@@ -28,6 +28,19 @@ package math.geom2d;
 import junit.framework.TestCase;
 import java.util.*;
 
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.BoundaryPolyCurve2D;
+import math.geom2d.curve.BoundarySet2D;
+import math.geom2d.curve.ContinuousBoundary2D;
+import math.geom2d.curve.ContinuousOrientedCurve2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.PolyOrientedCurve2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Polyline2D;
+import math.geom2d.line.StraightLine2D;
+
 public class Box2DTest extends TestCase {
 
 	public void testContains_DoubleDouble(){

@@ -1,0 +1,11 @@
+Notes for javaGeom library
+
+JavaGeom is a library for the Java programming language dedicated to geometrical computations.
+It Provides a general framework for manipulating and creating geometric primitives, 
+computing the intersection points between shapes, trasnforming the shapes by affine
+transforms, and performing measurements.
+
+Classical uses are the creation of geometrical primitives by the user, their modification,
+and measurements or  tests of some predicates.
+
+

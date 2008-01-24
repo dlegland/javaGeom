@@ -1,0 +1,86 @@
+Changes of javaGeom library
+
+javaGeom-0.5.2 (2008-??-??, rev. ??)
+
+- change package hierarchy
+
+
+javaGeom-0.5.2 (2008-01-17, rev. 93)
+
+- Clipping of smooth curves has been improved
+- Function "shape2D.getClippedShape()" have been renamed to
+	"Shape2D.clip()", and clipping procedures have been improved
+- Replace Math.sqrt() by Math.hypot(), to make computations more robust
+- Vector2D is more robust for checking colinearity and orthogonality
+- CircleArc2D.getReverseCurve() now returns a circle arc, not an ellipse arc
+- Some classes have been renamed:
+	Domain2D to GenericDomain2D, 
+	AbstractDomain2D to Domain2D, 
+	AbstractPolygon2D to PolygonalShape2D
+- Deprecate class ContinuousOrientedCurveSet2D, and remove references to it
+- add LinearTransforms, and GlideReflection2D
+
+
+javaGeom-0.5.1 (2007-12-02, rev. 86)
+
+- Use generics for curve set implementations, giving more control on type cast
+	and adding more safety 
+- Change hierarchy of affine transforms, allowing more control on type of 
+	transforms after transform composition 
+- Specialize the return type of overloaded methods when necessary 
+- Add more controls on the curve collection in CurveSet2D 
+- Deprecate class PolarPoint2D 
+- Fix bug in polyline path
+
+
+javaGeom-0.5.0 (2007-10-20, rev. 76)
+
+- Better support for generics
+- Change implementation of Bounding box, making it more robust and more generic
+- Add fonction to compute polygon centroid
+- Add class MultiPolygon2D, for multiply connected polygons
+- improve stability and robustness for various functions (point-point 
+	distances, affine transform)
+- improve implementation of Parabola2D and ParabolArc2D
+- introduce Hyperbolic conics (HyperbolaD, HyperbolaBranch2D, and 
+	HyperbolaBranchArc2D)
+
+
+javaGeom-0.4.0 (2007-05-13, rev. 55)
+
+- update to Java 1.5.0 and to generics (finally !)
+- add method Curve2D.getReverseCurve() which returns same curve with inverse
+	parametrization
+- add method ContinuousCurve2D.getAsPolyline(int), to use extract curve
+	approximation with a given number of subsegments
+- Implements methods in BezierCurve2D and ParabolaArc2D which uses polyline
+	approximations
+
+
+javaGeom-0.3.2 (2007-05-03, rev. 47)
+
+- Introduce ParabolaArc2D
+- minor changes in Parabola2D
+- Add setter class for geometric classes: Circle2D, CircleArc2D, 
+	StraightLine2D, LineSegment2D, Ray2D...
+- AbstractPolygon2D now returns an iterator instead of a Point2D array
+- Polyline2D and Polygon2D admit better handling of points
+
+
+javaGeom-0.3.1 (2007-04-22, rev. 45)
+
+- Box2D implements methods for clipping different types of curves
+- add method ContinuousCurve2D.getSubcurve(double, double) to extract a piece
+	of curve.
+- class hierarchy of different classes has been updated
+- better support for curve sets, 
+- better support for pathIterator of many curves
+- fix bugs, in particular in EllipseArc2D and CircleArc2D
+
+
+javaGeom v0.3.0 (rev. 29)
+
+- The support of some conics have been improved, and Parabola2D is introduced.
+- The curve hierarchy have been rewritten, M
+- Modifications have been made in the hierarchy of affine transforms.
+

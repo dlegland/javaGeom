@@ -25,6 +25,7 @@
 package math.geom2d;
 
 import java.util.Collection;
+import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 

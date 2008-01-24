@@ -33,6 +33,23 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
+import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.curve.Boundary2D;
+import math.geom2d.curve.BoundaryPolyCurve2D;
+import math.geom2d.curve.BoundarySet2D;
+import math.geom2d.curve.ContinuousBoundary2D;
+import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.ContinuousOrientedCurve2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.HRectangle2D;
+import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.PolygonalShape2D;
+
 /**
  * This class defines bounds of a shape. It stores limits in each direction:
  * <code>x</code> and <code>y</code>. It also provides methods for clipping

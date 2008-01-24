@@ -25,9 +25,12 @@
  */
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.conic.Ellipse2D;
+import math.geom2d.curve.Curve2D;
 
 
 public class DrawClippedEllipseDemo extends JPanel{

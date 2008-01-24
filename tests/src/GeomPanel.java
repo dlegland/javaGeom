@@ -25,6 +25,16 @@
 
 import java.awt.*;
 import math.geom2d.*;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.domain.HalfPlane2D;
+import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Ray2D;
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polygon2D;
+import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.transform.Rotation2D;
+import math.geom2d.transform.Translation2D;
 
 import javax.swing.JPanel;
 
@@ -135,8 +145,8 @@ public class GeomPanel extends JPanel{
 		
 		line1 = new Ray2D(-10, -10, 30, 20);
 		HalfPlane2D hp1 = new HalfPlane2D(line1);
-		shape = hp1.getClippedShape(window);
-		if((shape=hp1.getClippedShape(window))!=null) g2.draw(transform.createTransformedShape(shape));
+		shape = hp1.clip(window);
+		if((shape=hp1.clip(window))!=null) g2.draw(transform.createTransformedShape(shape));
 		
 		g2.draw(transform.createTransformedShape(new StraightLine2D(0,0,1,0)));
 		g2.draw(transform.createTransformedShape(new StraightLine2D(0,0,0,1)));

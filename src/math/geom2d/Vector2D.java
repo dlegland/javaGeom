@@ -24,6 +24,8 @@
 // package
 package math.geom2d;
 
+import math.geom2d.transform.AffineTransform2D;
+
 // Imports
 
 /**

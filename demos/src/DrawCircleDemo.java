@@ -27,7 +27,7 @@
 import java.awt.*;
 import javax.swing.*;
 
-import math.geom2d.*;
+import math.geom2d.conic.Circle2D;
 
 
 public class DrawCircleDemo extends JPanel{

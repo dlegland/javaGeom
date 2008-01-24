@@ -24,6 +24,9 @@
 // package
 package math.geom2d;
 
+import math.geom2d.transform.AffineTransform2D;
+
+
 // Imports
 
 /**
@@ -97,12 +100,6 @@ public interface Shape2D extends java.awt.Shape{
 
 	// ===================================================================
 	// general methods
-
-	/**
-	 * @deprecated use method clip(Box2D instead)
-	 */
-	@Deprecated
-	public abstract Shape2D getClippedShape(Box2D box);
 	
 	/**
 	 * Clip the shape with the given box, and returns a new shape.
@@ -215,14 +212,6 @@ class EmptySet2D implements Shape2D {
 	/** returns null.*/
 	public java.awt.geom.Rectangle2D getBounds2D() {
 		return null;
-	}
-
-	public boolean contains(Rectangle2D arg0) {
-		return false;
-	}
-
-	public boolean intersects(Rectangle2D arg0) {
-		return false;
 	}
 
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0) {

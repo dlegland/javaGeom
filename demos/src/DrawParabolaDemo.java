@@ -28,6 +28,12 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.Parabola2D;
+import math.geom2d.conic.ParabolaArc2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.line.Polyline2D;
 
 
 public class DrawParabolaDemo extends JPanel{

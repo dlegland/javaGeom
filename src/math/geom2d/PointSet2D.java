@@ -28,6 +28,8 @@ package math.geom2d;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.*;
+
+import math.geom2d.transform.AffineTransform2D;
 /**
  * Represent the union of a finite number of Point2D.
  *

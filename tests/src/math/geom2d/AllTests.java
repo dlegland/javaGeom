@@ -37,37 +37,9 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(AffineTransform2DTest.class));
 		suite.addTest(new TestSuite(Angle2DTest.class));
-		suite.addTest(new TestSuite(BezierCurve2DTest.class));
 		suite.addTest(new TestSuite(Box2DTest.class));
-		suite.addTest(new TestSuite(Circle2DTest.class));
-		suite.addTest(new TestSuite(CircleArc2DTest.class));
-		suite.addTest(new TestSuite(ClosedPolyline2DTest.class));
-		suite.addTest(new TestSuite(CurveSet2DTest.class));
-		suite.addTest(new TestSuite(LineSegment2DTest.class));
-		suite.addTest(new TestSuite(Ellipse2DTest.class));
-		suite.addTest(new TestSuite(EllipseArc2DTest.class));
-		suite.addTest(new TestSuite(HalfPlane2DTest.class));
-		suite.addTest(new TestSuite(Hyperbola2DTest.class));
-		suite.addTest(new TestSuite(HyperbolaBranch2DTest.class));
-		suite.addTest(new TestSuite(LineArc2DTest.class));
-		suite.addTest(new TestSuite(LineObject2DTest.class));
-		suite.addTest(new TestSuite(LineReflection2DTest.class));
-		suite.addTest(new TestSuite(MultiPolygon2DTest.class));
-		suite.addTest(new TestSuite(Parabola2DTest.class));
-		suite.addTest(new TestSuite(ParabolaArc2DTest.class));
 		suite.addTest(new TestSuite(Point2DTest.class));
-		suite.addTest(new TestSuite(Polygon2DTest.class));
-		suite.addTest(new TestSuite(Polyline2DTest.class));
-		suite.addTest(new TestSuite(PolyCurve2DTest.class));
-		suite.addTest(new TestSuite(PolyOrientedCurve2DTest.class));
-		suite.addTest(new TestSuite(Ray2DTest.class));
-		suite.addTest(new TestSuite(Rectangle2DTest.class));
-		suite.addTest(new TestSuite(Scaling2DTest.class));
-		suite.addTest(new TestSuite(StraightLine2DTest.class));
-		suite.addTest(new TestSuite(StraightObject2DTest.class));
-		suite.addTest(new TestSuite(Translation2DTest.class));
 		suite.addTest(new TestSuite(Vector2DTest.class));
 		//$JUnit-END$
 		return suite;

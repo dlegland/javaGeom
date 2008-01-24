@@ -28,6 +28,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.curve.Boundary2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.polygon.Polygon2D;
 
 
 public class DrawClippedPolygonDemo extends JPanel{

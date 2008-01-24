@@ -25,6 +25,8 @@
  */
 package math.geom2d;
 
+import math.geom2d.line.StraightObject2D;
+
 /**
  * This class is only devoted to static computations.
  * @author dlegland
@@ -141,8 +143,8 @@ public class Angle2D {
 	 */
 	public final static double getAbsoluteAngle(java.awt.geom.Point2D p1,
 			java.awt.geom.Point2D p2, java.awt.geom.Point2D p3){
-		double angle1 = new LineSegment2D(p2, p1).getHorizontalAngle();
-		double angle2 = new LineSegment2D(p2, p3).getHorizontalAngle();
+		double angle1 = Angle2D.getHorizontalAngle(new Vector2D(p2, p1));
+		double angle2 = Angle2D.getHorizontalAngle(new Vector2D(p2, p3));
 		angle1 = (angle2-angle1+M_2PI)%(M_2PI);
 		if(angle1<Math.PI) return angle1;
 		else return M_2PI-angle1;
