@@ -28,6 +28,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.BoundaryPolyCurve2D;
+import math.geom2d.curve.Curve2D;
 
 
 public class DrawBoundarySetDemo extends JPanel{

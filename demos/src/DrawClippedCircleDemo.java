@@ -28,6 +28,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.curve.Curve2D;
 
 
 public class DrawClippedCircleDemo extends JPanel{
