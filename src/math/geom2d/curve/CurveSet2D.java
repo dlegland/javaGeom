@@ -38,8 +38,8 @@ import java.util.*;
  * @author Legland
  *
  */
-public class CurveSet2D<T extends Curve2D> implements Curve2D{
-	//TODO: make it implement Iterable<T>
+public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
+
 	/** The inner array of curves*/
 	protected ArrayList<T> curves = new ArrayList<T>();
 	
@@ -680,6 +680,13 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D{
 			if(!ok) return false;
 		}
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
+	public Iterator<T> iterator() {
+		return curves.iterator();
 	}
 
 }

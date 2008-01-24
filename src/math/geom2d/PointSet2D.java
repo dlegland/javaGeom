@@ -35,9 +35,8 @@ import math.geom2d.transform.AffineTransform2D;
  *
  * @author dlegland
  */
-public class PointSet2D implements Shape2D {
+public class PointSet2D implements Shape2D, Iterable<Point2D>{
 
-	//TODO: make it implement Iterable<Point2D>
 	//TODO: add parametrization by <? extends Point2D> ?
 	protected Collection<Point2D> points = new ArrayList<Point2D>();
 	
@@ -284,6 +283,13 @@ public class PointSet2D implements Shape2D {
 		}
 		
 		return path.getPathIterator(trans, flatness);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
+	public Iterator<Point2D> iterator() {
+		return points.iterator();
 	}
 
 }
