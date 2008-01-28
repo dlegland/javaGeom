@@ -35,10 +35,10 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.ContinuousBoundary2D;
 import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
@@ -58,7 +58,7 @@ import math.geom2d.transform.Translation2D;
  * No convention is taken about lengths of semiaxis : the second semi axis
  * can be greater than the first one.
  */
-public class Ellipse2D implements SmoothCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
+public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 
 
 	// ===================================================================
@@ -755,13 +755,13 @@ public class Ellipse2D implements SmoothCurve2D, Conic2D, ContinuousBoundary2D, 
 	 * If the ellipse is not clipped, the result is an instance of
 	 * CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
 	 */
-	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
+	public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
 		
 		// Stores the result in appropriate structure
-		CurveSet2D<ContinuousOrientedCurve2D> result =
-			new CurveSet2D<ContinuousOrientedCurve2D> ();
+		CurveSet2D<SmoothOrientedCurve2D> result =
+			new CurveSet2D<SmoothOrientedCurve2D> ();
 		
 		// convert the result
 		for(Curve2D curve : set.getCurves()){

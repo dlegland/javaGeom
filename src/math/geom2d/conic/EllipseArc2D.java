@@ -34,10 +34,10 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.Ray2D;
@@ -50,7 +50,7 @@ import math.geom2d.transform.AffineTransform2D;
  * a starting angle, and a signed angle extent.
  * @author dlegland
  */
-public class EllipseArc2D implements SmoothCurve2D, ContinuousOrientedCurve2D {
+public class EllipseArc2D implements SmoothOrientedCurve2D{
 	protected Ellipse2D ellipse;
 		
 	protected double startAngle=0;
@@ -397,13 +397,6 @@ public class EllipseArc2D implements SmoothCurve2D, ContinuousOrientedCurve2D {
 	/** Always return true: an ellipse arc is bounded by definition */
 	public boolean isBounded() {
 		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
-	 */
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipContinuousOrientedCurve(this);
 	}
 
 	/**

@@ -91,7 +91,8 @@ public class Box2D implements PolygonalShape2D{
 	
 	/** Constructor from awt, to allow easy construction from existing apps.*/
 	public Box2D(java.awt.geom.Rectangle2D rect){
-		this(rect.getX(), rect.getX()+rect.getWidth(), rect.getY(), rect.getY()+rect.getHeight());
+		this(rect.getX(), rect.getX()+rect.getWidth(), 
+				rect.getY(), rect.getY()+rect.getHeight());
 	}
 
 	/** Constructor from 2 points, giving extreme coordinates of the box.*/
@@ -180,9 +181,9 @@ public class Box2D implements PolygonalShape2D{
 			CurveSet2D<?> clipped;
 			
 			// a clipped parts of current curve to the result
-			for(Curve2D continuous : curveSet.getCurves()){
+			for(Curve2D continuous : curveSet){
 				clipped = this.clipCurve(continuous);
-				for(Curve2D clippedPart : clipped.getCurves())
+				for(Curve2D clippedPart : clipped)
 					result.addCurve(clippedPart);
 			}
 			
@@ -191,25 +192,20 @@ public class Box2D implements PolygonalShape2D{
 		}
 		
 		// create array of points
-		ArrayList<Point2D> list = new ArrayList<Point2D>();
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 		// extract edges of the box boundary
 		Collection<LineSegment2D> edges = this.getEdges();
 		
 		// add the intersections with each edge to the list
 		for(LineSegment2D edge : edges)
-			list.addAll(curve.getIntersections(edge));
+			points.addAll(curve.getIntersections(edge));
 				
 		// convert list to point array, sorted wrt to their position on the curve
 		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		Point2D intersection;
-		double position;
-		for(int i=0; i<list.size(); i++){
-			intersection = (Point2D) list.get(i);
-			position = curve.getPosition(intersection);
+		for(Point2D p : points)
+			set.add(new java.lang.Double(curve.getPosition(p)));
 			
-			set.add(new java.lang.Double(position));
-		}		
 				
 		// Create CurveSet2D for storing the result
 		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
@@ -228,16 +224,14 @@ public class Box2D implements PolygonalShape2D{
 		Iterator<java.lang.Double> iter = set.iterator();
 		
 		// different behavior depending if first point lies inside the box
-		if(this.contains(point1) && !this.getBoundary().contains(point1)){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
-			res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
-		}
+		if(this.contains(point1) && !this.getBoundary().contains(point1))
+			res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
 		
 		// add the portions of curve between couples of intersections
 		while(iter.hasNext()){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
+			pos1 = iter.next().doubleValue();
 			if(iter.hasNext())
-				pos2 = ((java.lang.Double) iter.next()).doubleValue();
+				pos2 = iter.next().doubleValue();
 			else
 				pos2 = curve.getT1();
 			res.addCurve(curve.getSubCurve(pos1, pos2));
@@ -255,9 +249,9 @@ public class Box2D implements PolygonalShape2D{
 		CurveSet2D<?> clipped;
 
 		// a clipped parts of current curve to the result
-		for(Curve2D curve : curveSet.getCurves()){
+		for(Curve2D curve : curveSet){
 			clipped = this.clipCurve(curve);
-			for(Curve2D clippedPart : clipped.getCurves())
+			for(Curve2D clippedPart : clipped)
 				result.addCurve(clippedPart);
 		}
 
@@ -274,25 +268,19 @@ public class Box2D implements PolygonalShape2D{
 		//TODO: should take into account unbounded boxes
 		
 		// create array of points
-		ArrayList<Point2D> list = new ArrayList<Point2D>();
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 		// extract edges of the box boundary
 		Collection<LineSegment2D> edges = this.getEdges();
 		
 		// add the intersections with each edge to the list
 		for(LineSegment2D edge : edges)
-			list.addAll(curve.getIntersections(edge));
+			points.addAll(curve.getIntersections(edge));
 				
 		// convert list to point array, sorted wrt to their position on the curve
 		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		Point2D intersection;
-		double position;
-		for(int i=0; i<list.size(); i++){
-			intersection = (Point2D) list.get(i);
-			position = curve.getPosition(intersection);
-			
-			set.add(new java.lang.Double(position));
-		}		
+		for(Point2D p : points)
+			set.add(new java.lang.Double(curve.getPosition(p)));				
 				
 		// Create CurveSet2D for storing the result
 		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
@@ -311,10 +299,8 @@ public class Box2D implements PolygonalShape2D{
 		Iterator<java.lang.Double> iter = set.iterator();
 		
 		// different behavior depending if first point lies inside the box
-		if(this.contains(point1) && !this.getBoundary().contains(point1)){
-			pos1 = iter.next().doubleValue();
-			res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
-		}
+		if(this.contains(point1) && !this.getBoundary().contains(point1))
+			res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
 		
 		// add the portions of curve between couples of intersections
 		while(iter.hasNext()){
@@ -333,19 +319,18 @@ public class Box2D implements PolygonalShape2D{
 	 * clip a continuous smooth curve.
 	 */
 	public CurveSet2D<SmoothCurve2D> clipSmoothCurve(SmoothCurve2D curve){
-		// initialize curve set
+		// create two CurveSet2D to be used in fip-flop
 		CurveSet2D<SmoothCurve2D> result = new CurveSet2D<SmoothCurve2D>();
-		result.addCurve(curve);
 		CurveSet2D<SmoothCurve2D> buffer;
-		CurveSet2D<SmoothCurve2D> clipped;
+		
+		// init first buffer with current curve
+		result.addCurve(curve);
 		
 		// Iterate on each clipping line
-		Collection<StraightLine2D> lines = getClippingLines();
-		for(StraightLine2D line : lines){
+		for(StraightLine2D line : this.getClippingLines()){
 			buffer = new CurveSet2D<SmoothCurve2D>();
-			for(SmoothCurve2D smooth : result.getCurves()){
-				clipped = line.clipSmoothCurve(smooth);
-				for(SmoothCurve2D c : clipped.getCurves())
+			for(SmoothCurve2D smooth : result){
+				for(SmoothCurve2D c : line.clipSmoothCurve(smooth))
 					buffer.addCurve(c);
 			}
 			result = buffer;
@@ -364,19 +349,19 @@ public class Box2D implements PolygonalShape2D{
 			clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve){
 	
 		// create array of points
-		ArrayList<Point2D> list = new ArrayList<Point2D>();
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
 
 		// extract edges of the box boundary
 		Collection<LineSegment2D> edges = this.getEdges();
 		
 		// add the intersections with each edge to the list
 		for(LineSegment2D edge : edges)
-			list.addAll(curve.getIntersections(edge));
+			points.addAll(curve.getIntersections(edge));
 		
 		// convert list to point array, sorted wrt to their position on the curve
 		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		for(Point2D intersection : list)
-			set.add(new java.lang.Double(curve.getPosition(intersection)));			
+		for(Point2D p : points)
+			set.add(new java.lang.Double(curve.getPosition(p)));			
 				
 		// Create curveset for storing the result
 		CurveSet2D<ContinuousOrientedCurve2D> res =
@@ -403,17 +388,17 @@ public class Box2D implements PolygonalShape2D{
 		
 		// different behavior depending if first point lies inside the box
 		if(this.contains(point1) && !this.getBoundary().contains(point1))
-			pos0 = ((java.lang.Double) iter.next()).doubleValue();
+			pos0 = iter.next().doubleValue();
 		
 		
 		// add the portions of curve between couples of intersections
 		while(iter.hasNext()){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
+			pos1 = iter.next().doubleValue();
 			if(iter.hasNext())
-				pos2 = ((java.lang.Double) iter.next()).doubleValue();
+				pos2 = iter.next().doubleValue();
 			else
 				pos2 = pos0;
-			res.addCurve((ContinuousOrientedCurve2D)curve.getSubCurve(pos1, pos2));
+			res.addCurve(curve.getSubCurve(pos1, pos2));
 		}
 		
 		return res;
@@ -452,7 +437,7 @@ public class Box2D implements PolygonalShape2D{
 		for(ContinuousBoundary2D boundaryCurve : boundaryCurves){
 			clipped = this.clipContinuousOrientedCurve(boundaryCurve);
 			
-			for(ContinuousOrientedCurve2D clip : clipped.getCurves())
+			for(ContinuousOrientedCurve2D clip : clipped)
 				curveSet.addCurve(clip);			
 		}
 
@@ -578,7 +563,7 @@ public class Box2D implements PolygonalShape2D{
 			// remove curves from array
 			Iterator<Integer> iter2 = indices.iterator();
 			while(iter2.hasNext())
-				curves[((Integer) iter2.next()).intValue()] = null;
+				curves[iter2.next().intValue()] = null;
 			
 			// next curve !
 			c++;
@@ -667,19 +652,6 @@ public class Box2D implements PolygonalShape2D{
 	// ===================================================================
 	// methods from interface PolygonalShape2D
 	
-	/**
-	 * @deprecated use getVertices() instead.
-	 */
-	@Deprecated
-	public Iterator<Point2D> getPoints(){
-		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
-		points.add(new Point2D(xmin, ymin));
-		points.add(new Point2D(xmax, ymin));
-		points.add(new Point2D(xmax, ymax));
-		points.add(new Point2D(xmin, ymax));
-		return points.iterator();
-	}
-	
 	public Collection<Point2D> getVertices(){
 		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
 		points.add(new Point2D(xmin, ymin));
@@ -743,9 +715,7 @@ public class Box2D implements PolygonalShape2D{
 	 */
 	public boolean containsBounds(Shape2D shape){
 		if(!shape.isBounded()) return false;
-//		Iterator<Point2D> iter = new Box2D(shape.getBounds2D()).getVertices();
-//		while(iter.hasNext())
-		for(Point2D point : new Box2D(shape.getBounds2D()).getVertices())
+		for(Point2D point : shape.getBoundingBox().getVertices())
 			if(!contains(point)) return false;
 
 		return true;

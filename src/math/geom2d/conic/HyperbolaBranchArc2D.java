@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
@@ -180,10 +179,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	public Box2D getBoundingBox() {
 		// TODO Auto-generated method stub
 		return this.getAsPolyline(100).getBoundingBox();
-	}
-
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipContinuousOrientedCurve(this);
 	}
 
 	/**
