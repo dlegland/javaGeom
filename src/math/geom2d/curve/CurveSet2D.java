@@ -232,16 +232,16 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		// check index if even-> corresponds to a curve
 		int indc = (int)Math.floor(nc/2);
 		if(indc*2 == nc){
-			Curve2D curve = (Curve2D) curves.get(indc);
+			Curve2D curve = curves.get(indc);
 			double pos = fromUnitSegment(t-nc, curve.getT0(), curve.getT1());
 			return curve.getPoint(pos, point);
 		}else{
 			// return either last point of preceding curve, 
 			// or first point of next curve
 			if(t-nc<.5)
-				return ((Curve2D)curves.get(indc)).getLastPoint();
+				return curves.get(indc).getLastPoint();
 			else
-				return ((Curve2D)curves.get(indc+1)).getFirstPoint();
+				return curves.get(indc+1).getFirstPoint();
 		}
 	}
 
@@ -327,7 +327,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		
 		// need to subdivide only one curve
 		if(ind0==ind1 && t0<t1){
-			curve = (Curve2D)curves.get(ind0);
+			curve = curves.get(ind0);
 			pos0 = fromUnitSegment(t0-t0f, curve.getT0(), curve.getT1()); 
 			pos1 = fromUnitSegment(t1-t1f, curve.getT0(), curve.getT1());
 			res.addCurve(curve.getSubCurve(pos0, pos1));
@@ -335,26 +335,26 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		}		
 
 		// add the end of the curve containing first cut
-		curve = (Curve2D)curves.get(ind0);
+		curve = curves.get(ind0);
 		pos0 = fromUnitSegment(t0-t0f, curve.getT0(), curve.getT1()); 
 		res.addCurve(curve.getSubCurve(pos0, curve.getT1()));
 		
 		if(ind1>ind0){
 			// add all the whole curves between the 2 cuts
 			for(int n=ind0+1; n<ind1; n++)
-				res.addCurve((Curve2D) curves.get(n));
+				res.addCurve(curves.get(n));
 		}else{
 			// add all curves until the end of the set
 			for(int n=ind0+1; n<nc; n++)
-				res.addCurve((Curve2D) curves.get(n));
+				res.addCurve(curves.get(n));
 			
 			// add all curves from the beginning of the set
 			for(int n=0; n<ind1; n++)
-				res.addCurve((Curve2D) curves.get(n));
+				res.addCurve(curves.get(n));
 		}
 		
 		// add the beginning of the last cut curve
-		curve = (Curve2D) curves.get(ind1);
+		curve = curves.get(ind1);
 		pos1 = fromUnitSegment(t1-t1f, curve.getT0(), curve.getT1()); 
 		res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
 		
@@ -394,87 +394,23 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	 * totally inside the box, return a CurveSet2D with only one curve, which
 	 * is the original curve.
 	 */
-	public CurveSet2D<? extends Curve2D> getClippedShape(Box2D box){	
-		
-		// create array of points
-		ArrayList<Point2D> list = new ArrayList<Point2D>();
-		
-		// extract edges of the box boundary
-		Collection<LineSegment2D> edges = box.getEdges();
-		
-		// add the intersections with each edge to the list
-		for(LineSegment2D edge : edges)
-			list.addAll(this.getIntersections(edge));
-		
-		// convert list to point array, sorted wrt to their position on the curve
-		SortedSet<Double> set = new TreeSet<Double>();
-		double position;
-		for(Point2D intersection : list){
-			position = this.getPosition(intersection);			
-			set.add(new java.lang.Double(position));
-		}		
-				
-		// Create CurveSet2D for storing the result
-		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
-		
-		// extract first point of the curve
-		Point2D point1 = this.getFirstPoint();
-
-		// if no intersection point, the curve is totally either inside or outside the box
-		if(set.size()==0){
-			if(box.contains(point1))
-				res.addCurve(this);
-			return res;
-		}
-		
-		double pos1, pos2;
-		Iterator<java.lang.Double> iter = set.iterator();
-		
-		// different behavior depending if first point lies inside the box
-		if(this.contains(point1) && !box.getBoundary().contains(point1)){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
-			res.addCurve(this.getSubCurve(this.getT0(), pos1));
-		}
-		
-		// add the portions of curve between couples of intersections
-		while(iter.hasNext()){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
-			if(iter.hasNext())
-				pos2 = ((java.lang.Double) iter.next()).doubleValue();
-			else
-				pos2 = this.getT1();
-			res.addCurve(this.getSubCurve(pos1, pos2));
-		}
-		
-		return res;
-	}
-
-	/**
-	 * Clip a curve, and return a CurveSet2D. If the curve is totally outside
-	 * the box, return a CurveSet2D with 0 curves inside. If the curve is
-	 * totally inside the box, return a CurveSet2D with only one curve, which
-	 * is the original curve.
-	 */
 	public CurveSet2D<? extends Curve2D> clip(Box2D box){	
 		
 		// create array of points
-		ArrayList<Point2D> list = new ArrayList<Point2D>();
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 		// extract edges of the box boundary
 		Collection<LineSegment2D> edges = box.getEdges();
 		
 		// add the intersections with each edge to the list
 		for(LineSegment2D edge : edges)
-			list.addAll(this.getIntersections(edge));
+			points.addAll(this.getIntersections(edge));
 		
 		// convert list to point array, sorted wrt to their position on the curve
 		SortedSet<Double> set = new TreeSet<Double>();
-		double position;
-		for(Point2D intersection : list){
-			position = this.getPosition(intersection);			
-			set.add(new java.lang.Double(position));
-		}		
-				
+		for(Point2D p : points)
+			set.add(new java.lang.Double(this.getPosition(p)));
+					
 		// Create CurveSet2D for storing the result
 		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
 		
@@ -492,16 +428,14 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		Iterator<java.lang.Double> iter = set.iterator();
 		
 		// different behavior depending if first point lies inside the box
-		if(this.contains(point1) && !box.getBoundary().contains(point1)){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
-			res.addCurve(this.getSubCurve(this.getT0(), pos1));
-		}
+		if(this.contains(point1) && !box.getBoundary().contains(point1))
+			res.addCurve(this.getSubCurve(this.getT0(), iter.next()));
 		
 		// add the portions of curve between couples of intersections
 		while(iter.hasNext()){
-			pos1 = ((java.lang.Double) iter.next()).doubleValue();
+			pos1 = iter.next().doubleValue();
 			if(iter.hasNext())
-				pos2 = ((java.lang.Double) iter.next()).doubleValue();
+				pos2 = iter.next().doubleValue();
 			else
 				pos2 = this.getT1();
 			res.addCurve(this.getSubCurve(pos1, pos2));

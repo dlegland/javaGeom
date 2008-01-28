@@ -37,6 +37,7 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightObject2D;
@@ -57,7 +58,7 @@ import math.geom2d.transform.Translation2D;
  * parabola point to opposite side). 
  * @author dlegland
  */
-public class Parabola2D implements SmoothCurve2D, Conic2D, ContinuousBoundary2D {
+public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D {
 	/** Coordinate of the vertex*/
 	protected double xv=0, yv=0;
 
@@ -452,10 +453,6 @@ public class Parabola2D implements SmoothCurve2D, Conic2D, ContinuousBoundary2D 
 	/** Always returns false, because a parabola is not bounded.*/
 	public boolean isBounded(){return false;}
 
-
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipBoundary(this);
-	}
 	
 	/**
 	 * Clip the parabola by a box. The result is an instance of

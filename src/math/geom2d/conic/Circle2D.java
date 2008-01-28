@@ -32,10 +32,10 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 
@@ -332,19 +332,19 @@ public class Circle2D extends Ellipse2D {
 
 	/**
 	 * Clip the circle by a box. The result is an instance of
-	 * CurveSet2D<ContinuousOrientedCurve2D>, which 
+	 * CurveSet2D<SmoothOrientedCurve2D>, which 
 	 * contains only instances of CircleArc2D or Circle2D.
 	 * If the circle is not clipped, the result is an instance of
-	 * CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
+	 * CurveSet2D<SmoothOrientedCurve2D> which contains 0 curves.
 	 */
 	@Override
-	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
+	public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
 		
 		// Stores the result in appropriate structure
-		CurveSet2D<ContinuousOrientedCurve2D> result =
-			new CurveSet2D<ContinuousOrientedCurve2D> ();
+		CurveSet2D<SmoothOrientedCurve2D> result =
+			new CurveSet2D<SmoothOrientedCurve2D> ();
 		
 		// convert the result
 		for(Curve2D curve : set.getCurves()){

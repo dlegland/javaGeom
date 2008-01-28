@@ -63,13 +63,13 @@ import math.geom2d.transform.AffineTransform2D;
  * line.setPoint1(new Point2D(2, 3));<br>
  * // Transform into Ray2D :<br>
  * line.setPoint1(null);<br>
- * // Tranform into Line2D, going throug (2,3) and (4,5) :<br>
+ * // Transform into Line2D, going through (2,3) and (4,5) :<br>
  * line.setPoint2(null);<br>
  * </code><p><p>
  * This class is maybe slower than Edge2D or StraightLine2D, because parameters are
  * updated each time a computation is made, causing lot of additional processing.
  */
-public class LineObject2D extends StraightObject2D implements SmoothCurve2D, ContinuousOrientedCurve2D{
+public class LineObject2D extends StraightObject2D{
 
 
 	// ===================================================================

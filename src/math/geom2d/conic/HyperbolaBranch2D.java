@@ -4,7 +4,6 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousBoundary2D;
 import math.geom2d.curve.ContinuousCurve2D;
@@ -206,10 +205,6 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return new Box2D(
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-	}
-
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipContinuousOrientedCurve(this);
 	}
 
 	/**

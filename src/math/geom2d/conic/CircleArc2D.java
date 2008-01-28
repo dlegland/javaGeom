@@ -482,17 +482,7 @@ public class CircleArc2D extends EllipseArc2D{
 		return new CircleArc2D(this.circle.getReverseCurve(), 
 				startAngle, -angleExtent);
 	}
-	
-	/**
-	 * Clip the circle arc by a rectangle. The result is a CurveSet2D, which 
-	 * contains only instances of CircleArc2D. If circle arc is not clipped,
-	 * the result is an instance of CurveSet2D with zero curves.
-	 */
-	public Shape2D getClippedShape(java.awt.geom.Rectangle2D rect) {
-		CurveSet2D<?> set = new Box2D(rect).clipCurve(this);
-		return set;
-	}
-	
+		
 	/**
 	 * Clip the circle arc by a box. The result is a CurveSet2D, which 
 	 * contains only instances of CircleArc2D. If circle arc is not clipped,

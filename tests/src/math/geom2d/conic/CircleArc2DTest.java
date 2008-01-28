@@ -250,38 +250,38 @@ public class CircleArc2DTest extends TestCase {
 		Shape2D clip1;
 
 		// a rectangle totally outside the arc
-		clip1 = arc1.getClippedShape(new Box2D(15, 25, 15, 25)); 
+		clip1 = arc1.clip(new Box2D(15, 25, 15, 25)); 
 		assertTrue(clip1 instanceof CurveSet2D);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 0);
 
 		// an rectangle totally inside a circle arc
-		clip1 = arc1.getClippedShape(new Box2D(0, 7, 0, 7));
+		clip1 = arc1.clip(new Box2D(0, 7, 0, 7));
 		assertTrue(clip1 instanceof CurveSet2D);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 0);
 
 		// a circle arc totally inside the rectangle
-		clip1 = arc1.getClippedShape(new Box2D(-20, 20, -20, 20));
+		clip1 = arc1.clip(new Box2D(-20, 20, -20, 20));
 		assertTrue(clip1 instanceof CurveSet2D);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 1);
 		Curve2D clip1c1 = (Curve2D) ((CurveSet2D<?>) clip1).getFirstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
 
 		// a circle arc clipped with both extremities outside the rectangle
-		Shape2D curves = arc2.getClippedShape(rect1);
+		Shape2D curves = arc2.clip(rect1);
 		//assertTrue(curves.getClass().equals(CurveSet2D.class));
 		Curve2D curve1 = ((CurveSet2D<?>) curves).getFirstCurve();
 		assertTrue(curve1.getClass().equals(CircleArc2D.class));		
-//		Shape2D arc2c = arc2.getClippedShape(rect1);
+//		Shape2D arc2c = arc2.clip(rect1);
 //		System.out.println(arc2c);
 		assertTrue(curve1.equals(arc1));
-		//assertTrue(arc2.equals(arc1.getClippedShape(rect1)));
+		//assertTrue(arc2.equals(arc1.clip(rect1)));
 		
 		// a circle arc clipped with both extremities inside the rectangle
-		curves = arc1.getClippedShape(rect2);
+		curves = arc1.clip(rect2);
 		//assertTrue(curves.getClass().equals(CurveSet2D.class));
 		curve1 = ((CurveSet2D<?>) curves).getFirstCurve();
 		assertTrue(curve1.getClass().equals(CircleArc2D.class));
-//		assertTrue(arc1.equals(arc1.getClippedShape(rect2)));
+//		assertTrue(arc1.equals(arc1.clip(rect2)));
 		assertTrue(curve1.equals(arc1));
 
 	}

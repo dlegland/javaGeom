@@ -33,10 +33,10 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightObject2D;
@@ -48,7 +48,7 @@ import math.geom2d.transform.AffineTransform2D;
  * parametrization.
  * @author dlegland
  */
-public class ParabolaArc2D implements SmoothCurve2D, ContinuousOrientedCurve2D {
+public class ParabolaArc2D implements SmoothOrientedCurve2D {
 
 
 	protected Parabola2D parabola = new Parabola2D();
@@ -256,10 +256,6 @@ public class ParabolaArc2D implements SmoothCurve2D, ContinuousOrientedCurve2D {
 	/** return true if the arc is bounded, i.e. if both limits are finite.*/
 	public boolean isBounded(){
 		return (t0!=Double.NEGATIVE_INFINITY && t1!=Double.POSITIVE_INFINITY);
-	}
-
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipContinuousOrientedCurve(this);
 	}
 
 	/**

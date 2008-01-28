@@ -24,7 +24,6 @@
 // package
 package math.geom2d.conic;
 
-import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.BoundarySet2D;
@@ -37,7 +36,8 @@ import math.geom2d.transform.Translation2D;
 // Imports
 
 /**
- * Superclass for all linear and pieces smooth curves : polylines, conics, lines ...
+ * Superclass for all linear and pieces smooth curves : polylines, conics,
+ * lines ...
  */
 public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Conic2D{
 
@@ -206,15 +206,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 	public boolean isTwoLines() {
 		return false;
 	}
-	
-	
-	/** Returns a bounding box with infinite bounds in every direction */
-	public Box2D getBoundingBox() {
-		return new Box2D(
-				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-	}
-	
+		
 	public boolean contains(java.awt.geom.Point2D point) {
 		return this.contains(point.getX(), point.getY());
 	}

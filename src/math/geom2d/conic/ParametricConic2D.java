@@ -33,7 +33,6 @@ import java.util.*;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
@@ -219,13 +218,6 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	 */
 	public boolean isBounded() {
 		return conic.isBounded();
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#getClippedShape(math.geom2d.Rectangle2D)
-	 */
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipCurve(conic);
 	}
 
 	/* (non-Javadoc)

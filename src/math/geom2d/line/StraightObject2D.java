@@ -32,6 +32,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.SmoothOrientedCurve2D;
 
 
 // Imports
@@ -50,7 +51,7 @@ import math.geom2d.curve.SmoothCurve2D;
  * can be the union of several colinear line segments).
  */
 //TODO: rename as LinearShape2D?
-public abstract class StraightObject2D implements SmoothCurve2D{
+public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 
 	// ===================================================================
 	// constants
