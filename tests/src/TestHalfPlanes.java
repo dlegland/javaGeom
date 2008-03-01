@@ -29,7 +29,7 @@ public class TestHalfPlanes{
 		HalfPlane2D plane = new HalfPlane2D(line1);
 
 		Box2D window = new Box2D(-100, 100, -100, 100);
-		Shape2D shape1 = plane.getClippedShape(window);
+		Shape2D shape1 = plane.clip(window);
 		System.out.println("number of vertices : " + ((Polygon2D)shape1).getVerticesNumber());
 		
 		for(Point2D point : ((Polygon2D)shape1).getVertices())

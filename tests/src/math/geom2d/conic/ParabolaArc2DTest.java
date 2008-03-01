@@ -25,6 +25,7 @@
  */
 package math.geom2d.conic;
 
+import math.geom2d.Point2D;
 import math.geom2d.line.Polyline2D;
 import junit.framework.TestCase;
 
@@ -40,6 +41,70 @@ public class ParabolaArc2DTest extends TestCase {
 
 	public static void main(String[] args) {
 		junit.awtui.TestRunner.run(ParabolaArc2DTest.class);
+	}
+
+	public void testGetPoint(){
+		
+		// Vertical parabola
+		ParabolaArc2D arc = new ParabolaArc2D(
+				new Parabola2D(0, 0, 1, 0), -5, 5);		
+		Point2D p0;
+		
+		// origin
+		p0 = arc.getPoint(0);
+		assertEquals(p0, new Point2D(0, 0));
+
+		// after origin
+		p0 = arc.getPoint(1);
+		assertEquals(p0, new Point2D(1, 1));
+		p0 = arc.getPoint(2);
+		assertEquals(p0, new Point2D(2, 4));
+		
+		// before origin
+		p0 = arc.getPoint(-1);
+		assertEquals(p0, new Point2D(-1, 1));
+		p0 = arc.getPoint(-2);
+		assertEquals(p0, new Point2D(-2, 4));
+
+
+		// Horizontal parabola (pointing to the right)
+		arc = new ParabolaArc2D(new Parabola2D(0, 0, 1, -Math.PI/2), -5, 5);	
+
+		// origin
+		p0 = arc.getPoint(0);
+		assertEquals(p0, new Point2D(0, 0));
+
+		// after origin
+		p0 = arc.getPoint(1);
+		assertEquals(p0, new Point2D(1, -1));
+		p0 = arc.getPoint(2);
+		assertEquals(p0, new Point2D(4, -2));
+
+		// before origin
+		p0 = arc.getPoint(-1);
+		assertEquals(p0, new Point2D(1, 1));
+		p0 = arc.getPoint(-2);
+		assertEquals(p0, new Point2D(4, 2));
+
+
+		// Shifted horizontal parabola
+		arc = new ParabolaArc2D(new Parabola2D(20, 10, 1, -Math.PI/2), -5, 5);	
+
+		// origin
+		p0 = arc.getPoint(0);
+		assertEquals(p0, new Point2D(20, 10));
+
+		// after origin
+		p0 = arc.getPoint(1);
+		assertEquals(p0, new Point2D(20+1, 10-1));
+		p0 = arc.getPoint(2);
+		assertEquals(p0, new Point2D(20+4, 10-2));
+
+		// before origin
+		p0 = arc.getPoint(-1);
+		assertEquals(p0, new Point2D(20+1, 10+1));
+		p0 = arc.getPoint(-2);
+		assertEquals(p0, new Point2D(20+4, 10+2));
 	}
 
 	public void testGetAsPolyline2D(){
