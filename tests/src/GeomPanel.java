@@ -138,10 +138,10 @@ public class GeomPanel extends JPanel{
 		//System.out.println(line1.getClippedShape(window));
 		//System.out.println(line2.getClippedShape(window));
 		Shape2D shape;
-		if((shape=line1.getClippedShape(window))!=null) g2.draw(transform.createTransformedShape(shape));
-		if((shape=line2.getClippedShape(window))!=null) g2.draw(transform.createTransformedShape(shape));
-		if((shape=line3.getClippedShape(window))!=null) g2.draw(transform.createTransformedShape(shape));
-		if((shape=line4.getClippedShape(window))!=null) g2.draw(transform.createTransformedShape(shape));
+		if((shape=line1.clip(window))!=null) g2.draw(transform.createTransformedShape(shape));
+		if((shape=line2.clip(window))!=null) g2.draw(transform.createTransformedShape(shape));
+		if((shape=line3.clip(window))!=null) g2.draw(transform.createTransformedShape(shape));
+		if((shape=line4.clip(window))!=null) g2.draw(transform.createTransformedShape(shape));
 		
 		line1 = new Ray2D(-10, -10, 30, 20);
 		HalfPlane2D hp1 = new HalfPlane2D(line1);

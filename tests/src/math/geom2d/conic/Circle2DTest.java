@@ -92,6 +92,26 @@ public class Circle2DTest extends TestCase {
 		assertEquals(circle.getDistance(-2, 3), 0, 1e-14);
 		assertEquals(circle.getDistance(2, -1), 0, 1e-14);
 	}
+	
+	/*
+	 * Test for boolean isInside(Point2D)
+	 */
+	public void testIsInsidePoint2D() {
+		Circle2D circle = new Circle2D(0, 0, 10);
+		
+		Point2D point1 = new Point2D(9, 0);
+		assertTrue(circle.isInside(point1));
+		
+		Point2D point2 = new Point2D(11, 0);
+		assertTrue(!circle.isInside(point2));
+		
+		circle = new Circle2D(20, 50, 10);
+		point1 = new Point2D(29, 50);
+		assertTrue(circle.isInside(point1));
+		
+		point2 = new Point2D(31, 50);
+		assertTrue(!circle.isInside(point2));
+	}
 
 	/*
 	 * Test for Point2D[] getIntersections(StraightObject2D)

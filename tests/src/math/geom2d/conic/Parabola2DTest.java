@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.StraightLine2D;
@@ -52,16 +51,66 @@ public class Parabola2DTest extends TestCase {
 	}
 
 	public void testGetPoint(){
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		
+		// Vertical parabola
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);		
 		Point2D p0;
+		
+		// origin
 		p0 = parabola.getPoint(0);
 		assertEquals(p0, new Point2D(0, 0));
 
+		// after origin
 		p0 = parabola.getPoint(1);
 		assertEquals(p0, new Point2D(1, 1));
+		p0 = parabola.getPoint(2);
+		assertEquals(p0, new Point2D(2, 4));
+		
+		// before origin
 		p0 = parabola.getPoint(-1);
 		assertEquals(p0, new Point2D(-1, 1));
+		p0 = parabola.getPoint(-2);
+		assertEquals(p0, new Point2D(-2, 4));
+		
+		
+		// Horizontal parabola (pointing to the right)
+		 parabola = new Parabola2D(0, 0, 1, -Math.PI/2);	
+
+		 // origin
+		 p0 = parabola.getPoint(0);
+		 assertEquals(p0, new Point2D(0, 0));
+
+		 // after origin
+		 p0 = parabola.getPoint(1);
+		 assertEquals(p0, new Point2D(1, -1));
+		 p0 = parabola.getPoint(2);
+		 assertEquals(p0, new Point2D(4, -2));
+
+		 // before origin
+		 p0 = parabola.getPoint(-1);
+		 assertEquals(p0, new Point2D(1, 1));
+		 p0 = parabola.getPoint(-2);
+		 assertEquals(p0, new Point2D(4, 2));
+		 
+		 
+		// Shifted horizontal parabola
+		 parabola = new Parabola2D(20, 10, 1, -Math.PI/2);	
+
+		 // origin
+		 p0 = parabola.getPoint(0);
+		 assertEquals(p0, new Point2D(20, 10));
+
+		 // after origin
+		 p0 = parabola.getPoint(1);
+		 assertEquals(p0, new Point2D(20+1, 10-1));
+		 p0 = parabola.getPoint(2);
+		 assertEquals(p0, new Point2D(20+4, 10-2));
+
+		 // before origin
+		 p0 = parabola.getPoint(-1);
+		 assertEquals(p0, new Point2D(20+1, 10+1));
+		 p0 = parabola.getPoint(-2);
+		 assertEquals(p0, new Point2D(20+4, 10+2));
 	}
 	
 	public void testGetDistance(){
@@ -143,8 +192,7 @@ public class Parabola2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		Box2D box = new Box2D(-10, 10, -4, 4);
 		
-		CurveSet2D<ContinuousOrientedCurve2D> clippedCurve =
-			box.clipContinuousOrientedCurve(parabola);
+		CurveSet2D<ParabolaArc2D> clippedCurve = parabola.clip(box);
 		Curve2D curve = clippedCurve.getFirstCurve();
 		
 		assertTrue(clippedCurve.getCurveNumber()==1);
@@ -153,7 +201,17 @@ public class Parabola2DTest extends TestCase {
 		// parabola pointing to the right
 		parabola = new Parabola2D(0, 0, 1, -Math.PI/2);
 		box = new Box2D(-4, 4, -10, 10);
-		clippedCurve = box.clipContinuousOrientedCurve(parabola);
+		clippedCurve = parabola.clip(box);
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		curve = clippedCurve.getFirstCurve();
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
+		
+		
+		// translated parabola pointing to the right
+		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
+		box = new Box2D(20-4, 20+4, 10-10, 10+10);
+		clippedCurve = parabola.clip(box);
 		assertTrue(clippedCurve.getCurveNumber()==1);
 		curve = clippedCurve.getFirstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);

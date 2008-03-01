@@ -48,17 +48,17 @@ public class DrawParabolaDemo extends JPanel{
 		
 		double x0 = 150;
 		double y0 = 100;
-		double p  = 10;
-		parabola = new Parabola2D(x0, y0, p, 0.8);
+		double a  = .25;
+		parabola = new Parabola2D(x0, y0, a, 0);
 		
-		box = new Box2D(50, 250, 50, 150);
+		box = new Box2D(50, 250, 50, 250);
 	
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 	
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -100, 100);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -50, 50);
 		
 		Polyline2D polyline = arc.getAsPolyline(10);
 		
@@ -74,13 +74,15 @@ public class DrawParabolaDemo extends JPanel{
 		g2.setColor(Color.BLUE);
 		g2.draw(box);
 
-		CurveSet2D<Curve2D> clippedSet = box.clipCurve(arc);
-		Curve2D clipped = clippedSet.getFirstCurve();
+		// Draw the clipped parabola
+		CurveSet2D<?> clipped = arc.clip(box);
+		if (!clipped.isEmpty()){
+			g2.setStroke(new BasicStroke(4.0f));
+			g2.setColor(Color.RED);
+			g2.draw(clipped);
+		}
 		
-		g2.setStroke(new BasicStroke(4.0f));
-		g2.setColor(Color.RED);
-		g2.draw(clipped);
-
+		// Draw parabola origin
 		Point2D p1 = parabola.getPoint(0);
 		g2.fill(new Circle2D(p1, 4));
 		
