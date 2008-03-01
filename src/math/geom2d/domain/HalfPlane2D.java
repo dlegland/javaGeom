@@ -337,15 +337,4 @@ public class HalfPlane2D implements Domain2D{
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
 		return clip(defaultClipWindow).getPathIterator(t, flatness);
 	}
-
-
-	/**
-	 * @param window
-	 * @return
-	 */
-	public Shape2D getClippedShape(Box2D window) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

@@ -451,7 +451,7 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		
 		// extract first point of the curve, or a point arbitrarily far
 		Point2D point1 = curve.getFirstPoint();
-		if(curve.getT0()==Double.POSITIVE_INFINITY)
+		if(Double.isInfinite(curve.getT0()))
 			point1 = curve.getPoint(-1000);
 
 		// Extract first valid intersection point, if it exists

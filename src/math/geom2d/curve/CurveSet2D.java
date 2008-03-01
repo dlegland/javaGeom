@@ -185,6 +185,12 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return curves.size();
 	}
 	
+	/**
+	 * Returns true if the CurveSet does not contain any curve.
+	 */
+	public boolean isEmpty(){
+		return curves.size()==0;
+	}
 	
 	// ===================================================================
 	// methods inherited from interface Curve2D 
@@ -284,6 +290,28 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return pos;
 	}
 
+	public double project(Point2D point){
+		double minDist = Double.MAX_VALUE, dist=minDist;
+		double x=point.getX(), y=point.getY();
+		double pos = 0, t0, t1;
+		
+		int i=0;
+		for(Curve2D curve : curves){
+			dist = curve.getDistance(x, y);
+			if(dist<minDist){
+				minDist = dist;
+				pos = curve.getPosition(point);
+				// format position
+				t0 = curve.getT0();
+				t1 = curve.getT1();
+				pos = toUnitSegment(pos, t0, t1)+i*2;
+			}
+			i++;
+		}
+		return pos;
+	}
+
+	
 	public Curve2D getReverseCurve(){
 		Curve2D[] curves2 = new Curve2D[curves.size()];
 		int n=curves.size();

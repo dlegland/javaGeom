@@ -103,38 +103,22 @@ public interface Curve2D extends Shape2D{
 	public abstract Point2D getLastPoint();
 	
 	/**
-	 * Get position of the orthogonal projection of point on the curve. This
-	 * function always returns a valid value. For cases which admit several
-	 * orthogonal projection, the function returns the closest one.
-	 * @param point
-	 * @return the geodesic position on the curve
+	 * Get position of the point on the curve. If the point does not belong to
+	 * the curve, return Double.NaN.
+	 * @param point a point belonging to the curve
+	 * @return the position of the point on the curve
 	 */
 	public abstract double getPosition(Point2D point);
 	
-//	/**
-//	 * Get the signed distance of the curve to the given point : this distance is
-//	 * positive if the point lies outside the shape, and is negative if the point
-//	 * lies inside the shape. In this case, absolute value of distance is equals to 
-//	 * the distance to the border of the shape.
-//	 */
-//	public abstract double getSignedDistance(Point2D p);
-//
-//	/**
-//	 * Not defined for empty set, but returns POSITIVE_INFINITY.
-//	 */
-//	public abstract double getSignedDistance(double x, double y);
-
-//	/** 
-//	 * Returns a set of smooth curves. 
-//	 */
-//	public abstract SmoothCurve2D[] getSmoothPieces();
+	/**
+	 * Returns the position of the closest orthogonal projection of the point
+	 * on the curve, or of the closest singular point. This function should
+	 * always returns a valid value. 
+	 * @param point a point to project
+	 * @return the position of the closest orthogonal projection
+	 */
+	public abstract double project(Point2D point);
 	
-//	/** 
-//	 * Returns the total length of the curve. If the curve contains a non
-//	 * finite part (such as straight line, rays, conics ...), it returns 
-//	 * Double.POSITIVE_INFINITY.
-//	 */
-//	public abstract double getLength();
 		
 	/**
 	 * Returns the intersection points of the curve with the specified line.

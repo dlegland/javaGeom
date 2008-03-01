@@ -174,6 +174,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return conic.getPosition(point);
 	}
 
+	public double project(Point2D point){
+		return conic.project(point);
+	}
+
 	public Conic2D getReverseCurve(){
 		return conic.getReverseCurve();
 	}

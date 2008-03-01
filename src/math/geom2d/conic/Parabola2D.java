@@ -75,8 +75,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		super();
 	}
 
-	public Parabola2D(Point2D vertex, double p, double theta) {
-		this(vertex.getX(), vertex.getY(), p, theta);
+	public Parabola2D(Point2D vertex, double a, double theta) {
+		this(vertex.getX(), vertex.getY(), a, theta);
 	}
 
 	public Parabola2D(double xv, double yv, double a, double theta) {
@@ -367,6 +367,16 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return formatPoint(point).getX();
 	}
 
+	/**
+	 * Returns position of point on the parabola. If point is not on the
+	 * parabola returns the positions on its "vertical" projection
+	 * (i.e. its projection parallel to the symetry axis of the parabola).
+	 */
+	public double project(Point2D point) {
+		// t parameter is x-coordinate of point
+		return formatPoint(point).getX();
+	}
+
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
 		// Computes the lines which corresponds to a "Unit" parabola.
 		StraightObject2D line2;
@@ -461,7 +471,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * clipped, the result is an instance of
 	 * CurveSet2D<ParabolaArc2D> which contains 0 curves.
 	 */
-	public CurveSet2D<? extends ParabolaArc2D> clip(Box2D box) {
+	public CurveSet2D<ParabolaArc2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
 		

@@ -530,6 +530,17 @@ public class LineObject2D extends StraightObject2D{
 			return (point.getY()-y0)/dy;
 	}
 	
+	public double project(Point2D point){
+		updateParameters();
+		double t;
+		if(Math.abs(dx)>Math.abs(dy))
+			t = (point.getX()-x0)/dx;
+		else
+			t = (point.getY()-y0)/dy;
+		return Math.min(Math.max(t, getT0()), getT1());
+	}
+
+	
 	/**
 	 * return the line object which starts at <code>point2</code> and ends at
 	 * <code>point1</code>.

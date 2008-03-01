@@ -304,6 +304,29 @@ public class LineArc2D extends StraightObject2D
 		else
 			return Point2D.INFINITY_POINT;
 	}
+	
+	/**
+	 * Gets the position of the point on the line arc.
+	 * If point belongs to the line, this position is defined by the ratio:<p>
+	 * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
+	 * <code> t = (yp - y0)/dy <\code>.<p>
+	 * If point does not belong to edge, returns Double.NaN.
+	 */
+	public double getPosition(Point2D point){
+		double pos;
+		// uses the direction with the biggest derivative of line arc, 
+		// in order to avoid divisions by zero.		
+		if(Math.abs(dx)>Math.abs(dy))
+			pos = (point.getX()-x0)/dx;
+		else
+			pos = (point.getY()-y0)/dy;
+		
+		// return either pos or NaN
+		if(pos<t0) return Double.NaN;
+		if(pos>t1) return Double.NaN;
+		return pos;
+	}
+
 	/**
 	 * Gets the position of the closest point on the line arc.
 	 * If point belongs to the line, this position is defined by the ratio:<p>
@@ -312,7 +335,7 @@ public class LineArc2D extends StraightObject2D
 	 * If point does not belong to edge, returns t0, or t1, depending on which
 	 * one is the closest. 
 	 */
-	public double getPosition(Point2D point){
+	public double project(Point2D point){
 		double pos;
 		// uses the direction with the biggest derivative of line arc, 
 		// in order to avoid divisions by zero.		
@@ -377,49 +400,49 @@ public class LineArc2D extends StraightObject2D
 		return Math.min(d1, d2);
 	}
 
-	/**
-	 * Return either an instance of LineSegment2D, representing the visible
-	 * portion of the object inside the given rectangle, or a null pointer.
-	 */
-	public Shape2D getClippedShape(Box2D box){		
-		// get dimension of rectangle
-		double x = box.getMinX();
-		double y = box.getMinY();
-		double tmp;
-
-		double tvmin = Double.NEGATIVE_INFINITY;
-		double tvmax = Double.POSITIVE_INFINITY;
-		double thmin = Double.NEGATIVE_INFINITY;
-		double thmax = Double.POSITIVE_INFINITY;
-		
-		// case of vertical lines
-		if(Math.abs(dy)>Shape2D.ACCURACY){
-			thmin = (y-y0)/dy;
-			thmax = (y+box.getHeight()-y0)/dy;
-			if(thmax<thmin){tmp=thmin; thmin=thmax; thmax=tmp;}
-			
-			thmin = Math.max(thmin, t0);
-			thmax = Math.min(thmax, t1);
-		}
-		
-		// case of horizontal lines
-		if(Math.abs(dx)>Shape2D.ACCURACY){
-			tvmin = (x-x0)/dx;
-			tvmax = (x+box.getWidth()-x0)/dx;
-			if(tvmax<tvmin){tmp=tvmin; tvmin=tvmax; tvmax=tmp;}
-			
-			tvmin = Math.max(tvmin, t0);
-			tvmax = Math.min(tvmax, t1);
-		}
-
-		double tmin = Math.max(tvmin, thmin);
-		double tmax = Math.min(tvmax, thmax);
-		
-		if(tmin<tmax)
-			return new LineSegment2D(getPoint(tmin), getPoint(tmax));
-		else
-			return null;
-	}
+//	/**
+//	 * Return either an instance of LineSegment2D, representing the visible
+//	 * portion of the object inside the given rectangle, or a null pointer.
+//	 */
+//	public Shape2D getClippedShape(Box2D box){		
+//		// get dimension of rectangle
+//		double x = box.getMinX();
+//		double y = box.getMinY();
+//		double tmp;
+//
+//		double tvmin = Double.NEGATIVE_INFINITY;
+//		double tvmax = Double.POSITIVE_INFINITY;
+//		double thmin = Double.NEGATIVE_INFINITY;
+//		double thmax = Double.POSITIVE_INFINITY;
+//		
+//		// case of vertical lines
+//		if(Math.abs(dy)>Shape2D.ACCURACY){
+//			thmin = (y-y0)/dy;
+//			thmax = (y+box.getHeight()-y0)/dy;
+//			if(thmax<thmin){tmp=thmin; thmin=thmax; thmax=tmp;}
+//			
+//			thmin = Math.max(thmin, t0);
+//			thmax = Math.min(thmax, t1);
+//		}
+//		
+//		// case of horizontal lines
+//		if(Math.abs(dx)>Shape2D.ACCURACY){
+//			tvmin = (x-x0)/dx;
+//			tvmax = (x+box.getWidth()-x0)/dx;
+//			if(tvmax<tvmin){tmp=tvmin; tvmin=tvmax; tvmax=tmp;}
+//			
+//			tvmin = Math.max(tvmin, t0);
+//			tvmax = Math.min(tvmax, t1);
+//		}
+//
+//		double tmin = Math.max(tvmin, thmin);
+//		double tmax = Math.min(tvmax, thmax);
+//		
+//		if(tmin<tmax)
+//			return new LineSegment2D(getPoint(tmin), getPoint(tmax));
+//		else
+//			return null;
+//	}
 
 	/**
 	 * Clip the circle arc by a box. The result is an instance of
@@ -529,14 +552,14 @@ public class LineArc2D extends StraightObject2D
 	 * Tests if the Line intersects the interior of a specified rectangular area.
 	 */
 	public boolean intersects(double x, double y, double w, double h){
-		return getClippedShape(new Box2D(x, x+w, y, y+h))!=null;
+		return clip(new Box2D(x, x+w, y, y+h)).isEmpty();
 	}
 
 	/**
 	 * Tests if the Line intersects the interior of a specified rectangle2D.
 	 */
 	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return getClippedShape(new Box2D(r))!=null;
+		return !clip(new Box2D(r)).isEmpty();
 	}
 
 	public LineArc2D transform(AffineTransform2D trans){

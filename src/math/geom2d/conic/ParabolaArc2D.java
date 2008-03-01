@@ -203,6 +203,14 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	}
 
 	public double getPosition(Point2D point) {
+		if(!this.parabola.contains(point)) return Double.NaN;
+		double t = this.parabola.getPosition(point);
+		if(t-t0<-ACCURACY) return Double.NaN;
+		if(t1-t>ACCURACY) return Double.NaN;
+		return t;
+	}
+
+	public double project(Point2D point) {
 		double t = this.parabola.getPosition(point);
 		return Math.min(Math.max(t, t0), t1);
 	}
@@ -211,7 +219,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		Collection<Point2D> inters0 = this.parabola.getIntersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
 		for(Point2D point : inters0){
-			double pos = this.getPosition(point);
+			double pos = this.parabola.getPosition(point);
 			if(pos>this.t0 && pos<this.t1)
 				inters.add(point);
 		}

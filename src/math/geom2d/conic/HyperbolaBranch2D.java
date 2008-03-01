@@ -165,6 +165,12 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return Math.log(y + Math.hypot(y*y, 1));
 	}
 
+	public double project(Point2D point) {
+		point = hyperbola.toLocal(point);
+		double y = this.positive ? point.getY() : - point.getY();
+		return Math.log(y + Math.hypot(y*y, 1));
+	}
+
 	public HyperbolaBranch2D getReverseCurve() {
 		Hyperbola2D hyper2 = new Hyperbola2D(hyperbola.xc, hyperbola.yc, 
 				hyperbola.a, hyperbola.b, hyperbola.theta, !hyperbola.direct);
