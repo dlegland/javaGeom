@@ -605,8 +605,8 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	public boolean isInside(java.awt.geom.Point2D point){
 		AffineTransform2D rot = new Rotation2D(this.xc, this.yc, -this.theta);
 		Point2D pt = rot.transform(point, new Point2D());
-		double xp = pt.getX()/this.r1;
-		double yp = pt.getY()/this.r2;
+		double xp = (pt.getX() - this.xc)/this.r1;
+		double yp = (pt.getY() - this.yc)/this.r2;
 		if (direct)
 			return xp*xp + yp*yp < 1;
 		else
@@ -678,7 +678,33 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	}
 
 	public double getPosition(Point2D point){
-		// TODO: return a raw approximation. Should return exact value. or create other method.
+		double xp = point.getX();
+		double yp = point.getY();
+		
+		// translate
+		xp = xp-this.xc;
+		yp = yp-this.yc;
+		
+		// rotate
+		double xp1 = xp*Math.cos(theta) + yp*Math.sin(theta);
+		double yp1 = -xp*Math.sin(theta) + yp*Math.cos(theta);
+		xp = xp1;
+		yp = yp1;
+
+		// scale
+		xp = xp/this.r1;
+		yp = yp/this.r2;
+		
+		// compute angle
+		double angle = Angle2D.getHorizontalAngle(xp, yp);
+		
+		if(Math.abs(Math.hypot(xp, yp)-1)<Shape2D.ACCURACY)
+			return angle;
+		else
+			return Double.NaN;
+	}
+	
+	public double project(Point2D point){
 		double xp = point.getX();
 		double yp = point.getY();
 		
@@ -701,7 +727,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		
 		return angle;
 	}
-	
+
 	/**
 	 * Returns the ellipse with same center and same radius, but with the other
 	 * orientation.
@@ -744,9 +770,9 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return getDistance(new Point2D(x, y));
 	}
 		
-	public Shape2D getClippedShape(Box2D box){
-		return box.clipContinuousOrientedCurve(this);
-	}
+//	public Shape2D getClippedShape(Box2D box){
+//		return box.clipContinuousOrientedCurve(this);
+//	}
 	
 	/**
 	 * Clip the ellipse by a box. The result is an instance of

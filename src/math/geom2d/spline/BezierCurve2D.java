@@ -276,20 +276,19 @@ public class BezierCurve2D
 	}
 
 	/**
-	 * compute position by approximating cubic spline with a polyline.
+	 * Compute position by approximating cubic spline with a polyline.
 	 */
 	public double getPosition(Point2D point){
-//		int N=100;
-//		Point2D[] points = new Point2D[N];
-//		for(int i=0; i<N; i++)
-//			points[i] = this.getPoint((double)i/(N-1.0));
-//		Polyline2D polyline = new Polyline2D(points);
-//		
-		// Polyline computes position between 0 and N-1 (the number of line
-		// segments), so we need to divide the position on polyline by N-1
-		//return polyline.getPosition(point)/(N-1);
 		int N=100;
 		return this.getAsPolyline(N).getPosition(point)/((double)N);
+	}
+
+	/**
+	 * Compute position by approximating cubic spline with a polyline.
+	 */
+	public double project(Point2D point){
+		int N=100;
+		return this.getAsPolyline(N).project(point)/((double)N);
 	}
 
 	/**

@@ -145,6 +145,11 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return 0;
 	}
 
+	public double project(Point2D point) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	public HyperbolaBranchArc2D getReverseCurve() {
 		Hyperbola2D hyper = branch.hyperbola;
 		Hyperbola2D hyper2 = new Hyperbola2D(hyper.xc, hyper.yc, 

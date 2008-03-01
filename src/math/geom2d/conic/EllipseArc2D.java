@@ -301,7 +301,20 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
 	 */
 	public double getPosition(Point2D point) {
+		if(!ellipse.contains(point)) return Double.NaN;
 		double angle = ellipse.getPosition(point);
+		angle = angle-startAngle;
+		if(angleExtent>0)
+			angle = - angle;
+		
+		if(angle<0) return Double.NaN;
+		if(angle>Math.abs(angleExtent)) return Double.NaN;
+		
+		return angle;
+	}
+	
+	public double project(Point2D point) {
+		double angle = ellipse.project(point);
 		angle = angle-startAngle;
 		if(angleExtent>0)
 			angle = - angle;

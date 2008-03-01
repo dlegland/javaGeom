@@ -314,6 +314,28 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return closest.getPosition(point)+ind;
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
+	 */
+	public double project(math.geom2d.Point2D point) {
+		double dist, minDist = Double.POSITIVE_INFINITY;
+		double x = point.getX();
+		double y = point.getY();
+		double pos=Double.NaN;
+		
+		int i=0;
+		for(LineSegment2D edge : this.getEdges()){
+			dist = edge.getDistance(x, y);
+			if(dist<minDist){
+				minDist = dist;
+				pos = edge.project(point) + i;
+			}
+			i++;
+		}
+		
+		return pos;
+	}
+
 	/**
 	 * returns 0.
 	 */
@@ -412,19 +434,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return res;
 	}
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
-	 */
-	public CurveSet2D<? extends Curve2D> getClippedShape(Box2D box) {
-		return box.clipCurve(this);
-	}
-
-//	/* (non-Javadoc)
-//	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
-//	 */
-//	public CurveSet2D<? extends Curve2D> clip(Box2D box) {
-//		return box.clipCurve(this);
-//	}
 	/**
 	 * Clip the polyline by a box. The result is an instance of
 	 * CurveSet2D<Polyline2D>, which 
