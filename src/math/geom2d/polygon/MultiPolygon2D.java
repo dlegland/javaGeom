@@ -10,7 +10,7 @@ import math.geom2d.Box2D;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.BoundarySet2D;
 import math.geom2d.curve.ContinuousBoundary2D;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.curve.Domain2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
