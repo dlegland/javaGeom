@@ -148,27 +148,53 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	}
 
 	public Point2D getPoint(double t) {
+		if(Double.isInfinite(t))
+			return Point2D.INFINITY_POINT;
 		return this.getPoint(t, new Point2D());
 	}
 
 	public Point2D getPoint(double t, Point2D point) {
-		if(positive)
-			point.setLocation(Math.cosh(t), Math.sinh(t));
-		else
-			point.setLocation(-Math.cosh(t), -Math.sinh(t));
+		if(Double.isInfinite(t)){
+			point.setLocation(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+			return point;
+		}
+		
+		if(positive){
+//			if(t>5)
+//				point.setLocation(Math.exp(t)/2, Math.exp(t)/2);
+//			else if(t<-5)
+//				point.setLocation(Math.exp(t)/2, -Math.exp(t)/2);
+//			else{
+				double x = Math.cosh(t);
+				if(Double.isInfinite(x)) x = Math.abs(t);
+				double y = Math.sinh(t);
+				if(Double.isInfinite(y)) y = t;
+				point.setLocation(x, y);
+//			}
+		}else{
+			double x = -Math.cosh(t);
+			if(Double.isInfinite(x)) x = -Math.abs(t);
+			double y = -Math.sinh(t);
+			if(Double.isInfinite(y)) y = -t;
+			point.setLocation(x, y);
+		}
 		return hyperbola.toGlobal(point);
 	}
 
 	public double getPosition(Point2D point) {
 		point = hyperbola.toLocal(point);
 		double y = this.positive ? point.getY() : - point.getY();
-		return Math.log(y + Math.hypot(y*y, 1));
+//		if(y>5)
+//			return Math.log(2*y);
+//		if(y<-5)
+//			return -Math.log(-2*y);
+		return Math.log(y + Math.hypot(y, 1));
 	}
 
 	public double project(Point2D point) {
 		point = hyperbola.toLocal(point);
 		double y = this.positive ? point.getY() : - point.getY();
-		return Math.log(y + Math.hypot(y*y, 1));
+		return Math.log(y + Math.hypot(y, 1));
 	}
 
 	public HyperbolaBranch2D getReverseCurve() {
@@ -202,8 +228,18 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	}
 
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
-		// TODO Auto-generated method stub
-		return new ArrayList<Point2D>();
+		// compute intersections with support hyperbola
+		Collection<Point2D> inters = hyperbola.getIntersections(line);
+		
+		// check which points belong to this branch
+		Collection<Point2D> result = new ArrayList<Point2D>();
+		for(Point2D point : inters){
+			if(!(hyperbola.toLocal(point).getX()>0 ^ positive))
+				result.add(point);
+		}
+		
+		// return result
+		return result;
 	}
 
 	/** Returns a bounding box with infinite bounds in every direction */

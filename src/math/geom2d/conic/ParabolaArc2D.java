@@ -211,7 +211,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	}
 
 	public double project(Point2D point) {
-		double t = this.parabola.getPosition(point);
+		double t = this.parabola.project(point);
 		return Math.min(Math.max(t, t0), t1);
 	}
 

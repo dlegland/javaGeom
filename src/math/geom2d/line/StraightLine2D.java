@@ -364,36 +364,6 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		return new StraightLine2D(point, -dy, dx);
 	}
 	
-//	/** 
-//	 * Returns an Edge2D Pathiterator : the Edge2D is the intersection of the line with
-//	 * the default clipping area.
-//	 */
-//	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-//		return getClippedShape(defaultClipWindow).getPathIterator(t);
-//	}
-//
-//	/** 
-//	 * Returns an Edge2D Pathiterator : the Edge2D is the intersection of the line with
-//	 * the default clipping area.
-//	 */
-//	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-//		return getClippedShape(defaultClipWindow).getPathIterator(t, flatness);
-//	}
-//	
-//	/**
-//	 * Tests if the Line intersects the interior of a specified rectangular area.
-//	 */
-//	public boolean intersects(double x, double y, double w, double h){
-//		return false;
-//	}
-//
-//	/**
-//	 * Tests if the Line intersects the interior of a specified rectangle2D.
-//	 */
-//	public boolean intersects(java.awt.geom.Rectangle2D r){
-//		return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-//	}
-//
 	// ===================================================================
 	// mutators
 

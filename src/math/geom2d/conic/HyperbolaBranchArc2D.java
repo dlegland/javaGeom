@@ -77,7 +77,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 		// TODO Auto-generated method stub
-		return null;
+		return this.getAsPolyline(60).appendPath(path);
 	}
 
 	public Polyline2D getAsPolyline(int n) {
@@ -126,8 +126,15 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Point2D> inters0 = this.branch.getIntersections(line);
+		ArrayList<Point2D> inters = new ArrayList<Point2D>();
+		for(Point2D point : inters0){
+			double pos = this.branch.project(point);
+			if(pos>this.t0 && pos<this.t1)
+				inters.add(point);
+		}
+
+		return inters;
 	}
 
 	public Point2D getPoint(double t) {
@@ -141,13 +148,16 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public double getPosition(Point2D point) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!this.branch.contains(point)) return Double.NaN;
+		double t = this.branch.getPosition(point);
+		if(t-t0<-ACCURACY) return Double.NaN;
+		if(t1-t<ACCURACY) return Double.NaN;
+		return t;
 	}
 
 	public double project(Point2D point) {
-		// TODO Auto-generated method stub
-		return 0;
+		double t = this.branch.project(point);
+		return Math.min(Math.max(t, t0), t1);
 	}
 
 	public HyperbolaBranchArc2D getReverseCurve() {
@@ -164,9 +174,16 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return list;
 	}
 
+	/**
+	 * Returns a new HyperbolaBranchArc2D, with same parent hyperbola branch,
+	 * and with new parameterization bounds. The new bounds are constrained to
+	 * belong to the old bounds interval. If t1<t0, returns null.
+	 */
 	public HyperbolaBranchArc2D getSubCurve(double t0, double t1) {
-		// TODO Auto-generated method stub
-		return null;
+		if(t1<t0) return null;
+		t0 = Math.max(this.t0, t0);
+		t1 = Math.min(this.t1, t1);
+		return new HyperbolaBranchArc2D(branch, t0, t1);
 	}
 
 	public double getT0() {

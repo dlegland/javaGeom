@@ -24,9 +24,14 @@
 // package
 package math.geom2d.conic;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.BoundarySet2D;
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.Rotation2D;
 import math.geom2d.transform.Scaling2D;
@@ -39,7 +44,8 @@ import math.geom2d.transform.Translation2D;
  * Superclass for all linear and pieces smooth curves : polylines, conics,
  * lines ...
  */
-public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Conic2D{
+public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D>
+implements Conic2D{
 
 	// ===================================================================
 	// constants
@@ -61,7 +67,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 	/** angle of rotation of the hyperbola */
 	double theta = 0;
 	
-	/** a flag indicating wheter the hyperbola is direct or not */
+	/** a flag indicating whether the hyperbola is direct or not */
 	boolean direct = true;
 	
 	HyperbolaBranch2D branch1 = null;
@@ -119,6 +125,19 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 		return point;
 	}
 	
+	/** 
+	 * Change coordinate of the line to correspond to a standard hyperbola.
+	 * Standard hyperbola is such that x^2-y^2=1 for every point.
+	 * @param point
+	 * @return
+	 */
+	private StraightObject2D formatLine(StraightObject2D line){
+		line = line.transform(new Translation2D(-xc, -yc));
+		line = line.transform(new Rotation2D(-theta));
+		line = line.transform(new Scaling2D(1.0/a, 1.0/b));
+		return line;
+	}
+
 	// ===================================================================
 	// methods inherited fromConic2D interface
 	
@@ -155,12 +174,12 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 
 	/** Return 0 */
 	public double getLength1() {
-		return 0;
+		return a;
 	}
 
 	/** Return 0 */
 	public double getLength2() {
-		return 0;
+		return b;
 	}
 
 	public Vector2D getVector1() {
@@ -171,40 +190,8 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 		return new Vector2D(-Math.sin(theta), Math.cos(theta));
 	}
 
-	public boolean isCircle() {
-		return false;
-	}
-
-	public boolean isDegenerated() {
-		return false;
-	}
-
 	public boolean isDirect() {
 		return direct;
-	}
-
-	public boolean isEllipse() {
-		return false;
-	}
-
-	public boolean isHyperbola() {
-		return true;
-	}
-
-	public boolean isParabola() {
-		return false;
-	}
-
-	public boolean isPoint() {
-		return false;
-	}
-
-	public boolean isStraightLine() {
-		return false;
-	}
-
-	public boolean isTwoLines() {
-		return false;
 	}
 		
 	public boolean contains(java.awt.geom.Point2D point) {
@@ -222,6 +209,94 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements Con
 	
 	public Hyperbola2D getReverseCurve(){
 		return new Hyperbola2D(this.xc, this.yc, this.a, this.b, this.theta, !this.direct);
+	}
+
+	public Collection<Point2D> getIntersections(StraightObject2D line) {
+		
+		Collection<Point2D> points = new ArrayList<Point2D>();
+		
+		// format to 'standard' hyperbola
+		StraightObject2D line2 = formatLine(line);
+		
+		// Extract formatted line parameters
+		Point2D origin = line2.getOrigin();
+		double x0 = origin.getX();
+		double y0 = origin.getY();
+		double dx = line2.getVector().getDx();
+		double dy = line2.getVector().getDy();
+		
+		// extract line parameters
+		// different strategy depending if line is more horizontal or more vertical
+		if(Math.abs(dx)>Math.abs(dy)){
+			// Line is mainly horizontal
+			
+			// slope of the line
+			double k = dy/dx;
+			
+			// compute coefficients of second order equation
+			double a = 1-k*k;
+			double b = -2*k*y0;
+			double c = -y0*y0-1;
+			
+			double delta 	= b*b - 4*a*c;
+			if(delta<=0){
+				System.out.println("Intersection with horizontal line should alays give positive delta");
+				return points;
+			}
+			
+			// x coordinate of intersection points
+			double x1 = (-b - Math.sqrt(delta))/(2*a);
+			double x2 = (-b + Math.sqrt(delta))/(2*a);
+			
+			// support line of formatted line
+			StraightLine2D support = line2.getSupportLine();
+
+			// check first point is on the line
+			double pos1 = support.project(new Point2D(x1, k*x1+y0));
+			if(line2.contains(support.getPoint(pos1)))
+				points.add(line.getPoint(pos1));
+			
+			// check second point is on the line
+			double pos2 = support.project(new Point2D(x2, k*x2+y0));
+			if(line2.contains(support.getPoint(pos2)))
+				points.add(line.getPoint(pos2));
+			
+		}else{
+			// Line is mainly vertical
+			
+			// slope of the line
+			double k = dx/dy;
+			
+			// compute coefficients of second order equation
+			double a = k*k-1;
+			double b = -2*k*x0;
+			double c = x0*x0-1;
+			
+			double delta 	= b*b - 4*a*c;
+			if(delta<=0){
+				// No intersection with the hyperbola
+				return points;
+			}
+			
+			// x coordinate of intersection points
+			double y1 = (-b - Math.sqrt(delta))/(2*a);
+			double y2 = (-b + Math.sqrt(delta))/(2*a);
+
+			// support line of formatted line
+			StraightLine2D support = line2.getSupportLine();
+
+			// check first point is on the line
+			double pos1 = support.project(new Point2D(k*y1+x0, y1));
+			if(line2.contains(support.getPoint(pos1)))
+				points.add(line.getPoint(pos1));
+			
+			// check second point is on the line
+			double pos2 = support.project(new Point2D(k*y2+x0, y2));
+			if(line2.contains(support.getPoint(pos2)))
+				points.add(line.getPoint(pos2));
+		}
+
+		return points;
 	}
 
 	public Hyperbola2D transform(AffineTransform2D trans){
