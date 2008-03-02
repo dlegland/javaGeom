@@ -28,12 +28,15 @@ package math.geom2d.conic;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.Rotation2D;
 
 import junit.framework.TestCase;
 
@@ -247,6 +250,37 @@ public class Parabola2DTest extends TestCase {
 		curve = clippedCurve.getFirstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
+		
+		
+		// Oblic line
+		parabola = new Parabola2D(20, 10, 1, 0);
+		line = new StraightLine2D(20, 10, -1, -2);
+		clippedCurve = line.clipSmoothCurve(parabola);
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		curve = clippedCurve.getFirstCurve();
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(new ParabolaArc2D(parabola, 0, 2).equals(curve));
+		
+		// Oblic line 2
+		parabola = new Parabola2D(0, 0, 1, 0);
+		line = new StraightLine2D(0, 8, -1, -2);
+		clippedCurve = line.clipSmoothCurve(parabola);
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		curve = clippedCurve.getFirstCurve();
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
+		
+		// Oblic parabola with horizontal line
+		double theta = Angle2D.formatAngle(-Math.atan(2));
+		parabola = new Parabola2D(20, 10, 1, theta);
+		Point2D origin = new Point2D(20, 10+8);
+		origin = origin.transform(new Rotation2D(20, 10, theta));
+		line = new StraightLine2D(origin, new Vector2D(-1, 0));
+		clippedCurve = line.clipSmoothCurve(parabola);
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		curve = clippedCurve.getFirstCurve();
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
 	}
 	
 	public void testClipBox2D(){
