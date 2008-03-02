@@ -24,7 +24,7 @@
  * author : Legland
  * Created on 30 déc. 2003
  */
-package math.geom2d.domain;
+package math.geom2d.polygon;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;

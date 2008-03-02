@@ -1,6 +1,6 @@
-/* File Disc2D.java 
+/* File Domain2D.java 
  *
- * Project : EuclideJ
+ * Project : Java Geometry Library
  *
  * ===========================================
  * 
@@ -24,50 +24,46 @@
  * Created on 18 sept. 2004
  */
 
-package math.geom2d.domain;
+package math.geom2d.curve;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
 /**
- * A domain of the plane whose boundary is a circle.
+ * A domain defined from its boundary. The boundary curve must be correctly
+ * oriented, non self intersecting, and clearly separating interior and
+ * exterior.<p>
+ * All contains and intersect tests are computed from the signed distance of
+ * the boundary curve.
  * @author Legland
  */
-public class Disc2D implements Domain2D {
+public class GenericDomain2D implements Domain2D {
 
-	protected Circle2D circle = new Circle2D(0, 0, 1);
+	protected Boundary2D boundary = null;
 
 
-	public Disc2D(){
+	public GenericDomain2D(Boundary2D boundary){
+		this.boundary = boundary;
 	}
 	
-	public Disc2D(Circle2D circle){
-		this.circle = circle;
-	}
-	
-	public Disc2D(Point2D p, double r){
-		circle = new Circle2D(p, r);
-	}
-	
+
 	public Boundary2D getBoundary() {		
-		return circle;
+		return boundary;
 	}
 
 	public double getDistance(java.awt.geom.Point2D p) {
-		return Math.max(circle.getSignedDistance(p.getX(), p.getY()), 0);
+		return Math.max(boundary.getSignedDistance(p.getX(), p.getY()), 0);
 	}
 
 	public double getDistance(double x, double y) {
-		return Math.max(circle.getSignedDistance(x, y), 0);
+		return Math.max(boundary.getSignedDistance(x, y), 0);
 	}
 
 	/**
@@ -86,15 +82,20 @@ public class Disc2D implements Domain2D {
 	}
 
 	public Box2D getBoundingBox() {
-		return circle.getBoundingBox();
+		//TODO: manage infinite domains
+		return boundary.getBoundingBox();
 	}
 
-	public Shape2D transform(AffineTransform2D trans) {
-		return null;
+	/**
+	 * return a new domain which is created from the transformed domain of 
+	 * this boundary.
+	 */
+	public GenericDomain2D transform(AffineTransform2D trans) {
+		return new GenericDomain2D((Boundary2D) boundary.transform(trans));
 	}
 
 	public boolean contains(double x, double y) {
-		return circle.getSignedDistance(x, y)<=0;
+		return boundary.getSignedDistance(x, y)<=0;
 	}
 
 	public boolean contains(double x, double y, double w, double h){
@@ -105,8 +106,8 @@ public class Disc2D implements Domain2D {
 		return false;
 	}
 
-	public boolean contains(java.awt.geom.Point2D p) {
-		return contains(p.getX(), p.getY());
+	public boolean intersects(double x, double y, double w, double h){
+		return boundary.intersects(x, y, w, h);
 	}
 
 	/**
@@ -123,24 +124,24 @@ public class Disc2D implements Domain2D {
 		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
+	public boolean contains(java.awt.geom.Point2D p) {
+		return contains(p.getX(), p.getY());
+	}
+
 	public boolean contains(Rectangle2D rect) {
 		return contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 	}
 
-	public boolean intersects(double x, double y, double w, double h){
-		return circle.intersects(x, y, w, h);
-	}
-
 	public boolean intersects(Rectangle2D rect) {
-		return circle.intersects(rect);
+		return false;
 	}
 
 	public PathIterator getPathIterator(AffineTransform trans) {
-		return circle.getPathIterator(trans);
+		return boundary.getPathIterator(trans);
 	}
 
 	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
-		return circle.getPathIterator(trans, flatness);
+		return boundary.getPathIterator(trans, flatness);
 	}
 
 }

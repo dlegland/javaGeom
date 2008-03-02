@@ -22,7 +22,7 @@
  */
 
 // package
-package math.geom2d.domain;
+package math.geom2d.curve;
 
 import math.geom2d.Shape2D;
 import math.geom2d.curve.Boundary2D;

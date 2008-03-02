@@ -26,7 +26,7 @@
 import java.awt.*;
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.HalfPlane2D;
+import math.geom2d.line.HalfPlane2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;

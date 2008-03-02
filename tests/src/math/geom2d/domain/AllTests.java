@@ -37,7 +37,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.domain");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(HalfPlane2DTest.class));
+		//suite.addTest(new TestSuite(HalfPlane2DTest.class));
 		//$JUnit-END$
 		return suite;
 	}

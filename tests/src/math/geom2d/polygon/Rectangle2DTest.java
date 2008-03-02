@@ -29,7 +29,7 @@ package math.geom2d.polygon;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.curve.Domain2D;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.GenericAffineTransform2D;
 import junit.framework.TestCase;
@@ -81,7 +81,7 @@ public class Rectangle2DTest extends TestCase {
 		Rectangle2D rect = new Rectangle2D(10, 20, 40, 50);
 		AffineTransform2D aff = new GenericAffineTransform2D(2, 1, 0, 3, 2, 0);
 		AffineTransform2D aff2 = new GenericAffineTransform2D(1, 3, .5, 2, .3, 1);
-		assertTrue((rect.transform(aff) instanceof Domain2D));
+		assertTrue((rect.transform(aff) instanceof math.geom2d.curve.Domain2D));
 		assertTrue((rect.transform(aff).transform(aff2) instanceof Domain2D));
 	}
 	

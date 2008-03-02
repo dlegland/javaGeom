@@ -4,7 +4,7 @@
 
 // Imports
 import math.geom2d.*;
-import math.geom2d.domain.HalfPlane2D;
+import math.geom2d.line.HalfPlane2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
