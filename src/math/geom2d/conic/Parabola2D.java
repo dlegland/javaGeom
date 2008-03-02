@@ -40,6 +40,7 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -103,9 +104,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 */
 	private Point2D formatPoint(java.awt.geom.Point2D point){
 		Point2D p2 = new Point2D(point);
-		p2 = (Point2D) p2.transform(new Scaling2D(1, 1.0/a));
-		p2 = (Point2D) p2.transform(new Rotation2D(-theta));
-		p2 = (Point2D) p2.transform(new Translation2D(-xv, -yv));
+		p2 = p2.transform(new Translation2D(-xv, -yv));
+		p2 = p2.transform(new Rotation2D(-theta));
+		p2 = p2.transform(new Scaling2D(1, 1.0/a));
 		return p2;
 	}
 	
@@ -116,9 +117,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * @return
 	 */
 	private StraightObject2D formatLine(StraightObject2D line){
-		line = (StraightObject2D) line.transform(new Scaling2D(1, 1.0/a));
-		line = (StraightObject2D) line.transform(new Rotation2D(-theta));
-		line = (StraightObject2D) line.transform(new Translation2D(-xv, -yv));
+		line = line.transform(new Translation2D(-xv, -yv));
+		line = line.transform(new Rotation2D(-theta));
+		line = line.transform(new Scaling2D(1, 1.0/a));
 		return line;
 	}
 	
@@ -379,8 +380,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
 		// Computes the lines which corresponds to a "Unit" parabola.
-		StraightObject2D line2;
-		line2 = (StraightObject2D) this.formatLine(line);
+		StraightObject2D line2 = this.formatLine(line);
 		double dx = line2.getVector().getDx();
 		double dy = line2.getVector().getDy();
 		
@@ -397,28 +397,36 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 			return points;			
 		}
 
-		// case of horizontal or quasi-horizontal lines
-		if(Math.abs(dy)<Shape2D.ACCURACY){
-		}
-		
+		// Extract formatted line parameters
 		Point2D origin = line2.getOrigin();
 		double x0 = origin.getX();
 		double y0 = origin.getY();
 		
-		double k 	= dy/dx;
+		// Solve second order equation
+		double k 	= dy/dx;		// slope of the line
 		double yl 	= k*x0 - y0;
 		double delta = k*k - 4*yl;
+		
+		// Case of a line 'below' the parabola
 		if(delta<0) return points;
-
+		
+		// There are two intersections with supporting line,
+		// need to check these points belong to the line.
+		
 		double x;
-		x = (k - Math.sqrt(delta))*.5;
 		Point2D point;
+		StraightLine2D support = line2.getSupportLine();
+		
+		// test first intersection point
+		x = (k - Math.sqrt(delta))*.5;
 		point = new Point2D(x, x*x);
-		if(line2.contains(point))
+		if(line2.contains(support.getProjectedPoint(point)))
 			points.add(line.getPoint(line2.getPosition(point)));
+		
+		// test second intersection point
 		x = (k + Math.sqrt(delta))*.5;
 		point = new Point2D(x, x*x);
-		if(line2.contains(point))
+		if(line2.contains(support.getProjectedPoint(point)))
 			points.add(line.getPoint(line2.getPosition(point)));
 		
 		

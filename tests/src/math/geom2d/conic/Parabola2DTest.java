@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.StraightLine2D;
@@ -50,8 +51,7 @@ public class Parabola2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Parabola2DTest.class);
 	}
 
-	public void testGetPoint(){
-		
+	public void testGetPoint(){		
 		// Vertical parabola
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);		
 		Point2D p0;
@@ -113,6 +113,31 @@ public class Parabola2DTest extends TestCase {
 		 assertEquals(p0, new Point2D(20+4, 10+2));
 	}
 	
+	public void testContainsPoint2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		
+		Point2D point1 = new Point2D(-2, 4);
+		assertTrue(parabola.contains(point1));
+		
+		Point2D point2 = new Point2D(2, 4);
+		assertTrue(parabola.contains(point2));
+		
+	}
+
+	public void testGetPositionPoint2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		
+		Point2D point1 = new Point2D(-2, 4);
+		assertEquals(parabola.getPosition(point1), -2, Shape2D.ACCURACY);
+		
+		Point2D point2 = new Point2D(2, 4);
+		assertEquals(parabola.getPosition(point2), 2, Shape2D.ACCURACY);
+		
+	}
+
+	
 	public void testGetDistance(){
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		Point2D p = new Point2D(0, -1);
@@ -124,14 +149,18 @@ public class Parabola2DTest extends TestCase {
 		StraightLine2D line;
 		Collection<Point2D> inters;
 		Iterator<Point2D> iter;
+		Point2D inter;
 		
 		// Horizontal line cutting in two points
-		line = new StraightLine2D(0, 4, 1, 0);		
+		line = new StraightLine2D(10, 4, -20, 0);		
 		inters = parabola.getIntersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
-		assertEquals(iter.next(), new Point2D(-2, 4));
-		assertEquals(iter.next(), new Point2D(2, 4));
+		inter = iter.next();
+		assertEquals(inter, new Point2D(-2, 4));
+		assertTrue(parabola.contains(inter));
+		inter = iter.next();
+		assertEquals(inter, new Point2D(2, 4));
 		
 		// Horizontal line cutting in one points
 		line = new StraightLine2D(-2, 0, 1, 0);		
@@ -176,18 +205,51 @@ public class Parabola2DTest extends TestCase {
 		assertEquals(iter.next(), new Point2D(4, 2));
 		assertEquals(iter.next(), new Point2D(4, -2));
 		
+		// Parabola pointing to the top, line over -> 2 intersections
 		parabola = new Parabola2D(0, 0, 1./88, 0);
 		line = new StraightLine2D(0, 50, -1, 0);
 		inters = parabola.getIntersections(line);
 		assertTrue(inters.size()==2);
 
+		// Parabola pointing to the right, line at the right -> 2 intersections
 		parabola = new Parabola2D(0, 0, 1./88, Math.PI*1.5);
 		line = new StraightLine2D(50, 0, 0, 1);
 		inters = parabola.getIntersections(line);
 		assertTrue(inters.size()==2);
+		
+		// Translated parabola pointing to the right
+		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
+		line = new StraightLine2D(24, 0, 0, 20);
+		inters = parabola.getIntersections(line);
+		assertTrue(inters.size()==2);
+		iter = inters.iterator();
+		assertEquals(iter.next(), new Point2D(24, 12));
+		assertEquals(iter.next(), new Point2D(24, 8));
 	}
 	
-	public void testGetClippedShape(){
+	public void testClipLine2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
+	
+		CurveSet2D<?> clippedCurve = line.clipSmoothCurve(parabola);
+		Curve2D curve = clippedCurve.getFirstCurve();
+		
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		assertTrue(curve instanceof ParabolaArc2D);
+		
+		
+		// translated parabola pointing to the right
+		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
+		line = new StraightLine2D(24, 0, 0, 20);
+		clippedCurve = line.clipSmoothCurve(parabola);
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		curve = clippedCurve.getFirstCurve();
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
+	}
+	
+	public void testClipBox2D(){
 		// parabola pointing upwards
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		Box2D box = new Box2D(-10, 10, -4, 4);

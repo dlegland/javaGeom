@@ -206,7 +206,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		if(!this.parabola.contains(point)) return Double.NaN;
 		double t = this.parabola.getPosition(point);
 		if(t-t0<-ACCURACY) return Double.NaN;
-		if(t1-t>ACCURACY) return Double.NaN;
+		if(t1-t<ACCURACY) return Double.NaN;
 		return t;
 	}
 
