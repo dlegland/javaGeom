@@ -66,8 +66,15 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 	
 	/** Define a new Straight line going through the two given points. */
 	public StraightLine2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2){
-		this(point1.getX(), point1.getY(), 
-			point2.getX()-point1.getX(), point2.getY()-point1.getY());
+		this(point1, new Vector2D(point1, point2));
+	}
+
+	/** 
+	 * Define a new Straight line going through the given point, and with
+	 * the specified direction vector.
+	 */
+	public StraightLine2D(java.awt.geom.Point2D point, Vector2D direction){
+		this(point.getX(), point.getY(), direction.getDx(), direction.getDy());
 	}
 
 	/** 
@@ -434,7 +441,9 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		double position;
 		Vector2D vector = this.getVector();
 		for(Point2D point : list){
-			position = curve.getPosition(point);
+			// get position of intersection on the curve (use project to avoid
+			// round-off problems)
+			position = curve.project(point);
 			
 			// Condition of colinearity with direction vector of line
 			Vector2D tangent = curve.getTangent(position);
