@@ -315,10 +315,14 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	
 	public double project(Point2D point) {
 		double angle = ellipse.project(point);
-		angle = angle-startAngle;
-		if(angleExtent>0)
-			angle = - angle;
 		
+		// convert to arc parameterization
+		if(angleExtent>0)
+			angle = Angle2D.formatAngle(angle-startAngle);
+		else
+			angle = Angle2D.formatAngle(startAngle-angle);
+		
+		// ensure projection lies on the arc
 		if(angle<0) return 0;
 		if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
 		

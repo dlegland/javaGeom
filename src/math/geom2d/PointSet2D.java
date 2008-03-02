@@ -61,11 +61,8 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	 * location.
 	 * @param points
 	 */
-	public PointSet2D(Collection<java.awt.geom.Point2D> points){
-		Iterator<java.awt.geom.Point2D> iter = points.iterator();
-		java.awt.geom.Point2D point;
-		while(iter.hasNext()){
-			point = (java.awt.Point) iter.next();
+	public PointSet2D(Collection<? extends java.awt.geom.Point2D> points){
+		for(java.awt.geom.Point2D point : points){
 			if(point instanceof Point2D)
 				this.points.add((Point2D) point);
 			else

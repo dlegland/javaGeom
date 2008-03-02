@@ -39,7 +39,7 @@ public class geom2dTest {
 		//$JUnit-BEGIN$
 		suite.addTest(math.geom2d.AllTests.suite());
 		suite.addTest(math.geom2d.conic.AllTests.suite());
-		suite.addTest(math.geom2d.domain.AllTests.suite());
+		suite.addTest(math.geom2d.curve.AllTests.suite());
 		suite.addTest(math.geom2d.line.AllTests.suite());
 		suite.addTest(math.geom2d.polygon.AllTests.suite());
 		suite.addTest(math.geom2d.spline.AllTests.suite());

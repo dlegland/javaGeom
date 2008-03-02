@@ -209,13 +209,13 @@ public class Circle2DTest extends TestCase {
 		// try with a direct circle 
 		circle = new Circle2D(0, 0, 10, true);
 		arc1 = new CircleArc2D(circle, Math.PI/2, Math.PI/2);		
-		arc2 = (CircleArc2D) circle.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = circle.getSubCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 		
 		// try again with an indirect circle
 		circle = new Circle2D(0, 0, 10, false);
 		arc1 = new CircleArc2D(circle, Math.PI/2, -Math.PI/2);
-		arc2 = (CircleArc2D) circle.getSubCurve(3*Math.PI/2, 2*Math.PI);
+		arc2 = circle.getSubCurve(3*Math.PI/2, 2*Math.PI);
 		assertTrue(arc1.equals(arc2));
 	}
 	
@@ -226,7 +226,7 @@ public class Circle2DTest extends TestCase {
 		Circle2D circle = new Circle2D(50, 50, 50);
 		Box2D box = new Box2D(0, 100, 0, 100);
 		
-		CurveSet2D<? extends SmoothCurve2D> clipped = box.clipSmoothCurve(circle);
+		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
 		Collection<?> curves = clipped.getCurves();
 		assertTrue(curves.size()==1);
 		assertTrue(curves.iterator().next().equals(circle));
