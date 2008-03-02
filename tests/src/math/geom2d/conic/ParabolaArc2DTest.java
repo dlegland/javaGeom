@@ -25,8 +25,15 @@
  */
 package math.geom2d.conic;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.Polyline2D;
+import math.geom2d.line.StraightLine2D;
 import junit.framework.TestCase;
 
 public class ParabolaArc2DTest extends TestCase {
@@ -113,6 +120,69 @@ public class ParabolaArc2DTest extends TestCase {
 		
 		Polyline2D polyline = parabolaArc.getAsPolyline(4);
 		assertTrue(polyline.getPointArray().length==5);
+	}
+	
+	public void testContainsPoint2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
+		
+		Point2D point1 = new Point2D(-2, 4);
+		assertTrue(arc.contains(point1));
+		
+		Point2D point2 = new Point2D(2, 4);
+		assertTrue(arc.contains(point2));		
+	}
+
+	public void testGetPositionPoint2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		
+		Point2D point1 = new Point2D(-2, 4);
+		assertEquals(parabola.getPosition(point1), -2, Shape2D.ACCURACY);
+		
+		Point2D point2 = new Point2D(2, 4);
+		assertEquals(parabola.getPosition(point2), 2, Shape2D.ACCURACY);
+		
+	}
+
+	public void testGetIntersectionsLine(){
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola,
+				Double.NEGATIVE_INFINITY, 10);
+		StraightLine2D line;
+		Collection<Point2D> inters;
+		Iterator<Point2D> iter;
+		Point2D inter;
+		
+		// Horizontal line cutting in two points
+		line = new StraightLine2D(10, 4, -20, 0);		
+		inters = arc.getIntersections(line);
+		assertTrue(inters.size()==2);
+		iter = inters.iterator();
+		inter = iter.next();
+		assertEquals(inter, new Point2D(-2, 4));
+		assertTrue(arc.contains(inter));
+		assertEquals(arc.getPosition(inter), -2, Shape2D.ACCURACY);
+		inter = iter.next();
+		assertEquals(inter, new Point2D(2, 4));
+		assertTrue(arc.contains(inter));
+		assertEquals(arc.getPosition(inter), 2, Shape2D.ACCURACY);
+	}
+	
+	public void testClipLine2D(){
+		// parabola pointing upwards
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
+		ParabolaArc2D clippedArc = new ParabolaArc2D(parabola, -2, 2);
+		StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
+	
+		CurveSet2D<?> clippedCurve = line.clipSmoothCurve(arc);
+		Curve2D curve = clippedCurve.getFirstCurve();
+		
+		assertTrue(clippedCurve.getCurveNumber()==1);
+		assertTrue(curve instanceof ParabolaArc2D);
+		assertTrue(clippedArc.equals(curve));		
 	}
 	
 }

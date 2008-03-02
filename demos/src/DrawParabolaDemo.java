@@ -31,7 +31,6 @@ import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.conic.ParabolaArc2D;
-import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.Polyline2D;
 
@@ -58,16 +57,10 @@ public class DrawParabolaDemo extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 	
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -50, 50);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -30, 30);
 		
 		Polyline2D polyline = arc.getAsPolyline(10);
 		
-//		g2.setColor(Color.YELLOW);
-//		g2.fill(polyline);
-//		
-//		g2.setColor(Color.BLUE);
-//		g2.draw(parabola);
-
 		g2.setColor(Color.YELLOW);
 		g2.fill(polyline);
 
@@ -77,7 +70,7 @@ public class DrawParabolaDemo extends JPanel{
 		// Draw the clipped parabola
 		CurveSet2D<?> clipped = arc.clip(box);
 		if (!clipped.isEmpty()){
-			g2.setStroke(new BasicStroke(4.0f));
+			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
 			g2.draw(clipped);
 		}
@@ -100,7 +93,7 @@ public class DrawParabolaDemo extends JPanel{
 		JPanel panel = new DrawParabolaDemo();
 		JFrame frame = new JFrame("Draw parabola demo");
 		frame.setContentPane(panel);
-		frame.setSize(400, 300);
+		frame.setSize(500, 400);
 		frame.setVisible(true);
 		
 	}

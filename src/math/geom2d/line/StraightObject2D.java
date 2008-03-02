@@ -30,9 +30,9 @@ import java.util.Collection;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.curve.SmoothOrientedCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 
 
 // Imports
@@ -93,7 +93,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		// test if the two lines share at least one point (see contains() method
 		// for details on tests)
 		return(Math.abs((line2.y0-line1.y0)*line2.dx-(line2.x0-line1.x0)*line2.dy)/
-			Math.sqrt(line2.dx*line2.dx+line2.dy*line2.dy)<Shape2D.ACCURACY);
+			Math.hypot(line2.dx, line2.dy)<Shape2D.ACCURACY);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * but it can be used by subclasses to help computations.
 	 */
 	public double getSignedDistance(double x, double y){
-		return ((x-x0)*dy-(y-y0)*dx)/Math.sqrt(dx*dx+dy*dy);
+		return ((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy);
 	}
 
 	/**
@@ -341,18 +341,6 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	public double getPositionOnLine(double x, double y){
 		return  ( (y-y0)*dy + (x-x0)*dx ) / (dx*dx + dy*dy) ;
 	}
-
-	
-
-	/**
-	 * Return the intersection points of the line with the specified curve.
-	 * The length of the result array is the number of intersection points.
-	 */
-	public Collection<Point2D> getIntersections(Curve2D curve){
-		// use the method getIntersection(StraightObject), since it is easier
-		// to use.
-		return curve.getIntersections(this);
-	}
 	
 	/**
 	 * Return the intersection points of the curve with the specified line.
@@ -369,7 +357,6 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		points.add(point);
 		return points;
 	}
-
 	
 	/**
 	 * Returns the unique intersection with a straight object. If intersection doesn't
@@ -487,7 +474,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * precision given by Shape2D.ACCURACY.
 	 */
 	public boolean contains(double x, double y){
-		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.sqrt(dx*dx+dy*dy) < Shape2D.ACCURACY);
+		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < Shape2D.ACCURACY);
 	}
 
 	/** Returns false, because a line cannot contain a rectangle.*/
@@ -499,4 +486,6 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	public boolean contains(java.awt.geom.Rectangle2D r){
 		return false;
 	}
+	
+	public abstract StraightObject2D transform(AffineTransform2D transform);
 }
