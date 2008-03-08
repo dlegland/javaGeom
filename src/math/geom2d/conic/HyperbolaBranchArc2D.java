@@ -38,6 +38,14 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	
 	
 	// ===================================================================
+	// methods specific to the arc
+	
+	public HyperbolaBranch2D getHyperbolaBranch(){
+		return branch;
+	}
+
+
+	// ===================================================================
 	// methods inherited from SmoothCurve2D interface
 
 	public double getCurvature(double t) {

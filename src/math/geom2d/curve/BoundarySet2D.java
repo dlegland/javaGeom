@@ -37,7 +37,6 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public class BoundarySet2D<T extends ContinuousBoundary2D>
 extends CurveSet2D<T> implements Boundary2D {
-//TODO: check result of clipping	
 	public BoundarySet2D(){
 	}
 	
