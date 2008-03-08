@@ -210,7 +210,7 @@ public class Ellipse2DTest extends TestCase {
 		
 		AffineTransform2D aff2 = new GenericAffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
-		Ellipse2D ell2th = new Ellipse2D(100./5., 100./3., 10, 10);
+		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
 		assertTrue(ell2.isEllipse());
 		assertTrue(ell2.equals(ell2th));
 		

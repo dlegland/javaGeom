@@ -828,12 +828,9 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		trans = trans.compose(new Scaling2D(1/this.r1, 1/this.r2));
 		trans = trans.compose(new Rotation2D(-this.theta));
 		trans = trans.compose(new Translation2D(-this.xc, -this.yc));
-//		trans.preConcatenate(AffineTransform2D.createTranslation(-this.xc, -this.yc));
-//		trans.preConcatenate(AffineTransform2D.createRotation(-this.theta));
-//		trans.preConcatenate(AffineTransform2D.createScaling(1/this.r1, 1/this.r2));
 		
 		// transform the line accordingly
-		StraightObject2D line2 = (StraightObject2D) line.transform(trans);
+		StraightObject2D line2 = line.transform(trans);
 		
 		// The list of intersections
 		Collection<Point2D> points;
@@ -845,16 +842,18 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		
 		// convert points on circle as angles
 		ArrayList<Point2D> res = new ArrayList<Point2D>(points.size());
-		double angle;
-		for(Point2D point : points){
-			angle = circle.getPosition(point);
-			res.add(this.getPoint(angle));
-		}
+		for(Point2D point : points)
+			res.add(this.getPoint(circle.getPosition(point)));
 			
 		// return the result
 		return res;
 	}
 	
+	/**
+	 * Transforms this ellipse by an affine transform. If the transformed
+	 * shape is a circle (ellipse with equal axis lengths), returns an
+	 * instance of Circle2D.
+	 */
 	public Ellipse2D transform(AffineTransform2D trans){
 		double tmp1, tmp2;
 		double cot = Math.cos(theta);
@@ -878,6 +877,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		double r22 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
 		
 		if(false){
+			// debug info
 			double theta2_a = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
 			double theta2_b = Math.atan2(tab[3]*cot+tab[4]*sit, tab[0]*cot+tab[1]*sit);
 			double theta2_c = Math.asin((tab[3]*r1*cot+tab[4]*r1*sit)/r12);
@@ -900,8 +900,17 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 			r22 = (tab[0]*r2*sit - tab[1]*r2*cot)/sit2;
 		}
 		
-		//System.out.println("theta 2 : " + theta2); 
-		return new Ellipse2D(xc2, yc2, r12, r22, theta2);
+		r12 = Math.abs(r12);
+		r22 = Math.abs(r22);
+
+		// determine orientation of transformed ellipse
+		boolean direct2 = !(this.direct ^ trans.isDirect());
+		
+		// Transform either into a circle or an ellipse
+		if(Math.abs(r12-r22)<Shape2D.ACCURACY)
+			return new Circle2D(xc2, yc2, r12, direct2);
+		else
+			return new Ellipse2D(xc2, yc2, r12, r22, theta2, direct2);
 	}
 	
 
