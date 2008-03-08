@@ -451,15 +451,18 @@ public class Circle2D extends Ellipse2D {
 	// methods of Object interface
 	
 	public boolean equals(Object obj){
-		if(!(obj instanceof Circle2D)) return false;
+		if(!(obj instanceof Ellipse2D)) return false;
 		
-		Circle2D circle = (Circle2D) obj;
-		
-		if(Math.abs(circle.xc-xc)>Shape2D.ACCURACY) return false;
-		if(Math.abs(circle.yc-yc)>Shape2D.ACCURACY) return false;
-		if(Math.abs(circle.r-r)>Shape2D.ACCURACY) return false;
-		if(circle.direct!=direct) return false;
-		return true;
+		if(obj instanceof Circle2D){
+			Circle2D circle = (Circle2D) obj;
+			
+			if(Math.abs(circle.xc-xc)>Shape2D.ACCURACY) return false;
+			if(Math.abs(circle.yc-yc)>Shape2D.ACCURACY) return false;
+			if(Math.abs(circle.r-r)>Shape2D.ACCURACY) return false;
+			if(circle.direct!=direct) return false;
+			return true;
+		}
+		return super.equals(obj);
 	}
 	
 }

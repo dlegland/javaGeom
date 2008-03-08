@@ -1,9 +1,15 @@
 Changes of javaGeom library
 
-javaGeom-0.5.2 (2008-??-??, rev. ??)
+javaGeom-0.6.0 (2008-03-08, rev. 115)
 
-- change package hierarchy
-
+- changed package hierarchy, by dividing geom2d into several subpackages
+- implemented Iterable for PointSet2D and CurveSet2D
+- introduced SmoothOrientedCurve2D interface
+- curve: add method Curve2D.project(Point2D), different from the method
+	Curve2D.getPosition(Point2D), for better computation of curve clipping.
+- improved implementation of Hyperbola2D and Parabola2D, and their respective
+	arcs
+- various code cleanup
 
 javaGeom-0.5.2 (2008-01-17, rev. 93)
 
