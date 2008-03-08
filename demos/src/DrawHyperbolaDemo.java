@@ -35,7 +35,6 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Hyperbola2D;
 import math.geom2d.conic.HyperbolaBranch2D;
 import math.geom2d.conic.HyperbolaBranchArc2D;
-import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
@@ -140,13 +139,13 @@ public class DrawHyperbolaDemo extends JPanel{
 			g2.draw(clippedCurve.getAsPolyline(4));
 		}
 			
-//		// Draw the clipped parabola
-//		CurveSet2D<?> clipped = hyperbola.clip(box);
-//		if (!clipped.isEmpty()){
-//			g2.setStroke(new BasicStroke(1.0f));
-//			g2.setColor(Color.RED);
-//			g2.draw(clipped);
-//		}
+		// Draw the clipped hyperbola
+		CurveSet2D<?> clipped2 = hyperbola.clip(box);
+		if (!clipped2.isEmpty()){
+			g2.setStroke(new BasicStroke(1.0f));
+			g2.setColor(Color.BLUE);
+			g2.draw(clipped2);
+		}
 		
 		// Draw parabola origin
 		Point2D p1 = hyperbola.getCenter();

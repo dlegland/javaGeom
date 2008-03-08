@@ -303,5 +303,25 @@ implements Conic2D{
 		//TODO: implement it
 		return this;
 	}
+	
+	/**
+	 * 
+	 * Tests whether this hyperbola equals another object.
+	 */
+	public boolean equals(Object obj){
+		if(!(obj instanceof Hyperbola2D)) return false;
+		
+		Hyperbola2D that = (Hyperbola2D) obj;
+		
+		double eps = 1e-6;
+		if(Math.abs(that.xc - this.xc)>eps) return false;
+		if(Math.abs(that.yc - this.yc)>eps) return false;
+		if(Math.abs(that.a - this.a)>eps) return false;
+		if(Math.abs(that.b - this.b)>eps) return false;
+		if(Math.abs(that.theta - this.theta)>eps) return false;
+		if(this.direct != that.direct) return false;
+		
+		return true;
+	}
 		
 }

@@ -26,11 +26,11 @@
 import java.awt.*;
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.line.HalfPlane2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.HalfPlane2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.Rotation2D;

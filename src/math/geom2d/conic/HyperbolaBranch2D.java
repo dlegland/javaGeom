@@ -31,6 +31,26 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	
 
 	// ===================================================================
+	// methods specific to HyperbolaBranch2D
+	
+	/**
+	 * Returns the supporting hyperbola of this branch.
+	 */
+	public Hyperbola2D getHyperbola(){
+		return hyperbola;
+	}
+
+
+	/**
+	 * Returns true if this branch is the positive one, i.e. it contains the
+	 * positive axis in the basis of the supporting hyperbola.
+	 * @return
+	 */
+	public boolean isPositiveBranch(){
+		return positive;
+	}
+
+	// ===================================================================
 	// methods inherited from SmoothCurve2D interface
 
 	/**

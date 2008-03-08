@@ -4,10 +4,10 @@
 
 // Imports
 import math.geom2d.*;
-import math.geom2d.line.HalfPlane2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
+import math.geom2d.polygon.HalfPlane2D;
 import math.geom2d.polygon.Polygon2D;
 
 /**
