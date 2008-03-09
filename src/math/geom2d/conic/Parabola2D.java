@@ -163,8 +163,22 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	public double[] getCartesianEquation() {
-		// TODO Auto-generated method stub
-		return null;
+		// computation shortcuts
+		double cot 	= Math.cos(theta);
+		double sit 	= Math.sin(theta);
+		double cot2 = cot*cot;
+		double sit2	= sit*sit;
+		
+		// Compute new coefficients after rotation of parabola located at
+		// (xv,yv) by a rotation of angle theta around origin.
+		return new double[]{
+			a*cot2, 
+			-2*a*cot*sit,
+			a*sit2,
+			-2*a*xv*cot - sit,
+			2*a*xv*sit - cot,
+			a*xv*xv + yv
+		};
 	}
 
 	public Point2D getCenter() {

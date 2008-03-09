@@ -407,7 +407,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @see math.geom2d.Shape2D#getDistance(double, double)
 	 */
 	public double getDistance(double x, double y) {
-		Point2D p = getPoint(getPosition(new Point2D(x, y)));
+		Point2D p = getPoint(project(new Point2D(x, y)));
 		return p.getDistance(x, y);
 	}
 

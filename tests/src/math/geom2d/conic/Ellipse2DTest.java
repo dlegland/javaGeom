@@ -100,6 +100,35 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(el2.getConicType(), Conic2D.CIRCLE);
 	}
 
+	public void testGetCartesianEquation() {
+		Ellipse2D ellipse = new Ellipse2D(0, 0, 1, 1, 0);
+		double[] coefs = ellipse.getCartesianEquation();
+		assertEquals(coefs[0], 1, 1e-14);
+		assertEquals(coefs[1], 0, 1e-14);
+		assertEquals(coefs[2], 1, 1e-14);
+		assertEquals(coefs[3], 0, 1e-14);
+		assertEquals(coefs[4], 0, 1e-14);
+		assertEquals(coefs[5], -1, 1e-14);
+		
+		ellipse = new Ellipse2D(20, 30, 1, 1, 0);
+		coefs = ellipse.getCartesianEquation();
+		assertEquals(coefs[0], 1, 1e-14);
+		assertEquals(coefs[1], 0, 1e-14);
+		assertEquals(coefs[2], 1, 1e-14);
+		assertEquals(coefs[3], -40, 1e-14);
+		assertEquals(coefs[4], -60, 1e-14);
+		assertEquals(coefs[5], 1299, 1e-14);
+		
+		ellipse = new Ellipse2D(20, 30, 20, 10, 0);
+		coefs = ellipse.getCartesianEquation();
+		assertEquals(coefs[0], 100, 1e-14);
+		assertEquals(coefs[1], 0, 1e-14);
+		assertEquals(coefs[2], 400, 1e-14);
+//		assertEquals(coefs[3], -800, 1e-14);
+//		assertEquals(coefs[4], -600, 1e-14);
+//		assertEquals(coefs[5], 1100, 1e-14);
+	}
+	
 	public void testIsCircle(){
 		Ellipse2D el1 = new Ellipse2D(20, 30, 20, 30);
 		assertTrue(!el1.isCircle());
@@ -205,20 +234,20 @@ public class Ellipse2DTest extends TestCase {
 		
 		AffineTransform2D aff = new GenericAffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell1 = ellipse.transform(aff);
-		assertTrue(ell1.isEllipse());
+		assertTrue(ell1 instanceof Ellipse2D);
 		assertTrue(ell1.equals(ellipse));
 		
 		AffineTransform2D aff2 = new GenericAffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
 		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
-		assertTrue(ell2.isEllipse());
+		assertTrue(ell2 instanceof Ellipse2D);
 		assertTrue(ell2.equals(ell2th));
 		
 		// Try with a rotated base ellipse
 		ellipse = new Ellipse2D(100, 100, 50, 30, Math.PI/3);
 		AffineTransform2D aff3 = new GenericAffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell3 = ellipse.transform(aff3);
-		assertTrue(ell3.isEllipse());
+		assertTrue(ell3 instanceof Ellipse2D);
 		assertTrue(ell3.equals(ellipse));
 		
 		// At the moment, I do not how to compute parameters of transformed ellipse,

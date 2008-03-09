@@ -97,13 +97,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return this.parabola;
 	}
 	
-//	/**
-//	 * at the moment, return true.
-//	 */
-//	public boolean isDirect() {
-//		return true;
-//	}
-
 	// ==========================================================
 	// methods implementing the OrientedCurve2D interface
 

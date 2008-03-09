@@ -30,10 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.*;
 
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -326,44 +323,57 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	 *
 	 */
 	protected void updateParameters(){
-		type=Conic2D.NOT_A_CONIC; 
+		type=Conic2D.NOT_A_CONIC;
+		double eps = Shape2D.ACCURACY;
 		
-		double delta = b*b-a*c;
-		if(delta==0){
-			// cas ou la conique est une Conic2D.PARABOLA
-			if(a==0 && b==0 && c==0){
-				if(d!=0 || e!=0){
+		// First compute the discriminant
+		double delta = b*b-4*a*c;
+		
+		// Case of a parabola (delta==0)
+		if(Math.abs(delta)<eps){
+			
+			// Check degenerate cases (no x^2, y^2 or x*y)
+			if(Math.abs(a)<eps && Math.abs(b)<eps && Math.abs(c)<eps){
+				if(Math.abs(d)>eps || Math.abs(e)>eps){
 					type = Conic2D.STRAIGHT_LINE;
+					// TODO: compute line;
 					return;
 				}else{
 					type = Conic2D.NOT_A_CONIC;
 					return;
 				}
-			}else{
-				if(a==0){
-					if(d!=0){
-						type=Conic2D.PARABOLA;
-						return;
-					}
-					if(e*e-c*f >= 0) type=Conic2D.TWO_LINES; 
-					else type=Conic2D.NOT_A_CONIC;
-				}else{
-					int sgn = a>0 ? 1 : -1;		// signe de a
-					a*=sgn; b*=sgn; c*=sgn; d*=sgn; e*=sgn; f*=sgn; 
-
-					sgn = b>0 ? 1 : -1;			// signe de b
-					double alpha = Math.sqrt(a);
-					double beta = Math.sqrt(c*sgn);
-					
-					if(d*alpha + e*beta == 0){
-						type=Conic2D.NOT_A_CONIC;
-						return;
-					}else{
-						type=Conic2D.PARABOLA;
-						return;
-					}
-				}
 			}
+			
+			// Case of a parabola without x^2 parameter
+			if(Math.abs(a)<eps){
+				
+				// degenerate case
+				if(Math.abs(d)<eps){
+					if(e*e-c*f >= 0) type=Conic2D.TWO_LINES; 
+					else type=Conic2D.NOT_A_CONIC;				
+				}
+				
+				type=Conic2D.PARABOLA;
+				return;
+			}
+			
+			
+			int sgn = a>0 ? 1 : -1;		// signe de a
+			a*=sgn; b*=sgn; c*=sgn; d*=sgn; e*=sgn; f*=sgn; 
+
+			sgn = b>0 ? 1 : -1;			// signe de b
+			double alpha = Math.sqrt(a);
+			double beta = Math.sqrt(c*sgn);
+
+			if(d*alpha + e*beta == 0){
+				type=Conic2D.NOT_A_CONIC;
+				return;
+			}else{
+				type=Conic2D.PARABOLA;
+				return;
+			}
+			
+			
 		} else{ // delta != 0
 		
 			// coordonnees du centre de la conique

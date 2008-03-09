@@ -139,15 +139,29 @@ implements Conic2D{
 	}
 
 	// ===================================================================
-	// methods inherited fromConic2D interface
+	// methods inherited from Conic2D interface
 	
 	public double getAngle() {
 		return theta;
 	}
 
 	public double[] getCartesianEquation() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: not tested
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+		double cot2 = cot*cot;
+		double sit2 = sit*sit;
+		double a2 = a*a;
+		double b2 = b*b;
+		
+		return new double[]{
+				a2*(cot2 - sit2),
+				-4*a*b*sit*cot,
+				b2*(sit2 - cot2),
+				2*a*(xc*cot + yc*sit),
+				-2*b*(yc*cot + xc*sit),
+				xc*xc - yc*yc - a*b
+			};
 	}
 
 	public Point2D getCenter() {
