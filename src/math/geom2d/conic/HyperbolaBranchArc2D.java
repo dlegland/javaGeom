@@ -84,7 +84,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	// methods inherited from ContinuousCurve2D interface
 
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-		// TODO Auto-generated method stub
 		return this.getAsPolyline(60).appendPath(path);
 	}
 
@@ -92,8 +91,8 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		Point2D[] points = new Point2D[n+1];
 		
 		// avoid the cases where t0 and/or t1 is infinite
-		double t0 = Math.max(this.t0, -1000);
-		double t1 = Math.min(this.t1, 1000);
+		double t0 = Math.max(this.t0, -100);
+		double t1 = Math.min(this.t1, 100);
 		
 		double dt = (t1-t0)/(double)n;
 		points[0] = this.getPoint(t0);
@@ -236,13 +235,13 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 
 
 	public double getDistance(java.awt.geom.Point2D point) {
-		// TODO Auto-generated method stub
-		return this.getAsPolyline(100).getDistance(point);
+		Point2D p = getPoint(project(new Point2D(point)));
+		return p.getDistance(point);
 	}
 
 	public double getDistance(double x, double y) {
-		// TODO Auto-generated method stub
-		return this.getAsPolyline(100).getDistance(x, y);
+		Point2D p = getPoint(project(new Point2D(x, y)));
+		return p.getDistance(x, y);
 	}
 
 	public boolean isBounded() {
@@ -292,13 +291,11 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public java.awt.Rectangle getBounds() {
-		// TODO Auto-generated method stub
-		return this.getAsPolyline(100).getBounds();
+		return this.getBoundingBox().getAsAWTRectangle();
 	}
 
 	public java.awt.geom.Rectangle2D getBounds2D() {
-		// TODO Auto-generated method stub
-		return this.getAsPolyline(100).getBounds2D();
+		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
 	public java.awt.geom.GeneralPath getGeneralPath(){

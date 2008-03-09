@@ -395,6 +395,18 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return null;
 	}
 	
+	/**
+	 * return true if ellipse has a direct orientation.
+	 */
+	public boolean isDirect(){
+		return direct;
+	}
+	
+	public boolean isCircle(){
+		return Math.abs(r1-r2)<Shape2D.ACCURACY;
+	}			
+
+	
 	// ===================================================================
 	// methods of Conic2D
 
@@ -405,37 +417,38 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 			return Conic2D.ELLIPSE;
 	}
 
-	public boolean isEllipse(){return true;}
-	public boolean isParabola(){return false;}
-	public boolean isHyperbola(){return false;}
-	public boolean isCircle(){
-		return Math.abs(r1-r2)<Shape2D.ACCURACY;
-	}			
-	public boolean isStraightLine(){return false;}
-	public boolean isTwoLines(){return false;}
-	public boolean isPoint(){return false;}
-
-	public boolean isDegenerated(){return false;}
+//	public boolean isEllipse(){return true;}
+//	public boolean isParabola(){return false;}
+//	public boolean isHyperbola(){return false;}
+//	public boolean isStraightLine(){return false;}
+//	public boolean isTwoLines(){return false;}
+//	public boolean isPoint(){return false;}
+//
+//	public boolean isDegenerated(){return false;}
 
 
 	public double[] getCartesianEquation(){
-		// TODO: not tested, only analytically expressed
 		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
+		double sit = Math.sin(-theta);
 		double cot2 = cot*cot;
 		double sit2 = sit*sit;
-		double xr  = xc - xc*cot + yc*sit;
-		double yr  = yc - xc*sit - yc*cot;
 		double r12 = r1*r1;
 		double r22 = r2*r2;
 		
+		// compute coefficients of ellipse without rotation
+		double a1 = r22;
+		double c1 = r12;
+		double d1 = -2*r22*xc;
+		double e1 = -2*r12*yc;
+		double f1 = r22*xc*xc + r12*yc*yc - r12*r22;
+		
 		return new double[]{
-			cot2/r2 + sit2/r22,
-			2*sit*cot*(r12-r22)/(r12*r22),
-			cot2/r12 + sit2/r22,
-			2*(xr*cot/r12 + yr*sit/r22),
-			2*(yr*cot/r22 - xr*sit/r12),
-			xr*xr/r12 + yr*yr/r22
+				a1*cot2 + c1*sit2, 
+				2*(c1-a1)*cot*sit,
+				a1*sit2 + c1*cot2,
+				d1*cot + e1*sit,
+				-d1*sit + e1*cot,
+				f1
 		};
 	}
 
@@ -518,13 +531,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	 */
 	public double getAngle(){
 		return theta;
-	}
-	
-	/**
-	 * return true if ellipse has a direct orientation.
-	 */
-	public boolean isDirect(){
-		return direct;
 	}
 	
 	// ===================================================================

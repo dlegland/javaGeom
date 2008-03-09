@@ -85,7 +85,9 @@ Packages hierarchy
 \end_layout
 
 \begin_layout Standard
-Packages are divided depending in 2D, 3D, or spherical geometry.
+Packages are divided depending on the type of geoemtry used : geom2d for
+ euclidean plane geometry, geom3d for euclidean space geometry, or geom3s
+ for spherical geometry.
  Subpackages could include specialized shape types.
 \end_layout
 
@@ -94,11 +96,23 @@ subpackages for math.geom2d:
 \end_layout
 
 \begin_layout Description
-shapes various useful shapes (conics, bezier...)
+curve hierarchy of curves and of domains
 \end_layout
 
 \begin_layout Description
-algos algorithms on shapes: computation of intersections, dilations...
+line straight lines and line segments
+\end_layout
+
+\begin_layout Description
+polygon domains bounded by straight objects
+\end_layout
+
+\begin_layout Description
+transform affine and vectorial transforms in the plane
+\end_layout
+
+\begin_layout Description
+conic circle, ellipse, parabola and hyperbola, and derived classes
 \end_layout
 
 \begin_layout Subsection
@@ -1065,6 +1079,65 @@ A continuous set of oriented curves, which defines a domain.
 \end_layout
 
 \begin_layout Section
+Algorithms on curves
+\end_layout
+
+\begin_layout Subsection
+Clip a Curve Set
+\end_layout
+
+\begin_layout Standard
+Consider clipping with a box, i.e.\InsetSpace ~
+an isothetic rectangle.
+\end_layout
+
+\begin_layout Standard
+for a curve set, recursively clip each curve of the set, and add to a new
+ CurveSet2D
+\end_layout
+
+\begin_layout Subsection
+Clip a Boundary2D
+\end_layout
+
+\begin_layout Standard
+The same, but the result is a Boundary2D.
+ need to take care of order of clipping.
+\end_layout
+
+\begin_layout Standard
+Idea: compute intersections, order intersections, then link intersection
+ on the edge of the box.
+\end_layout
+
+\begin_layout Subsection
+Point in PolyOrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+There are two possible algorithms: either use a variant of ray intersections
+ count, or use orientation with respect to the closest oriented curve composing
+ the set.
+\end_layout
+
+\begin_layout Subsection
+Length of a Curve
+\end_layout
+
+\begin_layout Standard
+For many simple curves (e.g.\InsetSpace \space{}
+circles, circle arcs, polylines), there is an
+ explicit formula for computing there length.
+ For a generic smooth curve, the use of a derivative allows to compute length
+ of any curve by numerical integration.
+ Need to specify tolerance limit.
+\end_layout
+
+\begin_layout Chapter
+Lines and segments
+\end_layout
+
+\begin_layout Section
 Line objects
 \end_layout
 
@@ -1200,8 +1273,304 @@ A line object is defined from 2 points.
  changing the reference points.
 \end_layout
 
+\begin_layout Chapter
+Polylines and polygons
+\end_layout
+
 \begin_layout Section
-Circles and conics
+Polylines
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Polyline2D"
+
+\end_inset
+
+Polyline2D
+\end_layout
+
+\begin_layout Standard
+Polyline is a set of points which describe a curve composed of several line
+ segments.
+ It is typically the boundary of a polygon.
+\end_layout
+
+\begin_layout Description
+getLineSegments()
+\end_layout
+
+\begin_layout Description
+getLength() sum of the lengths of each line segment.
+\end_layout
+
+\begin_layout Section
+Polygons
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "PolygonalShape2D"
+
+\end_inset
+
+PolygonalShape2D
+\end_layout
+
+\begin_layout Standard
+The interface PolygonalShape2D is an interface for all Domain2D whose boundary
+ is composed uniquely of line segments.
+\end_layout
+
+\begin_layout Description
+getVertices():Point2D[]
+\end_layout
+
+\begin_layout Description
+getEdges():LineSegment2D[]
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Polygon2D"
+
+\end_inset
+
+Polygon2D
+\end_layout
+
+\begin_layout Standard
+Interface for polygons.
+\end_layout
+
+\begin_layout Description
+getVertices():Collection<Point2D>
+\end_layout
+
+\begin_layout Description
+getEdges():Collection<LineSegment2D>
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "SimplePolygon2D"
+
+\end_inset
+
+SimplePolygon2D
+\end_layout
+
+\begin_layout Standard
+A polygon defined from an array of points.
+ The boundary of a simple polygon is a closed polyline (a 
+\begin_inset Quotes eld
+\end_inset
+
+ring
+\begin_inset Quotes erd
+\end_inset
+
+ in JTS).
+\end_layout
+
+\begin_layout Subsection
+GenericPolygon2D
+\end_layout
+
+\begin_layout Standard
+A general Polygon 2D can be composed of several disjoint parts, and can
+ contains holes.
+ The boundary of a Polygon2D is a set of closed polylines.
+\end_layout
+
+\begin_layout Section
+Rectangles
+\end_layout
+
+\begin_layout Standard
+Maybe can be gathered under a class AbstractRectangle2D or RectangularShape2D
+ ?
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Rectangle2D"
+
+\end_inset
+
+Rectangle2D
+\end_layout
+
+\begin_layout Standard
+Defined from a corner, width and length, and orientation.
+\end_layout
+
+\begin_layout Subsection
+CenteredRectangle2D
+\end_layout
+
+\begin_layout Standard
+defined from a center, width and length, and orientation.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Box2D"
+
+\end_inset
+
+Box2D
+\end_layout
+
+\begin_layout Standard
+An isothetic rectangle.
+ Subclass of java class Rectangle2D.Double, which implements PolygonalShape.
+ Implementation should be changed to takes into account infinite boxes.
+ Inner fields: xmin, xmax, ymin and ymax.
+\end_layout
+
+\begin_layout Section
+Other polygons
+\end_layout
+
+\begin_layout Standard
+Square2D ? RegularPolygon2D ?
+\end_layout
+
+\begin_layout Section
+Algorithms on polygons
+\end_layout
+
+\begin_layout Standard
+geometric operations: union, intersection, subtraction of polygons
+\end_layout
+
+\begin_layout Standard
+Minkowski sum of polygons
+\end_layout
+
+\begin_layout Standard
+computation of (signed) area and of perimeter length 
+\end_layout
+
+\begin_layout Standard
+clipping of polygon
+\end_layout
+
+\begin_layout Standard
+triangulation of a polygon
+\end_layout
+
+\begin_layout Standard
+convex hull of a set of points.
+\end_layout
+
+\begin_layout Chapter
+Circles and conic curves
+\end_layout
+
+\begin_layout Section
+Conics
+\end_layout
+
+\begin_layout Standard
+Reminder of the cartesian equation of a conic:
+\begin_inset Formula \[
+ax^{2}+bxy+cy^{2}+dx+ey+f=0\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Conic types
+\end_layout
+
+\begin_layout Standard
+Types of conics are ellipses, parabola and hyperbolas.
+\end_layout
+
+\begin_layout Section
+Ellipse
+\end_layout
+
+\begin_layout Standard
+algebraic equation of an ellipse
+\begin_inset Formula \[
+\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}=1\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parabola
+\end_layout
+
+\begin_layout Subsection
+Representations
+\end_layout
+
+\begin_layout Subsubsection
+Used
+\end_layout
+
+\begin_layout Standard
+We use the following representation :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\left\{ \begin{array}{ccl}
+x(t) & = & t\\
+y(t) & = & at^{2}\end{array}\right.,\, t\in\mathbb{R}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Algorithms
+\end_layout
+
+\begin_layout Section
+Hyperbola
+\end_layout
+
+\begin_layout Standard
+composed of 2 branches
+\end_layout
+
+\begin_layout Standard
+Algebraic equation of an hyperbola :
+\begin_inset Formula \[
+\frac{x^{2}}{a^{2}}-\frac{y^{2}}{b^{2}}=1\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Classes hierarchy
+\end_layout
+
+\begin_layout Standard
+An interface Conic2D, and 3 subclasses : Ellipse2D, Parabola2D, Hyperbola2D.
+ The class Circle2D inherits Ellipse2D.
+ The class Hyperbola2D contains two instances of HyperbolaBranch2D.
+\end_layout
+
+\begin_layout Standard
+Arcs of conics are implemented in 4 classes : EllipseArc2D, CircleArc2D,
+ ParabolaArc2D and HyperbolaBranchArc2D.
+\end_layout
+
+\begin_layout Section
+Implementations
 \end_layout
 
 \begin_layout Subsection
@@ -1226,14 +1595,17 @@ Conic2D is an extension of OrientedCurve2D, not of ContinuousCurve2D.
  
 \end_layout
 
-\begin_layout Standard
-Reminder of the cartesian equation of a conic:
-\begin_inset Formula \[
-ax^{2}+bxy+cy^{2}+dx+ey+f=0\]
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Ellipse2D"
 
 \end_inset
 
- 
+Ellipse2D
+\end_layout
+
+\begin_layout Standard
+Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
 \end_layout
 
 \begin_layout Subsection
@@ -1247,19 +1619,6 @@ Circle2D
 
 \begin_layout Standard
 A circle inherits Ellipse2D.
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "Ellipse2D"
-
-\end_inset
-
-Ellipse2D
-\end_layout
-
-\begin_layout Standard
-Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
 \end_layout
 
 \begin_layout Subsection
@@ -1368,13 +1727,17 @@ end,\InsetSpace ~
 direct)
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Polynomial curves
 \end_layout
 
 \begin_layout Standard
 A quite common way used to describe abritrary curves.
  Different representations exist.
+\end_layout
+
+\begin_layout Section
+Representations
 \end_layout
 
 \begin_layout Subsection
@@ -1414,254 +1777,11 @@ Extension of Bezier curves, allow exact representation of conics.
 \end_layout
 
 \begin_layout Section
-Algorithms on curves
-\end_layout
-
-\begin_layout Subsection
-Clip a Curve Set
+Implementations
 \end_layout
 
 \begin_layout Standard
-Consider clipping with a box, i.e.\InsetSpace ~
-an isothetic rectangle.
-\end_layout
-
-\begin_layout Standard
-for a curve set, recursively clip each curve of the set, and add to a new
- CurveSet2D
-\end_layout
-
-\begin_layout Subsection
-Clip a Boundary2D
-\end_layout
-
-\begin_layout Standard
-The same, but the result is a Boundary2D.
- need to take care of order of clipping.
-\end_layout
-
-\begin_layout Standard
-Idea: compute intersections, order intersections, then link intersection
- on the edge of the box.
-\end_layout
-
-\begin_layout Subsection
-Point in PolyOrientedCurve2D
-\end_layout
-
-\begin_layout Standard
-There are two possible algorithms: either use a variant of ray intersections
- count, or use orientation with respect to the closest oriented curve composing
- the set.
-\end_layout
-
-\begin_layout Subsection
-Length of a Curve
-\end_layout
-
-\begin_layout Standard
-For many simple curves (e.g.\InsetSpace \space{}
-circles, circle arcs, polylines), there is an
- explicit formula for computing there length.
- For a generic smooth curve, the use of a derivative allows to compute length
- of any curve by numerical integration.
- Need to specify tolerance limit.
-\end_layout
-
-\begin_layout Chapter
-Polylines and polygons
-\end_layout
-
-\begin_layout Section
-Polylines
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "Polyline2D"
-
-\end_inset
-
-Polyline2D
-\end_layout
-
-\begin_layout Standard
-Polyline is a set of points which describe a curve composed of several line
- segments.
- It is typically the boundary of a polygon.
-\end_layout
-
-\begin_layout Description
-getLineSegments()
-\end_layout
-
-\begin_layout Description
-getLength() sum of the lengths of each line segment.
-\end_layout
-
-\begin_layout Section
-Polygons
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "PolygonalShape2D"
-
-\end_inset
-
-PolygonalShape2D
-\end_layout
-
-\begin_layout Standard
-The interface PolygonalShape2D is an interface for all Domain2D whose boundary
- is composed uniquely of line segments.
-\end_layout
-
-\begin_layout Description
-getVertices():Point2D[]
-\end_layout
-
-\begin_layout Description
-getEdges():LineSegment2D[]
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "Polygon2D"
-
-\end_inset
-
-Polygon2D
-\end_layout
-
-\begin_layout Standard
-Interface for polygons.
-\end_layout
-
-\begin_layout Description
-getVertices():Collection<Point2D>
-\end_layout
-
-\begin_layout Description
-getEdges():Collection<LineSegment2D>
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "SimplePolygon2D"
-
-\end_inset
-
-SimplePolygon2D
-\end_layout
-
-\begin_layout Standard
-A polygon defined from an array of points.
- The boundary of a simple polygon is a closed polyline (a 
-\begin_inset Quotes eld
-\end_inset
-
-ring
-\begin_inset Quotes erd
-\end_inset
-
- in JTS).
-\end_layout
-
-\begin_layout Subsection
-
-\end_layout
-
-\begin_layout Subsection
-GenericPolygon2D
-\end_layout
-
-\begin_layout Standard
-A general Polygon 2D can be composed of several disjoint parts, and can
- contains holes.
- The boundary of a Polygon2D is a set of closed polylines.
-\end_layout
-
-\begin_layout Section
-Rectangles
-\end_layout
-
-\begin_layout Standard
-Maybe can be gathered under a class AbstractRectangle2D or RectangularShape2D
- ?
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "Rectangle2D"
-
-\end_inset
-
-Rectangle2D
-\end_layout
-
-\begin_layout Standard
-Defined from a corner, width and length, and orientation.
-\end_layout
-
-\begin_layout Subsection
-CenteredRectangle2D
-\end_layout
-
-\begin_layout Standard
-defined from a center, width and length, and orientation.
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "Box2D"
-
-\end_inset
-
-Box2D
-\end_layout
-
-\begin_layout Standard
-An isothetic rectangle.
- Subclass of java class Rectangle2D.Double, which implements PolygonalShape.
- Implementation should be changed to takes into account infinite boxes.
- Inner fields: xmin, xmax, ymin and ymax.
-\end_layout
-
-\begin_layout Section
-Other polygons
-\end_layout
-
-\begin_layout Standard
-Square2D ? RegularPolygon2D ?
-\end_layout
-
-\begin_layout Section
-Algorithms on polygons
-\end_layout
-
-\begin_layout Standard
-geometric operations: union, intersection, subtraction of polygons
-\end_layout
-
-\begin_layout Standard
-Minkowski sum of polygons
-\end_layout
-
-\begin_layout Standard
-computation of (signed) area and of perimeter length 
-\end_layout
-
-\begin_layout Standard
-clipping of polygon
-\end_layout
-
-\begin_layout Standard
-triangulation of a polygon
-\end_layout
-
-\begin_layout Standard
-convex hull of a set of points.
+Currently only cubic Bezier curve defined by 4 control points is implemented.
 \end_layout
 
 \begin_layout Chapter
@@ -1671,10 +1791,6 @@ Transforms
 \begin_layout Standard
 Need to think a little bit further on transforms hierarchy, and on implementatio
 n of AffineTransform.
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Section

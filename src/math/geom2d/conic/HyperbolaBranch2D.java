@@ -60,9 +60,9 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	public double getCurvature(double t) {
 		double a = hyperbola.a;
 		double b = hyperbola.b;
-		double sih = Math.sinh(t);
-		double coh = Math.sinh(t);
-		return a*b/Math.pow(b*b*coh*coh + a*a*sih*sih, 3/2);
+		double asih = a*Math.sinh(t);
+		double bcoh = b*Math.cosh(t);
+		return a*b/Math.pow(Math.hypot(bcoh, asih), 3);
 	}
 
 	public Vector2D getTangent(double t) {
@@ -293,13 +293,14 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	}
 
 
-	public double getDistance(java.awt.geom.Point2D p) {
-		return this.getDistance(p.getX(), p.getY());
+	public double getDistance(java.awt.geom.Point2D point) {
+		Point2D projected = this.getPoint(this.project(new Point2D(point)));
+		return projected.getDistance(point);
 	}
 
 	public double getDistance(double x, double y) {
-		// TODO Auto-generated method stub
-		return 0;
+		Point2D projected = this.getPoint(this.project(new Point2D(x, y)));
+		return projected.getDistance(x, y);
 	}
 
 	/** return false, as an hyperbola branch is never bounded.*/
@@ -350,13 +351,11 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	}
 
 	public java.awt.Rectangle getBounds() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getBoundingBox().getAsAWTRectangle();
 	}
 
 	public java.awt.geom.Rectangle2D getBounds2D() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
 	/**

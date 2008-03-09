@@ -170,76 +170,76 @@ public class Box2D implements PolygonalShape2D{
 		return new CurveSet2D<Curve2D>();
 	}
 	
-	public CurveSet2D<Curve2D> clipCurveOld(Curve2D curve){		
-		// First evacuate special case of (non continuous) curve sets.
-		// Iterate on curves, clip each curve -> get a curve set, and add each
-		// component of the clipped curve set to the result curve set
-		if(curve instanceof CurveSet2D || !(curve instanceof ContinuousCurve2D)){
-			// Clip the current curve
-			CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
-			CurveSet2D<Curve2D> result = new CurveSet2D<Curve2D>();
-			CurveSet2D<?> clipped;
-			
-			// a clipped parts of current curve to the result
-			for(Curve2D continuous : curveSet){
-				clipped = this.clipCurve(continuous);
-				for(Curve2D clippedPart : clipped)
-					result.addCurve(clippedPart);
-			}
-			
-			// return a set of curves
-			return result;
-		}
-		
-		// create array of points
-		ArrayList<Point2D> points = new ArrayList<Point2D>();
-		
-		// extract edges of the box boundary
-		Collection<LineSegment2D> edges = this.getEdges();
-		
-		// add the intersections with each edge to the list
-		for(LineSegment2D edge : edges)
-			points.addAll(curve.getIntersections(edge));
-				
-		// convert list to point array, sorted wrt to their position on the curve
-		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		for(Point2D p : points)
-			set.add(new java.lang.Double(curve.getPosition(p)));
-			
-				
-		// Create CurveSet2D for storing the result
-		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
-		
-		// extract first point of the curve
-		Point2D point1 = curve.getFirstPoint();
-
-		// if no intersection point, the curve is totally either inside or outside the box
-		if(set.size()==0){
-			if(this.contains(point1))
-				res.addCurve(curve);
-			return res;
-		}
-		
-		double pos1, pos2;
-		Iterator<java.lang.Double> iter = set.iterator();
-		
-		// different behavior depending if first point lies inside the box
-		if(this.contains(point1) && !this.getBoundary().contains(point1))
-			res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
-		
-		// add the portions of curve between couples of intersections
-		while(iter.hasNext()){
-			pos1 = iter.next().doubleValue();
-			if(iter.hasNext())
-				pos2 = iter.next().doubleValue();
-			else
-				pos2 = curve.getT1();
-			res.addCurve(curve.getSubCurve(pos1, pos2));
-		}
-		
-		return res;
-	}
-		
+//	public CurveSet2D<Curve2D> clipCurveOld(Curve2D curve){		
+//		// First evacuate special case of (non continuous) curve sets.
+//		// Iterate on curves, clip each curve -> get a curve set, and add each
+//		// component of the clipped curve set to the result curve set
+//		if(curve instanceof CurveSet2D || !(curve instanceof ContinuousCurve2D)){
+//			// Clip the current curve
+//			CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
+//			CurveSet2D<Curve2D> result = new CurveSet2D<Curve2D>();
+//			CurveSet2D<?> clipped;
+//			
+//			// a clipped parts of current curve to the result
+//			for(Curve2D continuous : curveSet){
+//				clipped = this.clipCurve(continuous);
+//				for(Curve2D clippedPart : clipped)
+//					result.addCurve(clippedPart);
+//			}
+//			
+//			// return a set of curves
+//			return result;
+//		}
+//		
+//		// create array of points
+//		ArrayList<Point2D> points = new ArrayList<Point2D>();
+//		
+//		// extract edges of the box boundary
+//		Collection<LineSegment2D> edges = this.getEdges();
+//		
+//		// add the intersections with each edge to the list
+//		for(LineSegment2D edge : edges)
+//			points.addAll(curve.getIntersections(edge));
+//				
+//		// convert list to point array, sorted wrt to their position on the curve
+//		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
+//		for(Point2D p : points)
+//			set.add(new java.lang.Double(curve.getPosition(p)));
+//			
+//				
+//		// Create CurveSet2D for storing the result
+//		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
+//		
+//		// extract first point of the curve
+//		Point2D point1 = curve.getFirstPoint();
+//
+//		// if no intersection point, the curve is totally either inside or outside the box
+//		if(set.size()==0){
+//			if(this.contains(point1))
+//				res.addCurve(curve);
+//			return res;
+//		}
+//		
+//		double pos1, pos2;
+//		Iterator<java.lang.Double> iter = set.iterator();
+//		
+//		// different behavior depending if first point lies inside the box
+//		if(this.contains(point1) && !this.getBoundary().contains(point1))
+//			res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
+//		
+//		// add the portions of curve between couples of intersections
+//		while(iter.hasNext()){
+//			pos1 = iter.next().doubleValue();
+//			if(iter.hasNext())
+//				pos2 = iter.next().doubleValue();
+//			else
+//				pos2 = curve.getT1();
+//			res.addCurve(curve.getSubCurve(pos1, pos2));
+//		}
+//		
+//		return res;
+//	}
+	
 	/**
 	 * clip a CurveSet2D.
 	 */
@@ -719,15 +719,6 @@ public class Box2D implements PolygonalShape2D{
 			if(!contains(point)) return false;
 
 		return true;
-	}
-			
-	/** Return an instance of Box2D*/
-	public Shape2D getClippedShape(Box2D box){
-		double xmin = Math.min(box.xmin, this.xmin);
-		double xmax = Math.max(box.xmax, this.xmax);
-		double ymin = Math.min(box.ymin, this.ymin);
-		double ymax = Math.max(box.ymax, this.ymax);
-		return new Box2D(xmin, xmax, ymin, ymax);
 	}
 
 	/**
