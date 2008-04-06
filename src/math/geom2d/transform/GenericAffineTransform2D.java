@@ -110,71 +110,16 @@ public class GenericAffineTransform2D extends AbstractAffineTransform2D{
 		double[] tab = new double[6];
 		trans.getMatrix(tab);
 		m00 = tab[0];
-		m01 = tab[1];
-		m02 = tab[2];
-		m10 = tab[3];
-		m11 = tab[4];
+		m01 = tab[2];
+		m02 = tab[4];
+		m10 = tab[1];
+		m11 = tab[3];
 		m12 = tab[5];
 	}
 
 	// ===================================================================
-	// static methods
-	
+	// general functions
 
-	// ===================================================================
-	// accessors
-
-//	public boolean isIdentity(){
-//		if(m00!=1) return false;
-//		if(m11!=1) return false;
-//		if(m01!=0) return false;
-//		if(m02!=0) return false;
-//		if(m10!=0) return false;
-//		if(m12!=0) return false;
-//		return true;
-//	}
-//	
-//	/**
-//	 * Check if the transform is direct, i.e. it preserves the orientation
-//	 * of transformed shapes.
-//	 * @return true if transform is direct.
-//	 */
-//	public boolean isDirect(){
-//		return m00*m11-m01*m10>0;
-//	}
-//
-//	/**
-//	 * Check if the transform is an isometry, i.e. a compound of
-//	 * translation, rotation and reflection. Isometry remains area of shapes
-//	 * unchanged, but can change orientation (directed or undirected).
-//	 * @return true in case of isometry.
-//	 */
-//	public boolean isIsometry(){
-//		double det = Math.sqrt(m00*m11 - m01*m10); 
-//		return Math.abs(Math.abs(det)-1)<Shape2D.ACCURACY;
-//	}
-//
-//	/**
-//	 * Check if the transform is a motion, i.e. a compound of translations and
-//	 * rotation. Motion remains area and orientation (directed or undireced)
-//	 * of shapes unchanged.
-//	 * @return true in case of motion.
-//	 */
-//	public boolean isMotion(){
-//		double det = Math.sqrt(m00*m11 - m01*m10); 
-//		return Math.abs(det-1)<Shape2D.ACCURACY;
-//	}
-//	
-//	/**
-//	 * Check if the transform is an similarity, i.e. transformation which keeps
-//	 * unchanged the global shape, up to a scaling factor.
-//	 * @return true in case of similarity.
-//	 */
-//	public boolean isSimilarity(){
-//		return Math.abs(m00*m01 + m10*m11)<Shape2D.ACCURACY;		
-//	}
-//
-	
 	/**
 	 * return coefficients of the transform. Result is an array of 6 double.
 	 */
