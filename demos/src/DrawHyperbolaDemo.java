@@ -65,7 +65,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// Draw the bounding box
 		g2.setColor(Color.BLUE);
-		g2.draw(box);
+		g2.draw(box.getAsRectangle());
 
 		// Draw the asymptotes
 		StraightLine2D asymp1 = new StraightLine2D(150, 150, 1, 1);

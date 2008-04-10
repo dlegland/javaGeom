@@ -65,7 +65,7 @@ public class DrawParabolaDemo extends JPanel{
 		g2.fill(polyline);
 
 		g2.setColor(Color.BLUE);
-		g2.draw(box);
+		g2.draw(box.getAsRectangle());
 
 		// Draw the clipped parabola
 		CurveSet2D<?> clipped = arc.clip(box);

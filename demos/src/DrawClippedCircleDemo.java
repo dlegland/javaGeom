@@ -61,7 +61,7 @@ public class DrawClippedCircleDemo extends JPanel{
 		g2.draw(circle);
 
 		g2.setColor(Color.BLUE);
-		g2.draw(box);
+		g2.draw(box.getAsRectangle());
 
 		Curve2D clipped = box.clipCurve(circle);
 		g2.setStroke(new BasicStroke(4.0f));
