@@ -62,7 +62,7 @@ public class DrawClippedPolygonDemo extends JPanel{
 		g2.draw(polygon);
 
 		g2.setColor(Color.BLUE);
-		g2.draw(box);
+		g2.draw(box.getAsRectangle());
 
 		Boundary2D boundary = polygon.getBoundary();
 		Curve2D clipped = box.clipCurve(boundary);

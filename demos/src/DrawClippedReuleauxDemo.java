@@ -67,7 +67,7 @@ public class DrawClippedReuleauxDemo extends JPanel{
 
 		Box2D box = new Box2D(60, 140, 30, 180);
 		g2.setColor(Color.CYAN);
-		g2.fill(box);
+		g2.fill(box.getAsRectangle());
 		
 		g2.setColor(Color.YELLOW);
 		g2.fill(curve);
