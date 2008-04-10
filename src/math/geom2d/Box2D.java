@@ -27,10 +27,6 @@
 package math.geom2d;
 
 // Imports
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 import math.geom2d.transform.AffineTransform2D;
@@ -47,15 +43,13 @@ import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HRectangle2D;
-import math.geom2d.polygon.Polygon2D;
-import math.geom2d.polygon.PolygonalShape2D;
 
 /**
  * This class defines bounds of a shape. It stores limits in each direction:
  * <code>x</code> and <code>y</code>. It also provides methods for clipping
  * others shapes, depending on their type.
  */
-public class Box2D implements PolygonalShape2D{
+public class Box2D {
 
 	// ===================================================================
 	// constants
@@ -628,8 +622,8 @@ public class Box2D implements PolygonalShape2D{
 	}
 	
 	/**
-	 * convert to rectangle. Result is an instance of HRectangle, which extends
-	 * java.awt.geom.Rectangle2D.Double.
+	 * Converts to a rectangle. Result is an instance of HRectangle,
+	 * which extends java.awt.geom.Rectangle2D.Double.
 	 * @return an instance of HRectangle2D
 	 */
 	public Shape2D getAsRectangle(){
@@ -707,7 +701,7 @@ public class Box2D implements PolygonalShape2D{
 	public boolean isBounded(){return true;}
 	
 	/**
-	 * Test if the specified Shape is totally contained in this Rectangle.
+	 * Test if the specified Shape is totally contained in this Box2D.
 	 * Note that the test is performed on the bounding box of the shape, then
 	 * for rotated rectangles, this method can return false with a shape totally
 	 * contained in the rectangle. The problem does not exist for horizontal
@@ -722,50 +716,45 @@ public class Box2D implements PolygonalShape2D{
 	}
 
 	/**
-	 * Returns an instance of Box2D, or Shape2D.EMPTY_SET if the two boxes
-	 * are disjoint
+	 * Returns an instance of Box2D.
 	 */
-	public Shape2D clip(Box2D box){
-		// Tests if the two boxes are disjoint
-		if(this.xmin>box.xmax) return Shape2D.EMPTY_SET;
-		if(this.ymin>box.ymax) return Shape2D.EMPTY_SET;
-		if(this.xmax<box.xmin) return Shape2D.EMPTY_SET;
-		if(this.ymax<box.ymin) return Shape2D.EMPTY_SET;
-		
-		// compute bounds of the new Box
-		double xmin = Math.min(box.xmin, this.xmin);
-		double xmax = Math.max(box.xmax, this.xmax);
-		double ymin = Math.min(box.ymin, this.ymin);
-		double ymax = Math.max(box.ymax, this.ymax);
-		
-		// return a new Box2D
-		return new Box2D(xmin, xmax, ymin, ymax);
+	public Box2D clip(Box2D box){
+		return new Box2D(
+				Math.max(this.xmin, box.xmin),
+				Math.min(this.xmax, box.xmax),
+				Math.max(this.ymin, box.ymin),
+				Math.min(this.ymax, box.ymax));
 	}
 
-	/**
-	 * Return a new instance of Box2D with same parameters as this box.
-	 * @see math.geom2d.Shape2D#getBoundingBox()
-	 */
-	public Box2D getBoundingBox(){
-		return new Box2D(xmin, xmax, ymin, ymax);
-	}
-	
 	/** 
 	 * Return the new domain created by an affine transform of this box.
 	 */
-	public Polygon2D transform(AffineTransform2D trans){
-		int nPoints = 4;		
-		Point2D[] array = new Point2D[nPoints];
-		Point2D[] res = new Point2D[nPoints];
-		int i=0;
-		for(Point2D point : this.getVertices()){		
-			array[i] = point;
-			res[i] = new Point2D();
-			i++;
+	public Box2D transform(AffineTransform2D trans){
+		if(this.isBounded()){
+			// Extract the 4 vertices, transform them, and compute
+			// the new bounding box.
+			Collection<Point2D> points = this.getVertices();
+			double xmin = Double.POSITIVE_INFINITY;
+			double xmax = Double.NEGATIVE_INFINITY;
+			double ymin = Double.POSITIVE_INFINITY;
+			double ymax = Double.NEGATIVE_INFINITY;
+			for(Point2D point : points){
+				point = point.transform(trans);
+				xmin = Math.min(xmin, point.getX());
+				ymin = Math.min(ymin, point.getY());
+				xmax = Math.max(xmax, point.getX());
+				ymax = Math.max(ymax, point.getY());
+			}
+			return new Box2D(xmin, xmax, ymin, ymax);
 		}
 		
-		trans.transform(array, res);
-		return new Polygon2D(res);
+		//TODO: implement a more precise method
+		double xmin = Double.NEGATIVE_INFINITY;
+		double xmax = Double.POSITIVE_INFINITY;
+		double ymin = Double.NEGATIVE_INFINITY;
+		double ymax = Double.POSITIVE_INFINITY;
+		
+		return new Box2D(xmin, xmax, ymin, ymax);
 	}
 
 	// ===================================================================
@@ -801,34 +790,6 @@ public class Box2D implements PolygonalShape2D{
 	public boolean contains(java.awt.geom.Rectangle2D rect){
 		return this.contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 	}
-
-	public boolean intersects(double x0, double y0, double w, double h){
-		if(this.xmin>x0+w) return false;
-		if(this.ymin>y0+h) return false;
-		if(this.xmax<x0) return false;
-		if(this.ymax<y0) return false;
-		return true;
-	}
-	
-	public boolean intersects(java.awt.geom.Rectangle2D rect){
-		return this.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	public Rectangle getBounds() {
-		return this.getAsAWTRectangle();
-	}
-
-	public Rectangle2D getBounds2D() {
-		return this.getAsAWTRectangle2D();
-	}
-
-	public PathIterator getPathIterator(AffineTransform at) {
-		return getBoundary().getPathIterator(at);
-	}
-
-	public PathIterator getPathIterator(AffineTransform at, double flatness) {
-		return getBoundary().getPathIterator(at, flatness);
-	}	
 
 	// ===================================================================
 	// methods from Object interface
