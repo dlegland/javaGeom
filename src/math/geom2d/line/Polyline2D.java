@@ -364,6 +364,10 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return points.get(points.size()-1);
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return points;
+	}
+	
 	/** Always returns true, because a polyline is always bounded.*/
 	public boolean isBounded(){
 		return true;

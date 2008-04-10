@@ -372,6 +372,10 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return Point2D.INFINITY_POINT;
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return new ArrayList<Point2D>(0);
+	}
+	
 	/**
 	 * Returns position of point on the parabola. If point is not on the
 	 * parabola returns the positions on its "vertical" projection

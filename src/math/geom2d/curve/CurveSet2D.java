@@ -269,6 +269,15 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return getLastCurve().getLastPoint();
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>();
+		for(Curve2D curve : curves)
+			for(Point2D point : curve.getSingularPoints())
+				if(!list.contains(point))
+					list.add(point);
+		return list;
+	}
+
 	public double getPosition(Point2D point){
 		double minDist = Double.MAX_VALUE, dist=minDist;
 		double x=point.getX(), y=point.getY();

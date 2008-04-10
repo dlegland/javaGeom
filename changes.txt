@@ -1,5 +1,10 @@
 Changes of javaGeom library
 
+javaGeom-0.6.1 (2008-??-??, rev. ???)
+
+- Box2D does not implement PolygonalShape2D anymore
+
+
 javaGeom-0.6.0 (2008-03-08, rev. 115)
 
 - changed package hierarchy, by dividing geom2d into several subpackages

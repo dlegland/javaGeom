@@ -683,6 +683,10 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return new Point2D(xc + r1*Math.cos(theta), yc + r1*Math.sin(theta));
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return new ArrayList<Point2D>(0);
+	}
+	
 	public double getPosition(Point2D point){
 		double xp = point.getX();
 		double yp = point.getY();

@@ -167,6 +167,10 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return Point2D.INFINITY_POINT;
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return new ArrayList<Point2D>(0);
+	}
+	
 	public Point2D getPoint(double t) {
 		if(Double.isInfinite(t))
 			return Point2D.INFINITY_POINT;
