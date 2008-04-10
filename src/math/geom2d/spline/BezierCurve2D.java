@@ -275,6 +275,10 @@ public class BezierCurve2D
 		return new Point2D(this.x2, this.y2);
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return new ArrayList<Point2D>(0);
+	}
+	
 	/**
 	 * Compute position by approximating cubic spline with a polyline.
 	 */

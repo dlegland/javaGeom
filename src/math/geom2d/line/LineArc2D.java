@@ -305,6 +305,15 @@ public class LineArc2D extends StraightObject2D
 			return Point2D.INFINITY_POINT;
 	}
 	
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		if(t0!=Double.NEGATIVE_INFINITY)
+			list.add(this.getFirstPoint());
+		if(t1!=Double.POSITIVE_INFINITY)
+			list.add(this.getLastPoint());
+		return list;
+	}
+
 	/**
 	 * Gets the position of the point on the line arc.
 	 * If point belongs to the line, this position is defined by the ratio:<p>

@@ -511,6 +511,15 @@ public class LineObject2D extends StraightObject2D{
 		return point2;
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		if(point1!=null)
+			list.add(point1);
+		if(point2!=null)
+			list.add(point2);
+		return list;
+	}
+
 	/**
 	 * Gets position of the point on the line. If point belongs to the line, 
 	 * this position is defined by the ratio :<p>

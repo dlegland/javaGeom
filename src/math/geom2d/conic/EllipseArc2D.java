@@ -345,6 +345,13 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return ellipse.getPoint(startAngle+angleExtent);
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		list.add(this.getFirstPoint());
+		list.add(this.getLastPoint());
+		return list;
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
 	 */

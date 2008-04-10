@@ -195,6 +195,15 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return this.getPoint(t1);
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		if(t0!=Double.NEGATIVE_INFINITY)
+			list.add(this.getFirstPoint());
+		if(t1!=Double.POSITIVE_INFINITY)
+			list.add(this.getLastPoint());
+		return list;
+	}
+
 	public double getPosition(Point2D point) {
 		if(!this.parabola.contains(point)) return Double.NaN;
 		double t = this.parabola.getPosition(point);

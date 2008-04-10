@@ -103,6 +103,13 @@ public interface Curve2D extends Shape2D{
 	public abstract Point2D getLastPoint();
 	
 	/**
+	 * Returns a set of singular points, i. e. which do not locally admit
+	 * derivative.
+	 * @return a collection of Point2D.
+	 */
+	public abstract Collection<Point2D> getSingularPoints();
+	
+	/**
 	 * Get position of the point on the curve. If the point does not belong to
 	 * the curve, return Double.NaN.
 	 * @param point a point belonging to the curve

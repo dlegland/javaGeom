@@ -166,6 +166,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return conic.getLastPoint();
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		return conic.getSingularPoints();
+	}
+	
 
 	public double getPosition(Point2D point){
 		return conic.getPosition(point);

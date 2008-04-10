@@ -132,6 +132,14 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return this.getPoint(t1);
 	}
 
+	public Collection<Point2D> getSingularPoints(){
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		if(t0!=Double.NEGATIVE_INFINITY)
+			list.add(this.getFirstPoint());
+		if(t1!=Double.POSITIVE_INFINITY)
+			list.add(this.getLastPoint());
+		return list;
+	}
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
 		Collection<Point2D> inters0 = this.branch.getIntersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
