@@ -41,7 +41,6 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	
 	private static final long serialVersionUID = 1L;
 
-
 	/**
 	 * The point located at the infinity. This point is virtual, it
 	 * is contained in every inifinite shape, such as straight lines,

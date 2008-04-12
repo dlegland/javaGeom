@@ -35,50 +35,66 @@ public class Point3D implements Shape3D {
 	private double y = 0;
 	private double z = 0;
 
-	public Point3D(){		
+	/**
+	 * Initialize at coordinate (0,0,0).
+	 */
+	public Point3D(){
+		this(0, 0, 0);
 	}
-	
+
 	public Point3D(double x, double y, double z){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-	
+
 	public double getX(){
 		return x;
 	}
-	
+
 	public double getY(){
 		return y;
 	}
-	
+
 	public double getZ(){
 		return z;
 	}
-	
+
 	public void setLocation(Point3D point){
 		x = point.getX();
 		y = point.getY();
 		z = point.getZ();
 	}
-	
+
 	public double getDistance(Point3D point){
 		double dx = point.x - x;
 		double dy = point.y - y;
 		double dz = point.z - z;
-		
-		return Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+		return Math.hypot(Math.hypot(dx, dy), dz);
 	}
 
 	/** 
 	 * A point 'contains' another point if their euclidean distance is less 
 	 * than the accuracy.
-	 */	public boolean contains(Point3D point){
+	 */
+	public boolean contains(Point3D point){
 		if(getDistance(point)>ACCURACY) return false;
 		return true;
 	}
-	 
-	public Shape3D transform(AffineTransform3D trans){
+	
+	public Box3D getBoundingBox(){
+		return new Box3D(x, x, y, y, z, z);
+	}
+	
+	public Shape3D clip(Box3D box){
+		if(x<box.getMinX() || x>box.getMaxX()) return Shape3D.EMPTY_SET;
+		if(y<box.getMinY() || y>box.getMaxY()) return Shape3D.EMPTY_SET;
+		if(z<box.getMinZ() || z>box.getMaxZ()) return Shape3D.EMPTY_SET;
+		return this;
+	}
+
+	public Point3D transform(AffineTransform3D trans){
 		Point3D res = new Point3D();
 		trans.transformPoint(this, res);
 		return res;
