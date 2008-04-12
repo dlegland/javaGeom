@@ -52,12 +52,6 @@ import math.geom2d.polygon.HRectangle2D;
 public class Box2D {
 
 	// ===================================================================
-	// constants
-	
-	private static final long serialVersionUID = 1L;
-
-
-	// ===================================================================
 	// class variables
 	
 	private double xmin=0;
@@ -636,13 +630,43 @@ public class Box2D {
 	 * @param box the bounding box to include
 	 * @return this
 	 */
-	public Box2D union(Box2D box){
+	public Box2D merge(Box2D box){
 		this.xmin = Math.min(this.xmin, box.xmin);
-		this.xmax = Math.min(this.xmax, box.xmax);
+		this.xmax = Math.max(this.xmax, box.xmax);
 		this.ymin = Math.min(this.ymin, box.ymin);
-		this.ymax = Math.min(this.ymax, box.ymax);
+		this.ymax = Math.max(this.ymax, box.ymax);
 		return this;
 	}
+	
+	/**
+	 * Returns the Box2D which contains both this box and the specified box.
+	 * @param box the bounding box to include
+	 * @return this
+	 */
+	public Box2D union(Box2D box){
+		double xmin = Math.min(this.xmin, box.xmin);
+		double xmax = Math.max(this.xmax, box.xmax);
+		double ymin = Math.min(this.ymin, box.ymin);
+		double ymax = Math.max(this.ymax, box.ymax);
+		return new Box2D(xmin, xmax, ymin, ymax);
+	}
+	
+	/**
+	 * Returns the Box2D which is contained both by this box and by the
+	 * specified box.
+	 * @param box the bounding box to include
+	 * @return this
+	 */
+	public Box2D intersection(Box2D box){
+		double xmin = Math.max(this.xmin, box.xmin);
+		double xmax = Math.min(this.xmax, box.xmax);
+		double ymin = Math.max(this.ymin, box.ymin);
+		double ymax = Math.min(this.ymax, box.ymax);
+		return new Box2D(xmin, xmax, ymin, ymax);
+	}
+	
+	
+	
 	// ===================================================================
 	// methods from interface PolygonalShape2D
 	
@@ -697,8 +721,14 @@ public class Box2D {
 		return Math.max(getBoundary().getSignedDistance(x, y), 0);
 	}
 
-	/** Always returns true, because a rectangle is always bounded.*/
-	public boolean isBounded(){return true;}
+	/** Returns true if all bounds are finite.*/
+	public boolean isBounded(){
+		if(Double.isInfinite(xmin)) return false;
+		if(Double.isInfinite(ymin)) return false;
+		if(Double.isInfinite(xmax)) return false;
+		if(Double.isInfinite(ymax)) return false;
+		return true;
+	}
 	
 	/**
 	 * Test if the specified Shape is totally contained in this Box2D.

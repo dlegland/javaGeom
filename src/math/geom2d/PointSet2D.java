@@ -147,20 +147,6 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
 	 */
-	public Shape2D getClippedShape(Box2D box) {
-		PointSet2D res = new PointSet2D();
-		
-		for(Shape2D point : points){
-			point = point.clip(box);
-			if(point != Shape2D.EMPTY_SET)
-				res.addPoint((java.awt.Point) point);
-		}
-		return res;
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
-	 */
 	public Shape2D clip(Box2D box) {
 		PointSet2D res = new PointSet2D();
 		
