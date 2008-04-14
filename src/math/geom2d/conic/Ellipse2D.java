@@ -769,6 +769,10 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return true;
 	}
 
+	public boolean isEmpty(){
+		return false;
+	}
+
 	public double getDistance(java.awt.geom.Point2D point){
 //		PolarVector2D vector = this.getProjectedVector(point, 1e-10);
 //		return Math.abs(vector.getRho());
@@ -779,11 +783,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	public double getDistance(double x, double y){
 		return getDistance(new Point2D(x, y));
 	}
-		
-//	public Shape2D getClippedShape(Box2D box){
-//		return box.clipContinuousOrientedCurve(this);
-//	}
-	
+			
 	/**
 	 * Clip the ellipse by a box. The result is an instance of
 	 * CurveSet2D<ContinuousOrientedCurve2D>, 

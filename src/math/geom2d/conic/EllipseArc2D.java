@@ -423,6 +423,10 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return true;
 	}
 
+	public boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Clip the ellipse arc by a box. The result is an instance of
 	 * CurveSet2D<EllipseArc2D>, which 

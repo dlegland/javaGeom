@@ -37,10 +37,25 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public class PointSet2D implements Shape2D, Iterable<Point2D>{
 
-	//TODO: add parametrization by <? extends Point2D> ?
-	protected Collection<Point2D> points = new ArrayList<Point2D>();
+	/**
+	 * The inner collection of points composing the set.
+	 */
+	protected Collection<Point2D> points = null;
 	
+	/**
+	 * Creates a new PointSet2D without any points.
+	 */
 	public PointSet2D(){
+		this(0);
+	}
+	
+	/**
+	 * Creates a new empty PointSet2D, but preallocates the memory for storing
+	 * a given amount of points.
+	 * @param n the expected number of points in the PointSet2D.
+	 */
+	public PointSet2D(int n){
+		points = new ArrayList<Point2D>();
 	}
 	
 	/**
@@ -48,6 +63,7 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	 * Point2D with the same location.
 	 */
 	public PointSet2D(java.awt.geom.Point2D[] points){
+		this(points.length);
 		for(int i=0; i<points.length; i++)
 			if(Point2D.class.isInstance(points[i]))
 				this.points.add((Point2D) points[i]);
@@ -56,12 +72,14 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	}
 	
 	/**
-	 * points must be a collection of java.awt.Point. Instances of Point2D are
+	 * Points must be a collection of java.awt.Point. Instances of Point2D are
 	 * directly added, other Point are converted to Point2D with the same 
 	 * location.
 	 * @param points
 	 */
 	public PointSet2D(Collection<? extends java.awt.geom.Point2D> points){
+		this(points.size());
+		
 		for(java.awt.geom.Point2D point : points){
 			if(point instanceof Point2D)
 				this.points.add((Point2D) point);
@@ -71,7 +89,7 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	}
 	
 	/**
-	 * add a new point to the set of point. If point is not an instance of
+	 * Add a new point to the set of point. If point is not an instance of
 	 * Point2D, a Point2D with same location is added instead of point.
 	 * @param point
 	 */
@@ -143,17 +161,24 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	public boolean isBounded() {
 		return true;
 	}
+	
+	public boolean isEmpty(){
+		return points.size()==0;
+	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
 	 */
-	public Shape2D clip(Box2D box) {
+	public PointSet2D clip(Box2D box) {
 		PointSet2D res = new PointSet2D();
 		
 		for(Shape2D point : points){
 			point = point.clip(box);
-			if(point != Shape2D.EMPTY_SET)
-				res.addPoint((java.awt.Point) point);
+			if(point instanceof java.awt.geom.Point2D)
+				if(point instanceof Point2D)
+					res.points.add((Point2D) point);
+				else
+					res.points.add(new Point2D((java.awt.geom.Point2D)point));
 		}
 		return res;
 	}

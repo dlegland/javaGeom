@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.*;
 import math.geom2d.line.Polyline2D;
@@ -352,11 +351,8 @@ public class BezierCurve2D
 		return true;
 	}
 
-	/**
-	 * @see math.geom2d.Shape2D#getClippedShape(math.geom2d.Box2D)
-	 */
-	public Shape2D getClippedShape(Box2D box) {
-		return box.clipContinuousOrientedCurve(this);
+	public boolean isEmpty(){
+		return false;
 	}
 
 	/**

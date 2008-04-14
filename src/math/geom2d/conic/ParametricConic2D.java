@@ -225,6 +225,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return conic.isBounded();
 	}
 
+	public boolean isEmpty(){
+		return conic.isEmpty();
+	}
+
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getClippedShape(math.geom2d.Rectangle2D)
 	 */
