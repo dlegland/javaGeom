@@ -30,7 +30,6 @@ import java.util.Collection;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
@@ -134,6 +133,10 @@ public class LineObject2D extends StraightObject2D{
 	 */
 	public boolean isBounded(){
 		return point1!=null && point2!=null;
+	}
+
+	public boolean isEmpty(){
+		return false;
 	}
 
 	public boolean isColinear(StraightObject2D line){		
@@ -255,51 +258,6 @@ public class LineObject2D extends StraightObject2D{
 	public StraightLine2D getPerpendicular(Point2D point){
 		updateParameters();
 		return super.getPerpendicular(point);		
-	}
-	
-	
-	
-	public Shape2D getClippedShape(Box2D box){
-		// get vertices of rectangle
-		double x = box.getMinX();
-		double y = box.getMinY();
-		double w = box.getWidth();
-		double h = box.getHeight();
-
-		// case of vertical lines
-		if(Math.abs(dx)<Shape2D.ACCURACY){
-			if(x0>=x && x0<=x+w && y0<y+h)
-				return new LineSegment2D(x0, Math.max(y, y0), x0, y+h);
-			else return null;		
-		}
-	
-		// case of horizontal lines
-		if(Math.abs(dy)<Shape2D.ACCURACY){
-			if(y0>=y && y0<=y+h && x0<x+w)
-				return new LineSegment2D(Math.min(x, x0), y0, x+w, y0);
-			else return null;
-		}
-		
-		double t1 = (y-y0)/dy;
-		double t2 = (x+w-x0)/dx;
-		double t3 = (y+h-y0)/dy;
-		double t4 = (x-x0)/dx;
-		
-		// sort the positions of the 4 points in ascending order
-		double tmp;
-		
-		if(t1>t2){tmp=t1;t1=t2;t2=tmp;}
-		if(t3>t4){tmp=t3;t3=t4;t4=tmp;}
-		if(t2>t3){tmp=t2;t2=t3;t3=tmp;}
-		if(t1>t2){tmp=t1;t1=t2;t2=tmp;}
-		if(t3>t4){tmp=t3;t3=t4;t4=tmp;}
-		if(t2>t3){tmp=t2;t2=t3;t3=tmp;}
-		
-		if(t2>0)
-			return new LineSegment2D(getPoint(t2), getPoint(t3));
-		else if(t3>0)
-			return new LineSegment2D(getPoint(0), getPoint(t3));
-		return null;		
 	}
 
 	/**

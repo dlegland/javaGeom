@@ -200,14 +200,6 @@ public class Polygon2D implements PolygonalShape2D{
 	// methods inherited from AbstractPolygon2D interface
 	
 	/**
-	 * Return an iterator on the vertices.
-	 * @deprecated use getVertices() instead.
-	 */
-	public Iterator<Point2D> getPoints(){
-		return points.iterator();
-	}
-
-	/**
 	 * Returns the points of the polygon. The result is a pointer to the inner
 	 * collection of vertices.
 	 */
@@ -308,16 +300,7 @@ public class Polygon2D implements PolygonalShape2D{
 		else return dist;
 	}
 	
-	/**
-	 * Return the shape formed by the polygon clipped by the given box. 
-	 */
-	public Shape2D getClippedShape(Box2D box){
-		BoundarySet2D<ContinuousBoundary2D> boundarySet = 
-			box.clipBoundary(this.getBoundary());
-			
-		return boundarySet;
-	}
-	
+
 	/**
 	 * Return the shape formed by the polygon clipped by the given box. 
 	 */
@@ -340,8 +323,13 @@ public class Polygon2D implements PolygonalShape2D{
 	 * Always returns true if polygon is oriented counter-clockwise, 
 	 * false otherwise.
 	 */
-	public boolean isBounded(){return this.getSignedArea()>0;}
+	public boolean isBounded(){
+		return this.getSignedArea()>0;
+	}
 
+	public boolean isEmpty(){
+		return points.size()==0;
+	}
 	/** 
 	 * Return the new Polygon created by an affine transform of this polygon.
 	 */

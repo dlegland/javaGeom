@@ -258,6 +258,10 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return true;
 	}
 
+	public boolean isEmpty(){
+		return false;
+	}
+
 	public HyperbolaBranchArc2D transform(AffineTransform2D trans) {
 		HyperbolaBranch2D branch2 = (HyperbolaBranch2D)branch.transform(trans);
 		return new HyperbolaBranchArc2D(branch2, t0, t1);

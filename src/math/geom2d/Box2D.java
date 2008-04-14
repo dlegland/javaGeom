@@ -287,16 +287,20 @@ public class Box2D {
 		Iterator<java.lang.Double> iter = set.iterator();
 		
 		// different behavior depending if first point lies inside the box
+		double pos0 = Double.NaN;
 		if(this.contains(point1) && !this.getBoundary().contains(point1))
-			res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
+			if(curve.isClosed())
+				pos0 = iter.next();
+			else
+				res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
 		
-		// add the portions of curve between couples of intersections
+		// add the portions of curve between each couple of intersections
 		while(iter.hasNext()){
 			pos1 = iter.next().doubleValue();
 			if(iter.hasNext())
 				pos2 = iter.next().doubleValue();
-			else
-				pos2 = curve.getT1();
+			else 
+				pos2 = curve.isClosed() ? pos0 :  curve.getT1();
 			res.addCurve(curve.getSubCurve(pos1, pos2));
 		}
 		

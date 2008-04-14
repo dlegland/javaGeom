@@ -487,9 +487,15 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// methods implementing the Shape2D interface
 	
 	/** Always returns false, because a parabola is not bounded.*/
-	public boolean isBounded(){return false;}
+	public boolean isBounded(){
+		return false;
+	}
 
 	
+	public boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Clip the parabola by a box. The result is an instance of
 	 * CurveSet2D<ParabolaArc2D>, which 

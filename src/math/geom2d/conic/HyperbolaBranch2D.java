@@ -312,6 +312,10 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return false;
 	}
 
+	public boolean isEmpty(){
+		return false;
+	}
+
 	public HyperbolaBranch2D transform(AffineTransform2D trans) {
 		return new HyperbolaBranch2D(this.hyperbola.transform(trans), this.positive);
 	}

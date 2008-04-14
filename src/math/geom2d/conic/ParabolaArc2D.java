@@ -268,6 +268,10 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return (t0!=Double.NEGATIVE_INFINITY && t1!=Double.POSITIVE_INFINITY);
 	}
 
+	public boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Clip the parabola arc by a box. The result is an instance of
 	 * CurveSet2D<ParabolaArc2D>, which 

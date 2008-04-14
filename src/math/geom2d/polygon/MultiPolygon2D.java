@@ -114,15 +114,6 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 		return box;
 	}
 
-	public MultiPolygon2D getClippedShape(Box2D box) {
-		BoundarySet2D<?> boundary = box.clipBoundary(this.getBoundary());
-		ArrayList<ClosedPolyline2D> boundaries = 
-			new ArrayList<ClosedPolyline2D>(boundary.getCurveNumber());
-		for(ContinuousBoundary2D curve : boundary.getBoundaryCurves())
-			boundaries.add((ClosedPolyline2D) curve);
-		return new MultiPolygon2D(boundaries);
-	}
-
 	/**
 	 * Returns a new instance of MultiPolygon2D.
 	 */
@@ -157,6 +148,13 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 		return area>0;
 	}
 
+	public boolean isEmpty(){
+		for(ClosedPolyline2D polyline : polylines)
+			if(!polyline.isEmpty())
+				return false;
+		return true;
+	}
+	
 	public MultiPolygon2D transform(AffineTransform2D trans) {
 		ArrayList<ClosedPolyline2D> transformed =
 			new ArrayList<ClosedPolyline2D>(polylines.size());

@@ -93,6 +93,12 @@ public interface Shape2D extends java.awt.Shape{
 	 */
 	public abstract boolean isBounded();
 	
+	/**
+	 * Returns true if the shape does not contain any point. This is the case
+	 * for example for PointSet2D without any point.
+	 * @return true if the shape does not contain any point.
+	 */
+	public abstract boolean isEmpty();
 
 	// ===================================================================
 	// modifiers
@@ -151,9 +157,11 @@ class EmptySet2D implements Shape2D {
 		return false;
 	}
 
-	/** returns EmptySet2D.*/
-	public Shape2D getClippedShape(Box2D box) {
-		return this;
+	/**
+	 * Returns true by definition.
+	 */
+	public boolean isEmpty(){
+		return true;
 	}
 
 	/** returns EmptySet2D.*/

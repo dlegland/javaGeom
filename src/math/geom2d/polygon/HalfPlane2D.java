@@ -80,6 +80,10 @@ public class HalfPlane2D implements Domain2D{
 	/** Always returns false, because a half-plane is not bounded.*/
 	public boolean isBounded(){return false;}
 	
+	public boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Gets the distance of the point to the half-plane. This distance is zero
 	 * if the point lies inside the plane. 

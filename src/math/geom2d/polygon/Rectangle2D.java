@@ -254,7 +254,13 @@ public class Rectangle2D implements PolygonalShape2D{
 	// methods inherited from Shape2D interface
 	
 	/** Always returns true, because a rectangle is always bounded.*/
-	public boolean isBounded(){return true;}
+	public boolean isBounded(){
+		return true;
+	}
+	
+	public boolean isEmpty(){
+		return false;
+	}
 
 	public double getDistance(java.awt.geom.Point2D p){
 		return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
@@ -284,46 +290,6 @@ public class Rectangle2D implements PolygonalShape2D{
 		double dist = getBoundary().getDistance(x, y);
 		if(contains(x, y)) return -dist;
 		else return dist;
-	}
-	
-	/**
-	 * Return the clipped polygon, as an instance of Polygon2D. 
-	 * If the Rectangle2D is totally clipped, return EMPTY_SET.
-	 */
-	public Shape2D getClippedShape(Box2D box){
-		// Extract the boundary
-		ClosedPolyline2D boundary = (ClosedPolyline2D) this.getBoundary();
-		
-		// to keep intersection points
-		ArrayList<Point2D> intersections = new ArrayList<Point2D>();
-		
-		// iterate on box edges
-		Collection<LineSegment2D> edges = box.getEdges();
-		for(LineSegment2D edge : edges){
-			for(Point2D point : boundary.getIntersections(edge))
-				intersections.add(point);
-		}
-		
-		// if no intersection, 3 possibilities:
-		// - rectangle totally inside box: return this
-		// - box totally inside rectangle: return new rectangle based on box
-		// - disjoint sets: return EMPTY_SET
-		if(intersections.size()==0){
-			if(box.contains(boundary.getFirstPoint()))
-				return this;
-			if(this.contains(box.getMinX(), box.getMinY()))
-				return new Rectangle2D(box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight(), 0);
-			return Shape2D.EMPTY_SET;
-		}
-		
-		// sort the intersection points with respect to their position on the boundary
-		TreeMap<Double, Point2D> hash = new TreeMap<Double, Point2D>();
-		for(Point2D point : intersections)
-			hash.put(boundary.getPosition(point), point);
-		
-		// creates the new polygon
-		Point2D[] array = hash.values().toArray(new Point2D[0]);
-		return new Polygon2D(array);
 	}
 	
 	/**
@@ -546,20 +512,26 @@ public class Rectangle2D implements PolygonalShape2D{
 		Rectangle2D rect = (Rectangle2D) obj;
 		
 		// first get list of corners of the 2 rectangles.
-		Iterator<Point2D> iter1 = this.getPoints();
-		Point2D point;
-		boolean ok;
+//		Iterator<Point2D> iter1 = this.getPoints();
+//		Point2D point;
 		
 		// check all 4 corners of the first rectangle
-		while(iter1.hasNext()){
-			point = (Point2D) iter1.next();
+//		while(iter1.hasNext()){
+//			point = (Point2D) iter1.next();
+		boolean ok;
+		for(Point2D point : this.getVertices()){
 			ok = false;
 			
 			// compare with all 4 corners of second rectangle
-			Iterator<Point2D> iter2 = rect.getPoints();
-			while(iter2.hasNext())
-				if(point.equals(iter2.next()))
+//			Iterator<Point2D> iter2 = rect.getPoints();
+//			while(iter2.hasNext())
+//				if(point.equals(iter2.next()))
+//					ok = true;
+			for(Point2D point2 : rect.getVertices())
+				if(point.equals(point2)){
 					ok = true;
+					break;
+				}
 			
 			// if the point does not belong to the corners of the other rectangle,
 			// then the two rect are different

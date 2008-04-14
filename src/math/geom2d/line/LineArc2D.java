@@ -391,6 +391,10 @@ public class LineArc2D extends StraightObject2D
 		return true;		
 	}
 	
+	public boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Get the distance of the point (x, y) to this object.
 	 */

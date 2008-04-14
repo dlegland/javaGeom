@@ -368,11 +368,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return points;
 	}
 	
-	/** Always returns true, because a polyline is always bounded.*/
-	public boolean isBounded(){
-		return true;
-	}
-
 	/**
 	 * Returns the polyline with same points considered in reverse order.
 	 * Reversed polyline keep same references as original polyline.
@@ -436,6 +431,21 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 
 		// return the polyline
 		return res;
+	}
+
+	// ===================================================================
+	// Methods implementing the Shape2D interface
+
+	/** Always returns true, because a polyline is always bounded.*/
+	public boolean isBounded(){
+		return true;
+	}
+
+	/**
+	 * Returns true if the polyline does not contain any point.
+	 */
+	public boolean isEmpty(){
+		return points.size()==0;
 	}
 
 	/**
