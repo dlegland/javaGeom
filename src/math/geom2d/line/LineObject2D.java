@@ -35,6 +35,7 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -269,7 +270,7 @@ public class LineObject2D extends StraightObject2D{
 	 */
 	public CurveSet2D<? extends LineArc2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<Curve2D> set = box.clipCurve(this);
+		CurveSet2D<Curve2D> set = CurveUtil.clipCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<LineArc2D> result =

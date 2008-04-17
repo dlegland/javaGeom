@@ -36,6 +36,7 @@ import math.geom2d.curve.ContinuousBoundary2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
@@ -502,7 +503,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 */
 	public CurveSet2D<ParabolaArc2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
+		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<ParabolaArc2D> result =

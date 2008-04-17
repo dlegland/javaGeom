@@ -34,6 +34,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
@@ -490,7 +491,7 @@ public class CircleArc2D extends EllipseArc2D{
 	@Override
 	public CurveSet2D<CircleArc2D> clip(Box2D box) {
 		// Clip he curve
-		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
+		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
 		
 		// create a new structure for storing result
 		CurveSet2D<CircleArc2D> result =

@@ -364,7 +364,7 @@ public class BezierCurve2D
 	 */
 	public CurveSet2D<? extends BezierCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
+		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<BezierCurve2D> result =

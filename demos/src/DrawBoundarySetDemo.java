@@ -31,6 +31,7 @@ import math.geom2d.*;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.BoundaryPolyCurve2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveUtil;
 
 
 public class DrawBoundarySetDemo extends JPanel{
@@ -54,7 +55,7 @@ public class DrawBoundarySetDemo extends JPanel{
 		
 		Box2D box = new Box2D(0, 400, 0, 400);
 				
-		curve = box.clipBoundary(set);
+		curve = CurveUtil.clipBoundary(set, box);
 		System.out.println(curve);
 		
 	}

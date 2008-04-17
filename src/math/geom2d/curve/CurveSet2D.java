@@ -25,7 +25,7 @@ package math.geom2d.curve;
 
 import math.geom2d.Point2D;
 import math.geom2d.Box2D;
-import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -436,11 +436,8 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		// create array of points
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		// extract edges of the box boundary
-		Collection<LineSegment2D> edges = box.getEdges();
-		
-		// add the intersections with each edge to the list
-		for(LineSegment2D edge : edges)
+		// extract intersections with the box boundary
+		for(StraightLine2D edge : box.getClippingLines())
 			points.addAll(this.getIntersections(edge));
 		
 		// convert list to point array, sorted wrt to their position on the curve

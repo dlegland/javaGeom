@@ -33,6 +33,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.BoundarySet2D;
 import math.geom2d.curve.ContinuousBoundary2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -306,7 +307,7 @@ public class Polygon2D implements PolygonalShape2D{
 	 */
 	public Shape2D clip(Box2D box){
 		BoundarySet2D<ContinuousBoundary2D> boundarySet = 
-			box.clipBoundary(this.getBoundary());
+			CurveUtil.clipBoundary(this.getBoundary(), box);
 			
 		//TODO: should return an instance of MultiPolygon2D.
 		return boundarySet;

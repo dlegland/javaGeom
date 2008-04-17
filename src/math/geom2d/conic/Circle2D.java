@@ -34,6 +34,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.StraightLine2D;
@@ -340,7 +341,7 @@ public class Circle2D extends Ellipse2D {
 	@Override
 	public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
+		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<SmoothOrientedCurve2D> result =

@@ -32,6 +32,7 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.BoundaryPolyCurve2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveUtil;
 
 
 public class DrawClippedReuleauxDemo extends JPanel{
@@ -75,7 +76,7 @@ public class DrawClippedReuleauxDemo extends JPanel{
 		g2.setColor(Color.BLUE);
 		g2.draw(curve);
 		
-		Curve2D clipped = box.clipBoundary(curve);
+		Curve2D clipped = CurveUtil.clipBoundary(curve, box);
 		g2.setColor(Color.RED);
 		g2.setStroke(new BasicStroke(2));
 		g2.draw(clipped);

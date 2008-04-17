@@ -120,7 +120,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D>
 	@Override
 	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<Curve2D> set = box.clipCurve(this);
+		CurveSet2D<Curve2D> set = CurveUtil.clipCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<ContinuousOrientedCurve2D> result =

@@ -34,6 +34,7 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -457,7 +458,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	 */
 	public CurveSet2D<? extends Polyline2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<Curve2D> set = box.clipCurve(this);
+		CurveSet2D<Curve2D> set = CurveUtil.clipCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<Polyline2D> result =
