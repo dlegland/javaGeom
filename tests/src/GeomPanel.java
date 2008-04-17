@@ -33,8 +33,6 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HalfPlane2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Translation2D;
 
 import javax.swing.JPanel;
 
@@ -113,12 +111,12 @@ public class GeomPanel extends JPanel{
 		g2.draw(transform.createTransformedShape(edge));
 		
 
-		AffineTransform2D trans = new Translation2D(20, 80);
+		AffineTransform2D trans = AffineTransform2D.createTranslation(20, 80);
 //		Edge2D edge2 = (Edge2D) edge.transform(trans);
 		g2.draw(transform.createTransformedShape((LineSegment2D)edge.transform(trans)));
 //		g2.draw(transform.createTransformedShape(edge2));
 
-		AffineTransform2D rot = new Rotation2D(Math.PI/3);
+		AffineTransform2D rot = AffineTransform2D.createRotation(Math.PI/3);
 		//LineSegment2D edge3 = (LineSegment2D) edge.transform(rot);
 		g2.draw(transform.createTransformedShape((LineSegment2D)edge.transform(rot)));
 

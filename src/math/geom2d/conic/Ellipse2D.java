@@ -44,10 +44,6 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.GenericAffineTransform2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Scaling2D;
-import math.geom2d.transform.Translation2D;
 
 
 // Imports
@@ -609,7 +605,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	 * in each direction, then computing distance to origin.
 	 */
 	public boolean isInside(java.awt.geom.Point2D point){
-		AffineTransform2D rot = new Rotation2D(this.xc, this.yc, -this.theta);
+		AffineTransform2D rot = AffineTransform2D.createRotation(this.xc, this.yc, -this.theta);
 		Point2D pt = rot.transform(point, new Point2D());
 		double xp = (pt.getX() - this.xc)/this.r1;
 		double yp = (pt.getY() - this.yc)/this.r2;
@@ -834,10 +830,10 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	 */
 	public Collection<Point2D> getIntersections(StraightObject2D line){
 		// Compute the transform2D which transforms ellipse into unit circle
-		AffineTransform2D trans = new GenericAffineTransform2D();
-		trans = trans.compose(new Scaling2D(1/this.r1, 1/this.r2));
-		trans = trans.compose(new Rotation2D(-this.theta));
-		trans = trans.compose(new Translation2D(-this.xc, -this.yc));
+		AffineTransform2D trans = new AffineTransform2D();
+		trans = trans.compose(AffineTransform2D.createScaling(1/this.r1, 1/this.r2));
+		trans = trans.compose(AffineTransform2D.createRotation(-this.theta));
+		trans = trans.compose(AffineTransform2D.createTranslation(-this.xc, -this.yc));
 		
 		// transform the line accordingly
 		StraightObject2D line2 = line.transform(trans);

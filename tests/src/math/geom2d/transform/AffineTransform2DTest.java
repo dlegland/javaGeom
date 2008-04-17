@@ -51,7 +51,7 @@ public class AffineTransform2DTest extends TestCase {
 		Point2D center = new Point2D(10, 20);
 		Point2D point = new Point2D(10+5, 20);
 		double theta = Math.PI/4;
-		AffineTransform2D trans = new Rotation2D(center, theta);
+		AffineTransform2D trans = AffineTransform2D.createRotation(center, theta);
 		Point2D point2 = trans.transform(point, new Point2D());
 		Point2D expect = new Point2D(10+Math.sqrt(2)*5/2, 20+Math.sqrt(2)*5/2);
 		assertTrue(expect.distance(point2)<1e-14);
@@ -63,7 +63,7 @@ public class AffineTransform2DTest extends TestCase {
 		double x0 = 3;
 		double y0 = 5;
 		Point2D point = new Point2D(x0, y0);
-		AffineTransform2D trans = new Scaling2D(s1, s2);
+		AffineTransform2D trans = AffineTransform2D.createScaling(s1, s2);
 		Point2D point2 = trans.transform(point, new Point2D());
 		Point2D expect = new Point2D(x0*s1, y0*s2);
 		assertTrue(expect.distance(point2)<1e-14);
@@ -78,7 +78,7 @@ public class AffineTransform2DTest extends TestCase {
 		double s2 = 3;
 		Point2D center = new Point2D(xc, yc);
 		Point2D point = new Point2D(x0, y0);
-		AffineTransform2D trans = AbstractAffineTransform2D.createScaling(center, s1, s2);
+		AffineTransform2D trans = AffineTransform2D.createScaling(center, s1, s2);
 		Point2D point2 = trans.transform(point, new Point2D());
 		Point2D expect = new Point2D((x0-xc)*s1+xc, (y0-yc)*s2+yc);
 		assertTrue(expect.distance(point2)<1e-14);
@@ -87,27 +87,27 @@ public class AffineTransform2DTest extends TestCase {
 	public void testCreateTranslationVector(){
 		Vector2D vector = new Vector2D(10, 20);
 		Point2D point = new Point2D(3, 5);
-		AffineTransform2D trans = new Translation2D(vector);
+		AffineTransform2D trans = AffineTransform2D.createTranslation(vector);
 		Point2D point2 = trans.transform(point, new Point2D());
 		Point2D expect = new Point2D(13, 25);
 		assertTrue(expect.distance(point2)<1e-14);
 	}
 	
 	public void testGetInverseTransform(){
-		AffineTransform2D trans1  = new GenericAffineTransform2D(1, 0, 5, 0, 1, 10);	
+		AffineTransform2D trans1  = new AffineTransform2D(1, 0, 5, 0, 1, 10);	
 		AffineTransform2D trans1i = (AffineTransform2D)trans1.getInverseTransform();
-		AffineTransform2D trans2  = new GenericAffineTransform2D(1, 0, -5, 0, 1, -10);
+		AffineTransform2D trans2  = new AffineTransform2D(1, 0, -5, 0, 1, -10);
 
 		assertTrue(trans2.equals(trans1i));
 		assertTrue(trans1.equals(trans1i.getInverseTransform()));
 		
-		AffineTransform2D trans = new GenericAffineTransform2D(1, 2, 3, 4, 5, 6);
+		AffineTransform2D trans = new AffineTransform2D(1, 2, 3, 4, 5, 6);
 		assertTrue(trans.equals(trans.getInverseTransform().getInverseTransform()));
 	}
 	
 	
 	public void testEquals(){
-		AffineTransform2D trans  = new GenericAffineTransform2D(1, 2, 3, 4, 5, 6);
+		AffineTransform2D trans  = new AffineTransform2D(1, 2, 3, 4, 5, 6);
 		assertTrue(trans.equals(trans));
 	}
 	

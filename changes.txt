@@ -2,7 +2,16 @@ Changes of javaGeom library
 
 javaGeom-0.6.1 (2008-??-??, rev. ???)
 
+Start implementing 3D methods
+
+geom2d:
 - Box2D does not implement PolygonalShape2D anymore
+- added method Shape2D.isEmpty()
+- fixed clipping of closed curves.
+
+geom3d:
+- added Vector3D, Box3D, PointSet3D, and EmptySet3D
+
 
 
 javaGeom-0.6.0 (2008-03-08, rev. 115)
@@ -15,6 +24,7 @@ javaGeom-0.6.0 (2008-03-08, rev. 115)
 - improved implementation of Hyperbola2D and Parabola2D, and their respective
 	arcs
 - various code cleanup
+
 
 javaGeom-0.5.2 (2008-01-17, rev. 93)
 

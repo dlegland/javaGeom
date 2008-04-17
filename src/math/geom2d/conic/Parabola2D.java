@@ -44,9 +44,6 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Scaling2D;
-import math.geom2d.transform.Translation2D;
 
 /**
  * A parabola, defined by its vertex, its orientation, and its pedal.
@@ -104,9 +101,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 */
 	private Point2D formatPoint(java.awt.geom.Point2D point){
 		Point2D p2 = new Point2D(point);
-		p2 = p2.transform(new Translation2D(-xv, -yv));
-		p2 = p2.transform(new Rotation2D(-theta));
-		p2 = p2.transform(new Scaling2D(1, 1.0/a));
+		p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
+		p2 = p2.transform(AffineTransform2D.createRotation(-theta));
+		p2 = p2.transform(AffineTransform2D.createScaling(1, 1.0/a));
 		return p2;
 	}
 	
@@ -117,9 +114,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * @return
 	 */
 	private StraightObject2D formatLine(StraightObject2D line){
-		line = line.transform(new Translation2D(-xv, -yv));
-		line = line.transform(new Rotation2D(-theta));
-		line = line.transform(new Scaling2D(1, 1.0/a));
+		line = line.transform(AffineTransform2D.createTranslation(-xv, -yv));
+		line = line.transform(AffineTransform2D.createRotation(-theta));
+		line = line.transform(AffineTransform2D.createScaling(1, 1.0/a));
 		return line;
 	}
 	
@@ -202,7 +199,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 */
 	public Vector2D getVector1() {
 		Vector2D vect = new Vector2D(1, 0);
-		return vect.transform(new Rotation2D(theta));
+		return vect.transform(AffineTransform2D.createRotation(theta));
 	}
 
 	/** 
@@ -210,7 +207,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 */
 	public Vector2D getVector2() {
 		Vector2D vect = new Vector2D(1, 0);
-		return vect.transform(new Rotation2D(theta+Math.PI/2));
+		return vect.transform(AffineTransform2D.createRotation(theta+Math.PI/2));
 	}
 
 	/**
@@ -296,7 +293,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	
 	public Vector2D getTangent(double t) {
 		Vector2D vect = new Vector2D(1, 2.0*a*t);
-		return vect.transform(new Rotation2D(theta));
+		return vect.transform(AffineTransform2D.createRotation(theta));
 	}
 
 	/**
@@ -353,8 +350,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 
 	public Point2D getPoint(double t, Point2D point) {
 		point.setLocation(t, a*t*t);
-		point = new Rotation2D(theta).transform(point);
-		point = new Translation2D(xv, yv).transform(point);
+		point = AffineTransform2D.createRotation(theta).transform(point);
+		point = AffineTransform2D.createTranslation(xv, yv).transform(point);
 		return point;
 	}
 

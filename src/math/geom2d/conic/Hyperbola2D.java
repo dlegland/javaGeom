@@ -33,9 +33,6 @@ import math.geom2d.curve.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Scaling2D;
-import math.geom2d.transform.Translation2D;
 
 
 // Imports
@@ -112,16 +109,16 @@ implements Conic2D{
 	 * with a=b=1) to global coordinate system.
 	 */
 	public Point2D toGlobal(Point2D point){
-		point = point.transform(new Scaling2D(a, b));
-		point = point.transform(new Rotation2D(theta));
-		point = point.transform(new Translation2D(xc, yc));
+		point = point.transform(AffineTransform2D.createScaling(a, b));
+		point = point.transform(AffineTransform2D.createRotation(theta));
+		point = point.transform(AffineTransform2D.createTranslation(xc, yc));
 		return point;
 	}
 
 	public Point2D toLocal(Point2D point){
-		point = point.transform(new Translation2D(-xc, -yc));
-		point = point.transform(new Rotation2D(-theta));
-		point = point.transform(new Scaling2D(1/a, 1/b));
+		point = point.transform(AffineTransform2D.createTranslation(-xc, -yc));
+		point = point.transform(AffineTransform2D.createRotation(-theta));
+		point = point.transform(AffineTransform2D.createScaling(1/a, 1/b));
 		return point;
 	}
 	
@@ -132,9 +129,9 @@ implements Conic2D{
 	 * @return
 	 */
 	private StraightObject2D formatLine(StraightObject2D line){
-		line = line.transform(new Translation2D(-xc, -yc));
-		line = line.transform(new Rotation2D(-theta));
-		line = line.transform(new Scaling2D(1.0/a, 1.0/b));
+		line = line.transform(AffineTransform2D.createTranslation(-xc, -yc));
+		line = line.transform(AffineTransform2D.createRotation(-theta));
+		line = line.transform(AffineTransform2D.createScaling(1.0/a, 1.0/b));
 		return line;
 	}
 

@@ -36,10 +36,6 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HRectangle2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.LineReflection2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Scaling2D;
-import math.geom2d.transform.Translation2D;
 
 /**
  * @author Legland
@@ -168,25 +164,25 @@ public class Circle2DTest extends TestCase {
 		Ellipse2D transformed;
 		
 		// Transform with a translation
-		transformed = circle.transform(new Translation2D(1, 2));
+		transformed = circle.transform(AffineTransform2D.createTranslation(1, 2));
 		assertTrue(transformed instanceof Circle2D);
 		assertTrue(transformed.equals(new Circle2D(3, 5, 4)));
 		assertTrue(transformed.isDirect());
 		
 		// Transform with a rotation
-		transformed = circle.transform(new Rotation2D(0, 0, Math.PI/2));
+		transformed = circle.transform(AffineTransform2D.createRotation(0, 0, Math.PI/2));
 		assertTrue(transformed instanceof Circle2D);
 		assertTrue(transformed.equals(new Circle2D(-3, 2, 4)));
 		assertTrue(transformed.isDirect());
 		
 		// Transform with a scaling
-		transformed = circle.transform(new Scaling2D(2, 2));
+		transformed = circle.transform(AffineTransform2D.createScaling(2, 2));
 		assertTrue(transformed instanceof Circle2D);
 		assertTrue(transformed.equals(new Circle2D(4, 6, 8)));
 		assertTrue(transformed.isDirect());
 		
 		// Transform with a line reflection
-		AffineTransform2D transform = new LineReflection2D(new StraightLine2D(0, 0, 1, 1));
+		AffineTransform2D transform = AffineTransform2D.createLineReflection(new StraightLine2D(0, 0, 1, 1));
 		transformed = circle.transform(transform);
 		assertTrue(transformed instanceof Circle2D);
 		assertTrue(transformed.equals(new Circle2D(3, 2, 4, false)));

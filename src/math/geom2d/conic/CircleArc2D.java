@@ -39,7 +39,6 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
-import math.geom2d.transform.AbstractAffineTransform2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -511,7 +510,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 */
 	@Override
 	public EllipseArc2D transform(AffineTransform2D trans) {
-		if(!AbstractAffineTransform2D.isSimilarity(trans))
+		if(!AffineTransform2D.isSimilarity(trans))
 			return super.transform(trans);
 		
 		//System.out.println("transform a circle");
@@ -540,7 +539,7 @@ public class CircleArc2D extends EllipseArc2D{
 		double startAngle = angle1;
 		double angleExtent = Angle2D.formatAngle(angle2-angle1);
 		
-		boolean b1 = AbstractAffineTransform2D.isDirect(trans);
+		boolean b1 = AffineTransform2D.isDirect(trans);
 		boolean b2 = this.isDirect();
 		if(b1&!b2 | !b1&b2)
 			angleExtent = angleExtent-2*Math.PI;

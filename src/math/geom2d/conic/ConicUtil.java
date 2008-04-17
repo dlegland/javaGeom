@@ -5,7 +5,7 @@ package math.geom2d.conic;
 
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.transform.Rotation2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Generic class providing utilities for conics, especially for reducing a conic.
@@ -109,7 +109,7 @@ public class ConicUtil {
 		
 		// compute coordinate of conic center
 		Point2D center = new Point2D(-d1/(2*a1), -e1/(2*c1));
-		center = center.transform(new Rotation2D(-theta0));
+		center = center.transform(AffineTransform2D.createRotation(-theta0));
 		
 		// length of semi axes
 		double num = (c1*d1*d1 + a1*e1*e1 - 4*a1*c1*f1)/(4*a1*c1);

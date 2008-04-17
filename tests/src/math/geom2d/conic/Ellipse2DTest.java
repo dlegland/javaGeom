@@ -36,7 +36,6 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.GenericAffineTransform2D;
 
 /**
  * @author Legland
@@ -232,12 +231,12 @@ public class Ellipse2DTest extends TestCase {
 		// goal is to check affine transform of an ellipse
 		Ellipse2D ellipse = new Ellipse2D(100, 100, 50, 30, 0);
 		
-		AffineTransform2D aff = new GenericAffineTransform2D(1, 0, 0, 0, 1, 0);
+		AffineTransform2D aff = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell1 = ellipse.transform(aff);
 		assertTrue(ell1 instanceof Ellipse2D);
 		assertTrue(ell1.equals(ellipse));
 		
-		AffineTransform2D aff2 = new GenericAffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
+		AffineTransform2D aff2 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
 		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
 		assertTrue(ell2 instanceof Ellipse2D);
@@ -245,7 +244,7 @@ public class Ellipse2DTest extends TestCase {
 		
 		// Try with a rotated base ellipse
 		ellipse = new Ellipse2D(100, 100, 50, 30, Math.PI/3);
-		AffineTransform2D aff3 = new GenericAffineTransform2D(1, 0, 0, 0, 1, 0);
+		AffineTransform2D aff3 = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell3 = ellipse.transform(aff3);
 		assertTrue(ell3 instanceof Ellipse2D);
 		assertTrue(ell3.equals(ellipse));
