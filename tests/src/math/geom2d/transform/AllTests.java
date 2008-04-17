@@ -38,9 +38,6 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for math.geom2d.transform");
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(AffineTransform2DTest.class));
-		suite.addTest(new TestSuite(LineReflection2DTest.class));
-		suite.addTest(new TestSuite(Scaling2DTest.class));
-		suite.addTest(new TestSuite(Translation2DTest.class));
 		//$JUnit-END$
 		return suite;
 	}

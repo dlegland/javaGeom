@@ -31,7 +31,6 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.curve.Domain2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.GenericAffineTransform2D;
 import junit.framework.TestCase;
 
 /**
@@ -79,13 +78,13 @@ public class Rectangle2DTest extends TestCase {
 	public void testTransform(){
 		// just to test if Rectangle2D is still a FillShape2D after transform
 		Rectangle2D rect = new Rectangle2D(10, 20, 40, 50);
-		AffineTransform2D aff = new GenericAffineTransform2D(2, 1, 0, 3, 2, 0);
-		AffineTransform2D aff2 = new GenericAffineTransform2D(1, 3, .5, 2, .3, 1);
+		AffineTransform2D aff = new AffineTransform2D(2, 1, 0, 3, 2, 0);
+		AffineTransform2D aff2 = new AffineTransform2D(1, 3, .5, 2, .3, 1);
 		assertTrue((rect.transform(aff) instanceof math.geom2d.curve.Domain2D));
 		assertTrue((rect.transform(aff).transform(aff2) instanceof Domain2D));
 	}
 	
-	public void testGetClippedShape_Box2D(){
+	public void testClip_Box2D(){
 		double L = Math.hypot(100, 50);
 		double W = Math.hypot(80, 40);
 		double theta = Math.atan2(1, 2);
@@ -93,7 +92,7 @@ public class Rectangle2DTest extends TestCase {
 		Box2D box = new Box2D(0, 100, 0, 90);
 		
 		// clip the shape, and check the type
-		Shape2D clipped = rect.getClippedShape(box);
+		Shape2D clipped = rect.clip(box);
 		assertTrue(clipped instanceof Polygon2D);
 		
 		// create polygon to compare with

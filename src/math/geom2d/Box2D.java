@@ -624,13 +624,12 @@ public class Box2D {
 	 * which extends java.awt.geom.Rectangle2D.Double.
 	 * @return an instance of HRectangle2D
 	 */
-	public Shape2D getAsRectangle(){
+	public HRectangle2D getAsRectangle(){
 		return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
 	}
 	
 	/**
-	 * change the bounds of the box to also include bounds of the
-	 * argument.
+	 * Changes the bounds of this box to also include bounds of the argument.
 	 * @param box the bounding box to include
 	 * @return this
 	 */
@@ -676,16 +675,20 @@ public class Box2D {
 	
 	public Collection<Point2D> getVertices(){
 		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
-		points.add(new Point2D(xmin, ymin));
-		points.add(new Point2D(xmax, ymin));
-		points.add(new Point2D(xmax, ymax));
-		points.add(new Point2D(xmin, ymax));
+		boolean bx0 = !(Double.isInfinite(xmin) || Double.isNaN(xmin));
+		boolean bx1 = !(Double.isInfinite(xmax) || Double.isNaN(xmax));
+		boolean by0 = !(Double.isInfinite(ymin) || Double.isNaN(ymin));
+		boolean by1 = !(Double.isInfinite(ymax) || Double.isNaN(ymax));
+		if(bx0 && by0) points.add(new Point2D(xmin, ymin));
+		if(bx1 && by0) points.add(new Point2D(xmax, ymin));
+		if(bx0 && by1) points.add(new Point2D(xmin, ymax));
+		if(bx1 && by1) points.add(new Point2D(xmin, ymax));
 		return points;
 	}
 
 	/** Returns 4, the number of vertices of a rectangle*/
 	public int getVerticesNumber(){
-		return 4;
+		return this.getVertices().size();
 	}
 	
 	public Collection<LineSegment2D> getEdges(){
@@ -702,28 +705,25 @@ public class Box2D {
 	// methods from interface AbstractDomain2D
 	
 	public Boundary2D getBoundary(){
-		Point2D pts[] = new Point2D[5];
+		Point2D pts[] = new Point2D[4];
 		pts[0] = new Point2D(xmin, ymin);
 		pts[1] = new Point2D(xmax, ymin);
 		pts[2] = new Point2D(xmax, ymax);
 		pts[3] = new Point2D(xmin, ymax);
-		pts[4] = new Point2D(xmin, ymin);
-		return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));	
+		return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
 	}
-	
 
-	
 	// ===================================================================
 	// methods from Shape2D interface
 	
 
-	public double getDistance(java.awt.geom.Point2D p){
-		return Math.max(getBoundary().getSignedDistance(p), 0);
-	}
-	
-	public double getDistance(double x, double y){
-		return Math.max(getBoundary().getSignedDistance(x, y), 0);
-	}
+//	public double getDistance(java.awt.geom.Point2D p){
+//		return Math.max(getBoundary().getSignedDistance(p), 0);
+//	}
+//	
+//	public double getDistance(double x, double y){
+//		return Math.max(getBoundary().getSignedDistance(x, y), 0);
+//	}
 
 	/** Returns true if all bounds are finite.*/
 	public boolean isBounded(){
@@ -813,18 +813,6 @@ public class Box2D {
 		return true;
 	}
 	
-	public boolean contains(double x0, double y0, double w, double h){
-		if(!this.contains(x0, y0)) return false;
-		if(!this.contains(x0+w, y0)) return false;
-		if(!this.contains(x0+w, y0+h)) return false;
-		if(!this.contains(x0, y0+h)) return false;
-		return true;
-	}
-	
-	public boolean contains(java.awt.geom.Rectangle2D rect){
-		return this.contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
 	// ===================================================================
 	// methods from Object interface
 	

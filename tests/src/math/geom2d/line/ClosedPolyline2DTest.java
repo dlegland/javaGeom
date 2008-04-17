@@ -29,7 +29,9 @@ package math.geom2d.line;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.curve.CurveSet2D;
 
 import junit.framework.TestCase;
 
@@ -142,6 +144,44 @@ public class ClosedPolyline2DTest extends TestCase {
 		
 		// check two objects are the same
 		assertTrue(line2.equals(sub));
+	}
+	
+	public void testClip_Box2D(){
+		ClosedPolyline2D polyline1 = new ClosedPolyline2D(new Point2D[]{
+				new Point2D(-5, -5),
+				new Point2D(5, -5),
+				new Point2D(5, 5),
+				new Point2D(-5, 5)	});
+		
+		Box2D box = new Box2D(0, 10, 0, 10);
+		Polyline2D line1 = new Polyline2D(new Point2D[]{
+				new Point2D(5, 0),
+				new Point2D(5, 5),
+				new Point2D(0, 5)
+		});
+		
+		CurveSet2D<? extends Polyline2D> clipped = polyline1.clip(box);
+		assertTrue(clipped.getCurveNumber()==1);
+		assertTrue(clipped.getFirstCurve().equals(line1));
+		
+		
+		// Oblic polyline, cutting the box in two points
+		polyline1 = new ClosedPolyline2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(20, -20),
+				new Point2D(40, 0),
+				new Point2D(20, 20)	});
+		box = new Box2D(-30, 30, -30, 30);
+		line1 = new Polyline2D(new Point2D[]{
+				new Point2D(30, 10),
+				new Point2D(20, 20),
+				new Point2D(0, 0),
+				new Point2D(20, -20),
+				new Point2D(30, -10) });
+		clipped = polyline1.clip(box);
+		
+		assertTrue(clipped.getCurveNumber()==1);
+		assertTrue(clipped.getFirstCurve().equals(line1));
 	}
 	
 	public void testGetSignedArea(){

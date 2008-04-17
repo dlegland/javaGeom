@@ -41,8 +41,6 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.Rotation2D;
-import math.geom2d.transform.Translation2D;
 
 public class Box2DTest extends TestCase {
 
@@ -55,10 +53,10 @@ public class Box2DTest extends TestCase {
 	public void testTransform(){
 		Box2D box = new Box2D(-1, 1, -1, 1);
 		
-		AffineTransform2D trans = new Translation2D(1, 1);		
+		AffineTransform2D trans = AffineTransform2D.createTranslation(1, 1);		
 		assertTrue(box.transform(trans).equals(new Box2D(0, 2, 0, 2)));
 		
-		AffineTransform2D rot = new Rotation2D(0, 0, Math.PI/2);		
+		AffineTransform2D rot = AffineTransform2D.createRotation(0, 0, Math.PI/2);		
 		assertTrue(box.transform(rot).equals(new Box2D(-1, 1, -1, 1)));
 	}	
 

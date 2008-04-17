@@ -35,7 +35,6 @@ import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.transform.Rotation2D;
 
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
@@ -182,7 +181,7 @@ public class Rectangle2D implements PolygonalShape2D{
 	 */
 	@Deprecated
 	public Iterator<Point2D> getPoints(){
-		AffineTransform2D rot = new Rotation2D(x0, y0, theta);
+		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		
 		array.add((Point2D) new Point2D(x0, y0).transform(rot));
@@ -198,7 +197,7 @@ public class Rectangle2D implements PolygonalShape2D{
 	 * @return the vertices of the rectangle.
 	 */
 	public Collection<Point2D> getVertices(){
-		AffineTransform2D rot = new Rotation2D(x0, y0, theta);
+		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		
 		array.add((Point2D) new Point2D(x0, y0).transform(rot));

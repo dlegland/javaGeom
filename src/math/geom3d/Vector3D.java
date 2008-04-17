@@ -193,5 +193,18 @@ public class Vector3D {
 		return new Vector3D(this.x/r, this.y/r, this.z/r);
 	}
 	
+	// ===================================================================
+	// methods implementing Object interface
+
+	public boolean equals(Object obj){
+		if(!(obj instanceof Vector3D)) return false;
+		
+		Vector3D v = (Vector3D) obj;
+		if(Math.abs(x-v.x)>Shape3D.ACCURACY) return false;
+		if(Math.abs(y-v.y)>Shape3D.ACCURACY) return false;
+		if(Math.abs(z-v.z)>Shape3D.ACCURACY) return false;
+		return true;
+	}
+
 	
 }
