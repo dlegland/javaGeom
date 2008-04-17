@@ -303,11 +303,10 @@ public class Rectangle2D implements PolygonalShape2D{
 		ArrayList<Point2D> intersections = new ArrayList<Point2D>();
 		
 		// iterate on box edges
-		Collection<LineSegment2D> edges = box.getEdges();
-		for(LineSegment2D edge : edges){
-			for(Point2D point : boundary.getIntersections(edge))
+		for(StraightLine2D line : box.getClippingLines())
+			for(Point2D point : boundary.getIntersections(line))
 				intersections.add(point);
-		}
+		
 		
 		// if no intersection, 3 possibilities:
 		// - rectangle totally inside box: return this

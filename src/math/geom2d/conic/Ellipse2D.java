@@ -37,6 +37,7 @@ import math.geom2d.curve.ContinuousBoundary2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.curve.SmoothOrientedCurve2D;
 import math.geom2d.line.ClosedPolyline2D;
@@ -789,7 +790,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	 */
 	public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = box.clipSmoothCurve(this);
+		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<SmoothOrientedCurve2D> result =

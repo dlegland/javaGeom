@@ -30,6 +30,7 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.polygon.Polygon2D;
 
 
@@ -65,12 +66,12 @@ public class DrawClippedPolygonDemo extends JPanel{
 		g2.draw(box.getAsRectangle());
 
 		Boundary2D boundary = polygon.getBoundary();
-		Curve2D clipped = box.clipCurve(boundary);
+		Curve2D clipped = boundary.clip(box);
 		g2.setStroke(new BasicStroke(4.0f));
 		g2.setColor(Color.RED);
 		g2.draw(clipped);
 
-		clipped = box.clipBoundary(boundary);
+		clipped = CurveUtil.clipBoundary(boundary, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
 		g2.fill(clipped);

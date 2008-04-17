@@ -35,6 +35,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Boundary2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.Domain2D;
 import math.geom2d.curve.GenericDomain2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -84,7 +85,7 @@ public class Disc2D implements Domain2D {
 	}
 
 	public Shape2D clip(Box2D box) {
-		return new GenericDomain2D(box.clipBoundary(this.getBoundary()));
+		return new GenericDomain2D(CurveUtil.clipBoundary(this.getBoundary(), box));
 	}
 
 	public Box2D getBoundingBox() {

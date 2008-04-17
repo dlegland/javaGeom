@@ -78,7 +78,7 @@ public class GenericDomain2D implements Domain2D {
 	}
 
 	public Shape2D clip(Box2D box) {
-		return new GenericDomain2D(box.clipBoundary(this.getBoundary()));
+		return new GenericDomain2D(CurveUtil.clipBoundary(this.getBoundary(), box));
 	}
 
 	public Box2D getBoundingBox() {
