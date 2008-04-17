@@ -31,8 +31,10 @@ import java.util.*;
 
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.curve.Boundary2D;
+import math.geom2d.curve.BoundaryPolyCurve2D;
 import math.geom2d.curve.BoundarySet2D;
 import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
@@ -61,7 +63,8 @@ public class Box2D {
 		this(0, 0, 0, 0);	
 	}
 
-	/** Main constructor, given bounds for x coord, then bounds for y coord.
+	/**
+	 * Main constructor, given bounds for x coord, then bounds for y coord.
 	 * A check is performed to ensure first bound is lower than second bound.
 	 */
 	public Box2D(double x0, double x1, double y0, double y1){
@@ -115,9 +118,54 @@ public class Box2D {
 		return ymax-ymin;
 	}
 	
+	/** Returns true if all bounds are finite.*/
+	public boolean isBounded(){
+		if(Double.isInfinite(xmin)) return false;
+		if(Double.isInfinite(ymin)) return false;
+		if(Double.isInfinite(xmax)) return false;
+		if(Double.isInfinite(ymax)) return false;
+		return true;
+	}
 	
 	// ===================================================================
-	// methods specific to Box2D
+	// tests of inclusion	
+	
+	public boolean contains(java.awt.geom.Point2D point){
+		double x = point.getX();
+		double y = point.getY();
+		if(x<xmin) return false;
+		if(y<ymin) return false;
+		if(x>xmax) return false;
+		if(y>ymax) return false;
+		return true;
+	}
+	
+	public boolean contains(double x, double y){
+		if(x<xmin) return false;
+		if(y<ymin) return false;
+		if(x>xmax) return false;
+		if(y>ymax) return false;
+		return true;
+	}
+	
+	/**
+	 * Test if the specified Shape is totally contained in this Box2D.
+	 * Note that the test is performed on the bounding box of the shape, then
+	 * for rotated rectangles, this method can return false with a shape totally
+	 * contained in the rectangle. The problem does not exist for horizontal
+	 * rectangle, since edges of rectangle and bounding box are parallel.
+	 */
+	public boolean containsBounds(Shape2D shape){
+		if(!shape.isBounded()) return false;
+		for(Point2D point : shape.getBoundingBox().getVertices())
+			if(!contains(point)) return false;
+
+		return true;
+	}
+
+		
+	// ===================================================================
+	// information on the boundary
 	
 	/**
 	 * Returns a set of straight of lines defining half-planes, that all
@@ -139,35 +187,193 @@ public class Box2D {
 		return lines;
 	}
 	
+	public Collection<StraightObject2D> getEdges(){
+		ArrayList<StraightObject2D> edges = new ArrayList<StraightObject2D>(4);
+
+		if(isBounded()){
+			edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
+			edges.add(new LineSegment2D(xmax, ymin, xmax, ymax));
+			edges.add(new LineSegment2D(xmax, ymax, xmin, ymax));
+			edges.add(new LineSegment2D(xmin, ymax, xmin, ymin));
+			return edges;
+		}
+		
+		if(!Double.isInfinite(ymin)){
+			if(Double.isInfinite(xmin) && Double.isInfinite(xmax))
+				edges.add(new StraightLine2D(0, ymin, 1, 0));
+			else if(!Double.isInfinite(xmin) && !Double.isInfinite(xmax))
+				edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
+			else
+				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax));
+		}
+		
+		if(!Double.isInfinite(xmax)){
+			if(Double.isInfinite(ymin) && Double.isInfinite(ymax))
+				edges.add(new StraightLine2D(xmax, 0, 0, 1));
+			else if(!Double.isInfinite(ymin) && !Double.isInfinite(ymax))
+				edges.add(new LineSegment2D(xmax, ymin, xmax, ymax));
+			else
+				edges.add(new LineArc2D(xmax, 0, 0, 1, ymin, ymax));
+		}
+		
+		if(!Double.isInfinite(ymax)){
+			if(Double.isInfinite(xmin) && Double.isInfinite(xmax))
+				edges.add(new StraightLine2D(0, ymax, 1, 0));
+			else if(!Double.isInfinite(xmin) && !Double.isInfinite(xmax))
+				edges.add(new LineSegment2D(xmax, ymax, xmin, ymax));
+			else
+				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax).getReverseCurve());
+		}
+		
+		if(!Double.isInfinite(xmin)){
+			if(Double.isInfinite(ymin) && Double.isInfinite(ymax))
+				edges.add(new StraightLine2D(xmin, 0, 0, -1));
+			else if(!Double.isInfinite(ymin) && !Double.isInfinite(ymax))
+				edges.add(new LineSegment2D(xmin, ymax, xmin, ymin));
+			else
+				edges.add(new LineArc2D(xmin, 0, 0, 1, ymin, ymax).getReverseCurve());
+		}
+		
+		return edges;
+	}
+	
+	public Boundary2D getBoundary(){
+		
+		// First case of totally bounded box
+		if(isBounded()){
+			Point2D pts[] = new Point2D[4];
+			pts[0] = new Point2D(xmin, ymin);
+			pts[1] = new Point2D(xmax, ymin);
+			pts[2] = new Point2D(xmax, ymax);
+			pts[3] = new Point2D(xmin, ymax);
+			return new ClosedPolyline2D(pts);
+		}
+		
+		// extract boolean info on "boundedness" in each direction
+		boolean bx0 = !(Double.isInfinite(xmin));
+		boolean bx1 = !(Double.isInfinite(xmax));
+		boolean by0 = !(Double.isInfinite(ymin));
+		boolean by1 = !(Double.isInfinite(ymax));
+
+		// case of boxes unbounded in both x directions
+		if(!bx0 && !bx1){
+			if(!by0 && !by1) return new BoundarySet2D<StraightLine2D>();
+			if(by0) return new StraightLine2D(0, ymin, 1, 0);
+			if(by1) return new StraightLine2D(0, ymax, -1, 0);
+			return new BoundarySet2D<StraightLine2D>(new StraightLine2D[]{
+					new StraightLine2D(0, ymin, 1, 0),
+					new StraightLine2D(0, ymax, -1, 0)});
+		}
+		
+		// case of boxes unbounded in both y directions
+		if(!by0 && !by1){
+			if(!bx0 && !bx1) return new BoundarySet2D<StraightLine2D>();
+			if(bx0) return new StraightLine2D(xmin, 0, 0, -1);
+			if(bx1) return new StraightLine2D(xmax, 0, 0, 1);
+			return new BoundarySet2D<StraightLine2D>(new StraightLine2D[]{
+					new StraightLine2D(xmin, 0, 0, -1),
+					new StraightLine2D(xmax, 0, 0, 1)});
+		}
+		
+		// "corner boxes"
+		
+		if(bx0 && by0)	// lower left corner
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[]{
+					new LineArc2D(xmin, ymin, 0, -1, Double.NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmin, ymin, 1, 0, 0, Double.POSITIVE_INFINITY) });
+		
+		if(bx1 && by0)	// lower right corner
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[]{
+					new LineArc2D(xmax, ymin, 1, 0, Double.NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmax, ymin, 0, 1, 0, Double.POSITIVE_INFINITY) });
+		
+		if(bx1 && by1)	// upper right corner
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[]{
+					new LineArc2D(xmax, ymax, 0, 1, Double.NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmax, ymax, -1, 0, 0, Double.POSITIVE_INFINITY) });
+		
+		if(bx0 && by1)	// upper left corner
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[]{
+					new LineArc2D(xmin, ymax, -1, 0, Double.NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmin, ymax, 0, -1, 0, Double.POSITIVE_INFINITY) });
+		
+		// Remains only 4 cases: boxes unbounded in only one direction
+		
+		if(bx0)
+			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+					new LineArc2D(xmin, ymax, -1, 0, Double.NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmin, ymax, xmin, ymin),
+					new LineArc2D(xmin, ymin, 1, 0, 0, Double.POSITIVE_INFINITY) });
+		
+		if(bx1)
+			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+					new LineArc2D(xmax, ymin, 1, 0, Double.NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmax, ymin, xmax, ymax),
+					new LineArc2D(xmax, ymax, -1, 0, 0, Double.POSITIVE_INFINITY) });
+			
+		if(by0)
+			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+					new LineArc2D(xmin, ymin, 0, -1, Double.NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmin, ymin, xmax, ymin),
+					new LineArc2D(xmax, ymin, 0, 1, 0, Double.POSITIVE_INFINITY) });
+		
+		if(by1)
+			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+					new LineArc2D(xmax, ymax, 0, 1, Double.NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmax, ymax, xmin, ymax),
+					new LineArc2D(xmin, ymax, 0, -1, 0, Double.POSITIVE_INFINITY) });
+		
+		return null;
+	}	
+
+	public Collection<Point2D> getVertices(){
+		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
+		boolean bx0 = !(Double.isInfinite(xmin) || Double.isNaN(xmin));
+		boolean bx1 = !(Double.isInfinite(xmax) || Double.isNaN(xmax));
+		boolean by0 = !(Double.isInfinite(ymin) || Double.isNaN(ymin));
+		boolean by1 = !(Double.isInfinite(ymax) || Double.isNaN(ymax));
+		if(bx0 && by0) points.add(new Point2D(xmin, ymin));
+		if(bx1 && by0) points.add(new Point2D(xmax, ymin));
+		if(bx0 && by1) points.add(new Point2D(xmin, ymax));
+		if(bx1 && by1) points.add(new Point2D(xmin, ymax));
+		return points;
+	}
+
+	/** Returns the number of vertices of the box. */
+	public int getVerticesNumber(){
+		return this.getVertices().size();
+	}
+	
+	
+	// ===================================================================
+	// combination of box with other boxes
+	
 	/**
-	 * convert to AWT rectangle. 
-	 * @return an instance of java.awt.geom.Rectangle2D
+	 * Returns the Box2D which contains both this box and the specified box.
+	 * @param box the bounding box to include
+	 * @return a new Box2D
 	 */
-	public java.awt.Rectangle getAsAWTRectangle(){
-		int xr = (int) Math.floor(this.xmin);
-		int yr = (int) Math.floor(this.ymin);
-		int wr = (int) Math.ceil(this.xmax-xr);
-		int hr = (int) Math.ceil(this.ymax-yr);
-		return new java.awt.Rectangle(xr, yr, wr, hr);
+	public Box2D union(Box2D box){
+		double xmin = Math.min(this.xmin, box.xmin);
+		double xmax = Math.max(this.xmax, box.xmax);
+		double ymin = Math.min(this.ymin, box.ymin);
+		double ymax = Math.max(this.ymax, box.ymax);
+		return new Box2D(xmin, xmax, ymin, ymax);
 	}
 	
 	/**
-	 * convert to AWT Rectangle2D. Result is an instance of HRectangle, which extends
-	 * java.awt.geom.Rectangle2D.Double.
-	 * @return an instance of java.awt.geom.Rectangle2D
+	 * Returns the Box2D which is contained both by this box and by the
+	 * specified box.
+	 * @param box the bounding box to include
+	 * @return a new Box2D
 	 */
-	public java.awt.geom.Rectangle2D getAsAWTRectangle2D(){
-		return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
-	}
-	
-	/**
-	 * Converts to a rectangle. Result is an instance of HRectangle,
-	 * which extends java.awt.geom.Rectangle2D.Double.
-	 * @return an instance of HRectangle2D
-	 */
-	public HRectangle2D getAsRectangle(){
-		return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
-	}
+	public Box2D intersection(Box2D box){
+		double xmin = Math.max(this.xmin, box.xmin);
+		double xmax = Math.min(this.xmax, box.xmax);
+		double ymin = Math.max(this.ymin, box.ymin);
+		double ymax = Math.min(this.ymax, box.ymax);
+		return new Box2D(xmin, xmax, ymin, ymax);
+	}	
 	
 	/**
 	 * Changes the bounds of this box to also include bounds of the argument.
@@ -183,124 +389,16 @@ public class Box2D {
 	}
 	
 	/**
-	 * Returns the Box2D which contains both this box and the specified box.
-	 * @param box the bounding box to include
+	 * Clip this bounding box such that after clipping, it is totally
+	 * contained in the given box.
 	 * @return this
-	 */
-	public Box2D union(Box2D box){
-		double xmin = Math.min(this.xmin, box.xmin);
-		double xmax = Math.max(this.xmax, box.xmax);
-		double ymin = Math.min(this.ymin, box.ymin);
-		double ymax = Math.max(this.ymax, box.ymax);
-		return new Box2D(xmin, xmax, ymin, ymax);
-	}
-	
-	/**
-	 * Returns the Box2D which is contained both by this box and by the
-	 * specified box.
-	 * @param box the bounding box to include
-	 * @return this
-	 */
-	public Box2D intersection(Box2D box){
-		double xmin = Math.max(this.xmin, box.xmin);
-		double xmax = Math.min(this.xmax, box.xmax);
-		double ymin = Math.max(this.ymin, box.ymin);
-		double ymax = Math.min(this.ymax, box.ymax);
-		return new Box2D(xmin, xmax, ymin, ymax);
-	}
-	
-	
-	
-	// ===================================================================
-	// methods from interface PolygonalShape2D
-	
-	public Collection<Point2D> getVertices(){
-		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
-		boolean bx0 = !(Double.isInfinite(xmin) || Double.isNaN(xmin));
-		boolean bx1 = !(Double.isInfinite(xmax) || Double.isNaN(xmax));
-		boolean by0 = !(Double.isInfinite(ymin) || Double.isNaN(ymin));
-		boolean by1 = !(Double.isInfinite(ymax) || Double.isNaN(ymax));
-		if(bx0 && by0) points.add(new Point2D(xmin, ymin));
-		if(bx1 && by0) points.add(new Point2D(xmax, ymin));
-		if(bx0 && by1) points.add(new Point2D(xmin, ymax));
-		if(bx1 && by1) points.add(new Point2D(xmin, ymax));
-		return points;
-	}
-
-	/** Returns 4, the number of vertices of a rectangle*/
-	public int getVerticesNumber(){
-		return this.getVertices().size();
-	}
-	
-	public Collection<StraightObject2D> getEdges(){
-		ArrayList<StraightObject2D> edges = new ArrayList<StraightObject2D>(4);
-		edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
-		edges.add(new LineSegment2D(xmax, ymin, xmax, ymax));
-		edges.add(new LineSegment2D(xmax, ymax, xmin, ymax));
-		edges.add(new LineSegment2D(xmin, ymax, xmin, ymin));
-		return edges;
-	}
-	
-	
-	// ===================================================================
-	// methods from interface AbstractDomain2D
-	
-	public Boundary2D getBoundary(){
-		Point2D pts[] = new Point2D[4];
-		pts[0] = new Point2D(xmin, ymin);
-		pts[1] = new Point2D(xmax, ymin);
-		pts[2] = new Point2D(xmax, ymax);
-		pts[3] = new Point2D(xmin, ymax);
-		return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
-		
-		// TODO: complete it!
-	}
-
-	// ===================================================================
-	// methods from Shape2D interface
-	
-
-//	public double getDistance(java.awt.geom.Point2D p){
-//		return Math.max(getBoundary().getSignedDistance(p), 0);
-//	}
-//	
-//	public double getDistance(double x, double y){
-//		return Math.max(getBoundary().getSignedDistance(x, y), 0);
-//	}
-
-	/** Returns true if all bounds are finite.*/
-	public boolean isBounded(){
-		if(Double.isInfinite(xmin)) return false;
-		if(Double.isInfinite(ymin)) return false;
-		if(Double.isInfinite(xmax)) return false;
-		if(Double.isInfinite(ymax)) return false;
-		return true;
-	}
-	
-	/**
-	 * Test if the specified Shape is totally contained in this Box2D.
-	 * Note that the test is performed on the bounding box of the shape, then
-	 * for rotated rectangles, this method can return false with a shape totally
-	 * contained in the rectangle. The problem does not exist for horizontal
-	 * rectangle, since edges of rectangle and bounding box are parallel.
-	 */
-	public boolean containsBounds(Shape2D shape){
-		if(!shape.isBounded()) return false;
-		for(Point2D point : shape.getBoundingBox().getVertices())
-			if(!contains(point)) return false;
-
-		return true;
-	}
-
-	/**
-	 * Returns an instance of Box2D.
 	 */
 	public Box2D clip(Box2D box){
-		return new Box2D(
-				Math.max(this.xmin, box.xmin),
-				Math.min(this.xmax, box.xmax),
-				Math.max(this.ymin, box.ymin),
-				Math.min(this.ymax, box.ymax));
+		this.xmin = Math.max(this.xmin, box.xmin);
+		this.xmax = Math.min(this.xmax, box.xmax);
+		this.ymin = Math.max(this.ymin, box.ymin);
+		this.ymax = Math.min(this.ymax, box.ymax);
+		return this;
 	}
 
 	/** 
@@ -335,25 +433,36 @@ public class Box2D {
 	}
 
 	// ===================================================================
-	// methods from Shape interface
+	// conversion methods
 	
-	
-	public boolean contains(java.awt.geom.Point2D point){
-		double x = point.getX();
-		double y = point.getY();
-		if(x<xmin) return false;
-		if(y<ymin) return false;
-		if(x>xmax) return false;
-		if(y>ymax) return false;
-		return true;
+	/**
+	 * convert to AWT rectangle. 
+	 * @return an instance of java.awt.geom.Rectangle2D
+	 */
+	public java.awt.Rectangle getAsAWTRectangle(){
+		int xr = (int) Math.floor(this.xmin);
+		int yr = (int) Math.floor(this.ymin);
+		int wr = (int) Math.ceil(this.xmax-xr);
+		int hr = (int) Math.ceil(this.ymax-yr);
+		return new java.awt.Rectangle(xr, yr, wr, hr);
 	}
 	
-	public boolean contains(double x, double y){
-		if(x<xmin) return false;
-		if(y<ymin) return false;
-		if(x>xmax) return false;
-		if(y>ymax) return false;
-		return true;
+	/**
+	 * convert to AWT Rectangle2D. Result is an instance of HRectangle, which extends
+	 * java.awt.geom.Rectangle2D.Double.
+	 * @return an instance of java.awt.geom.Rectangle2D
+	 */
+	public java.awt.geom.Rectangle2D getAsAWTRectangle2D(){
+		return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
+	}
+	
+	/**
+	 * Converts to a rectangle. Result is an instance of HRectangle,
+	 * which extends java.awt.geom.Rectangle2D.Double.
+	 * @return an instance of HRectangle2D
+	 */
+	public HRectangle2D getAsRectangle(){
+		return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
 	}
 	
 	// ===================================================================
