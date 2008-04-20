@@ -50,8 +50,18 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		super(curves);
 	}
 
+	public PolyCurve2D(T[] curves, boolean closed){
+		super(curves);
+		this.closed = closed;
+	}
+
 	public PolyCurve2D(Collection<? extends T> curves){
 		super(curves);
+	}
+
+	public PolyCurve2D(Collection<? extends T> curves, boolean closed){
+		super(curves);
+		this.closed = closed;
 	}
 
 	public void setClosed(boolean b){
@@ -166,6 +176,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		PolyCurve2D<ContinuousCurve2D> result = new PolyCurve2D<ContinuousCurve2D>();
 		for(ContinuousCurve2D curve : curves)
 			result.addCurve(curve.transform(trans));
+		result.setClosed(this.closed);
 		return result;
 	}
 
