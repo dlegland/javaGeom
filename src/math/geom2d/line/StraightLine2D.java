@@ -399,7 +399,7 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 	 * clip a continuous smooth curve by the half-plane defined by this line.
 	 */
 	public CurveSet2D<SmoothCurve2D> clipSmoothCurve(SmoothCurve2D curve){
-		
+		//TODO: deprecate ?
 		// get the list of intersections with the line
 		ArrayList<Point2D> list = new ArrayList<Point2D>();				
 		list.addAll(curve.getIntersections(this));

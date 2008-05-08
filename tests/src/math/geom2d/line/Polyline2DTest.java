@@ -90,6 +90,28 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(p30.equals(line1.getPoint(3.5)));
 	}
 
+	public void testGetPosition() {
+		Polyline2D line = new Polyline2D(new Point2D[]{
+				 new Point2D(0, 0),
+				 new Point2D(10, 0),
+				 new Point2D(10, 10),
+				 new Point2D(20, 20) });
+		double eps = 1e-14;
+		
+		// corners
+		assertEquals(line.getPosition(new Point2D(0, 0)), 0, eps);
+		assertEquals(line.getPosition(new Point2D(10, 0)), 1, eps);
+		assertEquals(line.getPosition(new Point2D(10, 10)), 2, eps);
+		assertEquals(line.getPosition(new Point2D(20, 20)), 3, eps);
+		
+		// middles of edges
+		assertEquals(line.getPosition(new Point2D(5, 0)), .5, eps);
+		assertEquals(line.getPosition(new Point2D(10, 5)), 1.5, eps);
+		assertEquals(line.getPosition(new Point2D(15, 15)), 2.5, eps);
+		
+	}
+	
+	
 	public void testgetIntersections() {
 		// initialize points
 		Point2D[] points = new Point2D[3];

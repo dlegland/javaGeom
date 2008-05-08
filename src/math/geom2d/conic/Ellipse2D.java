@@ -1032,32 +1032,33 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 
 		// draw each line of the boundary
 		if(direct)
-			for(double t=0; t<=2*Math.PI; t+=.1)
+			for(double t=.1; t<=2*Math.PI; t+=.1)
 				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
 							(float)(yc+r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
 		else
-			for(double t=0; t<=2*Math.PI; t+=.1)
+			for(double t=.1; t<=2*Math.PI; t+=.1)
 				path.lineTo((float)(xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit), 
 							(float)(yc-r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
 		
 		// loop to the first point
 		path.lineTo((float)(xc+r1*cot), (float)(yc+r1*sit));
 		
-		// close to the last point
-		path.closePath();
 		return path;
 	}
 	
 	protected java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
-//		double cot = Math.cos(theta);
-//		double sit = Math.sin(theta);
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
 		
 		// position to the first point
-		//path.moveTo((float)(xc+r1*cot), (float)(yc+r1*sit));
+		path.moveTo((float)(xc+r1*cot), (float)(yc+r1*sit));
 		
 		path = this.appendPath(path);
+		
+		// close to the last point
+		path.closePath();
 		
 		return path;
 	}

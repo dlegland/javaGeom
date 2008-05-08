@@ -388,18 +388,13 @@ public class Circle2D extends Ellipse2D {
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
-		
-		// position to the first point
-		path.lineTo((float)(xc+r*cot), 
-					(float)(yc+r*sit));
-
-		
+				
 		if(direct)
-			for(double t=0; t<Math.PI*2; t+=.1)
+			for(double t=.1; t<Math.PI*2; t+=.1)
 				path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit), 
 							(float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
 		else
-			for(double t=0; t>Math.PI*2; t+=.1)
+			for(double t=.1; t<Math.PI*2; t+=.1)
 				path.lineTo((float)(xc+r*Math.cos(t)*cot+r*Math.sin(t)*sit), 
 							(float)(yc+r*Math.cos(t)*sit-r*Math.sin(t)*cot));
 
@@ -417,17 +412,8 @@ public class Circle2D extends Ellipse2D {
 		// position to the first point
 		path.moveTo((float)(xc+r), (float)(yc));
 
-		// draw each line of the boundary
-		if(direct)
-			for(double t=0; t<=2*Math.PI; t+=.1)
-				path.lineTo((float)(xc+r*Math.cos(t)), (float)(yc+r*Math.sin(t)));
-		else
-			for(double t=0; t<=2*Math.PI; t+=.1)
-				path.lineTo((float)(xc+r*Math.cos(t)), (float)(yc-r*Math.sin(t)));
-		
-		// line to first point
-		path.lineTo((float)(xc+r), 
-					(float)(yc));
+		// draw the circle
+		path = this.appendPath(path);
 		
 		// close to the last point
 		path.closePath();
@@ -466,4 +452,8 @@ public class Circle2D extends Ellipse2D {
 		return super.equals(obj);
 	}
 	
+	public String toString(){
+		return String.format(Locale.US, "Circle2D (%7.2f, %7.2f, %7.2f)", xc, yc, r);
+	}
+
 }

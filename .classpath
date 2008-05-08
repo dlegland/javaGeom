@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry output="demos/bin" kind="src" path="demos/src"/>
-	<classpathentry output="tests/bin" kind="src" path="tests/src"/>
+	<classpathentry kind="src" output="check/bin" path="check/src"/>
+	<classpathentry kind="src" output="demos/bin" path="demos/src"/>
+	<classpathentry kind="src" output="tests/bin" path="tests/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/Java/recup/junit3.8.1/junit.jar"/>
+	<classpathentry kind="lib" path="D:/java/recup/junit3.8.1/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
