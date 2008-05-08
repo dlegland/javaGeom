@@ -1777,7 +1777,7 @@ Extension of Bezier curves, allow exact representation of conics.
 \end_layout
 
 \begin_layout Section
-Implementations
+Cubic Bezier curve
 \end_layout
 
 \begin_layout Standard

@@ -27,13 +27,9 @@
 package math.geom2d.line;
 
 import junit.framework.TestCase;
-import java.util.Collection;
 
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.conic.Circle2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
 
 /**
  * @author Legland
@@ -249,20 +245,5 @@ public class StraightLine2DTest extends TestCase {
 		assertEquals(line2.getWindingAngle(p4), Math.PI, 1e-14);
 		assertEquals(line3.getWindingAngle(p4), Math.PI, 1e-14);		
 	}
-	
-	public void testClipSmoothCurveHalfPlane(){
-		Circle2D circle = new Circle2D(50, 50, 50);
-		
-		StraightLine2D line1 = new StraightLine2D(0, 0, 1, 0);		
-		CurveSet2D<SmoothCurve2D> clipped1 = line1.clipSmoothCurve(circle);
-		Collection<SmoothCurve2D> curves1 = clipped1.getCurves();
-		assertTrue(curves1.size()==1);
-		assertTrue(curves1.iterator().next().equals(circle));
-		
-		StraightLine2D line2 = new StraightLine2D(0, 0, 0, -1);		
-		CurveSet2D<SmoothCurve2D> clipped2 = line2.clipSmoothCurve(circle);
-		Collection<SmoothCurve2D> curves2 = clipped2.getCurves();
-		assertTrue(curves2.size()==1);
-		assertTrue(curves2.iterator().next().equals(circle));
-	}
+
 }

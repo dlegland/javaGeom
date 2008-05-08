@@ -4,6 +4,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.line.StraightLine2D;
 import junit.framework.TestCase;
 
@@ -69,7 +70,7 @@ public class HyperbolaBranch2DTest extends TestCase {
 		
 		StraightLine2D line = new StraightLine2D(x0+2*a, y0, 0, 1);
 		
-		CurveSet2D<?> clipped = line.clipSmoothCurve(branch);
+		CurveSet2D<?> clipped = CurveUtil.clipSmoothCurve(branch, line);
 		
 		assertTrue(clipped.getCurveNumber()==1);
 		Curve2D curve = clipped.getFirstCurve();
@@ -87,7 +88,7 @@ public class HyperbolaBranch2DTest extends TestCase {
 		branch = new HyperbolaBranch2D(hyper, true);
 		line = new StraightLine2D(x0+2*a, y0, 0, 1);
 		
-		clipped = line.clipSmoothCurve(branch);
+		clipped = CurveUtil.clipSmoothCurve(branch, line);
 		assertTrue(clipped.getCurveNumber()==1);
 
 		curve = clipped.getFirstCurve();

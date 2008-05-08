@@ -28,7 +28,8 @@ package math.geom2d.domain;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * a continuous boundary is a continuous oriented curve which delimits a planar domain.
+ * A continuous boundary is a continuous oriented curve which delimits a
+ * connected planar domain.
  * @author dlegland
  */
 public interface ContinuousBoundary2D extends Boundary2D,

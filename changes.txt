@@ -5,13 +5,15 @@ javaGeom-0.6.1 (2008-??-??, rev. ???)
 Start implementing 3D methods
 
 geom2d:
+- splitted curve subpackage into curve and domain subpackages
+- fixed clipping of closed curves, and implemented clipping methods in the
+	specific class 'CurveUtil' and 'Boundary2DUtil'.
 - simplified hierarchy of affine transforms, to keep only one concrete class.
 - added method Shape2D.isEmpty()
-- fixed clipping of closed curves, and implemented clipping methods in the
-	specific class 'CurveUtil'.
 - lot of rewriting in Box2D:
 	+ Box2D does not implement PolygonalShape2D anymore
 	+ better support of infinite boxes
+- remove Dimension2D (useless)
 
 geom3d:
 - added Vector3D, Box3D, PointSet3D, and EmptySet3D

@@ -43,6 +43,7 @@ public class BezierCurve2DTest extends TestCase {
 		super(arg0);
 	}
 
+	
 	public void testGetParametric() {
 		Point2D p1 = new Point2D(0, 0);
 		Point2D p2 = new Point2D(0, 1);
@@ -61,7 +62,38 @@ public class BezierCurve2DTest extends TestCase {
 		assertEquals(tab[1][1], 3, 1e-14);
 		assertEquals(tab[1][2], -3, 1e-14);
 		assertEquals(tab[1][3], 0, 1e-14);
+	}	
+	
+	public void testBezierCurve2D_DoubleArray() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(0, 1);
+		Point2D p3 = new Point2D(1, 1);
+		Point2D p4 = new Point2D(1, 0);
+		
+		BezierCurve2D bezier1 = new BezierCurve2D(p1, p2, p3, p4);
+		double[][] tab = bezier1.getParametric();
+		
+		BezierCurve2D bezier2 = new BezierCurve2D(tab);
+		assertTrue(p1.equals(bezier2.getFirstPoint()));
+		assertTrue(p2.equals(bezier2.getControl1()));
+		assertTrue(p3.equals(bezier2.getControl2()));
+		assertTrue(p4.equals(bezier2.getLastPoint()));
+		
+		p1 = new Point2D(100, 100);
+		p2 = new Point2D(100, 200);
+		p3 = new Point2D(200, 100);
+		p4 = new Point2D(300, 200);
+		
+		bezier1 = new BezierCurve2D(p1, p2, p3, p4);
+		tab = bezier1.getParametric();		
+		bezier2 = new BezierCurve2D(tab);
+		
+		assertTrue(p1.equals(bezier2.getFirstPoint()));
+		assertTrue(p2.equals(bezier2.getControl1()));
+		assertTrue(p3.equals(bezier2.getControl2()));
+		assertTrue(p4.equals(bezier2.getLastPoint()));
 	}
+	
 
 	/*
 	 * Test for Point2D getPoint(double)

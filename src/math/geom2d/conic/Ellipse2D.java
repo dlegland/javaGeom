@@ -55,7 +55,8 @@ import math.geom2d.transform.AffineTransform2D;
  * No convention is taken about lengths of semiaxis : the second semi axis
  * can be greater than the first one.
  */
-public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
+public class Ellipse2D
+implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 
 
 	// ===================================================================
@@ -172,25 +173,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	public void setCenter(double x, double y){
 		this.xc = x;
 		this.yc = y;
-	}
-	
-	/**
-	 * return as a closed polyline with <code>n</code> line segments.
-	 * @param n the number of line segments
-	 * @return a closed polyline with <code>n</code> line segments.
-	 */
-	public Polyline2D getAsPolyline(int n){
-		Point2D[] points = new Point2D[n];
-		double t0 = this.getT0();
-		double t1 = this.getT1();
-		double dt = (t1-t0)/n;
-		if(this.direct)
-			for(int i=0; i<n; i++)
-				points[i] = this.getPoint((double)i*dt + t0);
-		else
-			for(int i=0; i<n; i++)
-				points[i] = this.getPoint(-(double)i*dt + t0);
-		return new ClosedPolyline2D(points);		
 	}
 	
 	/**
@@ -392,6 +374,15 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return null;
 	}
 	
+	/** 
+	 * Return the parallel ellipse located at a distance d from this ellipse.
+	 * For direct ellipse, distance is positive outside of the ellipse, and
+	 * negative inside
+	 */
+	public Ellipse2D getParallel(double d){
+		return new Ellipse2D(xc, yc, Math.abs(r1+d), Math.abs(r2+d), theta, direct);
+	}
+
 	/**
 	 * return true if ellipse has a direct orientation.
 	 */
@@ -497,7 +488,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	}
 
 	/**
-	 * Return the second focus. It is defined as the second focus on the Major
+	 * Returns the second focus. It is defined as the second focus on the Major
 	 * axis, in the direction given by angle theta.
 	 */
 	public Point2D getFocus2(){
@@ -530,32 +521,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return theta;
 	}
 	
-	// ===================================================================
-	// methods of SmoothCurve2D interface
-	
-	public Vector2D getTangent(double t){
-		if(!direct) t = -t;
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-			
-		if (direct)
-			return new Vector2D(-r1*Math.sin(t)*cot - r2*Math.cos(t)*sit,
-					  			-r1*Math.sin(t)*sit + r2*Math.cos(t)*cot);
-		else
-			return new Vector2D(r1*Math.sin(t)*cot + r2*Math.cos(t)*sit,
-					  			r1*Math.sin(t)*sit - r2*Math.cos(t)*cot);
-	}
-
-	/**
-	 * returns the curvature of the ellipse.
-	 */
-	public double getCurvature(double t){
-		if(!direct) t = -t;
-		double cot = Math.cos(t);
-		double sit = Math.sin(t);
-		return r1*r2/Math.pow(r2*r2*cot*cot+r1*r1*sit*sit, 1.5);
-	}
-
 	
 	// ===================================================================
 	// methods of Boundary2D interface
@@ -566,26 +531,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 		return list;
 	}
 
-
-	// ===================================================================
-	// methods of ContinuousCurve2D interface
-
-	/** 
-	 * Returns a set of smooth curves, which contains only the ellipse.
-	 */
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<Ellipse2D> list = new ArrayList<Ellipse2D>(1);
-		list.add(this);
-		return list;
-	}
-
-	/**
-	 * return true, as an ellipse is always closed.
-	 */
-	public boolean isClosed(){
-		return true;
-	}
-
+	
 	// ===================================================================
 	// methods of OrientedCurve2D interface
 	
@@ -626,6 +572,72 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBoun
 	
 	public double getSignedDistance(double x, double y){
 		return getSignedDistance(new Point2D(x, y));
+	}
+
+	
+	// ===================================================================
+	// methods of SmoothCurve2D interface
+	
+	public Vector2D getTangent(double t){
+		if(!direct) t = -t;
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+			
+		if (direct)
+			return new Vector2D(-r1*Math.sin(t)*cot - r2*Math.cos(t)*sit,
+					  			-r1*Math.sin(t)*sit + r2*Math.cos(t)*cot);
+		else
+			return new Vector2D(r1*Math.sin(t)*cot + r2*Math.cos(t)*sit,
+					  			r1*Math.sin(t)*sit - r2*Math.cos(t)*cot);
+	}
+
+	/**
+	 * returns the curvature of the ellipse.
+	 */
+	public double getCurvature(double t){
+		if(!direct) t = -t;
+		double cot = Math.cos(t);
+		double sit = Math.sin(t);
+		return r1*r2/Math.pow(r2*r2*cot*cot+r1*r1*sit*sit, 1.5);
+	}
+
+
+	// ===================================================================
+	// methods of ContinuousCurve2D interface
+
+	/**
+	 * Returns as a closed polyline with <code>n</code> line segments.
+	 * @param n the number of line segments
+	 * @return a closed polyline with <code>n</code> line segments.
+	 */
+	public Polyline2D getAsPolyline(int n){
+		Point2D[] points = new Point2D[n];
+		double t0 = this.getT0();
+		double t1 = this.getT1();
+		double dt = (t1-t0)/n;
+		if(this.direct)
+			for(int i=0; i<n; i++)
+				points[i] = this.getPoint((double)i*dt + t0);
+		else
+			for(int i=0; i<n; i++)
+				points[i] = this.getPoint(-(double)i*dt + t0);
+		return new ClosedPolyline2D(points);		
+	}
+	
+	/** 
+	 * Returns a set of smooth curves, which contains only the ellipse.
+	 */
+	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+		ArrayList<Ellipse2D> list = new ArrayList<Ellipse2D>(1);
+		list.add(this);
+		return list;
+	}
+
+	/**
+	 * return true, as an ellipse is always closed.
+	 */
+	public boolean isClosed(){
+		return true;
 	}
 
 	// ===================================================================

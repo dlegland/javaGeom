@@ -1,4 +1,4 @@
-/* file : DrawBoundarySetDemo.java
+/* file : DrawBoundaryHoleDemo.java
  * 
  * Project : Euclide
  *
@@ -24,60 +24,59 @@
  *
  */
 
+package math.geom2d.domain;
+
 import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.CircleArc2D;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.domain.Boundary2DUtil;
-import math.geom2d.domain.BoundaryPolyCurve2D;
+import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.line.ClosedPolyline2D;
 
 
-public class DrawBoundarySetDemo extends JPanel{
+public class DrawBoundaryHoleDemo extends JPanel{
 
-	private static final long serialVersionUID = 7331324136801936514L;
+	private static final long serialVersionUID = 1L;
 	
 	Curve2D curve = null;
 	
-	public DrawBoundarySetDemo() {
+	public DrawBoundaryHoleDemo() {
 		super();
-		
-		double x0 = 100;
-		double y0 = 100;
-		double r  = 50;
-		CircleArc2D arc1 = new CircleArc2D(x0, y0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(x0+r, y0, r, 2*Math.PI/3, 2*Math.PI/3);
-		
-		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
-		set.addCurve(arc1);
-		set.addCurve(arc2);
-		
-		Box2D box = new Box2D(0, 400, 0, 400);
-				
-		curve = Boundary2DUtil.clipBoundary(set, box);
-		System.out.println(curve);
-		
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 
+		// build the different curves
+		Circle2D circle = new Circle2D(150, 150, 50, false);
+		ClosedPolyline2D square = new ClosedPolyline2D(new Point2D[]{
+				new Point2D(50, 50),
+				new Point2D(250, 50),
+				new Point2D(250, 250),
+				new Point2D(50, 250) });
+
+		// build the boundary set
+		BoundarySet2D<ContinuousBoundary2D> boundary = 
+			new BoundarySet2D<ContinuousBoundary2D>(
+				new ContinuousBoundary2D[]{square, circle});
+		
+		// fill the domain
 		g2.setColor(Color.CYAN);
-		g2.fillRect(30, 30, 180, 150);
+		g2.fill(boundary);
 		
-		g2.setColor(Color.YELLOW);
-		g2.fill(curve);
-		
-		g2.setColor(Color.BLUE);
-		g2.draw(curve);
+		// draw the boundary
+		g2.setColor(Color.BLACK);
+		g2.draw(boundary);
 	}
 
 	public final static void main(String[] args){
 		System.out.println("should draw a circle");
 		
-		JPanel panel = new DrawBoundarySetDemo();
-		JFrame frame = new JFrame("Draw circle demo");
+		JPanel panel = new DrawBoundaryHoleDemo();
+		JFrame frame = new JFrame("Draw boundary of a domain with hole");
 		frame.setContentPane(panel);
 		frame.setSize(400, 300);
 		frame.setVisible(true);

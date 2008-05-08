@@ -111,6 +111,16 @@ public class Circle2D extends Ellipse2D {
 		this.r2 = r;
 	}
 
+	/** 
+	 * Return the parallel circle located at a distance d from this circle.
+	 * For direct circle, distance is positive outside of the circle, and
+	 * negative inside
+	 */
+	@Override
+	public Circle2D getParallel(double d){
+		return new Circle2D(xc, yc, Math.abs(r1+d), direct);
+	}
+
 	// ===================================================================
 	// methods of Conic2D
 
