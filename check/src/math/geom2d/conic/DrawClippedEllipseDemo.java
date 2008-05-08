@@ -1,4 +1,4 @@
-/* file : DrawClippedPolygonDemo.java
+/* file : DrawClippedEllipseDemo.java
  * 
  * Project : Euclide
  *
@@ -20,58 +20,61 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 19 avr. 2007
+ * Created on 1 avr. 2007
  *
  */
 
+package math.geom2d.conic;
+
 import java.awt.*;
+
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.curve.Boundary2D;
+import math.geom2d.conic.Ellipse2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveUtil;
-import math.geom2d.polygon.Polygon2D;
 
 
-public class DrawClippedPolygonDemo extends JPanel{
+public class DrawClippedEllipseDemo extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
-	Polygon2D polygon = null;
+	Ellipse2D ellipse = null;
 	Box2D box = null;
 	
-	public DrawClippedPolygonDemo() {
+	public DrawClippedEllipseDemo() {
 		super();
 		
-		Point2D p1 = new Point2D(100, 30);
-		Point2D p2 = new Point2D(200, 30);
-		Point2D p3 = new Point2D(200, 170);
-		Point2D p4 = new Point2D(100, 170);
-		polygon = new Polygon2D(new Point2D[]{p1, p2, p3, p4});
+		double x0 	= 200;
+		double y0 	= 150;
+		double r1  	= 150;
+		double r2  	= 50;
+		double theta = 0;
+		ellipse = new Ellipse2D(x0, y0, r1, r2, theta);
 		
-		box = new Box2D(50, 250, 50, 150);
+		box = new Box2D(100, 300, 50, 250);
+	
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 	
 		g2.setColor(Color.YELLOW);
-		g2.fill(polygon);
+		g2.fill(ellipse);
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(polygon);
+		g2.draw(ellipse);
 
 		g2.setColor(Color.BLUE);
 		g2.draw(box.getAsRectangle());
 
-		Boundary2D boundary = polygon.getBoundary();
-		Curve2D clipped = boundary.clip(box);
+		Curve2D clipped = ellipse.clip(box);
 		g2.setStroke(new BasicStroke(4.0f));
 		g2.setColor(Color.RED);
 		g2.draw(clipped);
 
-		clipped = CurveUtil.clipBoundary(boundary, box);
+		clipped = CurveUtil.clipBoundary(ellipse, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
 		g2.fill(clipped);
@@ -80,10 +83,10 @@ public class DrawClippedPolygonDemo extends JPanel{
 	}
 
 	public final static void main(String[] args){
-		System.out.println("should draw a clipped polygon");
+		System.out.println("should draw a clipped ellipse");
 		
-		JPanel panel = new DrawClippedPolygonDemo();
-		JFrame frame = new JFrame("Clip Polygon demo");
+		JPanel panel = new DrawClippedEllipseDemo();
+		JFrame frame = new JFrame("Draw clipped ellipse demo");
 		frame.setContentPane(panel);
 		frame.setSize(400, 300);
 		frame.setVisible(true);

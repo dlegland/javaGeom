@@ -24,6 +24,8 @@
  *
  */
 
+package math.geom2d;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -32,13 +34,13 @@ import math.geom2d.polygon.HRectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
-public class DrawBoxBoundariesDemo extends JPanel{
+public class CheckBox2D_ClipBoundary extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
 	Box2D[][] boxes;	
 	
-	public DrawBoxBoundariesDemo() {
+	public CheckBox2D_ClipBoundary() {
 		super();
 		
 		double[] x0 = {20, 20, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
@@ -117,7 +119,7 @@ public class DrawBoxBoundariesDemo extends JPanel{
 	}
 
 	public final static void main(String[] args){
-		JPanel panel = new DrawBoxBoundariesDemo();
+		JPanel panel = new CheckBox2D_ClipBoundary();
 		JFrame frame = new JFrame("Draw box boundaries demo");
 		frame.setContentPane(panel);
 		frame.setSize(500, 500);
