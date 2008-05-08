@@ -1,6 +1,5 @@
-/*
- * File : AllTests.java
- *
+/* file : ContinuousBoundary2D.java
+ * 
  * Project : geometry
  *
  * ===========================================
@@ -21,31 +20,21 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * author : Legland
- * Created on 30 déc. 2003
+ * Created on 1 avr. 2007
+ *
  */
-package math.geom2d;
+package math.geom2d.domain;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
- * @author Legland
+ * a continuous boundary is a continuous oriented curve which delimits a planar domain.
+ * @author dlegland
  */
-public class geom2dTest {
+public interface ContinuousBoundary2D extends Boundary2D,
+		ContinuousOrientedCurve2D {
+	
+	public abstract ContinuousBoundary2D getReverseCurve();
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Tests for package math.geom2d");
-		//$JUnit-BEGIN$
-		suite.addTest(math.geom2d.AllTests.suite());
-		suite.addTest(math.geom2d.conic.AllTests.suite());
-		suite.addTest(math.geom2d.curve.AllTests.suite());
-		suite.addTest(math.geom2d.domain.AllTests.suite());
-		suite.addTest(math.geom2d.line.AllTests.suite());
-		suite.addTest(math.geom2d.polygon.AllTests.suite());
-		suite.addTest(math.geom2d.spline.AllTests.suite());
-		suite.addTest(math.geom2d.transform.AllTests.suite());
-		//$JUnit-END$
-		return suite;
-	}
+	public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
 }

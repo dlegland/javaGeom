@@ -1,6 +1,6 @@
-/* File SmoothOrientedCurve2D.java 
- *
- * Project : javaGeom
+/* file : Boundary2D.java
+ * 
+ * Project : geometry
  *
  * ===========================================
  * 
@@ -19,26 +19,30 @@
  * along with this library. if not, write to :
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
+ * 
+ * Created on 25 déc. 2006
  *
- * Created 24 janv. 08
  */
+package math.geom2d.domain;
 
-package math.geom2d.curve;
+import java.util.Collection;
 
-import math.geom2d.Box2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
+ * A Boundary2D is the curve which defines the contour of a domain in the
+ * plane. It is compound of one or several non-intersecting and oriented 
+ * curves. 
  * @author dlegland
- *
  */
-public interface SmoothOrientedCurve2D extends SmoothCurve2D, ContinuousOrientedCurve2D {
-	
-	public abstract SmoothOrientedCurve2D getReverseCurve();
-	
-	public abstract SmoothOrientedCurve2D getSubCurve(double t0, double t1);
-	
-	public abstract CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box);
-	
-	public abstract SmoothOrientedCurve2D transform(AffineTransform2D trans);
+public interface Boundary2D extends OrientedCurve2D {
+
+	/**
+	 * Return the different continuous curves composing the boundary
+	 */
+	public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
+		
+	public abstract Boundary2D getReverseCurve();
+
+	public abstract Boundary2D transform(AffineTransform2D trans);
 }

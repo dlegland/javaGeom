@@ -1,4 +1,4 @@
-/* file : BoundarySet2D.java
+/* file : PolyOrientedCurve2D.java
  * 
  * Project : geometry
  *
@@ -23,52 +23,50 @@
  * Created on 1 mai 2006
  *
  */
-package math.geom2d.curve;
+package math.geom2d.domain;
+
+// Imports
+import math.geom2d.Box2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 
 import java.util.*;
 
-import math.geom2d.Box2D;
-import math.geom2d.transform.AffineTransform2D;
-
 /**
- * A BoundarySet2D is a set of continuous oriented curves. 
- * Each curve of the set defines its own domain.<p>
+ * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the
+ * end of a curve is the beginning of the next curve, and such that they do
+ * not intersect nor self-intersect.<p>
  * @author dlegland
  */
-public class BoundarySet2D<T extends ContinuousBoundary2D>
-extends CurveSet2D<T> implements Boundary2D {
-	public BoundarySet2D(){
+public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> 
+		extends PolyCurve2D<T>
+		implements ContinuousOrientedCurve2D {
+	
+	public PolyOrientedCurve2D(){
+		super();
 	}
 	
-	public BoundarySet2D(T[] curves){
+	public PolyOrientedCurve2D(T[] curves){
 		super(curves);
 	}
 
-	public BoundarySet2D(Collection<? extends T> curves){
+	public PolyOrientedCurve2D(Collection<? extends T> curves) {
 		super(curves);
 	}
 
-	public BoundarySet2D(T curve){
-		super();
-		this.addCurve(curve);
-	}
-
+	
 	public double getWindingAngle(java.awt.geom.Point2D point) {
 		double angle=0;
-		for(OrientedCurve2D curve : this.getCurves())
+		for(OrientedCurve2D curve : this.curves)
 			angle += curve.getWindingAngle(point);
 		return angle;
 	}
 
 	public double getSignedDistance(java.awt.geom.Point2D p){
 		return getSignedDistance(p.getX(), p.getY());
-	}
-	
-	public Collection<ContinuousBoundary2D> getBoundaryCurves(){
-		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
-		for(Curve2D curve : this.curves)
-			list.add((ContinuousBoundary2D) curve);
-		return list;
 	}
 	
 	/* (non-Javadoc)
@@ -79,49 +77,51 @@ extends CurveSet2D<T> implements Boundary2D {
 		double dist = Double.POSITIVE_INFINITY;
 		
 		for(OrientedCurve2D curve : this.getCurves()){
-			dist = Math.min(dist, curve.getSignedDistance(x, y));
+			dist = curve.getSignedDistance(x, y);
 			if(Math.abs(dist)<Math.abs(minDist))
 				minDist = dist;
 		}		
 		return minDist;
 	}
-
 	
 	public boolean isInside(java.awt.geom.Point2D point){
 		return this.getSignedDistance(point.getX(), point.getY())<0;
 	}
 	
-	
-	public BoundarySet2D<? extends ContinuousBoundary2D> getReverseCurve(){
-		ContinuousBoundary2D[] curves2 = new ContinuousBoundary2D[curves.size()];
+	public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve(){
+		ContinuousOrientedCurve2D[] curves2 = 
+			new ContinuousOrientedCurve2D[curves.size()];
 		int n=curves.size();
 		for(int i=0; i<n; i++)
 			curves2[i] = curves.get(n-1-i).getReverseCurve();
-		return new BoundarySet2D<ContinuousBoundary2D>(curves2);
+		return new PolyOrientedCurve2D<ContinuousOrientedCurve2D>(curves2);
 	}
 
-	public CurveSet2D<? extends ContinuousOrientedCurve2D> getSubCurve(double t0, double t1){
-		// get the subcurve
-		CurveSet2D<? extends Curve2D> curveSet = super.getSubCurve(t0, t1);
-		
-		// create subcurve array
-		ArrayList<ContinuousOrientedCurve2D> curves = 
-			new ArrayList<ContinuousOrientedCurve2D>();
-		for(Curve2D curve : curveSet.getCurves())
-			curves.add((ContinuousOrientedCurve2D) curve);
-		
-		// Create CurveSet for the result
-		return new CurveSet2D<ContinuousOrientedCurve2D>(curves);
-	}
-
-	/**
-	 * Clip the curve by a box. The result is an instance of
-	 * ContinuousOrientedCurveSet2D<ContinuousOrientedCurve2D>, which 
-	 * contains only instances of ContinuousOrientedCurve2D. 
-	 * If the curve is not clipped, the result is an instance of
-	 * ContinuousOrientedCurveSet2D<ContinuousOrientedCurve2D> 
-	 * which contains 0 curves.
+	/** 
+	 * Return an instance of PolyOrientedCurve2D. 
 	 */
+	public PolyOrientedCurve2D <? extends ContinuousOrientedCurve2D>
+			getSubCurve(double t0, double t1){
+		PolyCurve2D<?> set = (PolyCurve2D<?>) super.getSubCurve(t0, t1);
+		PolyOrientedCurve2D<ContinuousOrientedCurve2D> subCurve = 
+			new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
+		subCurve.setClosed(false);
+		
+		// convert to PolySmoothCurve by adding curves.
+		for(Curve2D curve : set.getCurves())
+			subCurve.addCurve((ContinuousOrientedCurve2D) curve);
+		
+		return subCurve;
+	}
+	
+	/**
+	 * Clip the PolyCurve2D by a box. The result is an instance of
+	 * CurveSet2D<ContinuousOrientedCurve2D>, which 
+	 * contains only instances of ContinuousOrientedCurve2D. 
+	 * If the PolyCurve2D is not clipped, the result is an instance of
+	 * CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
+	 */
+	@Override
 	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<Curve2D> set = CurveUtil.clipCurve(this, box);
@@ -139,13 +139,11 @@ extends CurveSet2D<T> implements Boundary2D {
 	}
 
 	
-	
-	public BoundarySet2D<? extends ContinuousBoundary2D> 
-	transform(AffineTransform2D trans) {
-		BoundarySet2D<ContinuousBoundary2D> result =
-			new BoundarySet2D<ContinuousBoundary2D>();
-		for(Curve2D curve : curves)
-			result.addCurve((ContinuousBoundary2D) curve.transform(trans));
+	public PolyOrientedCurve2D<?> transform(AffineTransform2D trans) {
+		PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = 
+			new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
+		for(ContinuousOrientedCurve2D curve : curves)
+			result.addCurve(curve.transform(trans));
 		return result;
 	}
 }

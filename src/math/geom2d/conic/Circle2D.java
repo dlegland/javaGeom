@@ -36,7 +36,7 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.curve.SmoothOrientedCurve2D;
+import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 

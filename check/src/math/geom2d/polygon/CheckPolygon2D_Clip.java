@@ -30,9 +30,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.curve.Boundary2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.polygon.Polygon2D;
 
 
@@ -73,7 +73,7 @@ public class CheckPolygon2D_Clip extends JPanel{
 		g2.setColor(Color.RED);
 		g2.draw(clipped);
 
-		clipped = CurveUtil.clipBoundary(boundary, box);
+		clipped = Boundary2DUtil.clipBoundary(boundary, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
 		g2.fill(clipped);

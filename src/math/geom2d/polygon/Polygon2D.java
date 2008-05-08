@@ -30,10 +30,10 @@ import java.util.*;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.curve.Boundary2D;
-import math.geom2d.curve.BoundarySet2D;
-import math.geom2d.curve.ContinuousBoundary2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -307,7 +307,7 @@ public class Polygon2D implements PolygonalShape2D{
 	 */
 	public Shape2D clip(Box2D box){
 		BoundarySet2D<ContinuousBoundary2D> boundarySet = 
-			CurveUtil.clipBoundary(this.getBoundary(), box);
+			Boundary2DUtil.clipBoundary(this.getBoundary(), box);
 			
 		//TODO: should return an instance of MultiPolygon2D.
 		return boundarySet;

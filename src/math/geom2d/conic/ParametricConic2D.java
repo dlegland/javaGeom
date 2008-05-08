@@ -32,9 +32,9 @@ import java.util.*;
 
 import math.geom2d.*;
 import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
 
