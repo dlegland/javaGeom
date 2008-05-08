@@ -239,6 +239,26 @@ public class Circle2DTest extends TestCase {
 	}
 	
 	/**
+	 * Clip with a box which keeps only circle arc from 0 to PI.
+	 */
+	public void testClipBox_Half(){
+		Circle2D circle = new Circle2D(100, 150, 10);
+		Box2D box = new Box2D(50, 150, 50, 150);
+		
+		CurveSet2D<? extends ContinuousOrientedCurve2D> clipped =
+			circle.clip(box);
+		Collection<? extends ContinuousOrientedCurve2D> curves = 
+			clipped.getCurves();
+		assertTrue(curves.size()==1);
+		
+		ContinuousOrientedCurve2D curve = curves.iterator().next();
+		assertTrue(curve instanceof CircleArc2D);
+		
+		CircleArc2D arc = (CircleArc2D) curve;
+		assertTrue(new CircleArc2D(circle, Math.PI, Math.PI).equals(arc));
+	}
+
+	/**
 	 * Clip with a box which keeps only circle arc from 0 to PI/2.
 	 */
 	public void testClipBox_Quarter(){
@@ -272,5 +292,12 @@ public class Circle2DTest extends TestCase {
 		assertTrue(curves.iterator().next().equals(circle));
 	}
 	
+	public void testClipBox_TouchOutsideLeft(){
+		Circle2D circle = new Circle2D(40, 100, 10);
+		Box2D box = new Box2D(50, 150, 50, 150);
 
+		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
+		Collection<?> curves = clipped.getCurves();
+		assertTrue(curves.size()==0);
+	}
 }

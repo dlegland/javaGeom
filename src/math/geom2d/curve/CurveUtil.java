@@ -13,7 +13,6 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 
 /**
@@ -30,18 +29,23 @@ public abstract class CurveUtil {
 	 * is the original curve.
 	 */
 	public final static CurveSet2D<Curve2D> clipCurve(Curve2D curve, Box2D box){
-		// Case of continuous curve
+		// Case of continuous curve:
+		// convert the result of ClipContinuousCurve to CurveSet of Curve2D
 		if(curve instanceof ContinuousCurve2D)
-			return CurveUtil.clipContinuousCurve((ContinuousCurve2D) curve, box);
+			return new CurveSet2D<Curve2D>(
+					CurveUtil.clipContinuousCurve(
+							(ContinuousCurve2D) curve, box).getCurves());
 		
 		// case of a CurveSet2D
-		if(curve instanceof CurveSet2D && !(curve instanceof ContinuousCurve2D))
+		if(curve instanceof CurveSet2D)
 			return CurveUtil.clipCurveSet((CurveSet2D<?>) curve, box);
 		
 		// Unknown case
 		System.err.println("Unknown curve class in Box2D.clipCurve()");
 		return new CurveSet2D<Curve2D>();
 	}
+	
+	
 	/**
 	 * clip a CurveSet2D.
 	 */
@@ -62,17 +66,22 @@ public abstract class CurveUtil {
 	}
 		
 	/**
-	 * clip a continuous curve.
+	 * Clip a continuous curve.
 	 */
-	public final static CurveSet2D<Curve2D> clipContinuousCurve(ContinuousCurve2D curve, Box2D box){
+	public final static CurveSet2D<ContinuousCurve2D> clipContinuousCurve(ContinuousCurve2D curve, Box2D box){
 		//TODO: there is a problem for degenerate cases. Possible solution:
 		// each curve returns 2 intersection points in case of tangential intersection
-		//TODO: should take into account unbounded boxes
 		
-		// create array of points
+		// Create CurveSet2D for storing the result
+		CurveSet2D<ContinuousCurve2D> res = new CurveSet2D<ContinuousCurve2D>();		
+		
+
+		// ------ Compute ordered list of intersections
+		
+		// create array of intersection points
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		// add the intersections with edges of the box boundary
+		// add all the intersections with edges of the box boundary
 		for(StraightObject2D edge : box.getEdges())
 			points.addAll(curve.getIntersections(edge));
 				
@@ -80,39 +89,135 @@ public abstract class CurveUtil {
 		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
 		for(Point2D p : points)
 			set.add(new java.lang.Double(curve.getPosition(p)));				
-				
-		// Create CurveSet2D for storing the result
-		CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();		
 		
-		// extract first point of the curve
-		Point2D point1 = curve.getFirstPoint();
+		// iterator on the intersection positions
+		Iterator<java.lang.Double> iter = set.iterator();
 
+		
+		// ----- remove intersections which do not cross the boundary
+		
+		// init arrays
+		int nInter = set.size();
+		double[] positions = new double[nInter+2];
+		double[] between = new double[nInter+1];
+		
+		// fill up array of positions, with extreme positions of curve
+		positions[0] = curve.getT0();
+		for(int i=0; i<nInter; i++)
+			positions[i+1] = iter.next();
+		positions[nInter+1] = curve.getT1();
+		
+		// compute positions of points between intersections
+		for(int i=0; i<nInter+1; i++)
+			between[i] = choosePosition(positions[i], positions[i+1]);
+		
+		// array of positions to remove
+		ArrayList<Double> toRemove = new ArrayList<Double>();
+		
+		// remove an intersection point if the curve portions before and after
+		// are both either inside or outside of the box.
+		for(int i=0; i<nInter; i++){
+			Point2D p1 = curve.getPoint(between[i]);
+			Point2D p2 = curve.getPoint(between[i+1]);
+			boolean b1 = box.contains(p1);
+			boolean b2 = box.contains(p2);
+			if(b1==b2)
+				toRemove.add(positions[i+1]);
+		}
+			
+		// remove unnecessary intersections
+		set.removeAll(toRemove);
+		
+		// iterator on the intersection positions
+		iter = set.iterator();
+		
+		
+		// ----- Check case of no intersection point
+		
 		// if no intersection point, the curve is totally either inside or 
 		// outside the box
 		if(set.size()==0){
-			if(box.contains(point1))
+			// compute position of an arbitrary point on the curve
+			Point2D point;
+			if(curve.isBounded()){
+				point = curve.getFirstPoint();
+			}else{
+				double pos = choosePosition(curve.getT0(), curve.getT1());
+				point = curve.getPoint(pos);
+			}
+			
+			// if the box contains a point, it contains the whole curve
+			if(box.contains(point))
 				res.addCurve(curve);
 			return res;
 		}
 		
-		double pos1, pos2;
-		Iterator<java.lang.Double> iter = set.iterator();
+		
+		// ----- Check if the curve starts inside of the box
+
+		// the flag for a curve that starts inside the box
+		boolean inside = false;
+		boolean touch  = false;
+		
+		// different behavior if curve is bounded or not
+		double t0 = curve.getT0();
+		if(Double.isInfinite(t0)){
+			// choose point between -infinite and first intersection
+			double pos = choosePosition(t0, set.iterator().next());
+			inside = box.contains(curve.getPoint(pos));
+		}else{
+			// extract first point of the curve
+			Point2D point = curve.getFirstPoint();
+			inside = box.contains(point);
+			
+			// if first point is on the boundary, then choose another point
+			// located between first point and first intersection
+			if(box.getBoundary().contains(point)){
+				touch = true;
+				
+				double pos = choosePosition(t0, iter.next());
+				while(Math.abs(pos-t0)<Shape2D.ACCURACY && iter.hasNext())
+					pos = choosePosition(t0, iter.next());
+				if(Math.abs(pos-t0)<Shape2D.ACCURACY)
+					pos = choosePosition(t0, curve.getT1());
+				point = curve.getPoint(pos);
+				
+				// remove the first point from the list of intersections
+				set.remove(t0);
+				
+				// if inside, adds the first portion of the curve, 
+				// and remove next intersection
+				if(box.contains(point)){
+					pos = set.iterator().next();
+					res.addCurve(curve.getSubCurve(t0, pos));
+					set.remove(pos);
+				}
+				
+				// update iterator
+				iter = set.iterator();
+				
+				inside = false;
+			}							
+		}
 		
 		// different behavior depending if first point lies inside the box
 		double pos0 = Double.NaN;
-		if(box.contains(point1) && !box.getBoundary().contains(point1))
+		if(inside&&!touch)
 			if(curve.isClosed())
 				pos0 = iter.next();
 			else
 				res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
 		
-		// add the portions of curve between each couple of intersections
+		
+		// ----- add portions of curve between each couple of intersections
+		
+		double pos1, pos2;
 		while(iter.hasNext()){
 			pos1 = iter.next().doubleValue();
 			if(iter.hasNext())
 				pos2 = iter.next().doubleValue();
 			else 
-				pos2 = curve.isClosed() ? pos0 :  curve.getT1();
+				pos2 = curve.isClosed()&&!touch ? pos0 :  curve.getT1();
 			res.addCurve(curve.getSubCurve(pos1, pos2));
 		}
 		
@@ -120,25 +225,14 @@ public abstract class CurveUtil {
 	}
 		
 	/**
-	 * clip a continuous smooth curve.
+	 * clip a continuous smooth curve. Currently just call the static method
+	 * clipContinuousCurve, and cast clipped curves.
 	 */
 	public final static CurveSet2D<SmoothCurve2D> clipSmoothCurve(SmoothCurve2D curve, Box2D box){
-		// create two CurveSet2D to be used in fip-flop
 		CurveSet2D<SmoothCurve2D> result = new CurveSet2D<SmoothCurve2D>();
-		CurveSet2D<SmoothCurve2D> buffer;
-		
-		// init first buffer with current curve
-		result.addCurve(curve);
-		
-		// Iterate on each clipping line
-		for(StraightLine2D line : box.getClippingLines()){
-			buffer = new CurveSet2D<SmoothCurve2D>();
-			for(SmoothCurve2D smooth : result){
-				for(SmoothCurve2D c : line.clipSmoothCurve(smooth))
-					buffer.addCurve(c);
-			}
-			result = buffer;
-		}
+		for(ContinuousCurve2D cont : CurveUtil.clipContinuousCurve(curve, box))
+			if(cont instanceof SmoothCurve2D)
+				result.addCurve((SmoothCurve2D) cont);
 		
 		return result;
 	}
@@ -151,58 +245,66 @@ public abstract class CurveUtil {
 	 */
 	public final static CurveSet2D<ContinuousOrientedCurve2D>
 			clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve, Box2D box){
+		
+		CurveSet2D<ContinuousOrientedCurve2D> result = 
+			new CurveSet2D<ContinuousOrientedCurve2D>();
+		for(ContinuousCurve2D cont : CurveUtil.clipContinuousCurve(curve, box))
+			if(cont instanceof ContinuousOrientedCurve2D)
+				result.addCurve((ContinuousOrientedCurve2D) cont);
+		
+		return result;
 	
-		// create array of points
-		ArrayList<Point2D> points = new ArrayList<Point2D>();
-
-		// add the intersections with edges of the box boundary
-		for(StraightObject2D edge : box.getEdges())
-			points.addAll(curve.getIntersections(edge));
-		
-		// convert list to point array, sorted wrt to their position on the curve
-		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		for(Point2D p : points)
-			set.add(new java.lang.Double(curve.getPosition(p)));			
-				
-		// Create curveset for storing the result
-		CurveSet2D<ContinuousOrientedCurve2D> res =
-			new CurveSet2D<ContinuousOrientedCurve2D>();		
-				
-		// extract first point of the curve
-		Point2D point1 = curve.getFirstPoint();
-		
-		// case of empty curve set, for example
-		if(point1==null)
-			return res;
-
-		// if no intersection point, the curve is totally either inside or outside the box
-		if(set.size()==0){
-			if(box.contains(point1))
-				res.addCurve(curve);
-			return res;
-		}
-		
-		double pos1, pos2;
-		Iterator<java.lang.Double> iter = set.iterator();
-		
-		double pos0=0;
-		
-		// different behavior depending if first point lies inside the box
-		if(box.contains(point1) && !box.getBoundary().contains(point1))
-			pos0 = iter.next().doubleValue();
-		
-		
-		// add the portions of curve between couples of intersections
-		while(iter.hasNext()){
-			pos1 = iter.next().doubleValue();
-			if(iter.hasNext())
-				pos2 = iter.next().doubleValue();
-			else
-				pos2 = pos0;
-			res.addCurve(curve.getSubCurve(pos1, pos2));
-		}
-		
-		return res;
+//		// create array of points
+//		ArrayList<Point2D> points = new ArrayList<Point2D>();
+//
+//		// add the intersections with edges of the box boundary
+//		for(StraightObject2D edge : box.getEdges())
+//			points.addAll(curve.getIntersections(edge));
+//		
+//		// convert list to point array, sorted wrt to their position on the curve
+//		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
+//		for(Point2D p : points)
+//			set.add(new java.lang.Double(curve.getPosition(p)));			
+//				
+//		// Create curveset for storing the result
+//		CurveSet2D<ContinuousOrientedCurve2D> res =
+//			new CurveSet2D<ContinuousOrientedCurve2D>();		
+//				
+//		// extract first point of the curve
+//		Point2D point1 = curve.getFirstPoint();
+//		
+//		// case of empty curve set, for example
+//		if(point1==null)
+//			return res;
+//
+//		// if no intersection point, the curve is totally either inside or outside the box
+//		if(set.size()==0){
+//			if(box.contains(point1))
+//				res.addCurve(curve);
+//			return res;
+//		}
+//		
+//		double pos1, pos2;
+//		Iterator<java.lang.Double> iter = set.iterator();
+//		
+//		double pos0=0;
+//		
+//		// different behavior depending if first point lies inside the box
+//		if(box.contains(point1) && !box.getBoundary().contains(point1))
+//			pos0 = iter.next().doubleValue();
+//		
+//		
+//		// add the portions of curve between couples of intersections
+//		while(iter.hasNext()){
+//			pos1 = iter.next().doubleValue();
+//			if(iter.hasNext())
+//				pos2 = iter.next().doubleValue();
+//			else
+//				pos2 = pos0;
+//			res.addCurve(curve.getSubCurve(pos1, pos2));
+//		}
+//		
+//		return res;
 	}
 		
 
@@ -406,5 +508,24 @@ public abstract class CurveUtil {
 		}
 		return ind;
 	}
-	
+
+	/** 
+	 * Choose an arbitrary position between positions t0 and t1, which can be
+	 * infinite.
+	 * @param t0 the first bound of a curve parameterization
+	 * @param t1 the second bound of a curve parameterization
+	 * @return a position located between t0 and t1
+	 */
+	private final static double choosePosition(double t0, double t1){
+		if(Double.isInfinite(t0)){
+			if(Double.isInfinite(t1))
+				return 0;
+			return t1-10;
+		}
+		
+		if(Double.isInfinite(t1))
+			return t0+10;
+		
+		return (t0+t1)/2;
+	}
 }
