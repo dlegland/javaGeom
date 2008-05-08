@@ -24,6 +24,8 @@
  *
  */
 
+package math.geom2d.conic;
+
 import java.awt.*;
 import javax.swing.*;
 
