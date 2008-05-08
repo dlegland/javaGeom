@@ -28,7 +28,7 @@ package math.geom2d.line;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.curve.ContinuousBoundary2D;
+import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
 import java.util.ArrayList;

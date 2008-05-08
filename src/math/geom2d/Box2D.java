@@ -30,9 +30,9 @@ package math.geom2d;
 import java.util.*;
 
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.curve.Boundary2D;
-import math.geom2d.curve.BoundaryPolyCurve2D;
-import math.geom2d.curve.BoundarySet2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.BoundaryPolyCurve2D;
+import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;

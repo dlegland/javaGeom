@@ -23,9 +23,11 @@
  * Created on 25 déc. 2006
  *
  */
-package math.geom2d.curve;
+package math.geom2d.domain;
 
 import math.geom2d.Box2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**

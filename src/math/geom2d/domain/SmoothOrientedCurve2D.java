@@ -1,6 +1,6 @@
-/* file : ContinuousBoundary2D.java
- * 
- * Project : geometry
+/* File SmoothOrientedCurve2D.java 
+ *
+ * Project : javaGeom
  *
  * ===========================================
  * 
@@ -19,29 +19,28 @@
  * along with this library. if not, write to :
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
- * 
- * Created on 25 déc. 2006
  *
+ * Created 24 janv. 08
  */
-package math.geom2d.curve;
+
+package math.geom2d.domain;
 
 import math.geom2d.Box2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
-
 /**
- * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D
- * is a continuous, oriented and non self-intersecting curve.
  * @author dlegland
+ *
  */
-public interface ContinuousOrientedCurve2D extends ContinuousCurve2D, OrientedCurve2D{
+public interface SmoothOrientedCurve2D extends SmoothCurve2D, ContinuousOrientedCurve2D {
 	
-	public abstract ContinuousOrientedCurve2D getReverseCurve();
-
-	public abstract ContinuousOrientedCurve2D getSubCurve(double t0, double t1);
-
-	public abstract ContinuousOrientedCurve2D transform(AffineTransform2D trans);
-
-	public abstract CurveSet2D<? extends ContinuousOrientedCurve2D>
-	clip(Box2D box);
+	public abstract SmoothOrientedCurve2D getReverseCurve();
+	
+	public abstract SmoothOrientedCurve2D getSubCurve(double t0, double t1);
+	
+	public abstract CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box);
+	
+	public abstract SmoothOrientedCurve2D transform(AffineTransform2D trans);
 }

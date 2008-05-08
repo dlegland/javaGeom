@@ -1,5 +1,6 @@
-/* file : Boundary2D.java
- * 
+/*
+ * File : AllTests.java
+ *
  * Project : geometry
  *
  * ===========================================
@@ -20,29 +21,24 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 25 déc. 2006
- *
+ * author : Legland
+ * Created on 30 déc. 2003
  */
-package math.geom2d.curve;
+package math.geom2d.domain;
 
-import java.util.Collection;
-
-import math.geom2d.transform.AffineTransform2D;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- * A Boundary2D is the curve which defines the contour of a domain in the
- * plane. It is compound of one or several non-intersecting and oriented 
- * curves. 
- * @author dlegland
+ * @author Legland
  */
-public interface Boundary2D extends OrientedCurve2D {
+public class AllTests {
 
-	/**
-	 * Return the different continuous curves composing the boundary
-	 */
-	public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
-		
-	public abstract Boundary2D getReverseCurve();
-
-	public abstract Boundary2D transform(AffineTransform2D trans);
+	public static Test suite() {
+		TestSuite suite = new TestSuite("Test for math.geom2d.domain");
+		//$JUnit-BEGIN$
+		suite.addTest(new TestSuite(Boundary2DUtilTest.class));
+		//$JUnit-END$
+		return suite;
+	}
 }

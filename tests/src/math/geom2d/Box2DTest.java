@@ -27,7 +27,7 @@ package math.geom2d;
 
 import junit.framework.TestCase;
 
-import math.geom2d.curve.Boundary2D;
+import math.geom2d.domain.Boundary2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;

@@ -33,9 +33,9 @@ import java.util.TreeSet;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousBoundary2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports

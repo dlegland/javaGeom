@@ -24,7 +24,7 @@
  * Created on 18 sept. 2004
  */
 
-package math.geom2d.curve;
+package math.geom2d.domain;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -32,7 +32,7 @@ import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
 import math.geom2d.Shape2D;
-import math.geom2d.curve.Boundary2D;
+import math.geom2d.domain.Boundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
@@ -78,7 +78,7 @@ public class GenericDomain2D implements Domain2D {
 	}
 
 	public Shape2D clip(Box2D box) {
-		return new GenericDomain2D(CurveUtil.clipBoundary(this.getBoundary(), box));
+		return new GenericDomain2D(Boundary2DUtil.clipBoundary(this.getBoundary(), box));
 	}
 
 	public Box2D getBoundingBox() {

@@ -28,7 +28,7 @@ package math.geom2d.polygon;
 import java.util.*;
 
 import math.geom2d.Point2D;
-import math.geom2d.curve.Domain2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
 

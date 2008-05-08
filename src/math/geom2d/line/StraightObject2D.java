@@ -31,7 +31,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.curve.SmoothOrientedCurve2D;
+import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
 

@@ -20,21 +20,30 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 1 avr. 2007
+ * Created on 25 déc. 2006
  *
  */
-package math.geom2d.curve;
+package math.geom2d.domain;
 
+import math.geom2d.Box2D;
+import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
 
+
 /**
- * a continuous boundary is a continuous oriented curve which delimits a planar domain.
+ * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D
+ * is a continuous, oriented and non self-intersecting curve.
  * @author dlegland
  */
-public interface ContinuousBoundary2D extends Boundary2D,
-		ContinuousOrientedCurve2D {
+public interface ContinuousOrientedCurve2D extends ContinuousCurve2D, OrientedCurve2D{
 	
-	public abstract ContinuousBoundary2D getReverseCurve();
+	public abstract ContinuousOrientedCurve2D getReverseCurve();
 
-	public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
+	public abstract ContinuousOrientedCurve2D getSubCurve(double t0, double t1);
+
+	public abstract ContinuousOrientedCurve2D transform(AffineTransform2D trans);
+
+	public abstract CurveSet2D<? extends ContinuousOrientedCurve2D>
+	clip(Box2D box);
 }

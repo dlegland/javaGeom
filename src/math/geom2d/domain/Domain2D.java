@@ -22,10 +22,10 @@
  */
 
 // package
-package math.geom2d.curve;
+package math.geom2d.domain;
 
 import math.geom2d.Shape2D;
-import math.geom2d.curve.Boundary2D;
+import math.geom2d.domain.Boundary2D;
 
 // Imports
 

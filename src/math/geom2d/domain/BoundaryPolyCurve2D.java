@@ -23,7 +23,7 @@
  * Created on 31 mars 2007
  *
  */
-package math.geom2d.curve;
+package math.geom2d.domain;
 
 import java.util.*;
 

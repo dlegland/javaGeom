@@ -29,7 +29,7 @@ import java.util.Collection;
 
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.BoundarySet2D;
+import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;

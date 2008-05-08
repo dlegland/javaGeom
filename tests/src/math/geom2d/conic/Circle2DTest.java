@@ -29,9 +29,9 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.curve.ContinuousOrientedCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HRectangle2D;
