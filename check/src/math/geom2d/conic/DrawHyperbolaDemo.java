@@ -38,6 +38,7 @@ import math.geom2d.conic.Hyperbola2D;
 import math.geom2d.conic.HyperbolaBranch2D;
 import math.geom2d.conic.HyperbolaBranchArc2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
 
@@ -131,9 +132,9 @@ public class DrawHyperbolaDemo extends JPanel{
 			g2.fill(new Circle2D(point, 4));
 
 		
-//		// The clipping of first branch
-		//Curve2D clipped = branch1.clip(box);
-		CurveSet2D<SmoothCurve2D> clipped = line4.clipSmoothCurve(branch2);
+		// The clipping of first branch
+		CurveSet2D<SmoothCurve2D> clipped = 
+			CurveUtil.clipSmoothCurve(branch2, line4);
 		if (clipped!=null){
 			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
 			g2.setStroke(new BasicStroke(1.0f));

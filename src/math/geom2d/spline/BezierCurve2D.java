@@ -58,10 +58,27 @@ public class BezierCurve2D
 		this(0, 0, 0, 0, 0, 0, 0, 0);
 	}
 	
+	/** 
+	 * Build a new Bezier curve from its array of coefficients. The array
+	 * must have size 2*4.
+	 * @param coefs the coefficients of the BezierCurve2D.
+	 */
+	public BezierCurve2D(double[][] coefs){
+		this(
+				coefs[0][0], 
+				coefs[1][0], 
+				coefs[0][0] + coefs[0][1]/3.0, 
+				coefs[1][0] + coefs[1][1]/3.0, 
+				coefs[0][0] + 2*coefs[0][1]/3.0 + coefs[0][2]/3.0, 
+				coefs[1][0] + 2*coefs[1][1]/3.0 + coefs[1][2]/3.0, 
+				coefs[0][0] + coefs[0][1] + coefs[0][2] + coefs[0][3], 
+				coefs[1][0] + coefs[1][1] + coefs[1][2] + coefs[1][3]);
+	}
+
 	/**
 	 *  Build a new Bezier curve of degree 3 by specifying position of extreme
 	 *  points and position of 2 control points. The resulting curve is
-	 *  totally containe in the convex polygon formed by the 4 control points. 
+	 *  totally contained in the convex polygon formed by the 4 control points. 
 	 * @param p1 first point
 	 * @param ctrl1 first control point
 	 * @param ctrl2 second control point
@@ -103,6 +120,14 @@ public class BezierCurve2D
 	// ===================================================================
 	// methods specific to BezierCurve2D
 		
+	public Point2D getControl1(){
+		return new Point2D(ctrlx1, ctrly1);
+	}
+	
+	public Point2D getControl2(){
+		return new Point2D(ctrlx2, ctrly2);
+	}
+
 	/**
 	 * Returns the matrix of parametric representation of the line. Result has the 
 	 * form : <p>
@@ -126,60 +151,31 @@ public class BezierCurve2D
 		return tab;
 	}
 
-	/**
-	 * Creates a polyline with <code>n</code> line segments approximating
-	 * the Bezier curve.
-	 * @param n number of line segments of polyline
-	 * @return a polyline with <code>n</code> line segments.
-	 */
-	public Polyline2D getAsPolyline(int n){
-		Point2D[] points = new Point2D[n+1];
-		for(int i=0; i<n+1; i++)
-			points[i] = this.getPoint((double)i/(double)n);
-		return new Polyline2D(points);		
-	}
+//	/** 
+//	 * Return the parallel curve located at a distance d from this Bezier
+//	 * curve.
+//	 */
+//	public BezierCurve2D getParallel(double d){
+//		double[][] tab = this.getParametric();
+//		double[][] tab2 = new double[2][4];
+//		
+//		d = d/Math.hypot(tab[0][1], tab[1][1]);
+//		
+//		tab2[0][0] 	= tab[0][0] + d*tab[1][1];
+//		tab2[1][0] 	= tab[1][0] - d*tab[0][1];
+//		
+//		tab2[0][1] 	= tab[0][1] + 2*d*tab[1][2];
+//		tab2[1][1] 	= tab[1][1] - 2*d*tab[0][2];
+//		
+//		tab2[0][2] 	= tab[0][2] + 3*d*tab[1][3];
+//		tab2[1][2] 	= tab[1][2] - 3*d*tab[0][3];
+//
+//		tab2[0][3] 	= tab[0][3];
+//		tab2[1][3] 	= tab[1][3];
+//
+//		return new BezierCurve2D(tab2);
+//	}
 	
-	
-	// ===================================================================
-	// methods from SmoothCurve2D interface
-	
-	public Vector2D getTangent(double t){
-		double [][] c = getParametric();
-		double dx = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
-		double dy = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
-		return new Vector2D(dx, dy);
-	}
-
-
-	/**
-	 * returns the curvature of the Curve.
-	 */
-	public double getCurvature(double t){
-		double [][] c = getParametric();
-		double xp = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
-		double yp = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
-		double xs = 2*c[0][2] + 6*c[0][3]*t;
-		double ys = 2*c[1][2] + 6*c[1][3]*t;
-		
-		return (xp*ys - yp*xs)/Math.pow(xp*xp + yp*yp, 1.5);
-	}
-	
-	// ===================================================================
-	// methods from ContinousCurve2D interface 
-	
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<BezierCurve2D> list = new ArrayList<BezierCurve2D>(1);
-		list.add(this);
-		return list;
-	}
-	
-	/**
-	 * The cubic curve is never closed.
-	 */
-	public boolean isClosed() {
-		return false;
-	}
-
 	// ===================================================================
 	// methods from OrientedCurve2D interface 
 	
@@ -216,6 +212,59 @@ public class BezierCurve2D
 			return -getDistance(x, y);
 		else
 			return getDistance(x, y);
+	}
+
+	// ===================================================================
+	// methods from SmoothCurve2D interface
+	
+	public Vector2D getTangent(double t){
+		double [][] c = getParametric();
+		double dx = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
+		double dy = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
+		return new Vector2D(dx, dy);
+	}
+
+
+	/**
+	 * returns the curvature of the Curve.
+	 */
+	public double getCurvature(double t){
+		double [][] c = getParametric();
+		double xp = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
+		double yp = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
+		double xs = 2*c[0][2] + 6*c[0][3]*t;
+		double ys = 2*c[1][2] + 6*c[1][3]*t;
+		
+		return (xp*ys - yp*xs)/Math.pow(xp*xp + yp*yp, 1.5);
+	}
+	
+	// ===================================================================
+	// methods from ContinousCurve2D interface 
+	
+	/**
+	 * Creates a polyline with <code>n</code> line segments approximating
+	 * the Bezier curve.
+	 * @param n number of line segments of polyline
+	 * @return a polyline with <code>n</code> line segments.
+	 */
+	public Polyline2D getAsPolyline(int n){
+		Point2D[] points = new Point2D[n+1];
+		for(int i=0; i<n+1; i++)
+			points[i] = this.getPoint((double)i/(double)n);
+		return new Polyline2D(points);		
+	}
+	
+	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+		ArrayList<BezierCurve2D> list = new ArrayList<BezierCurve2D>(1);
+		list.add(this);
+		return list;
+	}
+	
+	/**
+	 * The cubic curve is never closed.
+	 */
+	public boolean isClosed() {
+		return false;
 	}
 
 	

@@ -24,21 +24,16 @@
 // package
 package math.geom2d.line;
 
+//Imports
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
-// Imports
 
 /**
  * Representation of straigth lines. Such lines can	be constructed using two points,
@@ -395,84 +390,6 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		y0 = -b*c/(a*a+b*b);
 	}
 
-	/**
-	 * clip a continuous smooth curve by the half-plane defined by this line.
-	 */
-	public CurveSet2D<SmoothCurve2D> clipSmoothCurve(SmoothCurve2D curve){
-		//TODO: deprecate ?
-		// get the list of intersections with the line
-		ArrayList<Point2D> list = new ArrayList<Point2D>();				
-		list.addAll(curve.getIntersections(this));
-				
-		// convert list to point array, sorted with respect to their position
-		// on the curve, but do not add tangent points with curvature greater
-		// than 0
-		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
-		double position;
-		Vector2D vector = this.getVector();
-		for(Point2D point : list){
-			// get position of intersection on the curve (use project to avoid
-			// round-off problems)
-			position = curve.project(point);
-			
-			// Condition of colinearity with direction vector of line
-			Vector2D tangent = curve.getTangent(position);
-			if(Vector2D.isColinear(tangent, vector)){			
-				// condition on the curvature (close to zero = cusp point)
-				double curv = curve.getCurvature(position);
-				if(Math.abs(curv)>Shape2D.ACCURACY) continue;
-			}
-			set.add(new java.lang.Double(position));
-		}		
-				
-		// Create CurveSet2D for storing the result
-		CurveSet2D<SmoothCurve2D> res = new CurveSet2D<SmoothCurve2D>();		
-		
-		// extract first point of the curve, or a point arbitrarily far
-		Point2D point1 = curve.getFirstPoint();
-		if(Double.isInfinite(curve.getT0()))
-			point1 = curve.getPoint(-1000);
-
-		// Extract first valid intersection point, if it exists
-		double pos1, pos2;
-		Iterator<java.lang.Double> iter = set.iterator();
-			
-		// if no intersection point, the curve is either totally inside
-		// or totally outside the box
-		if(!iter.hasNext()){
-			// Find a point on the curve and not on the line
-			// First tries with first point
-			double t0 = curve.getT0(); 
-			if(t0==Double.NEGATIVE_INFINITY) t0=-100;
-			while(this.contains(point1)){
-				double t1 = curve.getT1(); 
-				if(t1==Double.POSITIVE_INFINITY) t1=+100;
-				t0 = (t0+t1)/2;
-				point1 = curve.getPoint(t0);
-			}
-			if(this.getSignedDistance(point1)<0)
-				res.addCurve(curve);
-			return res;
-		}
-		
-		// different behavior depending if first point lies inside the box
-		if(this.getSignedDistance(point1)<0 && !this.contains(point1)){
-			pos1 = iter.next().doubleValue();
-			res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
-		}
-		
-		// add the portions of curve between couples of intersections
-		while(iter.hasNext()){
-			pos1 = iter.next().doubleValue();
-			if(iter.hasNext())
-				pos2 = iter.next().doubleValue();
-			else
-				pos2 = curve.getT1();
-			res.addCurve(curve.getSubCurve(pos1, pos2));
-		}
-		
-		return res;
-	}
 
 	// ===================================================================
 	// methods specific to Boundary2D interface
@@ -492,8 +409,8 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 	}
 
 
-//	// ===================================================================
-//	// general methods
+	// ===================================================================
+	// general methods
 
 	/**
 	 * Returns the transformed line. The result is still a StraightLine2D.
