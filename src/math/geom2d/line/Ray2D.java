@@ -89,7 +89,7 @@ public class Ray2D extends LineArc2D{
 	 * in the direction specified by <code>vector<\code>.
 	 */
 	public Ray2D(Point2D point, Vector2D vector){
-		this(point.getX(), point.getY(), vector.getDx(), vector.getDy());
+		this(point.getX(), point.getY(), vector.getX(), vector.getY());
 	}
 
 	/**
@@ -133,8 +133,8 @@ public class Ray2D extends LineArc2D{
 	public void setRay(Point2D point, Vector2D vect){
 		this.x0 = point.getX();
 		this.y0 = point.getY();
-		this.dx = vect.getDx();
-		this.dy = vect.getDy();
+		this.dx = vect.getX();
+		this.dy = vect.getY();
 	}
 
 	// ===================================================================

@@ -434,7 +434,7 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 						if(lambda < 0){
 							double xx, yy;
 							xx = length1; length1=length2; length2=xx;
-							xx = vector1.getDx(); yy = vector1.getDy();
+							xx = vector1.getX(); yy = vector1.getY();
 							vector1.setVector(-yy, xx);
 							vector2.setVector(xx, -yy);
 						}

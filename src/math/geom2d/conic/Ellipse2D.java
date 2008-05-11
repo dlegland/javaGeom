@@ -189,7 +189,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 
 	public Point2D getProjectedPoint(java.awt.geom.Point2D point){
 		Vector2D polar = this.getProjectedVector(point, Shape2D.ACCURACY);
-		return new Point2D(point.getX()+polar.getDx(), point.getY()+polar.getDy());
+		return new Point2D(point.getX()+polar.getX(), point.getY()+polar.getY());
 	}
 
 	/**
