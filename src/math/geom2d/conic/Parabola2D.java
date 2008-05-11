@@ -397,8 +397,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
 		// Computes the lines which corresponds to a "Unit" parabola.
 		StraightObject2D line2 = this.formatLine(line);
-		double dx = line2.getVector().getDx();
-		double dy = line2.getVector().getDy();
+		double dx = line2.getVector().getX();
+		double dy = line2.getVector().getY();
 		
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 

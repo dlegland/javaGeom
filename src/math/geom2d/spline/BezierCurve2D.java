@@ -102,8 +102,8 @@ public class BezierCurve2D
 	public BezierCurve2D(
 			java.awt.geom.Point2D p1, Vector2D v1, 
 			java.awt.geom.Point2D p2, Vector2D v2){
-		this(p1.getX(), p1.getY(), p1.getX()+v1.getDx()/3, p1.getY()+v1.getDy()/3, 
-			p2.getX()-v2.getDx()/3, p2.getY()-v2.getDy()/3, p2.getX(), p2.getY());
+		this(p1.getX(), p1.getY(), p1.getX()+v1.getX()/3, p1.getY()+v1.getY()/3, 
+			p2.getX()-v2.getX()/3, p2.getY()-v2.getY()/3, p2.getX(), p2.getY());
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class BezierCurve2D
 	}
 	
 	/**
-	 * Computes subcurve. If t1<t0, returns null.
+	 * Computes portion of BezierCurve. If t1<t0, returns null.
 	 */
 	public BezierCurve2D getSubCurve(double t0, double t1){
 		t0 = Math.max(t0, 0);
@@ -367,10 +367,10 @@ public class BezierCurve2D
 		double dt = t1-t0;
 		Vector2D v0 = getTangent(t0); 
 		Vector2D v1 = getTangent(t1);
-		v0.setDx(v0.getDx()*dt);
-		v0.setDy(v0.getDy()*dt);
-		v1.setDx(v1.getDx()*dt);
-		v1.setDy(v1.getDy()*dt);
+		v0.setX(v0.getX()*dt);
+		v0.setY(v0.getY()*dt);
+		v1.setX(v1.getX()*dt);
+		v1.setY(v1.getY()*dt);
 		return new BezierCurve2D(getPoint(t0), v0, getPoint(t1), v1);
 	}
 

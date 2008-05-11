@@ -69,7 +69,7 @@ public class Angle2D {
 	 * the point with given coordinate.
 	 */
 	public final static double getHorizontalAngle(Vector2D vect){
-		return (Math.atan2(vect.getDy(), vect.getDx()) + M_2PI)%(M_2PI);
+		return (Math.atan2(vect.getY(), vect.getX()) + M_2PI)%(M_2PI);
 	}
 
 	/** 
@@ -77,7 +77,7 @@ public class Angle2D {
 	 */
 	public final static double getHorizontalAngle(StraightObject2D object){
 		Vector2D vect = object.getVector();
-		return (Math.atan2(vect.getDy(), vect.getDx()) + M_2PI)%(M_2PI);
+		return (Math.atan2(vect.getY(), vect.getX()) + M_2PI)%(M_2PI);
 	}
 
 	/** 

@@ -69,7 +69,7 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 	 * the specified direction vector.
 	 */
 	public StraightLine2D(java.awt.geom.Point2D point, Vector2D direction){
-		this(point.getX(), point.getY(), direction.getDx(), direction.getDy());
+		this(point.getX(), point.getY(), direction.getX(), direction.getY());
 	}
 
 	/** 

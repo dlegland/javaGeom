@@ -233,8 +233,8 @@ implements Conic2D{
 		Point2D origin = line2.getOrigin();
 		double x0 = origin.getX();
 		double y0 = origin.getY();
-		double dx = line2.getVector().getDx();
-		double dy = line2.getVector().getDy();
+		double dx = line2.getVector().getX();
+		double dy = line2.getVector().getY();
 		
 		// extract line parameters
 		// different strategy depending if line is more horizontal or more vertical

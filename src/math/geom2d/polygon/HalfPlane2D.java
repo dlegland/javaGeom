@@ -237,7 +237,7 @@ public class HalfPlane2D implements Domain2D{
 		// check if horizontal
 		if(vect.isColinear(new Vector2D(1, 0))){
 			Point2D pos = line.getOrigin();
-			if(vect.getDx()>0)
+			if(vect.getX()>0)
 				return new Box2D(
 						Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
 						pos.getY(), Double.POSITIVE_INFINITY);
@@ -251,7 +251,7 @@ public class HalfPlane2D implements Domain2D{
 		// check if horizontal
 		if(vect.isColinear(new Vector2D(0, 1))){
 			Point2D pos = line.getOrigin();
-			if(vect.getDy()>0)
+			if(vect.getY()>0)
 				return new Box2D(
 						Double.NEGATIVE_INFINITY, pos.getX(), 
 						Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);

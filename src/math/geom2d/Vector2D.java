@@ -29,11 +29,10 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Define a vector in 2 Dimensions. Provides methods to compute cross product
+ * A vector in the 2D plane. Provides methods to compute cross product
  * and dot product, addition and subtraction of vectors.
  */
 public class Vector2D{
-
 
 	// ===================================================================
 	// constants
@@ -42,14 +41,14 @@ public class Vector2D{
 	// ===================================================================
 	// class variables
 	
-	protected double dx=1;
-	protected double dy=0;
+	protected double x=1;
+	protected double y=0;
 	
 	
 	// ===================================================================
 	// constructors
 	
-	/** construct a new Vectors initialized with dx=1 and dy=0. */
+	/** construct a new Vectors initialized with x=1 and y=0. */
 	public Vector2D(){
 		this(1, 0);
 	}
@@ -69,9 +68,9 @@ public class Vector2D{
 	}
 
 	/** constructor with given position. */
-	public Vector2D(double dx, double dy){
-		this.dx = dx;
-		this.dy = dy;
+	public Vector2D(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	
@@ -90,7 +89,7 @@ public class Vector2D{
 	 * negative if they are in opposite direction. 
 	 */
 	public final static double dot(Vector2D v1, Vector2D v2){
-		return v1.getDx()*v2.getDx()+v1.getDy()*v2.getDy();
+		return v1.getX()*v2.getX()+v1.getY()*v2.getY();
 	}
 	
 	/**
@@ -101,7 +100,7 @@ public class Vector2D{
 	 * negative otherwise.
 	 */
 	public final static double cross(Vector2D v1, Vector2D v2){
-		return v1.getDx()*v2.getDy()-v2.getDx()*v1.getDy();
+		return v1.getX()*v2.getY()-v2.getX()*v1.getY();
 	}	
 	
 	/**
@@ -111,7 +110,7 @@ public class Vector2D{
 	public final static boolean isColinear(Vector2D v1, Vector2D v2){
 		v1 = v1.getNormalizedVector();
 		v2 = v2.getNormalizedVector();
-		return Math.abs(v1.getDx()*v2.getDy() - v1.getDy()*v2.getDx())<Shape2D.ACCURACY;
+		return Math.abs(v1.getX()*v2.getY() - v1.getY()*v2.getX())<Shape2D.ACCURACY;
 	}
 	
 	/**
@@ -121,36 +120,36 @@ public class Vector2D{
 	public final static boolean isOrthogonal(Vector2D v1, Vector2D v2){			
 		v1 = v1.getNormalizedVector();
 		v2 = v2.getNormalizedVector();
-		return Math.abs(v1.getDx()*v2.getDx()+v1.getDy()*v2.getDy())<Shape2D.ACCURACY;
+		return Math.abs(v1.getX()*v2.getX()+v1.getY()*v2.getY())<Shape2D.ACCURACY;
 	}
 	
 	
 	// ===================================================================
 	// accessors
 
-	public double getDx(){
-		return dx;
+	public double getX(){
+		return x;
 	}
 	
-	public double getDy(){
-		return dy;
+	public double getY(){
+		return y;
 	}
 	
 
 	// ===================================================================
 	// modifiers
 
-	public void setDx(double dx){
-		this.dx = dx;
+	public void setX(double x){
+		this.x = x;
 	}
 	
-	public void setDy(double dy){
-		this.dy = dy;
+	public void setY(double y){
+		this.y = y;
 	}
 	
-	public void setVector(double dx, double dy){
-		this.dx = dx;
-		this.dy = dy;
+	public void setVector(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	
@@ -159,8 +158,8 @@ public class Vector2D{
 	 * angle with horizontal.
 	 */
 	public void setAsPolar(double rho, double theta){
-		dx = rho*Math.cos(theta);
-		dy = rho*Math.sin(theta);
+		x = rho*Math.cos(theta);
+		y = rho*Math.sin(theta);
 	}
 	
 	/**
@@ -169,7 +168,7 @@ public class Vector2D{
 	 * @return the vector opposite to <code>this</code>.
 	 */
 	public Vector2D getOpposite(){
-		return new Vector2D(-dx, -dy);
+		return new Vector2D(-x, -y);
 	}
 
 	/**
@@ -177,7 +176,7 @@ public class Vector2D{
 	 * @return the euclidean norm of the vector
 	 */
 	public double getNorm(){
-		return Math.hypot(dx, dy);
+		return Math.hypot(x, y);
 	}
 	
 	/**
@@ -192,9 +191,9 @@ public class Vector2D{
 	 * Normalizes the vector, such that its norms becomes 1.
 	 */	
 	public void normalize(){
-		double r = Math.hypot(this.dx, this.dy);
-		this.dx = this.dx/r;
-		this.dy = this.dy/r;
+		double r = Math.hypot(this.x, this.y);
+		this.x = this.x/r;
+		this.y = this.y/r;
 	}
 	
 	/**
@@ -202,8 +201,8 @@ public class Vector2D{
 	 * to 1.
 	 */	
 	public Vector2D getNormalizedVector(){
-		double r = Math.hypot(this.dx, this.dy);
-		return new Vector2D(this.dx/r, this.dy/r);
+		double r = Math.hypot(this.x, this.y);
+		return new Vector2D(this.x/r, this.y/r);
 	}
 	
 	
@@ -239,7 +238,7 @@ public class Vector2D{
 	 * negative if they are in opposite direction. 
 	 */
 	public double dot(Vector2D v){
-		return dx*v.getDx()+dy*v.getDy();
+		return x*v.getX()+y*v.getY();
 	}
 	
 	/**
@@ -251,7 +250,7 @@ public class Vector2D{
 	 * negative otherwise.
 	 */
 	public double cross(Vector2D v){
-		return dx*v.getDy()-v.getDx()*dy;
+		return x*v.getY()-v.getX()*y;
 	}
 	
 	/**
@@ -259,7 +258,7 @@ public class Vector2D{
 	 * Inner fields are not modified.
 	 */
 	public Vector2D plus(Vector2D v){
-		return new Vector2D(dx+v.getDx(), dy+v.getDy());
+		return new Vector2D(x+v.getX(), y+v.getY());
 	}
 	
 	/**	
@@ -267,7 +266,7 @@ public class Vector2D{
 	 * Inner fields are not modified.
 	 */
 	public Vector2D minus(Vector2D v){
-		return new Vector2D(dx-v.getDx(), dy-v.getDy());
+		return new Vector2D(x-v.getX(), y-v.getY());
 	}
 	
 	
@@ -280,8 +279,8 @@ public class Vector2D{
 	public Vector2D transform(AffineTransform2D trans){
 		double[] tab = trans.getCoefficients();
 		return new Vector2D(
-			dx*tab[0] + dy*tab[1],
-			dx*tab[3] + dy*tab[4]);
+			x*tab[0] + y*tab[1],
+			x*tab[3] + y*tab[4]);
 	}
 	
 	/** 
@@ -290,8 +289,8 @@ public class Vector2D{
 	public boolean equals(Object obj){
 		if(!(obj instanceof Vector2D)) return false;
 		Vector2D p = (Vector2D) obj;
-		return (Math.abs(p.getDx()-dx)<Shape2D.ACCURACY &&
-		 		Math.abs(p.getDy()-dy)<Shape2D.ACCURACY);
+		return (Math.abs(p.getX()-x)<Shape2D.ACCURACY &&
+		 		Math.abs(p.getY()-y)<Shape2D.ACCURACY);
 	}
 	
 

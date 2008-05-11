@@ -54,14 +54,14 @@ public class AffineTransform2D implements Bijection2D{
 			StraightObject2D line, double distance){
 		Vector2D vector = line.getVector().getNormalizedVector();
 		Point2D origin = line.getOrigin();
-		double dx = vector.getDx();
-		double dy = vector.getDy();
+		double dx = vector.getX();
+		double dy = vector.getY();
 		double x0 = origin.getX();
 		double y0 = origin.getY();
 		double delta = dx*dx + dy*dy;
 		
-		double tx = vector.getDx()*distance;
-		double ty = vector.getDy()*distance;
+		double tx = vector.getX()*distance;
+		double ty = vector.getY()*distance;
 		
 		return new AffineTransform2D(
 				(dx*dx - dy*dy)/delta,
@@ -75,8 +75,8 @@ public class AffineTransform2D implements Bijection2D{
 	public final static AffineTransform2D createLineReflection(StraightObject2D line){
 		Vector2D vector = line.getVector();
 		Point2D origin = line.getOrigin();
-		double dx = vector.getDx();
-		double dy = vector.getDy();
+		double dx = vector.getX();
+		double dy = vector.getY();
 		double x0 = origin.getX();
 		double y0 = origin.getY();
 		double delta = dx*dx + dy*dy;
@@ -156,7 +156,7 @@ public class AffineTransform2D implements Bijection2D{
 	 * Return a translation by the given vector.
 	 */
 	public final static AffineTransform2D createTranslation(Vector2D vect){
-		return new AffineTransform2D(1, 0, vect.getDx(), 0, 1, vect.getDy());
+		return new AffineTransform2D(1, 0, vect.getX(), 0, 1, vect.getY());
 	}
 	
 	/**
