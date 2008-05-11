@@ -13,10 +13,14 @@ geom2d:
 - lot of rewriting in Box2D:
 	+ Box2D does not implement PolygonalShape2D anymore
 	+ better support of infinite boxes
-- remove Dimension2D (useless)
+- removed Dimension2D (useless)
 
 geom3d:
-- added Vector3D, Box3D, PointSet3D, and EmptySet3D
+- added several classes:
+	+ Vector3D, Box3D, PointSet3D, and EmptySet3D
+	+ /curve: Curve3d, ContinuousCurve3D
+	+ /line: StraightLine3D, LineSegment3D
+	+ /plane: Plane3D
 
 
 

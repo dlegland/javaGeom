@@ -3,6 +3,8 @@
  */
 package math.geom3d;
 
+import math.geom3d.transform.AffineTransform3D;
+
 /**
  * Define a vector in 3 Dimensions. Provides methods to compute cross product
  * and dot product, addition and subtraction of vectors.
@@ -175,6 +177,15 @@ public class Vector3D {
 	}
 	
 	/**
+	 * Computes the square of the norm of the vector. This avoids to compute
+	 * the square root.
+	 * @return the euclidean norm of the vector
+	 */
+	public double getNormSq(){
+		return x*x + y*y + z*z;
+	}
+	
+	/**
 	 * Normalizes the vector, such that its norms becomes 1.
 	 */	
 	public void normalize(){
@@ -192,6 +203,21 @@ public class Vector3D {
 		double r = this.getNorm();
 		return new Vector3D(this.x/r, this.y/r, this.z/r);
 	}
+	
+	/**
+	 * Transform the vector, by using only the first 4 parameters of the 
+	 * transform. Translation of a vector returns the same vector.
+	 * @param trans an affine transform
+	 * @return the transformed vector.
+	 */
+	public Vector3D transform(AffineTransform3D trans){
+		double[] tab = trans.getCoefficients();
+		return new Vector3D(
+				x*tab[0] + y*tab[1] + z*tab[2],
+				x*tab[4] + y*tab[5] + z*tab[6],
+				x*tab[8] + y*tab[9] + z*tab[10]);
+	}
+
 	
 	// ===================================================================
 	// methods implementing Object interface

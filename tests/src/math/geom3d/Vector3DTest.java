@@ -19,6 +19,8 @@ public class Vector3DTest extends TestCase {
 		Vector3D v3 = new Vector3D(0, 0, 1);
 
 		assertTrue(v3.equals(Vector3D.crossProduct(v1, v2)));
+		assertTrue(v1.equals(Vector3D.crossProduct(v2, v3)));
+		assertTrue(v2.equals(Vector3D.crossProduct(v3, v1)));
 	}
 
 	public void testIsColinear() {

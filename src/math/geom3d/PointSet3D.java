@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom3d.transform.AffineTransform3D;
+
 /**
  * @author dlegland
  *
@@ -140,6 +142,14 @@ public class PointSet3D implements Shape3D, Iterable<Point3D>{
 		return false;
 	}
 
+	public boolean isEmpty(){
+		return points.size()==0;
+	}
+	
+	public boolean isBounded(){
+		return true;
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
 	 */

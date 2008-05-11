@@ -23,7 +23,7 @@
  * Created on 28 nov. 2006
  *
  */
-package math.geom3d;
+package math.geom3d.transform;
 
 /**
  * A transformation in the space that have an inverse.
