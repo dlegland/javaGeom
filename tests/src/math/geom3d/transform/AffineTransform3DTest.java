@@ -1,4 +1,4 @@
-package math.geom3d;
+package math.geom3d.transform;
 
 import junit.framework.TestCase;
 

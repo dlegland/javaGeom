@@ -23,12 +23,17 @@
  * Created on 27 nov. 2005
  *
  */
-package math.geom3d;
+package math.geom3d.transform;
+
+import math.geom3d.Point3D;
+import math.geom3d.Shape3D;
 
 /**
  * @author dlegland
  */
 public class AffineTransform3D implements Bijection3D {
+	//TODO make the class immutable
+	
 	// coefficients for x coordinate.
 	protected double m00, m01, m02, m03;
 	
@@ -115,13 +120,17 @@ public class AffineTransform3D implements Bijection3D {
 	}
 	
 	/**
-	 * return coefficients of the transform. Result is an array of 6 double.
+	 * Return the affine coefficients of the transform. Result is an array of 12 double.
 	 */
 	public double[] getCoefficients(){
 		double[] tab = {m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23};		
 		return tab;
 	}	
 
+	/**
+	 * Compute the determinant of this transform. Can be zero.
+	 * @return
+	 */
 	private double getDeterminant(){
 		return
 			+ m00*(m11*m22-m12*m21)
@@ -129,7 +138,10 @@ public class AffineTransform3D implements Bijection3D {
 			+ m02*(m10*m21-m20*m11);
 	}
 	
-	public Bijection3D getInverseTransform(){
+	/**
+	 * Computes the inverse affine transform.
+	 */
+	public AffineTransform3D getInverseTransform(){
 		double det = this.getDeterminant();
 		return new AffineTransform3D(
 				(m11*m22-m21*m12)/det, (m21*m01-m01*m22)/det, 

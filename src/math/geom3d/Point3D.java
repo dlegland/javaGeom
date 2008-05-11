@@ -25,6 +25,8 @@
  */
 package math.geom3d;
 
+import math.geom3d.transform.AffineTransform3D;
+
 /**
  * @author dlegland
  */
@@ -60,10 +62,29 @@ public class Point3D implements Shape3D {
 		return z;
 	}
 
+	public void setX(double x){
+		this.x = x;
+	}
+	
+	public void setY(double y){
+		this.y = y;
+	}
+	
+	public void setZ(double z){
+		this.z = z;
+	}
+	
+	
 	public void setLocation(Point3D point){
 		x = point.getX();
 		y = point.getY();
 		z = point.getZ();
+	}
+	
+	public void setLocation(double x, double y, double z){
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public double getDistance(Point3D point){
@@ -83,6 +104,14 @@ public class Point3D implements Shape3D {
 		return true;
 	}
 	
+	public boolean isEmpty(){
+		return false;
+	}
+	
+	public boolean isBounded(){
+		return true;
+	}
+	
 	public Box3D getBoundingBox(){
 		return new Box3D(x, x, y, y, z, z);
 	}
@@ -98,5 +127,19 @@ public class Point3D implements Shape3D {
 		Point3D res = new Point3D();
 		trans.transformPoint(this, res);
 		return res;
+	}
+	
+	// ===================================================================
+	// methods overriding Object superclass
+
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof Point3D)) return false;
+		Point3D point = (Point3D) obj;
+		
+		if(Math.abs(point.x - this.x)>Shape3D.ACCURACY) return false;
+		if(Math.abs(point.y - this.y)>Shape3D.ACCURACY) return false;
+		if(Math.abs(point.z - this.z)>Shape3D.ACCURACY) return false;
+		return true;
 	}
 }

@@ -23,7 +23,9 @@
  * Created on 28 nov. 2006
  *
  */
-package math.geom3d;
+package math.geom3d.transform;
+
+import math.geom3d.Point3D;
 
 /**
  * @author dlegland
