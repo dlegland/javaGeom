@@ -114,14 +114,22 @@ public class Plane3D implements Shape3D {
 		return this.getLineIntersection(line);
 	}
 	
+	public Vector3D projectVector(Vector3D vect){
+		Point3D point = new Point3D(x0+vect.getX(), y0+vect.getY(), z0+vect.getZ());
+		point = this.projectPoint(point);
+		return new Vector3D(point.getX()-x0, point.getY()-y0, point.getZ()-z0);
+	}
+	
 	public Point3D getPoint(double u, double v){
 		return new Point3D(
-				x0 + u*dx1 + v* dx2, 
-				y0 + u*dy1 + v* dy2, 
-				z0 + u*dz1 + v* dz2);
+				x0 + u*dx1 + v*dx2, 
+				y0 + u*dy1 + v*dy2, 
+				z0 + u*dz1 + v*dz2);
 	}
 	
 	public Point2D getPointPosition(Point3D point){
+		point = this.projectPoint(point);
+		//TODO: complete it
 		return null;
 	}
 	
