@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -329,13 +330,22 @@ public class BezierCurve2D
 	}
 
 	public Collection<Point2D> getSingularPoints(){
-		return new ArrayList<Point2D>(0);
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		list.add(this.getFirstPoint());
+		list.add(this.getLastPoint());
+		return list;
+	}
+	
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos)<Shape2D.ACCURACY) return true;
+		if(Math.abs(pos-1)<Shape2D.ACCURACY) return true;
+		return false;
 	}
 	
 	/**
 	 * Compute position by approximating cubic spline with a polyline.
 	 */
-	public double getPosition(Point2D point){
+	public double getPosition(java.awt.geom.Point2D point){
 		int N=100;
 		return this.getAsPolyline(N).getPosition(point)/((double)N);
 	}
@@ -343,7 +353,7 @@ public class BezierCurve2D
 	/**
 	 * Compute position by approximating cubic spline with a polyline.
 	 */
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		int N=100;
 		return this.getAsPolyline(N).project(point)/((double)N);
 	}
@@ -477,4 +487,5 @@ public class BezierCurve2D
 		list.add(this);
 		return list;
 	}
+
 }

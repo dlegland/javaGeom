@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -141,6 +142,13 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 			list.add(this.getLastPoint());
 		return list;
 	}
+	
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos-t0)<Shape2D.ACCURACY) return true;
+		if(Math.abs(pos-t1)<Shape2D.ACCURACY) return true;
+		return false;
+	}
+
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
 		Collection<Point2D> inters0 = this.branch.getIntersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
@@ -163,7 +171,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return branch.getPoint(t, point);
 	}
 
-	public double getPosition(Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		if(!this.branch.contains(point)) return Double.NaN;
 		double t = this.branch.getPosition(point);
 		if(t-t0<-ACCURACY) return Double.NaN;
@@ -171,7 +179,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return t;
 	}
 
-	public double project(Point2D point) {
+	public double project(java.awt.geom.Point2D point) {
 		double t = this.branch.project(point);
 		return Math.min(Math.max(t, t0), t1);
 	}

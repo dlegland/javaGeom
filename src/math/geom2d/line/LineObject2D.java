@@ -30,6 +30,7 @@ import java.util.Collection;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -478,7 +479,14 @@ public class LineObject2D extends StraightObject2D{
 			list.add(point2);
 		return list;
 	}
-
+	
+	public boolean isSingular(double pos) {
+		if(Double.isInfinite(pos)) return false;
+		if(Math.abs(pos)<Shape2D.ACCURACY && point1!=null) return true;
+		if(Math.abs(pos-1)<Shape2D.ACCURACY && point2!=null) return true;
+		return false;
+	}
+	
 	/**
 	 * Gets position of the point on the line. If point belongs to the line, 
 	 * this position is defined by the ratio :<p>
@@ -488,7 +496,7 @@ public class LineObject2D extends StraightObject2D{
 	 * uses the direction with the biggest derivative, in order to avoid divisions 
 	 * by zero.
 	 */
-	public double getPosition(Point2D point){
+	public double getPosition(java.awt.geom.Point2D point){
 		if(!contains(point)) return Double.NaN;
 		// not useful to update, because parameters were updated in contains() method
 		//updateParameters();
@@ -498,7 +506,7 @@ public class LineObject2D extends StraightObject2D{
 			return (point.getY()-y0)/dy;
 	}
 	
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		updateParameters();
 		double t;
 		if(Math.abs(dx)>Math.abs(dy))

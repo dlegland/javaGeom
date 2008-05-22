@@ -294,7 +294,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
 	 */
-	public double getPosition(math.geom2d.Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		int ind = 0;
 		double dist, minDist = Double.POSITIVE_INFINITY;
 		double x = point.getX();
@@ -318,7 +318,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
 	 */
-	public double project(math.geom2d.Point2D point) {
+	public double project(java.awt.geom.Point2D point) {
 		double dist, minDist = Double.POSITIVE_INFINITY;
 		double x = point.getX();
 		double y = point.getY();
@@ -367,6 +367,11 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 
 	public Collection<Point2D> getSingularPoints(){
 		return points;
+	}
+
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos-Math.round(pos))<Shape2D.ACCURACY) return true;
+		return false;
 	}
 	
 	/**

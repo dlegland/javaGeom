@@ -301,7 +301,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
 	 */
-	public double getPosition(Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		if(!ellipse.contains(point)) return Double.NaN;
 		double angle = ellipse.getPosition(point);
 		angle = angle-startAngle;
@@ -314,7 +314,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return angle;
 	}
 	
-	public double project(Point2D point) {
+	public double project(java.awt.geom.Point2D point) {
 		double angle = ellipse.project(point);
 		
 		// convert to arc parameterization
@@ -353,6 +353,12 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return list;
 	}
 	
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos)<Shape2D.ACCURACY) return true;
+		if(Math.abs(pos-Math.abs(angleExtent))<Shape2D.ACCURACY) return true;
+		return false;
+	}
+
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
 	 */

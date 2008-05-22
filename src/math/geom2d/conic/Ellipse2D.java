@@ -696,7 +696,14 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		return new ArrayList<Point2D>(0);
 	}
 	
-	public double getPosition(Point2D point){
+	/**
+	 * Always returns false, as an ellipse does not have any singular point.
+	 */
+	public boolean isSingular(double pos) {
+		return false;
+	}
+
+	public double getPosition(java.awt.geom.Point2D point){
 		double xp = point.getX();
 		double yp = point.getY();
 		
@@ -723,7 +730,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			return Double.NaN;
 	}
 	
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		double xp = point.getX();
 		double yp = point.getY();
 		

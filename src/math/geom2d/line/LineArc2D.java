@@ -314,6 +314,12 @@ public class LineArc2D extends StraightObject2D
 			list.add(this.getLastPoint());
 		return list;
 	}
+	
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos-t0)<Shape2D.ACCURACY) return true;
+		if(Math.abs(pos-t1)<Shape2D.ACCURACY) return true;
+		return false;
+	}
 
 	/**
 	 * Gets the position of the point on the line arc.
@@ -322,7 +328,7 @@ public class LineArc2D extends StraightObject2D
 	 * <code> t = (yp - y0)/dy <\code>.<p>
 	 * If point does not belong to edge, returns Double.NaN.
 	 */
-	public double getPosition(Point2D point){
+	public double getPosition(java.awt.geom.Point2D point){
 		double pos;
 		// uses the direction with the biggest derivative of line arc, 
 		// in order to avoid divisions by zero.		
@@ -345,7 +351,7 @@ public class LineArc2D extends StraightObject2D
 	 * If point does not belong to edge, returns t0, or t1, depending on which
 	 * one is the closest. 
 	 */
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		double pos;
 		// uses the direction with the biggest derivative of line arc, 
 		// in order to avoid divisions by zero.		
@@ -372,13 +378,24 @@ public class LineArc2D extends StraightObject2D
 		return list;
 	}
 
-	/** Return a new LineArc2D, which is the portion of the linearc delimited
-	 * by parameters t0 and t1.
+	/** 
+	 * Returns a new LineArc2D, which is the portion of the linearc delimited
+	 * by parameters t0 and t1. Cast the result to StraightLine2D, Ray2D or
+	 * LineSegment2D when appropriate.
 	 */
 	public LineArc2D getSubCurve(double t0, double t1){
 		t0 = Math.max(t0, this.t0);
 		t1 = Math.min(t1, this.t1);
-		return new LineArc2D(this, t0, t1);
+		if(Double.isInfinite(t1)){
+			if(Double.isInfinite(t0)) return new StraightLine2D(this);
+			else return new Ray2D(this.getPoint(t0), this.getVector());
+		}
+		
+		if(Double.isInfinite(t0))
+			return new LineArc2D(this, t0, t1);
+		else
+			return new LineSegment2D(this.getPoint(t0), this.getPoint(t1));
+		
 	}
 	
 

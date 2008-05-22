@@ -25,6 +25,7 @@ package math.geom2d.curve;
 
 import math.geom2d.Point2D;
 import math.geom2d.Box2D;
+import math.geom2d.Shape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -278,7 +279,17 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return list;
 	}
 
-	public double getPosition(Point2D point){
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos-Math.round(pos))<Shape2D.ACCURACY) return true;
+		int nc = (int) Math.floor(pos);
+		if(nc/2.0 - Math.floor(nc/2.0) > 0) return true;	// if is between 2 curves
+		
+		Curve2D curve = curves.get(nc);
+		double pos2 = fromUnitSegment(pos, curve.getT0(), curve.getT1());
+		return curve.isSingular(pos2);
+	}
+	
+	public double getPosition(java.awt.geom.Point2D point){
 		double minDist = Double.MAX_VALUE, dist=minDist;
 		double x=point.getX(), y=point.getY();
 		double pos = 0, t0, t1;
@@ -299,7 +310,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return pos;
 	}
 
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		double minDist = Double.MAX_VALUE, dist=minDist;
 		double x=point.getX(), y=point.getY();
 		double pos = 0, t0, t1;
