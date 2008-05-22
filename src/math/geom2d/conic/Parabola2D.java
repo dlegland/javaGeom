@@ -375,11 +375,18 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 	
 	/**
+	 * Always returns false, as a parabola does not have any singular point.
+	 */
+	public boolean isSingular(double pos) {
+		return false;
+	}
+
+	/**
 	 * Returns position of point on the parabola. If point is not on the
 	 * parabola returns the positions on its "vertical" projection
 	 * (i.e. its projection parallel to the symetry axis of the parabola).
 	 */
-	public double getPosition(Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		// t parameter is x-coordinate of point
 		return formatPoint(point).getX();
 	}
@@ -389,7 +396,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * parabola returns the positions on its "vertical" projection
 	 * (i.e. its projection parallel to the symetry axis of the parabola).
 	 */
-	public double project(Point2D point) {
+	public double project(java.awt.geom.Point2D point) {
 		// t parameter is x-coordinate of point
 		return formatPoint(point).getX();
 	}

@@ -170,12 +170,19 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return conic.getSingularPoints();
 	}
 	
+	/**
+	 * Always returns false, as an ellipse does not have any singular point.
+	 */
+	public boolean isSingular(double pos) {
+		return conic.isSingular(pos);
+	}
 
-	public double getPosition(Point2D point){
+
+	public double getPosition(java.awt.geom.Point2D point){
 		return conic.getPosition(point);
 	}
 
-	public double project(Point2D point){
+	public double project(java.awt.geom.Point2D point){
 		return conic.project(point);
 	}
 

@@ -205,7 +205,14 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return list;
 	}
 
-	public double getPosition(Point2D point) {
+	
+	public boolean isSingular(double pos) {
+		if(Math.abs(pos-t0)<Shape2D.ACCURACY) return true;
+		if(Math.abs(pos-t1)<Shape2D.ACCURACY) return true;
+		return false;
+	}
+
+	public double getPosition(java.awt.geom.Point2D point) {
 		if(!this.parabola.contains(point)) return Double.NaN;
 		double t = this.parabola.getPosition(point);
 		if(t-t0<-ACCURACY) return Double.NaN;
@@ -213,7 +220,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return t;
 	}
 
-	public double project(Point2D point) {
+	public double project(java.awt.geom.Point2D point) {
 		double t = this.parabola.project(point);
 		return Math.min(Math.max(t, t0), t1);
 	}

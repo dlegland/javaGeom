@@ -335,7 +335,7 @@ public class Box2D {
 		if(bx0 && by0) points.add(new Point2D(xmin, ymin));
 		if(bx1 && by0) points.add(new Point2D(xmax, ymin));
 		if(bx0 && by1) points.add(new Point2D(xmin, ymax));
-		if(bx1 && by1) points.add(new Point2D(xmin, ymax));
+		if(bx1 && by1) points.add(new Point2D(xmax, ymax));
 		return points;
 	}
 

@@ -110,12 +110,19 @@ public interface Curve2D extends Shape2D{
 	public abstract Collection<Point2D> getSingularPoints();
 	
 	/**
+	 * Checks if a point is singular.
+	 * @param pos the position of the point on the curve
+	 * @return true if the point at this location is singular
+	 */
+	public abstract boolean isSingular(double pos);
+	
+	/**
 	 * Get position of the point on the curve. If the point does not belong to
 	 * the curve, return Double.NaN.
 	 * @param point a point belonging to the curve
 	 * @return the position of the point on the curve
 	 */
-	public abstract double getPosition(Point2D point);
+	public abstract double getPosition(java.awt.geom.Point2D point);
 	
 	/**
 	 * Returns the position of the closest orthogonal projection of the point
@@ -124,7 +131,7 @@ public interface Curve2D extends Shape2D{
 	 * @param point a point to project
 	 * @return the position of the closest orthogonal projection
 	 */
-	public abstract double project(Point2D point);
+	public abstract double project(java.awt.geom.Point2D point);
 	
 		
 	/**

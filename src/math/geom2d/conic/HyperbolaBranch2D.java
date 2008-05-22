@@ -172,6 +172,13 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return new ArrayList<Point2D>(0);
 	}
 	
+	/**
+	 * Always returns false, as an hyperbola branch does not have any singular point.
+	 */
+	public boolean isSingular(double pos) {
+		return false;
+	}
+
 	public Point2D getPoint(double t) {
 		if(Double.isInfinite(t))
 			return Point2D.INFINITY_POINT;
@@ -206,9 +213,9 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return hyperbola.toGlobal(point);
 	}
 
-	public double getPosition(Point2D point) {
-		point = hyperbola.toLocal(point);
-		double y = this.positive ? point.getY() : - point.getY();
+	public double getPosition(java.awt.geom.Point2D point) {
+		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		double y = this.positive ? pt.getY() : - pt.getY();
 //		if(y>5)
 //			return Math.log(2*y);
 //		if(y<-5)
@@ -216,9 +223,9 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return Math.log(y + Math.hypot(y, 1));
 	}
 
-	public double project(Point2D point) {
-		point = hyperbola.toLocal(point);
-		double y = this.positive ? point.getY() : - point.getY();
+	public double project(java.awt.geom.Point2D point) {
+		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		double y = this.positive ? pt.getY() : - pt.getY();
 		return Math.log(y + Math.hypot(y, 1));
 	}
 
