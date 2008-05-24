@@ -109,6 +109,31 @@ public class TriangleGrid2D implements Grid2D {
 		this(point.getX(), point.getY(), s, theta);
 	}
 
+	public void setOrigin(Point2D point){
+		this.x0 = point.getX();
+		this.y0 = point.getY();
+	}
+	
+	public Point2D getOrigin(){
+		return new Point2D(x0, y0);
+	}
+	
+	public double getSize(){
+		return s;
+	}
+	
+	public void setSize(double s){
+		this.s = s;
+	}
+	
+	public void setAngle(double theta){
+		this.theta = theta;
+	}
+	
+	public double getTheta(){
+		return theta;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see math.geom2d.grid.Grid2D#getClosestVertex(java.awt.geom.Point2D)

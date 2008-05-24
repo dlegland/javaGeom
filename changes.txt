@@ -1,8 +1,8 @@
 Changes of javaGeom library
 
-javaGeom-0.6.1 (2008-??-??, rev. ???)
+javaGeom-0.6.1 (2008-05-24, rev. 137)
 
-Start implementing 3D methods
+Start implementing 3D methods, revision of package hierarchy.
 
 geom2d:
 - splitted curve subpackage into curve and domain subpackages
