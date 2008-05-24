@@ -36,7 +36,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
@@ -119,6 +119,10 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	// ====================================================================
 	// methods specific to EllipseArc2D
 	
+	public boolean containsAngle(double angle){
+		return Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle, angleExtent>0);
+	}
+
 	/** Get angle associated to given position*/
 	public double getAngle(double position){
 		if(position<0) position=0;
@@ -126,6 +130,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		if(angleExtent<0) position = -position;
 		return Angle2D.formatAngle(startAngle+position);
 	}
+	
 	
 	// ====================================================================
 	// methods from interface OrientedCurve2D
@@ -302,16 +307,15 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
 	 */
 	public double getPosition(java.awt.geom.Point2D point) {
-		if(!ellipse.contains(point)) return Double.NaN;
-		double angle = ellipse.getPosition(point);
-		angle = angle-startAngle;
-		if(angleExtent>0)
-			angle = - angle;
+		double angle = Angle2D.getHorizontalAngle(ellipse.getCenter(), point);
+		if(containsAngle(angle))
+			if(angleExtent>0)
+				return Angle2D.formatAngle(angle-startAngle);
+			else
+				return Angle2D.formatAngle(startAngle-angle);
 		
-		if(angle<0) return Double.NaN;
-		if(angle>Math.abs(angleExtent)) return Double.NaN;
-		
-		return angle;
+		// return either 0 or 1, depending on which extremity is closer.
+		return getFirstPoint().distance(point) < getLastPoint().distance(point) ? 0 : Math.abs(angleExtent);
 	}
 	
 	public double project(java.awt.geom.Point2D point) {
@@ -443,7 +447,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 */
 	public CurveSet2D<? extends EllipseArc2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
+		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<EllipseArc2D> result =

@@ -1,4 +1,4 @@
-/* file : CurveUtilTest.java
+/* file : Curve2DUtilTest.java
  * 
  * Project : geometry
  *
@@ -38,7 +38,7 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 
-public class CurveUtilTest extends TestCase {
+public class Curve2DUtilTest extends TestCase {
 
 	/*
 	 * Test method for 'math.geom2d.Box2D.clipCurve(Curve2D)'
@@ -48,7 +48,7 @@ public class CurveUtilTest extends TestCase {
 		LineSegment2D line1 = new LineSegment2D(2, -2, 12, 8);
 		LineSegment2D clip1 = new LineSegment2D(4, 0, 10, 6);
 		
-		CurveSet2D<Curve2D> curveSet = CurveUtil.clipCurve(line1, box);
+		CurveSet2D<Curve2D> curveSet = Curve2DUtil.clipCurve(line1, box);
 		Curve2D curve = curveSet.getFirstCurve();
 		assertTrue(clip1.equals(curve));
 	}
@@ -58,7 +58,7 @@ public class CurveUtilTest extends TestCase {
 		Circle2D 	line1 = new Circle2D(0, 0, 5, true);
 		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, Math.PI/2);
 		
-		CurveSet2D<Curve2D> curveSet = CurveUtil.clipCurve(line1, box);
+		CurveSet2D<Curve2D> curveSet = Curve2DUtil.clipCurve(line1, box);
 		Curve2D curve = curveSet.getFirstCurve();
 		assertTrue(clip1.equals(curve));
 	}
@@ -71,10 +71,10 @@ public class CurveUtilTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 
-		CurveSet2D<Curve2D> clipped1 = CurveUtil.clipCurve(arc1, box);
+		CurveSet2D<Curve2D> clipped1 = Curve2DUtil.clipCurve(arc1, box);
 		Curve2D curve1 = clipped1.getFirstCurve();
 		
-		CurveSet2D<Curve2D> clipped2 = CurveUtil.clipCurve(arc2, box);
+		CurveSet2D<Curve2D> clipped2 = Curve2DUtil.clipCurve(arc2, box);
 		Curve2D curve2 = clipped2.getFirstCurve();
 
 		double alpha = Math.asin(l/2/r);
@@ -100,7 +100,7 @@ public class CurveUtilTest extends TestCase {
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		
-		CurveSet2D<Curve2D> clippedSet = CurveUtil.clipCurve(set, box);
+		CurveSet2D<Curve2D> clippedSet = Curve2DUtil.clipCurve(set, box);
 		Iterator<Curve2D> iter 	= clippedSet.getCurves().iterator();
 		Curve2D curve1 	= iter.next();
 		Curve2D curve2 	= iter.next();
@@ -126,7 +126,7 @@ public class CurveUtilTest extends TestCase {
 		});
 		Box2D box = new Box2D(0, 20, 0, 20);
 		
-		CurveSet2D<Curve2D> clip1 = CurveUtil.clipCurve(poly1, box);
+		CurveSet2D<Curve2D> clip1 = Curve2DUtil.clipCurve(poly1, box);
 		Polyline2D sub1 = new Polyline2D(new Point2D[]{new Point2D(15, 0), new Point2D(20, 5)});
 		Polyline2D sub2 = new Polyline2D(new Point2D[]{new Point2D(20, 15), new Point2D(15, 20)});
 		Polyline2D sub3 = new Polyline2D(new Point2D[]{new Point2D(5, 20), new Point2D(0, 15)});
@@ -142,9 +142,9 @@ public class CurveUtilTest extends TestCase {
 	public void testFindNextCurveIndex() {
 		double nan = Double.NaN;
 		double[] tab1 = new double[]{nan, nan, .6, .2, nan, .4};
-		assertEquals(CurveUtil.findNextCurveIndex(tab1, .1), 3);
-		assertEquals(CurveUtil.findNextCurveIndex(tab1, .5), 2);
-		assertEquals(CurveUtil.findNextCurveIndex(tab1, .3), 5);
-		assertEquals(CurveUtil.findNextCurveIndex(tab1, .8), 3);
+		assertEquals(Curve2DUtil.findNextCurveIndex(tab1, .1), 3);
+		assertEquals(Curve2DUtil.findNextCurveIndex(tab1, .5), 2);
+		assertEquals(Curve2DUtil.findNextCurveIndex(tab1, .3), 5);
+		assertEquals(Curve2DUtil.findNextCurveIndex(tab1, .8), 3);
 	}
 }

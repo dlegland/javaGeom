@@ -131,6 +131,13 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(p2.getDistance(arc.getPoint(arc.getT1()))<Shape2D.ACCURACY);
 	}
 
+	public void testGetPositionPoint2D(){
+		Point2D origin = new Point2D(0, 0);
+		CircleArc2D arc = new CircleArc2D(origin, 10, 3*Math.PI/2, 3*Math.PI/2);
+		double t = arc.getPosition(new Point2D(10, 0));
+		assertEquals(t, Math.PI/2, 1e-12);
+	}
+	
 	/*
 	 * Test for double getDistance(double, double). Use a circle arc centered
 	 * on origin, from 0 to pi/2 radians, and check distances with points
