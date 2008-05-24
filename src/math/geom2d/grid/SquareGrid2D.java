@@ -52,6 +52,33 @@ public class SquareGrid2D implements Grid2D {
 		this.sy = sy;
 	}
 	
+	public void setOrigin(Point2D point){
+		this.x0 = point.getX();
+		this.y0 = point.getY();
+	}
+	
+	public Point2D getOrigin(){
+		return new Point2D(x0, y0);
+	}
+	
+	public double getSizeX(){
+		return sx;
+	}
+	
+	public double getSizeY(){
+		return sy;
+	}
+	
+	public void setSize(double s){
+		sx = s;
+		sy = s;
+	}
+	
+	public void setSize(double sx, double sy){
+		this.sx = sx;
+		this.sy = sy;
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.grid.Grid2D#getClosestVertex(math.geom2d.Point2D)
 	 */
