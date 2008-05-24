@@ -30,7 +30,7 @@ import java.util.*;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -127,7 +127,7 @@ extends CurveSet2D<T> implements Boundary2D {
 	 */
 	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<Curve2D> set = CurveUtil.clipCurve(this, box);
+		CurveSet2D<Curve2D> set = Curve2DUtil.clipCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<ContinuousOrientedCurve2D> result =

@@ -32,7 +32,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightLine2D;
 import junit.framework.TestCase;
@@ -178,7 +178,7 @@ public class ParabolaArc2DTest extends TestCase {
 		ParabolaArc2D clippedArc = new ParabolaArc2D(parabola, -2, 2);
 		StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
 	
-		CurveSet2D<?> clippedCurve = CurveUtil.clipSmoothCurve(arc, line);
+		CurveSet2D<?> clippedCurve = Curve2DUtil.clipSmoothCurve(arc, line);
 		Curve2D curve = clippedCurve.getFirstCurve();
 		
 		assertTrue(clippedCurve.getCurveNumber()==1);

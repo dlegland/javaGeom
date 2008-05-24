@@ -34,7 +34,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
@@ -163,10 +163,6 @@ public class CircleArc2D extends EllipseArc2D{
 		return t;
 	}
 	
-	public boolean containsAngle(double angle){
-		return Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle, angleExtent>0);
-	}
-
 	/**
 	 * @deprecated  should access radius from supporting circle
 	 */
@@ -385,7 +381,7 @@ public class CircleArc2D extends EllipseArc2D{
 	/**
 	 * return relative position between 0 and the angle extent.
 	 */
-	public double getPosition(Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		double angle = Angle2D.getHorizontalAngle(circle.getCenter(), point);
 		if(containsAngle(angle))
 			if(angleExtent>0)
@@ -395,7 +391,6 @@ public class CircleArc2D extends EllipseArc2D{
 		
 		// return either 0 or 1, depending on which extremity is closer.
 		return getFirstPoint().distance(point) < getLastPoint().distance(point) ? 0 : Math.abs(angleExtent);
-
 	}
 
 
@@ -491,7 +486,7 @@ public class CircleArc2D extends EllipseArc2D{
 	@Override
 	public CurveSet2D<CircleArc2D> clip(Box2D box) {
 		// Clip he curve
-		CurveSet2D<SmoothCurve2D> set = CurveUtil.clipSmoothCurve(this, box);
+		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
 		
 		// create a new structure for storing result
 		CurveSet2D<CircleArc2D> result =

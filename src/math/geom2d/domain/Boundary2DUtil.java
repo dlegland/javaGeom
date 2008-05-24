@@ -13,7 +13,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.CurveUtil;
+import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.line.LineSegment2D;
 
 /**
@@ -35,7 +35,7 @@ public abstract class Boundary2DUtil {
 		
 		CurveSet2D<ContinuousOrientedCurve2D> result = 
 			new CurveSet2D<ContinuousOrientedCurve2D>();
-		for(ContinuousCurve2D cont : CurveUtil.clipContinuousCurve(curve, box))
+		for(ContinuousCurve2D cont : Curve2DUtil.clipContinuousCurve(curve, box))
 			if(cont instanceof ContinuousOrientedCurve2D)
 				result.addCurve((ContinuousOrientedCurve2D) cont);
 		
