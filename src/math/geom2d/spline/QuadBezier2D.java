@@ -1,4 +1,4 @@
-/* File BezierCurve2D.java 
+/* File QuadBezier2D.java 
  *
  * Project : geometry
  *
@@ -37,17 +37,18 @@ import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.Polyline2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * An extension of the Bezier curve provided in java.awt.geom, with support for 
- * SmoothCurve2D and OrientedCurve2D.
+ * An extension of the QuadCurve2D curve provided in java.awt.geom, 
+ * with support for SmoothCurve2D and OrientedCurve2D.
  * @author Legland
  *
  */
-public class BezierCurve2D 
-	extends java.awt.geom.CubicCurve2D.Double
+public class QuadBezier2D 
+	extends java.awt.geom.QuadCurve2D.Double
 	implements SmoothCurve2D, ContinuousOrientedCurve2D {
 
 	private static final long serialVersionUID = 1L;
@@ -55,127 +56,87 @@ public class BezierCurve2D
 	// ===================================================================
 	// constructors 
 
-	public BezierCurve2D(){
-		this(0, 0, 0, 0, 0, 0, 0, 0);
+	public QuadBezier2D(){
+		this(0, 0, 0, 0, 0, 0);
 	}
 	
 	/** 
 	 * Build a new Bezier curve from its array of coefficients. The array
-	 * must have size 2*4.
-	 * @param coefs the coefficients of the BezierCurve2D.
+	 * must have size 2*3.
+	 * @param coefs the coefficients of the QuadBezier2D.
 	 */
-	public BezierCurve2D(double[][] coefs){
+	public QuadBezier2D(double[][] coefs){
 		this(
 				coefs[0][0], 
 				coefs[1][0], 
-				coefs[0][0] + coefs[0][1]/3.0, 
-				coefs[1][0] + coefs[1][1]/3.0, 
-				coefs[0][0] + 2*coefs[0][1]/3.0 + coefs[0][2]/3.0, 
-				coefs[1][0] + 2*coefs[1][1]/3.0 + coefs[1][2]/3.0, 
-				coefs[0][0] + coefs[0][1] + coefs[0][2] + coefs[0][3], 
-				coefs[1][0] + coefs[1][1] + coefs[1][2] + coefs[1][3]);
+				coefs[0][0] + coefs[0][1]/2.0, 
+				coefs[1][0] + coefs[1][1]/2.0, 
+				coefs[0][0] + coefs[0][1] + coefs[0][2], 
+				coefs[1][0] + coefs[1][1] + coefs[1][2]);
 	}
 
 	/**
-	 *  Build a new Bezier curve of degree 3 by specifying position of extreme
-	 *  points and position of 2 control points. The resulting curve is
-	 *  totally contained in the convex polygon formed by the 4 control points. 
+	 * Build a new quadratic Bezier curve by specifying position of extreme
+	 * points and position of control point. The resulting curve is
+	 * totally contained in the convex polygon formed by the 3 control points.
 	 * @param p1 first point
-	 * @param ctrl1 first control point
-	 * @param ctrl2 second control point
+	 * @param ctrl control point
 	 * @param p2 last point
 	 */
-	public BezierCurve2D(
-			java.awt.geom.Point2D p1, java.awt.geom.Point2D ctrl1,
-			java.awt.geom.Point2D ctrl2, java.awt.geom.Point2D p2){
-		this(p1.getX(), p1.getY(), ctrl1.getX(), ctrl1.getY(), 
-			ctrl2.getX(), ctrl2.getY(), p2.getX(), p2.getY());
+	public QuadBezier2D(
+			java.awt.geom.Point2D p1,
+			java.awt.geom.Point2D ctrl,
+			java.awt.geom.Point2D p2){
+		this(p1.getX(), p1.getY(), 
+			ctrl.getX(), ctrl.getY(), p2.getX(), p2.getY());
+	}
+	
+	public QuadBezier2D(java.awt.geom.Point2D[] pts) {
+		this(pts[0].getX(), pts[0].getY(), 
+				pts[1].getX(), pts[1].getY(), 
+				pts[2].getX(), pts[2].getY());
 	}
 
 	/**
-	 * Build a new Bezier curve of degree 3 by specifying position and tangent
-	 * of first and last points.
-	 * @param p1 first point
-	 * @param v1 first tangent vector
-	 * @param p2 position of last point
-	 * @param v2 last tangent vector
+	 * Build a new quadratic Bezier curve by specifying position of extreme
+	 * points and position of control point. The resulting curve is
+	 * totally contained in the convex polygon formed by the 3 control points.
 	 */
-	public BezierCurve2D(
-			java.awt.geom.Point2D p1, Vector2D v1, 
-			java.awt.geom.Point2D p2, Vector2D v2){
-		this(p1.getX(), p1.getY(), p1.getX()+v1.getX()/3, p1.getY()+v1.getY()/3, 
-			p2.getX()-v2.getX()/3, p2.getY()-v2.getY()/3, p2.getX(), p2.getY());
-	}
-
-	/**
-	 *  Build a new Bezier curve of degree 3 by specifying position of extreme
-	 *  points and position of 2 control points. The resulting curve is
-	 *  totally containe in the convex polygon formed by the 4 control points. 
-	 */
-	public BezierCurve2D(double x1, double y1, double xctrl1, double yctrl1, 
-		double xctrl2, double yctrl2, double x2, double y2){
-		super(x1, y1, xctrl1, yctrl1, xctrl2, yctrl2, x2, y2);
+	public QuadBezier2D(double x1, double y1, 
+		double xctrl, double yctrl, double x2, double y2){
+		super(x1, y1, xctrl, yctrl, x2, y2);
 	}
 	
 	
 	// ===================================================================
-	// methods specific to BezierCurve2D
+	// methods specific to QuadBezier2D
 		
-	public Point2D getControl1(){
-		return new Point2D(ctrlx1, ctrly1);
+	public Point2D getControl(){
+		return new Point2D(ctrlx, ctrly);
 	}
 	
-	public Point2D getControl2(){
-		return new Point2D(ctrlx2, ctrly2);
-	}
-
 	/**
-	 * Returns the matrix of parametric representation of the line. Result has the 
-	 * form : <p>
-	 * <code>[ x0  dx dx2 dx3] </code><p>
-	 * <code>[ y0  dy dy2 dy3] </code><p>
+	 * Returns the matrix of parametric representation of the line.
+	 * Result is a 2x3 array with coefficients: <p>
+	 * <code>[ cx0  cx1 cx2] </code><p>
+	 * <code>[ cy0  cy1 cy2] </code><p>
 	 * Coefficients are from the parametric equation :
-	 * x(t) = x0 + dx*t + dx2*t^2 + dx3*t^3
-	 * y(t) = y0 + dy*t + dy2*t^2 + dy3*t^3
+	 * <code>
+	 * x(t) = cx0 + cx1*t + cx2*t^2 
+	 * y(t) = cy0 + cy1*t + cy2*t^2
+	 * </code>
 	 */
 	public double[][] getParametric(){
-		double[][] tab = new double[2][4];
+		double[][] tab = new double[2][3];
 		tab[0][0] = x1;
-		tab[0][1] = 3*ctrlx1 - 3*x1;
-		tab[0][2] = 3*x1 -6*ctrlx1 + 3*ctrlx2;
-		tab[0][3] = x2 - 3*ctrlx2 + 3*ctrlx1 - x1;
+		tab[0][1] = 2*ctrlx - 2*x1;
+		tab[0][2] = x2 - 2*ctrlx + x1;
 		
 		tab[1][0] = y1;		
-		tab[1][1] = 3*ctrly1 - 3*y1;
-		tab[1][2] = 3*y1 -6*ctrly1 + 3*ctrly2;
-		tab[1][3] = y2 - 3*ctrly2 + 3*ctrly1 - y1;
+		tab[1][1] = 2*ctrly - 2*y1;
+		tab[1][2] = y2 - 2*ctrly + y1;
 		return tab;
 	}
-
-//	/** 
-//	 * Return the parallel curve located at a distance d from this Bezier
-//	 * curve.
-//	 */
-//	public BezierCurve2D getParallel(double d){
-//		double[][] tab = this.getParametric();
-//		double[][] tab2 = new double[2][4];
-//		
-//		d = d/Math.hypot(tab[0][1], tab[1][1]);
-//		
-//		tab2[0][0] 	= tab[0][0] + d*tab[1][1];
-//		tab2[1][0] 	= tab[1][0] - d*tab[0][1];
-//		
-//		tab2[0][1] 	= tab[0][1] + 2*d*tab[1][2];
-//		tab2[1][1] 	= tab[1][1] - 2*d*tab[0][2];
-//		
-//		tab2[0][2] 	= tab[0][2] + 3*d*tab[1][3];
-//		tab2[1][2] 	= tab[1][2] - 3*d*tab[0][3];
-//
-//		tab2[0][3] 	= tab[0][3];
-//		tab2[1][3] 	= tab[1][3];
-//
-//		return new BezierCurve2D(tab2);
-//	}
 	
 	// ===================================================================
 	// methods from OrientedCurve2D interface 
@@ -220,21 +181,20 @@ public class BezierCurve2D
 	
 	public Vector2D getTangent(double t){
 		double [][] c = getParametric();
-		double dx = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
-		double dy = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
+		double dx = c[0][1] + 2*c[0][2]*t;
+		double dy = c[1][1] + 2*c[1][2]*t;
 		return new Vector2D(dx, dy);
 	}
-
 
 	/**
 	 * returns the curvature of the Curve.
 	 */
 	public double getCurvature(double t){
 		double [][] c = getParametric();
-		double xp = c[0][1] +  (2*c[0][2] + 3*c[0][3]*t)*t;
-		double yp = c[1][1] +  (2*c[1][2] + 3*c[1][3]*t)*t;
-		double xs = 2*c[0][2] + 6*c[0][3]*t;
-		double ys = 2*c[1][2] + 6*c[1][3]*t;
+		double xp = c[0][1] +  2*c[0][2]*t;
+		double yp = c[1][1] +  2*c[1][2]*t;
+		double xs = 2*c[0][2];
+		double ys = 2*c[1][2];
 		
 		return (xp*ys - yp*xs)/Math.pow(Math.hypot(xp, yp), 1.5);
 	}
@@ -256,7 +216,7 @@ public class BezierCurve2D
 	}
 	
 	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<BezierCurve2D> list = new ArrayList<BezierCurve2D>(1);
+		ArrayList<QuadBezier2D> list = new ArrayList<QuadBezier2D>(1);
 		list.add(this);
 		return list;
 	}
@@ -272,15 +232,21 @@ public class BezierCurve2D
 	// ===================================================================
 	// methods from Curve2D interface 
 
+	public Collection<ContinuousCurve2D> getContinuousCurves() {
+		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
+		list.add(this);
+		return list;
+	}
+
 	/**
-	 * returns 0, as Bezier curve is parametrized between 0 and 1.
+	 * Returns 0, as Bezier curve is parametrized between 0 and 1.
 	 */
 	public double getT0() {
 		return 0;
 	}
 	
 	/**
-	 * returns 1, as Bezier curve is parametrized between 0 and 1.
+	 * Returns 1, as Bezier curve is parametrized between 0 and 1.
 	 */
 	public double getT1() {
 		return 1;
@@ -307,8 +273,8 @@ public class BezierCurve2D
 	public Point2D getPoint(double t, Point2D point) {
 		if(t<0 || t>1) return null;
 		double [][] c = getParametric();
-		double x = c[0][0] + (c[0][1] + (c[0][2] + c[0][3]*t)*t)*t;
-		double y = c[1][0] + (c[1][1] + (c[1][2] + c[1][3]*t)*t)*t;
+		double x = c[0][0] + (c[0][1] + c[0][2]*t)*t;
+		double y = c[1][0] + (c[1][1] + c[1][2]*t)*t;
 		point.setLocation(x, y);
 		return point;
 	}
@@ -362,26 +328,33 @@ public class BezierCurve2D
 	 * Returns the bezier curve given by control points taken in reverse
 	 * order.
 	 */
-	public BezierCurve2D getReverseCurve(){
-		return new BezierCurve2D(this.getP2(), this.getCtrlP2(), this.getCtrlP1(), this.getP1());
+	public QuadBezier2D getReverseCurve(){
+		return new QuadBezier2D(this.getP2(), this.getControl(), this.getP1());
 	}
 	
 	/**
 	 * Computes portion of BezierCurve. If t1<t0, returns null.
 	 */
-	public BezierCurve2D getSubCurve(double t0, double t1){
+	public QuadBezier2D getSubCurve(double t0, double t1){
 		t0 = Math.max(t0, 0);
 		t1 = Math.min(t1, 1);
 		if(t0>t1) return null;
 		
-		double dt = t1-t0;
+		// Extreme points
+		Point2D p0 = getPoint(t0);
+		Point2D p1 = getPoint(t1);
+		
+		// tangent vectors at extreme points
 		Vector2D v0 = getTangent(t0); 
 		Vector2D v1 = getTangent(t1);
-		v0.setX(v0.getX()*dt);
-		v0.setY(v0.getY()*dt);
-		v1.setX(v1.getX()*dt);
-		v1.setY(v1.getY()*dt);
-		return new BezierCurve2D(getPoint(t0), v0, getPoint(t1), v1);
+		
+		// compute position of control point as intersection of tangent lines
+		StraightLine2D tan0 = new StraightLine2D(p0, v0);
+		StraightLine2D tan1 = new StraightLine2D(p1, v1);
+		Point2D control = tan0.getIntersection(tan1);
+		
+		// build the new quad curve
+		return new QuadBezier2D(p0, control, p1);
 	}
 
 	// ===================================================================
@@ -399,12 +372,6 @@ public class BezierCurve2D
 	 * @see math.geom2d.Shape2D#getDistance(double, double)
 	 */
 	public double getDistance(double x, double y) {
-//		int N=100;
-//		Point2D[] points = new Point2D[N];
-//		for(int i=0; i<N; i++)
-//			points[i] = this.getPoint((double)i/(N-1.0));
-//		Polyline2D polyline = new Polyline2D(points);
-		
 		return this.getAsPolyline(100).getDistance(x, y);
 	}
 
@@ -421,23 +388,23 @@ public class BezierCurve2D
 
 	/**
 	 * Clip the circle arc by a box. The result is an instance of
-	 * ContinuousOrientedCurveSet2D<BezierCurve2D>, which 
+	 * ContinuousOrientedCurveSet2D<QuadBezier2D>, which 
 	 * contains only instances of EllipseArc2D. If the ellipse arc is not
 	 * clipped, the result is an instance of
-	 * ContinuousOrientedCurveSet2D<BezierCurve2D> which contains 0 curves.
+	 * ContinuousOrientedCurveSet2D<QuadBezier2D> which contains 0 curves.
 	 */
-	public CurveSet2D<? extends BezierCurve2D> clip(Box2D box) {
+	public CurveSet2D<? extends QuadBezier2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
-		CurveSet2D<BezierCurve2D> result =
-			new CurveSet2D<BezierCurve2D> ();
+		CurveSet2D<QuadBezier2D> result =
+			new CurveSet2D<QuadBezier2D> ();
 		
 		// convert the result
 		for(Curve2D curve : set.getCurves()){
-			if (curve instanceof BezierCurve2D)
-				result.addCurve((BezierCurve2D) curve);
+			if (curve instanceof QuadBezier2D)
+				result.addCurve((QuadBezier2D) curve);
 		}
 		return result;
 	}
@@ -452,11 +419,10 @@ public class BezierCurve2D
 	 * Returns the Bezier Curve transformed by the given AffineTransform2D.
 	 * This is simply done by transforming control points of the curve.
 	 */
-	public BezierCurve2D transform(AffineTransform2D trans) {
-		return new BezierCurve2D(
+	public QuadBezier2D transform(AffineTransform2D trans) {
+		return new QuadBezier2D(
 				trans.transform(this.getP1()), 
-				trans.transform(this.getCtrlP1()), 
-				trans.transform(this.getCtrlP2()), 
+				trans.transform(this.getControl()), 
 				trans.transform(this.getP2())) ;
 	}
 	
@@ -480,12 +446,6 @@ public class BezierCurve2D
 			path.lineTo((float)p.getX(), (float)p.getY());
 		}
 		return path;
-	}
-
-	public Collection<ContinuousCurve2D> getContinuousCurves() {
-		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-		list.add(this);
-		return list;
 	}
 
 }
