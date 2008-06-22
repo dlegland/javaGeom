@@ -318,4 +318,27 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
 	}
 	
+	public void testTransform_AffineTransform2D(){
+		double a = 2;
+		Parabola2D base = new Parabola2D(0, 0, a, 0);
+		
+		double s = 3;
+		Parabola2D scaled = base.transform(AffineTransform2D.createScaling(1, 3));
+		assertTrue(scaled.equals(new Parabola2D(0, 0, a*s, 0)));
+		
+		double theta = Math.PI/3;
+		Parabola2D rotated = base.transform(AffineTransform2D.createRotation(theta));
+		assertTrue(rotated.equals(new Parabola2D(0, 0, a, theta)));
+		
+		double dx=2, dy=3;
+		Parabola2D translated = base.transform(AffineTransform2D.createTranslation(dx, dy));
+		assertTrue(translated.equals(new Parabola2D(dx, dy, a, 0)));
+		
+		
+		Parabola2D reflected = base.transform(
+				AffineTransform2D.createLineReflection(new StraightLine2D(
+						new Point2D(0, 0), new Vector2D(1, 0))));
+		assertTrue(reflected.equals(new Parabola2D(0, 0, -a, 0)));
+	}
+	
 }

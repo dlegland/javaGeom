@@ -34,22 +34,25 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.conic.ParabolaArc2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.line.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 
 public class DrawParabolaDemo extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
+	double x0 = 150;
+	double y0 = 100;
+	double a  = .05;
+
 	Parabola2D parabola = null;
 	Box2D box = null;
 	
 	public DrawParabolaDemo() {
 		super();
 		
-		double x0 = 150;
-		double y0 = 100;
-		double a  = .25;
 		parabola = new Parabola2D(x0, y0, a, 0);
 		
 		box = new Box2D(50, 250, 50, 250);
@@ -70,23 +73,27 @@ public class DrawParabolaDemo extends JPanel{
 		g2.draw(box.getAsRectangle());
 
 		// Draw the clipped parabola
-		CurveSet2D<?> clipped = arc.clip(box);
+		CurveSet2D<?> clipped = parabola.clip(box);
 		if (!clipped.isEmpty()){
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
 			g2.draw(clipped);
+			
+			AffineTransform2D transfo = AffineTransform2D.createRotation(x0, y0, Math.PI/2);
+			Shape2D transformed = clipped.transform(transfo);
+			g2.draw(transformed);
 		}
 		
 		// Draw parabola origin
 		Point2D p1 = parabola.getPoint(0);
 		g2.fill(new Circle2D(p1, 4));
 		
-//		clipped = box.clipBoundary(parabola);
-//		g2.setStroke(new BasicStroke(2.0f));
-//		g2.setColor(Color.CYAN);
-//		g2.fill(clipped);
-//		g2.setColor(Color.BLUE);
-//		g2.draw(clipped);
+		clipped =  Boundary2DUtil.clipBoundary(parabola, box);
+		g2.setStroke(new BasicStroke(2.0f));
+		g2.setColor(Color.CYAN);
+		g2.fill(clipped);
+		g2.setColor(Color.BLUE);
+		g2.draw(clipped);
 	}
 
 	public final static void main(String[] args){

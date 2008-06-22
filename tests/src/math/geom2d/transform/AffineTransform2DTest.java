@@ -28,6 +28,7 @@
 package math.geom2d.transform;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.line.StraightLine2D;
 import junit.framework.TestCase;
 
 /**
@@ -91,6 +92,26 @@ public class AffineTransform2DTest extends TestCase {
 		Point2D point2 = trans.transform(point, new Point2D());
 		Point2D expect = new Point2D(13, 25);
 		assertTrue(expect.distance(point2)<1e-14);
+	}
+	
+	public void testIsIsometryAffineTransform2D(){
+		
+		assertTrue(AffineTransform2D.isIsometry(
+				AffineTransform2D.createTranslation(2, 3)));
+		
+		assertTrue(AffineTransform2D.isIsometry(
+				AffineTransform2D.createRotation(2, 3, Math.PI/3)));
+		
+		assertTrue(AffineTransform2D.isIsometry(
+				AffineTransform2D.createLineReflection(new StraightLine2D(
+						new Point2D(10, 20), new Vector2D(3, 2)))));
+		
+		assertTrue(!AffineTransform2D.isIsometry(
+				AffineTransform2D.createScaling(2, .5)));
+		
+		assertTrue(AffineTransform2D.isIsometry(
+				AffineTransform2D.createScaling(1, 1)));
+		
 	}
 	
 	public void testGetInverseTransform(){
