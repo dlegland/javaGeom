@@ -2,6 +2,12 @@ Changes of javaGeom library
 
 javaGeom-0.6.1 (2008-05-24, rev. 137)
 
+geom2d:
+- added QuadBezier2D
+
+
+javaGeom-0.6.1 (2008-05-24, rev. 137)
+
 Start implementing 3D methods, revision of package hierarchy.
 
 geom2d:

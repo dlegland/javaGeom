@@ -67,8 +67,20 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	/** The parameter of the parabola. If positive, the parabola is direct. */
 	protected double a=1;
 	
-
 	private boolean debug = false;
+	
+	/**
+	 * Creates a parabola by supplying the vertex and the focus.
+	 * @param vertex the vertex point of the parabola
+	 * @param focus the focal point of the parabola
+	 * @return the parabola with given vertex and focus
+	 */
+	public final static Parabola2D create(Point2D vertex, Point2D focus){
+		double p = Point2D.getDistance(vertex, focus);
+		double theta = Angle2D.getHorizontalAngle(vertex, focus) - Math.PI/2;
+		return new Parabola2D(vertex, 1/(4*p), theta);
+	}
+	
 	
 	public Parabola2D() {
 		super();
@@ -92,6 +104,18 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	public Point2D getFocus() {
 		double c = 1/a/4.0;
 		return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
+	}
+	
+	public double getParameter(){
+		return a;
+	}
+	
+	public double getFocusDistance(){
+		return 1.0/(4*a);
+	}
+	
+	public Point2D getVertex(){
+		return new Point2D(xv, yv);
 	}
 
 	/** 
@@ -128,37 +152,37 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return Conic2D.PARABOLA;
 	}
 
-	public boolean isEllipse() {
-		return false;
-	}
-
-	public boolean isParabola() {
-		return true;
-	}
-
-	public boolean isHyperbola() {
-		return false;
-	}
-
-	public boolean isCircle() {
-		return false;
-	}
-
-	public boolean isStraightLine() {
-		return false;
-	}
-
-	public boolean isTwoLines() {
-		return false;
-	}
-
-	public boolean isPoint() {
-		return false;
-	}
-
-	public boolean isDegenerated() {
-		return false;
-	}
+//	public boolean isEllipse() {
+//		return false;
+//	}
+//
+//	public boolean isParabola() {
+//		return true;
+//	}
+//
+//	public boolean isHyperbola() {
+//		return false;
+//	}
+//
+//	public boolean isCircle() {
+//		return false;
+//	}
+//
+//	public boolean isStraightLine() {
+//		return false;
+//	}
+//
+//	public boolean isTwoLines() {
+//		return false;
+//	}
+//
+//	public boolean isPoint() {
+//		return false;
+//	}
+//
+//	public boolean isDegenerated() {
+//		return false;
+//	}
 
 	public double[] getCartesianEquation() {
 		// computation shortcuts
@@ -179,21 +203,21 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		};
 	}
 
-	public Point2D getCenter() {
-		return null;
-	}
+//	public Point2D getCenter() {
+//		return null;
+//	}
 
-	public Point2D getFocus1() {
-		double c = 1/a/4.0;
-		return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
-	}
+//	public Point2D getFocus1() {
+//		double c = 1/a/4.0;
+//		return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
+//	}
 
-	/**
-	 * Always return Point2D.INFINITY_POINT.
-	 */
-	public Point2D getFocus2() {
-		return Point2D.INFINITY_POINT;
-	}
+//	/**
+//	 * Always return Point2D.INFINITY_POINT.
+//	 */
+//	public Point2D getFocus2() {
+//		return Point2D.INFINITY_POINT;
+//	}
 
 	/**
 	 * return the first vector of the parabola
@@ -211,19 +235,19 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return vect.transform(AffineTransform2D.createRotation(theta+Math.PI/2));
 	}
 
-	/**
-	 * return 0.
-	 */
-	public double getLength1() {
-		return 0;
-	}
-
-	/**
-	 * return 0.
-	 */
-	public double getLength2() {
-		return 0;
-	}
+//	/**
+//	 * return 0.
+//	 */
+//	public double getLength1() {
+//		return 0;
+//	}
+//
+//	/**
+//	 * return 0.
+//	 */
+//	public double getLength2() {
+//		return 0;
+//	}
 
 	/**
 	 * Return 1, by definition for a parabola.
@@ -350,6 +374,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	public Point2D getPoint(double t, Point2D point) {
+		if (point==null) point = new Point2D();
 		point.setLocation(t, a*t*t);
 		point = AffineTransform2D.createRotation(theta).transform(point);
 		point = AffineTransform2D.createTranslation(xv, yv).transform(point);
@@ -496,7 +521,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return false;
 	}
 
-	
+	/**
+	 * Returns false, as a parabola is never empty.
+	 */
 	public boolean isEmpty(){
 		return false;
 	}
@@ -533,9 +560,18 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	public Parabola2D transform(AffineTransform2D trans) {
-		// TODO Auto-generated method stub
-		// transform vertex, tansform focus, and update parameters ?
-		return null;
+		Point2D vertex = this.getVertex().transform(trans); 
+		Point2D focus = this.getFocus().transform(trans);
+		double a = 1/(4.0*Point2D.getDistance(vertex, focus));
+		double theta = Angle2D.getHorizontalAngle(vertex, focus) - Math.PI/2;
+		
+		// check orientation of resulting parabola
+		if(this.a<0 ^ trans.isDirect())
+			// normal case
+			return new Parabola2D(vertex, a, theta);
+		else
+			// inverted case
+			return new Parabola2D(vertex, -a, theta+Math.PI);
 	}
 
 	/**

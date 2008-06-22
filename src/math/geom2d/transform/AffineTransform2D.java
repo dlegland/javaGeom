@@ -72,6 +72,11 @@ public class AffineTransform2D implements Bijection2D{
 				2*dx*(dx*y0 - dy*x0)/delta + ty);
 	}
 
+
+	public final static AffineTransform2D createHomothecy(Point2D center, double k){
+		return createScaling(center, k, k);
+	}
+	
 	public final static AffineTransform2D createLineReflection(StraightObject2D line){
 		Vector2D vector = line.getVector();
 		Point2D origin = line.getOrigin();
@@ -90,6 +95,31 @@ public class AffineTransform2D implements Bijection2D{
 				2*dx*(dx*y0 - dy*x0)/delta);
 	}
 
+	/**
+	 * Return a point reflection centered on a point.
+	 * @param center the center of the reflection
+	 * @return an instance of AffineTransform2D representing a point reflection
+	 */
+	public final static AffineTransform2D createPointReflection(Point2D center){
+		return AffineTransform2D.createScaling(center, -1, -1);
+	}
+	
+	public final static AffineTransform2D createQuadrantRotation(int numQuadrant){
+		int n = ((numQuadrant % 4) + 4)%4;
+		switch(n){
+		case 0:
+			return new AffineTransform2D(1, 0, 0, 0, 1, 0);
+		case 1:
+			return new AffineTransform2D(0, -1, 0, 1, 0, 0);
+		case 2:
+			return new AffineTransform2D(-1, 0, 0, 0, -1, 0);
+		case 3:
+			return new AffineTransform2D(0, 1, 0, -1, 0, 0);
+		default:
+			return new AffineTransform2D(1, 0, 0, 0, 1, 0);
+		}
+	}
+	
 	/**
 	 * Return a rotation around the origin, with angle in radians.
 	 */
@@ -153,6 +183,16 @@ public class AffineTransform2D implements Bijection2D{
 	}
 
 	/**
+	 * Creates a Shear transform, using the classical Java notation.
+	 * @param shx shear in x-axis
+	 * @param shy shear in y-axis
+	 * @return a shear transform
+	 */
+	public final static AffineTransform2D createShear(double shx, double shy){
+		return new AffineTransform2D(1, shx, 0, shy, 1, 0);
+	}
+	
+	/**
 	 * Return a translation by the given vector.
 	 */
 	public final static AffineTransform2D createTranslation(Vector2D vect){
@@ -198,12 +238,23 @@ public class AffineTransform2D implements Bijection2D{
 	 * @return true in case of isometry.
 	 */
 	public final static boolean isIsometry(AffineTransform2D trans){
+		// extract matrix coefficients
 		double[][] mat = trans.getAffineMatrix();
-		double det = mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0]; 
-		return Math.abs(Math.abs(det)-1)<Shape2D.ACCURACY;
+		double a = mat[0][0];
+		double b = mat[0][1];
+		double d = mat[1][0];
+		double e = mat[1][1];
+		
+		// peforms some tests
+        if(Math.abs(a*a+d*d-1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(b*b+e*e-1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(a*b+d*e)>Shape2D.ACCURACY) 	 return false;
+ 
+        // if all tests passed, return true;
+        return true;
 	}
 
-	/**
+    /**
 	 * Check if the transform is a motion, i.e. a compound of translations and
 	 * rotation. Motion remains area and orientation (directed or undirected)
 	 * of shapes unchanged.

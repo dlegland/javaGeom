@@ -184,7 +184,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){		
 		Point2D point = new Point2D();
 		for(ContinuousCurve2D curve : getCurves()){
-			curve.getPoint(curve.getT0(), point);
+			point = curve.getPoint(curve.getT0());
 			path.lineTo((float)point.getX(), (float)point.getY());
 			curve.appendPath(path);
 		}
