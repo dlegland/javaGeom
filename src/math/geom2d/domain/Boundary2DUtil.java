@@ -101,6 +101,7 @@ public abstract class Boundary2DUtil {
 	 */
 	public final static BoundarySet2D<ContinuousBoundary2D>
 	clipBoundary(Boundary2D boundary, Box2D box){
+		//TODO: assumes for the moment that box is closed (rectangular)
 		// iteration variable
 		ContinuousOrientedCurve2D curve;
 		
@@ -228,7 +229,9 @@ public abstract class Boundary2DUtil {
 				curve = curves[ind];
 
 				// add a link between previous curve and current curve
-				boundary0.addCurve(new LineSegment2D(p1, curve.getFirstPoint()));
+				// TODO: add more line segments if intersection contains corner
+				//boundary0.addCurve(new LineSegment2D(p1, curve.getFirstPoint()));
+				boundary0.addCurve(getBoundaryPortion(box, p1, curve.getFirstPoint()));				
 				
 				// add to current boundary
 				boundary0.addCurve(curve);
@@ -245,7 +248,7 @@ public abstract class Boundary2DUtil {
 			}
 			
 			// add a line from last point to first point
-			boundary0.addCurve(new LineSegment2D(p1, p0));			
+			boundary0.addCurve(getBoundaryPortion(box, p1, p0));			
 			
 			// Add current boundary to the set of boundary curves
 			res.addCurve(boundary0);
@@ -261,7 +264,7 @@ public abstract class Boundary2DUtil {
 
 		return res;
 	}
-		
+	
 	public final static int findNextCurveIndex(double[] positions, double pos){
 		int ind = -1;
 		double posMin = java.lang.Double.MAX_VALUE;
@@ -294,5 +297,48 @@ public abstract class Boundary2DUtil {
 			}
 		}
 		return ind;
+	}
+	
+	/**
+	 * 
+	 * @param box the box from which one extract a portion of boundary
+	 * @param t0 the position of portion beginning
+	 * @param t1 the position of portion ending
+	 * @return
+	 */
+	public final static ContinuousOrientedCurve2D getBoundaryPortion(
+			Box2D box, Point2D p0, Point2D p1){
+		Boundary2D boundary = box.getBoundary();
+		
+		// position of start and end points
+		double t0 = boundary.getPosition(p0);
+		double t1 = boundary.getPosition(p1);
+		
+		// curve index of each point
+		int ind0 = (int) Math.floor(t0);
+		int ind1 = (int) Math.floor(t1);
+		
+		// Simple case: returns only a line segment
+		if(ind0==ind1 && ind0<ind1)
+			return new LineSegment2D(p0, p1);
+		
+		PolyOrientedCurve2D<LineSegment2D> result = 
+			new PolyOrientedCurve2D<LineSegment2D>();
+		
+		// add the first line segment
+		int ind = (ind0+1) % 4;
+		result.addCurve(new LineSegment2D(p0, boundary.getPoint(ind)));
+
+		// add all line segments between 2 box corners
+		while(ind!=ind1){
+			result.addCurve(new LineSegment2D(boundary.getPoint(ind), 
+					boundary.getPoint((ind+1)%4)));
+			ind = (ind+1)%4;	
+		}
+		
+		// add the last line segment
+		result.addCurve(new LineSegment2D(boundary.getPoint(ind), p1));
+		
+		return result;
 	}
 }
