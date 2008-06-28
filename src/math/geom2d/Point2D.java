@@ -335,7 +335,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 
 	/**
-	 * Two points are consided equal if their euclidean distance is less
+	 * Two points are considered equal if their Euclidean distance is less
 	 * than Shape2D.ACCURACY.
 	 */
 	public boolean equals(Object obj){

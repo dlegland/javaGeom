@@ -26,9 +26,16 @@ package math.geom2d.line;
 
 //Imports
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Angle2D;
+import math.geom2d.Box2D;
+import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.ContinuousBoundary2D;
@@ -36,13 +43,11 @@ import math.geom2d.transform.AffineTransform2D;
 
 
 /**
- * Representation of straigth lines. Such lines can	be constructed using two points,
+ * Representation of straight lines. Such lines can	be constructed using two points,
  * a point and a parallel line or straight object, or with coefficient of the 
- * cartesian equation.
+ * Cartesian equation.
  */
-public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
-
-	//TODO: should be better not to override LineArc2D -> faster computation
+public class StraightLine2D extends StraightObject2D implements ContinuousBoundary2D{
 
 	// ===================================================================
 	// constants
@@ -50,84 +55,6 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 
 	// ===================================================================
 	// class variables
-	
-	// ===================================================================
-	// constructors
-	
-	/** Empty constructor: a straight line corresponding to horizontal axis.*/
-	public StraightLine2D(){
-		this(0,0,1,0);
-	}
-	
-	/** Define a new Straight line going through the two given points. */
-	public StraightLine2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2){
-		this(point1, new Vector2D(point1, point2));
-	}
-
-	/** 
-	 * Define a new Straight line going through the given point, and with
-	 * the specified direction vector.
-	 */
-	public StraightLine2D(java.awt.geom.Point2D point, Vector2D direction){
-		this(point.getX(), point.getY(), direction.getX(), direction.getY());
-	}
-
-	/** 
-	 * Define a new Straight line going through the given point, and with
-	 * the specified direction vector.
-	 */
-	public StraightLine2D(java.awt.geom.Point2D point, double dx, double dy){
-		this(point.getX(), point.getY(), dx, dy);
-	}
-
-	/** 
-	 * Define a new Straight line going through the given point, and with
-	 * the specified direction given by angle.
-	 */
-	public StraightLine2D(java.awt.geom.Point2D point, double angle){
-		this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
-	}
-
-	/** 
-	 * Define a new Straight line at the same position and with the same direction
-	 * than an other straight object (line, edge or ray).
-	 */
-	public StraightLine2D(StraightObject2D obj){
-		this(obj.x0, obj.y0, obj.dx, obj.dy);
-	}
-
-
-	/** 
-	 * Define a new Straight line going through the point (xp, yp) and with
-	 * the direction dx, dy.
-	 */
-	public StraightLine2D(double xp, double yp, double dx, double dy){
-		super(xp, yp, dx, dy, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-	}
-
-	/** 
-	 * Define a new Straight line, parallel to another straigth object (ray,
-	 * straight line or edge), and going through the given point.
-	 */
-	public StraightLine2D(StraightObject2D line, java.awt.geom.Point2D point){
-		this(point.getX(), point.getY(), line.dx, line.dy);
-	}
-	
-	
-	/**
-	 * Define a new straight line, from the coefficients of the cartesian equation.
-	 * The starting point of the line is then the point of the line closest to the 
-	 * origin, and the direction vector has unit norm.
-	 */
-	public StraightLine2D(double a, double b, double c){
-		this(0,0,1,0);
-		double d = a*a+b*b;
-		x0 = -a*c/d;
-		y0 = -b*c/d;
-		double theta = Math.atan2(-a, b);
-		dx = Math.cos(theta);
-		dy = Math.sin(theta);		
-	}
 	
 	
 	// ===================================================================
@@ -204,163 +131,87 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		return line1.getIntersection(line2);
 	}
 
-//	// ===================================================================
-//	// accessors
-//
-//	/** Always returns false, because a line is not bounded.*/
-//	public  boolean isBounded(){return false;}
-//
-//	public boolean equals(Object obj){
-//		if(!(obj instanceof StraightLine2D)) return false;
-//		return isColinear((StraightLine2D) obj);
-//	}
-//
-//	/**
-//	 * Returns the part of the line visible inside the rectangle 
-//	 * <code>rect<\code>. The result is either an Edge2D, if line is
-//	 * partially visible, or null, if line does not intersect the rectangle.
-//	 * The resulting Edge2D is bounded by the rectangle.
-//	 */
-//	public Shape2D getClippedShape(java.awt.geom.Rectangle2D rect){
-//		// get vertices of rectangle
-//		double x = rect.getX();
-//		double y = rect.getY();
-//		double w = rect.getWidth();
-//		double h = rect.getHeight();
-//
-//		// case of vertical lines
-//		if(Math.abs(dx)<Shape2D.ACCURACY)
-//			if(x0>=x && x0<=x+w)
-//				return new LineSegment2D(x0, y, x0, y0+h);
-//			else
-//				return null;		
-//		
-//		// case of horizontal lines
-//		if(Math.abs(dy)<Shape2D.ACCURACY)
-//			if(y0>=y && y0<=y+h)
-//				return new LineSegment2D(x, y0, x+w, y0);
-//			else
-//				return null;
-//		
-//		double t1 = (y-y0)/dy;
-//		double t2 = (x+w-x0)/dx;
-//		double t3 = (y+h-y0)/dy;
-//		double t4 = (x-x0)/dx;
-//		
-//		// sort the positions of the 4 points in ascending order
-//		double tmp;
-//		
-//		if(t1>t2){tmp=t1;t1=t2;t2=tmp;}
-//		if(t3>t4){tmp=t3;t3=t4;t4=tmp;}
-//		if(t2>t3){tmp=t2;t2=t3;t3=tmp;}
-//		if(t1>t2){tmp=t1;t1=t2;t2=tmp;}
-//		if(t3>t4){tmp=t3;t3=t4;t4=tmp;}
-//		if(t2>t3){tmp=t2;t2=t3;t3=tmp;}
-//		return new LineSegment2D(getPoint(t2), getPoint(t3));
-//	}
-//
-//	/** 
-//	 * Always returns Double.POSITIVE_INFINITY, since a line is infinite...
-//	 */
-//	public double getLength(){
-//		return Double.POSITIVE_INFINITY;
-//	}
-//
-//	public double getViewAngle(Point2D point){
-//		if (super.isPositivelyOriented(point)) return Math.PI;
-//		else return -Math.PI;
-//	}
-//	
-//	/** 
-//	 * Returns the parameter of the first point of the line, which is always Double.NEGATIVE_INFINITY.
-//	 */
-//	public double getT0(){
-//		return Double.NEGATIVE_INFINITY;
-//	}
-//
-//	/** 
-//	 * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
-//	 */
-//	public double getT1(){
-//		return Double.POSITIVE_INFINITY;
-//	}
-//
-//	/**
-//	 * Gets the point specified with the parametric representation of the line.
-//	 */
-//	public Point2D getPoint(double t){
-//		return new Point2D(x0 + dx*t, y0+dy*t);
-//	}
-//
-//	/**
-//	 * Gets the point specified with the parametric representation of the line.
-//	 */
-//	public Point2D getPoint(double t, Point2D point){
-//		if(point==null) point = new Point2D();
-//		point.setLocation(x0 + dx*t, y0 + dy*t);
-//		return point;
-//	}
-//
-//
-//	/** 
-//	 * Returns true if the point (x, y) lies on the line, with precision given 
-//	 * by Shape2D.ACCURACY.
-//	 */
-//	public boolean contains(double x, double y){
-//		return super.contains(x, y);
-//	}
-//
-//
-//	/** 
-//	 * Returns true if the point p lies on the line, with precision given by 
-//	 * Shape2D.ACCURACY.
-//	 */
-//	public boolean contains(java.awt.geom.Point2D p){
-//		return super.contains(p.getX(), p.getY());
-//	}
-//
-//	/**
-//	 * Returns null, because an infinite line has no bounds.
-//	 */
-//	public java.awt.Rectangle getBounds(){
-//		return null;
-//	}
-//	
-//	/**
-//	 * Returns null, because an infinite line has no bounds.
-//	 */
-//	public java.awt.geom.Rectangle2D getBounds2D(){
-//		return null;
-//	}
-//	
-	/** 
-	 * Return a new Straight line, parallel to another straigth object (ray,
-	 * straight line or edge), and going through the given point.
-	 */
-	public StraightLine2D getParallel(java.awt.geom.Point2D point){
-		return new StraightLine2D(point, dx, dy);
+	
+	// ===================================================================
+	// constructors
+	
+	/** Empty constructor: a straight line corresponding to horizontal axis.*/
+	public StraightLine2D(){
+		this(0,0,1,0);
+	}
+	
+	/** Define a new Straight line going through the two given points. */
+	public StraightLine2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2){
+		this(point1, new Vector2D(point1, point2));
 	}
 
 	/** 
-	 * Return the parallel line located at a distance d. Distance is positive
-	 * in the 'right' side of the line (outside of the limiting half-plane),
-	 * and negative in the 'left' of the line.
+	 * Define a new Straight line going through the given point, and with
+	 * the specified direction vector.
 	 */
-	public StraightLine2D getParallel(double d){
-		double dd = Math.sqrt(dx*dx+dy*dy);
-		return new StraightLine2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+	public StraightLine2D(java.awt.geom.Point2D point, Vector2D direction){
+		this(point.getX(), point.getY(), direction.getX(), direction.getY());
 	}
 
 	/** 
-	 * Return a new Straight line, parallel to another straigth object (ray,
+	 * Define a new Straight line going through the given point, and with
+	 * the specified direction vector.
+	 */
+	public StraightLine2D(java.awt.geom.Point2D point, double dx, double dy){
+		this(point.getX(), point.getY(), dx, dy);
+	}
+
+	/** 
+	 * Define a new Straight line going through the given point, and with
+	 * the specified direction given by angle.
+	 */
+	public StraightLine2D(java.awt.geom.Point2D point, double angle){
+		this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
+	}
+
+	/** 
+	 * Define a new Straight line at the same position and with the same direction
+	 * than an other straight object (line, edge or ray).
+	 */
+	public StraightLine2D(StraightObject2D obj){
+		this(obj.x0, obj.y0, obj.dx, obj.dy);
+	}
+
+
+	/** 
+	 * Define a new Straight line going through the point (xp, yp) and with
+	 * the direction dx, dy.
+	 */
+	public StraightLine2D(double xp, double yp, double dx, double dy){
+		super(xp, yp, dx, dy);
+	}
+
+	/** 
+	 * Define a new Straight line, parallel to another straigth object (ray,
 	 * straight line or edge), and going through the given point.
 	 */
-	public StraightLine2D getPerpendicular(Point2D point){
-		return new StraightLine2D(point, -dy, dx);
+	public StraightLine2D(StraightObject2D line, java.awt.geom.Point2D point){
+		this(point.getX(), point.getY(), line.dx, line.dy);
+	}
+	
+	
+	/**
+	 * Define a new straight line, from the coefficients of the cartesian equation.
+	 * The starting point of the line is then the point of the line closest to the 
+	 * origin, and the direction vector has unit norm.
+	 */
+	public StraightLine2D(double a, double b, double c){
+		this(0,0,1,0);
+		double d = a*a+b*b;
+		x0 = -a*c/d;
+		y0 = -b*c/d;
+		double theta = Math.atan2(-a, b);
+		dx = Math.cos(theta);
+		dy = Math.sin(theta);		
 	}
 	
 	// ===================================================================
-	// mutators
+	// methods specific to StraightLine2D
 
 	public void setLine(double x0, double y0, double dx, double dy){
 		this.x0 = x0;
@@ -389,8 +240,34 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		x0 = -a*c/(a*a+b*b);
 		y0 = -b*c/(a*a+b*b);
 	}
+	
+	/** 
+	 * Returns a new Straight line, parallel to another straight object (ray,
+	 * straight line or edge), and going through the given point.
+	 */
+	public StraightLine2D getParallel(java.awt.geom.Point2D point){
+		return new StraightLine2D(point, dx, dy);
+	}
 
+	/** 
+	 * Return the parallel line located at a distance d. Distance is positive
+	 * in the 'right' side of the line (outside of the limiting half-plane),
+	 * and negative in the 'left' of the line.
+	 */
+	public StraightLine2D getParallel(double d){
+		double dd = Math.sqrt(dx*dx+dy*dy);
+		return new StraightLine2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+	}
 
+	/** 
+	 * Return a new Straight line, parallel to another straigth object (ray,
+	 * straight line or edge), and going through the given point.
+	 */
+	public StraightLine2D getPerpendicular(Point2D point){
+		return new StraightLine2D(point, -dy, dx);
+	}
+	
+	
 	// ===================================================================
 	// methods specific to Boundary2D interface
 	
@@ -398,6 +275,87 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
+	}
+
+
+	// ===================================================================
+	// methods specific to OrientedCurve2D interface
+	
+	public double getWindingAngle(java.awt.geom.Point2D point){
+
+		double angle1 = Angle2D.getHorizontalAngle(-dx, -dy);
+		double angle2 = Angle2D.getHorizontalAngle(dx, dy);
+
+		if(this.isInside(point)){
+			if(angle2>angle1) return angle2 - angle1;
+			else return 2*Math.PI - angle1 + angle2;
+		}else{
+			if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
+			else return angle2 - angle1;
+		}
+	}
+
+	
+	// ===================================================================
+	// methods implementing the ContinuousCurve2D interface
+	
+	/**
+	 * Throws an exception when called.
+	 */
+	public Polyline2D getAsPolyline(int n) {
+		throw new UnboundedShapeException();
+	}
+
+	
+	// ===================================================================
+	// methods implementing the Curve2D interface
+	
+	public Point2D getFirstPoint() {
+		return Point2D.INFINITY_POINT;
+	}
+
+	public Point2D getLastPoint() {
+		return Point2D.INFINITY_POINT;
+	}
+
+	/** Returns an empty list of points. */
+	public Collection<Point2D> getSingularPoints() {
+		return new ArrayList<Point2D>(0);
+	}
+
+	/** Returns false, whatever the position.*/
+	public boolean isSingular(double pos) {
+		return false;
+	}
+
+	/** 
+	 * Returns the parameter of the first point of the line, which is always Double.NEGATIVE_INFINITY.
+	 */
+	public double getT0(){
+		return Double.NEGATIVE_INFINITY;
+	}
+
+	/** 
+	 * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
+	 */
+	public double getT1(){
+		return Double.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * Gets the point specified with the parametric representation of the line.
+	 */
+	public Point2D getPoint(double t){
+		return new Point2D(x0 + dx*t, y0+dy*t);
+	}
+
+	/**
+	 * Gets the point specified with the parametric representation of the line.
+	 */
+	public Point2D getPoint(double t, Point2D point){
+		if(point==null) point = new Point2D();
+		point.setLocation(x0 + dx*t, y0 + dy*t);
+		return point;
 	}
 
 	/**
@@ -408,9 +366,34 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 		return new StraightLine2D(this.x0, this.y0, -this.dx, -this.dy);
 	}
 
+	public GeneralPath appendPath(GeneralPath path) {
+		throw new UnboundedShapeException();
+	}
+
 
 	// ===================================================================
-	// general methods
+	// methods implementing the Shape2D interface
+
+	/** Always returns false, because a line is not bounded.*/
+	public  boolean isBounded(){return false;}
+
+	/**
+	 * Get the distance of the point (x, y) to this object.
+	 */
+	public double getDistance(double x, double y){
+		Point2D proj = super.getProjectedPoint(x, y);
+		return proj.distance(x, y);
+	}
+
+	public Box2D getBoundingBox() {
+		if(Math.abs(dx)<0)
+			return new Box2D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+		if(Math.abs(dy)<0)
+			return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, x0, y0);
+
+		return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+	}
 
 	/**
 	 * Returns the transformed line. The result is still a StraightLine2D.
@@ -422,6 +405,50 @@ public class StraightLine2D extends LineArc2D implements ContinuousBoundary2D{
 			x0*tab[3] + y0*tab[4] + tab[5],
 			dx*tab[0] + dy*tab[1],
 			dx*tab[3] + dy*tab[4] );
+	}
+	
+	
+	// ===================================================================
+	// methods implementing the Shape interface
+
+	/** 
+	 * Returns true if the point (x, y) lies on the line, with precision given 
+	 * by Shape2D.ACCURACY.
+	 */
+	public boolean contains(double x, double y){
+		return super.supportContains(x, y);
+	}
+
+	/** 
+	 * Returns true if the point p lies on the line, with precision given by 
+	 * Shape2D.ACCURACY.
+	 */
+	public boolean contains(java.awt.geom.Point2D p){
+		return super.supportContains(p.getX(), p.getY());
+	}
+	
+	/** Throws an infiniteShapeException */
+	public PathIterator getPathIterator(AffineTransform at) {
+		throw new UnboundedShapeException();
+	}
+
+	/** Throws an infiniteShapeException */
+	public PathIterator getPathIterator(AffineTransform at, double flatness) {
+		throw new UnboundedShapeException();
+	}
+
+
+	// ===================================================================
+	// methods implementing the Object interface
+
+	public boolean equals(Object obj){
+		if(!(obj instanceof StraightLine2D)) return false;
+		StraightLine2D line = (StraightLine2D) obj;
+		if(Math.abs(x0-line.x0)>Shape2D.ACCURACY) return false;
+		if(Math.abs(y0-line.y0)>Shape2D.ACCURACY) return false;
+		if(Math.abs(dx-line.dx)>Shape2D.ACCURACY) return false;
+		if(Math.abs(dy-line.dy)>Shape2D.ACCURACY) return false;
+		return true;
 	}
 
 }

@@ -62,27 +62,27 @@ public class StraightLine2DTest extends TestCase {
 		assertTrue(!line.isBounded());
 	}
 
-	public void testEqualsStraightLine2D() {
+	public void testEquals() {
 		StraightLine2D line1 = new StraightLine2D(1, 2, 1, 1);
 		StraightLine2D line2 = new StraightLine2D(2, 3, 1, 1);
 		StraightLine2D line3 = new StraightLine2D(1, 2, -1, -1);
 		StraightLine2D line4 = new StraightLine2D(2, 3, 2, 2);
 		
 		assertTrue(line1.equals(line1));
-		assertTrue(line1.equals(line2));
-		assertTrue(line1.equals(line3));
-		assertTrue(line1.equals(line4));
-		assertTrue(line2.equals(line1));
+		assertTrue(!line1.equals(line2));
+		assertTrue(!line1.equals(line3));
+		assertTrue(!line1.equals(line4));
+		assertTrue(!line2.equals(line1));
 		assertTrue(line2.equals(line2));
-		assertTrue(line2.equals(line3));
-		assertTrue(line2.equals(line4));
-		assertTrue(line3.equals(line1));
-		assertTrue(line3.equals(line2));
+		assertTrue(!line2.equals(line3));
+		assertTrue(!line2.equals(line4));
+		assertTrue(!line3.equals(line1));
+		assertTrue(!line3.equals(line2));
 		assertTrue(line3.equals(line3));
-		assertTrue(line3.equals(line4));
-		assertTrue(line4.equals(line1));
-		assertTrue(line4.equals(line2));
-		assertTrue(line4.equals(line3));
+		assertTrue(!line3.equals(line4));
+		assertTrue(!line4.equals(line1));
+		assertTrue(!line4.equals(line2));
+		assertTrue(!line4.equals(line3));
 		assertTrue(line4.equals(line4));
 	}
 

@@ -9,9 +9,9 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.PointSet2D;
-import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.line.StraightObject2D;
 
 /**
  * @author dlegland
@@ -220,7 +220,7 @@ public class TriangleGrid2D implements Grid2D {
 			// add each clipped line
 			for(int i=i0; i<=i1; i++){
 				StraightLine2D line = baseLine.getParallel(d*i);
-				for(LineArc2D arc : line.clip(box)){
+				for(StraightObject2D arc : line.clip(box)){
 					if(arc instanceof LineSegment2D)
 						array.add((LineSegment2D) arc);
 				}

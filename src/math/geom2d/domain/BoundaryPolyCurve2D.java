@@ -59,35 +59,6 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		list.add(this);
 		return list;
 	}
-
-//	/**
-//	 * Add the curve to the curve set, if it does not already belongs to the
-//	 * set and if it is an instance of ContinuousOrientedCurve2D. 
-//	 * @param curve
-//	 */
-//	public void addCurve(Curve2D curve){
-//		if(!(curve instanceof ContinuousOrientedCurve2D))
-//			return;
-//		
-//		if(!curves.contains(curve))
-//			curves.add(curve);
-//	}
-	
-//	/** 
-//	 * Return an instance of PolyOrientedCurve2D. 
-//	 */
-//	public PolyOrientedCurve2D<?> getSubCurve(double t0, double t1){
-//		PolyCurve2D<T> set = super.getSubCurve(t0, t1);
-//		PolyOrientedCurve2D<ContinuousOrientedCurve2D> subCurve = 
-//			new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
-//		subCurve.setClosed(false);
-//		
-//		// convert to PolySmoothCurve by adding curves.
-//		for(ContinuousOrientedCurve2D curve : set.getCurves())
-//			subCurve.addCurve(curve);
-//		
-//		return subCurve;
-//	}
 	
 	public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve(){
 		ContinuousOrientedCurve2D[] curves2 = 
@@ -105,5 +76,4 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 			result.addCurve(curve.transform(trans));
 		return result;
 	}
-
 }

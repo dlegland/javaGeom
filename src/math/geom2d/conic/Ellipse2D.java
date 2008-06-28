@@ -148,8 +148,11 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			theta = theta + Math.PI/2;
 		}			
 		
-		// create the rsulting ellipse
-		return new Ellipse2D(0, 0, r1, r2, theta);
+		// Return either an ellipse or a circle
+		if(Math.abs(r1-r2)<Shape2D.ACCURACY)
+			return new Circle2D(0, 0, r1);
+		else
+			return new Ellipse2D(0, 0, r1, r2, theta);
 	}
 	
 	/**
@@ -1026,6 +1029,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	public Ellipse2D transform(AffineTransform2D trans){
 		Ellipse2D result = Ellipse2D.transformCentered(this, trans);
 		result.setCenter(this.getCenter().transform(trans));
+		result.direct = this.direct ^ !trans.isDirect();
 		return result;
 	}
 //	public Ellipse2D transform(AffineTransform2D trans){

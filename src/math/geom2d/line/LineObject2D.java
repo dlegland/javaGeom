@@ -36,7 +36,6 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtil;
-import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -89,20 +88,14 @@ public class LineObject2D extends StraightObject2D{
 	
 	/** Define a new Edge with two extremities. */
 	public LineObject2D(Point2D point1, Point2D point2){
-		x0 = point1.getX();
-		y0 = point1.getY();
-		dx = point2.getX()-point1.getX();
-		dy = point2.getY()-point1.getY();
+		super(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2.getY()-point1.getY());
 		this.point1 = point1;
 		this.point2 = point2;
 	}
 	
 	/** Define a new Edge with two extremities. */
 	public LineObject2D(double x1, double y1, double x2, double y2){
-		x0 = x1;
-		y0 = y1;
-		dx = x2-x1;
-		dy = y2-y1;
+		super(x1, y1, x2-x1, y2-y1);
 		point1 = new Point2D(x1, y1);
 		point2 = new Point2D(x2, y2);
 	}
@@ -377,15 +370,6 @@ public class LineObject2D extends StraightObject2D{
 		return new Polyline2D(points);
 	}
 
-	/** 
-	 * Returns an array containing the curve itself.
-	 */
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<LineObject2D> list = new ArrayList<LineObject2D>(1);
-		list.add(this);
-		return list;
-	}
-
 	public ContinuousOrientedCurve2D[] getBoundaryCurves(){
 		return new ContinuousOrientedCurve2D[]{this};
 	}
@@ -564,7 +548,7 @@ public class LineObject2D extends StraightObject2D{
 	 */
 	public boolean contains(double x, double y){
 		updateParameters();
-		boolean b = super.contains(x, y);
+		boolean b = super.supportContains(x, y);
 		double t;
 		if(Math.abs(dx)>Math.abs(dy)) t = (x-x0)/dx;
 		else t = (y-y0)/dy;
