@@ -54,6 +54,56 @@ public class Ellipse2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Ellipse2DTest.class);
 	}
 
+	public void testCreatePointPointDouble(){
+		Ellipse2D base = new Ellipse2D(20, 30, 10, 4, Math.PI/3);
+		Point2D focus1 = base.getFocus1();
+		Point2D focus2 = base.getFocus2();
+		double chord = base.getLength1()*2;
+		Ellipse2D created = Ellipse2D.create(focus1, focus2, chord);
+		
+		assertTrue(base.equals(created));
+	}
+	
+	public void testReduceCentered(){
+		double[] coefs = {1./400., 0, 1./100.};
+		Ellipse2D ell0 = Ellipse2D.reduceCentered(coefs);
+		assertTrue(ell0.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+		
+		double[] coefs2 = {1./400., 0, 1./100., 0, 0, -1};
+		Ellipse2D ell2 = Ellipse2D.reduceCentered(coefs2);
+		assertTrue(ell2.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+
+		double[] coefs3 = {1., 0, 4., 0, 0, -400};
+		Ellipse2D ell3 = Ellipse2D.reduceCentered(coefs3);
+		assertTrue(ell3.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+
+		double theta = Math.PI/3;
+		double[] rotCoefs = Conic2DUtil.transformCentered(coefs,
+				AffineTransform2D.createRotation(theta));
+		Ellipse2D ellRot = Ellipse2D.reduceCentered(rotCoefs);
+		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
+	}
+	
+	public void testTransformCentered(){
+		Ellipse2D ell0 = new Ellipse2D(0, 0, 20, 10, 0);
+		
+		// Check rotation of an ellipse
+		double theta = Math.PI/3;
+		AffineTransform2D rot60 = AffineTransform2D.createRotation(Math.PI/3);
+		Ellipse2D ellRot = Ellipse2D.transformCentered(ell0, rot60);
+		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
+		
+		// Check scaling of an ellipse
+		double sx = 2.5; double sy = 3;
+		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
+		Ellipse2D ellSca = Ellipse2D.transformCentered(ell0, sca);
+		assertTrue(ellSca.equals(new Ellipse2D(0, 0, 20.*sx, 10.*sy, 0)));
+
+		// Check scaling and rotation
+		Ellipse2D ellBoth = Ellipse2D.transformCentered(ellSca, rot60);
+		assertTrue(ellBoth.equals(new Ellipse2D(0, 0, 20.*sx, 10.*sy, theta)));
+
+	}
 	
 	public void testGetProjectedPoint(){
 		Ellipse2D el1 = new Ellipse2D(0, 0, 10, 10);
@@ -99,9 +149,15 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(el2.getConicType(), Conic2D.CIRCLE);
 	}
 
-	public void testGetCartesianEquation() {
-		Ellipse2D ellipse = new Ellipse2D(0, 0, 1, 1, 0);
-		double[] coefs = ellipse.getCartesianEquation();
+	public void testGetConicCoefficients() {
+		double a1 = 1;	double a2 = 20;
+		double b1 = 1;  double b2 = 10;
+		double xc = 20; double yc = 30;
+		double theta = Math.PI/3;
+		int Npts = 13;
+		
+		Ellipse2D ellipse = new Ellipse2D(0, 0, a1, 1, 0);
+		double[] coefs = ellipse.getConicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], 1, 1e-14);
@@ -109,8 +165,8 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(coefs[4], 0, 1e-14);
 		assertEquals(coefs[5], -1, 1e-14);
 		
-		ellipse = new Ellipse2D(20, 30, 1, 1, 0);
-		coefs = ellipse.getCartesianEquation();
+		ellipse = new Ellipse2D(xc, yc, a1, b1, 0);
+		coefs = ellipse.getConicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], 1, 1e-14);
@@ -118,14 +174,29 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(coefs[4], -60, 1e-14);
 		assertEquals(coefs[5], 1299, 1e-14);
 		
-		ellipse = new Ellipse2D(20, 30, 20, 10, 0);
-		coefs = ellipse.getCartesianEquation();
-		assertEquals(coefs[0], 100, 1e-14);
-		assertEquals(coefs[1], 0, 1e-14);
-		assertEquals(coefs[2], 400, 1e-14);
-//		assertEquals(coefs[3], -800, 1e-14);
-//		assertEquals(coefs[4], -600, 1e-14);
-//		assertEquals(coefs[5], 1100, 1e-14);
+		ellipse = new Ellipse2D(xc, yc, a2, b2, 0);
+		coefs = ellipse.getConicCoefficients();
+		for(int i=0; i<Npts; i++){
+			double pos =((double)i)*2*Math.PI/Npts;
+			Point2D point = ellipse.getPoint(pos);
+			double x = point.getX();
+			double y = point.getY();
+			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
+				coefs[3]*x + coefs[4]*y + coefs[5];
+			assertTrue(Math.abs(sum)<1e-12);			
+		}
+		
+		ellipse = new Ellipse2D(xc, yc, a2, b2, theta);
+		coefs = ellipse.getConicCoefficients();
+		for(int i=0; i<Npts; i++){
+			double pos =((double)i)*2*Math.PI/Npts;
+			Point2D point = ellipse.getPoint(pos);
+			double x = point.getX();
+			double y = point.getY();
+			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
+				coefs[3]*x + coefs[4]*y + coefs[5];
+			assertTrue(Math.abs(sum)<1e-12);			
+		}
 	}
 	
 	public void testIsCircle(){
@@ -227,15 +298,20 @@ public class Ellipse2DTest extends TestCase {
 		assertTrue(!ell1.equals(ell4));
 	}
 	
+	/**
+	 * Check transformation of ellipse with various transforms.
+	 */
 	public void testTransform(){
 		// goal is to check affine transform of an ellipse
 		Ellipse2D ellipse = new Ellipse2D(100, 100, 50, 30, 0);
 		
+		// Identity
 		AffineTransform2D aff = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell1 = ellipse.transform(aff);
 		assertTrue(ell1 instanceof Ellipse2D);
 		assertTrue(ell1.equals(ellipse));
 		
+		// Non uniform scaling
 		AffineTransform2D aff2 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
 		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);

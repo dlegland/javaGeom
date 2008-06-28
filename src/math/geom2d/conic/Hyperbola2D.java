@@ -142,7 +142,7 @@ implements Conic2D{
 		return theta;
 	}
 
-	public double[] getCartesianEquation() {
+	public double[] getConicCoefficients() {
 		//TODO: not tested
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
@@ -159,6 +159,14 @@ implements Conic2D{
 				-2*b*(yc*cot + xc*sit),
 				xc*xc - yc*yc - a*b
 			};
+	}
+
+	/**
+	 * @deprecated use getConicCoefficients instead
+	 */
+	@Deprecated
+	public double[] getCartesianEquation() {
+		return getConicCoefficients();
 	}
 
 	public Point2D getCenter() {

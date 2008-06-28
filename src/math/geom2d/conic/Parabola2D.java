@@ -184,7 +184,15 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 //		return false;
 //	}
 
+	/**
+	 * @deprecated use getConicCoefficients instead
+	 */
+	@Deprecated
 	public double[] getCartesianEquation() {
+		return getConicCoefficients();
+	}
+
+	public double[] getConicCoefficients() {
 		// computation shortcuts
 		double cot 	= Math.cos(theta);
 		double sit 	= Math.sin(theta);
