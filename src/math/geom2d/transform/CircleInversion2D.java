@@ -136,8 +136,8 @@ public class CircleInversion2D implements Transform2D{
 				LineSegment2D segment = (LineSegment2D) line;
 				
 				// transform limits of edges, to obtain limits of arc
-				Point2D p1 = segment.getPoint1();
-				Point2D p2 = segment.getPoint2();
+				Point2D p1 = segment.getFirstPoint();
+				Point2D p2 = segment.getLastPoint();
 				p1 = (Point2D) this.transform(p1, new Point2D());
 				p2 = (Point2D) this.transform(p2, new Point2D());
 

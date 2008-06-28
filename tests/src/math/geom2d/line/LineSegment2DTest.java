@@ -216,12 +216,12 @@ public class LineSegment2DTest extends TestCase {
 		assertTrue(rect.equals(new HRectangle2D(1, 1, 2, 1)));
 	}
 
-	public void testEqualsLineSegment2D(){
+	public void testEquals(){
 		LineSegment2D edge1 = new LineSegment2D(1, 2, 3, 4);
 		assertTrue(edge1.equals(edge1));
 		LineSegment2D edge2 = new LineSegment2D(3, 4, 1, 2);
-		assertTrue(edge1.equals(edge2));
-		assertTrue(edge2.equals(edge1));
+		assertTrue(!edge1.equals(edge2));
+		assertTrue(!edge2.equals(edge1));
 		
 		LineSegment2D edge3 = new LineSegment2D(1, 4, 3, 2);
 		assertTrue(!edge1.equals(edge3));

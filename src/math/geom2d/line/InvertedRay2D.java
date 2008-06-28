@@ -1,4 +1,4 @@
-/* File Ray2D.java 
+/* File InvertedRay2D.java 
  *
  * Project : Java Geometry Library
  *
@@ -40,23 +40,21 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Ray, or half-line, defined from an origin and a direction vector.
+ * Inverted ray is defined from an origin and a direction vector.
  * It is composed of all points satisfying the parametric equation:<p>
  * <code>x(t) = x0+t*dx<code><br>
  * <code>y(t) = y0+t*dy<code></p> 
- * With <code>t<code> comprised between 0 and +INFINITY.
+ * with <code>t<code> comprised between -INFINITY and 0.
+ * This is complementary class to Ray2D.
  */
-public class Ray2D extends StraightObject2D{
-
+public class InvertedRay2D extends StraightObject2D{
 
 	// ===================================================================
-	// constants
-	
+	// constants	
 
 	// ===================================================================
 	// class variables
-	
-	
+		
 	// ===================================================================
 	// constructors
 	
@@ -64,7 +62,7 @@ public class Ray2D extends StraightObject2D{
 	 * Empty constructor for Ray2D. Default is ray starting at origin, and 
 	 * having a slope of 1*dx and 0*dy.
 	 */
-	public Ray2D(){
+	public InvertedRay2D(){
 		this(0, 0, 1, 0);
 	}
 
@@ -72,7 +70,7 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from <code>point1<\code>, and going in the
 	 * direction of <code>point2<\code>.
 	 */
-	public Ray2D(Point2D point1, Point2D point2){
+	public InvertedRay2D(Point2D point1, Point2D point2){
 		this(point1.getX(), point1.getY(), 
 			point2.getX()-point1.getX(), point2.getY()-point1.getY());
 	}
@@ -81,7 +79,7 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from point <code>(x1,y1)<\code>, and going 
 	 * in the direction defined by vector <code>(dx, dy)<\code>.
 	 */
-	public Ray2D(double x1, double y1, double dx, double dy){
+	public InvertedRay2D(double x1, double y1, double dx, double dy){
 		super(x1, y1, dx, dy);
 	}
 
@@ -89,7 +87,7 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from point <code>point<\code>, and going 
 	 * in the direction defined by vector <code>(dx,dy)<\code>.
 	 */
-	public Ray2D(Point2D point, double dx, double dy){
+	public InvertedRay2D(Point2D point, double dx, double dy){
 		this(point.getX(), point.getY(), dx, dy);
 	}
 
@@ -97,7 +95,7 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from point <code>point<\code>, and going 
 	 * in the direction specified by <code>vector<\code>.
 	 */
-	public Ray2D(Point2D point, Vector2D vector){
+	public InvertedRay2D(Point2D point, Vector2D vector){
 		this(point.getX(), point.getY(), vector.getX(), vector.getY());
 	}
 
@@ -105,7 +103,7 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from point <code>point<\code>, and going 
 	 * in the direction specified by <code>angle<\code> (in radians).
 	 */
-	public Ray2D(Point2D point, double angle){
+	public InvertedRay2D(Point2D point, double angle){
 		this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
 	}
 
@@ -113,20 +111,20 @@ public class Ray2D extends StraightObject2D{
 	 * Creates a new Ray2D, originating from point <code>(x, y)<\code>, and going 
 	 * in the direction specified by <code>angle<\code> (in radians).
 	 */
-	public Ray2D(double x, double y, double angle){
+	public InvertedRay2D(double x, double y, double angle){
 		this(x, y, Math.cos(angle), Math.sin(angle));
 	}
 
 	/** 
 	 * Define a new Ray, with same characteristics as given object.
 	 */
-	public Ray2D(StraightObject2D line){
+	public InvertedRay2D(StraightObject2D line){
 		this(line.x0, line.y0, line.dx, line.dy);
 	}
 	
 	
 	// ===================================================================
-	// methods specific to Ray2D
+	// methods specific to InvertedRay2D
 
 	public void setRay(double x0, double y0, double dx, double dy){
 		this.x0 = x0;
@@ -167,21 +165,21 @@ public class Ray2D extends StraightObject2D{
 	// methods implementing the Curve2D interface
 
 	public Point2D getFirstPoint() {
-		return new Point2D(x0, y0);
-	}
-
-	public Point2D getLastPoint() {
 		return Point2D.INFINITY_POINT;
 	}
 
+	public Point2D getLastPoint() {
+		return new Point2D(x0, y0);
+	}
+
 	public Point2D getPoint(double t, Point2D point) {
-		t = Math.max(t, 0);
+		t = Math.min(t, 0);
 		return new Point2D(x0+t*dx, y0+t*dy);
 	}
 
 	public Collection<Point2D> getSingularPoints(){
 		ArrayList<Point2D> list = new ArrayList<Point2D>(1);
-		list.add(this.getFirstPoint());
+		list.add(this.getLastPoint());
 		return list;
 	}
 	
@@ -190,22 +188,22 @@ public class Ray2D extends StraightObject2D{
 	}
 
 	public double getT0() {
-		return 0;
+		return Double.NEGATIVE_INFINITY;
 	}
 
 	public double getT1() {
-		return Double.POSITIVE_INFINITY;
+		return 0;
 	}
 
-	public InvertedRay2D getReverseCurve() {
-		return new InvertedRay2D(x0, y0, -dx, -dy);
+	public Ray2D getReverseCurve() {
+		return new Ray2D(x0, y0, -dx, -dy);
 	}
 
 
 	// ===================================================================
 	// methods implementing the Shape2D interface
 
-	/** Always returns false, because a ray is not bounded.*/
+	/** Always returns false, because n inverted ray is not bounded.*/
 	public boolean isBounded(){
 		return false;
 	}
@@ -213,21 +211,20 @@ public class Ray2D extends StraightObject2D{
 	public boolean contains(double x, double y){
 		if(!this.supportContains(x,y)) return false;
 		double t = this.getPositionOnLine(x, y);
-		return t>-Shape2D.ACCURACY;
+		return t<Shape2D.ACCURACY;
 	}
 	
-	
 	public Box2D getBoundingBox(){
-		double t = Double.POSITIVE_INFINITY;
-		return new Box2D(x0, x0+t*dx, y0, y0+t*dy);
+		double t = Double.NEGATIVE_INFINITY;
+		return new Box2D(x0+t*dx, x0, y0+t*dy, y0);
 	}
 	
 	@Override
-	public Ray2D transform(AffineTransform2D trans){
+	public InvertedRay2D transform(AffineTransform2D trans){
 		double[] tab = trans.getCoefficients();
 		double x1 = x0*tab[0] + y0*tab[1] + tab[2];
 		double y1 = x0*tab[3] + y0*tab[4] + tab[5];
-		return new Ray2D(x1, y1, 
+		return new InvertedRay2D(x1, y1, 
 			dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4]);
 	}
 
@@ -242,14 +239,14 @@ public class Ray2D extends StraightObject2D{
 	public PathIterator getPathIterator(AffineTransform at, double flatness) {
 		throw new UnboundedShapeException();
 	}
-	
+
 	
 	// ===================================================================
-	// methods implementing the Object interface
-	
+	// methods implementing the Shape interface
+
 	public boolean equals(Object obj){
-		if(!(obj instanceof Ray2D)) return false;
-		Ray2D ray = (Ray2D) obj;
+		if(!(obj instanceof InvertedRay2D)) return false;
+		InvertedRay2D ray = (InvertedRay2D) obj;
 		if(Math.abs(x0-ray.x0)>Shape2D.ACCURACY) return false;
 		if(Math.abs(y0-ray.y0)>Shape2D.ACCURACY) return false;
 		if(Math.abs(dx-ray.dx)>Shape2D.ACCURACY) return false;

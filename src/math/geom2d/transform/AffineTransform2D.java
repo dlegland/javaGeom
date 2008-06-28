@@ -345,9 +345,16 @@ public class AffineTransform2D implements Bijection2D{
 		return tab;
 	}
 
+	/**
+	 * Return the inverse transform. If the transform is not invertible, 
+	 * throws a new NonInvertibleTransformException.
+	 */
 	public AffineTransform2D getInverseTransform(){
 		double det = m00*m11 - m10*m01;
-		// TODO: manage case of transforms with determinant=0
+		
+		if(Math.abs(det)<Shape2D.ACCURACY)
+			throw new NonInvertibleTransformException();
+		
 		return new AffineTransform2D(
 			m11/det, -m01/det, (m01*m12-m02*m11)/det, 
 			-m10/det, m00/det, (m02*m10-m00*m12)/det);

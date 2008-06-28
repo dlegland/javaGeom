@@ -28,15 +28,11 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -83,7 +79,7 @@ public class LineArc2D extends StraightObject2D
 	}
 	
 	/**
-	 * Construcion by copy of another line arc
+	 * Construction by copy of another line arc
 	 * @param line the line to copy
 	 */
 	public LineArc2D(LineArc2D line) {
@@ -96,16 +92,13 @@ public class LineArc2D extends StraightObject2D
 	 * on the line.
 	 * @param x1 the x-coordinate of the first point
 	 * @param y1 the y-coordinate of the first point
-	 * @param x2 the x-coordinate of the second point
-	 * @param y2 the y-coordinate of the second point
+	 * @param x2 the x-coordinate of the direction vector
+	 * @param y2 the y-coordinate of the direction vector
 	 * @param t0 the starting position of the arc
 	 * @param t1 the ending position of the arc
 	 */
 	public LineArc2D(double x1, double y1, double dx, double dy, double t0, double t1) {
-		this.x0 = x1;
-		this.y0 = y1;
-		this.dx = dx;
-		this.dy = dy;
+		super(x1, y1, dx, dy);
 		this.t0=t0;
 		this.t1=t1;
 	}
@@ -176,25 +169,14 @@ public class LineArc2D extends StraightObject2D
 			return Double.POSITIVE_INFINITY;
 	}
 
-	// ===================================================================
-	// methods of SmoothCurve2D interface
-	
-	public Vector2D getTangent(double t){
-		return new Vector2D(dx, dy);
-	}
-
-	/**
-	 * returns 0 as every straight object.
-	 */
-	public double getCurvature(double t){
-		return 0.0;
-	}
-	
 	
 	// ===================================================================
 	// methods of ContinuousCurve2D interface
 	
 	public Polyline2D getAsPolyline(int n){
+		if(!this.isBounded())
+			throw new UnboundedShapeException();
+		
 		Point2D[] points = new Point2D[n+1];
 		double t0 = this.getT0();
 		double t1 = this.getT1();
@@ -204,49 +186,6 @@ public class LineArc2D extends StraightObject2D
 		return new Polyline2D(points);
 	}
 
-	/** 
-	 * Returns an array containing the curve itself.
-	 */
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<LineArc2D> list = new ArrayList<LineArc2D>(1);
-		list.add(this);
-		return list;
-	}
-
-	// ===================================================================
-	// methods of OrientedCurve2D interface
-	
-	public double getWindingAngle(java.awt.geom.Point2D point){
-
-		double angle1, angle2;
-		if(t0==Double.NEGATIVE_INFINITY)
-			angle1 = Angle2D.getHorizontalAngle(0, 0, -dx, -dy);
-		else
-			angle1 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t0*dx, y0+t0*dy);
-		
-		if(t1==Double.POSITIVE_INFINITY)
-			angle2 = Angle2D.getHorizontalAngle(0, 0, dx, dy);
-		else
-			angle2 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t1*dx, y0+t1*dy);
-		
-		if(this.isInside(point)){
-			if(angle2>angle1) return angle2 - angle1;
-			else return 2*Math.PI - angle1 + angle2;
-		}else{
-			if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
-			else return angle2 - angle1;
-		}
-	}
-
-	/**
-	 * return true if the given point lies to the left of the line when travaling along
-	 * the line in the direcion given by its direction vector.
-	 * @param p the point to test
-	 * @return true if point p lies on the 'left' of the line.
-	 */
-	public boolean isInside(java.awt.geom.Point2D p){
-		return( (p.getX()-x0)*dy-(p.getY()-y0)*dx < 0);
-	}
 
 	// ===================================================================
 	// methods of Curve2D interface
@@ -264,7 +203,6 @@ public class LineArc2D extends StraightObject2D
 	public double getT1(){
 		return t1;
 	}
-
 
 	public Point2D getPoint(double t){
 		return getPoint(t, new Point2D());
@@ -321,48 +259,11 @@ public class LineArc2D extends StraightObject2D
 		return false;
 	}
 
-	/**
-	 * Gets the position of the point on the line arc.
-	 * If point belongs to the line, this position is defined by the ratio:<p>
-	 * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
-	 * <code> t = (yp - y0)/dy <\code>.<p>
-	 * If point does not belong to edge, returns Double.NaN.
-	 */
-	public double getPosition(java.awt.geom.Point2D point){
-		double pos;
-		// uses the direction with the biggest derivative of line arc, 
-		// in order to avoid divisions by zero.		
-		if(Math.abs(dx)>Math.abs(dy))
-			pos = (point.getX()-x0)/dx;
-		else
-			pos = (point.getY()-y0)/dy;
-		
-		// return either pos or NaN
-		if(pos<t0) return Double.NaN;
-		if(pos>t1) return Double.NaN;
-		return pos;
-	}
-
-	/**
-	 * Gets the position of the closest point on the line arc.
-	 * If point belongs to the line, this position is defined by the ratio:<p>
-	 * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
-	 * <code> t = (yp - y0)/dy <\code>.<p>
-	 * If point does not belong to edge, returns t0, or t1, depending on which
-	 * one is the closest. 
-	 */
-	public double project(java.awt.geom.Point2D point){
-		double pos;
-		// uses the direction with the biggest derivative of line arc, 
-		// in order to avoid divisions by zero.		
-		if(Math.abs(dx)>Math.abs(dy))
-			pos = (point.getX()-x0)/dx;
-		else
-			pos = (point.getY()-y0)/dy;
-		
-		// Bounds between t0 and t1
-		return Math.min(Math.max(pos, t0), t1);
-	}
+	public Collection<ContinuousCurve2D> getContinuousCurves() {
+		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
+		list.add(this);
+		return list;
+	}	
 
 	/**
 	 * Returns the line arc which have the same trace, but has the inverse
@@ -372,32 +273,15 @@ public class LineArc2D extends StraightObject2D
 		return new LineArc2D(x0, y0, -dx, -dy, -t1, -t0);
 	}
 
-	public Collection<ContinuousCurve2D> getContinuousCurves() {
-		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-		list.add(this);
-		return list;
-	}
-
 	/** 
-	 * Returns a new LineArc2D, which is the portion of the linearc delimited
-	 * by parameters t0 and t1. Cast the result to StraightLine2D, Ray2D or
-	 * LineSegment2D when appropriate.
+	 * Returns a new LineArc2D, which is the portion of this
+	 * LineArc2D delimited by parameters t0 and t1.
 	 */
 	public LineArc2D getSubCurve(double t0, double t1){
-		t0 = Math.max(t0, this.t0);
-		t1 = Math.min(t1, this.t1);
-		if(Double.isInfinite(t1)){
-			if(Double.isInfinite(t0)) return new StraightLine2D(this);
-			else return new Ray2D(this.getPoint(t0), this.getVector());
-		}
-		
-		if(Double.isInfinite(t0))
-			return new LineArc2D(this, t0, t1);
-		else
-			return new LineSegment2D(this.getPoint(t0), this.getPoint(t1));
-		
+		t0 = Math.max(t0, this.getT0());
+		t1 = Math.min(t1, this.getT1());
+		return new LineArc2D(this, t0, t1);		
 	}
-	
 
 	// ===================================================================
 	// methods of Shape2D interface
@@ -407,17 +291,6 @@ public class LineArc2D extends StraightObject2D
 		if(t1==Double.POSITIVE_INFINITY) return false;
 		if(t0==Double.NEGATIVE_INFINITY) return false;
 		return true;		
-	}
-	
-	public boolean isEmpty(){
-		return false;
-	}
-
-	/**
-	 * Get the distance of the point (x, y) to this object.
-	 */
-	public double getDistance(java.awt.geom.Point2D p){
-		return getDistance(p.getX(), p.getY());
 	}
 	
 	/**
@@ -431,77 +304,10 @@ public class LineArc2D extends StraightObject2D
 		return Math.min(d1, d2);
 	}
 
-//	/**
-//	 * Return either an instance of LineSegment2D, representing the visible
-//	 * portion of the object inside the given rectangle, or a null pointer.
-//	 */
-//	public Shape2D getClippedShape(Box2D box){		
-//		// get dimension of rectangle
-//		double x = box.getMinX();
-//		double y = box.getMinY();
-//		double tmp;
-//
-//		double tvmin = Double.NEGATIVE_INFINITY;
-//		double tvmax = Double.POSITIVE_INFINITY;
-//		double thmin = Double.NEGATIVE_INFINITY;
-//		double thmax = Double.POSITIVE_INFINITY;
-//		
-//		// case of vertical lines
-//		if(Math.abs(dy)>Shape2D.ACCURACY){
-//			thmin = (y-y0)/dy;
-//			thmax = (y+box.getHeight()-y0)/dy;
-//			if(thmax<thmin){tmp=thmin; thmin=thmax; thmax=tmp;}
-//			
-//			thmin = Math.max(thmin, t0);
-//			thmax = Math.min(thmax, t1);
-//		}
-//		
-//		// case of horizontal lines
-//		if(Math.abs(dx)>Shape2D.ACCURACY){
-//			tvmin = (x-x0)/dx;
-//			tvmax = (x+box.getWidth()-x0)/dx;
-//			if(tvmax<tvmin){tmp=tvmin; tvmin=tvmax; tvmax=tmp;}
-//			
-//			tvmin = Math.max(tvmin, t0);
-//			tvmax = Math.min(tvmax, t1);
-//		}
-//
-//		double tmin = Math.max(tvmin, thmin);
-//		double tmax = Math.min(tvmax, thmax);
-//		
-//		if(tmin<tmax)
-//			return new LineSegment2D(getPoint(tmin), getPoint(tmax));
-//		else
-//			return null;
-//	}
-
-	/**
-	 * Clip the circle arc by a box. The result is an instance of
-	 * CurveSet2D<LineArc2D>, which 
-	 * contains only instances of LineArc2D. If the ellipse arc is not
-	 * clipped, the result is an instance of
-	 * CurveSet2D<LineArc2D> which contains 0 curves.
-	 */
-	public CurveSet2D<? extends LineArc2D> clip(Box2D box) {
-		// Clip the curve
-		CurveSet2D<Curve2D> set = Curve2DUtil.clipCurve(this, box);
-		
-		// Stores the result in appropriate structure
-		CurveSet2D<LineArc2D> result =
-			new CurveSet2D<LineArc2D> ();
-		
-		// convert the result
-		for(Curve2D curve : set.getCurves()){
-			if (curve instanceof LineArc2D)
-				result.addCurve((LineArc2D) curve);
-		}
-		return result;
-	}
-
-
 	public Box2D getBoundingBox(){
 		return new Box2D(x0+t0*dx, x0+t1*dx, y0+t0*dy, y0+t1*dy);
 	}
+	
 	
 	// ===================================================================
 	// methods of Shape interface
@@ -511,7 +317,7 @@ public class LineArc2D extends StraightObject2D
 	}
 
 	public boolean contains(double xp, double yp){
-		if(!super.contains(xp, yp)) return false;
+		if(!super.supportContains(xp, yp)) return false;
 		
 		// compute position on the line
 		double t = getPositionOnLine(xp, yp);
@@ -520,20 +326,6 @@ public class LineArc2D extends StraightObject2D
 		if(t-t1>ACCURACY) return false;
 
 		return true;
-	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
 	
@@ -545,7 +337,7 @@ public class LineArc2D extends StraightObject2D
 	}
 	
 	/**
-	 * append a line to the current path. If t0 or t1 is infinite, 
+	 * Appends a line to the current path. If t0 or t1 is infinite, 
 	 * does not append anything.
 	 * @param path the path to modify
 	 * @return the modified path
@@ -570,7 +362,7 @@ public class LineArc2D extends StraightObject2D
 	}
 
 	/** 
-	 * Return pathiterator for this line arc.
+	 * Return PathIterator for this line arc.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
@@ -579,20 +371,6 @@ public class LineArc2D extends StraightObject2D
 		return path.getPathIterator(t, flatness);
 	}
 	
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangular area.
-	 */
-	public boolean intersects(double x, double y, double w, double h){
-		return clip(new Box2D(x, x+w, y, y+h)).isEmpty();
-	}
-
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return !clip(new Box2D(r)).isEmpty();
-	}
-
 	public LineArc2D transform(AffineTransform2D trans){
 		double[] tab = trans.getCoefficients();
 		double x1 = x0*tab[0] + y0*tab[1] + tab[2];
@@ -612,15 +390,8 @@ public class LineArc2D extends StraightObject2D
 	
 	public boolean equals(Object obj){
 		if(!(obj instanceof LineArc2D)) return false;
-		return equals((LineArc2D)obj);
-	}
-	
-	/**
-	 * Compare two edges, and returns true if they have the two same vertices.
-	 * @param arc : the line arcs to compare to.
-	 * @return true if extremities of both edges are the same.
-	 */
-	public boolean equals(LineArc2D arc){
+		LineArc2D arc = (LineArc2D)obj;
+		
 		// First check if two arcs lie on the same line
 		if(!this.isColinear(arc)) return false;
 		
@@ -663,6 +434,5 @@ public class LineArc2D extends StraightObject2D
 		if(getPoint1().getDistance(arc.getPoint2())>ACCURACY) return false;
 		if(getPoint2().getDistance(arc.getPoint1())>ACCURACY) return false;
 		return true;
-	}	
-			
+	}
 }

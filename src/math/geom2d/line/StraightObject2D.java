@@ -27,10 +27,15 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Angle2D;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -47,10 +52,7 @@ import math.geom2d.transform.AffineTransform2D;
  * t between 0 and 1 give a point inside p1 and p2, t<0 give a point 'before'
  * p1, and t>1 give a point 'after' p2, so it is convenient to easily manage
  * edges, rays and straight lines.<p>
- * At the difference of LineArc2D, this class is not necessarily connex (it
- * can be the union of several colinear line segments).
  */
-//TODO: rename as LinearShape2D?
 public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 
 	// ===================================================================
@@ -160,6 +162,25 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 //			else return Math.PI*2-angle1;
 //	}
 	
+	
+	// ===================================================================
+	// Protected constructors
+
+	protected StraightObject2D(double x0, double y0, double dx, double dy){
+		this.x0 = x0;
+		this.y0 = y0;
+		this.dx = dx;
+		this.dy = dy;
+	}
+	
+	protected StraightObject2D(Point2D point, Vector2D vector){
+		this.x0 = point.getX();
+		this.y0 = point.getY();
+		this.dx = vector.getX();
+		this.dy = vector.getY();
+	}
+
+	
 	// ===================================================================
 	// accessors
 
@@ -194,6 +215,16 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		return(Math.abs(dx*line.dy - dy*line.dx)<Shape2D.ACCURACY);
 	}
 	
+
+	/** 
+	 * Returns true if the point (x, y) lies on the line covering the object, with 
+	 * precision given by Shape2D.ACCURACY.
+	 */
+	protected boolean supportContains(double x, double y){
+		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < Shape2D.ACCURACY);
+	}
+	
+
 	/** 
 	 * Always returns false, because we can not come back to starting point if we
 	 * always go straight ...
@@ -205,7 +236,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	/** 
 	 * Returns a set of smooth curves. Actually, return the curve itself.
 	 */
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+	public Collection<? extends SmoothOrientedCurve2D> getSmoothPieces() {
 		ArrayList<StraightObject2D> list = new ArrayList<StraightObject2D>(1);
 		list.add(this);
 		return list;
@@ -469,12 +500,8 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	// ===================================================================
 	// general methods
 
-	/** 
-	 * Returns true if the point (x, y) lies on the line covering the object, with 
-	 * precision given by Shape2D.ACCURACY.
-	 */
-	public boolean contains(double x, double y){
-		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < Shape2D.ACCURACY);
+	public boolean contains(java.awt.geom.Point2D p) {
+		return this.contains(p.getX(), p.getY());
 	}
 
 	/** Returns false, because a line cannot contain a rectangle.*/
@@ -487,5 +514,209 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		return false;
 	}
 	
+	// ===================================================================
+	// methods of OrientedCurve2D interface
+	
+	public double getWindingAngle(java.awt.geom.Point2D point){
+
+		double t0 = this.getT0();
+		double t1 = this.getT1();
+		
+		double angle1, angle2;
+		if(t0==Double.NEGATIVE_INFINITY)
+			angle1 = Angle2D.getHorizontalAngle(-dx, -dy);
+		else
+			angle1 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t0*dx, y0+t0*dy);
+		
+		if(t1==Double.POSITIVE_INFINITY)
+			angle2 = Angle2D.getHorizontalAngle(dx, dy);
+		else
+			angle2 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t1*dx, y0+t1*dy);
+		
+		if(this.isInside(point)){
+			if(angle2>angle1) return angle2 - angle1;
+			else return 2*Math.PI - angle1 + angle2;
+		}else{
+			if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
+			else return angle2 - angle1;
+		}
+	}
+
+
+	/**
+	 * Returns true if the given point lies to the left of the line when
+	 * traveling along the line in the direction given by its direction
+	 * vector.
+	 * @param p the point to test
+	 * @return true if point p lies on the 'left' of the line.
+	 */
+	public boolean isInside(java.awt.geom.Point2D p){
+		return( (p.getX()-x0)*dy-(p.getY()-y0)*dx < 0);
+	}
+	
+	
+	// ===================================================================
+	// methods of SmoothCurve2D interface
+	
+	public Vector2D getTangent(double t){
+		return new Vector2D(dx, dy);
+	}
+
+	/**
+	 * returns 0 as every straight object.
+	 */
+	public double getCurvature(double t){
+		return 0.0;
+	}
+	
+	
+	// ===================================================================
+	// methods implementing the Curve2D interface
+	
+	public Point2D getPoint(double t) {
+		return this.getPoint(t, new Point2D());
+	}
+
+	/**
+	 * Gets the position of the point on the line arc.
+	 * If point belongs to the line, this position is defined by the ratio:<p>
+	 * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
+	 * <code> t = (yp - y0)/dy <\code>.<p>
+	 * If point does not belong to edge, returns Double.NaN.
+	 */
+	public double getPosition(java.awt.geom.Point2D point){
+		double pos;
+		// uses the direction with the biggest derivative of line arc, 
+		// in order to avoid divisions by zero.		
+		if(Math.abs(dx)>Math.abs(dy))
+			pos = (point.getX()-x0)/dx;
+		else
+			pos = (point.getY()-y0)/dy;
+		
+		// return either pos or NaN
+		if(pos<this.getT0()) return Double.NaN;
+		if(pos>this.getT1()) return Double.NaN;
+		return pos;
+	}
+
+
+	/**
+	 * Gets the position of the closest point on the line arc.
+	 * If point belongs to the line, this position is defined by the ratio:<p>
+	 * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
+	 * <code> t = (yp - y0)/dy <\code>.<p>
+	 * If point does not belong to edge, returns t0, or t1, depending on which
+	 * one is the closest. 
+	 */
+	public double project(java.awt.geom.Point2D point){
+		double pos;
+		// uses the direction with the biggest derivative of line arc, 
+		// in order to avoid divisions by zero.		
+		if(Math.abs(dx)>Math.abs(dy))
+			pos = (point.getX()-x0)/dx;
+		else
+			pos = (point.getY()-y0)/dy;
+		
+		// Bounds between t0 and t1
+		return Math.min(Math.max(pos, this.getT0()), this.getT1());
+	}
+
+	/** 
+	 * Returns a new StraightObject2D, which is the portion of this
+	 * StraightObject2D delimited by parameters t0 and t1.
+	 * Casts the result to StraightLine2D, Ray2D or LineSegment2D when
+	 * appropriate.
+	 */
+	public StraightObject2D getSubCurve(double t0, double t1){
+		t0 = Math.max(t0, this.getT0());
+		t1 = Math.min(t1, this.getT1());
+		if(Double.isInfinite(t1)){
+			if(Double.isInfinite(t0)) 
+				return new StraightLine2D(this);
+			else
+				return new Ray2D(this.getPoint(t0), this.getVector());
+		}
+		
+		if(Double.isInfinite(t0))
+			return new InvertedRay2D(this.getPoint(t1), this.getVector());
+		else
+			return new LineSegment2D(this.getPoint(t0), this.getPoint(t1));
+		
+	}
+
+	public Collection<ContinuousCurve2D> getContinuousCurves() {
+		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
+		list.add(this);
+		return list;
+	}	
+
+	
+	// ===================================================================
+	// methods of Shape2D interface
+	
+	/**
+	 * Get the distance of the point (x, y) to this object.
+	 */
+	public double getDistance(java.awt.geom.Point2D p){
+		return getDistance(p.getX(), p.getY());
+	}
+	
+	/**
+	 * Returns false.
+	 */
+	public boolean isEmpty(){
+		return false;
+	}
+
 	public abstract StraightObject2D transform(AffineTransform2D transform);
+	
+	public CurveSet2D<? extends StraightObject2D> clip(Box2D box) {
+		// Clip the curve
+		CurveSet2D<ContinuousCurve2D> set = Curve2DUtil.clipContinuousCurve(this, box);
+		
+		// Stores the result in appropriate structure
+		CurveSet2D<StraightObject2D> result =
+			new CurveSet2D<StraightObject2D> ();
+		
+		// convert the result
+		for(Curve2D curve : set.getCurves()){
+			if (curve instanceof StraightObject2D)
+				result.addCurve((StraightObject2D) curve);
+		}
+		return result;
+	}
+	
+	
+	// ===================================================================
+	// methods of Shape interface
+	
+	/**
+	 * Tests if the Line intersects the interior of a specified rectangle2D.
+	 */
+	public boolean intersects(java.awt.geom.Rectangle2D r){
+		return !clip(new Box2D(r)).isEmpty();
+	}
+
+	/**
+	 * Tests if the Line intersects the interior of a specified rectangular area.
+	 */
+	public boolean intersects(double x, double y, double w, double h){
+		return clip(new Box2D(x, x+w, y, y+h)).isEmpty();
+	}
+
+	/**
+	 * Return bounding box of the shape.
+	 */
+	public java.awt.Rectangle getBounds(){
+		return this.getBoundingBox().getAsAWTRectangle();
+	}
+	
+	/**
+	 * Return more precise bounds for the shape.
+	 */
+	public java.awt.geom.Rectangle2D getBounds2D(){
+		return this.getBoundingBox().getAsAWTRectangle2D();
+	}
+
+
 }

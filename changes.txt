@@ -10,11 +10,13 @@ geom2d:
 Bug fixes
 geom2d:
 - fixed transform of Parabolas
-- fixed comparison of Ellipses
-
-Code
-geom2d:
+- fixed transform and comparison of Ellipses
 - introduce construction of Ellipse from 2 focii
+
+Coding
+geom2d:
+- introduced UnboundedShapeException, NonInvertibleTransformException
+- dissociate LineArc2D from other line classes
 
 
 javaGeom-0.6.1 (2008-05-24, rev. 137)

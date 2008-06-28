@@ -305,18 +305,16 @@ public class Circle2D extends Ellipse2D {
 	 * is the first one on the line. 
 	 */
 	public Collection<Point2D> getIntersections(StraightObject2D line) {
-		// first compute position of point at intersection of line and from the perpendicular
-		// line going through the center of the circle.
+		// initialize array of points
 		ArrayList<Point2D> intersections = new ArrayList<Point2D>();
 
+		// Compute line perpendicular to the test line, and going through the
+		// circle center
 		Point2D center = new Point2D(xc, yc);
-		StraightLine2D perp = StraightLine2D.createOrthogonalLine2D(line, center);
-		Point2D inter = line.getIntersection(perp);
-		
+		StraightLine2D perp = StraightLine2D.createOrthogonalLine2D(line, center);	
 
-		// the line is too far from the circle -> no intersection
-		if(inter==null) return intersections;
-
+		// Compute distance between line and circle center
+		Point2D inter = perp.getIntersection(new StraightLine2D(line));
 		double dist = inter.getDistance(xc, yc);		
 		
 		// if the distance is the radius of the circle, return the intersection point 
