@@ -319,7 +319,7 @@ public abstract class Boundary2DUtil {
 		int ind1 = (int) Math.floor(t1);
 		
 		// Simple case: returns only a line segment
-		if(ind0==ind1 && ind0<ind1)
+		if(ind0==ind1 && t0<t1)
 			return new LineSegment2D(p0, p1);
 		
 		PolyOrientedCurve2D<LineSegment2D> result = 

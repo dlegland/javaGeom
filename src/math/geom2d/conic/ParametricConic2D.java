@@ -92,10 +92,18 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return type;
 	}
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.Conic2D#getCartesianEquation()
+	/**
+	 * @deprecated use getConicCoefficients instead
 	 */
+	@Deprecated
 	public double[] getCartesianEquation() {
+		return getConicCoefficients();
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.Conic2D#getConicCoefficients()
+	 */
+	public double[] getConicCoefficients() {
 		return new double[]{a, b, c, d, e, f};
 	}
 

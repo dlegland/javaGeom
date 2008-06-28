@@ -41,6 +41,7 @@ public interface Conic2D extends OrientedCurve2D{
 	// ===================================================================
 	// constants
 	
+	//TODO: use enums
 	public final static int NOT_A_CONIC 	= 0;
 	public final static int ELLIPSE 		= 1;
 	public final static int HYPERBOLA 		= 2;
@@ -64,12 +65,18 @@ public interface Conic2D extends OrientedCurve2D{
 	public abstract int getConicType();
 
 	/** 
-	 * Return the coefficient of the cartesian representation of the conic. Cartesian
+	 * @deprecated use getConicCoefficients() instead
+	 */
+	@Deprecated
+	public abstract double[] getCartesianEquation();
+	
+	/** 
+	 * Returns the coefficient of the cartesian representation of the conic. Cartesian
 	 * equation has the form :<p>
 	 * a*x^2 + b*x*y + c*y^2 + d*x + e*y + f<p>
 	 * The length of the array is then of size 6.
 	 */
-	public abstract double[] getCartesianEquation();
+	public abstract double[] getConicCoefficients();
 
 
 	/** 

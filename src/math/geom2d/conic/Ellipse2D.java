@@ -79,6 +79,110 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	/** directed ellipse or not */
 	protected boolean direct = true;
 	
+	/**
+	 * Create a new Ellipse by specifying the two focii, and the length of the
+	 * chord. The chord equals the sum of distances between a point of the 
+	 * ellipse and each focus.
+	 * @param focus1 the first focus
+	 * @param focus2 the second focus
+	 * @param chord the sum of distances to focii
+	 * @return a new instance of Ellipse2D
+	 */
+	public final static Ellipse2D create(Point2D focus1, Point2D focus2, double chord){
+		double x1 = focus1.getX();
+		double y1 = focus1.getY();
+		double x2 = focus2.getX();
+		double y2 = focus2.getY();
+		
+		double xc = (x1+x2)/2;
+		double yc = (y1+y2)/2;
+		double theta = Angle2D.getHorizontalAngle(x1, y1, x2, y2);
+		
+		double dist = focus1.getDistance(focus2);
+		if(dist<Shape2D.ACCURACY)
+			return new Circle2D(xc, yc, chord/2);
+
+		double r1 = chord/2;
+		double r2 = Math.sqrt(chord*chord - dist*dist)/2;		
+		
+		return new Ellipse2D(xc, yc, r1, r2, theta);
+	}
+	
+	/**
+	 * Creates a new Ellipse by reducing the conic coefficients, assuming
+	 * conic type is ellipse, and ellipse is centered.
+	 * @param coefs an array of double with at least 3 coefficients
+	 * containing coefficients for x^2, xy, and y^2 factors.
+	 * @return the Ellipse2D corresponding to given coefficients
+	 */
+	public final static Ellipse2D reduceCentered(double[] coefs){
+		double A = coefs[0];
+		double B = coefs[1];
+		double C = coefs[2];
+		
+		// Compute orientation angle of the ellipse
+		double theta;
+		if(Math.abs(A-C)<Shape2D.ACCURACY){
+			theta = Math.PI/4;
+		}else{
+			theta = Math.atan2(B, (A-C))/2.0;
+		}
+		
+		// compute ellipse in isothetic basis
+		double[] coefs2 = Conic2DUtil.transformCentered(coefs,
+				AffineTransform2D.createRotation(-theta));
+		
+		// extract coefficients f if present
+		double f = 1;
+		if(coefs2.length>5)
+			f = Math.abs(coefs[5]);
+		
+		// extract major and minor axis lengths, ensuring r1 is greater
+		double r1, r2;
+		if(coefs2[0]<coefs2[2]){
+			r1 = Math.sqrt(f/coefs2[0]);
+			r2 = Math.sqrt(f/coefs2[2]);
+		}else{
+			r1 = Math.sqrt(f/coefs2[2]);
+			r2 = Math.sqrt(f/coefs2[0]);
+			theta = theta + Math.PI/2;
+		}			
+		
+		// create the rsulting ellipse
+		return new Ellipse2D(0, 0, r1, r2, theta);
+	}
+	
+	/**
+	 * Transform an ellipse, by supposing both the ellipse is centered and the
+	 * transform has no translation part.
+	 * @param ellipse an ellipse
+	 * @param trans an affine transform
+	 * @return the transformed ellipse, centered around origin
+	 */
+	public final static Ellipse2D transformCentered(Ellipse2D ellipse, AffineTransform2D trans){
+		// Extract inner parameter of ellipse
+		double r1 = ellipse.r1;		double r2 = ellipse.r2;		
+		double theta = ellipse.theta;
+		
+		// precompute some parts
+		double r1Sq = r1*r1;		double r2Sq = r2*r2;
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+		double cotSq = cot*cot;
+		double sitSq = sit*sit;
+		
+		// compute coefficients of the centered conis
+		double A = cotSq/r1Sq + sitSq/r2Sq;
+		double B = 2*cot*sit*(1/r1Sq-1/r2Sq);
+		double C = cotSq/r2Sq + sitSq/r1Sq;
+		double[] coefs = new double[]{A, B, C};
+		
+		// Compute coefficients of the transformed conic
+		double[] coefs2 = Conic2DUtil.transformCentered(coefs, trans);
+		
+		// reduce conic coefficients to Ellipse
+		return Ellipse2D.reduceCentered(coefs2);
+	}
 	
 	// ===================================================================
 	// constructors
@@ -405,16 +509,52 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			return Conic2D.ELLIPSE;
 	}
 
-//	public boolean isEllipse(){return true;}
-//	public boolean isParabola(){return false;}
-//	public boolean isHyperbola(){return false;}
-//	public boolean isStraightLine(){return false;}
-//	public boolean isTwoLines(){return false;}
-//	public boolean isPoint(){return false;}
-//
-//	public boolean isDegenerated(){return false;}
+	/**
+	 * Returns the conic coefficients of the ellipse. Algorithm taken from
+	 * http://tog.acm.org/GraphicsGems/gemsv/ch2-6/conmat.c
+	 */
+	public double[] getConicCoefficients() {
+	
+		/* common coeficients */
+		double r1Sq = this.r1*this.r1;
+		double r2Sq = this.r2*this.r2;
+		
+		//  angle of ellipse, and trigonometric formulas
+		double sint 	= Math.sin(this.theta);
+		double cost 	= Math.cos(this.theta);
+		double sin2t 	= 2.0*sint*cost;
+		double sintSq 	= sint*sint;
+		double costSq 	= cost*cost;
+		
+		// coefs from ellipse center
+		double xcSq 	= xc*xc;
+		double ycSq 	= yc*yc;
+		double r1SqInv 	= 1.0/r1Sq;
+		double r2SqInv 	= 1.0/r2Sq;
+
+		/* Compute the coefficients. These formulae are the transformations
+			      on the unit circle written out long hand */
+		
+		double a = costSq/r1Sq + sintSq/r2Sq;
+		double b = (r2Sq-r1Sq)*sin2t/(2.0*r1Sq*r2Sq);
+		double c = costSq/r2Sq + sintSq/r1Sq; 
+		double d = -yc*b-xc*a; 
+		double e = -xc*b-yc*c; 
+		double f = -1.0 + (xcSq + ycSq)*(r1SqInv + r2SqInv)/2.0 +
+				(costSq - sintSq)*(xcSq - ycSq)*(r1SqInv - r2SqInv)/2.0 +
+				xc*yc*(r1SqInv - r2SqInv)*sin2t;
+		
+		// Adapt computed coefficients to javaGeom convention
+		return new double[]{
+				a, b*2, c, d*2, e*2, f
+		};
+	}
 
 
+	/**
+	 * @deprecated use getConicCoefficients() instead.
+	 */
+	@Deprecated
 	public double[] getCartesianEquation(){
 		double cot = Math.cos(theta);
 		double sit = Math.sin(-theta);
@@ -455,13 +595,15 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	}
 	
 	/**
-	 * compute eccentricity of ellipse, depending on the lengths of the
-	 * semi axis.
+	 * Computes eccentricity of ellipse, depending on the lengths of the
+	 * semi-axes. Eccentricity is 0 for a circle (r1==r2), and tends to 1 when
+	 * ellipse elongates.
 	 */
 	public double getEccentricity(){
 		double a = Math.max(r1, r2);
 		double b = Math.min(r1, r2);
-		return Math.sqrt(1-a*a/b/b);
+		double r = b/a;
+		return Math.sqrt(1-r*r);
 	}
 
 	/**
@@ -472,7 +614,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	}
 
 	/**
-	 * Return the first focus. It ius defined as the first focus on the Major
+	 * Return the first focus. It is defined as the first focus on the Major
 	 * axis, in the direction given by angle theta.
 	 */
 	public Point2D getFocus1(){
@@ -774,6 +916,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	public EllipseArc2D getSubCurve(double t0, double t1){
 		double startAngle  	= direct ? t0 : -t0;
 		double extent 		= direct ? t1-t0 : t0-t1;
+		extent = Angle2D.formatAngle(extent);
 		return new EllipseArc2D(this, startAngle, extent);
 	}
 	
@@ -881,63 +1024,68 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 * instance of Circle2D.
 	 */
 	public Ellipse2D transform(AffineTransform2D trans){
-		double tmp1, tmp2;
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-
-		// coef of the transform
-		double tab[] = trans.getCoefficients();
-		
-		// compute coordinate of new center
-		double xc2 = xc*tab[0] + yc*tab[1] + tab[2];
-		double yc2 = xc*tab[3] + yc*tab[4] + tab[5];
-		
-		// square of r1 of new ellipse
-		tmp1 = tab[0]*r1*cot + tab[1]*r1*sit;
-		tmp2 = tab[3]*r1*cot + tab[4]*r1*sit;
-		double r12 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
-		
-		// square of r2 of new ellipse
-		tmp1 = tab[0]*r2*cot - tab[1]*r2*sit;
-		tmp2 = tab[3]*r2*cot - tab[4]*r2*sit;
-		double r22 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
-		
-		if(false){
-			// debug info
-			double theta2_a = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
-			double theta2_b = Math.atan2(tab[3]*cot+tab[4]*sit, tab[0]*cot+tab[1]*sit);
-			double theta2_c = Math.asin((tab[3]*r1*cot+tab[4]*r1*sit)/r12);
-			double theta2_d = Math.acos((tab[0]*r1*cot+tab[1]*r1*sit)/r12);
-			System.out.println("theta2_a = " +theta2_a);
-			System.out.println("theta2_b = " +theta2_b);
-			System.out.println("theta2_c = " +theta2_c);
-			System.out.println("theta2_d = " +theta2_d);
-		}
-		
-		double theta2 = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
-
-		double cot2 = Math.cos(theta2);
-		double sit2 = Math.sin(theta2);
-		if(Math.abs(cot2)>Math.abs(sit2)){
-			r12 = (tab[0]*r1*cot + tab[1]*r1*sit)/cot2;
-			r22 = (tab[4]*r2*cot - tab[3]*r2*sit)/cot2;
-		}else{
-			r12 = (tab[3]*r1*cot + tab[4]*r1*sit)/sit2;
-			r22 = (tab[0]*r2*sit - tab[1]*r2*cot)/sit2;
-		}
-		
-		r12 = Math.abs(r12);
-		r22 = Math.abs(r22);
-
-		// determine orientation of transformed ellipse
-		boolean direct2 = !(this.direct ^ trans.isDirect());
-		
-		// Transform either into a circle or an ellipse
-		if(Math.abs(r12-r22)<Shape2D.ACCURACY)
-			return new Circle2D(xc2, yc2, r12, direct2);
-		else
-			return new Ellipse2D(xc2, yc2, r12, r22, theta2, direct2);
+		Ellipse2D result = Ellipse2D.transformCentered(this, trans);
+		result.setCenter(this.getCenter().transform(trans));
+		return result;
 	}
+//	public Ellipse2D transform(AffineTransform2D trans){
+//		double tmp1, tmp2;
+//		double cot = Math.cos(theta);
+//		double sit = Math.sin(theta);
+//
+//		// coef of the transform
+//		double tab[] = trans.getCoefficients();
+//		
+//		// compute coordinate of new center
+//		double xc2 = xc*tab[0] + yc*tab[1] + tab[2];
+//		double yc2 = xc*tab[3] + yc*tab[4] + tab[5];
+//		
+//		// square of r1 of new ellipse
+//		tmp1 = tab[0]*r1*cot + tab[1]*r1*sit;
+//		tmp2 = tab[3]*r1*cot + tab[4]*r1*sit;
+//		double r12 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
+//		
+//		// square of r2 of new ellipse
+//		tmp1 = tab[0]*r2*cot - tab[1]*r2*sit;
+//		tmp2 = tab[3]*r2*cot - tab[4]*r2*sit;
+//		double r22 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
+//		
+//		if(false){
+//			// debug info
+//			double theta2_a = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
+//			double theta2_b = Math.atan2(tab[3]*cot+tab[4]*sit, tab[0]*cot+tab[1]*sit);
+//			double theta2_c = Math.asin((tab[3]*r1*cot+tab[4]*r1*sit)/r12);
+//			double theta2_d = Math.acos((tab[0]*r1*cot+tab[1]*r1*sit)/r12);
+//			System.out.println("theta2_a = " +theta2_a);
+//			System.out.println("theta2_b = " +theta2_b);
+//			System.out.println("theta2_c = " +theta2_c);
+//			System.out.println("theta2_d = " +theta2_d);
+//		}
+//		
+//		double theta2 = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
+//
+//		double cot2 = Math.cos(theta2);
+//		double sit2 = Math.sin(theta2);
+//		if(Math.abs(cot2)>Math.abs(sit2)){
+//			r12 = (tab[0]*r1*cot + tab[1]*r1*sit)/cot2;
+//			r22 = (tab[4]*r2*cot - tab[3]*r2*sit)/cot2;
+//		}else{
+//			r12 = (tab[3]*r1*cot + tab[4]*r1*sit)/sit2;
+//			r22 = (tab[0]*r2*sit - tab[1]*r2*cot)/sit2;
+//		}
+//		
+//		r12 = Math.abs(r12);
+//		r22 = Math.abs(r22);
+//
+//		// determine orientation of transformed ellipse
+//		boolean direct2 = !(this.direct ^ trans.isDirect());
+//		
+//		// Transform either into a circle or an ellipse
+//		if(Math.abs(r12-r22)<Shape2D.ACCURACY)
+//			return new Circle2D(xc2, yc2, r12, direct2);
+//		else
+//			return new Ellipse2D(xc2, yc2, r12, r22, theta2, direct2);
+//	}
 	
 
 	// ===================================================================
@@ -1108,17 +1256,19 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		Ellipse2D conic = (Ellipse2D) obj;
 		
 		if(!conic.getCenter().equals(this.getCenter())) return false;
-		if(conic.getLength1()!=this.getLength1()) return false;
-		if(conic.getLength2()!=this.getLength2()) return false;
-		if(conic.getAngle()!=this.getAngle()) return false;
+		if(Math.abs(conic.getLength1()-this.getLength1())>Shape2D.ACCURACY) return false;
+		if(Math.abs(conic.getLength2()-this.getLength2())>Shape2D.ACCURACY) return false;
+		if(Math.abs(Angle2D.formatAngle(conic.getAngle()-this.getAngle()))
+				>Shape2D.ACCURACY) return false;
 		if(conic.isDirect()!=this.isDirect()) return false;
 		return true;
 	}
 	
 	public String toString(){
-		return Double.toString(xc).concat(new String(" ")).concat(Double.toString(yc)).concat(
-			new String(" ")).concat(Double.toString(r1).concat(new String(" ")).concat(Double.toString(r2)));
+		return String.format("%f %f %f %f %f", xc, yc, r1, r2,
+				Math.toDegrees(theta));
 	}
+
 
 
 //	/**

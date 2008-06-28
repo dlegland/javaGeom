@@ -11,11 +11,11 @@ import math.geom2d.transform.AffineTransform2D;
  * Generic class providing utilities for conics, especially for reducing a conic.
  * @author dlegland
  */
-public class ConicUtil {
+public class Conic2DUtil {
 
 	public final static Conic2D reduceConic(double[] coefs){
 		if(coefs.length<6){
-			System.err.println("ConicUtil.reduceConic: must provide 6 coefficients");
+			System.err.println("Conic2DUtil.reduceConic: must provide 6 coefficients");
 			return null;
 		}
 		boolean debug = false;
@@ -66,7 +66,7 @@ public class ConicUtil {
 		
 		// small control on the value of b1
 		if(Math.abs(b1)>eps){
-			System.err.println("ConicUtil.reduceConic: conic was not correctly transformed");
+			System.err.println("Conic2DUtil.reduceConic: conic was not correctly transformed");
 		}
 		
 		// Case of a parabola
@@ -136,5 +136,47 @@ public class ConicUtil {
 		
 		// remaining cas is the hyperbola
 		return null;
+	}
+	
+	/**
+	 * Transform a conic centered around the origin, by dropping the
+	 * translation part of the transform. The array must be contains at
+	 * least 3 elements. If it contains 3 elements, the 3 remaining elements
+	 * are supposed to be 0, 0, and -1 in that order.
+	 * @param coefs an array of double with at least 3 coefficients
+	 * @param trans an affine transform
+	 * @return an array of double with as many elements as the input array
+	 */
+	public final static double[] transformCentered(double[] coefs, AffineTransform2D trans){
+		// Extract transform coefficients
+		double[][] mat = trans.getAffineMatrix();
+		double a = mat[0][0];
+		double b = mat[1][0];
+		double c = mat[0][1];
+		double d = mat[1][1];
+		
+		// Extract first conic coefficients
+		double A = coefs[0];
+		double B = coefs[1];
+		double C = coefs[2];
+		
+		// compute matrix determinant
+		double delta = a*d-b*c;
+		delta = delta*delta;
+		
+		double A2 = (A*d*d + C*b*b - B*b*d)/delta;
+		double B2 = (B*(a*d+b*c) - 2*(A*c*d+C*a*b))/delta;
+		double C2 = (A*c*c + C*a*a - B*a*c)/delta;
+		
+		// return only 3 parameters if needed
+		if(coefs.length==3) return new double[]{A2, B2, C2};
+		
+		// Compute other coefficients
+		double D = coefs[3];
+		double E = coefs[4];
+		double F = coefs[5];
+		double D2 = D*d-E*b;
+		double E2 = E*a-D*c;
+		return new double[]{A2, B2, C2, D2, E2, F};
 	}
 }

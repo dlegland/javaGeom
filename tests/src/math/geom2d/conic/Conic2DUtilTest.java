@@ -1,17 +1,28 @@
 package math.geom2d.conic;
 
+import math.geom2d.transform.AffineTransform2D;
 import junit.framework.TestCase;
 
-public class ConicUtilTest extends TestCase {
+public class Conic2DUtilTest extends TestCase {
 
 	/**
 	 * Constructor for Circle2DTest.
 	 * @param arg0
 	 */
-	public ConicUtilTest(String arg0) {
+	public Conic2DUtilTest(String arg0) {
 		super(arg0);
 	}
 	
+	public void testTransformCenteredEllipse(){
+		double[] coefs = {.01, 0, .05};
+		AffineTransform2D rot30 = AffineTransform2D.createRotation(Math.PI/3);
+		double[] transformed = Conic2DUtil.transformCentered(coefs, rot30);
+		
+		double[] back = Conic2DUtil.transformCentered(transformed,
+				AffineTransform2D.createRotation(-Math.PI/3));
+		for(int i=0; i<3; i++)
+			assertEquals(coefs[i], back[i], 1e-12);
+	}
 	
 	public void testReduceConicParabola(){
 		double[] coefs;
@@ -19,9 +30,9 @@ public class ConicUtilTest extends TestCase {
 		double eps = 1e-14;
 		
 		coefs = new double[]{1, 0, 0, 0, -1, 0};
-		conic = ConicUtil.reduceConic(coefs);
+		conic = Conic2DUtil.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], 1, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 0, eps);
@@ -30,9 +41,9 @@ public class ConicUtilTest extends TestCase {
 		assertEquals(coefs[5], 0, eps);
 		
 		coefs = new double[]{5, 0, 0, 0, -1, 0};
-		conic = ConicUtil.reduceConic(coefs);
+		conic = Conic2DUtil.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], 5, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 0, eps);
@@ -42,9 +53,9 @@ public class ConicUtilTest extends TestCase {
 
 		
 		coefs = new double[]{0, 0, 1, -1, 0, 0};
-		conic = ConicUtil.reduceConic(coefs);
+		conic = Conic2DUtil.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], 0, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 1, eps);
@@ -54,7 +65,7 @@ public class ConicUtilTest extends TestCase {
 		
 		double a2 = Math.sqrt(2)/2.;
 		coefs = new double[]{.5, -1, .5, -a2, -a2, 0};
-		conic = ConicUtil.reduceConic(coefs);
+		conic = Conic2DUtil.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
 	}
 	
@@ -68,15 +79,15 @@ public class ConicUtilTest extends TestCase {
 		
 		for(double t=0; t<Math.PI/2; t+=Math.PI/16){
 			ellipse = new Ellipse2D(0, 0, 2, 1, t);
-			coefs0 = ellipse.getCartesianEquation();
-			conic = ConicUtil.reduceConic(coefs0);
+			coefs0 = ellipse.getConicCoefficients();
+			conic = Conic2DUtil.reduceConic(coefs0);
 		}
 		
 		a = 4; b = 2;
 		coefs0 = new double[]{b*b, 0, a*a, 0, 0, -a*a*b*b};
-		conic = ConicUtil.reduceConic(coefs0);
+		conic = Conic2DUtil.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], coefs0[0], eps);
 		assertEquals(coefs[1], coefs0[1], eps);
 		assertEquals(coefs[2], coefs0[2], eps);
@@ -87,10 +98,10 @@ public class ConicUtilTest extends TestCase {
 		
 		a = 4; b = 2; xc=3; yc=5; theta=0;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getCartesianEquation();
-		conic = ConicUtil.reduceConic(coefs0);
+		coefs0 = ellipse.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], coefs0[0], eps);
 		assertEquals(coefs[1], coefs0[1], eps);
 		assertEquals(coefs[2], coefs0[2], eps);
@@ -100,10 +111,10 @@ public class ConicUtilTest extends TestCase {
 
 		a = 2; b = 1; xc=0; yc=0; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getCartesianEquation();
-		conic = ConicUtil.reduceConic(coefs0);
+		coefs0 = ellipse.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], coefs0[0], eps);
 		assertEquals(coefs[1], coefs0[1], eps);
 		assertEquals(coefs[2], coefs0[2], eps);
@@ -113,10 +124,10 @@ public class ConicUtilTest extends TestCase {
 
 		a = 4; b = 2; xc=3; yc=5; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getCartesianEquation();
-		conic = ConicUtil.reduceConic(coefs0);
+		coefs0 = ellipse.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getCartesianEquation();
+		coefs = conic.getConicCoefficients();
 		assertEquals(coefs[0], coefs0[0], eps);
 		assertEquals(coefs[1], coefs0[1], eps);
 		assertEquals(coefs[2], coefs0[2], eps);
