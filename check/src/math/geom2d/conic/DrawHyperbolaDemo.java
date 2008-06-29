@@ -40,6 +40,7 @@ import math.geom2d.conic.HyperbolaBranchArc2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.line.StraightLine2D;
 
 
@@ -55,8 +56,8 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		double x0 = 150;
 		double y0 = 150;
-		double a  = 20;
-		double b  = 20;
+		double a  = 50;
+		double b  = 50;
 		hyperbola = new Hyperbola2D(x0, y0, a, b, 0, true);
 		
 		box = new Box2D(50, 250, 50, 250);
@@ -85,6 +86,10 @@ public class DrawHyperbolaDemo extends JPanel{
 		// isolate second branch and an arc
 		HyperbolaBranch2D branch2 = (HyperbolaBranch2D) hyperbola.getLastCurve();
 		HyperbolaBranchArc2D arc2 = new HyperbolaBranchArc2D(branch2, -tmax, tmax);
+
+		g2.setColor(Color.CYAN);
+		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
+		g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
 
 		// Draw the arcs
 		g2.setColor(Color.BLACK);

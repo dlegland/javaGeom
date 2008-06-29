@@ -26,10 +26,11 @@ public class CheckDrawWedges2D extends JPanel{
 	double x0=150, y0=150;
 	Box2D box = new Box2D(50, 250, 50, 250);
 	
-	InvertedRay2D inv1 = new InvertedRay2D(x0, y0, -1, -2);
-	Ray2D ray1 = new Ray2D(x0, y0, 2, 1);
+	InvertedRay2D inv1 	= new InvertedRay2D(x0, y0, 1, 2);
+	Ray2D ray1 			= new Ray2D(x0, y0, 1, -2);
 	
 	BoundaryPolyCurve2D<StraightObject2D> wedge1; 
+	BoundaryPolyCurve2D<StraightObject2D> wedge2; 
 	
 	
 	public CheckDrawWedges2D(){
@@ -42,15 +43,15 @@ public class CheckDrawWedges2D extends JPanel{
 		
 		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, Math.PI/3);
 
-		Boundary2D clipped = Boundary2DUtil.clipBoundary(wedge1, box);
+		//Boundary2D clipped = Boundary2DUtil.clipBoundary(wedge1, box);
 		Boundary2D rotated = wedge1.transform(rot);
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(clipped);
+		//g2.fill(clipped);
 		g2.fill(Boundary2DUtil.clipBoundary(rotated, box));	
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(wedge1.clip(box));
+		//g2.draw(wedge1.clip(box));
 		g2.draw(rotated.clip(box));
 		
 		g2.setColor(Color.BLACK);

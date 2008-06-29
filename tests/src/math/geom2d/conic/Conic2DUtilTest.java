@@ -84,7 +84,8 @@ public class Conic2DUtilTest extends TestCase {
 		}
 		
 		a = 4; b = 2;
-		coefs0 = new double[]{b*b, 0, a*a, 0, 0, -a*a*b*b};
+		double delta = a*a*b*b;
+		coefs0 = new double[]{b*b/delta, 0, a*a/delta, 0, 0, -1};
 		conic = Conic2DUtil.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
 		coefs = conic.getConicCoefficients();
@@ -98,43 +99,57 @@ public class Conic2DUtilTest extends TestCase {
 		
 		a = 4; b = 2; xc=3; yc=5; theta=0;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getConicCoefficients();
-		conic = Conic2DUtil.reduceConic(coefs0);
+		double[] coefsTranslated = ellipse.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefsTranslated);
 		assertTrue(conic instanceof Ellipse2D);
 		coefs = conic.getConicCoefficients();
-		assertEquals(coefs[0], coefs0[0], eps);
-		assertEquals(coefs[1], coefs0[1], eps);
-		assertEquals(coefs[2], coefs0[2], eps);
-		assertEquals(coefs[3], coefs0[3], eps);
-		assertEquals(coefs[4], coefs0[4], eps);
-		assertEquals(coefs[5], coefs0[5], eps);
+		assertEquals(coefs[0], coefsTranslated[0], eps);
+		assertEquals(coefs[1], coefsTranslated[1], eps);
+		assertEquals(coefs[2], coefsTranslated[2], eps);
+		assertEquals(coefs[3], coefsTranslated[3], eps);
+		assertEquals(coefs[4], coefsTranslated[4], eps);
+		assertEquals(coefs[5], coefsTranslated[5], eps);
 
-		a = 2; b = 1; xc=0; yc=0; theta=Math.PI/3;
+		a = 4; b = 2; xc=0; yc=0; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getConicCoefficients();
-		conic = Conic2DUtil.reduceConic(coefs0);
+		double[] coefsRotated = ellipse.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefsRotated);
 		assertTrue(conic instanceof Ellipse2D);
 		coefs = conic.getConicCoefficients();
-		assertEquals(coefs[0], coefs0[0], eps);
-		assertEquals(coefs[1], coefs0[1], eps);
-		assertEquals(coefs[2], coefs0[2], eps);
-		assertEquals(coefs[3], coefs0[3], eps);
-		assertEquals(coefs[4], coefs0[4], eps);
-		assertEquals(coefs[5], coefs0[5], eps);
+		assertEquals(coefs[0], coefsRotated[0], eps);
+		assertEquals(coefs[1], coefsRotated[1], eps);
+		assertEquals(coefs[2], coefsRotated[2], eps);
+		assertEquals(coefs[3], coefsRotated[3], eps);
+		assertEquals(coefs[4], coefsRotated[4], eps);
+		assertEquals(coefs[5], coefsRotated[5], eps);
 
 		a = 4; b = 2; xc=3; yc=5; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		coefs0 = ellipse.getConicCoefficients();
-		conic = Conic2DUtil.reduceConic(coefs0);
+		double[] coefsRotTrans = ellipse.getConicCoefficients();
+		
+		Ellipse2D rotated = ellipse.transform(AffineTransform2D.createRotation(-theta));
+		double[] coefsRTR = rotated.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefsRTR);
+		
 		assertTrue(conic instanceof Ellipse2D);
 		coefs = conic.getConicCoefficients();
-		assertEquals(coefs[0], coefs0[0], eps);
-		assertEquals(coefs[1], coefs0[1], eps);
-		assertEquals(coefs[2], coefs0[2], eps);
-		assertEquals(coefs[3], coefs0[3], eps);
-		assertEquals(coefs[4], coefs0[4], eps);
-		assertEquals(coefs[5], coefs0[5], eps);
-
-	}
+		assertEquals(coefs[0], coefsRTR[0], eps);
+		assertEquals(coefs[1], coefsRTR[1], eps);
+		assertEquals(coefs[2], coefsRTR[2], eps);
+		assertEquals(coefs[3], coefsRTR[3], eps);
+		assertEquals(coefs[4], coefsRTR[4], eps);
+		assertEquals(coefs[5], coefsRTR[5], eps);
+		
 	
+		conic = Conic2DUtil.reduceConic(coefsRotTrans);
+		
+		assertTrue(conic instanceof Ellipse2D);
+		coefs = conic.getConicCoefficients();
+		assertEquals(coefs[0], coefsRotTrans[0], eps);
+		assertEquals(coefs[1], coefsRotTrans[1], eps);
+		assertEquals(coefs[2], coefsRotTrans[2], eps);
+		assertEquals(coefs[3], coefsRotTrans[3], eps);
+		assertEquals(coefs[4], coefsRotTrans[4], eps);
+		assertEquals(coefs[5], coefsRotTrans[5], eps);
+	}
 }
