@@ -102,6 +102,7 @@ public abstract class Boundary2DUtil {
 	public final static BoundarySet2D<ContinuousBoundary2D>
 	clipBoundary(Boundary2D boundary, Box2D box){
 		//TODO: assumes for the moment that box is closed (rectangular)
+		
 		// iteration variable
 		ContinuousOrientedCurve2D curve;
 		
@@ -124,7 +125,7 @@ public abstract class Boundary2DUtil {
 		
 		// Iterate on boundary curves: extract current curve (continuous and
 		// oriented), clip it with box, and add clipped curves to the array
-		// 'curves'
+		// 'curveSet'
 		for(ContinuousBoundary2D boundaryCurve : boundaryCurves){
 			clipped = Boundary2DUtil.clipContinuousOrientedCurve(boundaryCurve, box);
 			
@@ -212,7 +213,6 @@ public abstract class Boundary2DUtil {
 			
 			// start position of first curve, used as stop flag
 			double pos0	= startPositions[ind];
-			
 
 			// store indices of curves, to remove them later
 			ArrayList<Integer> indices = new ArrayList<Integer>();

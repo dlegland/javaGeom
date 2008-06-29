@@ -67,15 +67,15 @@ public class Ellipse2DTest extends TestCase {
 	public void testReduceCentered(){
 		double[] coefs = {1./400., 0, 1./100.};
 		Ellipse2D ell0 = Ellipse2D.reduceCentered(coefs);
-		assertTrue(ell0.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+		assertTrue(ell0.equals(new Ellipse2D(0, 0, 20, 10, 0)));
 		
 		double[] coefs2 = {1./400., 0, 1./100., 0, 0, -1};
 		Ellipse2D ell2 = Ellipse2D.reduceCentered(coefs2);
-		assertTrue(ell2.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+		assertTrue(ell2.equals(new Ellipse2D(0, 0, 20, 10, 0)));
 
 		double[] coefs3 = {1., 0, 4., 0, 0, -400};
 		Ellipse2D ell3 = Ellipse2D.reduceCentered(coefs3);
-		assertTrue(ell3.equals(new Ellipse2D(0, 0, 20, 10, Math.PI)));
+		assertTrue(ell3.equals(new Ellipse2D(0, 0, 20, 10, 0)));
 
 		double theta = Math.PI/3;
 		double[] rotCoefs = Conic2DUtil.transformCentered(coefs,

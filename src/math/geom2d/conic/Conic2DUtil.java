@@ -3,6 +3,7 @@
  */
 package math.geom2d.conic;
 
+import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -45,8 +46,8 @@ public class Conic2DUtil {
 			if (Math.abs(a-c)<eps)
 				theta0 = Math.PI/4;			// conic symmetric wrt diagonal
 			else
-				theta0 = Math.atan(b/(a-c))/2;
-			System.out.println(theta0);
+				theta0 = Angle2D.formatAngle(Math.atan2(b, a-c)/2);
+			
 			// computation shortcuts
 			double cot 	= Math.cos(theta0);
 			double sit 	= Math.sin(theta0);
@@ -109,7 +110,7 @@ public class Conic2DUtil {
 		
 		// compute coordinate of conic center
 		Point2D center = new Point2D(-d1/(2*a1), -e1/(2*c1));
-		center = center.transform(AffineTransform2D.createRotation(-theta0));
+		center = center.transform(AffineTransform2D.createRotation(theta0));
 		
 		// length of semi axes
 		double num = (c1*d1*d1 + a1*e1*e1 - 4*a1*c1*f1)/(4*a1*c1);

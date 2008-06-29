@@ -126,6 +126,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			theta = Math.PI/4;
 		}else{
 			theta = Math.atan2(B, (A-C))/2.0;
+			if(B<0) theta -= Math.PI;
+			theta = Angle2D.formatAngle(theta);
 		}
 		
 		// compute ellipse in isothetic basis
@@ -145,7 +147,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		}else{
 			r1 = Math.sqrt(f/coefs2[2]);
 			r2 = Math.sqrt(f/coefs2[0]);
-			theta = theta + Math.PI/2;
+			theta = Angle2D.formatAngle(theta + Math.PI/2);
+			theta = Math.min(theta, Angle2D.formatAngle(theta+Math.PI));
 		}			
 		
 		// Return either an ellipse or a circle
@@ -539,20 +542,17 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			      on the unit circle written out long hand */
 		
 		double a = costSq/r1Sq + sintSq/r2Sq;
-		double b = (r2Sq-r1Sq)*sin2t/(2.0*r1Sq*r2Sq);
+		double b = (r2Sq-r1Sq)*sin2t/(r1Sq*r2Sq);
 		double c = costSq/r2Sq + sintSq/r1Sq; 
-		double d = -yc*b-xc*a; 
-		double e = -xc*b-yc*c; 
+		double d = -yc*b-2*xc*a; 
+		double e = -xc*b-2*yc*c; 
 		double f = -1.0 + (xcSq + ycSq)*(r1SqInv + r2SqInv)/2.0 +
 				(costSq - sintSq)*(xcSq - ycSq)*(r1SqInv - r2SqInv)/2.0 +
 				xc*yc*(r1SqInv - r2SqInv)*sin2t;
 		
 		// Adapt computed coefficients to javaGeom convention
-		return new double[]{
-				a, b*2, c, d*2, e*2, f
-		};
+		return new double[]{a, b, c, d, e, f};
 	}
-
 
 	/**
 	 * @deprecated use getConicCoefficients() instead.
