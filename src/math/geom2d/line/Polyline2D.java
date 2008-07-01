@@ -602,9 +602,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		
 		if(points.size()<2) return path;
 		
-		Point2D p0 = this.getFirstPoint();
-		path.moveTo((float)p0.getX(), (float)p0.getY());
-			
 		// line to each point
 		for(Point2D point : points)
 			path.lineTo((float)(point.getX()), (float)(point.getY()));
