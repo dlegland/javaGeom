@@ -211,34 +211,32 @@ public abstract class Boundary2DUtil {
 			Point2D p0 	= curve.getFirstPoint();
 			Point2D p1 	= curve.getLastPoint();
 			
-			// start position of first curve, used as stop flag
-			double pos0	= startPositions[ind];
+			// index of first curve, used as a stop flag
+			int ind0 = ind;
 
 			// store indices of curves, to remove them later
 			ArrayList<Integer> indices = new ArrayList<Integer>();
 			indices.add(new Integer(ind));
 			
 			// position of last point of current curve on box boundary
-			ind = findNextCurveIndex(startPositions, pos0);
-			double pos = startPositions[ind];
+			ind = findNextCurveIndex(startPositions, endPositions[ind0]);
 						
 			// iterate while we don't come back to first point
-			while(pos!=pos0){				
+			while(ind!=ind0){				
 				// find the curve whose first point is just after last point
 				// of current curve on box boundary
 				curve = curves[ind];
 
 				// add a link between previous curve and current curve
-				// TODO: add more line segments if intersection contains corner
-				//boundary0.addCurve(new LineSegment2D(p1, curve.getFirstPoint()));
 				boundary0.addCurve(getBoundaryPortion(box, p1, curve.getFirstPoint()));				
 				
 				// add to current boundary
 				boundary0.addCurve(curve);
 
+				indices.add(new Integer(ind));
+
 				// find index and position of next curve
-				ind = findNextCurveIndex(startPositions, pos);
-				pos = startPositions[ind];
+				ind = findNextCurveIndex(startPositions, endPositions[ind]);
 				
 				// get last points
 				p1 = curve.getLastPoint();
