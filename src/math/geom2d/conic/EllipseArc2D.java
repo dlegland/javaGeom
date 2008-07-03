@@ -48,7 +48,8 @@ import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An arc of ellipse. It is defined by an ellipse, 
- * a starting angle, and a signed angle extent.
+ * a starting angle, and a signed angle extent. Circle arc is oriented
+ * counter-clockwise if angle extent is positive, and clockwise otherwise. 
  * @author dlegland
  */
 public class EllipseArc2D implements SmoothOrientedCurve2D{

@@ -281,9 +281,14 @@ public class Circle2D extends Ellipse2D {
 	 * return a new CircleArc2D. t0 and t1 are position on circle.
 	 */
 	public CircleArc2D getSubCurve(double t0, double t1){
-		double startAngle  	= direct ? t0 : -t0;
-		double extent 		= direct ? t1-t0 : t0-t1;
-		extent = Angle2D.formatAngle(extent);
+		double startAngle, extent;
+		if(this.direct){
+			startAngle = t0;
+			extent = Angle2D.formatAngle(t1-t0);
+		}else{
+			startAngle = -t0;
+			extent = -Angle2D.formatAngle(t0-t1);
+		}
 		return new CircleArc2D(this, startAngle, extent);
 	}
 

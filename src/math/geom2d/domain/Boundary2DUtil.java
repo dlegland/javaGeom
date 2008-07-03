@@ -15,6 +15,7 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Polyline2D;
 
 /**
  * Collects some useful methods for clipping curves.
@@ -320,23 +321,27 @@ public abstract class Boundary2DUtil {
 		if(ind0==ind1 && t0<t1)
 			return new LineSegment2D(p0, p1);
 		
-		PolyOrientedCurve2D<LineSegment2D> result = 
-			new PolyOrientedCurve2D<LineSegment2D>();
+		// Create an array to store vertices
+		// Array can contain at most 6 vertices: 4 for the box corners, 
+		// and 2 for curve extremities.
+		ArrayList<Point2D> vertices = new ArrayList<Point2D>(6);
 		
-		// add the first line segment
+		// add the first point.
+		vertices.add(p0);
+		
+		// compute index of first box boundary edge
 		int ind = (ind0+1) % 4;
-		result.addCurve(new LineSegment2D(p0, boundary.getPoint(ind)));
 
-		// add all line segments between 2 box corners
+		// add all vertices segments between the 2 end points
 		while(ind!=ind1){
-			result.addCurve(new LineSegment2D(boundary.getPoint(ind), 
-					boundary.getPoint((ind+1)%4)));
+			vertices.add(boundary.getPoint(ind));
 			ind = (ind+1)%4;	
 		}
+		vertices.add(boundary.getPoint(ind));
 		
 		// add the last line segment
-		result.addCurve(new LineSegment2D(boundary.getPoint(ind), p1));
+		vertices.add(p1);
 		
-		return result;
+		return new Polyline2D(vertices);
 	}
 }

@@ -14,6 +14,7 @@ import math.geom2d.Box2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.domain.BoundaryPolyCurve2D;
+import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -24,18 +25,27 @@ public class CheckDrawWedges2D extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	double x0=150, y0=150;
+	double d = 20;
 	Box2D box = new Box2D(50, 250, 50, 250);
 	
-	InvertedRay2D inv1 	= new InvertedRay2D(x0, y0, 1, 2);
-	Ray2D ray1 			= new Ray2D(x0, y0, 1, -2);
+	InvertedRay2D inv1 	= new InvertedRay2D(x0, y0-d, 1, 2);
+	Ray2D ray1 			= new Ray2D(x0, y0-d, 1, -2);
+	InvertedRay2D inv2 	= new InvertedRay2D(x0, y0+d, -1, -2);
+	Ray2D ray2 			= new Ray2D(x0, y0+d, -1, 2);
 	
 	BoundaryPolyCurve2D<StraightObject2D> wedge1; 
 	BoundaryPolyCurve2D<StraightObject2D> wedge2; 
+	BoundarySet2D<BoundaryPolyCurve2D<StraightObject2D>> boundary;
 	
-	
+	@SuppressWarnings("unchecked")
 	public CheckDrawWedges2D(){
 		wedge1 = new BoundaryPolyCurve2D<StraightObject2D>(
 				new StraightObject2D[]{inv1, ray1});
+		wedge2 = new BoundaryPolyCurve2D<StraightObject2D>(
+				new StraightObject2D[]{inv2, ray2});
+		// Unchecked type cast
+		boundary = new BoundarySet2D<BoundaryPolyCurve2D<StraightObject2D>>(
+			new BoundaryPolyCurve2D[]{wedge1, wedge2});
 	}
 	
 	public void paintComponent(Graphics g){
@@ -44,7 +54,7 @@ public class CheckDrawWedges2D extends JPanel{
 		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, Math.PI/3);
 
 		//Boundary2D clipped = Boundary2DUtil.clipBoundary(wedge1, box);
-		Boundary2D rotated = wedge1.transform(rot);
+		Boundary2D rotated = boundary.transform(rot);
 		
 		g2.setColor(Color.CYAN);
 		//g2.fill(clipped);
