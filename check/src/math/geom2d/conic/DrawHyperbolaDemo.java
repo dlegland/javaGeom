@@ -40,6 +40,7 @@ import math.geom2d.conic.HyperbolaBranchArc2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtil;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.line.StraightLine2D;
 
@@ -67,10 +68,6 @@ public class DrawHyperbolaDemo extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		// Draw the bounding box
-		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
-
 		// Draw the asymptotes
 		StraightLine2D asymp1 = new StraightLine2D(150, 150, 1, 1);
 		StraightLine2D asymp2 = new StraightLine2D(150, 150, -1, 1);
@@ -79,7 +76,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		g2.draw(asymp2.clip(box));
 		
 		// isolate first branch and an arc
-		double tmax = 2.5;
+		double tmax = 1.5;
 		HyperbolaBranch2D branch1 = (HyperbolaBranch2D) hyperbola.getFirstCurve();
 		HyperbolaBranchArc2D arc1 = new HyperbolaBranchArc2D(branch1, -tmax, tmax);
 	
@@ -87,10 +84,17 @@ public class DrawHyperbolaDemo extends JPanel{
 		HyperbolaBranch2D branch2 = (HyperbolaBranch2D) hyperbola.getLastCurve();
 		HyperbolaBranchArc2D arc2 = new HyperbolaBranchArc2D(branch2, -tmax, tmax);
 
-		g2.setColor(Color.CYAN);
+		g2.setColor(Color.BLUE);
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
-		g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
-
+		//g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
+		Boundary2D clippedBoundary =
+			Boundary2DUtil.clipBoundary(hyperbola, box);
+		//boolean b1 = clippedBoundary.contains(new Point2D(50, 50));
+//		g2.setColor(Color.BLUE);
+//		g2.draw(clippedBoundary);
+		g2.setColor(Color.CYAN);
+		g2.fill(clippedBoundary);
+		
 		// Draw the arcs
 		g2.setColor(Color.BLACK);
 		g2.draw(arc1);
@@ -146,18 +150,33 @@ public class DrawHyperbolaDemo extends JPanel{
 			g2.setColor(Color.RED);
 			g2.draw(clippedCurve.getAsPolyline(4));
 		}
-			
+				
 		// Draw the clipped hyperbola
+		g2.setStroke(new BasicStroke(1.0f));
+		g2.setColor(Color.BLUE);
 		CurveSet2D<?> clipped2 = hyperbola.clip(box);
 		if (!clipped2.isEmpty()){
-			g2.setStroke(new BasicStroke(1.0f));
-			g2.setColor(Color.BLUE);
 			g2.draw(clipped2);
 		}
 		
+		// The clipping of first branch
+		clipped = Curve2DUtil.clipSmoothCurve(branch2, line4);
+		if (clipped!=null){
+			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
+			g2.setStroke(new BasicStroke(1.0f));
+			g2.setColor(Color.RED);
+			g2.draw(clippedCurve.getAsPolyline(4));
+		}
+			
 		// Draw parabola origin
 		Point2D p1 = hyperbola.getCenter();
 		g2.fill(new Circle2D(p1, 4));
+		
+		// Draw the bounding box
+		g2.setStroke(new BasicStroke(1.0f));
+		g2.setColor(Color.BLACK);
+		g2.draw(box.getBoundary());
+
 		
 	}
 

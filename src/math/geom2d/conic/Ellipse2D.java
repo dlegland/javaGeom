@@ -917,9 +917,14 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 * return a new EllipseArc2D.
 	 */
 	public EllipseArc2D getSubCurve(double t0, double t1){
-		double startAngle  	= direct ? t0 : -t0;
-		double extent 		= direct ? t1-t0 : t0-t1;
-		extent = Angle2D.formatAngle(extent);
+		double startAngle, extent;
+		if(this.direct){
+			startAngle = t0;
+			extent = Angle2D.formatAngle(t1-t0);
+		}else{
+			startAngle = -t0;
+			extent = -Angle2D.formatAngle(t0-t1);
+		}
 		return new EllipseArc2D(this, startAngle, extent);
 	}
 	
