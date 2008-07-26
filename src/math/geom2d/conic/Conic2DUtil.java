@@ -131,12 +131,22 @@ public class Conic2DUtil {
 			else
 				return new Ellipse2D(center, 
 						Math.sqrt(bt), Math.sqrt(at), theta0+Math.PI/2);
-			
-				
 		}
 		
-		// remaining cas is the hyperbola
-		return null;
+		// remaining case is the hyperbola
+		
+		// Case of east-west hyperbola
+		if(at>0){
+			if(debug)
+				System.out.println("east-west hyperbola");
+			return new Hyperbola2D(center,
+						Math.sqrt(at), Math.sqrt(-bt), theta0);
+		}else{
+			if(debug)
+				System.out.println("north-south hyperbola");
+			return new Hyperbola2D(center, 
+				Math.sqrt(bt), Math.sqrt(-at), theta0+Math.PI/2);
+		}
 	}
 	
 	/**

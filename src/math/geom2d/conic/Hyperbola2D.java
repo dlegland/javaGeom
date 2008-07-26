@@ -243,24 +243,22 @@ implements Conic2D{
 	}
 
 	public double[] getConicCoefficients() {
-		//TODO: not tested
-		
-		/* common coeficients */
+		// scaling coefficients
 		double aSq 		= this.a*this.a;
 		double bSq 		= this.b*this.b;
+		double aSqInv 	= 1.0/aSq;
+		double bSqInv 	= 1.0/bSq;
 		
-		//  angle of ellipse, and trigonometric formulas
+		//  angle of hyperbola with horizontal, and trigonometric formulas
 		double sint 	= Math.sin(this.theta);
 		double cost 	= Math.cos(this.theta);
 		double sin2t 	= 2.0*sint*cost;
 		double sintSq 	= sint*sint;
 		double costSq 	= cost*cost;
 		
-		// coefs from ellipse center
+		// coefs from hyperbola center
 		double xcSq 	= xc*xc;
 		double ycSq 	= yc*yc;
-		double aSqInv 	= 1.0/aSq;
-		double bSqInv 	= 1.0/bSq;
 
 		/* Compute the coefficients. These formulae are the transformations
 			      on the unit hyperbola written out long hand */
@@ -268,13 +266,14 @@ implements Conic2D{
 		double a = costSq/aSq - sintSq/bSq;
 		double b = (bSq+aSq)*sin2t/(aSq*bSq);
 		double c = sintSq/aSq - costSq/bSq; 
-		double d = -2*xc*(costSq/aSq+sintSq/bSq) 
-			- 2*yc*sint*cost*(aSqInv+bSqInv);
-		double e = 2*xc*sint*cost*(bSqInv-aSqInv)
-			- 2*yc*(costSq/bSq+sintSq/aSq);
-		double f = -1.0 + (xcSq + ycSq)*(aSqInv + bSqInv)/2.0 +
-				(costSq - sintSq)*(xcSq - ycSq)*(aSqInv - bSqInv)/2.0 +
-				xc*yc*(aSqInv - bSqInv)*sin2t;
+		double d = -yc*b-2*xc*a; 
+		double e = -xc*b-2*yc*c; 
+		double f = -1.0 + (xcSq + ycSq)*(aSqInv - bSqInv)/2.0 +
+		(costSq - sintSq)*(xcSq - ycSq)*(aSqInv + bSqInv)/2.0 +
+		xc*yc*(aSqInv + bSqInv)*sin2t;
+		// Equivalent to:
+//		double f = (xcSq*costSq + xc*yc*sin2t + ycSq*sintSq)*aSqInv 
+//			- (xcSq*sintSq - xc*yc*sin2t + ycSq*costSq)*bSqInv - 1;
 		
 		// Return array of results
 		return new double[]{a, b, c, d, e, f};
@@ -358,8 +357,6 @@ implements Conic2D{
 		
 		// Extract formatted line parameters
 		Point2D origin = line2.getOrigin();
-//		double x0 = origin.getX();
-//		double y0 = origin.getY();
 		double dx = line2.getVector().getX();
 		double dy = line2.getVector().getY();
 		

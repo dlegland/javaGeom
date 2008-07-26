@@ -50,7 +50,7 @@ public interface Conic2D extends OrientedCurve2D{
 	public final static int STRAIGHT_LINE 	= 5;
 	public final static int TWO_LINES 		= 6;
 	public final static int POINT 			= 7;
-
+	
 	// ===================================================================
 	// class variables
 	
