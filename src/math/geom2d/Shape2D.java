@@ -108,7 +108,8 @@ public interface Shape2D extends java.awt.Shape{
 	// general methods
 	
 	/**
-	 * Clip the shape with the given box, and returns a new shape.
+	 * Clip the shape with the given box, and returns a new shape. The box
+	 * must be bounded.
 	 * @param box the clipping box
 	 * @return the clipped shape
 	 */

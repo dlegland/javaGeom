@@ -10,6 +10,7 @@ import java.util.Iterator;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
@@ -102,7 +103,8 @@ public abstract class Boundary2DUtil {
 	 */
 	public final static BoundarySet2D<ContinuousBoundary2D>
 	clipBoundary(Boundary2D boundary, Box2D box){
-		//TODO: assumes for the moment that box is closed (rectangular)
+		
+		if(!box.isBounded()) throw new UnboundedShapeException();
 		
 		// iteration variable
 		ContinuousOrientedCurve2D curve;
