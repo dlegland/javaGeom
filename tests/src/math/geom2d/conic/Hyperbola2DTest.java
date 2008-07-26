@@ -4,6 +4,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.transform.AffineTransform2D;
 import junit.framework.TestCase;
 
 public class Hyperbola2DTest extends TestCase {
@@ -21,6 +22,46 @@ public class Hyperbola2DTest extends TestCase {
 	public void testGetFocus2() {
 		Hyperbola2D hyper = new Hyperbola2D();
 		assertEquals(hyper.getFocus2(), new Point2D(-Math.sqrt(2), 0));
+	}
+	
+	public void testReduceCentered(){
+		double[] coefs = {1./400., 0, -1./100.};
+		Hyperbola2D hyp0 = Hyperbola2D.reduceCentered(coefs);
+		assertTrue(hyp0.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+		
+		double[] coefs2 = {1./400., 0, -1./100., 0, 0, -1};
+		Hyperbola2D hyp2 = Hyperbola2D.reduceCentered(coefs2);
+		assertTrue(hyp2.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+		
+		double[] coefs3 = {1., 0, -4., 0, 0, -400};
+		Hyperbola2D hyp3 = Hyperbola2D.reduceCentered(coefs3);
+		assertTrue(hyp3.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+//		double theta = Math.PI/3;
+//		double[] rotCoefs = Conic2DUtil.transformCentered(coefs,
+//				AffineTransform2D.createRotation(theta));
+//		Ellipse2D ellRot = Ellipse2D.reduceCentered(rotCoefs);
+//		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
+	}
+	
+	public void testTransformCentered(){
+		Hyperbola2D hyp0 = new Hyperbola2D(0, 0, 20, 10, 0, true);
+		
+		// Check rotation of an ellipse
+		double theta = Math.PI/3;
+		AffineTransform2D rot60 = AffineTransform2D.createRotation(Math.PI/3);
+		Hyperbola2D hypRot = Hyperbola2D.transformCentered(hyp0, rot60);
+		assertTrue(hypRot.equals(new Hyperbola2D(0, 0, 20, 10, theta, true)));
+		
+		// Check scaling of an ellipse
+		double sx = 2.5; double sy = 3;
+		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
+		Hyperbola2D hypSca = Hyperbola2D.transformCentered(hyp0, sca);
+		assertTrue(hypSca.equals(new Hyperbola2D(0, 0, 20.*sx, 10.*sy, 0, true)));
+
+		// Check scaling and rotation
+		Hyperbola2D hypBoth = Hyperbola2D.transformCentered(hypSca, rot60);
+		assertTrue(hypBoth.equals(new Hyperbola2D(0, 0, 20.*sx, 10.*sy, theta, true)));
+
 	}
 	
 	public void testClipBox(){

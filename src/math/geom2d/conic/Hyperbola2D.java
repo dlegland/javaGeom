@@ -27,7 +27,9 @@ package math.geom2d.conic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
@@ -70,6 +72,96 @@ implements Conic2D{
 	HyperbolaBranch2D branch1 = null;
 	HyperbolaBranch2D branch2 = null;
 	
+	
+	/**
+	 * Creates a new Hyperbola by reducing the conic coefficients, assuming
+	 * conic type is Hyperbola, and hyperbola is centered.
+	 * @param coefs an array of double with at least 3 coefficients
+	 * containing coefficients for x^2, xy, and y^2 factors.
+	 * @return the Hyperbola2D corresponding to given coefficients
+	 */
+	public final static Hyperbola2D reduceCentered(double[] coefs){
+		double A = coefs[0];
+		double B = coefs[1];
+		double C = coefs[2];
+		
+		// Compute orientation angle of the ellipse
+		double theta;
+		if(Math.abs(A-C)<Shape2D.ACCURACY){
+			theta = Math.PI/4;
+		}else{
+			theta = Math.atan2(B, (A-C))/2.0;
+			if(B<0) theta -= Math.PI;
+			theta = Angle2D.formatAngle(theta);
+		}
+		
+		// compute ellipse in isothetic basis
+		double[] coefs2 = Conic2DUtil.transformCentered(coefs,
+				AffineTransform2D.createRotation(-theta));
+		
+		// extract coefficient f if present
+		double f = 1;
+		if(coefs2.length>5)
+			f = Math.abs(coefs[5]);
+
+		assert Math.abs(coefs2[0]/f)<Shape2D.ACCURACY : 
+			"Second conic coefficient should be zero";
+
+		if(coefs2[0]*coefs2[2]>0){
+			System.err.println("Transformed conic is not an Hyperbola");
+		}
+		
+		// extract major and minor axis lengths, ensuring r1 is greater
+		double r1, r2;
+		if(coefs2[0]>0){
+			// East-West hyperbola
+			r1 = Math.sqrt(f/coefs2[0]);
+			r2 = Math.sqrt(-f/coefs2[2]);
+		}else{
+			// North-South hyperbola
+			r1 = Math.sqrt(f/coefs2[2]);
+			r2 = Math.sqrt(-f/coefs2[0]);
+			theta = Angle2D.formatAngle(theta + Math.PI/2);
+			theta = Math.min(theta, Angle2D.formatAngle(theta+Math.PI));
+		}			
+		
+		// Return the new Hyperbola
+		return new Hyperbola2D(0, 0, r1, r2, theta, true);
+	}
+	
+	/**
+	 * Transform an hyperbole, by supposing both the hyperbole is centered
+	 * and the transform has no translation part.
+	 * @param hyper an hyperbole
+	 * @param trans an affine transform
+	 * @return the transformed hyperbole, centered around origin
+	 */
+	public final static Hyperbola2D transformCentered(Hyperbola2D hyper, AffineTransform2D trans){
+		// Extract inner parameter of ellipse
+		double a = hyper.a;		double b = hyper.b;		
+		double theta = hyper.theta;
+		
+		// precompute some parts
+		double aSq = a*a;		double bSq = b*b;
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+		double cotSq = cot*cot;
+		double sitSq = sit*sit;
+		
+		// compute coefficients of the centered conis
+		double A = cotSq/aSq - sitSq/bSq;
+		double B = 2*cot*sit*(1/aSq+1/bSq);
+		double C = sitSq/aSq - cotSq/bSq;
+		double[] coefs = new double[]{A, B, C};
+		
+		// Compute coefficients of the transformed conic
+		double[] coefs2 = Conic2DUtil.transformCentered(coefs, trans);
+		
+		// reduce conic coefficients to Ellipse
+		return Hyperbola2D.reduceCentered(coefs2);
+	}
+	
+
 	// ===================================================================
 	// constructors
 	
@@ -83,6 +175,14 @@ implements Conic2D{
 	
 	public Hyperbola2D(Point2D center, double a, double b, double theta, boolean d){
 		this(center.getX(), center.getY(), a, b, theta, d);
+	}
+	
+	public Hyperbola2D(Point2D center, double a, double b, double theta){
+		this(center.getX(), center.getY(), a, b, theta, true);
+	}
+	
+	public Hyperbola2D(double xc, double yc, double a, double b, double theta){
+		this(xc, yc, a, b, theta, true);
 	}
 	
 	/** Main constructor */
@@ -144,21 +244,40 @@ implements Conic2D{
 
 	public double[] getConicCoefficients() {
 		//TODO: not tested
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		double cot2 = cot*cot;
-		double sit2 = sit*sit;
-		double a2 = a*a;
-		double b2 = b*b;
 		
-		return new double[]{
-				a2*(cot2 - sit2),
-				-4*a*b*sit*cot,
-				b2*(sit2 - cot2),
-				2*a*(xc*cot + yc*sit),
-				-2*b*(yc*cot + xc*sit),
-				xc*xc - yc*yc - a*b
-			};
+		/* common coeficients */
+		double aSq 		= this.a*this.a;
+		double bSq 		= this.b*this.b;
+		
+		//  angle of ellipse, and trigonometric formulas
+		double sint 	= Math.sin(this.theta);
+		double cost 	= Math.cos(this.theta);
+		double sin2t 	= 2.0*sint*cost;
+		double sintSq 	= sint*sint;
+		double costSq 	= cost*cost;
+		
+		// coefs from ellipse center
+		double xcSq 	= xc*xc;
+		double ycSq 	= yc*yc;
+		double aSqInv 	= 1.0/aSq;
+		double bSqInv 	= 1.0/bSq;
+
+		/* Compute the coefficients. These formulae are the transformations
+			      on the unit hyperbola written out long hand */
+		
+		double a = costSq/aSq - sintSq/bSq;
+		double b = (bSq+aSq)*sin2t/(aSq*bSq);
+		double c = sintSq/aSq - costSq/bSq; 
+		double d = -2*xc*(costSq/aSq+sintSq/bSq) 
+			- 2*yc*sint*cost*(aSqInv+bSqInv);
+		double e = 2*xc*sint*cost*(bSqInv-aSqInv)
+			- 2*yc*(costSq/bSq+sintSq/aSq);
+		double f = -1.0 + (xcSq + ycSq)*(aSqInv + bSqInv)/2.0 +
+				(costSq - sintSq)*(xcSq - ycSq)*(aSqInv - bSqInv)/2.0 +
+				xc*yc*(aSqInv - bSqInv)*sin2t;
+		
+		// Return array of results
+		return new double[]{a, b, c, d, e, f};
 	}
 
 	/**
@@ -239,8 +358,8 @@ implements Conic2D{
 		
 		// Extract formatted line parameters
 		Point2D origin = line2.getOrigin();
-		double x0 = origin.getX();
-		double y0 = origin.getY();
+//		double x0 = origin.getX();
+//		double y0 = origin.getY();
 		double dx = line2.getVector().getX();
 		double dy = line2.getVector().getY();
 		
@@ -249,13 +368,14 @@ implements Conic2D{
 		if(Math.abs(dx)>Math.abs(dy)){
 			// Line is mainly horizontal
 			
-			// slope of the line
+			// slope and intercept of the line: y(x) = k*x + yi
 			double k = dy/dx;
+			double yi = origin.getY() - k*origin.getX();
 			
 			// compute coefficients of second order equation
 			double a = 1-k*k;
-			double b = -2*k*y0;
-			double c = -y0*y0-1;
+			double b = -2*k*yi;
+			double c = -yi*yi-1;
 			
 			double delta 	= b*b - 4*a*c;
 			if(delta<=0){
@@ -271,25 +391,26 @@ implements Conic2D{
 			StraightLine2D support = line2.getSupportLine();
 
 			// check first point is on the line
-			double pos1 = support.project(new Point2D(x1, k*x1+y0));
+			double pos1 = support.project(new Point2D(x1, k*x1+yi));
 			if(line2.contains(support.getPoint(pos1)))
 				points.add(line.getPoint(pos1));
 			
 			// check second point is on the line
-			double pos2 = support.project(new Point2D(x2, k*x2+y0));
+			double pos2 = support.project(new Point2D(x2, k*x2+yi));
 			if(line2.contains(support.getPoint(pos2)))
 				points.add(line.getPoint(pos2));
 			
 		}else{
 			// Line is mainly vertical
 			
-			// slope of the line
-			double k = dx/dy;
+			// slope and intercept of the line: x(y) = k*y + xi
+			double k 	= dx/dy;
+			double xi 	= origin.getX() - k*origin.getY();
 			
 			// compute coefficients of second order equation
 			double a = k*k-1;
-			double b = -2*k*x0;
-			double c = x0*x0-1;
+			double b = 2*k*xi;
+			double c = xi*xi-1;
 			
 			double delta 	= b*b - 4*a*c;
 			if(delta<=0){
@@ -305,12 +426,12 @@ implements Conic2D{
 			StraightLine2D support = line2.getSupportLine();
 
 			// check first point is on the line
-			double pos1 = support.project(new Point2D(k*y1+x0, y1));
+			double pos1 = support.project(new Point2D(k*y1+xi, y1));
 			if(line2.contains(support.getPoint(pos1)))
 				points.add(line.getPoint(pos1));
 			
 			// check second point is on the line
-			double pos2 = support.project(new Point2D(k*y2+x0, y2));
+			double pos2 = support.project(new Point2D(k*y2+xi, y2));
 			if(line2.contains(support.getPoint(pos2)))
 				points.add(line.getPoint(pos2));
 		}
@@ -318,9 +439,16 @@ implements Conic2D{
 		return points;
 	}
 
+	/**
+	 * Transforms this hyperbole by an affine transform. 
+	 */
 	public Hyperbola2D transform(AffineTransform2D trans){
-		//TODO: implement it
-		return this;
+		Hyperbola2D result = Hyperbola2D.transformCentered(this, trans);
+		Point2D center = this.getCenter().transform(trans);
+		result.xc = center.getX();
+		result.yc = center.getY();
+		result.direct = this.direct ^ !trans.isDirect();
+		return result;
 	}
 	
 	/**
