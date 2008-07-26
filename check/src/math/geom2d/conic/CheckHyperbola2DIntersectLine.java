@@ -45,21 +45,22 @@ import math.geom2d.domain.Boundary2DUtil;
 import math.geom2d.line.StraightLine2D;
 
 
-public class DrawHyperbolaDemo extends JPanel{
+public class CheckHyperbola2DIntersectLine extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
 	Hyperbola2D hyperbola = null;
 	Box2D box = null;
 	
-	public DrawHyperbolaDemo() {
+	public CheckHyperbola2DIntersectLine() {
 		super();
 		
 		double x0 = 150;
 		double y0 = 150;
 		double a  = 50;
-		double b  = 80;
-		hyperbola = new Hyperbola2D(x0, y0, a, b, 0, true);
+		double b  = 30;
+		double theta = Math.PI/3;
+		hyperbola = new Hyperbola2D(x0, y0, a, b, theta, true);
 		
 		box = new Box2D(50, 250, 50, 250);
 	
@@ -68,12 +69,12 @@ public class DrawHyperbolaDemo extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		// Draw the asymptotes
-		StraightLine2D asymp1 = new StraightLine2D(150, 150, 1, 1);
-		StraightLine2D asymp2 = new StraightLine2D(150, 150, -1, 1);
-		g2.setColor(Color.GREEN);
-		g2.draw(asymp1.clip(box));
-		g2.draw(asymp2.clip(box));
+//		// Draw the asymptotes
+//		StraightLine2D asymp1 = new StraightLine2D(150, 150, 1, 1);
+//		StraightLine2D asymp2 = new StraightLine2D(150, 150, -1, 1);
+//		g2.setColor(Color.GREEN);
+//		g2.draw(asymp1.clip(box));
+//		g2.draw(asymp2.clip(box));
 		
 		// isolate first branch and an arc
 		double tmax = 1.5;
@@ -95,10 +96,10 @@ public class DrawHyperbolaDemo extends JPanel{
 		g2.setColor(Color.CYAN);
 		g2.fill(clippedBoundary);
 		
-//		// Draw the arcs
-//		g2.setColor(Color.BLACK);
-//		g2.draw(arc1);
-//		g2.draw(arc2);
+		// Draw the arcs
+		g2.setColor(Color.BLACK);
+		g2.draw(arc1);
+		g2.draw(arc2);
 		
 		// Get focal points
 		Point2D focus1 = hyperbola.getFocus1();
@@ -151,13 +152,13 @@ public class DrawHyperbolaDemo extends JPanel{
 			g2.draw(clippedCurve.getAsPolyline(4));
 		}
 				
-		// Draw the clipped hyperbola
-		g2.setStroke(new BasicStroke(1.0f));
-		g2.setColor(Color.BLUE);
-		CurveSet2D<?> clipped2 = hyperbola.clip(box);
-		if (!clipped2.isEmpty()){
-			g2.draw(clipped2);
-		}
+//		// Draw the clipped hyperbola
+//		g2.setStroke(new BasicStroke(1.0f));
+//		g2.setColor(Color.BLUE);
+//		CurveSet2D<?> clipped2 = hyperbola.clip(box);
+//		if (!clipped2.isEmpty()){
+//			g2.draw(clipped2);
+//		}
 		
 		// The clipping of first branch
 		clipped = Curve2DUtil.clipSmoothCurve(branch2, line4);
@@ -183,7 +184,7 @@ public class DrawHyperbolaDemo extends JPanel{
 	public final static void main(String[] args){
 		System.out.println("should draw a hyperbola");
 		
-		JPanel panel = new DrawHyperbolaDemo();
+		JPanel panel = new CheckHyperbola2DIntersectLine();
 		JFrame frame = new JFrame("Draw hyperbola demo");
 		frame.setContentPane(panel);
 		frame.setSize(500, 400);

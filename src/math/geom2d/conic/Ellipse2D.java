@@ -138,7 +138,10 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		double f = 1;
 		if(coefs2.length>5)
 			f = Math.abs(coefs[5]);
-		
+
+		assert Math.abs(coefs2[0]/f)<Shape2D.ACCURACY : 
+			"Second conic coefficient should be zero";
+
 		// extract major and minor axis lengths, ensuring r1 is greater
 		double r1, r2;
 		if(coefs2[0]<coefs2[2]){
@@ -550,7 +553,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 				(costSq - sintSq)*(xcSq - ycSq)*(r1SqInv - r2SqInv)/2.0 +
 				xc*yc*(r1SqInv - r2SqInv)*sin2t;
 		
-		// Adapt computed coefficients to javaGeom convention
+		// Return array of results
 		return new double[]{a, b, c, d, e, f};
 	}
 
@@ -559,28 +562,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 */
 	@Deprecated
 	public double[] getCartesianEquation(){
-		double cot = Math.cos(theta);
-		double sit = Math.sin(-theta);
-		double cot2 = cot*cot;
-		double sit2 = sit*sit;
-		double r12 = r1*r1;
-		double r22 = r2*r2;
-		
-		// compute coefficients of ellipse without rotation
-		double a1 = r22;
-		double c1 = r12;
-		double d1 = -2*r22*xc;
-		double e1 = -2*r12*yc;
-		double f1 = r22*xc*xc + r12*yc*yc - r12*r22;
-		
-		return new double[]{
-				a1*cot2 + c1*sit2, 
-				2*(c1-a1)*cot*sit,
-				a1*sit2 + c1*cot2,
-				d1*cot + e1*sit,
-				-d1*sit + e1*cot,
-				f1
-		};
+		return getConicCoefficients();
 	}
 
 	/**
