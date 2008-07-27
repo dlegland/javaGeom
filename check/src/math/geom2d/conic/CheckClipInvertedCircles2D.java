@@ -34,7 +34,7 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 
 
@@ -81,7 +81,7 @@ public class CheckClipInvertedCircles2D extends JPanel{
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
 		//g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
 		Boundary2D clippedBoundary =
-			Boundary2DUtil.clipBoundary(boundary, box);
+			Boundary2DUtils.clipBoundary(boundary, box);
 		
 		g2.setColor(Color.CYAN);
 		g2.fill(clippedBoundary);

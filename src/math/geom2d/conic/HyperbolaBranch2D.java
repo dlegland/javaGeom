@@ -8,7 +8,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.line.LineSegment2D;
@@ -290,7 +290,8 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	 */
 	public CurveSet2D<? extends HyperbolaBranchArc2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
+		CurveSet2D<SmoothCurve2D> set = 
+			Curve2DUtils.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<HyperbolaBranchArc2D> result =

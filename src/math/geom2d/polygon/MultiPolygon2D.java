@@ -8,7 +8,7 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
@@ -119,7 +119,8 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 	 * Returns a new instance of MultiPolygon2D.
 	 */
 	public MultiPolygon2D clip(Box2D box) {
-		BoundarySet2D<?> boundary = Boundary2DUtil.clipBoundary(this.getBoundary(), box);
+		BoundarySet2D<?> boundary = 
+			Boundary2DUtils.clipBoundary(this.getBoundary(), box);
 		ArrayList<ClosedPolyline2D> boundaries = 
 			new ArrayList<ClosedPolyline2D>(boundary.getCurveNumber());
 		for(ContinuousBoundary2D curve : boundary.getBoundaryCurves())

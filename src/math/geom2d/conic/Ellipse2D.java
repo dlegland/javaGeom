@@ -35,7 +35,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContinuousBoundary2D;
@@ -132,7 +132,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		}
 		
 		// compute ellipse in isothetic basis
-		double[] coefs2 = Conic2DUtil.transformCentered(coefs,
+		double[] coefs2 = Conic2DUtils.transformCentered(coefs,
 				AffineTransform2D.createRotation(-theta));
 		
 		// extract coefficients f if present
@@ -188,7 +188,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		double[] coefs = new double[]{A, B, C};
 		
 		// Compute coefficients of the transformed conic
-		double[] coefs2 = Conic2DUtil.transformCentered(coefs, trans);
+		double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
 		
 		// reduce conic coefficients to Ellipse
 		return Ellipse2D.reduceCentered(coefs2);
@@ -943,7 +943,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 */
 	public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
+		CurveSet2D<SmoothCurve2D> set =
+			Curve2DUtils.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<SmoothOrientedCurve2D> result =

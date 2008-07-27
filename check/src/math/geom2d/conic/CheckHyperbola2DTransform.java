@@ -31,7 +31,7 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -71,7 +71,7 @@ public class CheckHyperbola2DTransform extends JPanel{
 		Hyperbola2D rotated = hyperbola.transform(rot);
 
 		g2.setColor(Color.CYAN);
-		g2.fill(Boundary2DUtil.clipBoundary(rotated, box));
+		g2.fill(Boundary2DUtils.clipBoundary(rotated, box));
 		g2.setColor(Color.BLUE);
 		g2.draw(rotated.clip(box));
 

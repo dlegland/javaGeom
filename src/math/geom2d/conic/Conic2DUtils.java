@@ -20,12 +20,12 @@ import math.geom2d.transform.AffineTransform2D;
  * Provides in particular methods for reducing a conic.
  * @author dlegland
  */
-public class Conic2DUtil {
+public class Conic2DUtils {
 
 	public final static Conic2D reduceConic(double[] coefs){
 		if(coefs.length<6){
 			System.err.println(
-					"Conic2DUtil.reduceConic: must provide 6 coefficients");
+					"Conic2DUtils.reduceConic: must provide 6 coefficients");
 			return null;
 		}
 		boolean debug = false;
@@ -77,7 +77,7 @@ public class Conic2DUtil {
 		
 		// small control on the value of b1
 		if(Math.abs(b1)>eps){
-			System.err.println("Conic2DUtil.reduceConic: conic was not correctly transformed");
+			System.err.println("Conic2DUtils.reduceConic: conic was not correctly transformed");
 			return null;
 		}
 		
@@ -168,7 +168,7 @@ public class Conic2DUtil {
 		double bt = num/c1;
 		
 		if(at<0 && bt<0){
-			System.err.println("Conic2DUtil.reduceConic(): found A<0 and C<0");
+			System.err.println("Conic2DUtils.reduceConic(): found A<0 and C<0");
 			return new EmptyConic2D(coefs);
 		}
 		
@@ -414,7 +414,7 @@ public class Conic2DUtil {
 				tra = AffineTransform2D.createTranslation(xc, yc);
 			AffineTransform2D trans = tra.compose(rot).compose(sca);
 			
-			return Conic2DUtil.transform(coefs, trans);
+			return Conic2DUtils.transform(coefs, trans);
 		}
 
 		public Type getConicType() {

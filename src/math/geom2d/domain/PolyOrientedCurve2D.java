@@ -29,7 +29,7 @@ package math.geom2d.domain;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -124,7 +124,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D>
 	@Override
 	public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<Curve2D> set = Curve2DUtil.clipCurve(this, box);
+		CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<ContinuousOrientedCurve2D> result =

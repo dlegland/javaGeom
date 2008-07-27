@@ -39,7 +39,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(Circle2DTest.class));
 		suite.addTest(new TestSuite(CircleArc2DTest.class));
-		suite.addTest(new TestSuite(Conic2DUtilTest.class));
+		suite.addTest(new TestSuite(Conic2DUtilsTest.class));
 		suite.addTest(new TestSuite(Ellipse2DTest.class));
 		suite.addTest(new TestSuite(EllipseArc2DTest.class));
 		suite.addTest(new TestSuite(Hyperbola2DTest.class));
