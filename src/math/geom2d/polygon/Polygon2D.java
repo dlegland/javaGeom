@@ -31,7 +31,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.line.ClosedPolyline2D;
@@ -307,7 +307,7 @@ public class Polygon2D implements PolygonalShape2D{
 	 */
 	public Shape2D clip(Box2D box){
 		BoundarySet2D<ContinuousBoundary2D> boundarySet = 
-			Boundary2DUtil.clipBoundary(this.getBoundary(), box);
+			Boundary2DUtils.clipBoundary(this.getBoundary(), box);
 			
 		//TODO: should return an instance of MultiPolygon2D.
 		return boundarySet;

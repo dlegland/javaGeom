@@ -78,7 +78,7 @@ public class Ellipse2DTest extends TestCase {
 		assertTrue(ell3.equals(new Ellipse2D(0, 0, 20, 10, 0)));
 
 		double theta = Math.PI/3;
-		double[] rotCoefs = Conic2DUtil.transformCentered(coefs,
+		double[] rotCoefs = Conic2DUtils.transformCentered(coefs,
 				AffineTransform2D.createRotation(theta));
 		Ellipse2D ellRot = Ellipse2D.reduceCentered(rotCoefs);
 		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));

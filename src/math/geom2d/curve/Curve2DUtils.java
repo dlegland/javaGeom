@@ -20,7 +20,7 @@ import math.geom2d.line.StraightObject2D;
  * @author dlegland
  *
  */
-public abstract class Curve2DUtil {
+public abstract class Curve2DUtils {
 	
 	/**
 	 * Clip a curve, and return a CurveSet2D. If the curve is totally outside
@@ -33,12 +33,12 @@ public abstract class Curve2DUtil {
 		// convert the result of ClipContinuousCurve to CurveSet of Curve2D
 		if(curve instanceof ContinuousCurve2D)
 			return new CurveSet2D<Curve2D>(
-					Curve2DUtil.clipContinuousCurve(
+					Curve2DUtils.clipContinuousCurve(
 							(ContinuousCurve2D) curve, box).getCurves());
 		
 		// case of a CurveSet2D
 		if(curve instanceof CurveSet2D)
-			return Curve2DUtil.clipCurveSet((CurveSet2D<?>) curve, box);
+			return Curve2DUtils.clipCurveSet((CurveSet2D<?>) curve, box);
 		
 		// Unknown case
 		System.err.println("Unknown curve class in Box2D.clipCurve()");
@@ -56,7 +56,7 @@ public abstract class Curve2DUtil {
 
 		// a clipped parts of current curve to the result
 		for(Curve2D curve : curveSet){
-			clipped = Curve2DUtil.clipCurve(curve, box);
+			clipped = Curve2DUtils.clipCurve(curve, box);
 			for(Curve2D clippedPart : clipped)
 				result.addCurve(clippedPart);
 		}
@@ -242,7 +242,7 @@ public abstract class Curve2DUtil {
 	 */
 	public final static CurveSet2D<SmoothCurve2D> clipSmoothCurve(SmoothCurve2D curve, Box2D box){
 		CurveSet2D<SmoothCurve2D> result = new CurveSet2D<SmoothCurve2D>();
-		for(ContinuousCurve2D cont : Curve2DUtil.clipContinuousCurve(curve, box))
+		for(ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve, box))
 			if(cont instanceof SmoothCurve2D)
 				result.addCurve((SmoothCurve2D) cont);
 		

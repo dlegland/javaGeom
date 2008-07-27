@@ -37,10 +37,10 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Hyperbola2D;
 import math.geom2d.conic.HyperbolaBranch2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.line.StraightLine2D;
 
 
@@ -82,7 +82,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
 		//g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
 		Boundary2D clippedBoundary =
-			Boundary2DUtil.clipBoundary(hyperbola, box);
+			Boundary2DUtils.clipBoundary(hyperbola, box);
 		//boolean b1 = clippedBoundary.contains(new Point2D(50, 50));
 //		g2.setColor(Color.BLUE);
 //		g2.draw(clippedBoundary);
@@ -137,7 +137,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// The clipping of first branch
 		CurveSet2D<SmoothCurve2D> clipped = 
-			Curve2DUtil.clipSmoothCurve(branch2, line4);
+			Curve2DUtils.clipSmoothCurve(branch2, line4);
 		if (clipped!=null){
 			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
 			g2.setStroke(new BasicStroke(1.0f));
@@ -154,7 +154,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		}
 		
 		// The clipping of first branch
-		clipped = Curve2DUtil.clipSmoothCurve(branch2, line4);
+		clipped = Curve2DUtils.clipSmoothCurve(branch2, line4);
 		if (clipped!=null){
 			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
 			g2.setStroke(new BasicStroke(1.0f));

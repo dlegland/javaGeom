@@ -37,7 +37,7 @@ public class Hyperbola2DTest extends TestCase {
 		Hyperbola2D hyp3 = Hyperbola2D.reduceCentered(coefs3);
 		assertTrue(hyp3.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
 //		double theta = Math.PI/3;
-//		double[] rotCoefs = Conic2DUtil.transformCentered(coefs,
+//		double[] rotCoefs = Conic2DUtils.transformCentered(coefs,
 //				AffineTransform2D.createRotation(theta));
 //		Ellipse2D ellRot = Ellipse2D.reduceCentered(rotCoefs);
 //		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
@@ -86,7 +86,7 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[4], 0, 1e-14);
 		assertEquals(coefs[5], -1, 1e-14);
 		
-		conic = Conic2DUtil.reduceConic(coefs);
+		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.equals(hyperbola));
@@ -101,7 +101,7 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[4], 60, 1e-14);
 		assertEquals(coefs[5], -501, 1e-14);
 		
-		conic = Conic2DUtil.reduceConic(coefs);
+		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().equals(center));
@@ -111,7 +111,7 @@ public class Hyperbola2DTest extends TestCase {
 		// hyperbola not reduced, not at origin, but oriented east-west
 		hyperbola = new Hyperbola2D(center, a2, b2, 0);
 		coefs = hyperbola.getConicCoefficients();
-		conic = Conic2DUtil.reduceConic(coefs);
+		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().equals(center));
@@ -120,7 +120,7 @@ public class Hyperbola2DTest extends TestCase {
 		// hyperbola centered, scaled, rotated
 		hyperbola = new Hyperbola2D(center, a2, b2, theta);
 		coefs = hyperbola.getConicCoefficients();
-		conic = Conic2DUtil.reduceConic(coefs);
+		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().equals(center));

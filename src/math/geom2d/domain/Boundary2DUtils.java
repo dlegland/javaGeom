@@ -14,7 +14,7 @@ import math.geom2d.UnboundedShapeException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 
@@ -23,7 +23,7 @@ import math.geom2d.line.Polyline2D;
  * @author dlegland
  *
  */
-public abstract class Boundary2DUtil {
+public abstract class Boundary2DUtils {
 	
 
 	/**
@@ -33,11 +33,13 @@ public abstract class Boundary2DUtil {
 	 * is the original curve.
 	 */
 	public final static CurveSet2D<ContinuousOrientedCurve2D>
-			clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve, Box2D box){
+			clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve, 
+					Box2D box){
 		
 		CurveSet2D<ContinuousOrientedCurve2D> result = 
 			new CurveSet2D<ContinuousOrientedCurve2D>();
-		for(ContinuousCurve2D cont : Curve2DUtil.clipContinuousCurve(curve, box))
+		for(ContinuousCurve2D cont : 
+			Curve2DUtils.clipContinuousCurve(curve, box))
 			if(cont instanceof ContinuousOrientedCurve2D)
 				result.addCurve((ContinuousOrientedCurve2D) cont);
 		
@@ -130,7 +132,7 @@ public abstract class Boundary2DUtil {
 		// oriented), clip it with box, and add clipped curves to the array
 		// 'curveSet'
 		for(ContinuousBoundary2D boundaryCurve : boundaryCurves){
-			clipped = Boundary2DUtil.clipContinuousOrientedCurve(boundaryCurve, box);
+			clipped = Boundary2DUtils.clipContinuousOrientedCurve(boundaryCurve, box);
 			
 			for(ContinuousOrientedCurve2D clip : clipped)
 				curveSet.addCurve(clip);			

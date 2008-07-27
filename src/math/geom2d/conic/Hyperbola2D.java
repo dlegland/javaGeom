@@ -96,7 +96,7 @@ implements Conic2D{
 		}
 		
 		// compute ellipse in isothetic basis
-		double[] coefs2 = Conic2DUtil.transformCentered(coefs,
+		double[] coefs2 = Conic2DUtils.transformCentered(coefs,
 				AffineTransform2D.createRotation(-theta));
 		
 		// extract coefficient f if present
@@ -155,7 +155,7 @@ implements Conic2D{
 		double[] coefs = new double[]{A, B, C};
 		
 		// Compute coefficients of the transformed conic
-		double[] coefs2 = Conic2DUtil.transformCentered(coefs, trans);
+		double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
 		
 		// reduce conic coefficients to Ellipse
 		return Hyperbola2D.reduceCentered(coefs2);

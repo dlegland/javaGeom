@@ -33,7 +33,7 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.conic.Ellipse2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.domain.Boundary2DUtil;
+import math.geom2d.domain.Boundary2DUtils;
 
 
 public class DrawClippedEllipseDemo extends JPanel{
@@ -74,7 +74,7 @@ public class DrawClippedEllipseDemo extends JPanel{
 		g2.setColor(Color.RED);
 		g2.draw(clipped);
 
-		clipped = Boundary2DUtil.clipBoundary(ellipse, box);
+		clipped = Boundary2DUtils.clipBoundary(ellipse, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
 		g2.fill(clipped);

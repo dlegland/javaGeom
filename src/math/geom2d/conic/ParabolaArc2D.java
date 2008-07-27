@@ -35,7 +35,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtil;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
@@ -83,7 +83,8 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		double t0 = Math.max(this.t0, -1000);
 		double t1 = Math.min(this.t1, 1000);
 		if(debug)
-			System.out.println("theta=" + Math.toDegrees(parabola.theta) + " t0=" + t0 + " t1="+t1);
+			System.out.println("theta=" + Math.toDegrees(parabola.theta) + 
+					" t0=" + t0 + " t1="+t1);
 		
 		double dt = (t1-t0)/(double)n;
 		points[0] = this.getPoint(t0);
@@ -289,7 +290,8 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	 */
 	public CurveSet2D<? extends ParabolaArc2D> clip(Box2D box) {
 		// Clip the curve
-		CurveSet2D<SmoothCurve2D> set = Curve2DUtil.clipSmoothCurve(this, box);
+		CurveSet2D<SmoothCurve2D> set = 
+			Curve2DUtils.clipSmoothCurve(this, box);
 		
 		// Stores the result in appropriate structure
 		CurveSet2D<ParabolaArc2D> result =
