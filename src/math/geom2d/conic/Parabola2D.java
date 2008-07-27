@@ -148,8 +148,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// ==========================================================
 	// methods implementing the Conic2D interface
 
-	public int getConicType() {
-		return Conic2D.PARABOLA;
+	public Conic2D.Type getConicType() {
+		return Conic2D.Type.PARABOLA;
 	}
 
 //	public boolean isEllipse() {

@@ -9,9 +9,12 @@ geom2d:
 
 Bug fixes
 geom2d:
-- fixed transform of Parabolas
-- fixed transform and comparison of Ellipses
-- introduce construction of Ellipse from 2 focii
+- Many bug fixes in conics:
+	+ fixed transform of Parabolas
+	+ fixed transform and comparison of Ellipses
+	+ fixed transform, clipping, computation of conic coefficients for Hyperbolas
+	+ introduced construction of Ellipse from 2 focii
+- Fixed clipping of boundaries
 
 Coding
 geom2d:

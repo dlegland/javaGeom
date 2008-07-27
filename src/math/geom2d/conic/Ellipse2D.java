@@ -88,7 +88,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 * @param chord the sum of distances to focii
 	 * @return a new instance of Ellipse2D
 	 */
-	public final static Ellipse2D create(Point2D focus1, Point2D focus2, double chord){
+	public final static Ellipse2D create(Point2D focus1, Point2D focus2,
+			double chord){
 		double x1 = focus1.getX();
 		double y1 = focus1.getY();
 		double x2 = focus2.getX();
@@ -511,11 +512,11 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	// ===================================================================
 	// methods of Conic2D
 
-	public int getConicType(){
+	public Conic2D.Type getConicType(){
 		if(Math.abs(r1-r2)<Shape2D.ACCURACY)
-			return Conic2D.CIRCLE;
+			return Conic2D.Type.CIRCLE;
 		else
-			return Conic2D.ELLIPSE;
+			return Conic2D.Type.ELLIPSE;
 	}
 
 	/**
@@ -524,7 +525,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 */
 	public double[] getConicCoefficients() {
 	
-		/* common coeficients */
+		/* common coefficients */
 		double r1Sq = this.r1*this.r1;
 		double r2Sq = this.r2*this.r2;
 		
@@ -904,8 +905,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 			startAngle = t0;
 			extent = Angle2D.formatAngle(t1-t0);
 		}else{
-			startAngle = -t0;
-			extent = -Angle2D.formatAngle(t0-t1);
+			extent = -Angle2D.formatAngle(t1-t0);
+			startAngle = Angle2D.formatAngle(-t0);
 		}
 		return new EllipseArc2D(this, startAngle, extent);
 	}

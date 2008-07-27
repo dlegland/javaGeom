@@ -60,12 +60,39 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	// ===================================================================
 	// static methods
 	
+	/**
+	 * Creates a straight line going through a point and with a given angle.
+	 * 
+	 */
+	public final static StraightLine2D create(java.awt.geom.Point2D point, double angle){
+		return new StraightLine2D(point.getX(), point.getY(), 
+				Math.cos(angle), Math.sin(angle));
+	}
+
+	/**
+	 * Creates a straight line through 2 points.
+	 */
+	public final static StraightLine2D create(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
+		return new StraightLine2D(p1, p2);
+	}
+
+	/**
+	 * Creates a straight line through a point and with a given direction vector.
+	 */
+	public final static StraightLine2D create(java.awt.geom.Point2D origin, Vector2D direction){
+		return new StraightLine2D(origin, direction);
+	}
+
+	/**
+	 * @deprecated use create(Point2D, Point2D) instead
+	 */
+	@Deprecated
 	public final static StraightLine2D createStraightLine2D(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
 		return new StraightLine2D(p1, p2);
 	}
 
 	/**
-	 * *
+	 * Creates a median between 2 points.
 	 * @param p1 one point
 	 * @param p2 another point
 	 * @return the median of points p1 and p2

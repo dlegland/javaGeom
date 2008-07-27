@@ -179,4 +179,78 @@ public interface Curve2D extends Shape2D{
 	 * When a curve is clipped, the result is a set of curves.
 	 */
 	public abstract CurveSet2D<? extends Curve2D> clip(Box2D box);
+	
+	/**
+	 * Utilitary class for representing empty curves.
+	 * @author dlegland
+	 */
+	static class EmptyCurve2D extends Shape2D.EmptySet2D implements Curve2D{
+
+		protected EmptyCurve2D(){
+		}
+		
+		public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
+			return null;
+		}
+
+		public Point2D getFirstPoint() {
+			return null;
+		}
+
+		public Collection<Point2D> getIntersections(StraightObject2D line) {
+			return null;
+		}
+
+		public Point2D getLastPoint() {
+			return null;
+		}
+
+		public Point2D getPoint(double t) {
+			return null;
+		}
+
+		public Point2D getPoint(double t, Point2D point) {
+			return null;
+		}
+
+		public double getPosition(java.awt.geom.Point2D point) {
+			return Double.NaN;
+		}
+
+		public Curve2D getReverseCurve() {
+			return this;
+		}
+
+		public Collection<Point2D> getSingularPoints() {
+			return null;
+		}
+
+		public Curve2D getSubCurve(double t0, double t1) {
+			return null;
+		}
+
+		public double getT0() {
+			return Double.NaN;
+		}
+
+		public double getT1() {
+			return Double.NaN;
+		}
+
+		public boolean isSingular(double pos) {
+			return false;
+		}
+
+		public double project(java.awt.geom.Point2D point) {
+			return Double.NaN;
+		}
+		
+		public Curve2D transform(AffineTransform2D trans){
+			return this;
+		}
+		
+		public CurveSet2D<? extends Curve2D> clip(Box2D box){
+			return null;
+		}
+	}
 }

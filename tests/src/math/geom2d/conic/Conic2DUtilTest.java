@@ -1,5 +1,8 @@
 package math.geom2d.conic;
 
+import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
 import junit.framework.TestCase;
 
@@ -22,6 +25,48 @@ public class Conic2DUtilTest extends TestCase {
 				AffineTransform2D.createRotation(-Math.PI/3));
 		for(int i=0; i<3; i++)
 			assertEquals(coefs[i], back[i], 1e-12);
+	}
+	
+	public void testTransformEllipse(){
+		Ellipse2D ell0 		= new Ellipse2D(0, 0, 40, 30, 0);
+		double[] coefs 		= ell0.getConicCoefficients();
+
+		double[] coefs2;
+		Conic2D conic;
+				
+		// Ellipse transformed by an identity
+		AffineTransform2D id 	= new AffineTransform2D();
+		coefs2 	= Conic2DUtil.transform(coefs, id);
+		conic 	= Conic2DUtil.reduceConic(coefs2);
+		assertTrue(ell0.equals(conic));
+
+		// Ellipse transformed by a translation
+		AffineTransform2D tra 	= AffineTransform2D.createTranslation(10, 20);
+		Ellipse2D ellTra 	= new Ellipse2D(10, 20, 40, 30, 0);
+		coefs2 	= Conic2DUtil.transform(coefs, tra);
+		conic 	= Conic2DUtil.reduceConic(coefs2);
+		assertTrue(ellTra.equals(conic));
+
+		// Ellipse transformed by a rotation
+		AffineTransform2D rot 	= AffineTransform2D.createRotation(Math.PI/6);
+		Ellipse2D ellRot 	= new Ellipse2D(0, 0, 40, 30, Math.PI/6);
+		coefs2 	= Conic2DUtil.transform(coefs, rot);
+		conic 	= Conic2DUtil.reduceConic(coefs2);
+		assertTrue(ellRot.equals(conic));
+
+		// Ellipse transformed by a rotation then by a translation
+		AffineTransform2D RT 	= tra.compose(rot);
+		Ellipse2D ellRotTra	= new Ellipse2D(10, 20, 40, 30, Math.PI/6);
+		coefs2 	= Conic2DUtil.transform(coefs, RT);
+		conic 	= Conic2DUtil.reduceConic(coefs2);
+		assertTrue(ellRotTra.equals(conic));
+		
+		// Ellipse transformed by a scaling
+		AffineTransform2D sca 	= AffineTransform2D.createScaling(3, 2);
+		Ellipse2D ellSca	= new Ellipse2D(0, 0, 120, 60, 0);
+		coefs2 	= Conic2DUtil.transform(coefs, sca);
+		conic 	= Conic2DUtil.reduceConic(coefs2);
+		assertTrue(ellSca.equals(conic));
 	}
 	
 	public void testReduceConicParabola(){
@@ -151,5 +196,112 @@ public class Conic2DUtilTest extends TestCase {
 		assertEquals(coefs[3], coefsRotTrans[3], eps);
 		assertEquals(coefs[4], coefsRotTrans[4], eps);
 		assertEquals(coefs[5], coefsRotTrans[5], eps);
+	}
+
+	public void testReduceConicStraightLine(){
+		double[] coefs;
+		Conic2D conic;
+		StraightLine2D line;
+		
+		double eps = Shape2D.ACCURACY;
+		Point2D origin = new Point2D(0, 0);
+		
+		// Vertical line
+		coefs = new double[]{0, 0, 0, 1, 0, -1};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicStraightLine2D);
+		line = (StraightLine2D) conic;
+		assertEquals(line.getDistance(origin), 1, eps);
+		assertEquals(line.getHorizontalAngle(), 3*Math.PI/2, eps);
+
+		// Horizontal line
+		coefs = new double[]{0, 0, 0, 0, 1, -1};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicStraightLine2D);
+		line = (StraightLine2D) conic;
+		assertEquals(line.getDistance(origin), 1, eps);
+		assertEquals(line.getHorizontalAngle(), 0, eps);
+		
+		// Diagonal line
+		coefs = new double[]{0, 0, 0, -1, 1, -1};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicStraightLine2D);
+		line = (StraightLine2D) conic;
+		assertEquals(line.getDistance(origin), Math.sqrt(2)/2, eps);
+		assertEquals(line.getHorizontalAngle(), Math.PI/4, eps);
+		
+		// line with slope 1/2 and going through (0, 2.5)
+		coefs = new double[]{0, 0, 0, -1, 2, -5};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicStraightLine2D);
+		line = (StraightLine2D) conic;
+		assertEquals(line.getDistance(origin), Math.sqrt(5), eps);
+		assertEquals(line.getHorizontalAngle(), Math.atan(.5), eps);	
+	}
+	
+	public void testReduceConicTwoStraightLines(){
+		double[] coefs;
+		Conic2D conic;
+		Conic2DUtil.ConicTwoLines2D lines;
+		
+		double eps = Shape2D.ACCURACY;
+		Point2D origin = new Point2D(0, 0);
+		
+		// Horizontal lines
+		coefs = new double[]{0, 0, 1, 0, 0, -1};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicTwoLines2D);
+		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		lines = (Conic2DUtil.ConicTwoLines2D) conic;
+		assertEquals(lines.getDistance(origin), 1, eps);
+		
+		// Horizontal lines (different from 1)
+		coefs = new double[]{0, 0, 1, 0, 0, -4};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicTwoLines2D);
+		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		lines = (Conic2DUtil.ConicTwoLines2D) conic;
+		assertEquals(lines.getDistance(origin), 2, eps);
+		
+		// Vertical lines
+		coefs = new double[]{1, 0, 0, 0, 0, -1};
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic instanceof Conic2DUtil.ConicTwoLines2D);
+		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		lines = (Conic2DUtil.ConicTwoLines2D) conic;
+		assertEquals(lines.getDistance(origin), 1, eps);
+		
+	}
+	
+	public void testTransformConicTwoStraightLines(){
+		double[] coefs, coefs2;
+		Conic2D conic;
+		Conic2DUtil.ConicTwoLines2D lines;
+		
+		double eps = Shape2D.ACCURACY;
+		Point2D origin = new Point2D(0, 0);
+		
+		// Horizontal lines
+		coefs = new double[]{0, 0, 1, 0, 0, -1};
+		
+		Point2D center = new Point2D(20, 30);
+		
+		// Translation
+		AffineTransform2D tra = AffineTransform2D.createTranslation(20, 30);
+		coefs2 = Conic2DUtil.transform(coefs, tra);		
+		conic = Conic2DUtil.reduceConic(coefs2);
+		assertTrue(conic instanceof Conic2DUtil.ConicTwoLines2D);
+		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		lines = (Conic2DUtil.ConicTwoLines2D) conic;
+		assertEquals(lines.getDistance(center), 1, eps);
+				
+		// Rotation
+		AffineTransform2D rot = AffineTransform2D.createRotation(Math.PI/6);
+		coefs2 = Conic2DUtil.transform(coefs, rot);		
+		conic = Conic2DUtil.reduceConic(coefs2);
+		assertTrue(conic instanceof Conic2DUtil.ConicTwoLines2D);
+		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		lines = (Conic2DUtil.ConicTwoLines2D) conic;
+		assertEquals(lines.getDistance(origin), 1, eps);
 	}
 }

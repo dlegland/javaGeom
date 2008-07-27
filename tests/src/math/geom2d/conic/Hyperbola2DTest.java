@@ -64,6 +64,69 @@ public class Hyperbola2DTest extends TestCase {
 
 	}
 	
+	public void testGetConicCoefficients() {
+		double xc = 20; double yc = 30;
+		double a1 = 1;	double b1 = 1;
+		double a2 = 20; double b2 = 10;
+		double theta = Math.PI/3;
+
+		Hyperbola2D hyperbola, hyperbola2;
+		Conic2D conic;
+			
+		Point2D origin = new Point2D(0, 0);
+		Point2D center = new Point2D(xc, yc);
+		
+		// Hyperbola centered and reduced
+		hyperbola = new Hyperbola2D(origin, a1, b1, 0);
+		double[] coefs = hyperbola.getConicCoefficients();
+		assertEquals(coefs[0], 1, 1e-14);
+		assertEquals(coefs[1], 0, 1e-14);
+		assertEquals(coefs[2], -1, 1e-14);
+		assertEquals(coefs[3], 0, 1e-14);
+		assertEquals(coefs[4], 0, 1e-14);
+		assertEquals(coefs[5], -1, 1e-14);
+		
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		hyperbola2 = (Hyperbola2D) conic;
+		assertTrue(hyperbola2.equals(hyperbola));
+		
+		// Hyperbola reduced but not located at origin
+		hyperbola = new Hyperbola2D(center, a1, b1, 0);
+		coefs = hyperbola.getConicCoefficients();
+		assertEquals(coefs[0], 1, 1e-14);
+		assertEquals(coefs[1], 0, 1e-14);
+		assertEquals(coefs[2], -1, 1e-14);
+		assertEquals(coefs[3], -40, 1e-14);
+		assertEquals(coefs[4], 60, 1e-14);
+		assertEquals(coefs[5], -501, 1e-14);
+		
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		hyperbola2 = (Hyperbola2D) conic;
+		assertTrue(hyperbola2.getCenter().equals(center));
+		assertTrue(hyperbola2.equals(hyperbola));
+
+		
+		// hyperbola not reduced, not at origin, but oriented east-west
+		hyperbola = new Hyperbola2D(center, a2, b2, 0);
+		coefs = hyperbola.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		hyperbola2 = (Hyperbola2D) conic;
+		assertTrue(hyperbola2.getCenter().equals(center));
+		assertTrue(hyperbola2.equals(hyperbola));
+		
+		// hyperbola centered, scaled, rotated
+		hyperbola = new Hyperbola2D(center, a2, b2, theta);
+		coefs = hyperbola.getConicCoefficients();
+		conic = Conic2DUtil.reduceConic(coefs);
+		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		hyperbola2 = (Hyperbola2D) conic;
+		assertTrue(hyperbola2.getCenter().equals(center));
+		assertTrue(hyperbola2.equals(hyperbola));
+	}
+
 	public void testClipBox(){
 		Hyperbola2D hyperbola = new Hyperbola2D(0, 0, 1, 1, 0, true);
 		Box2D box = new Box2D(-2, 2, -2, 2);
