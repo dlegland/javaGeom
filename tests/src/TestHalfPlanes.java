@@ -8,7 +8,7 @@ import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
 import math.geom2d.polygon.HalfPlane2D;
-import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.SimplePolygon2D;
 
 /**
  * class TestHalfPlanes.
@@ -30,9 +30,10 @@ public class TestHalfPlanes{
 
 		Box2D window = new Box2D(-100, 100, -100, 100);
 		Shape2D shape1 = plane.clip(window);
-		System.out.println("number of vertices : " + ((Polygon2D)shape1).getVerticesNumber());
+		System.out.println("number of vertices : " + 
+				((SimplePolygon2D)shape1).getVerticesNumber());
 		
-		for(Point2D point : ((Polygon2D)shape1).getVertices())
+		for(Point2D point : ((SimplePolygon2D)shape1).getVertices())
 			System.out.println("x=" + point.getX() + " " + point.getY());		
 	}
 }

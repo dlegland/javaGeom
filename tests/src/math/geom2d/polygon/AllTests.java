@@ -39,7 +39,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(HalfPlane2DTest.class));
 		suite.addTest(new TestSuite(MultiPolygon2DTest.class));
-		suite.addTest(new TestSuite(Polygon2DTest.class));
+		suite.addTest(new TestSuite(SimplePolygon2DTest.class));
 		suite.addTest(new TestSuite(Rectangle2DTest.class));
 		//$JUnit-END$
 		return suite;

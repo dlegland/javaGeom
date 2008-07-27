@@ -93,7 +93,7 @@ public class Rectangle2DTest extends TestCase {
 		
 		// clip the shape, and check the type
 		Shape2D clipped = rect.clip(box);
-		assertTrue(clipped instanceof Polygon2D);
+		assertTrue(clipped instanceof SimplePolygon2D);
 		
 		// create polygon to compare with
 		Point2D[] points = new Point2D[]{
@@ -106,7 +106,7 @@ public class Rectangle2DTest extends TestCase {
 				new Point2D(0, 20),
 				new Point2D(10, 0)
 		};
-		Polygon2D poly = new Polygon2D(points);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		assertTrue(clipped.equals(poly));
 	}

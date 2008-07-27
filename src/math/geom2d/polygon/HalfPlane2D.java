@@ -33,7 +33,7 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.StraightObject2D;
-import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.SimplePolygon2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports
@@ -111,6 +111,8 @@ public class HalfPlane2D implements Domain2D{
 	}
 	
 	public Shape2D clip(Box2D box){
+		// TODO: use the Boundary2DUtils.clipBoundary method ?
+		
 		// edges and corners of the rectangle
 		// get vertices of rectangle
 		double x = box.getMinX();
@@ -215,7 +217,7 @@ public class HalfPlane2D implements Domain2D{
 		while(dt<t1)
 			point[p++] = corners[dt++];
 		
-		return new Polygon2D(point);
+		return new SimplePolygon2D(point);
 	}
 	
 	/** 
