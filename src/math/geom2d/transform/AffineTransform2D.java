@@ -360,6 +360,12 @@ public class AffineTransform2D implements Bijection2D{
 			-m10/det, m00/det, (m02*m10-m00*m12)/det);
 	}
 	
+	/**
+	 * Return the affine transform created by applying first the affine
+	 * transform given by <code>that</code>, then this affine transform.
+	 * @param that th transform to apply first
+	 * @return the composition this * that
+	 */
 	public AffineTransform2D compose(AffineTransform2D that){
 		double[][] m2 = that.getAffineMatrix();
 		double n00 = this.m00*m2[0][0] + this.m01*m2[1][0];

@@ -124,8 +124,8 @@ public class Circle2D extends Ellipse2D {
 	// ===================================================================
 	// methods of Conic2D
 
-	public int getConicType(){
-		return Conic2D.ELLIPSE;
+	public Type getConicType(){
+		return Conic2D.Type.ELLIPSE;
 	}
 
 	public boolean isEllipse(){return true;}
@@ -278,7 +278,7 @@ public class Circle2D extends Ellipse2D {
 	}
 
 	/**
-	 * return a new CircleArc2D. t0 and t1 are position on circle.
+	 * Returns a new CircleArc2D. t0 and t1 are position on circle.
 	 */
 	public CircleArc2D getSubCurve(double t0, double t1){
 		double startAngle, extent;
@@ -286,8 +286,8 @@ public class Circle2D extends Ellipse2D {
 			startAngle = t0;
 			extent = Angle2D.formatAngle(t1-t0);
 		}else{
-			startAngle = -t0;
-			extent = -Angle2D.formatAngle(t0-t1);
+			extent = -Angle2D.formatAngle(t1-t0);
+			startAngle = Angle2D.formatAngle(-t0);
 		}
 		return new CircleArc2D(this, startAngle, extent);
 	}

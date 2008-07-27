@@ -291,8 +291,8 @@ implements Conic2D{
 		return new Point2D(xc, yc);
 	}
 
-	public int getConicType() {
-		return Conic2D.HYPERBOLA;
+	public Conic2D.Type getConicType() {
+		return Conic2D.Type.HYPERBOLA;
 	}
 
 	public double getEccentricity() {

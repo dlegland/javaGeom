@@ -3,20 +3,29 @@
  */
 package math.geom2d.conic;
 
+
 import math.geom2d.Angle2D;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * Generic class providing utilities for conics, especially for reducing a conic.
+ * Generic class providing utilities for manipulating conics.
+ * Provides in particular methods for reducing a conic.
  * @author dlegland
  */
 public class Conic2DUtil {
 
 	public final static Conic2D reduceConic(double[] coefs){
 		if(coefs.length<6){
-			System.err.println("Conic2DUtil.reduceConic: must provide 6 coefficients");
+			System.err.println(
+					"Conic2DUtil.reduceConic: must provide 6 coefficients");
 			return null;
 		}
 		boolean debug = false;
@@ -31,6 +40,7 @@ public class Conic2DUtil {
 		
 		// Transform the generic conic into a conic symmetric with respect to
 		// one of the basis axes.
+		// This results in fixing the coefficient b to 0.
 		
 		// coefficients of transformed conic;
 		double a1, b1, c1, d1, e1, f1;
@@ -56,7 +66,7 @@ public class Conic2DUtil {
 			double cot2 = cot*cot;
 			double sit2 = sit*sit;
 			
-			// Compute coefficients of rotated conic
+			// Compute coefficients of the conic rotated around origin
 			a1 = a*cot2 + b*sit*cot + c*sit2;
 			b1 = si2t*(c-a) + b*co2t; // should be equal to zero
 			c1 = a*sit2 - b*sit*cot + c*cot2;
@@ -68,13 +78,38 @@ public class Conic2DUtil {
 		// small control on the value of b1
 		if(Math.abs(b1)>eps){
 			System.err.println("Conic2DUtil.reduceConic: conic was not correctly transformed");
+			return null;
 		}
+		
+		
+		// Test degenerate cases
+		if(Math.abs(a)<eps && Math.abs(c)<eps){
+			if(Math.abs(d)>eps || Math.abs(e)>eps)
+				return new ConicStraightLine2D(d, e, f);
+			else
+				return new EmptyConic2D(coefs);
+		}
+		
 		
 		// Case of a parabola
 		if(Math.abs(a1)<eps){
 			// case of a1 close to 0 -> parabola parallel to horizontal axis
 			if(debug)
 				System.out.println("horizontal parabola");
+			
+			// Check degenerate case d=1
+			if(Math.abs(d1)<eps){
+				double delta = e1*e1-4*c1*f1;
+				if(delta >= 0){
+					// find the 2 roots
+					double ys 	= -e1/2.0/c1;
+					double dist = Math.sqrt(delta)/2.0/c1;
+					Point2D center = new Point2D(0, ys).transform(
+							AffineTransform2D.createRotation(theta0));
+					return new ConicTwoLines2D(center, dist, theta0);
+				} else 
+					return new EmptyConic2D(coefs);				
+			}
 			
 			// compute reduced coefficients
 			double c2 = -c1/d1;
@@ -92,6 +127,21 @@ public class Conic2DUtil {
 			// Case of c1 close to 0 -> parabola parallel to vertical axis
 			if(debug)
 				System.out.println("vertical parabola");
+			
+			// Check degenerate case d=1
+			if(Math.abs(e1)<eps){
+				double delta = d1*d1 - 4*a1*f1;
+				if(delta >= 0){
+					// find the 2 roots
+					double xs 	= -d1/2.0/a1;
+					double dist = Math.sqrt(delta)/2.0/a1;
+					Point2D center = new Point2D(0, xs).transform(
+							AffineTransform2D.createRotation(theta0));
+					return new ConicTwoLines2D(center, dist, theta0);
+				} else
+					return new EmptyConic2D(coefs);				
+			}
+			
 			
 			// compute reduced coefficients
 			double a2 = -a1/e1;
@@ -118,7 +168,8 @@ public class Conic2DUtil {
 		double bt = num/c1;
 		
 		if(at<0 && bt<0){
-			System.out.println("empty set");
+			System.err.println("Conic2DUtil.reduceConic(): found A<0 and C<0");
+			return new EmptyConic2D(coefs);
 		}
 		
 		// Case of an ellipse
@@ -130,7 +181,8 @@ public class Conic2DUtil {
 						Math.sqrt(at), Math.sqrt(bt), theta0);
 			else
 				return new Ellipse2D(center, 
-						Math.sqrt(bt), Math.sqrt(at), theta0+Math.PI/2);
+						Math.sqrt(bt), Math.sqrt(at), 
+						Angle2D.formatAngle(theta0+Math.PI/2));
 		}
 		
 		// remaining case is the hyperbola
@@ -150,7 +202,7 @@ public class Conic2DUtil {
 	}
 	
 	/**
-	 * Transform a conic centered around the origin, by dropping the
+	 * Transforms a conic centered around the origin, by dropping the
 	 * translation part of the transform. The array must be contains at
 	 * least 3 elements. If it contains 3 elements, the 3 remaining elements
 	 * are supposed to be 0, 0, and -1 in that order.
@@ -158,7 +210,8 @@ public class Conic2DUtil {
 	 * @param trans an affine transform
 	 * @return an array of double with as many elements as the input array
 	 */
-	public final static double[] transformCentered(double[] coefs, AffineTransform2D trans){
+	public final static double[] transformCentered(double[] coefs,
+			AffineTransform2D trans){
 		// Extract transform coefficients
 		double[][] mat = trans.getAffineMatrix();
 		double a = mat[0][0];
@@ -190,4 +243,200 @@ public class Conic2DUtil {
 		double E2 = E*a-D*c;
 		return new double[]{A2, B2, C2, D2, E2, F};
 	}
+	
+	/**
+	 * Transforms a conic by an affine transform.
+	 * @param coefs an array of double with 6 coefficients
+	 * @param trans an affine transform
+	 * @return the coefficients of the transformed conic
+	 */
+	public final static double[] transform(double[] coefs, 
+			AffineTransform2D trans){
+		// Extract coefficients of the inverse transform
+		double[][] mat = trans.getInverseTransform().getAffineMatrix();
+		double a = mat[0][0];
+		double b = mat[1][0];
+		double c = mat[0][1];
+		double d = mat[1][1];
+		double e = mat[0][2];
+		double f = mat[1][2];
+		
+		// Extract conic coefficients
+		double A = coefs[0];
+		double B = coefs[1];
+		double C = coefs[2];
+		double D = coefs[3];
+		double E = coefs[4];
+		double F = coefs[5];
+		
+		// Compute coefficients of the transformed conic
+		double A2 = A*a*a + B*a*b + C*b*b;
+		double B2 = 2*(A*a*c + C*b*d) + B*(a*d + b*c);
+		double C2 = A*c*c + B*c*d + C*d*d;
+		double D2 = 2*(A*a*e + C*b*f) + B*(a*f + b*e) + D*a + E*b;
+		double E2 = 2*(A*c*e + C*d*f) + B*(c*f + d*e) + D*c + E*d;
+		double F2 = A*e*e + B*e*f + C*f*f + D*e + E*f + F;
+		
+		// Return the array of coefficients
+		return new double[]{A2, B2, C2, D2, E2, F2};
+	}
+
+	
+	// -----------------------------------------------------------------	
+	// Some special conics
+	
+	static class ConicStraightLine2D extends StraightLine2D
+			implements Conic2D{
+
+		double[] coefs = new double[]{0, 0, 0, 1, 0, 0};
+		
+		public ConicStraightLine2D(StraightLine2D line){
+			super(line);
+			coefs = new double[]{0, 0, 0, dy, -dx, dx*y0-dy*x0};
+		}
+		
+		public ConicStraightLine2D(double a, double b, double c){
+			super(StraightLine2D.createCartesianLine2D(a, b, c));
+			coefs = new double[]{0, 0, 0, a, b, c};
+		}
+		
+		public double[] getConicCoefficients() {
+			return coefs;
+		}
+
+		public Type getConicType() {
+			return Conic2D.Type.STRAIGHT_LINE;
+		}
+
+		/** Return NaN.*/
+		public double getEccentricity() {
+			return Double.NaN;
+		}
+		
+		public ConicStraightLine2D getReverseCurve(){
+			return new ConicStraightLine2D(super.getReverseCurve());
+		}
+
+		public ConicStraightLine2D transform(AffineTransform2D trans){
+			return new ConicStraightLine2D(super.transform(trans));
+		}
+	}
+	
+	static class EmptyConic2D extends Curve2D.EmptyCurve2D implements Conic2D{
+
+		double[] coefs;
+		
+		public EmptyConic2D(double[] coefs){
+		}
+		
+		public EmptyConic2D(){
+			this(new double[]{0,0,0,0,0,1});
+		}
+		
+		public double[] getCartesianEquation() {
+			return getConicCoefficients();
+		}
+
+		public double[] getConicCoefficients() {
+			return coefs;
+		}
+
+		public Type getConicType() {
+			return Conic2D.Type.NOT_A_CONIC;
+		}
+
+		public double getEccentricity() {
+			return Double.NaN;
+		}
+
+		public double getSignedDistance(java.awt.geom.Point2D point) {
+			return Double.NaN;
+		}
+
+		public double getSignedDistance(double x, double y) {
+			return Double.NaN;
+		}
+
+		public double getWindingAngle(java.awt.geom.Point2D point) {
+			return Double.NaN;
+		}
+
+		public boolean isInside(java.awt.geom.Point2D pt) {
+			return false;
+		}
+		
+		public CurveSet2D<? extends ContinuousOrientedCurve2D> 
+		clip(Box2D box){
+			return null;
+		}
+
+		public Conic2D getReverseCurve(){
+			return this;
+		}
+		
+		public Conic2D transform(AffineTransform2D trans){
+			return this;
+		}		
+	}
+	
+	static class ConicTwoLines2D extends BoundarySet2D<StraightLine2D>
+	implements Conic2D{
+
+		double xc=0, yc=0, d=1, theta=0;
+		
+		public ConicTwoLines2D(Point2D point, double d, double theta){
+			this(point.x, point.y, d, theta);
+		}
+		
+		public ConicTwoLines2D(double xc, double yc, double d, double theta){
+			super();
+			
+			this.xc = xc;
+			this.yc =yc;
+			this.d = d;
+			this.theta = theta;
+			
+			StraightLine2D baseLine = StraightLine2D.create(
+					new Point2D(xc, yc), theta);
+			this.addCurve(baseLine.getParallel(d));
+			this.addCurve(baseLine.getParallel(-d).getReverseCurve());
+		}
+		
+		public double[] getCartesianEquation() {
+			return getConicCoefficients();
+		}
+
+		public double[] getConicCoefficients() {
+			double[] coefs = {0, 0, 1, 0, 0, -1};
+			AffineTransform2D 
+				sca = AffineTransform2D.createScaling(0, d),
+				rot = AffineTransform2D.createRotation(theta),
+				tra = AffineTransform2D.createTranslation(xc, yc);
+			AffineTransform2D trans = tra.compose(rot).compose(sca);
+			
+			return Conic2DUtil.transform(coefs, trans);
+		}
+
+		public Type getConicType() {
+			return Conic2D.Type.TWO_LINES;
+		}
+
+		public double getEccentricity() {
+			return Double.NaN;
+		}
+		
+		public ConicTwoLines2D transform(AffineTransform2D trans){
+			Point2D center = new Point2D(xc, yc).transform(trans);
+			StraightLine2D line = this.getFirstCurve().transform(trans);
+			
+			return new ConicTwoLines2D(center, line.getDistance(center),
+					line.getHorizontalAngle());
+		}
+		
+		public ConicTwoLines2D getReverseCurve(){
+			return new ConicTwoLines2D(xc, yc, -d, theta);
+		}
+	}
+	
+	//TODO: add CrossConic2D
 }

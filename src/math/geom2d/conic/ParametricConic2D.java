@@ -54,7 +54,7 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	protected double e;
 	protected double f;
 	
-	protected int type=0;
+	protected Conic2D.Type type;
 	
 	
 	/**
@@ -88,8 +88,8 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.Conic2D#getType()
 	 */
-	public int getConicType() {
-		return type;
+	public Type getConicType() {
+		return conic.getConicType();
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	 *
 	 */
 	protected void updateParameters(){
-		type=Conic2D.NOT_A_CONIC;
+		type=Conic2D.Type.NOT_A_CONIC;
 		double eps = Shape2D.ACCURACY;
 		
 		// First compute the discriminant
@@ -358,11 +358,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 			// Check degenerate cases (no x^2, y^2 or x*y)
 			if(Math.abs(a)<eps && Math.abs(b)<eps && Math.abs(c)<eps){
 				if(Math.abs(d)>eps || Math.abs(e)>eps){
-					type = Conic2D.STRAIGHT_LINE;
-					// TODO: compute line;
+					type = Conic2D.Type.STRAIGHT_LINE;
 					return;
 				}else{
-					type = Conic2D.NOT_A_CONIC;
+					type = Conic2D.Type.NOT_A_CONIC;
 					return;
 				}
 			}
@@ -372,11 +371,11 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 				
 				// degenerate case
 				if(Math.abs(d)<eps){
-					if(e*e-c*f >= 0) type=Conic2D.TWO_LINES; 
-					else type=Conic2D.NOT_A_CONIC;				
+					if(e*e-c*f >= 0) type=Conic2D.Type.TWO_LINES; 
+					else type=Conic2D.Type.NOT_A_CONIC;				
 				}
 				
-				type=Conic2D.PARABOLA;
+				type=Conic2D.Type.PARABOLA;
 				return;
 			}
 			
@@ -389,10 +388,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 			double beta = Math.sqrt(c*sgn);
 
 			if(d*alpha + e*beta == 0){
-				type=Conic2D.NOT_A_CONIC;
+				type=Conic2D.Type.NOT_A_CONIC;
 				return;
 			}else{
-				type=Conic2D.PARABOLA;
+				type=Conic2D.Type.PARABOLA;
 				return;
 			}
 			
@@ -405,20 +404,20 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 			
 			double ff = a*x1*x1 + 2*b*x1*y1 + c*y1*y1 + 2*d*x1 + 2*e*y1 + f;
 			if(ff==0 && delta<0){
-				type=POINT;
+				type=Conic2D.Type.POINT;
 				return;
 			}else{
 				if(ff==0 && delta>0){
-					type=Conic2D.TWO_LINES;
+					type=Conic2D.Type.TWO_LINES;
 					return;
 				}
 			
 				if(a==c && b==0){
 					if(ff*a>0){
-						type=Conic2D.NOT_A_CONIC; // no solution
+						type=Conic2D.Type.NOT_A_CONIC; // no solution
 						return;
 					}else{
-						type=Conic2D.CIRCLE;    // conic is a Circle2D
+						type=Conic2D.Type.CIRCLE;    // conic is a Circle2D
 						double length1 = Math.sqrt(-ff/a);
 						this.conic = new Circle2D(x1, y1, length1);
 						return;
@@ -438,10 +437,10 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 
 				if(delta<0){
 					if((lambda*ff>0)){		// if lamba and ff have same sign
-						type=Conic2D.NOT_A_CONIC; // no solution
+						type=Conic2D.Type.NOT_A_CONIC; // no solution
 						return;
 					}else{
-						type=ELLIPSE; // c'est une ellipse
+						type=Conic2D.Type.ELLIPSE; // c'est une ellipse
 						double length1 = Math.sqrt(-ff/lambda);
 						double length2 = Math.sqrt(-ff/mu);
 
@@ -460,7 +459,7 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 						return;
 					}
 				}else{		
-					type=Conic2D.HYPERBOLA; // conic is a Hyperbola
+					type=Conic2D.Type.HYPERBOLA; // conic is a Hyperbola
 					
 					return;
 				}

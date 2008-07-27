@@ -56,22 +56,7 @@ public interface Shape2D extends java.awt.Shape{
 	
 	public final static Shape2D EMPTY_SET = new EmptySet2D();
 	
-	// ===================================================================
-	// static methods
 	
-	// ===================================================================
-	// class variables
-	
-	
-	// ===================================================================
-	// constructors
-	
-	
-	
-	
-	// ===================================================================
-	// accessors
-
 	/**
 	 * get the distance of the shape to the given point, or the distance of point
 	 * to the frontier of the shape in the case of a plain shape.
@@ -85,8 +70,6 @@ public interface Shape2D extends java.awt.Shape{
 	 */
 	public abstract double getDistance(double x, double y);
 
-
-
 	/** 
 	 * Returns true if the shape is bounded, that is if we can draw a finite rectangle
 	 * enclosing the shape. For example, a straight line or a parabola are not bounded.
@@ -99,13 +82,6 @@ public interface Shape2D extends java.awt.Shape{
 	 * @return true if the shape does not contain any point.
 	 */
 	public abstract boolean isEmpty();
-
-	// ===================================================================
-	// modifiers
-
-
-	// ===================================================================
-	// general methods
 	
 	/**
 	 * Clip the shape with the given box, and returns a new shape. The box
@@ -128,106 +104,113 @@ public interface Shape2D extends java.awt.Shape{
 	 * @return the transformed shape
 	 */
 	public abstract Shape2D transform(AffineTransform2D trans);
-}
-
-
-/**
- * An empty set is a shape which does not contain any point. 
- * @author Legland
- */
-class EmptySet2D implements Shape2D {
 
 	/**
-	 * Not defined for empty set, but returns POSITIVE_INFINITY.
+	 * An empty set is a shape which does not contain any point. 
+	 * @author Legland
 	 */
-	public double getDistance(java.awt.geom.Point2D p) {
-		return Double.POSITIVE_INFINITY;
+	public class EmptySet2D implements Shape2D {
+
+		protected EmptySet2D(){		
+		}	
+
+		/**
+		 * Not defined for empty set, but returns POSITIVE_INFINITY.
+		 */
+		public double getDistance(java.awt.geom.Point2D p) {
+			return Double.POSITIVE_INFINITY;
+		}
+
+		/**
+		 * Not defined for empty set, but returns POSITIVE_INFINITY.
+		 */
+		public double getDistance(double x, double y) {
+			return Double.POSITIVE_INFINITY;
+		}
+
+		/**
+		 * Not defined for empty set, but returns FALSE.
+		 */
+		public boolean isBounded() {
+			return false;
+		}
+
+		/**
+		 * Returns true by definition.
+		 */
+		public boolean isEmpty(){
+			return true;
+		}
+
+		/** returns EmptySet2D.*/
+		public Shape2D clip(Box2D box) {
+			return this;
+		}
+
+		public Box2D getBoundingBox(){
+			return new Box2D(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+		}
+
+		/** returns EmptySet2D.*/
+		public Shape2D transform(AffineTransform2D trans) {
+			return this;
+		}
+
+		/** returns false.*/
+		public boolean contains(double arg0, double arg1) {
+			return false;
+		}
+
+		/** returns false.*/
+		public boolean contains(java.awt.geom.Rectangle2D r) {
+			return false;
+		}
+
+		/** returns false.*/
+		public boolean contains(double arg0,double arg1,double arg2,double arg3) {
+			return false;
+		}
+
+		/** returns false.*/
+		public boolean intersects(
+				double arg0,
+				double arg1,
+				double arg2,
+				double arg3) {
+			return false;
+		}
+
+		/** returns false.*/
+		public boolean intersects(java.awt.geom.Rectangle2D r) {
+			return false;
+		}
+
+		/** returns null.*/
+		public java.awt.Rectangle getBounds() {
+			return null;
+		}
+
+		/** returns false.*/
+		public boolean contains(java.awt.geom.Point2D arg0) {
+			return false;
+		}
+
+		/** returns null.*/
+		public java.awt.geom.Rectangle2D getBounds2D() {
+			return null;
+		}
+
+		public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0) {
+			return null;
+		}
+
+		public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0, double arg1) {
+			return null;
+		}
+
+		public boolean equals(Object obj){
+			return (obj instanceof EmptySet2D);
+		}
 	}
 
-	/**
-	 * Not defined for empty set, but returns POSITIVE_INFINITY.
-	 */
-	public double getDistance(double x, double y) {
-		return Double.POSITIVE_INFINITY;
-	}
-
-	/**
-	 * Not defined for empty set, but returns FALSE.
-	 */
-	public boolean isBounded() {
-		return false;
-	}
-
-	/**
-	 * Returns true by definition.
-	 */
-	public boolean isEmpty(){
-		return true;
-	}
-
-	/** returns EmptySet2D.*/
-	public Shape2D clip(Box2D box) {
-		return this;
-	}
-
-	public Box2D getBoundingBox(){
-		return new Box2D(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
-	}
-
-	/** returns EmptySet2D.*/
-	public Shape2D transform(AffineTransform2D trans) {
-		return this;
-	}
-
-	/** returns false.*/
-	public boolean contains(double arg0, double arg1) {
-		return false;
-	}
-
-	/** returns false.*/
-	public boolean contains(java.awt.geom.Rectangle2D r) {
-		return false;
-	}
-
-	/** returns false.*/
-	public boolean contains(double arg0,double arg1,double arg2,double arg3) {
-		return false;
-	}
-
-	/** returns false.*/
-	public boolean intersects(
-		double arg0,
-		double arg1,
-		double arg2,
-		double arg3) {
-		return false;
-	}
-
-	/** returns false.*/
-	public boolean intersects(java.awt.geom.Rectangle2D r) {
-		return false;
-	}
-
-	/** returns null.*/
-	public java.awt.Rectangle getBounds() {
-		return null;
-	}
-
-	/** returns false.*/
-	public boolean contains(java.awt.geom.Point2D arg0) {
-		return false;
-	}
-
-	/** returns null.*/
-	public java.awt.geom.Rectangle2D getBounds2D() {
-		return null;
-	}
-
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0) {
-		return null;
-	}
-
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0, double arg1) {
-		return null;
-	}
 }

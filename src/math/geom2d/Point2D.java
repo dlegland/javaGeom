@@ -25,12 +25,12 @@
 package math.geom2d;
 
 import java.util.Collection;
+
+import math.geom2d.conic.Circle2D;
 import math.geom2d.transform.AffineTransform2D;
 
-// Imports
-
 /**
- * A point in the plane defined by its 2 cartesian coordinates x and y.
+ * A point in the plane defined by its 2 Cartesian coordinates x and y.
  * The class provides static methods to compute distance between two points.
  */
 public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
@@ -94,7 +94,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	// static functions
 
 	/**
-	 * create a new point from polar coordinates <code>rho</code> and
+	 * Creates a new point from polar coordinates <code>rho</code> and
 	 * <code>theta</code>.
 	 */
 	public final static Point2D createPolar(double rho, double theta){
@@ -102,7 +102,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 
 	/**
-	 * create a new point from polar coordinates <code>rho</code> and
+	 * Creates a new point from polar coordinates <code>rho</code> and
 	 * <code>theta</code>, from the given point.
 	 */
 	public final static Point2D createPolar(Point2D point, double rho, double theta){
@@ -110,7 +110,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 
 	/**
-	 * create a new point from polar coordinates <code>rho</code> and
+	 * Creates a new point from polar coordinates <code>rho</code> and
 	 * <code>theta</code>, from the position (x0,y0).
 	 */
 	public final static Point2D createPolar(double x0, double y0, double rho, double theta){
@@ -119,7 +119,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 
 	
 	/**
-	 * get the dot product of the two points, defined by : <p>
+	 * Gets the dot product of the two points, defined by: <p>
 	 * <code> x1*y2 + x2*y1</code> <p>
 	 * Dot product is zero if the vectors defined by the 2 points are 
 	 * orthogonal. It is positive if vectors are in the same direction, and
@@ -132,7 +132,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 	
 	/**
-	 * get the cross product of the two points, defined by : <p>
+	 * Gets the cross product of the two points, defined by : <p>
 	 * <code> x1*y2 - x2*y1</code><p>
 	 * cross product is zero for colinear vector. It is positive if angle
 	 * between vector 1 and vector 2 is comprised between 0 and PI, and
@@ -367,28 +367,32 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
-	/** Return null*/
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		return null;
+	/** Returns a circle enclosing the point*/
+	public java.awt.geom.PathIterator getPathIterator(
+			java.awt.geom.AffineTransform trans){
+		return new Circle2D(this, 1).getPathIterator(trans);
 	}
 
 	/** 
-	 * return a circle enclosing the point, which radius is the specified flatness.
+	 * Returns a circle enclosing the point, whose radius is the specified
+	 * flatness.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(
-			java.awt.geom.AffineTransform t, double flatness){
-		return null;
+			java.awt.geom.AffineTransform trans, double flatness){
+		return new Circle2D(this, 1).getPathIterator(trans, flatness);
 	}
 
 	/**
-	 * Tests if the Point2D intersects the interior of a specified rectangular area.
+	 * Tests if the Point2D intersects the interior of a specified rectangular
+	 * area.
 	 */
 	public boolean intersects(double x, double y, double w, double h){
 		return( getX()>=x && getX()<=x+w && getY()>=y && getY()<=y+h);
 	}
 
 	/**
-	 * Tests if the Point2D intersects the interior of a specified rectangle2D.
+	 * Tests if the Point2D intersects the interior of a specified
+	 * rectangle2D.
 	 */
 	public boolean intersects(java.awt.geom.Rectangle2D r){
 		return( getX()>=r.getX() && getX()<=r.getX()+r.getWidth() && 
@@ -421,17 +425,17 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return this;
 	}
 	
+	/**
+	 * Returns a bounding box with zero width and zero height, whose
+	 * coordinates limits are point coordinates.
+	 */
 	public Box2D getBoundingBox(){
-		return new Box2D(getX()-.5, getX()+.5, getY()-.5, getY()+.5);
+		return new Box2D(getX(), getX(), getY(), getY());
 	}
 	
-	public Shape2D getTransformedShape(AffineTransform2D trans){
-		double[] tab = trans.getCoefficients();
-		return new Point2D(
-			x*tab[0] + y*tab[1] + tab[2],
-			x*tab[3] + y*tab[4] + tab[5] );
-	}
-	
+	/**
+	 * Returns the transformed point.
+	 */
 	public Point2D transform(AffineTransform2D trans){
 		double[] tab = trans.getCoefficients();
 		return new Point2D(

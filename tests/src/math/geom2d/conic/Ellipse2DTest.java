@@ -145,8 +145,8 @@ public class Ellipse2DTest extends TestCase {
 	public void testGetType() {
 		Ellipse2D el1 = new Ellipse2D(20, 30, 20, 30, Math.PI/3);
 		Ellipse2D el2 = new Ellipse2D(20, 30, 20, 20, Math.PI/3);
-		assertEquals(el1.getConicType(), Conic2D.ELLIPSE);
-		assertEquals(el2.getConicType(), Conic2D.CIRCLE);
+		assertEquals(el1.getConicType(), Conic2D.Type.ELLIPSE);
+		assertEquals(el2.getConicType(), Conic2D.Type.CIRCLE);
 	}
 
 	public void testGetConicCoefficients() {
@@ -282,8 +282,8 @@ public class Ellipse2DTest extends TestCase {
 		
 		// try again with an indirect ellipse
 		ellipse = new Ellipse2D(0, 0, 20, 10, 0, false);
-		arc1 = new EllipseArc2D(ellipse, Math.PI/2, -Math.PI/2);
-		arc2 = (EllipseArc2D) ellipse.getSubCurve(3*Math.PI/2, 2*Math.PI);
+		arc1 = new EllipseArc2D(ellipse, 3*Math.PI/2, -Math.PI/2);
+		arc2 = (EllipseArc2D) ellipse.getSubCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 	}
 
