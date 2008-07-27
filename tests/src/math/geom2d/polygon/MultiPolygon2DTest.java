@@ -12,12 +12,12 @@ public class MultiPolygon2DTest extends TestCase {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0), new Point2D(10, 0),
 				new Point2D(10, 10), new Point2D(0, 10) };
-		Polygon2D pol1 = new Polygon2D(pts1);
+		SimplePolygon2D pol1 = new SimplePolygon2D(pts1);
 		
 		Point2D[] pts2 = new Point2D[]{
 				new Point2D(20, 0), new Point2D(30, 0),
 				new Point2D(30, 10), new Point2D(20, 10) };
-		Polygon2D pol2 = new Polygon2D(pts2);		
+		SimplePolygon2D pol2 = new SimplePolygon2D(pts2);		
 		
 		MultiPolygon2D polygon = new MultiPolygon2D();
 		polygon.addPolygon(pol1);
@@ -36,12 +36,12 @@ public class MultiPolygon2DTest extends TestCase {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0), new Point2D(10, 0),
 				new Point2D(10, 10), new Point2D(0, 10) };
-		Polygon2D pol1 = new Polygon2D(pts1);
+		SimplePolygon2D pol1 = new SimplePolygon2D(pts1);
 		
 		Point2D[] pts2 = new Point2D[]{
 				new Point2D(20, 0), new Point2D(30, 0),
 				new Point2D(30, 10), new Point2D(20, 10) };
-		Polygon2D pol2 = new Polygon2D(pts2);		
+		SimplePolygon2D pol2 = new SimplePolygon2D(pts2);		
 		
 		MultiPolygon2D polygon = new MultiPolygon2D();
 		polygon.addPolygon(pol1);
@@ -54,12 +54,12 @@ public class MultiPolygon2DTest extends TestCase {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0), new Point2D(10, 0),
 				new Point2D(10, 10), new Point2D(0, 10) };
-		Polygon2D pol1 = new Polygon2D(pts1);
+		SimplePolygon2D pol1 = new SimplePolygon2D(pts1);
 		
 		Point2D[] pts2 = new Point2D[]{
 				new Point2D(20, 0), new Point2D(30, 0),
 				new Point2D(30, 10), new Point2D(20, 10) };
-		Polygon2D pol2 = new Polygon2D(pts2);		
+		SimplePolygon2D pol2 = new SimplePolygon2D(pts2);		
 		
 		MultiPolygon2D polygon = new MultiPolygon2D();
 		polygon.addPolygon(pol1);

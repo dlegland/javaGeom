@@ -31,7 +31,7 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HalfPlane2D;
-import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.SimplePolygon2D;
 import math.geom2d.transform.AffineTransform2D;
 
 import javax.swing.JPanel;
@@ -151,7 +151,7 @@ public class GeomPanel extends JPanel{
 		
 		double[] tx = {40, -80, -100, -50};
 		double[] ty = {30, 80, -60, 30};
-		Polygon2D poly = new Polygon2D(tx, ty);
+		SimplePolygon2D poly = new SimplePolygon2D(tx, ty);
 		g2.setColor(Color.green);
 		g2.fill(transform.createTransformedShape(poly));
 		g2.fill(transform.createTransformedShape(poly.transform(rot)));

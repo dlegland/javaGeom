@@ -1,5 +1,5 @@
 /*
- * File : Polygon2DTest.java
+ * File : SimplePolygon2DTest.java
  *
  * Project : geometry
  *
@@ -33,18 +33,18 @@ import junit.framework.TestCase;
 /**
  * @author Legland
  */
-public class Polygon2DTest extends TestCase {
+public class SimplePolygon2DTest extends TestCase {
 
 	/**
-	 * Constructor for Polygon2DTest.
+	 * Constructor for SimplePolygon2DTest.
 	 * @param arg0
 	 */
-	public Polygon2DTest(String arg0) {
+	public SimplePolygon2DTest(String arg0) {
 		super(arg0);
 	}
 
 	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Polygon2DTest.class);
+		junit.awtui.TestRunner.run(SimplePolygon2DTest.class);
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class Polygon2DTest extends TestCase {
 		points[1] = new Point2D(40, 20);
 		points[2] = new Point2D(40, 60);
 		points[3] = new Point2D(20, 60);
-		Polygon2D poly = new Polygon2D(points);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		assertTrue(poly.contains(20, 20));
 		assertTrue(poly.contains(40, 20));
@@ -80,7 +80,7 @@ public class Polygon2DTest extends TestCase {
 		points[3] = new Point2D(60, 10);
 		points[4] = new Point2D(60, 30);
 		points[5] = new Point2D(80, 30);
-		poly = new Polygon2D(points);
+		poly = new SimplePolygon2D(points);
 		
 		// classic case
 		assertTrue(poly.contains(60, 40));
@@ -96,7 +96,7 @@ public class Polygon2DTest extends TestCase {
 		points[5] = new Point2D(10, 10);
 		points[6] = new Point2D(40, 10);
 		points[7] = new Point2D(40, 60);
-		poly = new Polygon2D(points);
+		poly = new SimplePolygon2D(points);
 		
 		// classic cases
 		assertTrue(poly.contains(15, 15));
@@ -116,14 +116,14 @@ public class Polygon2DTest extends TestCase {
 		points[1] = new Point2D(40, 20);
 		points[2] = new Point2D(40, 60);
 		points[3] = new Point2D(20, 60);
-		Polygon2D poly = new Polygon2D(points);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
 
 		Point2D centro = new Point2D(30, 40);
 		assertTrue(centro.equals(poly.getCentroid()));
 		
 		
 		// a cross centered around (15, 15), in reverse order
-		poly = new Polygon2D(new Point2D[]{
+		poly = new SimplePolygon2D(new Point2D[]{
 				new Point2D(10, 0),
 				new Point2D(10, 10),
 				new Point2D(0, 10),
@@ -148,7 +148,7 @@ public class Polygon2DTest extends TestCase {
 		points[3] = new Point2D(60, 10);
 		points[4] = new Point2D(60, 30);
 		points[5] = new Point2D(80, 30);
-		Polygon2D poly = new Polygon2D(points);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		Box2D box = new Box2D(20, 80, 10, 70);
 		Box2D bounds = new Box2D(poly.getBounds2D());
@@ -163,7 +163,7 @@ public class Polygon2DTest extends TestCase {
 		points[3] = new Point2D(60, 10);
 		points[4] = new Point2D(60, 30);
 		points[5] = new Point2D(80, 30);
-		Polygon2D poly = new Polygon2D(points);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		Rectangle2D rect = new Rectangle2D(20, 10, 60, 60);
 		//Rectangle2D bounds = new Rectangle2D(poly.getBounds2D());

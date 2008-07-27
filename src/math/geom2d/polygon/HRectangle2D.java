@@ -43,7 +43,8 @@ import math.geom2d.transform.AffineTransform2D;
  * simply a wrapper of class <code>java.awt.geom.Rectangle2D.Double</code>
  * with interface <code>AbstractPolygon</code>.
  */
-public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements PolygonalShape2D{
+public class HRectangle2D extends java.awt.geom.Rectangle2D.Double 
+implements Polygon2D{
 
 	// ===================================================================
 	// constants
@@ -264,7 +265,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements Po
 	/** 
 	 * Return the new Polygon created by an affine transform of this polygon.
 	 */
-	public Polygon2D transform(AffineTransform2D trans){
+	public SimplePolygon2D transform(AffineTransform2D trans){
 		int nPoints = 4;		
 		Point2D[] array = new Point2D[nPoints];
 		Point2D[] res = new Point2D[nPoints];
@@ -275,7 +276,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements Po
 		}
 		
 		trans.transform(array, res);
-		return new Polygon2D(res);
+		return new SimplePolygon2D(res);
 	}
 
 	

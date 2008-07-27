@@ -39,7 +39,7 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
  */
-public class Rectangle2D implements PolygonalShape2D{
+public class Rectangle2D implements Polygon2D{
 
 
 	// ===================================================================
@@ -327,7 +327,7 @@ public class Rectangle2D implements PolygonalShape2D{
 		
 		// creates the new polygon
 		Point2D[] array = hash.values().toArray(new Point2D[0]);
-		return new Polygon2D(array);
+		return new SimplePolygon2D(array);
 	}
 	
 	/**
@@ -360,7 +360,7 @@ public class Rectangle2D implements PolygonalShape2D{
 	/** 
 	 * Return the new Polygon created by an affine transform of this polygon.
 	 */
-	public Polygon2D transform(AffineTransform2D trans){
+	public SimplePolygon2D transform(AffineTransform2D trans){
 		int nPoints = 4;		
 		Point2D[] array = new Point2D[nPoints];
 		Point2D[] res = new Point2D[nPoints];
@@ -371,7 +371,7 @@ public class Rectangle2D implements PolygonalShape2D{
 		}
 		
 		trans.transform(array, res);
-		return new Polygon2D(res);
+		return new SimplePolygon2D(res);
 	}
 	
 	

@@ -22,7 +22,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  *
  */
-public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
+public class MultiPolygon2D implements Domain2D, Polygon2D {
 	
 	ArrayList<ClosedPolyline2D> polylines = new ArrayList<ClosedPolyline2D>();
 	
@@ -36,7 +36,7 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 		polylines.add(polyline);
 	}
 
-	public MultiPolygon2D(Polygon2D polygon){
+	public MultiPolygon2D(SimplePolygon2D polygon){
 		polylines.add((ClosedPolyline2D) polygon.getBoundary());
 	}
 	
@@ -53,7 +53,7 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 	// methods specific to MultiPolygon2D
 	
 	
-	public void addPolygon(Polygon2D polygon){
+	public void addPolygon(SimplePolygon2D polygon){
 		polylines.add((ClosedPolyline2D) polygon.getBoundary());
 	}
 	
@@ -61,10 +61,11 @@ public class MultiPolygon2D implements Domain2D, PolygonalShape2D {
 	 * Return the set of (oriented) polygons forming this MultiPolygon2D.
 	 * @return a set of Polygon2D.
 	 */
-	public Collection<Polygon2D> getPolygons(){
-		ArrayList<Polygon2D> polygons = new ArrayList<Polygon2D>();
+	public Collection<SimplePolygon2D> getPolygons(){
+		ArrayList<SimplePolygon2D> polygons = 
+			new ArrayList<SimplePolygon2D>();
 		for(ClosedPolyline2D polyline : polylines)
-			polygons.add(new Polygon2D(polyline.getPoints()));
+			polygons.add(new SimplePolygon2D(polyline.getPoints()));
 		return polygons;
 	}
 	

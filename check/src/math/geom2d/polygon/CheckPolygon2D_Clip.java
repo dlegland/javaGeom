@@ -33,14 +33,14 @@ import math.geom2d.*;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.SimplePolygon2D;
 
 
 public class CheckPolygon2D_Clip extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
-	Polygon2D polygon = null;
+	SimplePolygon2D polygon = null;
 	Box2D box = null;
 	
 	public CheckPolygon2D_Clip() {
@@ -50,7 +50,7 @@ public class CheckPolygon2D_Clip extends JPanel{
 		Point2D p2 = new Point2D(200, 30);
 		Point2D p3 = new Point2D(200, 170);
 		Point2D p4 = new Point2D(100, 170);
-		polygon = new Polygon2D(new Point2D[]{p1, p2, p3, p4});
+		polygon = new SimplePolygon2D(new Point2D[]{p1, p2, p3, p4});
 		
 		box = new Box2D(50, 250, 50, 150);
 	}
