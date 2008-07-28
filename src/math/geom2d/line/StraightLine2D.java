@@ -39,6 +39,8 @@ import math.geom2d.UnboundedShapeException;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
@@ -302,6 +304,10 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
+	}
+
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
 	}
 
 

@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.Domain2D;
 
 /**
  * @author dlegland
@@ -37,12 +37,12 @@ public class CheckDrawCurveSet2D extends JPanel{
 		g2.setStroke(new BasicStroke(2.0f));
 	
 		Box2D box = new Box2D(0, 200, 0, 200);
-		Curve2D clipped =  Boundary2DUtils.clipBoundary(circleSet, box);
+		Domain2D domain =  circleSet.getDomain();
 
 		g2.setColor(Color.CYAN);
-		g2.fill(clipped);
+		g2.fill(domain.clip(box));
 		g2.setColor(Color.BLUE);
-		g2.draw(clipped);
+		g2.draw(domain.getBoundary().clip(box));
 	}
 	
 	public final static void main(String[] args){

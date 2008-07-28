@@ -34,7 +34,6 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.conic.ParabolaArc2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -79,7 +78,8 @@ public class DrawParabolaDemo extends JPanel{
 			g2.setColor(Color.RED);
 			g2.draw(clipped);
 			
-			AffineTransform2D transfo = AffineTransform2D.createRotation(x0, y0, Math.PI/2);
+			AffineTransform2D transfo = 
+				AffineTransform2D.createRotation(x0, y0, Math.PI/2);
 			Shape2D transformed = clipped.transform(transfo);
 			g2.draw(transformed);
 		}
@@ -88,10 +88,9 @@ public class DrawParabolaDemo extends JPanel{
 		Point2D p1 = parabola.getPoint(0);
 		g2.fill(new Circle2D(p1, 4));
 		
-		clipped =  Boundary2DUtils.clipBoundary(parabola, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
-		g2.fill(clipped);
+		g2.fill(parabola.getDomain().clip(box));
 		g2.setColor(Color.BLUE);
 		g2.draw(clipped);
 	}

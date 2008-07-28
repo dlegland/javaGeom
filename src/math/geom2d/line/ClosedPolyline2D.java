@@ -29,6 +29,8 @@ import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.transform.AffineTransform2D;
 
 import java.util.ArrayList;
@@ -124,6 +126,10 @@ public class ClosedPolyline2D extends Polyline2D implements
 		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
+	}
+
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
 	}
 
 	

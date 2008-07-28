@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 
 /**
@@ -45,9 +44,7 @@ public class CheckClipBand2D extends JPanel{
 //		Boundary2D rotated = wedge1.transform(rot);
 //		
 		g2.setColor(Color.CYAN);
-		g2.fill(Boundary2DUtils.clipBoundary(band, box));	
-//		g2.fill(Boundary2DUtil.clipBoundary(line1, box));	
-//		g2.fill(Boundary2DUtil.clipBoundary(line2, box));	
+		g2.fill(band.getDomain().clip(box));	
 		
 		g2.setColor(Color.BLUE);
 		g2.draw(line1.clip(box));

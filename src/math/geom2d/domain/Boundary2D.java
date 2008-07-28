@@ -38,11 +38,23 @@ import math.geom2d.transform.AffineTransform2D;
 public interface Boundary2D extends OrientedCurve2D {
 
 	/**
-	 * Return the different continuous curves composing the boundary
+	 * Returns the different continuous curves composing the boundary
 	 */
 	public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
-		
+	
+	/**
+	 * Returns the domain delimited by this boundary.
+	 * @return the domain delimited by this boundary
+	 */
+	public abstract Domain2D getDomain();
+	
+	/**
+	 * Forces the subclasses to return an instance of Boundary2D.
+	 */
 	public abstract Boundary2D getReverseCurve();
 
+	/**
+	 * Forces the subclasses to return an instance of Boundary2D.
+	 */
 	public abstract Boundary2D transform(AffineTransform2D trans);
 }

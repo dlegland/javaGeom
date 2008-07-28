@@ -32,7 +32,6 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Ellipse2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -73,7 +72,7 @@ public class CheckEllipse2DTransform extends JPanel{
 			Ellipse2D rotated = ellipse.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			g2.fill(Boundary2DUtils.clipBoundary(rotated, box));
+			g2.fill(rotated.getDomain().clip(box));
 			g2.setColor(Color.BLUE);
 			g2.draw(rotated);
 		}
@@ -83,7 +82,7 @@ public class CheckEllipse2DTransform extends JPanel{
 		Ellipse2D scaled = ellipse.transform(rot);
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(Boundary2DUtils.clipBoundary(scaled, box));
+		g2.fill(scaled.getDomain().clip(box));
 		g2.setColor(Color.BLUE);
 		g2.draw(scaled.clip(box));
 

@@ -39,6 +39,8 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
@@ -657,6 +659,10 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
+	}
+
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
 	}
 
 	
