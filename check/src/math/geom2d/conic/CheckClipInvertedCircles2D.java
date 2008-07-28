@@ -30,11 +30,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
-
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 
 
@@ -74,20 +71,13 @@ public class CheckClipInvertedCircles2D extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		BoundarySet2D<Circle2D> boundary = new BoundarySet2D<Circle2D>(
-				new Circle2D[]{circle1, circle2, circle3, circle4});
-		
-
-		
-		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
-		//g2.fill(Boundary2DUtil.clipBoundary(branch2, box));
-		Boundary2D clippedBoundary =
-			Boundary2DUtils.clipBoundary(boundary, box);
+				new Circle2D[]{circle1, circle2, circle3, circle4});		
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(clippedBoundary);
+		g2.fill(boundary.getDomain().clip(box));
 		
 		g2.setColor(Color.RED);
-		g2.draw(clippedBoundary);
+		g2.draw(boundary.clip(box));
 	}
 
 	public final static void main(String[] args){
@@ -97,7 +87,6 @@ public class CheckClipInvertedCircles2D extends JPanel{
 		JFrame frame = new JFrame("Draw inverted circles");
 		frame.setContentPane(panel);
 		frame.setSize(500, 400);
-		frame.setVisible(true);
-		
+		frame.setVisible(true);	
 	}
 }

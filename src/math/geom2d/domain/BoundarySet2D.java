@@ -40,6 +40,10 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public class BoundarySet2D<T extends ContinuousBoundary2D>
 extends CurveSet2D<T> implements Boundary2D {
+
+	// ===================================================================
+	// Constructors
+	
 	public BoundarySet2D(){
 	}
 	
@@ -56,6 +60,23 @@ extends CurveSet2D<T> implements Boundary2D {
 		this.addCurve(curve);
 	}
 
+	// ===================================================================
+	// Methods implementing Boundary2D interface
+	
+	public Collection<ContinuousBoundary2D> getBoundaryCurves(){
+		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
+		for(Curve2D curve : this.curves)
+			list.add((ContinuousBoundary2D) curve);
+		return list;
+	}
+	
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
+	}
+
+	// ===================================================================
+	// Methods implementing OrientedCurve2D interface
+	
 	public double getWindingAngle(java.awt.geom.Point2D point) {
 		double angle=0;
 		for(OrientedCurve2D curve : this.getCurves())
@@ -65,13 +86,6 @@ extends CurveSet2D<T> implements Boundary2D {
 
 	public double getSignedDistance(java.awt.geom.Point2D p){
 		return getSignedDistance(p.getX(), p.getY());
-	}
-	
-	public Collection<ContinuousBoundary2D> getBoundaryCurves(){
-		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
-		for(Curve2D curve : this.curves)
-			list.add((ContinuousBoundary2D) curve);
-		return list;
 	}
 	
 	/* (non-Javadoc)
@@ -95,6 +109,9 @@ extends CurveSet2D<T> implements Boundary2D {
 	}
 	
 	
+	// ===================================================================
+	// Methods implementing Curve2D interface
+	
 	public BoundarySet2D<? extends ContinuousBoundary2D> getReverseCurve(){
 		ContinuousBoundary2D[] curves2 = new ContinuousBoundary2D[curves.size()];
 		int n=curves.size();
@@ -117,6 +134,10 @@ extends CurveSet2D<T> implements Boundary2D {
 		return new CurveSet2D<ContinuousOrientedCurve2D>(curves);
 	}
 
+
+	// ===================================================================
+	// Methods implementing the Shape2D interface
+	
 	/**
 	 * Clip the curve by a box. The result is an instance of
 	 * ContinuousOrientedCurveSet2D<ContinuousOrientedCurve2D>, which 

@@ -11,6 +11,8 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightObject2D;
@@ -88,7 +90,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	// methods inherited from Boundary2D interface
 
 	/** 
-	 * returns an instance of ArrayList<ContinuousBoundary2D> containing only
+	 * Returns an instance of ArrayList<ContinuousBoundary2D> containing only
 	 * <code>this</code>.
 	 */
 	public Collection<ContinuousBoundary2D> getBoundaryCurves() {
@@ -96,6 +98,11 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		list.add(this);
 		return list;
 	}
+
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
+	}
+
 
 	// ===================================================================
 	// methods inherited from OrientedCurve2D interface

@@ -39,6 +39,9 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		extends PolyOrientedCurve2D<T>
 		implements ContinuousBoundary2D {
 
+	// ===================================================================
+	// Constructors
+	
 	public BoundaryPolyCurve2D() {
 		super();
 	}
@@ -51,6 +54,10 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		super(curves);
 	}
 	
+
+	// ===================================================================
+	// Methods implementing Boundary2D interface
+	
 	/**
 	 * return a ArrayList<ContinuousBoundary2D> containing only <code>this</code>.
 	 */
@@ -59,6 +66,14 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		list.add(this);
 		return list;
 	}
+	
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
+	}
+
+
+	// ===================================================================
+	// Methods implementing OrientedCurve2D interface
 	
 	public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve(){
 		ContinuousOrientedCurve2D[] curves2 = 

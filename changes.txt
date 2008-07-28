@@ -20,6 +20,9 @@ Coding
 geom2d:
 - introduced UnboundedShapeException, NonInvertibleTransformException
 - dissociate LineArc2D from other line classes
+- many changes in class names:
+	+ Utilitary classes are now named XXXUtils
+	+ Polygon2D->SimplePolygon2D, PolygonalShape2D->Polygon2D
 
 
 javaGeom-0.6.1 (2008-05-24, rev. 137)

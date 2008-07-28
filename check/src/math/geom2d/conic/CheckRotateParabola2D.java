@@ -32,7 +32,6 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
-import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.transform.AffineTransform2D;
 
 
@@ -69,7 +68,7 @@ public class CheckRotateParabola2D extends JPanel{
 			Parabola2D rotated = parabola.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			g2.fill(Boundary2DUtils.clipBoundary(rotated, box));
+			g2.fill(rotated.getDomain().clip(box));
 			g2.setColor(Color.BLUE);
 			g2.draw(rotated.clip(box));
 		}

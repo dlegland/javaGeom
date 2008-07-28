@@ -38,6 +38,8 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
@@ -289,6 +291,11 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return list;
 	}
 	
+	public Domain2D getDomain() {
+		return new GenericDomain2D(this);
+	}
+
+
 	// ==========================================================
 	// methods implementing the OrientedCurve2D interface
 
