@@ -47,7 +47,7 @@ import math.geom2d.transform.AffineTransform2D;
  * with <code>t<code> comprised between -INFINITY and 0.
  * This is complementary class to Ray2D.
  */
-public class InvertedRay2D extends StraightObject2D{
+public class InvertedRay2D extends AbstractLine2D{
 
 	// ===================================================================
 	// constants	
@@ -118,8 +118,8 @@ public class InvertedRay2D extends StraightObject2D{
 	/** 
 	 * Define a new Ray, with same characteristics as given object.
 	 */
-	public InvertedRay2D(StraightObject2D line){
-		this(line.x0, line.y0, line.dx, line.dy);
+	public InvertedRay2D(LinearShape2D line){
+		super(line);
 	}
 	
 	

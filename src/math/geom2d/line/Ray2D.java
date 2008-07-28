@@ -46,7 +46,7 @@ import math.geom2d.transform.AffineTransform2D;
  * <code>y(t) = y0+t*dy<code></p> 
  * With <code>t<code> comprised between 0 and +INFINITY.
  */
-public class Ray2D extends StraightObject2D{
+public class Ray2D extends AbstractLine2D{
 
 
 	// ===================================================================
@@ -120,8 +120,8 @@ public class Ray2D extends StraightObject2D{
 	/** 
 	 * Define a new Ray, with same characteristics as given object.
 	 */
-	public Ray2D(StraightObject2D line){
-		this(line.x0, line.y0, line.dx, line.dy);
+	public Ray2D(LinearShape2D line){
+		super(line);
 	}
 	
 	

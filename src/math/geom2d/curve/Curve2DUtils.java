@@ -13,7 +13,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 
 /**
  * Collects some useful methods for clipping curves.
@@ -94,7 +94,7 @@ public abstract class Curve2DUtils {
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 		// add all the intersections with edges of the box boundary
-		for(StraightObject2D edge : box.getEdges())
+		for(LinearShape2D edge : box.getEdges())
 			points.addAll(curve.getIntersections(edge));
 				
 		// convert list to point array, sorted wrt to their position on the curve

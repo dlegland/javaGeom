@@ -15,7 +15,7 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -266,7 +266,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return Double.POSITIVE_INFINITY;
 	}
 
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		// compute intersections with support hyperbola
 		Collection<Point2D> inters = hyperbola.getIntersections(line);
 		

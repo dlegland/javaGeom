@@ -32,7 +32,7 @@ import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.SimplePolygon2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -58,7 +58,7 @@ public class HalfPlane2D implements Domain2D{
 	// constructors
 	
 	/** Main constructor */
-	public HalfPlane2D(StraightObject2D line){
+	public HalfPlane2D(LinearShape2D line){
 		this.line = new StraightLine2D(line);
 	}
 	

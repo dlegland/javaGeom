@@ -6,6 +6,7 @@ New features:
 geom2d:
 - added QuadBezier2D
 - added grid subpackage
+- added Boundary2D.getDomain(): Domain2D
 
 Bug fixes
 geom2d:
@@ -23,6 +24,7 @@ geom2d:
 - many changes in class names:
 	+ Utilitary classes are now named XXXUtils
 	+ Polygon2D->SimplePolygon2D, PolygonalShape2D->Polygon2D
+	+ StraightObject2D splitted into LinearShape2D (interface) and AbstractLine2D
 
 
 javaGeom-0.6.1 (2008-05-24, rev. 137)

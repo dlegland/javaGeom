@@ -33,7 +33,7 @@ public class Angle2DTest extends TestCase {
 	/*
 	 * Test method for 'math.geom2d.Angle2D.getHorizontalAngle(SraightObject2D)'
 	 */
-	public void testGetHorizontalAngleStraighObject2D() {
+	public void testGetHorizontalAngleStraightObject2D() {
 		StraightLine2D line1 = new StraightLine2D(1, 2, 2, 2);
 		StraightLine2D line2 = new StraightLine2D(1, 2, -3, 3);
 		StraightLine2D line3 = new StraightLine2D(1, 2, 0, 3);

@@ -37,8 +37,8 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
 
 /**
  * A circle in the plane, defined as the set of points located at an equal
@@ -309,7 +309,7 @@ public class Circle2D extends Ellipse2D {
 	 * line. If there are 2 intersections points, the first one in the array
 	 * is the first one on the line. 
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		// initialize array of points
 		ArrayList<Point2D> intersections = new ArrayList<Point2D>();
 

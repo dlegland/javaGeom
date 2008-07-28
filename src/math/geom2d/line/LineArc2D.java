@@ -47,7 +47,7 @@ import math.geom2d.transform.AffineTransform2D;
  * line. t0=0 and t1=inf: this is a ray.
  * @author dlegland
  */
-public class LineArc2D extends StraightObject2D 
+public class LineArc2D extends AbstractLine2D 
 	implements SmoothCurve2D, ContinuousOrientedCurve2D{
 
 	protected double t0=0;
@@ -74,8 +74,10 @@ public class LineArc2D extends StraightObject2D
 	 * @param t0 the lower bound of line arc parameterization
 	 * @param t1 the upper bound of line arc parameterization
 	 */
-	public LineArc2D(StraightObject2D line, double t0, double t1) {
-		this(line.x0, line.y0, line.dx, line.dy, t0, t1);
+	public LineArc2D(LinearShape2D line, double t0, double t1) {
+		super(line);
+		this.t0 = t0;
+		this.t1 = t1;
 	}
 	
 	/**

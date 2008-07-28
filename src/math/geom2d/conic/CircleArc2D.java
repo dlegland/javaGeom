@@ -39,7 +39,7 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -400,7 +400,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 * line. If there are 2 intersections points, the first one in the array
 	 * is the first one on the line. 
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		// extract intersection with supporting circle
 		Collection<Point2D> points = circle.getIntersections(line);
 				

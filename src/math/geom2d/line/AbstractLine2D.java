@@ -1,4 +1,4 @@
-/* File StraightObject2D.java 
+/* File AbstractLine2D.java 
  *
  * Project : Java Geometry Library
  *
@@ -53,7 +53,7 @@ import math.geom2d.transform.AffineTransform2D;
  * p1, and t>1 give a point 'after' p2, so it is convenient to easily manage
  * edges, rays and straight lines.<p>
  */
-public abstract class StraightObject2D implements SmoothOrientedCurve2D{
+public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearShape2D{
 
 	// ===================================================================
 	// constants
@@ -79,7 +79,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * Returns the unique intersection of two straight objects. If intersection doesn't
 	 * exist (parallel lines), return null.
 	 */
-	public final static Point2D getIntersection(StraightObject2D l1, StraightObject2D l2){
+	public final static Point2D getIntersection(AbstractLine2D l1, AbstractLine2D l2){
 		double t = ((l1.y0-l2.y0)*l2.dx - (l1.x0-l2.x0)*l2.dy ) / 
 			(l1.dx*l2.dy - l1.dy*l2.dx) ;
 		return new Point2D(l1.x0+t*l1.dx, l1.y0+t*l1.dy);
@@ -88,7 +88,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	/**
 	 * Test if the two linear objects are located on the same straight line.
 	 */
-	public final static boolean isColinear(StraightObject2D line1, StraightObject2D line2){		
+	public final static boolean isColinear(AbstractLine2D line1, AbstractLine2D line2){		
 		// test if the two lines are parallel
 		if(Math.abs(line1.dx*line2.dy - line1.dy*line2.dx)>ACCURACY) return false;
 		
@@ -101,7 +101,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	/**
 	 * Test if the two linear objects are parallel.
 	 */
-	public final static boolean isParallel(StraightObject2D line1, StraightObject2D line2){		
+	public final static boolean isParallel(AbstractLine2D line1, AbstractLine2D line2){		
 		return(Math.abs(line1.dx*line2.dy - line1.dy*line2.dx)<ACCURACY);
 	}
 
@@ -124,7 +124,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 //	 * Gets angle between two (directed) straight objects. Result is given in radians, 
 //	 * between 0 and 2*PI.
 //	 */
-//	public final static double getAngle(StraightObject2D obj1, StraightObject2D obj2){
+//	public final static double getAngle(AbstractLine2D obj1, AbstractLine2D obj2){
 //		double angle1 = obj1.getHorizontalAngle();
 //		double angle2 = obj2.getHorizontalAngle();
 //		return (angle2-angle1+Math.PI*2)%(Math.PI*2);
@@ -166,18 +166,22 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	// ===================================================================
 	// Protected constructors
 
-	protected StraightObject2D(double x0, double y0, double dx, double dy){
+	protected AbstractLine2D(double x0, double y0, double dx, double dy){
 		this.x0 = x0;
 		this.y0 = y0;
 		this.dx = dx;
 		this.dy = dy;
 	}
 	
-	protected StraightObject2D(Point2D point, Vector2D vector){
+	protected AbstractLine2D(Point2D point, Vector2D vector){
 		this.x0 = point.getX();
 		this.y0 = point.getY();
 		this.dx = vector.getX();
 		this.dy = vector.getY();
+	}
+
+	protected AbstractLine2D(LinearShape2D line){
+		this(line.getOrigin(), line.getVector());
 	}
 
 	
@@ -193,12 +197,13 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		return new Vector2D(dx, dy);
 	}
 
-	public boolean isColinear(StraightObject2D line){		
+	public boolean isColinear(LinearShape2D linear){		
 		// test if the two lines are parallel
-		if(!isParallel(line)) return false;
+		if(!isParallel(linear)) return false;
 		
 		// test if the two lines share at least one point (see contains() method
 		// for details on tests)
+		StraightLine2D line = linear.getSupportingLine();
 		if(Math.abs(dx)>Math.abs(dy)){
 			if(Math.abs((line.x0-x0)*dy/dx+y0-line.y0) > Shape2D.ACCURACY) return false;
 			else return true;
@@ -211,7 +216,9 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	/**
 	 * Test if the this object is parallel to the given one.
 	 */
-	public boolean isParallel(StraightObject2D line){		
+	public boolean isParallel(LinearShape2D linear){
+		// TODO: replace by test on vector
+		StraightLine2D line = linear.getSupportingLine();
 		return(Math.abs(dx*line.dy - dy*line.dx)<Shape2D.ACCURACY);
 	}
 	
@@ -237,14 +244,14 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * Returns a set of smooth curves. Actually, return the curve itself.
 	 */
 	public Collection<? extends SmoothOrientedCurve2D> getSmoothPieces() {
-		ArrayList<StraightObject2D> list = new ArrayList<StraightObject2D>(1);
+		ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
 		list.add(this);
 		return list;
 	}
 
 	/**
 	 * Get the distance of the StraightObject2d to the given point. This method is not
-	 * designed to be used directly, because StraightObject2D is an abstract class, 
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
 	 * but it can be used by subclasses to help computations.
 	 */
 	public double getDistance(Point2D p){
@@ -253,7 +260,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 
 	/**
 	 * Get the distance of the StraightObject2d to the given point. This method is not
-	 * designed to be used directly, because StraightObject2D is an abstract class, 
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
 	 * but it can be used by subclasses to help computations.
 	 * @param x , y : position of point
 	 * @return distance between this object and the point (x,y)
@@ -266,7 +273,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * Get the signed distance of the StraightObject2d to the given point. The signed
 	 * distance is positive if point lies 'to the right' of the line, when moving in
 	 * the direction given by direction vector. This method is not
-	 * designed to be used directly, because StraightObject2D is an abstract class, 
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
 	 * but it can be used by subclasses to help computations.
 	 */
 	public double getSignedDistance(java.awt.geom.Point2D p){
@@ -277,7 +284,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * Get the signed distance of the StraightObject2d to the given point. The signed
 	 * distance is positive if point lies 'to the right' of the line, when moving in
 	 * the direction given by direction vector. This method is not
-	 * designed to be used directly, because StraightObject2D is an abstract class, 
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
 	 * but it can be used by subclasses to help computations.
 	 */
 	public double getSignedDistance(double x, double y){
@@ -377,7 +384,7 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	 * Return the intersection points of the curve with the specified line.
 	 * The length of the result array is the number of intersection points.
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line){
+	public Collection<Point2D> getIntersections(LinearShape2D line){
 		
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
@@ -390,17 +397,23 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	}
 	
 	/**
-	 * Returns the unique intersection with a straight object. If intersection doesn't
-	 * exist (parallel lines), return null.
+	 * Returns the unique intersection with a straight object. 
+	 * If the intersection doesn't exist (parallel lines), returns null.
 	 */
-	public Point2D getIntersection(StraightObject2D line){
+	public Point2D getIntersection(LinearShape2D line){
+		Vector2D vect = line.getVector();
+		double dx2 = vect.getX();
+		double dy2 = vect.getY();
+		
 		// test if two lines are parallel
-		if(Math.abs(dx*line.dy - dy*line.dx)<Shape2D.ACCURACY)
+		if(Math.abs(dx*dy2 - dy*dx2)<Shape2D.ACCURACY)
 			return null;
 			
 		// compute position on the line
-		double t = (  (y0-line.y0)*line.dx - (x0-line.x0)*line.dy ) / 
-			(dx*line.dy - dy*line.dx) ;
+		Point2D origin = line.getOrigin();
+		double x2 = origin.getX();
+		double y2 = origin.getY();
+		double t = (  (y0-y2)*dx2 - (x0-x2)*dy2 ) / (dx*dy2 - dy*dx2) ;
 			
 		// compute position of intersection point
 		Point2D point = new Point2D(x0+t*dx, y0+t*dy);
@@ -421,10 +434,16 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		return getProjectedPoint(p.getX(), p.getY());
 	}
 	
+	public StraightLine2D getSupportingLine(){
+		return new StraightLine2D(this);
+	}
+
 	/**
 	 * returns one straight line which contains this straight object.
+	 * @deprecated replaced by getSupportingLine()
 	 * @return the Straight line which contains this object
 	 */
+	@Deprecated
 	public StraightLine2D getSupportLine(){
 		return new StraightLine2D(this);
 	}
@@ -622,12 +641,12 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 	}
 
 	/** 
-	 * Returns a new StraightObject2D, which is the portion of this
-	 * StraightObject2D delimited by parameters t0 and t1.
+	 * Returns a new AbstractLine2D, which is the portion of this
+	 * AbstractLine2D delimited by parameters t0 and t1.
 	 * Casts the result to StraightLine2D, Ray2D or LineSegment2D when
 	 * appropriate.
 	 */
-	public StraightObject2D getSubCurve(double t0, double t1){
+	public AbstractLine2D getSubCurve(double t0, double t1){
 		t0 = Math.max(t0, this.getT0());
 		t1 = Math.min(t1, this.getT1());
 		if(Double.isInfinite(t1)){
@@ -668,21 +687,21 @@ public abstract class StraightObject2D implements SmoothOrientedCurve2D{
 		return false;
 	}
 
-	public abstract StraightObject2D transform(AffineTransform2D transform);
+	public abstract AbstractLine2D transform(AffineTransform2D transform);
 	
-	public CurveSet2D<? extends StraightObject2D> clip(Box2D box) {
+	public CurveSet2D<? extends AbstractLine2D> clip(Box2D box) {
 		// Clip the curve
 		CurveSet2D<ContinuousCurve2D> set = 
 			Curve2DUtils.clipContinuousCurve(this, box);
 		
 		// Stores the result in appropriate structure
-		CurveSet2D<StraightObject2D> result =
-			new CurveSet2D<StraightObject2D> ();
+		CurveSet2D<AbstractLine2D> result =
+			new CurveSet2D<AbstractLine2D> ();
 		
 		// convert the result
 		for(Curve2D curve : set.getCurves()){
-			if (curve instanceof StraightObject2D)
-				result.addCurve((StraightObject2D) curve);
+			if (curve instanceof AbstractLine2D)
+				result.addCurve((AbstractLine2D) curve);
 		}
 		return result;
 	}

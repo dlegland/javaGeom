@@ -31,7 +31,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import junit.framework.TestCase;
 
 /**
@@ -54,7 +54,7 @@ public class HalfPlane2DTest extends TestCase {
 	public void testIsBounded() {
 		Point2D p1 = new Point2D(-1, 1);
 		Point2D p2 = new Point2D(1, 2);
-		StraightObject2D line1 = new StraightLine2D(p2, p1);
+		LinearShape2D line1 = new StraightLine2D(p2, p1);
 		line1 = new Ray2D(-10, -10, 30, 20);		
 		HalfPlane2D plane = new HalfPlane2D(line1);
 		assertTrue(!plane.isBounded());
@@ -63,7 +63,7 @@ public class HalfPlane2DTest extends TestCase {
 	public void testGetBoundary() {
 		Point2D p1 = new Point2D(-1, 1);
 		Point2D p2 = new Point2D(1, 2);
-		StraightObject2D line1 = new StraightLine2D(p2, p1);
+		LinearShape2D line1 = new StraightLine2D(p2, p1);
 		line1 = new Ray2D(-10, -10, 30, 20);		
 		HalfPlane2D plane = new HalfPlane2D(line1);
 		assertTrue(plane.getBoundary().equals(new StraightLine2D(line1)));

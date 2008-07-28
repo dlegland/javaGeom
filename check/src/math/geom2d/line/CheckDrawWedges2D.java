@@ -32,18 +32,18 @@ public class CheckDrawWedges2D extends JPanel{
 	InvertedRay2D inv2 	= new InvertedRay2D(x0, y0+d, -1, -2);
 	Ray2D ray2 			= new Ray2D(x0, y0+d, -1, 2);
 	
-	BoundaryPolyCurve2D<StraightObject2D> wedge1; 
-	BoundaryPolyCurve2D<StraightObject2D> wedge2; 
-	BoundarySet2D<BoundaryPolyCurve2D<StraightObject2D>> boundary;
+	BoundaryPolyCurve2D<AbstractLine2D> wedge1; 
+	BoundaryPolyCurve2D<AbstractLine2D> wedge2; 
+	BoundarySet2D<BoundaryPolyCurve2D<AbstractLine2D>> boundary;
 	
 	@SuppressWarnings("unchecked")
 	public CheckDrawWedges2D(){
-		wedge1 = new BoundaryPolyCurve2D<StraightObject2D>(
-				new StraightObject2D[]{inv1, ray1});
-		wedge2 = new BoundaryPolyCurve2D<StraightObject2D>(
-				new StraightObject2D[]{inv2, ray2});
+		wedge1 = new BoundaryPolyCurve2D<AbstractLine2D>(
+				new AbstractLine2D[]{inv1, ray1});
+		wedge2 = new BoundaryPolyCurve2D<AbstractLine2D>(
+				new AbstractLine2D[]{inv2, ray2});
 		// Unchecked type cast
-		boundary = new BoundarySet2D<BoundaryPolyCurve2D<StraightObject2D>>(
+		boundary = new BoundarySet2D<BoundaryPolyCurve2D<AbstractLine2D>>(
 			new BoundaryPolyCurve2D[]{wedge1, wedge2});
 	}
 	

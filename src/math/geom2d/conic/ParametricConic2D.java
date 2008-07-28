@@ -35,7 +35,7 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -132,9 +132,9 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
+	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		return conic.getIntersections(line);
 	}
 

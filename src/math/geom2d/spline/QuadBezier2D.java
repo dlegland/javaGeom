@@ -38,7 +38,7 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -254,9 +254,9 @@ public class QuadBezier2D
 
 	/**
 	 * Use approximation, by replacing Bezier curve with a polyline. 
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
+	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		return this.getAsPolyline(100).getIntersections(line);
 	}
 

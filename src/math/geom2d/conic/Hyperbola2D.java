@@ -33,7 +33,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
@@ -228,7 +228,7 @@ implements Conic2D{
 	 * @param point
 	 * @return
 	 */
-	private StraightObject2D formatLine(StraightObject2D line){
+	private LinearShape2D formatLine(LinearShape2D line){
 		line = line.transform(AffineTransform2D.createTranslation(-xc, -yc));
 		line = line.transform(AffineTransform2D.createRotation(-theta));
 		line = line.transform(AffineTransform2D.createScaling(1.0/a, 1.0/b));
@@ -348,12 +348,12 @@ implements Conic2D{
 		return new Hyperbola2D(this.xc, this.yc, this.a, this.b, this.theta, !this.direct);
 	}
 
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		
 		Collection<Point2D> points = new ArrayList<Point2D>();
 		
 		// format to 'standard' hyperbola
-		StraightObject2D line2 = formatLine(line);
+		LinearShape2D line2 = formatLine(line);
 		
 		// Extract formatted line parameters
 		Point2D origin = line2.getOrigin();
@@ -385,7 +385,7 @@ implements Conic2D{
 			double x2 = (-b + Math.sqrt(delta))/(2*a);
 			
 			// support line of formatted line
-			StraightLine2D support = line2.getSupportLine();
+			StraightLine2D support = line2.getSupportingLine();
 
 			// check first point is on the line
 			double pos1 = support.project(new Point2D(x1, k*x1+yi));
@@ -420,7 +420,7 @@ implements Conic2D{
 			double y2 = (-b + Math.sqrt(delta))/(2*a);
 
 			// support line of formatted line
-			StraightLine2D support = line2.getSupportLine();
+			StraightLine2D support = line2.getSupportingLine();
 
 			// check first point is on the line
 			double pos1 = support.project(new Point2D(k*y1+xi, y1));

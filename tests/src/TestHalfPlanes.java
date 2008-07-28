@@ -6,7 +6,7 @@
 import math.geom2d.*;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.HalfPlane2D;
 import math.geom2d.polygon.SimplePolygon2D;
 
@@ -23,7 +23,7 @@ public class TestHalfPlanes{
 
 		Point2D p1 = new Point2D(-1, 1);
 		Point2D p2 = new Point2D(1, 2);
-		StraightObject2D line1 = new StraightLine2D(p2, p1);
+		LinearShape2D line1 = new StraightLine2D(p2, p1);
 		line1 = new Ray2D(-10, -10, 30, 20);
 		
 		HalfPlane2D plane = new HalfPlane2D(line1);

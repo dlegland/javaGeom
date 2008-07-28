@@ -38,7 +38,7 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Straight Edge defined by two points.
  */
-public class LineSegment2D extends StraightObject2D{
+public class LineSegment2D extends AbstractLine2D{
 
 
 	// ===================================================================

@@ -25,7 +25,7 @@
  */
 package math.geom2d;
 
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 
 /**
  * This class is only devoted to static computations.
@@ -75,8 +75,8 @@ public class Angle2D {
 	/** 
 	 * Returns the horizontal angle formed by the line joining the two given points.
 	 */
-	public final static double getHorizontalAngle(StraightObject2D object){
-		Vector2D vect = object.getVector();
+	public final static double getHorizontalAngle(LinearShape2D object){
+		Vector2D vect = object.getSupportingLine().getVector();
 		return (Math.atan2(vect.getY(), vect.getX()) + M_2PI)%(M_2PI);
 	}
 
@@ -98,7 +98,7 @@ public class Angle2D {
 	 * Gets angle between two (directed) straight objects. Result is given in radians, 
 	 * between 0 and 2*PI.
 	 */
-	public final static double getAngle(StraightObject2D obj1, StraightObject2D obj2){
+	public final static double getAngle(LinearShape2D obj1, LinearShape2D obj2){
 		double angle1 = obj1.getHorizontalAngle();
 		double angle2 = obj2.getHorizontalAngle();
 		return (angle2-angle1+M_2PI)%(M_2PI);

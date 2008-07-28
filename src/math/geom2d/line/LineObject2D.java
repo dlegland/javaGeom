@@ -69,7 +69,7 @@ import math.geom2d.transform.AffineTransform2D;
  * This class is maybe slower than Edge2D or StraightLine2D, because parameters are
  * updated each time a computation is made, causing lot of additional processing.
  */
-public class LineObject2D extends StraightObject2D{
+public class LineObject2D extends AbstractLine2D{
 
 
 	// ===================================================================
@@ -134,7 +134,7 @@ public class LineObject2D extends StraightObject2D{
 		return false;
 	}
 
-	public boolean isColinear(StraightObject2D line){		
+	public boolean isColinear(LinearShape2D line){		
 		updateParameters();
 		return super.isColinear(line);
 	}
@@ -143,7 +143,7 @@ public class LineObject2D extends StraightObject2D{
 	 * Test if the this object is parallel to the given one. This method is overloaded
 	 * to update parameters before computation.
 	 */
-	public boolean isParallel(StraightObject2D line){		
+	public boolean isParallel(LinearShape2D line){		
 		updateParameters();
 		return super.isParallel(line);
 	}

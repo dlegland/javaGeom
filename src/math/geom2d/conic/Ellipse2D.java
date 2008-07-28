@@ -43,9 +43,9 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
-import math.geom2d.line.StraightObject2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
@@ -989,7 +989,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	 * that ellipse becomes a circle, then using the intersections computation
 	 * from circle. 
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line){
+	public Collection<Point2D> getIntersections(LinearShape2D line){
 		// Compute the transform2D which transforms ellipse into unit circle
 		AffineTransform2D trans = new AffineTransform2D();
 		trans = trans.compose(AffineTransform2D.createScaling(1/this.r1, 1/this.r2));
@@ -997,7 +997,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		trans = trans.compose(AffineTransform2D.createTranslation(-this.xc, -this.yc));
 		
 		// transform the line accordingly
-		StraightObject2D line2 = line.transform(trans);
+		LinearShape2D line2 = line.transform(trans);
 		
 		// The list of intersections
 		Collection<Point2D> points;

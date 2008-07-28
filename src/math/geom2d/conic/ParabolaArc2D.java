@@ -40,7 +40,7 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -226,7 +226,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return Math.min(Math.max(t, t0), t1);
 	}
 
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		Collection<Point2D> inters0 = this.parabola.getIntersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
 		for(Point2D point : inters0){

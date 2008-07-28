@@ -16,7 +16,7 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.Polyline2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -149,7 +149,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return false;
 	}
 
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		Collection<Point2D> inters0 = this.branch.getIntersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
 		for(Point2D point : inters0){
