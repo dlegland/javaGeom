@@ -27,7 +27,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Box2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 import java.util.*;
@@ -197,7 +197,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	// methods inherited from interface Curve2D 
 	
 	
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		ArrayList<Point2D> intersect = new ArrayList<Point2D>();
 
 		// add intersections with each curve

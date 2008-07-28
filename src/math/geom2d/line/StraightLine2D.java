@@ -49,7 +49,7 @@ import math.geom2d.transform.AffineTransform2D;
  * a point and a parallel line or straight object, or with coefficient of the 
  * Cartesian equation.
  */
-public class StraightLine2D extends StraightObject2D implements ContinuousBoundary2D{
+public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary2D{
 
 	// ===================================================================
 	// constants
@@ -118,7 +118,7 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	 * Return a new Straight line, parallel to another straight object (ray,
 	 * straight line or edge), and going through the given point.
 	 */
-	public final static StraightLine2D createParallelLine2D(StraightObject2D line, java.awt.geom.Point2D point){
+	public final static StraightLine2D createParallelLine2D(LinearShape2D line, java.awt.geom.Point2D point){
 		return new StraightLine2D(line, point);
 	}
 
@@ -126,7 +126,8 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	 * Return a new Straight line, parallel to another straight object (ray,
 	 * straight line or edge), and going through the given point.
 	 */
-	public final static StraightLine2D createParallelLine2D(StraightObject2D line, double d){
+	public final static StraightLine2D createParallelLine2D(LinearShape2D linear, double d){
+		StraightLine2D line = linear.getSupportingLine();
 		double dd = Math.sqrt(line.dx*line.dx+line.dy*line.dy);
 		return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd, line.dx, line.dy);
 	}
@@ -135,7 +136,9 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	 * Return a new Straight line, parallel to another straigth object (ray,
 	 * straight line or edge), and going through the given point.
 	 */
-	public final static StraightLine2D createOrthogonalLine2D(StraightObject2D line, Point2D point){
+	public final static StraightLine2D createOrthogonalLine2D(
+			LinearShape2D linear, Point2D point){
+		StraightLine2D line = linear.getSupportingLine();
 		return new StraightLine2D(point, -line.dy, line.dx);
 	}
 
@@ -199,11 +202,11 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	}
 
 	/** 
-	 * Define a new Straight line at the same position and with the same direction
-	 * than an other straight object (line, edge or ray).
+	 * Define a new Straight line at the same position and with the same
+	 * direction than an other straight object (line, edge or ray).
 	 */
-	public StraightLine2D(StraightObject2D obj){
-		this(obj.x0, obj.y0, obj.dx, obj.dy);
+	public StraightLine2D(LinearShape2D line){
+		super(line);
 	}
 
 
@@ -219,8 +222,8 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 	 * Define a new Straight line, parallel to another straigth object (ray,
 	 * straight line or edge), and going through the given point.
 	 */
-	public StraightLine2D(StraightObject2D line, java.awt.geom.Point2D point){
-		this(point.getX(), point.getY(), line.dx, line.dy);
+	public StraightLine2D(LinearShape2D line, java.awt.geom.Point2D point){
+		this(point, line.getVector());
 	}
 	
 	
@@ -261,6 +264,14 @@ public class StraightLine2D extends StraightObject2D implements ContinuousBounda
 		this.y0 = p1.getY();
 		this.dx = p2.getX()-x0;
 		this.dy = p2.getY()-y0;
+	}
+	
+	public void setLine(LinearShape2D linear){
+		StraightLine2D line = linear.getSupportingLine();
+		this.x0 = line.x0;
+		this.y0 = line.y0;
+		this.dx = line.dx;
+		this.dy = line.dy;
 	}
 
 	public void setCartesianEquation(double a, double b, double c){

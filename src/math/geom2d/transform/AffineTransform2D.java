@@ -29,7 +29,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 
 /**
  * Base class for generic affine transforms in the plane. They include
@@ -51,7 +51,7 @@ public class AffineTransform2D implements Bijection2D{
 	// static methods
 	
 	public final static AffineTransform2D createGlideReflection(
-			StraightObject2D line, double distance){
+			LinearShape2D line, double distance){
 		Vector2D vector = line.getVector().getNormalizedVector();
 		Point2D origin = line.getOrigin();
 		double dx = vector.getX();
@@ -77,7 +77,8 @@ public class AffineTransform2D implements Bijection2D{
 		return createScaling(center, k, k);
 	}
 	
-	public final static AffineTransform2D createLineReflection(StraightObject2D line){
+	public final static AffineTransform2D createLineReflection(
+			LinearShape2D line){
 		Vector2D vector = line.getVector();
 		Point2D origin = line.getOrigin();
 		double dx = vector.getX();

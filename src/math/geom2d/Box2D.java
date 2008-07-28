@@ -33,11 +33,12 @@ import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
 import math.geom2d.polygon.HRectangle2D;
 
 /**
@@ -187,8 +188,8 @@ public class Box2D {
 		return lines;
 	}
 	
-	public Collection<StraightObject2D> getEdges(){
-		ArrayList<StraightObject2D> edges = new ArrayList<StraightObject2D>(4);
+	public Collection<LinearShape2D> getEdges(){
+		ArrayList<LinearShape2D> edges = new ArrayList<LinearShape2D>(4);
 
 		if(isBounded()){
 			edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
@@ -300,25 +301,25 @@ public class Box2D {
 		// Remains only 4 cases: boxes unbounded in only one direction
 		
 		if(bx0)
-			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[]{
 					new LineArc2D(xmin, ymax, -1, 0, Double.NEGATIVE_INFINITY, 0),
 					new LineSegment2D(xmin, ymax, xmin, ymin),
 					new LineArc2D(xmin, ymin, 1, 0, 0, Double.POSITIVE_INFINITY) });
 		
 		if(bx1)
-			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[]{
 					new LineArc2D(xmax, ymin, 1, 0, Double.NEGATIVE_INFINITY, 0),
 					new LineSegment2D(xmax, ymin, xmax, ymax),
 					new LineArc2D(xmax, ymax, -1, 0, 0, Double.POSITIVE_INFINITY) });
 			
 		if(by0)
-			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[]{
 					new LineArc2D(xmin, ymin, 0, -1, Double.NEGATIVE_INFINITY, 0),
 					new LineSegment2D(xmin, ymin, xmax, ymin),
 					new LineArc2D(xmax, ymin, 0, 1, 0, Double.POSITIVE_INFINITY) });
 		
 		if(by1)
-			return new BoundaryPolyCurve2D<StraightObject2D>(new StraightObject2D[]{
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[]{
 					new LineArc2D(xmax, ymax, 0, 1, Double.NEGATIVE_INFINITY, 0),
 					new LineSegment2D(xmax, ymax, xmin, ymax),
 					new LineArc2D(xmin, ymax, 0, -1, 0, Double.POSITIVE_INFINITY) });

@@ -29,7 +29,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Point2D;
 import math.geom2d.Box2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 
 import java.util.*;
 
@@ -138,7 +138,7 @@ public interface Curve2D extends Shape2D{
 	 * Returns the intersection points of the curve with the specified line.
 	 * The length of the result array is the number of intersection points.
 	 */
-	public abstract Collection<Point2D> getIntersections(StraightObject2D line);
+	public abstract Collection<Point2D> getIntersections(LinearShape2D line);
 
 	/**
 	 * Return the path for tracing the curve, when cursor is already located
@@ -197,7 +197,7 @@ public interface Curve2D extends Shape2D{
 			return null;
 		}
 
-		public Collection<Point2D> getIntersections(StraightObject2D line) {
+		public Collection<Point2D> getIntersections(LinearShape2D line) {
 			return null;
 		}
 

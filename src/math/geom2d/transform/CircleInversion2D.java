@@ -90,7 +90,7 @@ public class CircleInversion2D implements Transform2D{
 	 * Transformed shape can be computed for different cases:
 	 * <ul>
 	 * <li>Point2D is transformed into another Point2D</li>
-	 * <li>StraightObject2D is transformed into a CircleArc2D or a Circle2D</li>
+	 * <li>LinearShape2D is transformed into a CircleArc2D or a Circle2D</li>
 	 * <li>Circle2D is transformed into another Circle2D</li>
 	 * <li>Polyline2D is transformed into a continuous set of circle arcs</li>
 	 * </ul>
@@ -107,12 +107,12 @@ public class CircleInversion2D implements Transform2D{
 			double theta = Math.atan2(pt.getY()-yc, pt.getX()-xc);
 			return Point2D.createPolar(circle.getCenter(), d, theta);
 		}
-		else if(shape instanceof StraightObject2D){
+		else if(shape instanceof LinearShape2D){
 			Point2D center = circle.getCenter();
 			double r  = circle.getRadius();
-			StraightObject2D line = (StraightObject2D) shape;
+			LinearShape2D line = (LinearShape2D) shape;
 						
-			Point2D po = line.getProjectedPoint(center);
+			Point2D po = line.getSupportingLine().getProjectedPoint(center);
 			double d = center.getDistance(po);
 
 			// Degenerate case of a point belonging to the line :

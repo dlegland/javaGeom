@@ -229,9 +229,9 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	// Methods inherited from Curve2D interface
 	
 	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
+	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		ArrayList<Point2D> list = new ArrayList<Point2D>();
 		
 		// extract intersections with each edge, and add to a list

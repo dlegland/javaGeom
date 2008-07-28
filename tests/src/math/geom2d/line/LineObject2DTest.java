@@ -54,8 +54,8 @@ public class LineObject2DTest extends TestCase {
 		Point2D p1 = new Point2D(2, 3);
 		Point2D p2 = new Point2D(4, 7);
 		LineObject2D line = new LineObject2D(p1, p2);
-		assertTrue(line instanceof StraightObject2D);
-		assertTrue(StraightObject2D.class.isInstance(line));
+		assertTrue(line instanceof LinearShape2D);
+		assertTrue(LinearShape2D.class.isInstance(line));
 	}
 	
 	public void testGetViewAngle() {

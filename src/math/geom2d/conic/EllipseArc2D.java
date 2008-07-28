@@ -43,7 +43,7 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -365,9 +365,9 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.StraightObject2D)
+	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
 	 */
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		
 		// check point contained in it
 		ArrayList<Point2D> array = new ArrayList<Point2D>();

@@ -44,7 +44,7 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.StraightObject2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -140,7 +140,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * @param point
 	 * @return
 	 */
-	private StraightObject2D formatLine(StraightObject2D line){
+	private LinearShape2D formatLine(LinearShape2D line){
 		line = line.transform(AffineTransform2D.createTranslation(-xv, -yv));
 		line = line.transform(AffineTransform2D.createRotation(-theta));
 		line = line.transform(AffineTransform2D.createScaling(1, 1.0/a));
@@ -441,9 +441,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return formatPoint(point).getX();
 	}
 
-	public Collection<Point2D> getIntersections(StraightObject2D line) {
+	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		// Computes the lines which corresponds to a "Unit" parabola.
-		StraightObject2D line2 = this.formatLine(line);
+		LinearShape2D line2 = this.formatLine(line);
 		double dx = line2.getVector().getX();
 		double dy = line2.getVector().getY();
 		
@@ -478,7 +478,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		
 		double x;
 		Point2D point;
-		StraightLine2D support = line2.getSupportLine();
+		StraightLine2D support = line2.getSupportingLine();
 		
 		// test first intersection point
 		x = (k - Math.sqrt(delta))*.5;
