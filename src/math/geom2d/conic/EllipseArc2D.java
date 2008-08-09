@@ -47,16 +47,23 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * An arc of ellipse. It is defined by an ellipse, 
- * a starting angle, and a signed angle extent. Circle arc is oriented
- * counter-clockwise if angle extent is positive, and clockwise otherwise. 
+ * An arc of ellipse. It is defined by a supporting ellipse, a starting angle,
+ * and a signed angle extent, both in radians.
+ * The ellipse arc is oriented counter-clockwise if angle extent is positive,
+ * and clockwise otherwise. 
  * @author dlegland
  */
 public class EllipseArc2D implements SmoothOrientedCurve2D{
+	
+	/** The supporting ellipse */
 	protected Ellipse2D ellipse;
 		
+	/** The starting position on ellipse, in radians between 0 and +2PI */
 	protected double startAngle=0;
+	
+	/** The signed angle extent, in radians between -2PI and +2PI.*/
 	protected double angleExtent=Math.PI;
+	
 	
 	// ====================================================================
 	// Constructors
@@ -83,7 +90,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 
 	/**
 	 * Specify supporting ellipse, start angle and end angle, and a flag
-	 * indicating wheter the arc is directed or not.
+	 * indicating whether the arc is directed or not.
 	 * @param ell the supporting ellipse
 	 * @param start the starting angle
 	 * @param end the ending angle
@@ -111,11 +118,12 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 */
 	public EllipseArc2D(double xc, double yc, double a, double b, 
 			double theta, double start, double end, boolean direct){
-		this.ellipse = new Ellipse2D(xc, yc, a, b, theta, direct);
+		this.ellipse = new Ellipse2D(xc, yc, a, b, theta);
 		this.startAngle = start;
 		this.angleExtent = Angle2D.formatAngle(end-start);
 		if(!direct) this.angleExtent = this.angleExtent - Math.PI*2;
 	}
+	
 	
 	// ====================================================================
 	// methods specific to EllipseArc2D
@@ -340,7 +348,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @return the first point of the curve
 	 */
 	public Point2D getFirstPoint(){
-		return ellipse.getPoint(startAngle);
+		return this.getPoint(0);
 	}
 	
 	/**
@@ -348,7 +356,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @return the last point of the curve.
 	 */
 	public Point2D getLastPoint(){
-		return ellipse.getPoint(startAngle+angleExtent);
+		return this.getPoint(Math.abs(angleExtent));
 	}
 
 	public Collection<Point2D> getSingularPoints(){
@@ -508,8 +516,20 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
 	 */
 	public EllipseArc2D transform(AffineTransform2D trans) {
+		// transform supporting ellipse
 		Ellipse2D ell = ellipse.transform(trans);
-		return new EllipseArc2D(ell, startAngle, angleExtent);
+		
+		// ensure ellipse is direct
+		if(!ell.isDirect())
+			ell = ell.getReverseCurve();
+		
+		// Compute position of end points on the transformed ellipse
+		double startPos = ell.project(this.getFirstPoint().transform(trans));
+		double endPos = ell.project(this.getLastPoint().transform(trans));
+		
+		// Compute the new arc
+		boolean direct = !(angleExtent>0 ^ trans.isDirect());
+		return new EllipseArc2D(ell, startPos, endPos, direct);
 	}
 
 
@@ -584,85 +604,42 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
 		
-		double cot = Math.cos(ellipse.theta);
-		double sit = Math.sin(ellipse.theta);
-		double xc = ellipse.xc;
-		double yc = ellipse.yc;
-		double r1 = ellipse.r1;
-		double r2 = ellipse.r2;
-		double endAngle = startAngle+angleExtent;
+//		double cot = Math.cos(ellipse.theta);
+//		double sit = Math.sin(ellipse.theta);
+//		double xc = ellipse.xc;
+//		double yc = ellipse.yc;
+//		double r1 = ellipse.r1;
+//		double r2 = ellipse.r2;
+//		
+//		double t, x, y;
 		
-		if(angleExtent>0)
-			for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-						(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
-		else
-			for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-						(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
+		//TODO: should be better to replace be cubic arcs
 		
-		return path;
-	}
-
-	
-	public java.awt.geom.GeneralPath getInnerPath() {
-		
-		// Creates the path
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		
-		double cot = Math.cos(ellipse.theta);
-		double sit = Math.sin(ellipse.theta);
-		double xc = ellipse.xc;
-		double yc = ellipse.yc;
-		double r1 = ellipse.r1;
-		double r2 = ellipse.r2;
-		double endAngle = startAngle+angleExtent;
-		
-		// position to the first point
-//		path.moveTo((float)(xc+r1*Math.cos(startAngle)*cot-r2*Math.sin(startAngle)*sit), 
-//					(float)(yc+r1*Math.cos(startAngle)*sit+r2*Math.sin(startAngle)*cot));
-
-		if(angleExtent>0)
-			for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-							(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
-		else
-			for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-							(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
+		int N = 60;
+		double dt = Math.abs(angleExtent)/(double)N;
+		for(int i=1; i<=N; i++){
+//			t = startAngle + ((double) i)*dt;
+//			x = r1*Math.cos(t);
+//			y = r2*Math.sin(t);
+			Point2D point = this.getPoint(i*dt);
+			path.lineTo((float)point.getX(), (float)point.getY());
+		}
 		
 		return path;
 	}
-	
-	protected java.awt.geom.GeneralPath getGeneralPath() {
-		
-		// Creates the path
+
+	protected java.awt.geom.GeneralPath getGeneralPath() {		
+		// create new path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
-		double cot = Math.cos(ellipse.theta);
-		double sit = Math.sin(ellipse.theta);
-		double xc = ellipse.xc;
-		double yc = ellipse.yc;
-		double r1 = ellipse.r1;
-		double r2 = ellipse.r2;
-		double endAngle = startAngle+angleExtent;
+		Point2D point;
 		
-		// position to the first point
-		path.moveTo(
-				(float)(xc+r1*Math.cos(startAngle)*cot-r2*Math.sin(startAngle)*sit), 
-				(float)(yc+r1*Math.cos(startAngle)*sit+r2*Math.sin(startAngle)*cot));
-
-		// add several inner points
-		if(angleExtent>0)
-			for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-							(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
-		else
-			for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-							(float)(yc+r1*Math.cos(t)*sit+r2*Math.sin(t)*cot));
+		point = this.getFirstPoint();
+		path.moveTo((float)point.getX(), (float)point.getY());
+		path = this.appendPath(path);
 		
-		return path;
+		// return the final path
+		return path;		
 	}	
 	
 	/** 
@@ -694,11 +671,10 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		if(Math.abs(ellipse.r2-arc.ellipse.r2)>Shape2D.ACCURACY) return false;
 		if(Math.abs(ellipse.theta-arc.ellipse.theta)>Shape2D.ACCURACY) return false;
 		
-		// test is angles are the same
-		if(Math.abs(Angle2D.formatAngle(startAngle)-Angle2D.formatAngle(arc.startAngle))>
-				Shape2D.ACCURACY) return false;
-		if(Math.abs(Angle2D.formatAngle(angleExtent)-Angle2D.formatAngle(arc.angleExtent))>
-				Shape2D.ACCURACY) return false;
+		// test if angles are the same
+		if(!Angle2D.equals(startAngle, arc.startAngle)) return false;
+		if(!Angle2D.equals(angleExtent, arc.angleExtent)) return false;
+		
 		return true;
 	}
 	

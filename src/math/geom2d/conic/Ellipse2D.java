@@ -37,7 +37,6 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
@@ -58,7 +57,7 @@ import math.geom2d.transform.AffineTransform2D;
  * can be greater than the first one.
  */
 public class Ellipse2D
-implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
+implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 
 
 	// ===================================================================
@@ -917,6 +916,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 		return new EllipseArc2D(this, startAngle, extent);
 	}
 	
+	
 	// ===================================================================
 	// methods of Shape2D interface
 
@@ -1019,76 +1019,20 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Boundary2D{
 	/**
 	 * Transforms this ellipse by an affine transform. If the transformed
 	 * shape is a circle (ellipse with equal axis lengths), returns an
-	 * instance of Circle2D.
+	 * instance of Circle2D. 
+	 * The resulting ellipse is direct if this ellipse and the transform
+	 * are either both direct or both indirect.
 	 */
 	public Ellipse2D transform(AffineTransform2D trans){
 		Ellipse2D result = Ellipse2D.transformCentered(this, trans);
 		result.setCenter(this.getCenter().transform(trans));
-		result.direct = this.direct ^ !trans.isDirect();
+		result.direct = !(this.direct ^ trans.isDirect());
 		return result;
 	}
-//	public Ellipse2D transform(AffineTransform2D trans){
-//		double tmp1, tmp2;
-//		double cot = Math.cos(theta);
-//		double sit = Math.sin(theta);
-//
-//		// coef of the transform
-//		double tab[] = trans.getCoefficients();
-//		
-//		// compute coordinate of new center
-//		double xc2 = xc*tab[0] + yc*tab[1] + tab[2];
-//		double yc2 = xc*tab[3] + yc*tab[4] + tab[5];
-//		
-//		// square of r1 of new ellipse
-//		tmp1 = tab[0]*r1*cot + tab[1]*r1*sit;
-//		tmp2 = tab[3]*r1*cot + tab[4]*r1*sit;
-//		double r12 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
-//		
-//		// square of r2 of new ellipse
-//		tmp1 = tab[0]*r2*cot - tab[1]*r2*sit;
-//		tmp2 = tab[3]*r2*cot - tab[4]*r2*sit;
-//		double r22 = Math.sqrt(tmp1*tmp1 + tmp2*tmp2);
-//		
-//		if(false){
-//			// debug info
-//			double theta2_a = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
-//			double theta2_b = Math.atan2(tab[3]*cot+tab[4]*sit, tab[0]*cot+tab[1]*sit);
-//			double theta2_c = Math.asin((tab[3]*r1*cot+tab[4]*r1*sit)/r12);
-//			double theta2_d = Math.acos((tab[0]*r1*cot+tab[1]*r1*sit)/r12);
-//			System.out.println("theta2_a = " +theta2_a);
-//			System.out.println("theta2_b = " +theta2_b);
-//			System.out.println("theta2_c = " +theta2_c);
-//			System.out.println("theta2_d = " +theta2_d);
-//		}
-//		
-//		double theta2 = Math.atan2(tab[4]*sit+tab[3]*cot, tab[1]*sit+tab[0]*cot);
-//
-//		double cot2 = Math.cos(theta2);
-//		double sit2 = Math.sin(theta2);
-//		if(Math.abs(cot2)>Math.abs(sit2)){
-//			r12 = (tab[0]*r1*cot + tab[1]*r1*sit)/cot2;
-//			r22 = (tab[4]*r2*cot - tab[3]*r2*sit)/cot2;
-//		}else{
-//			r12 = (tab[3]*r1*cot + tab[4]*r1*sit)/sit2;
-//			r22 = (tab[0]*r2*sit - tab[1]*r2*cot)/sit2;
-//		}
-//		
-//		r12 = Math.abs(r12);
-//		r22 = Math.abs(r22);
-//
-//		// determine orientation of transformed ellipse
-//		boolean direct2 = !(this.direct ^ trans.isDirect());
-//		
-//		// Transform either into a circle or an ellipse
-//		if(Math.abs(r12-r22)<Shape2D.ACCURACY)
-//			return new Circle2D(xc2, yc2, r12, direct2);
-//		else
-//			return new Ellipse2D(xc2, yc2, r12, r22, theta2, direct2);
-//	}
-	
 
+	
 	// ===================================================================
-	// methods of Shape2D interface
+	// methods implementing the Shape interface
 
 	/** 
 	 * Return true if the point p lies on the ellipse, with precision given by 

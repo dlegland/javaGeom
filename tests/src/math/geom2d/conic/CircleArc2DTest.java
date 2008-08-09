@@ -34,6 +34,8 @@ import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.AffineTransform2D;
 
 import junit.framework.TestCase;
 
@@ -308,4 +310,41 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(arc.contains(0, 10));
 	}
 
+	public void testTransformAffineTransform2D(){
+		CircleArc2D arc;
+		
+		double tx = 20;
+		double ty = 10;
+		double theta = Math.PI/3;
+		double sx = 3;
+		double sy = 2;		
+		
+		// Simple direct arc
+		arc = new CircleArc2D(0, 0, 10, 0, Math.PI/2);
+		
+		// translation
+		AffineTransform2D tra = AffineTransform2D.createTranslation(tx, ty);
+		assertTrue(arc.transform(tra).equals(
+				new CircleArc2D(tx, ty, 10, 0, Math.PI/2)));
+		
+		// rotation
+		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
+		assertTrue(arc.transform(rot).equals(
+				new CircleArc2D(0, 0, 10, theta, Math.PI/2)));
+		
+		// scaling with unequal factors
+		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
+		assertTrue(arc.transform(sca).equals(
+				new EllipseArc2D(0, 0, 30, 20, 0, 0, Math.PI/2)));
+		
+		// line reflections
+		AffineTransform2D refOx = AffineTransform2D.createLineReflection(
+				new StraightLine2D(0, 0, 1, 0));
+		assertTrue(arc.transform(refOx).equals(
+				new CircleArc2D(0, 0, 10, 0, -Math.PI/2)));
+		AffineTransform2D refOy = AffineTransform2D.createLineReflection(
+				new StraightLine2D(0, 0, 0, 1));
+		assertTrue(arc.transform(refOy).equals(
+				new CircleArc2D(0, 0, 10, Math.PI, -Math.PI/2)));	
+	}
 }

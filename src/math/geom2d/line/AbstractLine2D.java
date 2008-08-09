@@ -397,7 +397,7 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 	
 	/**
-	 * Returns the unique intersection with a straight object. 
+	 * Returns the unique intersection with a linear shape. 
 	 * If the intersection doesn't exist (parallel lines), returns null.
 	 */
 	public Point2D getIntersection(LinearShape2D line){

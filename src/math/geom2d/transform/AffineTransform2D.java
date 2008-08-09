@@ -274,8 +274,23 @@ public class AffineTransform2D implements Bijection2D{
 	 */
 	public final static boolean isSimilarity(AffineTransform2D trans){
 		double[][] mat = trans.getAffineMatrix();
-		return Math.abs(mat[0][0]*mat[0][1] + mat[1][0]*mat[1][1])<
-			Shape2D.ACCURACY;		
+        // isolate linear part of the transform
+        double a = mat[0][0];
+        double b = mat[1][0];
+        double c = mat[0][1];
+        double d = mat[1][1];
+
+        // determinant
+        double k2 = Math.abs(a*d - b*c);
+        
+        // test each condition
+        if(Math.abs(a*a + b*b - k2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(c*c + d*d - k2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(a*a + c*c - k2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(b*b + d*d - k2)>Shape2D.ACCURACY) return false;
+ 
+        // if each test passed, return true
+        return true;
 	}
 
 

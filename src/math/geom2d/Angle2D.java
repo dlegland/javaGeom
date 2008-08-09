@@ -166,6 +166,21 @@ public class Angle2D {
 	}
 
 	/**
+	 * Checks whether two angles are equal. 
+	 * @param angle1 first angle to compare
+	 * @param angle2 second angle to compare
+	 * @return true if the two angle are equal modulo 2*PI
+	 */
+	public final static boolean equals(double angle1, double angle2){
+		angle1 = Angle2D.formatAngle(angle1);
+		angle2 = Angle2D.formatAngle(angle2);
+		double diff = Angle2D.formatAngle(angle1-angle2);
+		if(diff<Shape2D.ACCURACY) return true;
+		if(Math.abs(diff-Math.PI*2)<Shape2D.ACCURACY) return true;
+		return false;
+	}
+	
+	/**
 	 * Tests if an angle belongs to an angular interval, defined by two
 	 * limit angle, counted Counter-clockwise.
 	 * @param startAngle the beginning of the angular domain

@@ -1,6 +1,6 @@
 Changes of javaGeom library
 
-javaGeom-0.6.2 (20??-??-??, rev. ??)
+javaGeom-0.6.2 (2008-07-30, rev. 153)
 
 New features:
 geom2d:
