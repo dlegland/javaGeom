@@ -25,6 +25,8 @@
  */
 package math.geom2d.conic;
 
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.AffineTransform2D;
 import junit.framework.TestCase;
 
 public class EllipseArc2DTest extends TestCase {
@@ -67,4 +69,59 @@ public class EllipseArc2DTest extends TestCase {
 		assertTrue(arc1.equals(arc4));
 	}
 
+	public void testTransformAffineTransform2D(){
+		EllipseArc2D arc, transformed;
+		double x0 = 0;
+		double y0 = 0;
+		double a = 20;
+		double b = 10;
+		
+		double tx = 20;
+		double ty = 10;
+		double theta = Math.PI/3;
+		double sx = 3;
+		double sy = 2;		
+		
+		// Simple direct arc
+		arc = new EllipseArc2D(x0, y0, a, b, 0, 0, Math.PI/2);
+		
+		// translation
+		AffineTransform2D tra = AffineTransform2D.createTranslation(tx, ty);
+		assertTrue(arc.transform(tra).equals(
+				new EllipseArc2D(tx, ty, a, b, 0, 0, Math.PI/2)));
+		
+		// rotation
+		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
+		assertTrue(arc.transform(rot).equals(
+				new EllipseArc2D(x0, y0, a, b, theta, 0, Math.PI/2)));
+		
+		// scaling with unequal factors
+		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
+		assertTrue(arc.transform(sca).equals(
+				new EllipseArc2D(x0, y0, a*sx, b*sy, 0, 0, Math.PI/2)));
+		
+		// line reflections
+		AffineTransform2D refOx = AffineTransform2D.createLineReflection(
+				new StraightLine2D(0, 0, 1, 0));
+		assertTrue(arc.transform(refOx).equals(
+				new EllipseArc2D(x0, y0, a, b, 0, 0, -Math.PI/2)));
+		AffineTransform2D refOy = AffineTransform2D.createLineReflection(
+				new StraightLine2D(0, 0, 0, 1));
+		assertTrue(arc.transform(refOy).equals(
+				new EllipseArc2D(x0, y0, a, b, 0, Math.PI, -Math.PI/2)));
+		
+		// Rotated ellipse
+		arc = new EllipseArc2D(x0, y0, a, b, Math.PI/3, 0, Math.PI/2);
+		transformed = arc.transform(refOy);
+		assertTrue(transformed.equals(
+				new EllipseArc2D(x0, y0, a, b, 2*Math.PI/3, 0, -Math.PI/2)));
+		
+		// Rotated ellipse, from indirect ellipse
+		Ellipse2D ell = new Ellipse2D(x0, y0, a, b, Math.PI/3, true);
+		Ellipse2D ell2 = new Ellipse2D(x0, y0, a, b, 2*Math.PI/3, false);
+		arc = new EllipseArc2D(ell, 0, Math.PI/2);
+		transformed = arc.transform(refOy);
+		assertTrue(transformed.equals(new EllipseArc2D(ell2, 0, -Math.PI/2)));
+	}
+	
 }

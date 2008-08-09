@@ -114,6 +114,30 @@ public class AffineTransform2DTest extends TestCase {
 		
 	}
 	
+	public void testIsSimilarityAffineTransform2D(){
+		// Test on some isometries
+		assertTrue(AffineTransform2D.isSimilarity(
+				AffineTransform2D.createTranslation(2, 3)));
+		
+		assertTrue(AffineTransform2D.isSimilarity(
+				AffineTransform2D.createRotation(2, 3, Math.PI/3)));
+		
+		assertTrue(AffineTransform2D.isSimilarity(
+				AffineTransform2D.createLineReflection(new StraightLine2D(
+						new Point2D(10, 20), new Vector2D(3, 2)))));
+		
+		// Test with scaling with various coefficients
+		assertTrue(!AffineTransform2D.isSimilarity(
+				AffineTransform2D.createScaling(2, .5)));
+		
+		assertTrue(AffineTransform2D.isSimilarity(
+				AffineTransform2D.createScaling(1, 1)));
+		
+		assertTrue(AffineTransform2D.isSimilarity(
+				AffineTransform2D.createScaling(3, 3)));
+		
+	}
+	
 	public void testGetInverseTransform(){
 		AffineTransform2D trans1  = new AffineTransform2D(1, 0, 5, 0, 1, 10);	
 		AffineTransform2D trans1i = (AffineTransform2D)trans1.getInverseTransform();
