@@ -250,7 +250,7 @@ public class CircleArc2DTest extends TestCase {
 	}
 	
 	
-	public void testGetClippedShape() {
+	public void testClipBox2D() {
 		// defines some shapes
 		CircleArc2D arc1 = new CircleArc2D(new Point2D(0, 0), 10, 0, Math.PI/2);
 		CircleArc2D arc2 = new CircleArc2D(new Point2D(0, 0), 10, 3*Math.PI/2, 3*Math.PI/2);
@@ -294,22 +294,37 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(curve1.equals(arc1));
 
 	}
-
+	
+	public void testGetReverseCurve(){
+		// direct arc, direct circle
+		Circle2D circle1 = new Circle2D(0, 0, 10);
+		CircleArc2D arc1 = new CircleArc2D(circle1, 0, Math.PI/2);
+		assertTrue(arc1.getReverseCurve().equals(
+				new CircleArc2D(circle1, Math.PI/2, -Math.PI/2)));
+		
+		// inverse circle arc, inverse circle
+		Circle2D circle2 = new Circle2D(0, 0, 10, false);
+		CircleArc2D arc2 = new CircleArc2D(circle2, Math.PI, -Math.PI/2);
+		assertTrue(arc2.getReverseCurve().equals(
+				new CircleArc2D(circle2, Math.PI/2, Math.PI/2)));
+		
+		// direct arc, indirect circle
+		CircleArc2D arc3 = new CircleArc2D(circle2, 0, Math.PI/2);
+		assertTrue(arc3.getReverseCurve().equals(
+				new CircleArc2D(circle2, Math.PI/2, -Math.PI/2)));
+		
+		// inverse circle arc, direct circle
+		CircleArc2D arc4 = new CircleArc2D(circle1, Math.PI, -Math.PI/2);
+		assertTrue(arc4.getReverseCurve().equals(
+				new CircleArc2D(circle1, Math.PI/2, Math.PI/2)));
+	}
+	
 	public void testClass(){
-		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, Math.PI/2);
+		Point2D origin = new Point2D(0, 0);
+		CircleArc2D arc = new CircleArc2D(origin, 10, 0, Math.PI/2);
 		assertTrue(Curve2D.class.isInstance(arc));
 	}
 	
-	/*
-	 * Test for boolean contains(double, double)
-	 */
-	public void testContainsdoubledouble() {
-		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, Math.PI/2);
-		assertTrue(!arc.contains(0, 0));
-		assertTrue(arc.contains(10, 0));
-		assertTrue(arc.contains(0, 10));
-	}
-
 	public void testTransformAffineTransform2D(){
 		CircleArc2D arc;
 		
@@ -346,5 +361,15 @@ public class CircleArc2DTest extends TestCase {
 				new StraightLine2D(0, 0, 0, 1));
 		assertTrue(arc.transform(refOy).equals(
 				new CircleArc2D(0, 0, 10, Math.PI, -Math.PI/2)));	
+	}
+	
+	/*
+	 * Test for boolean contains(double, double)
+	 */
+	public void testContainsdoubledouble() {
+		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, Math.PI/2);
+		assertTrue(!arc.contains(0, 0));
+		assertTrue(arc.contains(10, 0));
+		assertTrue(arc.contains(0, 10));
 	}
 }

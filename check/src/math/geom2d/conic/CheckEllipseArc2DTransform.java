@@ -83,8 +83,8 @@ public class CheckEllipseArc2DTransform extends JPanel{
 		g2.draw(ellipse.transform(trans));
 		g2.setColor(Color.BLUE);
 		CurveSet2D<? extends Curve2D> transformed = clipped.transform(trans);
-		g2.draw(clipped.getFirstCurve().transform(trans));
-		//g2.draw(transformed);
+		//g2.draw(clipped.getFirstCurve().transform(trans));
+		g2.draw(transformed);
 	}
 
 	public final static void main(String[] args){

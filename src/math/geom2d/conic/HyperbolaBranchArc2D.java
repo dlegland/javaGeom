@@ -27,6 +27,7 @@ import math.geom2d.transform.AffineTransform2D;
 public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		SmoothCurve2D {
 
+	/** The supporting hyperbola branch */
 	HyperbolaBranch2D branch = null;
 	
 	double t0 = 0;
@@ -273,8 +274,16 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public HyperbolaBranchArc2D transform(AffineTransform2D trans) {
-		HyperbolaBranch2D branch2 = (HyperbolaBranch2D)branch.transform(trans);
-		return new HyperbolaBranchArc2D(branch2, t0, t1);
+		HyperbolaBranch2D branch2 = branch.transform(trans);
+		
+		// Compute position of end points on the transformed parabola
+		double startPos = Double.isInfinite(t0) ? Double.NEGATIVE_INFINITY :
+			branch2.project(this.getFirstPoint().transform(trans));
+		double endPos = Double.isInfinite(t1) ? Double.POSITIVE_INFINITY : 
+			branch2.project(this.getLastPoint().transform(trans));
+		
+		// Compute the new arc		
+		return new HyperbolaBranchArc2D(branch2, startPos, endPos);
 	}
 
 	
@@ -293,12 +302,12 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return true;
 	}
 
-	/** Return false: a curve does not contain a rectangle*/
+	/** Returns false: a curve does not contain a rectangle*/
 	public boolean contains(java.awt.geom.Rectangle2D r) {
 		return false;
 	}
 
-	/** Return false: a curve does not contain a rectangle*/
+	/** Returns false: a curve does not contain a rectangle*/
 	public boolean contains(double x, double y, double w, double h) {
 		return false;
 	}

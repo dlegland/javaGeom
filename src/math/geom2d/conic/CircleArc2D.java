@@ -470,12 +470,12 @@ public class CircleArc2D extends EllipseArc2D{
 	}
 	
 	/**
-	 * returns the circle arc which refers to the reversed parent circle,
+	 * Returns the circle arc which refers to the same parent circle,
 	 * with same start angle, and with opposite angle extent.
 	 */
 	public CircleArc2D getReverseCurve(){
-		return new CircleArc2D(this.circle.getReverseCurve(), 
-				startAngle, -angleExtent);
+		return new CircleArc2D(this.circle, 
+				startAngle+angleExtent, -angleExtent);
 	}
 		
 	/**
