@@ -100,9 +100,13 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		this.theta = theta;
 	}
 
+	
 	// ==========================================================
 	// methods specific to Parabola2D
 	
+	/**
+	 * Returns the focus of the parabola.
+	 */
 	public Point2D getFocus() {
 		double c = 1/a/4.0;
 		return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
@@ -120,8 +124,39 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return new Point2D(xv, yv);
 	}
 
+	/**
+	 * Returns the first direction vector of the parabola
+	 */
+	public Vector2D getVector1() {
+		Vector2D vect = new Vector2D(1, 0);
+		return vect.transform(AffineTransform2D.createRotation(theta));
+	}
+
 	/** 
-	 * Change coordinate of the point to correspond to a standard parabola.
+	 * Returns the second direction vector of the parabola.
+	 */
+	public Vector2D getVector2() {
+		Vector2D vect = new Vector2D(1, 0);
+		return vect.transform(AffineTransform2D.createRotation(theta+Math.PI/2));
+	}
+
+	/**
+	 * Returns orientation angle of parabola. It is defined as the angle of
+	 * the derivative at the vertex.
+	 */
+	public double getAngle() {
+		return theta;
+	}
+
+	/**
+	 * Returns true if the parameter a is positive.
+	 */
+	public boolean isDirect() {
+		return a>0;
+	}
+	
+	/** 
+	 * Changes coordinate of the point to correspond to a standard parabola.
 	 * Standard parabola s such that y=x^2 for every point of the parabola.
 	 * @param point
 	 * @return
@@ -135,7 +170,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 	
 	/** 
-	 * Change coordinate of the line to correspond to a standard parabola.
+	 * Changes coordinate of the line to correspond to a standard parabola.
 	 * Standard parabola s such that y=x^2 for every point of the parabola.
 	 * @param point
 	 * @return
@@ -147,44 +182,13 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return line;
 	}
 	
+
 	// ==========================================================
 	// methods implementing the Conic2D interface
 
 	public Conic2D.Type getConicType() {
 		return Conic2D.Type.PARABOLA;
 	}
-
-//	public boolean isEllipse() {
-//		return false;
-//	}
-//
-//	public boolean isParabola() {
-//		return true;
-//	}
-//
-//	public boolean isHyperbola() {
-//		return false;
-//	}
-//
-//	public boolean isCircle() {
-//		return false;
-//	}
-//
-//	public boolean isStraightLine() {
-//		return false;
-//	}
-//
-//	public boolean isTwoLines() {
-//		return false;
-//	}
-//
-//	public boolean isPoint() {
-//		return false;
-//	}
-//
-//	public boolean isDegenerated() {
-//		return false;
-//	}
 
 	/**
 	 * @deprecated use getConicCoefficients instead
@@ -213,52 +217,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		};
 	}
 
-//	public Point2D getCenter() {
-//		return null;
-//	}
-
-//	public Point2D getFocus1() {
-//		double c = 1/a/4.0;
-//		return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
-//	}
-
-//	/**
-//	 * Always return Point2D.INFINITY_POINT.
-//	 */
-//	public Point2D getFocus2() {
-//		return Point2D.INFINITY_POINT;
-//	}
-
-	/**
-	 * return the first vector of the parabola
-	 */
-	public Vector2D getVector1() {
-		Vector2D vect = new Vector2D(1, 0);
-		return vect.transform(AffineTransform2D.createRotation(theta));
-	}
-
-	/** 
-	 * return second director vector of the parabola.
-	 */
-	public Vector2D getVector2() {
-		Vector2D vect = new Vector2D(1, 0);
-		return vect.transform(AffineTransform2D.createRotation(theta+Math.PI/2));
-	}
-
-//	/**
-//	 * return 0.
-//	 */
-//	public double getLength1() {
-//		return 0;
-//	}
-//
-//	/**
-//	 * return 0.
-//	 */
-//	public double getLength2() {
-//		return 0;
-//	}
-
 	/**
 	 * Return 1, by definition for a parabola.
 	 */
@@ -266,21 +224,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return 1.0;
 	}
 
-	/**
-	 * Return orientation angle of parabola. It is defined as the angle of
-	 * the derivative at the vertex.
-	 */
-	public double getAngle() {
-		return theta;
-	}
-
-	/**
-	 * at the moment, return true.
-	 */
-	public boolean isDirect() {
-		return a>0;
-	}
-	
 	
 	// ==========================================================
 	// methods implementing the Boundary2D interface
@@ -328,6 +271,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return y>x*x;
 	}
 
+	
 	// ==========================================================
 	// methods implementing the SmoothCurve2D interface
 	
@@ -337,7 +281,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	/**
-	 * returns the curvature of the ellipse.
+	 * Returns the curvature of the parabola at the given position.
 	 */
 	public double getCurvature(double t){
 		double p2 = .25/a/a;
@@ -349,18 +293,24 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// methods implementing the ContinuousCurve2D interface
 
 	/**
-	 * return the polyline of the parabola arc from t=-100 to t=100.
+	 * Returns the polyline of the parabola arc from t=-100 to t=100.
 	 */
 	public Polyline2D getAsPolyline(int n){
 		return new ParabolaArc2D(this, -100, 100).getAsPolyline(n);
 	}
 
+	/**
+	 * Returns a collection containing only this parabola.
+	 */
 	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
 		ArrayList<Parabola2D> list = new ArrayList<Parabola2D>(1);
 		list.add(this);
 		return list;
 	}
 
+	/**
+	 * Returns false, as a parabola is an open curve.
+	 */
 	public boolean isClosed() {
 		return false;
 	}
@@ -397,19 +347,22 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	/**
-	 * return the constant Point2D.INFINITY_POINT.
+	 * Returns the constant Point2D.INFINITY_POINT.
 	 */
 	public Point2D getFirstPoint() {
 		return Point2D.INFINITY_POINT;
 	}
 
 	/**
-	 * return the constant Point2D.INFINITY_POINT.
+	 * Returns the constant Point2D.INFINITY_POINT.
 	 */
 	public Point2D getLastPoint() {
 		return Point2D.INFINITY_POINT;
 	}
 
+	/**
+	 * Returns an empty collection of singular points.
+	 */
 	public Collection<Point2D> getSingularPoints(){
 		return new ArrayList<Point2D>(0);
 	}
@@ -529,6 +482,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return new ParabolaArc2D(this, -100, 100).getDistance(x, y);
 	}
 	
+
+	// ===============================================
 	// methods implementing the Shape2D interface
 	
 	/** Always returns false, because a parabola is not bounded.*/
@@ -574,6 +529,11 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 
+	/**
+	 * Transforms the parabola by an affine transform.
+	 * The transformed parabola is direct if this parabola and the affine
+	 * transform are both either direct or indirect.
+	 */
 	public Parabola2D transform(AffineTransform2D trans) {
 		Point2D vertex = this.getVertex().transform(trans); 
 		Point2D focus = this.getFocus().transform(trans);
@@ -589,8 +549,12 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 			return new Parabola2D(vertex, -a, theta+Math.PI);
 	}
 
+
+	// ===============================================
+	// methods implementing the Shape interface
+	
 	/**
-	 * Return bounding box of the shape.
+	 * Returns bounding box of the parabola.
 	 */
 	public java.awt.Rectangle getBounds(){
 		return this.getBoundingBox().getAsAWTRectangle();
@@ -603,9 +567,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return this.getBoundingBox().getAsAWTRectangle2D();
 	}
 
-
-	//	 methods implementing the Shape interface
-	
 	public boolean contains(double x, double y) {
 		// Process the point to be in a basis such that parabola is vertical
 		Point2D p2 = formatPoint(new Point2D(x, y));
@@ -672,28 +633,29 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	/**
-	 * compute path of a ParabolaArc2D with -100<t<100.
+	 * Computes path of a ParabolaArc2D with -100<t<100.
 	 */
 	public java.awt.geom.GeneralPath getGeneralPath(){
 		return new ParabolaArc2D(this, -100, 100).getGeneralPath();
 	}
 	
 	/**
-	 * return path iterator of a ParabolaArc2D with -100<t<100.
+	 * Returns path iterator of a ParabolaArc2D with -100<t<100.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans) {
 		return getGeneralPath().getPathIterator(trans);
 	}
 
 	/**
-	 * return path iterator of a ParabolaArc2D with -100<t<100.
+	 * Returns path iterator of a ParabolaArc2D with -100<t<100.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
 		return getGeneralPath().getPathIterator(trans, flatness);
 	}
-	// ====================================================================
-	// Methods inherited from object interface
 	
+	
+	// ====================================================================
+	// Methods inherited from the object class	
 	
 	public boolean equals(Object obj){
 		if(!(obj instanceof Parabola2D)) return false;
@@ -702,8 +664,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		if ((this.xv-parabola.xv)>Shape2D.ACCURACY) return false;
 		if ((this.yv-parabola.yv)>Shape2D.ACCURACY) return false;
 		if ((this.a-parabola.a)>Shape2D.ACCURACY) return false;
-		if ((Angle2D.formatAngle(this.theta)-Angle2D.formatAngle(parabola.theta))>Shape2D.ACCURACY)
-			return false;
+		if (!Angle2D.equals(this.theta, parabola.theta)) return false;
 		
 		return true;
 	}

@@ -311,7 +311,16 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	}
 	
 	public ParabolaArc2D transform(AffineTransform2D trans) {
-		return new ParabolaArc2D(parabola.transform(trans), t0, t1);
+		Parabola2D par = parabola.transform(trans);
+		
+		// Compute position of end points on the transformed parabola
+		double startPos = Double.isInfinite(t0) ? Double.NEGATIVE_INFINITY :
+			par.project(this.getFirstPoint().transform(trans));
+		double endPos = Double.isInfinite(t1) ? Double.POSITIVE_INFINITY : 
+			par.project(this.getLastPoint().transform(trans));
+		
+		// Compute the new arc		
+		return new ParabolaArc2D(par, startPos, endPos);
 	}
 
 	
