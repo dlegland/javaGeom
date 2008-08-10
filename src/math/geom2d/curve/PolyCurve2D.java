@@ -172,8 +172,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		return result;
 	}
 
-	public PolyCurve2D<? extends ContinuousCurve2D> transform(AffineTransform2D trans) {
-		PolyCurve2D<ContinuousCurve2D> result = new PolyCurve2D<ContinuousCurve2D>();
+	public PolyCurve2D<? extends ContinuousCurve2D> transform(
+			AffineTransform2D trans) {
+		PolyCurve2D<ContinuousCurve2D> result = 
+			new PolyCurve2D<ContinuousCurve2D>();
 		for(ContinuousCurve2D curve : curves)
 			result.addCurve(curve.transform(trans));
 		result.setClosed(this.closed);
@@ -181,8 +183,9 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 	}
 
 
-	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){		
-		Point2D point = new Point2D();
+	public java.awt.geom.GeneralPath appendPath(
+			java.awt.geom.GeneralPath path){	
+		Point2D point;
 		for(ContinuousCurve2D curve : getCurves()){
 			point = curve.getPoint(curve.getT0());
 			path.lineTo((float)point.getX(), (float)point.getY());

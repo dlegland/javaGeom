@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 import java.util.*;
 
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.conic.CircleArc2D;
 
 
@@ -61,7 +62,36 @@ public class CurveSet2DTest extends TestCase {
 		pos1 = 2.3;
 		point1 = set.getPoint(pos1);
 		assertEquals(set.getPosition(point1), pos1, 1e-10);
+	}
+	
+	public void testGetLocalPosition() {
+		double r = 10;
+		double extent = 2*Math.PI/3;
+		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, extent);
+		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, extent);	
+		CurveSet2D<CircleArc2D> set = new CurveSet2D<CircleArc2D>();
+		set.addCurve(arc1);
+		set.addCurve(arc2);
+		
+		assertEquals(set.getLocalPosition(0), 0, Shape2D.ACCURACY);
+		assertEquals(set.getLocalPosition(1), extent, Shape2D.ACCURACY);
+		assertEquals(set.getLocalPosition(2), 0, Shape2D.ACCURACY);
+		assertEquals(set.getLocalPosition(3), extent, Shape2D.ACCURACY);
+	}
 
+	public void testGetGlobalPosition() {
+		double r = 10;
+		double extent = 2*Math.PI/3;
+		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, extent);
+		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, extent);	
+		CurveSet2D<CircleArc2D> set = new CurveSet2D<CircleArc2D>();
+		set.addCurve(arc1);
+		set.addCurve(arc2);
+		
+		assertEquals(set.getGlobalPosition(0, 0), 0, Shape2D.ACCURACY);
+		assertEquals(set.getGlobalPosition(0, extent), 1, Shape2D.ACCURACY);
+		assertEquals(set.getGlobalPosition(1, 0), 2, Shape2D.ACCURACY);
+		assertEquals(set.getGlobalPosition(1, extent), 3, Shape2D.ACCURACY);
 	}
 	
 	/*
