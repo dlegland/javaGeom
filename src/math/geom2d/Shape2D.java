@@ -84,6 +84,12 @@ public interface Shape2D extends java.awt.Shape{
 	public abstract boolean isEmpty();
 	
 	/**
+	 * Returns the bounding box of the shape.
+	 * @return the bounding box of the shape.
+	 */
+	public abstract Box2D getBoundingBox();
+
+	/**
 	 * Clip the shape with the given box, and returns a new shape. The box
 	 * must be bounded.
 	 * @param box the clipping box
@@ -92,13 +98,7 @@ public interface Shape2D extends java.awt.Shape{
 	public abstract Shape2D clip(Box2D box);
 	
 	/**
-	 * Returns the bounding box of the shape.
-	 * @return the bounding box of the shape.
-	 */
-	public abstract Box2D getBoundingBox();
-
-	/**
-	 * transform the shape by an affine transform. Subclasses may override
+	 * Transforms the shape by an affine transform. Subclasses may override
 	 * the type of returned shape.
 	 * @param trans an affine transform
 	 * @return the transformed shape

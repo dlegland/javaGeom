@@ -590,10 +590,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	// ===================================================================
 	// methods implementing the Curve2D interface
 	
-	public Point2D getPoint(double t) {
-		return this.getPoint(t, new Point2D());
-	}
-
 	/**
 	 * Gets the position of the point on the line arc.
 	 * If point belongs to the line, this position is defined by the ratio:<p>

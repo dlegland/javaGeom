@@ -81,13 +81,7 @@ public interface Curve2D extends Shape2D{
 	 * between them.
 	 */
 	public abstract Point2D getPoint(double t);
-	
-	/** 
-	 * Same as getPoint(t), but gives the point as a parameter. This avoids 
-	 * repetitive memory allocations.
-	 */
-	public abstract Point2D getPoint(double t, Point2D point);
-	
+		
 	/**
 	 * Get the first point of the curve. It must returns the same result as 
 	 * <code>getPoint(getT0())</code>.

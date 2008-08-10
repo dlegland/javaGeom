@@ -32,7 +32,7 @@ import math.geom2d.curve.*;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * A set of bezier curves, making a continuous curve.
+ * A set of Bezier curves, making a continuous curve.
  * @author dlegland
  */
 public class PolyBezierCurve2D extends PolyCurve2D<BezierCurve2D> {

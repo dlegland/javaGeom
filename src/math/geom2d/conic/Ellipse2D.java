@@ -796,17 +796,12 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	 * This parameter is between the two limits 0 and 2*Math.PI.
 	 */
 	public Point2D getPoint(double t){
-		return this.getPoint(t, new Point2D());
-	}
-	
-	public Point2D getPoint(double t, Point2D point){
-		if(point==null) point = new Point2D();
 		if(!direct) t = -t;
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
-		point.setLocation(xc + r1*Math.cos(t)*cot - r2*Math.sin(t)*sit,
-						  yc + r1*Math.cos(t)*sit + r2*Math.sin(t)*cot);
-		return point;
+		return new Point2D(
+				xc + r1*Math.cos(t)*cot - r2*Math.sin(t)*sit,
+				yc + r1*Math.cos(t)*sit + r2*Math.sin(t)*cot);
 	}
 
 	/**

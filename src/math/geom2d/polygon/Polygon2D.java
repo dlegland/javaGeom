@@ -1,4 +1,4 @@
-/* File AbstractPolygon2D.java 
+/* File Polygon2D.java 
  *
  * Project : Java Geometry Library
  *

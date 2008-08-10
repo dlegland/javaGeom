@@ -172,7 +172,7 @@ public class InvertedRay2D extends AbstractLine2D{
 		return new Point2D(x0, y0);
 	}
 
-	public Point2D getPoint(double t, Point2D point) {
+	public Point2D getPoint(double t) {
 		t = Math.min(t, 0);
 		return new Point2D(x0+t*dx, y0+t*dy);
 	}

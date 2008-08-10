@@ -298,18 +298,11 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	 * @see math.geom2d.Curve2D#getPoint(double)
 	 */
 	public Point2D getPoint(double t) {
-		return getPoint(t, new Point2D());
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
-	 */
-	public Point2D getPoint(double t, Point2D point) {
 		if(curves.size()==0) return null;
 		if(t<getT0())
-			return this.getFirstCurve().getPoint(this.getFirstCurve().getT0(), point);
+			return this.getFirstCurve().getFirstPoint();
 		if(t>getT1()) 
-			return this.getLastCurve().getPoint(this.getLastCurve().getT1(), point);
+			return this.getLastCurve().getLastPoint();
 		
 		// curve index
 		int nc = (int) Math.floor(t);
@@ -319,7 +312,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		if(indc*2 == nc){
 			Curve2D curve = curves.get(indc);
 			double pos = fromUnitSegment(t-nc, curve.getT0(), curve.getT1());
-			return curve.getPoint(pos, point);
+			return curve.getPoint(pos);
 		}else{
 			// return either last point of preceding curve, 
 			// or first point of next curve
