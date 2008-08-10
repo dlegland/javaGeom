@@ -93,7 +93,7 @@ public class Vector2D{
 	}
 	
 	/**
-	 * get the cross product of the two vectors, defined by : <p>
+	 * Get the cross product of the two vectors, defined by : <p>
 	 * <code> dx1*dy2 - dx2*dy1</code><p>
 	 * cross product is zero for colinear vectors. It is positive if angle
 	 * between vector 1 and vector 2 is comprised between 0 and PI, and
@@ -104,7 +104,7 @@ public class Vector2D{
 	}	
 	
 	/**
-	 * test if the two vectors are colinear
+	 * Tests if the two vectors are colinear
 	 * @return true if the vectors are colinear
 	 */
 	public final static boolean isColinear(Vector2D v1, Vector2D v2){
@@ -114,7 +114,7 @@ public class Vector2D{
 	}
 	
 	/**
-	 * test if the two vectors are orthogonal
+	 * Tests if the two vectors are orthogonal
 	 * @return true if the vectors are orthogonal
 	 */
 	public final static boolean isOrthogonal(Vector2D v1, Vector2D v2){			
@@ -288,9 +288,9 @@ public class Vector2D{
 	 */
 	public boolean equals(Object obj){
 		if(!(obj instanceof Vector2D)) return false;
-		Vector2D p = (Vector2D) obj;
-		return (Math.abs(p.getX()-x)<Shape2D.ACCURACY &&
-		 		Math.abs(p.getY()-y)<Shape2D.ACCURACY);
+		Vector2D v = (Vector2D) obj;
+		return (Math.abs(v.getX()-x)<Shape2D.ACCURACY &&
+		 		Math.abs(v.getY()-y)<Shape2D.ACCURACY);
 	}
 	
 
