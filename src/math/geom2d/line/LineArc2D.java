@@ -207,19 +207,13 @@ public class LineArc2D extends AbstractLine2D
 	}
 
 	public Point2D getPoint(double t){
-		return getPoint(t, new Point2D());
-	}
-
-	public Point2D getPoint(double t, Point2D point){
-		if(point==null) point = new Point2D();
 		if(t<t0) t=t0;
 		if(t>t1) t=t1;
 		
 		if(t==Double.NEGATIVE_INFINITY || t==Double.POSITIVE_INFINITY)
-			point.setLocation(Point2D.INFINITY_POINT.getX(), Point2D.INFINITY_POINT.getY());
+			return Point2D.INFINITY_POINT;
 		else 
-			point.setLocation(x0 + dx*t, y0 + dy*t);
-		return point;
+			return new Point2D(x0 + dx*t, y0 + dy*t);
 	}
 	
 	/**

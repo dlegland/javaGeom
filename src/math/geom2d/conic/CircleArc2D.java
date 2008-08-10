@@ -353,13 +353,9 @@ public class CircleArc2D extends EllipseArc2D{
 	/**
 	 * Returns the position of a point form the curvilinear position.
 	 */
-	public Point2D getPoint(double t) {
-		return getPoint(t, new Point2D());
-	}
-
-	public Point2D getPoint(double t, Point2D point) {		
+	public Point2D getPoint(double t) {		
 		t = this.positionToAngle(t);
-		return circle.getPoint(t, point);
+		return circle.getPoint(t);
 	}
 
 	/**
@@ -367,7 +363,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 * @return the first point of the curve
 	 */
 	public Point2D getFirstPoint(){
-		return circle.getPoint(startAngle, new Point2D());
+		return circle.getPoint(startAngle);
 	}
 	
 	/**
@@ -375,7 +371,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 * @return the last point of the curve.
 	 */
 	public Point2D getLastPoint(){
-		return circle.getPoint(startAngle+angleExtent, new Point2D());
+		return circle.getPoint(startAngle+angleExtent);
 	}
 
 	/**

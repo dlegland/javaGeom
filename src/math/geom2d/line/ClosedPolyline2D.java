@@ -212,12 +212,10 @@ public class ClosedPolyline2D extends Polyline2D implements
 	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
 	 */
 	/**
-	 * return point from position as double. Position t can be from 0 to n, 
+	 * Returns point from position as double. Position t can be from 0 to n, 
 	 * with n equal to the number of vertices of the polyline.
 	 */
-	public math.geom2d.Point2D getPoint(double t, math.geom2d.Point2D point) {
-		if(point==null) point = new Point2D();
-		
+	public math.geom2d.Point2D getPoint(double t) {
 		// format position to stay between limits
 		double t0 	= this.getT0();
 		double t1 	= this.getT1();		
@@ -227,16 +225,14 @@ public class ClosedPolyline2D extends Polyline2D implements
 
 		// index of vertex before point
 		int ind0 	= (int) Math.floor(t+Shape2D.ACCURACY);
-		double tl = t-ind0;
+		double tl 	= t-ind0;
 
 		if(ind0==n) ind0 = 0;
 		Point2D p0 	= points.get(ind0);
 		
 		// check if equal to a vertex
-		if(Math.abs(t-ind0)<Shape2D.ACCURACY){
-			point.setLocation(p0);
-			return point;
-		}		
+		if(Math.abs(t-ind0)<Shape2D.ACCURACY)
+			return new Point2D(p0);
 		
 		// index of vertex after point
 		int ind1	= ind0+1;
@@ -244,14 +240,12 @@ public class ClosedPolyline2D extends Polyline2D implements
 		Point2D p1 	= points.get(ind1);
 		
 		// position on line;
-
 		double x0 = p0.getX();
 		double y0 = p0.getY();
 		double dx = p1.getX()-x0;
 		double dy = p1.getY()-y0;
 		
-		point.setLocation(x0+tl*dx, y0+tl*dy);
-		return point;
+		return new Point2D(x0+tl*dx, y0+tl*dy);
 	}
 
 	/**

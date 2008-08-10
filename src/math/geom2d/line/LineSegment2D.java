@@ -200,16 +200,9 @@ public class LineSegment2D extends AbstractLine2D{
 		return 1.0;
 	}
 
-
 	public Point2D getPoint(double t){
-		return this.getPoint(t, new Point2D());
-	}
-
-	public Point2D getPoint(double t, Point2D point){
-		if(point==null) point = new Point2D();
 		t = Math.min(Math.max(t, 0), 1);
-		point.setLocation(x0 + dx*t, y0 + dy*t);
-		return point;
+		return new Point2D(x0 + dx*t, y0 + dy*t);
 	}
 
 	/**

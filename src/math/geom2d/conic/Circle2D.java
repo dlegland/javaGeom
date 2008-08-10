@@ -251,22 +251,10 @@ public class Circle2D extends Ellipse2D {
 	 * depending on the parameter t. 
 	 * This parameter is between the two limits 0 and 2*Math.PI.
 	 */
-	public Point2D getPoint(double t){
-		return this.getPoint(t, new Point2D());
-	}
-	
-	/**
-	 * Get the position of the curve from internal parametric representation,
-	 * depending on the parameter t. 
-	 * This parameter is between the two limits 0 and 2*Math.PI.
-	 */
-	public Point2D getPoint(double t, Point2D point) {
+	public Point2D getPoint(double t) {
 		double angle = theta+t;
-		if(!direct) angle = theta-t;
-			
-		if(point==null) point = new Point2D();
-		point.setLocation(xc + r*Math.cos(angle), yc + r*Math.sin(angle));
-		return point;
+		if(!direct) angle = theta-t;		
+		return new Point2D(xc + r*Math.cos(angle), yc + r*Math.sin(angle));
 	}
 	
 

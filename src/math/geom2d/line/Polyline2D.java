@@ -250,9 +250,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
 	 */
-	public math.geom2d.Point2D getPoint(double t, math.geom2d.Point2D point) {
-		if(point==null) point = new Point2D();
-		
+	public math.geom2d.Point2D getPoint(double t) {
 		// format position to stay between limits
 		double t0 	= this.getT0();
 		double t1 	= this.getT1();		
@@ -264,10 +262,8 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		Point2D p0 	= points.get(ind0);
 		
 		// check if equal to a vertex
-		if(Math.abs(t-ind0)<Shape2D.ACCURACY){
-			point.setLocation(p0);
-			return point;
-		}		
+		if(Math.abs(t-ind0)<Shape2D.ACCURACY)
+			return new Point2D(p0);
 		
 		// index of vertex after point
 		int ind1	= ind0+1;
@@ -280,15 +276,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		double dx = p1.getX()-x0;
 		double dy = p1.getY()-y0;
 		
-		point.setLocation(x0+tl*dx, y0+tl*dy);
-		return point;
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getPoint(double)
-	 */
-	public math.geom2d.Point2D getPoint(double t) {
-		return getPoint(t, new Point2D());
+		return new Point2D(x0+tl*dx, y0+tl*dy);
 	}
 
 	/* (non-Javadoc)

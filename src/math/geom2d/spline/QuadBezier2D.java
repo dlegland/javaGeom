@@ -263,20 +263,12 @@ public class QuadBezier2D
 	/**
 	 * @see math.geom2d.Curve2D#getPoint(double)
 	 */
-	public Point2D getPoint(double t){
-		return getPoint(t, new Point2D());
-	}
-
-	/**
-	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
-	 */
-	public Point2D getPoint(double t, Point2D point) {
-		if(t<0 || t>1) return null;
+	public Point2D getPoint(double t) {
+		t = Math.min(Math.max(t, 0), 1);
 		double [][] c = getParametric();
 		double x = c[0][0] + (c[0][1] + c[0][2]*t)*t;
 		double y = c[1][0] + (c[1][1] + c[1][2]*t)*t;
-		point.setLocation(x, y);
-		return point;
+		return new Point2D(x, y);
 	}
 
 	/**

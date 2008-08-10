@@ -429,16 +429,6 @@ public class LineObject2D extends AbstractLine2D{
 		return new Point2D(x0 + dx*t, y0+dy*t);
 	}
 
-	public Point2D getPoint(double t, Point2D point){
-		if(point==null) point = new Point2D();
-		updateParameters();
-		if((t<0 && point1==null) || (t>1 && point2==null)) 
-			point.setLocation(Double.NaN, Double.NaN);
-		else 
-			point.setLocation(x0 + dx*t, y0 + dy*t);
-		return point;
-	}
-
 	/**
 	 * Get the first point of the curve. 
 	 * @return the first point of the curve

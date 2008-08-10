@@ -290,16 +290,9 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getPoint(double)
-	 */
-	public Point2D getPoint(double t) {
-		return getPoint(t, new Point2D());
-	}
-
-	/* (non-Javadoc)
 	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
 	 */
-	public Point2D getPoint(double t, Point2D point) {
+	public Point2D getPoint(double t) {
 		// check bounds
 		t = Math.max(t, 0);
 		t = Math.min(t, Math.abs(angleExtent));
@@ -309,7 +302,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		else 				t = startAngle+t;
 		
 		// return corresponding point
-		return ellipse.getPoint(t, point);
+		return ellipse.getPoint(t);
 	}
 
 	/* (non-Javadoc)

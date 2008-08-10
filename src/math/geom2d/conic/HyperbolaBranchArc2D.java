@@ -167,11 +167,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return branch.getPoint(t);
 	}
 
-	public Point2D getPoint(double t, Point2D point) {
-		t = Math.min(Math.max(t, t0), t1);
-		return branch.getPoint(t, point);
-	}
-
 	public double getPosition(java.awt.geom.Point2D point) {
 		if(!this.branch.contains(point)) return Double.NaN;
 		double t = this.branch.getPosition(point);

@@ -335,12 +335,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 
 
 	public Point2D getPoint(double t) {
-		return getPoint(t, new Point2D());
-	}
-
-	public Point2D getPoint(double t, Point2D point) {
-		if (point==null) point = new Point2D();
-		point.setLocation(t, a*t*t);
+		Point2D point = new Point2D(t, a*t*t);
 		point = AffineTransform2D.createRotation(theta).transform(point);
 		point = AffineTransform2D.createTranslation(xv, yv).transform(point);
 		return point;

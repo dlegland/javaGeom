@@ -150,14 +150,7 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	 * @see math.geom2d.Curve2D#getPoint(double)
 	 */
 	public Point2D getPoint(double t) {
-		return this.getPoint(t, new Point2D());
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
-	 */
-	public Point2D getPoint(double t, Point2D point) {
-		return conic.getPoint(t, point);
+		return conic.getPoint(t);
 	}
 
 	/* (non-Javadoc)

@@ -189,44 +189,25 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	public Point2D getPoint(double t) {
 		if(Double.isInfinite(t))
 			return Point2D.INFINITY_POINT;
-		return this.getPoint(t, new Point2D());
-	}
-
-	public Point2D getPoint(double t, Point2D point) {
-		if(Double.isInfinite(t)){
-			point.setLocation(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-			return point;
-		}
 		
+		double x, y;
 		if(positive){
-//			if(t>5)
-//				point.setLocation(Math.exp(t)/2, Math.exp(t)/2);
-//			else if(t<-5)
-//				point.setLocation(Math.exp(t)/2, -Math.exp(t)/2);
-//			else{
-				double x = Math.cosh(t);
-				if(Double.isInfinite(x)) x = Math.abs(t);
-				double y = Math.sinh(t);
-				if(Double.isInfinite(y)) y = t;
-				point.setLocation(x, y);
-//			}
+			x = Math.cosh(t);
+			if(Double.isInfinite(x)) x = Math.abs(t);
+			y = Math.sinh(t);
+			if(Double.isInfinite(y)) y = t;
 		}else{
-			double x = -Math.cosh(t);
+			x = -Math.cosh(t);
 			if(Double.isInfinite(x)) x = -Math.abs(t);
-			double y = -Math.sinh(t);
+			y = -Math.sinh(t);
 			if(Double.isInfinite(y)) y = -t;
-			point.setLocation(x, y);
 		}
-		return hyperbola.toGlobal(point);
+		return hyperbola.toGlobal(new Point2D(x, y));
 	}
 
 	public double getPosition(java.awt.geom.Point2D point) {
 		Point2D pt = hyperbola.toLocal(new Point2D(point));
 		double y = this.positive ? pt.getY() : - pt.getY();
-//		if(y>5)
-//			return Math.log(2*y);
-//		if(y<-5)
-//			return -Math.log(-2*y);
 		return Math.log(y + Math.hypot(y, 1));
 	}
 
