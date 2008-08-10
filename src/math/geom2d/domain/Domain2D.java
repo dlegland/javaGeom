@@ -42,7 +42,7 @@ public interface Domain2D extends Shape2D{
 
 
 	/**
-	 * returns the boundary of the set. This boundary is either a continuous
+	 * Returns the boundary of the set. This boundary is either a continuous
 	 * non intersecting curve (connected domain), or a set of non intersecting
 	 * continuous curve (one continuous non-intersection for each connected
 	 * part of the domain). <p>

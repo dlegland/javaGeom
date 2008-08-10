@@ -30,7 +30,6 @@ import java.util.*;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
@@ -248,11 +247,13 @@ public class SimplePolygon2D implements Polygon2D{
 	/** 
 	 * Returns a closed polyline, which encloses the polygon.
 	 */
-	public Boundary2D getBoundary(){
+	public BoundarySet2D<ClosedPolyline2D> getBoundary(){
 		Point2D[] array = new Point2D[this.points.size()];
 		for(int i=0; i<this.points.size(); i++)
 			array[i] = (Point2D) this.points.get(i);
-		return new ClosedPolyline2D(array); 
+		
+		return new BoundarySet2D<ClosedPolyline2D>(
+				new ClosedPolyline2D(array));
 	}
 
 

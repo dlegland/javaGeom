@@ -132,6 +132,17 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return edges;
 	}
 	
+	public LineSegment2D getFirstEdge(){
+		if(points.size()<2) return null;
+		return new LineSegment2D(points.get(0), points.get(1));
+	}
+	
+	public LineSegment2D getLastEdge(){
+		int n = points.size();
+		if(n<2) return null;
+		return new LineSegment2D(points.get(n-2), points.get(n-1));
+	}
+	
 
 	// ===================================================================
 	// Methods inherited from ContinuousCurve2D
