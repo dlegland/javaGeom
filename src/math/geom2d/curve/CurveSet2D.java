@@ -33,8 +33,12 @@ import math.geom2d.transform.AffineTransform2D;
 import java.util.*;
 
 /**
- * A parameterized set of curves. 
- * A curve cannot be included twice in a CurveSet2D.
+ * <p>A parameterized set of curves. 
+ * A curve cannot be included twice in a CurveSet2D.</p>
+ * <p>The k-th curve contains points with positions between 2*k and 2*k+1. 
+ * This allows to differentiate extremities of contiguous curves. The points
+ * with positions t between 2*k+1 and 2*k+2 belong to the curve k if 
+ * t<2*k+1.5, or to the curve k+1 if t>2*k+1.5</p>
  * 
  * @author Legland
  *
@@ -51,10 +55,10 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	 * Mapping of the parameter t, relative to the local curve, into the
 	 * interval [0 1], [0 1[, ]0 1], or ]0 1[, depending on the values of
 	 * t0 and t1.
-	 * @param t
-	 * @param t0
-	 * @param t1
-	 * @return
+	 * @param t a value between t0 and t1
+	 * @param t0 the lower bound of parameterization domain
+	 * @param t1 the upper bound of parameterization domain
+	 * @return a value between 0 and 1
 	 */
 	protected final static double toUnitSegment(double t, double t0, double t1){
 		if(t<=t0) return 0;
@@ -74,11 +78,12 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	}
 	
 	/**
-	 * Transform the value t between 0 and 1 in a value given between t0 and t1. 
-	 * @param t
-	 * @param t0
-	 * @param t1
-	 * @return
+	 * Transforms the value t between 0 and 1 in a value comprised between t0
+	 * and t1.
+	 * @param t a value between 0 and 1
+	 * @param t0 the lower bound of parameterization domain
+	 * @param t1 the upper bound of parameterization domain
+	 * @return a value between t0 and t1
 	 */
 	protected final static double fromUnitSegment(double t, double t0, double t1){
 		if(t<=0) return t0;
@@ -96,6 +101,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		// t0 and t1 are both finite
 		return t*(t1-t0) + t0;
 	}
+
 	
 	// ===================================================================
 	// Constructors 
@@ -124,8 +130,70 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		this.curves.addAll(curves);
 	}
 
+	
 	// ===================================================================
 	// methods specific to CurveSet2D
+	
+	/**
+	 * Converts the position on the curve set, which is comprised between 0 and
+	 * 2*Nc-1 with Nc being the number of curves, to the position on the curve
+	 * which contains the position. The result is comprised between the t0 and 
+	 * the t1 of the child curve.
+	 * @see getGlobalPosition
+	 * @see getCurveIndex
+	 * @param t the position on the curve set
+	 * @return the position on the subcurve
+	 */
+	public double getLocalPosition(double t){
+		int i = this.getCurveIndex(t);
+		T curve = curves.get(i);
+		double t0 = curve.getT0();
+		double t1 = curve.getT1();
+		return fromUnitSegment(t-2*i, t0, t1);
+	}
+	
+	/**
+	 * Converts a position on a curve (between t0 and t1 of the curve)
+	 * to the position on the curve set (between 0 and 2*Nc-1).
+	 * @see getLocalPosition
+	 * @see getCurveIndex
+	 * @param i the index of the curve to consider
+	 * @param t the position on the curve
+	 * @return the position on the curve set, between 0 and 2*Nc-1
+	 */
+	public double getGlobalPosition(int i, double t){
+		T curve = curves.get(i);
+		double t0 = curve.getT0();
+		double t1 = curve.getT1();
+		return toUnitSegment(t, t0, t1) + i*2;
+	}
+
+	/**
+	 * Returns the index of the curve corresponding to a given position.
+	 * @param t the position on the set of curves, between 0 and twice the
+	 * number of curves minus 1
+	 * @return the index of the curve which contains position t
+	 */
+	public int getCurveIndex(double t){
+		
+		// check bounds
+		if(curves.size()==0) return 0;
+		if(t>curves.size()*2-1) return curves.size()-1;
+		
+		// curve index
+		int nc = (int) Math.floor(t);
+		
+		// check index if even-> corresponds to a curve
+		int indc = (int)Math.floor(nc/2);
+		if(indc*2 == nc)
+			return indc;
+		else
+			return t-nc<.5 ? indc : indc+1;
+	}
+	
+	
+	// ===================================================================
+	// Management of curves
 
 	/**
 	 * Adds the curve to the curve set, if it does not already belongs to the
@@ -161,6 +229,16 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	}
 	
 	/**
+	 * Returns the curve corresponding to a given position.
+	 * @param t the position on the set of curves, between 0 and twice the number of curves
+	 * @return the curve corresponding to the position.
+	 */
+	public T getCurve(double t){
+		if(curves.size()==0) return null;
+		return curves.get(getCurveIndex(t));
+	}
+	
+	/**
 	 * Returns the first curve of the collection if it exists, null otherwise.
 	 * @return the first curve of the collection
 	 */
@@ -192,10 +270,10 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	public boolean isEmpty(){
 		return curves.size()==0;
 	}
+
 	
 	// ===================================================================
 	// methods inherited from interface Curve2D 
-	
 	
 	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		ArrayList<Point2D> intersect = new ArrayList<Point2D>();
@@ -498,13 +576,13 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		double xmax = Double.MIN_VALUE;	
 		double ymax = Double.MIN_VALUE;
 		
-		java.awt.geom.Rectangle2D rect;
+		Box2D box;
 		for(Curve2D curve : curves){
-			rect = curve.getBounds();
-			xmin = Math.min(xmin, rect.getX());
-			ymin = Math.min(ymin, rect.getY());
-			xmax = Math.max(xmax, rect.getX()+rect.getWidth());
-			ymax = Math.max(ymax, rect.getY()+rect.getHeight());
+			box 	= curve.getBoundingBox();
+			xmin 	= Math.min(xmin, box.getMinX());
+			ymin 	= Math.min(ymin, box.getMinY());
+			xmax 	= Math.max(xmax, box.getMaxX());
+			ymax 	= Math.max(ymax, box.getMaxY());
 		}
 
 		return new Box2D(xmin, xmax, ymin, ymax);
@@ -539,12 +617,12 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	// ===================================================================
 	// methods inherited from interface Shape2D 
 
-	/** return true if one of the curves contains the point */
+	/** Returns true if one of the curves contains the point */
 	public boolean contains(java.awt.geom.Point2D p){
 		return contains(p.getX(), p.getY());	
 	}
 	
-	/** return true if one of the curves contains the point */
+	/** Returns true if one of the curves contains the point */
 	public boolean contains(double x, double y){
 		for(Curve2D curve : curves){
 			if(curve.contains(x, y))
@@ -626,11 +704,12 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return path.getPathIterator(trans, flatness);		
 	}	
 
+
 	// ===================================================================
 	// methods inherited from interface Object 
 
 	/**
-	 * Return true if obj is a CurveSet2D with the same number of
+	 * Returns true if obj is a CurveSet2D with the same number of
 	 * curves, and such that each curve belongs to both objects.
 	 */
 	public boolean equals(Object obj){
@@ -667,5 +746,4 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	public Iterator<T> iterator() {
 		return curves.iterator();
 	}
-
 }
