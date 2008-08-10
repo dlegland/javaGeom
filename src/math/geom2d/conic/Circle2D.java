@@ -51,6 +51,40 @@ public class Circle2D extends Ellipse2D {
 	/** the radius of the circle.*/
 	protected double r = 0;
 	
+
+	// ===================================================================
+	// Static methods
+
+	public final static Collection<Point2D> getIntersections(
+			Circle2D circle1, Circle2D circle2){
+		ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+		
+		Point2D center1 = circle1.getCenter();
+		Point2D center2 = circle2.getCenter();
+		double r1 = circle1.getRadius();
+		double r2 = circle2.getRadius();
+		
+		double d = Point2D.getDistance(center1, center2);
+		
+		// case of no intersection
+		if(d<Math.abs(r1-r2) | d>(r1+r2)) return intersections;
+		
+		// Angle of line from center1 to center2
+		double 	angle = Angle2D.getHorizontalAngle(center1, center2);
+		
+		// position of intermediate point
+		double d1   = d/2 + (r1*r1 - r2*r2)/(2*d);
+		Point2D tmp = Point2D.createPolar(center1, d1, angle);
+		
+		// Add the 2 intersection points
+		double h 	= Math.sqrt(r1*r1 - d1*d1);
+		intersections.add(Point2D.createPolar(tmp, h, angle+Math.PI/2));
+		intersections.add(Point2D.createPolar(tmp, h, angle-Math.PI/2));
+		
+		return intersections;
+	}
+
+
 	// ===================================================================
 	// Constructors
 
@@ -110,7 +144,7 @@ public class Circle2D extends Ellipse2D {
 		this.r1 = r;
 		this.r2 = r;
 	}
-
+	
 	/** 
 	 * Return the parallel circle located at a distance d from this circle.
 	 * For direct circle, distance is positive outside of the circle, and
@@ -128,16 +162,7 @@ public class Circle2D extends Ellipse2D {
 		return Conic2D.Type.ELLIPSE;
 	}
 
-	public boolean isEllipse(){return true;}
-	public boolean isParabola(){return false;}
-	public boolean isHyperbola(){return false;}
 	public boolean isCircle(){return true;}			
-	public boolean isStraightLine(){return false;}
-	public boolean isTwoLines(){return false;}
-	public boolean isPoint(){return false;}
-
-	public boolean isDegenerated(){return false;}
-
 
 	/**
 	 * return cartesian equation of the circle:<p>
@@ -274,7 +299,8 @@ public class Circle2D extends Ellipse2D {
 	 * orientation.
 	 */
 	public Circle2D getReverseCurve(){
-		return new Circle2D(this.getCenter().getX(), this.getCenter().getY(), this.getRadius(), !this.direct);
+		return new Circle2D(this.getCenter().getX(), this.getCenter().getY(),
+				this.getRadius(), !this.direct);
 	}
 
 	/**
@@ -305,7 +331,7 @@ public class Circle2D extends Ellipse2D {
 
 	/**
 	 * Compute intersections of the circle with a line. Return an array of
-	 * Point2D, of size 0, or 2 depending on the distance between circle and
+	 * Point2D, of size 0, 1 or 2 depending on the distance between circle and
 	 * line. If there are 2 intersections points, the first one in the array
 	 * is the first one on the line. 
 	 */
@@ -316,13 +342,15 @@ public class Circle2D extends Ellipse2D {
 		// Compute line perpendicular to the test line, and going through the
 		// circle center
 		Point2D center = new Point2D(xc, yc);
-		StraightLine2D perp = StraightLine2D.createOrthogonalLine2D(line, center);	
+		StraightLine2D perp = StraightLine2D.createOrthogonalLine2D(line, 
+				center);	
 
 		// Compute distance between line and circle center
 		Point2D inter = perp.getIntersection(new StraightLine2D(line));
 		double dist = inter.getDistance(xc, yc);		
 		
-		// if the distance is the radius of the circle, return the intersection point 
+		// if the distance is the radius of the circle, return the
+		// intersection point 
 		if(Math.abs(dist-r)<Shape2D.ACCURACY){
 			if(line.contains(inter))
 				intersections.add(inter);
@@ -371,11 +399,9 @@ public class Circle2D extends Ellipse2D {
 		return result;
 	}
 
-	
 
 	// ===================================================================
-	// methods of Shape interface
-	
+	// methods of Shape interface	
 
 	/** 
 	 * Return true if the point (x, y) lies exactly on the circle.

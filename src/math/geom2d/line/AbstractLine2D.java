@@ -216,10 +216,8 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	/**
 	 * Test if the this object is parallel to the given one.
 	 */
-	public boolean isParallel(LinearShape2D linear){
-		// TODO: replace by test on vector
-		StraightLine2D line = linear.getSupportingLine();
-		return(Math.abs(dx*line.dy - dy*line.dx)<Shape2D.ACCURACY);
+	public boolean isParallel(LinearShape2D line){
+		return Vector2D.isColinear(this.getVector(), line.getVector());
 	}
 	
 

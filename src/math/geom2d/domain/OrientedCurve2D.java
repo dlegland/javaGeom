@@ -48,17 +48,18 @@ public interface OrientedCurve2D extends Curve2D {
 	public abstract double getWindingAngle(java.awt.geom.Point2D point);
 
 	/**
-	 * Get the signed distance of the curve to the given point : this distance is
-	 * positive if the point lies outside the shape, and is negative if the point
-	 * lies inside the shape. In this case, absolute value of distance is equals to 
-	 * the distance to the border of the shape.
+	 * Get the signed distance of the curve to the given point: this distance
+	 * is positive if the point lies outside the shape, and is negative if the
+	 * point lies inside the shape. In this case, absolute value of distance
+	 * is equals to the distance to the border of the shape.
 	 * @param point a point of the plane
 	 * @return the signed distance to the curve
 	 */
 	public abstract double getSignedDistance(java.awt.geom.Point2D point);
 
 	/**
-	 * The same as getSignedDistance(Point2D), but by passing 2 double as arguments.
+	 * The same as getSignedDistance(Point2D), but by passing 2 double as
+	 * arguments.
 	 * @param x x-coord of a point
 	 * @param y y-coord of a point
 	 * @return the signed distance of the point (x,y) to the curve
