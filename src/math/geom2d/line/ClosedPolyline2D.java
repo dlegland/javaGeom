@@ -38,7 +38,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Extends Polyline2D, by considering the last point is connected to the first one.
+ * Extends Polyline2D, by considering that the last point is connected to the
+ * first one.
  * A ClosedPolyline2D can be used as boundary for Polygons.
  * @author dlegland
  */
@@ -102,7 +103,7 @@ public class ClosedPolyline2D extends Polyline2D implements
 	// Methods specific to Polyline2D
 
 	/**
-	 * return an array of LineSegment2D. The number of edges is the sazme as 
+	 * return an array of LineSegment2D. The number of edges is the same as 
 	 * the number of vertices.
 	 * @return the edges of the polyline
 	 */
@@ -116,6 +117,13 @@ public class ClosedPolyline2D extends Polyline2D implements
 			edges.add(new LineSegment2D(points.get(i), points.get(i+1)));
 		edges.add(new LineSegment2D(points.get(n-1), points.get(0)));
 		return edges;
+	}
+
+	
+	public LineSegment2D getLastEdge(){
+		int n = points.size();
+		if(n<2) return null;
+		return new LineSegment2D(points.get(n-1), points.get(0));
 	}
 
 	

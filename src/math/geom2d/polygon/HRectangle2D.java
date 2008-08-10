@@ -29,7 +29,6 @@ import java.util.*;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
@@ -142,7 +141,7 @@ implements Polygon2D{
 		return edges;
 	}
 
-	public Boundary2D getBoundary(){
+	public BoundarySet2D<ClosedPolyline2D> getBoundary(){
 		Point2D pts[] = new Point2D[5];
 		pts[0] = new Point2D(x, y);
 		pts[1] = new Point2D(width+x, y);

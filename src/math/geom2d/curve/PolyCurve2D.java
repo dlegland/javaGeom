@@ -41,7 +41,9 @@ import java.util.*;
  */
 public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 	implements ContinuousCurve2D {
-	protected boolean closed = true;
+	
+	/** flag for indicating if the curve is closed or not (default is open)*/
+	protected boolean closed = false;
 	
 	public PolyCurve2D(){		
 	}

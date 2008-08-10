@@ -30,7 +30,9 @@ import java.util.*;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Boundary2DUtils;
+import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
@@ -235,7 +237,7 @@ public class Rectangle2D implements Polygon2D{
 	// ===================================================================
 	// methods inherited from interface AbstractDomain2D	
 	
-	public Boundary2D getBoundary(){
+	public BoundarySet2D<ClosedPolyline2D> getBoundary(){
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
 		Point2D pts[] = new Point2D[5];
@@ -244,8 +246,8 @@ public class Rectangle2D implements Polygon2D{
 		pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
 		pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
 		pts[4] = new Point2D(x0, y0);
-		//return new BoundarySet2D(new ClosedPolyline2D(pts));	
-		return new ClosedPolyline2D(pts);
+
+		return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
 	}	
 
 	
@@ -292,42 +294,11 @@ public class Rectangle2D implements Polygon2D{
 	}
 	
 	/**
-	 * Return the clipped polygon, as an instance of Polygon2D. 
-	 * If the Rectangle2D is totally clipped, return EMPTY_SET.
+	 * Return the clipped polygon.
 	 */
 	public Shape2D clip(Box2D box){
-		// Extract the boundary
-		ClosedPolyline2D boundary = (ClosedPolyline2D) this.getBoundary();
-		
-		// to keep intersection points
-		ArrayList<Point2D> intersections = new ArrayList<Point2D>();
-		
-		// iterate on box edges
-		for(StraightLine2D line : box.getClippingLines())
-			for(Point2D point : boundary.getIntersections(line))
-				intersections.add(point);
-		
-		
-		// if no intersection, 3 possibilities:
-		// - rectangle totally inside box: return this
-		// - box totally inside rectangle: return new rectangle based on box
-		// - disjoint sets: return EMPTY_SET
-		if(intersections.size()==0){
-			if(box.contains(boundary.getFirstPoint()))
-				return this;
-			if(this.contains(box.getMinX(), box.getMinY()))
-				return new Rectangle2D(box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight(), 0);
-			return Shape2D.EMPTY_SET;
-		}
-		
-		// sort the intersection points with respect to their position on the boundary
-		TreeMap<Double, Point2D> hash = new TreeMap<Double, Point2D>();
-		for(Point2D point : intersections)
-			hash.put(boundary.getPosition(point), point);
-		
-		// creates the new polygon
-		Point2D[] array = hash.values().toArray(new Point2D[0]);
-		return new SimplePolygon2D(array);
+		return new GenericDomain2D(Boundary2DUtils.clipBoundary(
+				this.getBoundary(), box));
 	}
 	
 	/**

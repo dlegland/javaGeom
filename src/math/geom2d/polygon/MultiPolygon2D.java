@@ -36,25 +36,26 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		polylines.add(polyline);
 	}
 
+	public MultiPolygon2D(ClosedPolyline2D[] polylines){
+		for(ClosedPolyline2D polyline : polylines)
+			this.polylines.add(polyline);
+	}
+
 	public MultiPolygon2D(SimplePolygon2D polygon){
-		polylines.add((ClosedPolyline2D) polygon.getBoundary());
+		polylines.addAll(polygon.getBoundary().getCurves());
 	}
 	
 	public MultiPolygon2D(Collection<ClosedPolyline2D> lines){
 		polylines.addAll(lines);
 	}
 
-//	public MultiPolygon2D(Collection<Polygon2D> polygons){
-//		for(Polygon2D polygon : polygons)
-//			polylines.add((ClosedPolyline2D) polygon.getBoundary());
-//	}
 	
 	// ===================================================================
 	// methods specific to MultiPolygon2D
 	
 	
 	public void addPolygon(SimplePolygon2D polygon){
-		polylines.add((ClosedPolyline2D) polygon.getBoundary());
+		polylines.addAll(polygon.getBoundary().getCurves());
 	}
 	
 	/**
@@ -72,6 +73,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	public void addPolyline(ClosedPolyline2D polyline){
 		polylines.add(polyline);
 	}
+
 	
 	// ===================================================================
 	// methods inherited from interface AbstractDomain2D
@@ -80,6 +82,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return new BoundarySet2D<ClosedPolyline2D>(polylines);
 	}
 
+	
 	// ===================================================================
 	// methods inherited from interface AbstractPolygon2D
 	
