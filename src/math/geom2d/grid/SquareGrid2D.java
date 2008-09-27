@@ -45,6 +45,14 @@ public class SquareGrid2D implements Grid2D {
 		this(x0, y0, s, s);
 	}
 	
+	public SquareGrid2D(double s){
+		this(0, 0, s, s);
+	}
+
+	public SquareGrid2D(double sx, double sy){
+		this(0, 0, sx, sy);
+	}
+
 	public SquareGrid2D(double x0, double y0, double sx, double sy){
 		this.x0 = x0;
 		this.y0 = y0;

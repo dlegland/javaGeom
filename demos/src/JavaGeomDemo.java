@@ -73,7 +73,7 @@ public class JavaGeomDemo extends JPanel{
 		g2.draw(edge);
 		
 		// Compute a median line, and draw it
-		StraightLine2D line2 = StraightLine2D.createMedian2D(p3, p4);
+		StraightLine2D line2 = StraightLine2D.createMedian(p3, p4);
 		g2.draw(new Circle2D(p3, 2));
 		g2.draw(new Circle2D(p4, 2));
 		g2.draw(line2.clip(box));
