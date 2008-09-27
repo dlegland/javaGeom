@@ -66,7 +66,7 @@ public abstract class Polyline2DUtils {
 			
 			// Extract parallel to last edge
 			LineSegment2D lastEdge = polyline.getLastEdge();
-			line0 	= StraightLine2D.createParallelLine2D(lastEdge, d);
+			line0 	= StraightLine2D.createParallel(lastEdge, d);
 			
 			v2 		= lastEdge.getLastPoint();
 			p0 		= line0.getProjectedPoint(v2);
@@ -222,7 +222,7 @@ public abstract class Polyline2DUtils {
 		
 		// Extract parallel to last edge
 		LineSegment2D lastEdge = polyline.getLastEdge();
-		line0 	= StraightLine2D.createParallelLine2D(lastEdge, d);
+		line0 	= StraightLine2D.createParallel(lastEdge, d);
 		
 		v2 		= lastEdge.getLastPoint();
 		p0 		= line0.getProjectedPoint(v2);

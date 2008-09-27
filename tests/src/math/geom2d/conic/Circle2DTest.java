@@ -51,6 +51,17 @@ public class Circle2DTest extends TestCase {
 		super(arg0);
 	}
 
+	public void testCreatePoint2DPoint2DPoint2D(){
+		Point2D p1 = new Point2D(6, 1);
+		Point2D p2 = new Point2D(4, 3);
+		Point2D p3 = new Point2D(2, 1);
+		Circle2D circle = new Circle2D(4, 1, 2);
+		
+		assertTrue(Circle2D.create(p1, p2, p3).equals(circle));
+		assertTrue(Circle2D.create(p1, p3, p2).equals(circle));
+		assertTrue(Circle2D.create(p3, p2, p1).equals(circle));
+	}
+	
 	public void testContainsDoubleDouble() {
 		Circle2D circle = new Circle2D(0, 0, 10);
 		

@@ -84,7 +84,23 @@ public class Circle2D extends Ellipse2D {
 		return intersections;
 	}
 
-
+	/**
+	 * Creates a circle containing 3 points.
+	 */
+	public final static Circle2D create(Point2D p1, Point2D p2, 
+			Point2D p3){		
+		StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);
+		StraightLine2D line23 = StraightLine2D.createMedian(p2, p3);
+		
+		if(StraightLine2D.isParallel(line12, line23)) return null;
+		
+		Point2D center = StraightLine2D.getIntersection(line12, line23);
+		double radius = Point2D.getDistance(center, p2);
+		
+		return new Circle2D(center, radius);
+	}
+	
+	
 	// ===================================================================
 	// Constructors
 
@@ -330,7 +346,7 @@ public class Circle2D extends Ellipse2D {
 		// Compute line perpendicular to the test line, and going through the
 		// circle center
 		Point2D center = new Point2D(xc, yc);
-		StraightLine2D perp = StraightLine2D.createOrthogonalLine2D(line, 
+		StraightLine2D perp = StraightLine2D.createPerpendicular(line,
 				center);	
 
 		// Compute distance between line and circle center

@@ -98,18 +98,37 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	 * @param p1 one point
 	 * @param p2 another point
 	 * @return the median of points p1 and p2
+	 * @since 0.6.3
 	 */
-	public final static StraightLine2D createMedian2D(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
+	public final static StraightLine2D createMedian(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
 		Point2D mid = Point2D.midPoint(p1, p2);
-		StraightLine2D line = StraightLine2D.createStraightLine2D(p1, p2);	
+		StraightLine2D line = StraightLine2D.create(p1, p2);	
+		return StraightLine2D.createOrthogonalLine2D(line, mid);
+	}
+
+	/**
+	 * Creates a median between 2 points.
+	 * @param p1 one point
+	 * @param p2 another point
+	 * @return the median of points p1 and p2
+	 * @deprecated since 0.6.3, use createMedian instead
+	 */
+	@Deprecated
+	public final static StraightLine2D createMedian2D(
+			java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
+		Point2D mid = Point2D.midPoint(p1, p2);
+		StraightLine2D line = StraightLine2D.create(p1, p2);	
 		return StraightLine2D.createOrthogonalLine2D(line, mid);
 	}
 
 	/** 
 	 * Return a new Straight line going through the given point, and with
 	 * the specified direction vector.
+	 * @deprecated since 0.6.3, use create() instead
 	 */
-	public final static StraightLine2D createStraightLine2D(java.awt.geom.Point2D point, double dx, double dy){
+	@Deprecated
+	public final static StraightLine2D createStraightLine2D(
+			java.awt.geom.Point2D point, double dx, double dy){
 		return new StraightLine2D(point, dx, dy);
 	}
 
@@ -117,25 +136,69 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	/** 
 	 * Return a new Straight line, parallel to another straight object (ray,
 	 * straight line or edge), and going through the given point.
+	 * @since 0.6.3
 	 */
-	public final static StraightLine2D createParallelLine2D(LinearShape2D line, java.awt.geom.Point2D point){
+	public final static StraightLine2D createParallel(
+			LinearShape2D line, java.awt.geom.Point2D point){
 		return new StraightLine2D(line, point);
 	}
 
 	/** 
 	 * Return a new Straight line, parallel to another straight object (ray,
 	 * straight line or edge), and going through the given point.
+	 * @deprecated since 0.6.3, use createParallel() instead
 	 */
-	public final static StraightLine2D createParallelLine2D(LinearShape2D linear, double d){
-		StraightLine2D line = linear.getSupportingLine();
-		double dd = Math.sqrt(line.dx*line.dx+line.dy*line.dy);
-		return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd, line.dx, line.dy);
+	@Deprecated
+	public final static StraightLine2D createParallelLine2D(
+			LinearShape2D line, java.awt.geom.Point2D point){
+		return new StraightLine2D(line, point);
 	}
 
 	/** 
-	 * Return a new Straight line, parallel to another straigth object (ray,
+	 * Return a new Straight line, parallel to another straight object (ray,
 	 * straight line or edge), and going through the given point.
+	 * @since 0.6.3
 	 */
+	public final static StraightLine2D createParallel(
+			LinearShape2D linear, double d){
+		StraightLine2D line = linear.getSupportingLine();
+		double dd = Math.hypot(line.dx, line.dy);
+		return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd,
+				line.dx, line.dy);
+	}
+
+	/** 
+	 * Return a new Straight line, parallel to another straight object (ray,
+	 * straight line or edge), and going through the given point.
+	 * @deprecated since 0.6.3, use createParallel() instead
+	 */
+	@Deprecated
+	public final static StraightLine2D createParallelLine2D(
+			LinearShape2D linear, double d){
+		StraightLine2D line = linear.getSupportingLine();
+		double dd = Math.hypot(line.dx, line.dy);
+		return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd,
+				line.dx, line.dy);
+	}
+
+
+	/** 
+	 * Return a new Straight line, perpendicular to a straight object (ray,
+	 * straight line or edge), and going through the given point.
+	 * @since 0.6.3
+	 */
+	public final static StraightLine2D createPerpendicular(
+			LinearShape2D linear, Point2D point){
+		StraightLine2D line = linear.getSupportingLine();
+		return new StraightLine2D(point, -line.dy, line.dx);
+	}
+
+	/** 
+	 * Return a new Straight line, parallel to another straight object (ray,
+	 * straight line or edge), and going through the given point.
+	 * @deprecated since 0.6.3, use createPerpendicular instead
+	 */
+	@Deprecated
 	public final static StraightLine2D createOrthogonalLine2D(
 			LinearShape2D linear, Point2D point){
 		StraightLine2D line = linear.getSupportingLine();
@@ -146,6 +209,16 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	 * Return a new Straight line, with the given coefficient of the cartesian
 	 * equation (a*x + b*y + c = 0).
 	 */
+	public final static StraightLine2D createCartesian(double a, double b, double c){
+		return new StraightLine2D(a, b, c);
+	}
+	
+	/** 
+	 * Return a new Straight line, with the given coefficient of the cartesian
+	 * equation (a*x + b*y + c = 0).
+	 * @deprecated since 0.6.3, use createCartesian instead
+	 */
+	@Deprecated
 	public final static StraightLine2D createCartesianLine2D(double a, double b, double c){
 		return new StraightLine2D(a, b, c);
 	}
@@ -173,7 +246,8 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	}
 	
 	/** Define a new Straight line going through the two given points. */
-	public StraightLine2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2){
+	public StraightLine2D(java.awt.geom.Point2D point1, 
+			java.awt.geom.Point2D point2){
 		this(point1, new Vector2D(point1, point2));
 	}
 
@@ -228,9 +302,10 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	
 	
 	/**
-	 * Define a new straight line, from the coefficients of the cartesian equation.
-	 * The starting point of the line is then the point of the line closest to the 
-	 * origin, and the direction vector has unit norm.
+	 * Define a new straight line, from the coefficients of the cartesian
+	 * equation.
+	 * The starting point of the line is then the point of the line closest to
+	 * the origin, and the direction vector has unit norm.
 	 */
 	public StraightLine2D(double a, double b, double c){
 		this(0,0,1,0);
@@ -312,7 +387,8 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	// methods specific to Boundary2D interface
 	
 	public Collection<ContinuousBoundary2D> getBoundaryCurves(){
-		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
+		ArrayList<ContinuousBoundary2D> list = 
+			new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
 	}
@@ -373,21 +449,24 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	}
 
 	/** 
-	 * Returns the parameter of the first point of the line, which is always Double.NEGATIVE_INFINITY.
+	 * Returns the parameter of the first point of the line, which is always
+	 * Double.NEGATIVE_INFINITY.
 	 */
 	public double getT0(){
 		return Double.NEGATIVE_INFINITY;
 	}
 
 	/** 
-	 * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
+	 * Returns the parameter of the last point of the line, which is always
+	 * Double.POSITIVE_INFINITY.
 	 */
 	public double getT1(){
 		return Double.POSITIVE_INFINITY;
 	}
 
 	/**
-	 * Gets the point specified with the parametric representation of the line.
+	 * Gets the point specified with the parametric representation of the
+	 * line.
 	 */
 	public Point2D getPoint(double t){
 		return new Point2D(x0 + dx*t, y0+dy*t);
@@ -422,11 +501,13 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 
 	public Box2D getBoundingBox() {
 		if(Math.abs(dx)<0)
-			return new Box2D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+			return new Box2D(x0, x0, Double.NEGATIVE_INFINITY, 
+					Double.POSITIVE_INFINITY);
 		if(Math.abs(dy)<0)
-			return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, x0, y0);
+			return new Box2D(Double.NEGATIVE_INFINITY, 
+					Double.POSITIVE_INFINITY, x0, y0);
 
-		return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+		return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 
@@ -447,7 +528,7 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	// methods implementing the Shape interface
 
 	/** 
-	 * Returns true if the point (x, y) lies on the line, with precision given 
+	 * Returns true if the point (x, y) lies on the line, with precision given
 	 * by Shape2D.ACCURACY.
 	 */
 	public boolean contains(double x, double y){
@@ -468,7 +549,7 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	}
 
 	/** Throws an infiniteShapeException */
-	public PathIterator getPathIterator(AffineTransform at, double flatness) {
+	public PathIterator getPathIterator(AffineTransform at, double flatness){
 		throw new UnboundedShapeException();
 	}
 
@@ -485,5 +566,4 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 		if(Math.abs(dy-line.dy)>Shape2D.ACCURACY) return false;
 		return true;
 	}
-
 }

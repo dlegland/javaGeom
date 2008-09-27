@@ -296,7 +296,7 @@ public class Conic2DUtils {
 		}
 		
 		public ConicStraightLine2D(double a, double b, double c){
-			super(StraightLine2D.createCartesianLine2D(a, b, c));
+			super(StraightLine2D.createCartesian(a, b, c));
 			coefs = new double[]{0, 0, 0, a, b, c};
 		}
 		

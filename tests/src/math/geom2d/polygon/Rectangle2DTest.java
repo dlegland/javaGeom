@@ -26,8 +26,6 @@
  */
 package math.geom2d.polygon;
 
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -63,9 +61,6 @@ public class Rectangle2DTest extends TestCase {
 		assertEquals(rect.getDistance(10, 60), 0, Shape2D.ACCURACY);		
 	}
 
-	public void testGetSignedDistance() {
-	}
-
 	/*
 	 * Test for boolean equals(Rectangle2D)
 	 */
@@ -82,32 +77,5 @@ public class Rectangle2DTest extends TestCase {
 		AffineTransform2D aff2 = new AffineTransform2D(1, 3, .5, 2, .3, 1);
 		assertTrue((rect.transform(aff) instanceof math.geom2d.domain.Domain2D));
 		assertTrue((rect.transform(aff).transform(aff2) instanceof Domain2D));
-	}
-	
-	public void testClip_Box2D(){
-		double L = Math.hypot(100, 50);
-		double W = Math.hypot(80, 40);
-		double theta = Math.atan2(1, 2);
-		Rectangle2D rect = new Rectangle2D(20, -20, L, W, theta);
-		Box2D box = new Box2D(0, 100, 0, 90);
-		
-		// clip the shape, and check the type
-		Shape2D clipped = rect.clip(box);
-		assertTrue(clipped instanceof SimplePolygon2D);
-		
-		// create polygon to compare with
-		Point2D[] points = new Point2D[]{
-				new Point2D(60, 0), 
-				new Point2D(100, 20),
-				new Point2D(100, 70),
-				new Point2D(90, 90),
-				new Point2D(40, 90),
-				new Point2D(0, 70),
-				new Point2D(0, 20),
-				new Point2D(10, 0)
-		};
-		SimplePolygon2D poly = new SimplePolygon2D(points);
-		
-		assertTrue(clipped.equals(poly));
 	}
 }
