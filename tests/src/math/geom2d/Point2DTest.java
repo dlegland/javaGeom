@@ -109,6 +109,25 @@ public class Point2DTest extends TestCase {
 		assertTrue(!Point2D.isColinear(p3, p2, p1));		
 	}
 	
+	public void testCcw(){
+		Point2D p1 = new Point2D(10, 10);
+		Point2D p2 = new Point2D(20, 10);
+		Point2D p3 = new Point2D(30, 10);
+		Point2D p4 = new Point2D(30, 20);
+		
+		// Simple cases
+		assertEquals(Point2D.ccw(p1, p3, p4), 1);
+		assertEquals(Point2D.ccw(p1, p4, p3), -1);
+		
+		// aligned points
+		assertEquals(Point2D.ccw(p1, p2, p3), 1);
+		assertEquals(Point2D.ccw(p3, p2, p1), 1);
+		assertEquals(Point2D.ccw(p2, p1, p3), -1);
+		assertEquals(Point2D.ccw(p2, p3, p1), -1);
+		assertEquals(Point2D.ccw(p1, p3, p2), 0);
+		assertEquals(Point2D.ccw(p3, p1, p2), 0);
+	}
+	
 	/*
 	 * Test for boolean equals(Object)
 	 */

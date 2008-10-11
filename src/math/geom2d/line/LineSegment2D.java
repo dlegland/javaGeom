@@ -93,6 +93,27 @@ public class LineSegment2D extends AbstractLine2D{
 			new Vector2D(x2-x0, y2-y0));
 	}
 
+	/**
+	 * Checks if two line segment intersect. Uses the Point2D.ccw() method,
+	 * which is based on Sedgewick algorithm.
+	 * @param edge1 a line segment
+	 * @param edge2 a line segment
+	 * @return true if the 2 line segments intersect
+	 */
+	public final static boolean intersects(LineSegment2D edge1,
+			LineSegment2D edge2){
+		Point2D e1p1 = edge1.getFirstPoint();
+		Point2D e1p2 = edge1.getLastPoint();
+		Point2D e2p1 = edge2.getFirstPoint();
+		Point2D e2p2 = edge2.getLastPoint();
+		
+		boolean b1 = Point2D.ccw(e1p1, e1p2, e2p1)*
+		Point2D.ccw(e1p1, e1p2, e2p2)<=0;
+		boolean b2 = Point2D.ccw(e2p1, e2p2, e1p1)*
+		Point2D.ccw(e2p1, e2p2, e1p2)<=0;
+		return b1 && b2;
+	}
+	
 	
 	// ===================================================================
 	// constructors

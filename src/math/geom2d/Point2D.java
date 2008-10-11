@@ -171,6 +171,31 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return Math.abs(dx1*dy2 - dy1*dx2)<Shape2D.ACCURACY;
 	}
 	
+	/**
+	 * Computes the orientation of the 3 points: returns +1 is the path
+	 * P0->P1->P2 turns Counter-Clockwise, -1 if the path turns Clockwise,
+	 * and 0 if the point P2 is located on the line segment [P0 P1].
+	 * Algorithm taken from Sedgewick.
+	 * @param p0 the initial point
+	 * @param p1 the middle point
+	 * @param p2 the last point
+	 * @return +1, 0 or -1, depending on the relative position of the points
+	 */
+	public final static int ccw(Point2D p0, Point2D p1, Point2D p2){
+		double x0 = p0.getX();
+		double y0 = p0.getY();
+		double dx1 = p1.getX()-x0;
+		double dy1 = p1.getY()-y0;
+		double dx2 = p2.getX()-x0;
+		double dy2 = p2.getY()-y0;
+			 
+	    if (dx1*dy2 > dy1*dx2) return +1;
+	    if (dx1*dy2 < dy1*dx2) return -1;
+	    if ((dx1*dx2 < 0) || (dy1*dy2 < 0)) return -1;
+	    if ((dx1*dx1+dy1*dy1) < (dx2*dx2+dy2*dy2)) return +1;
+	    return 0;		
+	}
+	
 	public final static Point2D midPoint(
 			java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
 		return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2); 
