@@ -32,11 +32,11 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Main interface for all geometric objects, including points, lines, curves, 
  * or planar regions... <p>
- * Depending direct interfaces extending Shape2D are Curve2D, and AbstractDomain2D.
- * There are some direct implementation of Shape2D: Point2D, Shape2D.EmptySet2D. 
+ * Depending direct interfaces extending Shape2D are Curve2D and Domain2D.
+ * Some direct implementations of Shape2D are Point2D, PointSet2D, or
+ * Shape2D.EmptySet2D. 
  */
-public interface Shape2D extends java.awt.Shape{
-
+public interface Shape2D extends java.awt.Shape {
 
 	// ===================================================================
 	// constants
@@ -46,16 +46,11 @@ public interface Shape2D extends java.awt.Shape{
 	 */
 	public final static double ACCURACY = 1e-12;
 
-	/**
-	 * This is the basic window used by default to clip lines, conics or others
-	 * infinite figures to draw them. To override this default window, use
-	 * <code>Shape2D.getClippedShape(Rectangle2D)</code>, which always returns a 
-	 * 'finite' shape.
-	 */
-	public final static Box2D defaultClipWindow = new Box2D(-1000, 2000, -1000, 2000);
-	
 	public final static Shape2D EMPTY_SET = new EmptySet2D();
 	
+	public abstract boolean contains(double x, double y);
+	
+	public abstract boolean contains(java.awt.geom.Point2D p);
 	
 	/**
 	 * get the distance of the shape to the given point, or the distance of point

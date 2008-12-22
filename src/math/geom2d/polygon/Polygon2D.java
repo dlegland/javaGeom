@@ -41,24 +41,48 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public interface Polygon2D extends Domain2D{
 
-
-	/** Return the vertices (singular points) of the polygon*/
+	/** Returns the vertices (singular points) of the polygon*/
 	public abstract Collection<Point2D> getVertices();
 	
-	/** Return the number of vertices of the polygon*/
+	/**
+	 * Returns the i-th vertex of the polygon.
+	 * @param i index of the vertex, between 0 and the number of vertices
+	 */
+	public abstract Point2D getVertex(int i);
+	
+	/** 
+	 * Returns the number of vertices of the polygon
+	 * @deprecated use getVertexNumber() instead (0.6.3)
+	 */
+	@Deprecated
 	public abstract int getVerticesNumber();
+
+	/** 
+	 * Returns the number of vertices of the polygon
+	 * @since 0.6.3
+	 */
+	public abstract int getVertexNumber();
 	
 	/** Return the edges as line segments of the polygon*/
 	public abstract Collection<LineSegment2D> getEdges();
 
+	/** Returns the number of edges of the polygon*/
+	public abstract int getEdgeNumber();
+
+	
 	// ===================================================================
 	// general methods
 
 	public abstract BoundarySet2D<ClosedPolyline2D> getBoundary();
 
 	/** 
-	 * Return the new Polygon created by an affine transform of this polygon.
+	 * Returns the new Polygon created by an affine transform of this polygon.
 	 */
 	public abstract Polygon2D transform(AffineTransform2D trans);
 
+	/**
+	 * Returns the complementary polygon.
+	 * @return the polygon complementary to this
+	 */
+	public Polygon2D complement();
 }

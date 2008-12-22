@@ -29,6 +29,7 @@ package math.geom2d.curve;
 import math.geom2d.Box2D;
 import math.geom2d.Vector2D;
 import math.geom2d.transform.AffineTransform2D;
+
 /**
  * Interface for smooth and continuous curves. They accept first and second 
  * derivative at every point, and can be drawn with a parametric

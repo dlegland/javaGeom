@@ -69,7 +69,7 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 		
 		
 		AffineTransform2D user2Display = AffineTransform2D.createScaling(sx, sy);
-		user2Display = AffineTransform2D.createTranslation(x0, y0).compose(user2Display);
+		user2Display = user2Display.chain(AffineTransform2D.createTranslation(x0, y0));
 		
 		Box2D clippingBox = new Box2D(10, 40, 10, 40);
 		

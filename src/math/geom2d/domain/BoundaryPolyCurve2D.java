@@ -25,6 +25,7 @@
  */
 package math.geom2d.domain;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.transform.AffineTransform2D;
@@ -32,7 +33,8 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * A single continuous oriented curve, which defines the boundary of a 
  * planar domain. The boundary curve is composed of several continuous and
- * oriented curves linked together to form a continuous curve.
+ * oriented curves linked together to form a continuous curve. The resulting
+ * boundary curve is either a closed curve, or an infinite curve at both ends.
  * @author dlegland
  */
 public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
@@ -50,10 +52,35 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		super(curves);
 	}
 	
+//	public BoundaryPolyCurve2D(T[] curves, boolean closed) {
+//		super(curves);
+//		this.closed = closed;
+//	}
+	
 	public BoundaryPolyCurve2D(Collection<? extends T> curves) {
 		super(curves);
 	}
 	
+//	public BoundaryPolyCurve2D(Collection<? extends T> curves, boolean closed) {
+//		super(curves);
+//		this.closed = closed;
+//	}
+	
+	// ===================================================================
+	// Methods overriding CurveSet2D methods
+
+	/**
+	 * Override the isClosed() id the following way: return true if all curves
+	 * are bounded. If at least one curve is unbounded, return false.
+	 */
+	@Override
+	public boolean isClosed(){
+		for(T curve : curves){
+			if(!curve.isBounded())
+				return false;
+		}
+		return true;
+	}
 
 	// ===================================================================
 	// Methods implementing Boundary2D interface
@@ -71,6 +98,9 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		return new GenericDomain2D(this);
 	}
 
+	public void fill(Graphics2D g2){
+		g2.fill(this.getGeneralPath());
+	}
 
 	// ===================================================================
 	// Methods implementing OrientedCurve2D interface

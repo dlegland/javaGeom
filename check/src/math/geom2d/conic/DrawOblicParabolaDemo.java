@@ -30,10 +30,11 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.conic.ParabolaArc2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.Polyline2D;
 
 
@@ -64,26 +65,26 @@ public class DrawOblicParabolaDemo extends JPanel{
 		Polyline2D polyline = arc.getAsPolyline(10);
 		
 		g2.setColor(Color.YELLOW);
-		g2.fill(polyline);
+		new GenericDomain2D(new ClosedPolyline2D(polyline.getVertices())).fill(g2);
 
 		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
+		box.getBoundary().draw(g2);
 
 		// Draw the clipped parabola
 		CurveSet2D<?> clipped = parabola.clip(box);
 		if (!clipped.isEmpty()){
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
-			g2.draw(clipped);
+			clipped.draw(g2);
 		}
 		
 		// Draw parabola origin
 		Point2D p1 = parabola.getPoint(0);
-		g2.fill(new Circle2D(p1, 4));
+		new Disc2D(p1, 4).fill(g2);
 		
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
-		g2.fill(parabola.getDomain().clip(box));
+		parabola.getDomain().clip(box).fill(g2);
 //		g2.setColor(Color.BLUE);
 //		g2.draw(clipped);
 	}

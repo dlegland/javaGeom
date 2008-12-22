@@ -25,6 +25,7 @@
  */
 package math.geom2d.domain;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
@@ -60,6 +61,7 @@ extends CurveSet2D<T> implements Boundary2D {
 		this.addCurve(curve);
 	}
 
+	
 	// ===================================================================
 	// Methods implementing Boundary2D interface
 	
@@ -73,6 +75,11 @@ extends CurveSet2D<T> implements Boundary2D {
 	public Domain2D getDomain() {
 		return new GenericDomain2D(this);
 	}
+
+	public void fill(Graphics2D g2){
+		g2.fill(this.getGeneralPath());
+	}
+
 
 	// ===================================================================
 	// Methods implementing OrientedCurve2D interface
@@ -161,8 +168,6 @@ extends CurveSet2D<T> implements Boundary2D {
 		}
 		return result;
 	}
-
-	
 	
 	public BoundarySet2D<? extends ContinuousBoundary2D> 
 	transform(AffineTransform2D trans) {

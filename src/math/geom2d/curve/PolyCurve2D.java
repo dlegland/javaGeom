@@ -139,7 +139,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		CurveSet2D<?> set = (CurveSet2D<?>) super.getSubCurve(t0, t1);
 		PolyCurve2D<ContinuousCurve2D> subCurve = new PolyCurve2D<ContinuousCurve2D>();
 		
-		if(t1<t0 & !closed) return subCurve;
+		if(t1<t0 & !this.isClosed()) return subCurve;
 		subCurve.setClosed(false);
 			
 		// convert to PolySmoothCurve by adding curves.
@@ -180,7 +180,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 			new PolyCurve2D<ContinuousCurve2D>();
 		for(ContinuousCurve2D curve : curves)
 			result.addCurve(curve.transform(trans));
-		result.setClosed(this.closed);
+		result.setClosed(this.isClosed());
 		return result;
 	}
 
@@ -203,7 +203,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		return path;
 	}
 
-	protected java.awt.geom.GeneralPath getGeneralPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		// create new path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		

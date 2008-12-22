@@ -24,6 +24,8 @@
 // package
 package math.geom2d.line;
 
+import java.awt.Graphics2D;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -175,10 +177,22 @@ public class LineSegment2D extends AbstractLine2D{
 		this.dx = x2-x1;
 		this.dy = y2-y1;
 	}
-	
 
+	
 	// ===================================================================
-	// Methods implementing the Curve2D interface
+	// Methods implementing the OrientedCurve2D interface
+
+	public double getSignedDistance(double x, double y){
+		Point2D proj = super.getProjectedPoint(x, y);
+		if(contains(proj)) return super.getSignedDistance(x, y);
+
+		double d = this.getDistance(x, y);
+		return super.getSignedDistance(x, y)>0 ? d : -d;
+	}
+
+	
+	// ===================================================================
+	// Methods implementing the ContinuousCurve2D interface
 
 	public Polyline2D getAsPolyline(int n) {
 		Point2D[] points = new Point2D[n+1];
@@ -322,13 +336,23 @@ public class LineSegment2D extends AbstractLine2D{
 	 * @return the modified path
 	 */
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		path.lineTo((float)x0, (float)y0);
 		path.lineTo((float)x0+dx, (float)y0+dy);
 		return path;
 	}
 	
+	public void draw(Graphics2D g){
+		g.draw(new java.awt.geom.Line2D.Double(x0, y0, x0+dx, y0+dy));
+	}
+	
+	public java.awt.geom.GeneralPath getGeneralPath(){
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo((float)x0, (float)y0);
+		path.lineTo((float)(x0+dx), (float)(y0+dy));
+		return path;
+	}
+	
 	/** 
-	 * Return pathiterator for this line arc.
+	 * Return path iterator for this line arc.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

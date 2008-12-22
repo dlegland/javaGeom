@@ -50,7 +50,7 @@ public class PointSet2DTest extends TestCase {
 		Box2D box = new Box2D(-5, 5, -5, 5);
 		
 		PointSet2D clipped = set.clip(box);
-		assertTrue(clipped.getPointsNumber()==1);
+		assertTrue(clipped.getPointNumber()==1);
 	}
 
 	public void testGetBoundingBox() {

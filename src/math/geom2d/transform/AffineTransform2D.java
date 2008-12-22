@@ -211,6 +211,9 @@ public class AffineTransform2D implements Bijection2D{
 	// ===================================================================
 	// methods to identify transforms
 	
+	/**
+	 * Checks if the given transform is the identity transform.
+	 */
 	public final static boolean isIdentity(AffineTransform2D trans){
 		double[] coefs = trans.getCoefficients();
 		if(Math.abs(coefs[0]-1)>Shape2D.ACCURACY) return false;
@@ -223,7 +226,7 @@ public class AffineTransform2D implements Bijection2D{
 	}
 	
 	/**
-	 * Check if the transform is direct, i.e. it preserves the orientation
+	 * Checks if the transform is direct, i.e. it preserves the orientation
 	 * of transformed shapes.
 	 * @return true if transform is direct.
 	 */
@@ -233,7 +236,7 @@ public class AffineTransform2D implements Bijection2D{
 	}
 
 	/**
-	 * Check if the transform is an isometry, i.e. a compound of
+	 * Checks if the transform is an isometry, i.e. a compound of
 	 * translation, rotation and reflection. Isometry keeps area of shapes
 	 * unchanged, but can change orientation (directed or undirected).
 	 * @return true in case of isometry.
@@ -256,9 +259,9 @@ public class AffineTransform2D implements Bijection2D{
 	}
 
     /**
-	 * Check if the transform is a motion, i.e. a compound of translations and
-	 * rotation. Motion remains area and orientation (directed or undirected)
-	 * of shapes unchanged.
+	 * Checks if the transform is a motion, i.e. a compound of translations
+	 * and rotation. Motion remains area and orientation (directed or
+	 * undirected) of shapes unchanged.
 	 * @return true in case of motion.
 	 */
 	public final static boolean isMotion(AffineTransform2D trans){
@@ -268,8 +271,8 @@ public class AffineTransform2D implements Bijection2D{
 	}
 	
 	/**
-	 * Check if the transform is an similarity, i.e. transformation which keeps
-	 * unchanged the global shape, up to a scaling factor.
+	 * Checks if the transform is an similarity, i.e. transformation which
+	 * keeps unchanged the global shape, up to a scaling factor.
 	 * @return true in case of similarity.
 	 */
 	public final static boolean isSimilarity(AffineTransform2D trans){
@@ -343,45 +346,37 @@ public class AffineTransform2D implements Bijection2D{
 
 
 	// ===================================================================
-	// implementations of AffineTransform2D methods
+	// methods specific to AffineTransform2D class
 	
 	/**
-	 * Returns coefficients of the transform. Result is an array of 6 double.
+	 * Returns coefficients of the transform in a linear array of 6 double.
 	 */
 	public double[] getCoefficients(){
 		double[] tab = {m00, m01, m02, m10, m11, m12};		
 		return tab;
 	}	
 
+	/**
+	 * Returns the 3x3 square matrix representing the transform.
+	 * @return the 3x3 affine transform representing the matrix
+	 */
 	public double[][] getAffineMatrix(){
 		double[][] tab = new double[][]{
 				new double[]{m00, m01, m02}, 
-				new double[]{m10, m11, m12}
+				new double[]{m10, m11, m12},
+				new double[]{0, 0, 1}
 		};
 		return tab;
 	}
 
 	/**
-	 * Return the inverse transform. If the transform is not invertible, 
-	 * throws a new NonInvertibleTransformException.
-	 */
-	public AffineTransform2D getInverseTransform(){
-		double det = m00*m11 - m10*m01;
-		
-		if(Math.abs(det)<Shape2D.ACCURACY)
-			throw new NonInvertibleTransformException();
-		
-		return new AffineTransform2D(
-			m11/det, -m01/det, (m01*m12-m02*m11)/det, 
-			-m10/det, m00/det, (m02*m10-m00*m12)/det);
-	}
-	
-	/**
 	 * Return the affine transform created by applying first the affine
 	 * transform given by <code>that</code>, then this affine transform.
-	 * @param that th transform to apply first
+	 * @deprecated replaced by concatenate() method (0.6.3)
+	 * @param that the transform to apply first
 	 * @return the composition this * that
 	 */
+	@Deprecated
 	public AffineTransform2D compose(AffineTransform2D that){
 		double[][] m2 = that.getAffineMatrix();
 		double n00 = this.m00*m2[0][0] + this.m01*m2[1][0];
@@ -393,7 +388,73 @@ public class AffineTransform2D implements Bijection2D{
 		return new AffineTransform2D(n00, n01, n02, n10, n11, n12); 
 	}
 	
+	/**
+	 * Return the affine transform created by applying first the affine
+	 * transform given by <code>that</code>, then this affine transform.
+	 * This the equivalent method of the 'concatenate' method in 
+	 * java.awt.geom.AffineTransform.
+	 * @param that the transform to apply first
+	 * @return the composition this * that
+	 * @since 0.6.3
+	 */
+	public AffineTransform2D concatenate(AffineTransform2D that){
+		double[][] m2 = that.getAffineMatrix();
+		double n00 = this.m00*m2[0][0] + this.m01*m2[1][0];
+		double n01 = this.m00*m2[0][1] + this.m01*m2[1][1];
+		double n02 = this.m00*m2[0][2] + this.m01*m2[1][2] + this.m02;
+		double n10 = this.m10*m2[0][0] + this.m11*m2[1][0];
+		double n11 = this.m10*m2[0][1] + this.m11*m2[1][1];
+		double n12 = this.m10*m2[0][2] + this.m11*m2[1][2] + this.m12;
+		return new AffineTransform2D(n00, n01, n02, n10, n11, n12); 
+	}
 	
+	/**
+	 * Return the affine transform created by applying first this affine
+	 * transform, then the affine transform given by <code>that</code>.
+	 * This the equivalent method of the 'preConcatenate' method in 
+	 * java.awt.geom.AffineTransform.
+	 * 
+	 * <code><pre>
+	 * shape = shape.transform(T1.chain(T2).chain(T3));
+	 * </pre></code>
+	 * is equivalent to the sequence:
+	 * <code><pre>
+	 * shape = shape.transform(T1);
+	 * shape = shape.transform(T2);
+	 * shape = shape.transform(T3);
+	 * </pre></code>
+	 * @param that the transform to apply in a second step
+	 * @return the composition that * this
+	 * @since 0.6.3
+	 */
+	public AffineTransform2D chain(AffineTransform2D that){
+		double[][] m2 = that.getAffineMatrix();
+		return new AffineTransform2D(
+			m2[0][0]*this.m00 + m2[0][1]*this.m10,
+			m2[0][0]*this.m01 + m2[0][1]*this.m11,
+			m2[0][0]*this.m02 + m2[0][1]*this.m12 + m2[0][2],
+			m2[1][0]*this.m00 + m2[1][1]*this.m10,
+			m2[1][0]*this.m01 + m2[1][1]*this.m11,
+			m2[1][0]*this.m02 + m2[1][1]*this.m12 + m2[1][2]);
+	}
+	
+	/**
+	 * Return the affine transform created by applying first this affine
+	 * transform, then the affine transform given by <code>that</code>.
+	 * This the equivalent method of the 'preConcatenate' method in 
+	 * java.awt.geom.AffineTransform.
+	 * @param that the transform to apply in a second step
+	 * @return the composition that * this
+	 * @since 0.6.3
+	 */
+	public AffineTransform2D preConcatenate(AffineTransform2D that){
+		return this.chain(that);
+	}
+	
+
+	// ===================================================================
+	// methods testing type of transform
+		
 	public boolean isSimilarity(){
 		return AffineTransform2D.isSimilarity(this);
 	}
@@ -413,6 +474,37 @@ public class AffineTransform2D implements Bijection2D{
 	public boolean isIdentity(){
 		return AffineTransform2D.isIdentity(this);
 	}
+	
+	
+	// ===================================================================
+	// implementations of Bijection2D methods
+
+	/**
+	 * Return the inverse transform. If the transform is not invertible, 
+	 * throws a new NonInvertibleTransformException.
+	 * @since 0.6.3
+	 */
+	public AffineTransform2D invert(){
+		double det = m00*m11 - m10*m01;
+		
+		if(Math.abs(det)<Shape2D.ACCURACY)
+			throw new NonInvertibleTransformException();
+		
+		return new AffineTransform2D(
+			m11/det, -m01/det, (m01*m12-m02*m11)/det, 
+			-m10/det, m00/det, (m02*m10-m00*m12)/det);
+	}
+	
+	/**
+	 * Return the inverse transform. If the transform is not invertible, 
+	 * throws a new NonInvertibleTransformException.
+	 * @deprecated use invert() method instead (0.6.3)
+	 */
+	@Deprecated
+	public AffineTransform2D getInverseTransform(){
+		return this.invert();
+	}
+
 	
 	// ===================================================================
 	// implementations of Transform2D methods

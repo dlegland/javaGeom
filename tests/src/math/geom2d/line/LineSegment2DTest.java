@@ -279,6 +279,53 @@ public class LineSegment2DTest extends TestCase {
 		LineSegment2D edge4 = new LineSegment2D(2, 2, 0, 2);
 		assertEquals(edge4.getWindingAngle(p3), Math.PI/2, 1e-14);
 		assertEquals(edge4.getWindingAngle(p4), -Math.PI/2, 1e-14);
+	}
+
+	public void testProjectPoint2D(){
+		// Test on a basic line segment (diagonal +1;+1)
+		LineSegment2D line1 = new LineSegment2D(
+				new Point2D(-1, 2), new Point2D(1, 4));
+		Point2D point = new Point2D(1, 2);
 		
+		assertEquals(line1.project(point), .5, 1e-12);	
+
+		
+		// Create a line segment with (1,2)*d direction vector
+		double x0 = 20;
+		double y0 = 30;
+		double d = 10;
+		LineSegment2D line2 = new LineSegment2D(
+				new Point2D(x0, y0), new Point2D(x0+d, y0+2*d));
+		
+		// Test points which project 'nicely' on the line segment
+		Point2D p0_0 = new Point2D(x0, y0);
+		Point2D p1_0 = new Point2D(x0+d, y0);
+		Point2D p0_1 = new Point2D(x0, y0+d);
+		Point2D p1_1 = new Point2D(x0+d, y0+d);
+		Point2D p0_2 = new Point2D(x0, y0+2*d);
+		Point2D p1_2 = new Point2D(x0+d, y0+2*d);
+		
+		assertEquals(line2.project(p0_0), 0, 1e-12);
+		assertEquals(line2.project(p1_0), .2, 1e-12);
+		assertEquals(line2.project(p0_1), .4, 1e-12);
+		assertEquals(line2.project(p1_1), .6, 1e-12);
+		assertEquals(line2.project(p0_2), .8, 1e-12);
+		assertEquals(line2.project(p1_2), 1, 1e-12);
+		
+		// Test points which project on first point
+		Point2D pl1 = new Point2D(x0, y0-d);
+		Point2D pl2 = new Point2D(x0-d, y0);
+		Point2D pl3 = new Point2D(x0+d, y0-d);
+		assertEquals(line2.project(pl1), 0, 1e-12);
+		assertEquals(line2.project(pl2), 0, 1e-12);
+		assertEquals(line2.project(pl3), 0, 1e-12);
+		
+		// Test points which project on last point
+		Point2D pu1 = new Point2D(x0+d, y0+3*d);
+		Point2D pu2 = new Point2D(x0+2*d, y0+2*d);
+		Point2D pu3 = new Point2D(x0, y0+3*d);
+		assertEquals(line2.project(pu1), 1, 1e-12);
+		assertEquals(line2.project(pu2), 1, 1e-12);
+		assertEquals(line2.project(pu3), 1, 1e-12);
 	}
 }

@@ -61,7 +61,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		ClosedPolyline2D line = new ClosedPolyline2D(points);
 		line.addPoint(new Point2D(30, 20));
-		assertEquals(line.getVerticesNumber(), points.length+1);		
+		assertEquals(line.getVertexNumber(), points.length+1);		
 	}
 
 	public void testGetPoint() {
@@ -243,4 +243,69 @@ public class ClosedPolyline2DTest extends TestCase {
 //		assertTrue(polyline.isInside(new Point2D(0, 50)));		
 	
 	}
+	
+	/*
+	 * Test for boolean contains(double, double)
+	 */
+	public void testIsInside2(){
+		
+		// start with a simple rectangle
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(20, 20);
+		points[1] = new Point2D(40, 20);
+		points[2] = new Point2D(40, 60);
+		points[3] = new Point2D(20, 60);
+		ClosedPolyline2D poly = new ClosedPolyline2D(points);
+		
+
+		assertTrue(poly.isInside(20, 20));
+		assertTrue(poly.isInside(40, 20));
+		assertTrue(poly.isInside(40, 60));
+		assertTrue(poly.isInside(20, 60));
+		assertTrue(poly.isInside(25, 20));
+		assertTrue(poly.isInside(25, 40));
+		assertTrue(!poly.isInside(10, 20));
+		assertTrue(!poly.isInside(50, 20));
+		assertTrue(!poly.isInside(10, 10));
+		assertTrue(poly.isInside(25, 25));
+
+		// try some more complicated figures, in order to test particular
+		// cases of the algorithm
+		points = new Point2D[6];
+		points[0] = new Point2D(40, 70);
+		points[1] = new Point2D(40, 50);
+		points[2] = new Point2D(20, 50);
+		points[3] = new Point2D(60, 10);
+		points[4] = new Point2D(60, 30);
+		points[5] = new Point2D(80, 30);
+		poly = new ClosedPolyline2D(points);
+		
+		// classic case
+		assertTrue(poly.isInside(60, 40));
+		// problematic case
+		assertTrue(poly.isInside(50, 40));
+
+		points = new Point2D[8];
+		points[0] = new Point2D(10, 60);
+		points[1] = new Point2D(10, 40);
+		points[2] = new Point2D(20, 50);
+		points[3] = new Point2D(20, 20);
+		points[4] = new Point2D(10, 30);
+		points[5] = new Point2D(10, 10);
+		points[6] = new Point2D(40, 10);
+		points[7] = new Point2D(40, 60);
+		poly = new ClosedPolyline2D(points);
+		
+		// classic cases
+		assertTrue(poly.isInside(15, 15));
+		assertTrue(poly.isInside(25, 40));
+		assertTrue(!poly.isInside(15, 37));
+		
+		// problematic cases
+		assertTrue(poly.isInside(30, 35));
+		assertTrue(!poly.isInside(10, 35));
+		assertTrue(!poly.isInside(5, 35));		
+	}
+
+	
 }

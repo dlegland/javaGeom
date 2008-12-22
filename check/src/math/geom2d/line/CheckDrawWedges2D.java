@@ -11,9 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -52,16 +53,18 @@ public class CheckDrawWedges2D extends JPanel{
 		
 		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, Math.PI/3);
 
-		Boundary2D rotated = boundary.transform(rot);
+		Domain2D domain = new GenericDomain2D(boundary);
+		Domain2D rotated = domain.transform(rot);
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(rotated.getDomain().clip(box));	
+		domain.clip(box).fill(g2);
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(rotated.clip(box));
+		rotated.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getBoundary());
+		domain.getBoundary().clip(box).draw(g2);
+		box.draw(g2);
 	}
 	
 	public final static void main(String[] args){

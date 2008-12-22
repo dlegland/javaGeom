@@ -14,6 +14,8 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
+ * Defines a triangle grid, with various size and orientation.
+ * The grid contains triangle with all edges the same length.
  * @author dlegland
  *
  */
@@ -52,7 +54,6 @@ public class TriangleGrid2D implements Grid2D {
 	 * 
 	 * @param x0 x-coord of grid origin
 	 * @param y0 y-coord of grid origin
-	 * @param s size of the triangle tile
 	 */
 	public TriangleGrid2D(double x0, double y0){
 		this(x0, y0, 1, 0);

@@ -28,7 +28,7 @@ public class CheckBezierCurve2D_getParallel  extends JPanel{
 
 		g2.setColor(Color.BLUE);
 		g2.setStroke(new BasicStroke(2.0f));
-		g2.draw(bezier1);
+		bezier1.draw(g2);
 		
 		
 //		BezierCurve2D bezier2 = bezier1.getParallel(20);

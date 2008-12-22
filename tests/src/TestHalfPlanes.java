@@ -31,7 +31,7 @@ public class TestHalfPlanes{
 		Box2D window = new Box2D(-100, 100, -100, 100);
 		Shape2D shape1 = plane.clip(window);
 		System.out.println("number of vertices : " + 
-				((SimplePolygon2D)shape1).getVerticesNumber());
+				((SimplePolygon2D)shape1).getVertexNumber());
 		
 		for(Point2D point : ((SimplePolygon2D)shape1).getVertices())
 			System.out.println("x=" + point.getX() + " " + point.getY());		

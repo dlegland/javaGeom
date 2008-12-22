@@ -30,6 +30,7 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 /**
@@ -139,8 +140,8 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	 * 2*Nc-1 with Nc being the number of curves, to the position on the curve
 	 * which contains the position. The result is comprised between the t0 and 
 	 * the t1 of the child curve.
-	 * @see getGlobalPosition
-	 * @see getCurveIndex
+	 * @see #getGlobalPosition(int, double)
+	 * @see #getCurveIndex(double)
 	 * @param t the position on the curve set
 	 * @return the position on the subcurve
 	 */
@@ -155,8 +156,8 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	/**
 	 * Converts a position on a curve (between t0 and t1 of the curve)
 	 * to the position on the curve set (between 0 and 2*Nc-1).
-	 * @see getLocalPosition
-	 * @see getCurveIndex
+	 * @see #getLocalPosition(double)
+	 * @see #getCurveIndex(double)
 	 * @param i the index of the curve to consider
 	 * @param t the position on the curve
 	 * @return the position on the curve set, between 0 and 2*Nc-1
@@ -229,15 +230,38 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	}
 	
 	/**
+	 * Returns the inner curve corresponding to the given index. 
+	 * @param index index of the curve 
+	 * @return the i-th inner curve
+	 * @since 0.6.3
+	 */
+	public T getCurve(int index){
+		return curves.get(index);
+	}
+	
+	/**
 	 * Returns the curve corresponding to a given position.
+	 * @deprecated replaced by {@link #getChildCurve(double)} method
 	 * @param t the position on the set of curves, between 0 and twice the number of curves
 	 * @return the curve corresponding to the position.
 	 */
+	@Deprecated
 	public T getCurve(double t){
 		if(curves.size()==0) return null;
 		return curves.get(getCurveIndex(t));
 	}
 	
+	/**
+	 * Returns the child curve corresponding to a given position.
+	 * @param t the position on the set of curves, between 0 and twice the number of curves
+	 * @return the curve corresponding to the position.
+	 * @since 0.6.3
+	 */
+	public T getChildCurve(double t){
+		if(curves.size()==0) return null;
+		return curves.get(getCurveIndex(t));
+	}
+
 	/**
 	 * Returns the first curve of the collection if it exists, null otherwise.
 	 * @return the first curve of the collection
@@ -352,12 +376,14 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 
 	public boolean isSingular(double pos) {
 		if(Math.abs(pos-Math.round(pos))<Shape2D.ACCURACY) return true;
-		int nc = (int) Math.floor(pos);
-		if(nc/2.0 - Math.floor(nc/2.0) > 0) return true;	// if is between 2 curves
+		
+		int nc = this.getCurveIndex(pos);
+		//int nc = (int) Math.floor(pos);
+		if(nc - Math.floor(pos/2.0) > 0) return true;	// if is between 2 curves
 		
 		Curve2D curve = curves.get(nc);
-		double pos2 = fromUnitSegment(pos, curve.getT0(), curve.getT1());
-		return curve.isSingular(pos2);
+		//double pos2 = fromUnitSegment(pos-2*nc, curve.getT0(), curve.getT1());
+		return curve.isSingular(this.getLocalPosition(pos));
 	}
 	
 	public double getPosition(java.awt.geom.Point2D point){
@@ -391,7 +417,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 			dist = curve.getDistance(x, y);
 			if(dist<minDist){
 				minDist = dist;
-				pos = curve.getPosition(point);
+				pos = curve.project(point);
 				// format position
 				t0 = curve.getT0();
 				t1 = curve.getT1();
@@ -401,7 +427,6 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		}
 		return pos;
 	}
-
 	
 	public Curve2D getReverseCurve(){
 		Curve2D[] curves2 = new Curve2D[curves.size()];
@@ -661,7 +686,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return false;
 	}	
 
-	protected java.awt.geom.GeneralPath getGeneralPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		// create new path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
@@ -696,6 +721,10 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 			return null;
 		return path.getPathIterator(trans, flatness);		
 	}	
+
+	public void draw(Graphics2D g2) {
+		g2.draw(this.getGeneralPath());
+	}
 
 
 	// ===================================================================

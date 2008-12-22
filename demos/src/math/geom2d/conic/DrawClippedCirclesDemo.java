@@ -47,7 +47,7 @@ public class DrawClippedCirclesDemo extends JPanel {
 		// Draw circles
 		g2.setColor(Color.BLUE);
 		for(Circle2D circle : circles)
-			 g2.draw(circle);
+			 circle.draw(g2);
 		
 		// Draw circles in inner box
 		g2.setStroke(new BasicStroke(3.0f));
@@ -55,7 +55,7 @@ public class DrawClippedCirclesDemo extends JPanel {
 		for(Circle2D circle : circles){
 			 clipped = circle.clip(clippingBox);
 			 if(!clipped.isEmpty())
-				 g2.draw(clipped);
+				 clipped.draw(g2);
 		}
 	}
 	

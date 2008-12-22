@@ -90,6 +90,44 @@ public class Circle2DTest extends TestCase {
 		assertTrue(circle.intersects(new HRectangle2D(-50, -50, 100, 100)));
 	}
 	
+	public void testGetPositionPoint2D() {
+		Circle2D circle;
+		Point2D point;
+		double x0 = 20;
+		double y0 = 30;
+		double r2 = Math.sqrt(2);
+		
+		double eps = 1e-12;
+		
+		// Standard circle
+		circle = new Circle2D(x0, y0, 10);
+		point = new Point2D(x0+r2, y0+r2);
+		assertEquals(circle.getPosition(point), Math.PI/4, eps);
+		
+		// inverted circle
+		circle = new Circle2D(x0, y0, 10, false);
+		point = new Point2D(x0+r2, y0-r2);
+		assertEquals(circle.getPosition(point), Math.PI/4, eps);
+	}
+	
+	public void testGetPointDouble() {
+		Circle2D circle;
+		Point2D point;
+		double x0 = 20;
+		double y0 = 30;
+		double r = 10;
+		
+		// Standard circle
+		circle = new Circle2D(x0, y0, 10);
+		point = circle.getPoint(Math.PI/2);
+		assertTrue(new Point2D(x0, y0+r).equals(point));
+		
+		// inverted circle
+		circle = new Circle2D(x0, y0, 10, false);
+		point = circle.getPoint(3*Math.PI/2);
+		assertTrue(new Point2D(x0, y0+r).equals(point));
+	}
+	
 	/*
 	 * Test for double getDistance(Point2D)
 	 */
@@ -347,5 +385,14 @@ public class Circle2DTest extends TestCase {
 		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
 		Collection<?> curves = clipped.getCurves();
 		assertTrue(curves.size()==0);
+	}
+	
+	public void testClipBox_Problem(){
+		Circle2D circle = new Circle2D(6, 0, 6+6.4);
+		Box2D box = new Box2D(-10, 10, 10, -10);
+
+		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
+		Collection<?> curves = clipped.getCurves();
+		assertTrue(curves.size()==1);
 	}
 }

@@ -24,8 +24,12 @@
 // package
 package math.geom2d.domain;
 
+import java.awt.Graphics2D;
+
+import math.geom2d.Box2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.Boundary2D;
+import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 
@@ -40,7 +44,6 @@ import math.geom2d.domain.Boundary2D;
  */
 public interface Domain2D extends Shape2D{
 
-
 	/**
 	 * Returns the boundary of the set. This boundary is either a continuous
 	 * non intersecting curve (connected domain), or a set of non intersecting
@@ -50,4 +53,28 @@ public interface Domain2D extends Shape2D{
 	 * @return the boundary of the domain
 	 */
 	public abstract Boundary2D getBoundary();
+	
+	/**
+	 * Returns the domain which complements this domain in the plane.
+	 * @return the complement of this domain.
+	 * @since 0.6.3
+	 */
+	public abstract Domain2D complement();
+	
+	public abstract Domain2D transform(AffineTransform2D transform);
+	public abstract Domain2D clip(Box2D box);
+	
+	/**
+	 * Draws the boundary of the domain, using current Stroke and color.
+	 * @param g2 the Graphics to draw on
+	 * @since 0.6.3
+	 */
+	public abstract void draw(Graphics2D g2);
+	
+	/**
+	 * Fills the interior of the domain, using the Graphics current Paint.
+	 * @param g2 the Graphics to fill on
+	 * @since 0.6.3
+	 */
+	public abstract void fill(Graphics2D g2);
 }

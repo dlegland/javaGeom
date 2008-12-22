@@ -39,7 +39,7 @@ public class DrawClippedReuleauxDemo extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
-	Boundary2D curve = null;
+	Boundary2D boundary = null;
 	
 	public DrawClippedReuleauxDemo() {
 		super();
@@ -58,9 +58,8 @@ public class DrawClippedReuleauxDemo extends JPanel{
 		set.addCurve(arc2);
 		set.addCurve(arc3);
 		
-		curve = set;
-		System.out.println(curve);
-		
+		boundary = set;
+		System.out.println(boundary);
 	}
 	
 	public void paintComponent(Graphics g){
@@ -68,18 +67,18 @@ public class DrawClippedReuleauxDemo extends JPanel{
 
 		Box2D box = new Box2D(60, 140, 30, 180);
 		g2.setColor(Color.CYAN);
-		g2.fill(box.getAsRectangle());
+		box.fill(g2);
 		
 		g2.setColor(Color.YELLOW);
-		g2.fill(curve);
+		boundary.fill(g2);
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(curve);
+		boundary.fill(g2);
 		
-		Curve2D clipped = Boundary2DUtils.clipBoundary(curve, box);
+		Curve2D clipped = Boundary2DUtils.clipBoundary(boundary, box);
 		g2.setColor(Color.RED);
 		g2.setStroke(new BasicStroke(2));
-		g2.draw(clipped);
+		clipped.draw(g2);
 	}
 
 	public final static void main(String[] args){

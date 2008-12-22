@@ -25,6 +25,7 @@
 package math.geom2d.polygon;
 
 // Imports
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
@@ -32,6 +33,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
@@ -186,10 +188,10 @@ public class Rectangle2D implements Polygon2D{
 		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		
-		array.add((Point2D) new Point2D(x0, y0).transform(rot));
-		array.add((Point2D) new Point2D(x0+w, y0).transform(rot));
-		array.add((Point2D) new Point2D(x0+w, y0+h).transform(rot));
-		array.add((Point2D) new Point2D(x0, y0+h).transform(rot));
+		array.add(new Point2D(x0, y0).transform(rot));
+		array.add(new Point2D(x0+w, y0).transform(rot));
+		array.add(new Point2D(x0+w, y0+h).transform(rot));
+		array.add(new Point2D(x0, y0+h).transform(rot));
 		
 		return array.iterator();
 	}		
@@ -199,18 +201,48 @@ public class Rectangle2D implements Polygon2D{
 	 * @return the vertices of the rectangle.
 	 */
 	public Collection<Point2D> getVertices(){
-		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
+		AffineTransform2D rot = 
+			AffineTransform2D.createRotation(x0, y0, theta);
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		
-		array.add((Point2D) new Point2D(x0, y0).transform(rot));
-		array.add((Point2D) new Point2D(x0+w, y0).transform(rot));
-		array.add((Point2D) new Point2D(x0+w, y0+h).transform(rot));
-		array.add((Point2D) new Point2D(x0, y0+h).transform(rot));
+		array.add(new Point2D(x0, y0).transform(rot));
+		array.add(new Point2D(x0+w, y0).transform(rot));
+		array.add(new Point2D(x0+w, y0+h).transform(rot));
+		array.add(new Point2D(x0, y0+h).transform(rot));
 		
 		return array;
 	}
 	
-	public int getVerticesNumber(){
+	/**
+	 * Returns the i-th vertex of the polygon.
+	 * @param i index of the vertex, between 0 and 3
+	 */
+	public Point2D getVertex(int i){
+		AffineTransform2D rot = 
+			AffineTransform2D.createRotation(x0, y0, theta);
+		switch(i){
+		case 0: return new Point2D(x0, y0).transform(rot);
+		case 1: return new Point2D(x0+w, y0).transform(rot);
+		case 2: return new Point2D(x0+w, y0+h).transform(rot);
+		case 3: return new Point2D(x0, y0+h).transform(rot);
+		default: 
+			throw new IndexOutOfBoundsException();
+		}
+	}
+	
+	/**
+	 * @deprecated use getVertexNumber instead (0.6.3)
+	 */
+	@Deprecated
+	public int getVerticesNumber() {
+		return getVertexNumber();
+	}
+
+	/**
+	 * Return the number of vertices of the rectangle, which is 4.
+	 * @since 0.6.3
+	 */
+	public int getVertexNumber(){
 		return 4;
 	}
 	
@@ -233,23 +265,37 @@ public class Rectangle2D implements Polygon2D{
 		return edges;
 	}	
 
+	public int getEdgeNumber(){
+		return 4;
+	}
+	
 	
 	// ===================================================================
-	// methods inherited from interface AbstractDomain2D	
+	// methods implementing the Domain2D interface
 	
 	public BoundarySet2D<ClosedPolyline2D> getBoundary(){
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
-		Point2D pts[] = new Point2D[5];
+		Point2D pts[] = new Point2D[4];
 		pts[0] = new Point2D(x0, y0);
 		pts[1] = new Point2D(w*cot+x0, w*sit+y0);
 		pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
 		pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
-		pts[4] = new Point2D(x0, y0);
-
+	
 		return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
 	}	
 
+	public Polygon2D complement(){
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+		Point2D pts[] = new Point2D[4];
+		pts[0] = new Point2D(x0, y0);
+		pts[1] = new Point2D(-h*sit+x0, h*cot+y0);
+		pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
+		pts[3] = new Point2D(w*cot+x0, w*sit+y0);
+	
+		return new SimplePolygon2D(pts);
+	}
 	
 	// ===================================================================
 	// methods inherited from Shape2D interface
@@ -296,7 +342,7 @@ public class Rectangle2D implements Polygon2D{
 	/**
 	 * Return the clipped polygon.
 	 */
-	public Shape2D clip(Box2D box){
+	public Domain2D clip(Box2D box){
 		return new GenericDomain2D(Boundary2DUtils.clipBoundary(
 				this.getBoundary(), box));
 	}
@@ -463,6 +509,14 @@ public class Rectangle2D implements Polygon2D{
 		path.lineTo((float)x0, (float)y0);
 				
 		return path.getPathIterator(t, flatness);
+	}
+	
+	public void draw(Graphics2D g2){
+		g2.draw(this.getBoundary().getGeneralPath());
+	}
+
+	public void fill(Graphics2D g){
+		g.fill(this.getBoundary().getGeneralPath());
 	}
 	
 	

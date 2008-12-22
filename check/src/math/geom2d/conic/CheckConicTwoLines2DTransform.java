@@ -71,14 +71,14 @@ public class CheckConicTwoLines2DTransform extends JPanel{
 //		g2.setColor(Color.CYAN);
 //		g2.fill(Boundary2DUtil.clipBoundary(rotated, box));
 		g2.setColor(Color.BLUE);
-		g2.draw(rotated.clip(box));
+		rotated.clip(box).draw(g2);
 
 		g2.setColor(Color.BLACK);
-		g2.draw(conic.clip(box));
+		conic.clip(box).draw(g2);
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getAsRectangle());
+		box.getBoundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

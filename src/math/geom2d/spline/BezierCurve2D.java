@@ -23,6 +23,7 @@
 
 package math.geom2d.spline;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -182,7 +183,7 @@ public class BezierCurve2D
 	
 	/**
 	 * Use winding angle of approximated polyline
-	 * @see math.geom2d.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
+	 * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
 	 */
 	public double getWindingAngle(java.awt.geom.Point2D point) {
 		return this.getAsPolyline(100).getWindingAngle(point);
@@ -206,7 +207,7 @@ public class BezierCurve2D
 	}
 
 	/**
-	 * @see math.geom2d.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
+	 * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
 	 */
 	public double getSignedDistance(double x, double y) {
 		if(isInside(new Point2D(x, y)))
@@ -236,7 +237,7 @@ public class BezierCurve2D
 		double xs = 2*c[0][2] + 6*c[0][3]*t;
 		double ys = 2*c[1][2] + 6*c[1][3]*t;
 		
-		return (xp*ys - yp*xs)/Math.pow(Math.hypot(xp, yp), 1.5);
+		return (xp*ys - yp*xs)/Math.pow(Math.hypot(xp, yp), 3);
 	}
 	
 	// ===================================================================
@@ -280,7 +281,7 @@ public class BezierCurve2D
 	}
 	
 	/**
-	 * returns 1, as Bezier curve is parametrized between 0 and 1.
+	 * Returns 1, as Bezier curve is parametrized between 0 and 1.
 	 */
 	public double getT1() {
 		return 1;
@@ -288,14 +289,14 @@ public class BezierCurve2D
 
 	/**
 	 * Use approximation, by replacing Bezier curve with a polyline. 
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
+	 * @see math.geom2d.curve.Curve2D#getIntersections(math.geom2d.line.LinearShape2D)
 	 */
 	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		return this.getAsPolyline(100).getIntersections(line);
 	}
 
 	/**
-	 * @see math.geom2d.Curve2D#getPoint(double)
+	 * @see math.geom2d.curve.Curve2D#getPoint(double)
 	 */
 	public Point2D getPoint(double t) {
 		t = Math.min(Math.max(t, 0), 1);
@@ -306,7 +307,7 @@ public class BezierCurve2D
 	}
 
 	/**
-	 * Get the first point of the curve. 
+	 * Returns the first point of the curve. 
 	 * @return the first point of the curve
 	 */
 	public Point2D getFirstPoint(){
@@ -314,13 +315,17 @@ public class BezierCurve2D
 	}
 	
 	/**
-	 * Get the last point of the curve. 
+	 * Returns the last point of the curve. 
 	 * @return the last point of the curve.
 	 */
 	public Point2D getLastPoint(){
 		return new Point2D(this.x2, this.y2);
 	}
 
+	/**
+	 * Singular points of a Bezier curve are the first point and the last
+	 * point.
+	 */
 	public Collection<Point2D> getSingularPoints(){
 		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
 		list.add(this.getFirstPoint());
@@ -328,6 +333,9 @@ public class BezierCurve2D
 		return list;
 	}
 	
+	/**
+	 * Returns true if pos is either 0 or 1.
+	 */
 	public boolean isSingular(double pos) {
 		if(Math.abs(pos)<Shape2D.ACCURACY) return true;
 		if(Math.abs(pos-1)<Shape2D.ACCURACY) return true;
@@ -335,7 +343,7 @@ public class BezierCurve2D
 	}
 	
 	/**
-	 * Compute position by approximating cubic spline with a polyline.
+	 * Computes position by approximating cubic spline with a polyline.
 	 */
 	public double getPosition(java.awt.geom.Point2D point){
 		int N=100;
@@ -343,7 +351,7 @@ public class BezierCurve2D
 	}
 
 	/**
-	 * Compute position by approximating cubic spline with a polyline.
+	 * Computes position by approximating cubic spline with a polyline.
 	 */
 	public double project(java.awt.geom.Point2D point){
 		int N=100;
@@ -453,25 +461,28 @@ public class BezierCurve2D
 				trans.transform(this.getP2())) ;
 	}
 	
+	public void draw(Graphics2D g){
+		g.draw(this);
+	}
 	
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		Point2D p = new Point2D();
-		for(double t=0; t<1;t+=.01){
-			p = this.getPoint(t);
-			path.lineTo((float)p.getX(), (float)p.getY());
-		}
-		p = this.getPoint(getT1());
-		path.lineTo((float)p.getX(), (float)p.getY());
+		Point2D p2 = this.getControl1();
+		Point2D p3 = this.getControl2();
+		Point2D p4 = this.getLastPoint();
+		path.curveTo(p2.getX(), p2.getY(), p3.getX(), p3.getY(), 
+				p4.getX(), p4.getY());
 		return path;
 	}
 	
-	public java.awt.geom.GeneralPath getInnerPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		Point2D p = new Point2D();
-		for(double t=0; t<1;t+=.01){
-			p = this.getPoint(t);
-			path.lineTo((float)p.getX(), (float)p.getY());
-		}
+		Point2D p1 = this.getFirstPoint();
+		Point2D p2 = this.getControl1();
+		Point2D p3 = this.getControl2();
+		Point2D p4 = this.getLastPoint();
+		path.moveTo(p1.getX(), p1.getY());
+		path.curveTo(p2.getX(), p2.getY(), p3.getX(), p3.getY(), 
+				p4.getX(), p4.getY());
 		return path;
 	}
 

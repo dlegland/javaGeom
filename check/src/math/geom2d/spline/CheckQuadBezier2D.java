@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
-import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.Disc2D;
 
 public class CheckQuadBezier2D  extends JPanel{
 
@@ -39,16 +39,16 @@ public class CheckQuadBezier2D  extends JPanel{
 
 		g2.setColor(Color.BLUE);
 		g2.setStroke(new BasicStroke(2.0f));
-		g2.draw(bezier);
+		bezier.draw(g2);
 		
 		g2.setPaint(Color.RED);
 		for(Point2D point : points)
-			g2.fill(new Circle2D(point, 5));
+			new Disc2D(point, 5).fill(g2);
 		
 		QuadBezier2D bezier2 = bezier.getSubCurve(.5, .75);
 		g2.setColor(Color.MAGENTA);
 		g2.setStroke(new BasicStroke(2.0f));
-		g2.draw(bezier2);
+		bezier2.draw(g2);
 		
 	}
 

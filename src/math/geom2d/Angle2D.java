@@ -40,7 +40,7 @@ public class Angle2D {
 	public final static double M_PI_4 	= Math.PI/4;
 	
 	/**
-	 * format an angle betwwen 0 and 2*PI.
+	 * Formats an angle between 0 and 2*PI.
 	 * @param angle the angle before formatting
 	 * @return the same angle, between 0 and 2*PI.
 	 */
@@ -105,7 +105,7 @@ public class Angle2D {
 	}
 	
 	/**
-	 * Gets angle between two (directed) straight objects. Result is given in radians, 
+	 * Gets angle between two vectors. Result is given in radians, 
 	 * between 0 and 2*PI.
 	 */
 	public final static double getAngle(Vector2D vect1, Vector2D vect2){

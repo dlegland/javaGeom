@@ -53,15 +53,16 @@ public class CheckClipBoundary2D extends JPanel{
 		
 		// fill the domain
 		g2.setColor(Color.CYAN);
-		g2.fill(Boundary2DUtils.clipBoundary(parabola, box));
+		Boundary2D boundary = Boundary2DUtils.clipBoundary(parabola, box);
+		new GenericDomain2D(boundary).fill(g2);
 		
-		// fill the domain
+		// draw the domain
 		g2.setColor(Color.BLUE);
-		g2.draw(parabola.clip(box));
+		parabola.clip(box).draw(g2);
 		
 		// draw the boundary
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getBoundary());
+		box.getBoundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

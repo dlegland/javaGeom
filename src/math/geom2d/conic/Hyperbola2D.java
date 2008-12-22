@@ -24,12 +24,14 @@
 // package
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
@@ -40,8 +42,8 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Superclass for all linear and pieces smooth curves : polylines, conics,
- * lines ...
+ * An Hyperbola, which is represented as a curve set of two boundary curves
+ * which are instances of HyperbolaBranch2D.
  */
 public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D>
 implements Conic2D{
@@ -437,7 +439,7 @@ implements Conic2D{
 	}
 
 	/**
-	 * Transforms this hyperbole by an affine transform. 
+	 * Transforms this hyperbola by an affine transform. 
 	 */
 	public Hyperbola2D transform(AffineTransform2D trans){
 		Hyperbola2D result = Hyperbola2D.transformCentered(this, trans);
@@ -447,6 +449,12 @@ implements Conic2D{
 		result.direct = this.direct ^ !trans.isDirect();
 		return result;
 	}
+	
+	/** Throws an infiniteShapeException */
+	public void draw(Graphics2D g) {
+		throw new UnboundedShapeException();
+	}
+
 	
 	/**
 	 * 

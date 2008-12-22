@@ -25,12 +25,14 @@
  */
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -243,10 +245,17 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// methods implementing the OrientedCurve2D interface
 
 	public double getWindingAngle(java.awt.geom.Point2D point) {
-		if(isInside(point))
-			return Math.PI*2;
-		else
-			return 0.0;
+		if(isDirect()){
+			if(isInside(point))
+				return Math.PI*2;
+			else
+				return 0.0;
+		} else {
+			if(isInside(point))
+				return 0.0;
+			else
+				return -Math.PI*2;
+		}
 	}
 
 	public double getSignedDistance(java.awt.geom.Point2D p) {
@@ -268,7 +277,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		double y = p2.getY();
 		
 		// check condition of parabola
-		return y>x*x;
+		return y>x*x ^ a<0;
 	}
 
 	
@@ -284,8 +293,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	 * Returns the curvature of the parabola at the given position.
 	 */
 	public double getCurvature(double t){
-		double p2 = .25/a/a;
-		return p2/Math.pow(t*t+p2, 3/2);		
+		return 2*a/Math.pow(Math.hypot(1, 2*a*t), 3);		
 	}
 	
 	
@@ -459,7 +467,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 	/**
-	 * return a new ParabolaArc2D, or null if t1<t0.
+	 * Returns a new ParabolaArc2D, or null if t1<t0.
 	 */
 	public ParabolaArc2D getSubCurve(double t0, double t1){
 		if(debug)
@@ -477,6 +485,45 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return new ParabolaArc2D(this, -100, 100).getDistance(x, y);
 	}
 	
+	// ===============================================
+	// Drawing methods (curve interface)
+	
+	/** 
+	 * returns the appended path of a ParabolaArc2D, with -100<t<100,
+	 * transformed as a polyline with 201 points.
+	 */
+	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
+		double t0 = -100;
+		double t1 = 100;
+		Point2D point = getPoint(t0);
+		for(double t=t0; t<=t1; t+=1){
+			point = getPoint(t);
+			path.lineTo((float)point.getX(), (float)point.getY());
+		}
+		point = getPoint(t1);
+		path.lineTo((float)point.getX(), (float)point.getY());
+			
+		return path;
+	}
+
+	/**
+	 * Computes path of a ParabolaArc2D with -100<t<100.
+	 */
+	public java.awt.geom.GeneralPath getGeneralPath(){
+		return new ParabolaArc2D(this, -100, 100).getGeneralPath();
+	}
+		
+	/** Throws an infiniteShapeException */
+	public void draw(Graphics2D g) {
+		throw new UnboundedShapeException();
+	}
+	
+	/** Throws an infiniteShapeException */
+	public void fill(Graphics2D g2){
+		throw new UnboundedShapeException();
+	}
+
+
 
 	// ===============================================
 	// methods implementing the Shape2D interface
@@ -545,6 +592,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	}
 
 
+
 	// ===============================================
 	// methods implementing the Shape interface
 	
@@ -609,31 +657,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return false;
 	}
 
-	/** 
-	 * returns the appended path of a ParabolaArc2D, with -100<t<100,
-	 * transformed as a polyline with 201 points.
-	 */
-	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		double t0 = -100;
-		double t1 = 100;
-		Point2D point = getPoint(t0);
-		for(double t=t0; t<=t1; t+=1){
-			point = getPoint(t);
-			path.lineTo((float)point.getX(), (float)point.getY());
-		}
-		point = getPoint(t1);
-		path.lineTo((float)point.getX(), (float)point.getY());
-			
-		return path;
-	}
-
-	/**
-	 * Computes path of a ParabolaArc2D with -100<t<100.
-	 */
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		return new ParabolaArc2D(this, -100, 100).getGeneralPath();
-	}
-	
 	/**
 	 * Returns path iterator of a ParabolaArc2D with -100<t<100.
 	 */
@@ -647,7 +670,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
 		return getGeneralPath().getPathIterator(trans, flatness);
 	}
-	
 	
 	// ====================================================================
 	// Methods inherited from the object class	

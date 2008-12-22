@@ -43,7 +43,8 @@ public class CheckDrawRotatedRays extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 		for(Ray2D ray : rays)
-			g2.draw(ray.clip(box));
+			ray.clip(box).draw(g2);
+			//g2.draw(ray.clip(box));
 		
 		g2.setColor(Color.BLACK);
 		g2.draw(box.getBoundary());

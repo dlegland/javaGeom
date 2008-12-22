@@ -31,7 +31,6 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 
@@ -40,7 +39,7 @@ public class DrawBoundarySetDemo extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
-	Curve2D curve = null;
+	Boundary2D curve = null;
 	
 	public DrawBoundarySetDemo() {
 		super();
@@ -59,20 +58,19 @@ public class DrawBoundarySetDemo extends JPanel{
 				
 		curve = Boundary2DUtils.clipBoundary(set, box);
 		System.out.println(curve);
-		
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setColor(Color.CYAN);
-		g2.fillRect(30, 30, 180, 150);
+//		g2.setColor(Color.CYAN);
+//		g2.fillRect(30, 30, 180, 150);
 		
 		g2.setColor(Color.YELLOW);
-		g2.fill(curve);
+		new GenericDomain2D(curve).fill(g2);
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(curve);
+		curve.draw(g2);
 	}
 
 	public final static void main(String[] args){

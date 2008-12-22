@@ -11,7 +11,9 @@ import math.geom2d.PointSet2D;
 import math.geom2d.line.LineSegment2D;
 
 /**
- * Defines a grid for snapping mouse pointer.
+ * Defines a grid for snapping mouse pointer. The main purpose of a grid is
+ * to find the closest vertex to a given point. It also provides methods
+ * for accessing the collection of vertices and edges visible in a Box2D.
  * @author dlegland
  *
  */

@@ -65,11 +65,11 @@ public class DrawBoundaryHoleDemo extends JPanel{
 		
 		// fill the domain
 		g2.setColor(Color.CYAN);
-		g2.fill(boundary);
+		new GenericDomain2D(boundary).fill(g2);
 		
 		// draw the boundary
 		g2.setColor(Color.BLACK);
-		g2.draw(boundary);
+		boundary.draw(g2);
 	}
 
 	public final static void main(String[] args){

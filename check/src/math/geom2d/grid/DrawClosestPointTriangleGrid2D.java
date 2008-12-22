@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.Disc2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawClosestPointTriangleGrid2D  extends JPanel{
@@ -31,16 +32,16 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 		
 		// draw the box in blue
 		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
+		box.getAsRectangle().getBoundary().draw(g2);
 		
 		// the the edges of the grid
 		g2.setColor(Color.BLACK);
 		for(LineSegment2D line : grid.getEdges(box))
-			g2.draw(line);
+			line.draw(g2);
 
 		// draw vertices of the grid, as black circles
 		for(Point2D point : grid.getVertices(box))
-			g2.draw(new Circle2D(point, 3));
+			new Disc2D(point, 3).fill(g2);
 
 		Point2D[] points = new Point2D[]{
 				new Point2D(x0+s/3+3*s, y0+s/3),
@@ -51,14 +52,14 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 		
 		// draw the origin, as a red circle 
 		g.setColor(Color.RED);
-		g2.draw(new Circle2D(x0, y0, 3));
+		new Circle2D(x0, y0, 3).draw(g2);
 		
 		// draw test points with edge
 		g.setColor(Color.BLUE);
 		for(Point2D point : points){
 			LineSegment2D edge = new LineSegment2D(point, grid.getClosestVertex(point));
 			g2.draw(edge);
-			g2.draw(new Circle2D(point, 2));
+			new Disc2D(point, 2).fill(g2);
 		}
 	}
 

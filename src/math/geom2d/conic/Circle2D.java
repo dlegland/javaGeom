@@ -25,6 +25,7 @@
  */
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Angle2D;
@@ -117,11 +118,10 @@ public class Circle2D extends Ellipse2D {
 	
 	/** Create a new circle with specified center and radius */
 	public Circle2D(double xcenter, double ycenter, double radius){
-		super(xcenter, ycenter, radius, radius, 0, true);
-		this.r = radius;
+		this(xcenter, ycenter, radius, true);
 	}
 
-	/** Create a new circle with specified center and radius */
+	/** Create a new circle with specified center, radius and orientation.*/
 	public Circle2D(double xcenter, double ycenter, double radius, boolean direct){
 		super(xcenter, ycenter, radius, radius, 0, direct);
 		this.r = radius;
@@ -247,6 +247,16 @@ public class Circle2D extends Ellipse2D {
 	// ===================================================================
 	// methods of OrientedCurve2D interface
 	
+	/**
+	 * Test whether  the point is inside the circle. The test is performed
+	 * by translating the point, and re-scaling it such that its coordinates
+	 * are expressed in unit circle basis.
+	 */
+	public boolean isInside(java.awt.geom.Point2D point){
+		double xp = (point.getX() - this.xc)/this.r;
+		double yp = (point.getY() - this.yc)/this.r;
+		return (xp*xp + yp*yp < 1) ^ !direct;
+	}
 
 	public double getSignedDistance(java.awt.geom.Point2D point){
 		return getSignedDistance(point.getX(), point.getY());
@@ -290,7 +300,7 @@ public class Circle2D extends Ellipse2D {
 		return new Point2D(xc + r*Math.cos(theta), yc + r*Math.sin(theta));
 	}
 
-	public double getPosition(Point2D point) {
+	public double getPosition(java.awt.geom.Point2D point) {
 		double angle = Angle2D.getHorizontalAngle(xc, yc, point.getX(), point.getY());
 		if(direct)
 			return Angle2D.formatAngle(angle-theta);
@@ -346,8 +356,8 @@ public class Circle2D extends Ellipse2D {
 		// Compute line perpendicular to the test line, and going through the
 		// circle center
 		Point2D center = new Point2D(xc, yc);
-		StraightLine2D perp = StraightLine2D.createPerpendicular(line,
-				center);	
+		StraightLine2D perp =
+			StraightLine2D.createPerpendicular(line, center);	
 
 		// Compute distance between line and circle center
 		Point2D inter = perp.getIntersection(new StraightLine2D(line));
@@ -450,7 +460,7 @@ public class Circle2D extends Ellipse2D {
 	}
 	
 
-	protected java.awt.geom.GeneralPath getGeneralPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
 		// position to the first point
@@ -464,6 +474,12 @@ public class Circle2D extends Ellipse2D {
 		return path;
 	}
 	
+	public void draw(Graphics2D g2){
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc-r, yc-r, 2*r, 2*r);
+		g2.draw(ellipse);
+	}
+
 	/** 
 	 * Return pathiterator for this circle.
 	 */

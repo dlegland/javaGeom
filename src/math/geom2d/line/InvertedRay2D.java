@@ -24,6 +24,7 @@
 // package
 package math.geom2d.line;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
@@ -156,10 +157,16 @@ public class InvertedRay2D extends AbstractLine2D{
 		throw new UnboundedShapeException();
 	}
 
+	/** Throws an infiniteShapeException */
 	public GeneralPath appendPath(GeneralPath path) {
 		throw new UnboundedShapeException();
 	}
 	
+	/** Throws an infiniteShapeException */
+	public java.awt.geom.GeneralPath getGeneralPath() {
+		throw new UnboundedShapeException();
+	}
+
 
 	// ===================================================================
 	// methods implementing the Curve2D interface
@@ -237,6 +244,11 @@ public class InvertedRay2D extends AbstractLine2D{
 	}
 
 	public PathIterator getPathIterator(AffineTransform at, double flatness) {
+		throw new UnboundedShapeException();
+	}
+
+	/** Throws an infiniteShapeException */
+	public void draw(Graphics2D g) {
 		throw new UnboundedShapeException();
 	}
 

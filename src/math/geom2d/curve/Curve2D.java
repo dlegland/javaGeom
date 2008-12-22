@@ -31,6 +31,7 @@ import math.geom2d.Box2D;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.line.LinearShape2D;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 /**
@@ -174,6 +175,15 @@ public interface Curve2D extends Shape2D{
 	 */
 	public abstract CurveSet2D<? extends Curve2D> clip(Box2D box);
 	
+	public abstract java.awt.geom.GeneralPath getGeneralPath();
+	
+	/**
+	 * Draws the curve on the given Graphics2D object.
+	 * @param g2 the grahics to draw the curve
+	 * @since 0.6.3
+	 */
+	public abstract void draw(Graphics2D g2);
+	
 	/**
 	 * Utilitary class for representing empty curves.
 	 * @author dlegland
@@ -245,6 +255,13 @@ public interface Curve2D extends Shape2D{
 		
 		public CurveSet2D<? extends Curve2D> clip(Box2D box){
 			return null;
+		}
+		
+		public java.awt.geom.GeneralPath getGeneralPath(){
+			return  null;
+		}
+		
+		public void draw(Graphics2D g){			
 		}
 	}
 }

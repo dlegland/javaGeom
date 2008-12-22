@@ -1,5 +1,38 @@
 Changes of javaGeom library
 
+javaGeom-0.6.3 (2008-??-??, rev. ???)
+
+New features
+- instances of Domain2D can be complemented
+- added methods to draw shapes:
+	+ Curve2D.draw(),
+	+ Boundary2D.fill(),  
+	+ Domain2D.fill(), Domain2D.draw()
+	+ Box2D.draw(), Box2D.fill()
+	+ Point2D.draw(), PointSet2D.draw()
+- implemented getWindingAngle() of EllipseArc2D, ParabolaArc2D
+- added Polyline2D.getVertex() and Polygon2D.getVertex()
+	
+Regressions
+- removed Shape2D.defaultClipWindow
+- changed names of methods in polylines and polygons: 
+	+ 'Points' -> 'Vertices'
+	+ 'verticesNumber' -> 'vertexNumber'
+- remove deprecated methods 
+	+ getClippedShape in Point2D
+- changed AffineTransform2D.getInverseTransform() to invert()
+
+Bug fixes
+- fixed projection on lines (!)
+- fixed computation of curvature for quad and cubic splines
+- fixed clipping of BoundaryPolyCurve2D
+- fixed clipping of domains
+- fixed clipping of inverse circle arcs
+
+Coding
+
+
+	
 javaGeom-0.6.2 (2008-07-30, rev. 153)
 
 New features:
@@ -26,7 +59,7 @@ geom2d:
 	+ Polygon2D->SimplePolygon2D, PolygonalShape2D->Polygon2D
 	+ StraightObject2D splitted into LinearShape2D (interface) and AbstractLine2D
 
-
+		
 javaGeom-0.6.1 (2008-05-24, rev. 137)
 
 Start implementing 3D methods, revision of package hierarchy.

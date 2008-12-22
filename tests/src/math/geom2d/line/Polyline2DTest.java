@@ -57,7 +57,7 @@ public class Polyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		Polyline2D line = new Polyline2D(points);
 		line.addPoint(new Point2D(30, 20));
-		assertEquals(line.getVerticesNumber(), points.length+1);		
+		assertEquals(line.getVertexNumber(), points.length+1);		
 	}
 
 	public void testGetPoint() {

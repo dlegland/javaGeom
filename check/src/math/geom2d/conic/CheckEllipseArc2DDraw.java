@@ -70,7 +70,7 @@ public class CheckEllipseArc2DDraw extends JPanel{
 		
 		// Draw the support ellipse
 		g2.setColor(Color.CYAN);
-		g2.draw(ellipse);
+		ellipse.draw(g2);
 		
 		// create an arc
 		EllipseArc2D arc1 = new EllipseArc2D(ellipse, Math.PI/6, 2*Math.PI/3);
@@ -88,7 +88,7 @@ public class CheckEllipseArc2DDraw extends JPanel{
 		set.addCurve(arc2);
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(set);
+		set.draw(g2);
 	}
 
 	public final static void main(String[] args){

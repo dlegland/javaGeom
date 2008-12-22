@@ -26,13 +26,13 @@
 
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
@@ -49,7 +49,6 @@ public class Disc2D implements Domain2D {
 
 	protected Circle2D circle = new Circle2D(0, 0, 1);
 
-
 	public Disc2D(){
 	}
 	
@@ -61,8 +60,17 @@ public class Disc2D implements Domain2D {
 		circle = new Circle2D(p, r);
 	}
 	
+	public Disc2D(double x0, double y0, double r){
+		circle = new Circle2D(x0, y0, r);
+	}
+	
+	
 	public Boundary2D getBoundary() {		
 		return circle;
+	}
+
+	public Domain2D complement(){
+		return new GenericDomain2D(circle.getReverseCurve());
 	}
 
 	public double getDistance(java.awt.geom.Point2D p) {
@@ -84,7 +92,7 @@ public class Disc2D implements Domain2D {
 		return false;
 	}
 
-	public Shape2D clip(Box2D box) {
+	public Domain2D clip(Box2D box) {
 		return new GenericDomain2D(Boundary2DUtils.clipBoundary(this.getBoundary(), box));
 	}
 
@@ -92,7 +100,7 @@ public class Disc2D implements Domain2D {
 		return circle.getBoundingBox();
 	}
 
-	public Shape2D transform(AffineTransform2D trans) {
+	public Domain2D transform(AffineTransform2D trans) {
 		return null;
 	}
 
@@ -145,5 +153,12 @@ public class Disc2D implements Domain2D {
 	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
 		return circle.getPathIterator(trans, flatness);
 	}
+	
+	public void draw(Graphics2D g2){
+		g2.draw(circle.getGeneralPath());
+	}
 
+	public void fill(Graphics2D g2){
+		g2.fill(circle.getGeneralPath());
+	}
 }

@@ -47,6 +47,19 @@ public class SimplePolygon2DTest extends TestCase {
 		junit.awtui.TestRunner.run(SimplePolygon2DTest.class);
 	}
 
+	public void testGetComplement(){
+		// start with a simple rectangle
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(20, 10);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(10, 20);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		
+		SimplePolygon2D poly2 = poly.complement();
+		assertEquals(poly2.getSignedArea(), -poly.getSignedArea());
+	}
+	
 	/*
 	 * Test for boolean contains(double, double)
 	 */

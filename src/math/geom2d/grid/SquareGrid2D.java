@@ -13,11 +13,13 @@ import math.geom2d.Shape2D;
 import math.geom2d.line.LineSegment2D;
 
 /**
+ * Defines a square grid, which can have different size in each direction. 
+ * The grid is always parallel to the main axes.
  * @author dlegland
  *
  */
 public class SquareGrid2D implements Grid2D {
-
+//TODO: mutable or not ?
 	double x0 = 0;
 	double y0 = 0;
 	

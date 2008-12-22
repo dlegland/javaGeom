@@ -26,6 +26,7 @@
  */
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.*;
@@ -333,6 +334,15 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
 		return conic.getPathIterator(trans, flatness);
 	}
+	
+	public void draw(Graphics2D g) {
+		conic.draw(g);
+	}
+
+	public java.awt.geom.GeneralPath getGeneralPath(){
+		return conic.getGeneralPath();
+	}
+	
 
 	/**
 	 * When internal parameters are modified, recompute type, focal...

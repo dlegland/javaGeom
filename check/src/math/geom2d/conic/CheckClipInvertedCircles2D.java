@@ -74,10 +74,10 @@ public class CheckClipInvertedCircles2D extends JPanel{
 				new Circle2D[]{circle1, circle2, circle3, circle4});		
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(boundary.getDomain().clip(box));
+		boundary.getDomain().clip(box).fill(g2);
 		
 		g2.setColor(Color.RED);
-		g2.draw(boundary.clip(box));
+		boundary.clip(box).draw(g2);
 	}
 
 	public final static void main(String[] args){
@@ -85,8 +85,9 @@ public class CheckClipInvertedCircles2D extends JPanel{
 		
 		JPanel panel = new CheckClipInvertedCircles2D();
 		JFrame frame = new JFrame("Draw inverted circles");
+		panel.setPreferredSize(new Dimension(400, 400));
 		frame.setContentPane(panel);
-		frame.setSize(500, 400);
-		frame.setVisible(true);	
+		frame.setVisible(true);
+		frame.pack();
 	}
 }

@@ -1,6 +1,7 @@
 package math.geom2d.conic;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Shape2D;
+import math.geom2d.curve.Curve2D;
 
 public class CheckCircle2DClipBox2D  extends JPanel{
 
@@ -47,40 +48,40 @@ public class CheckCircle2DClipBox2D  extends JPanel{
 
 		// draw box outlines
 		g2.setColor(Color.BLACK);
-		g2.draw(box1.getAsRectangle());
-		g2.draw(box2.getAsRectangle());
+		box1.draw(g2);
+		box2.draw(g2);
 		
 		// draw each circle
 		g2.setColor(Color.BLUE);
 		for(Circle2D circle : circles1)
-			g2.draw(circle.clip(box1));
+			circle.clip(box1).draw(g2);
 		
 		// draw each circle
 		for(Circle2D circle : circles2)
-			g2.draw(circle.clip(box2));
+			circle.clip(box2).draw(g2);
 		
 		// draw each circle
 		g2.setColor(Color.BLUE);
 		for(Circle2D circle : circles0)
-			g2.draw(circle.clip(box2));
+			circle.clip(box2).draw(g2);
 		
 		// draw each circle
 		g2.setColor(Color.RED);
 		for(Circle2D circle : circles0){
-			Shape2D clipped = circle.clip(box1);
+			Curve2D clipped = circle.clip(box1);
 			if(!clipped.isEmpty())
-				g2.draw(clipped);
+				clipped.draw(g2);
 		}
-
 	}
 
 	public final static void main(String[] args){
 		System.out.println("should draw a circle");
 		
 		JPanel panel = new CheckCircle2DClipBox2D();
+		panel.setPreferredSize(new Dimension(400, 400));
 		JFrame frame = new JFrame("Check Clip Circle2D");
 		frame.setContentPane(panel);
-		frame.setSize(400, 400);
+		frame.pack();
 		frame.setVisible(true);
 		
 	}}

@@ -30,7 +30,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -70,12 +69,12 @@ public class CheckHyperbola2DTransform extends JPanel{
 		Hyperbola2D rotated = hyperbola.transform(rot);
 
 		g2.setColor(Color.CYAN);
-		g2.fill(rotated.getDomain().clip(box));
+		rotated.getDomain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
-		g2.draw(rotated.clip(box));
+		rotated.clip(box).draw(g2);
 
 		g2.setColor(Color.BLACK);
-		g2.draw(hyperbola.clip(box));
+		hyperbola.clip(box).draw(g2);
 		
 //		// Also draw a scaled version of the hyperbola
 //		AffineTransform2D sca = AffineTransform2D.createScaling(origin, .5, 3);
@@ -88,15 +87,15 @@ public class CheckHyperbola2DTransform extends JPanel{
 
 		// Draw the original hyperbola
 		g2.setColor(Color.BLACK);
-		g2.draw(hyperbola.clip(box));
+		hyperbola.clip(box).draw(g2);
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getAsRectangle());
+		box.getBoundary().draw(g2);
 
 		// Draw transform origin
 		Point2D p1 = new Point2D(x0, y0);
-		g2.fill(new Circle2D(p1, 4));
+		new Disc2D(p1, 4).fill(g2);
 	}
 
 	public final static void main(String[] args){

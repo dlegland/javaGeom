@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.PointSet2D;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 
@@ -62,7 +61,7 @@ public class DrawLineIntersectionsDemo extends JPanel {
 		for(StraightLine2D line : lines){
 			 clipped = line.clip(outerBox);
 			 if(!clipped.isEmpty())
-				 g2.draw(clipped);
+				 clipped.draw(g2);
 		}
 		
 		// Draw points in inner box
@@ -70,7 +69,7 @@ public class DrawLineIntersectionsDemo extends JPanel {
 		g2.setColor(Color.RED);
 		for(Point2D point : points){
 			if(innerBox.contains(point))
-				 g2.fill(new Circle2D(point, 4));
+				point.draw(g2, 4);
 		}
 	}
 	

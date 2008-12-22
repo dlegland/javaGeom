@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.Disc2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawVerticesSquareGrid2D  extends JPanel{
@@ -30,20 +30,20 @@ public class DrawVerticesSquareGrid2D  extends JPanel{
 		
 		// draw the box in blue
 		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
+		box.getAsRectangle().getBoundary().draw(g2);
 		
 		// the the edges of the grid
 		g2.setColor(Color.BLACK);
 		for(LineSegment2D line : grid.getEdges(box))
-			g2.draw(line);
+			line.draw(g2);
 
 		// draw vertices of the grid, as black circles
 		for(Point2D point : grid.getVertices(box))
-			g2.draw(new Circle2D(point, 3));
+			new Disc2D(point, 3).fill(g2);
 
 		// draw the origin, as a red circle 
 		g.setColor(Color.RED);
-		g2.draw(new Circle2D(x0, y0, 3));
+		new Disc2D(x0, y0, 3).fill(g2);
 	}
 
 	public final static void main(String[] args){
