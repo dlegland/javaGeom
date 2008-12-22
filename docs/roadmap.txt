@@ -1,0 +1,31 @@
+Roadmap for javageom Library
+----------------------------
+
+0.6.3 	(soon) next stable release
+		check oriented curves winding angle
+
+0.7.0 	(just after 0.6.x) remove dependencies from Shape2D
+
+0.8.0   (?) create 'data' subdirectory, to separate data and algorithms ?
+
+1.0   	(?) complete implementation for lines, polygons and conics in 2D
+		Additional algorithms can be provided, as well as additional shapes.
+		Partial support of 3D (lines, polygons) can be provided
+
+Other pending questions:
+- keep inheritance from java.awt.geom.Point2D for Points ?
+- keep double methods (one with x,y, other with point2D) when using points ?
+- introduce finite grids
+- line segments with direct access to vertices (like LineObject2D) ?
+	Call it Line2D ?
+- introduce points in homogeneous coordinates ?
+
+
+Version numbering:
+pattern: javaGeom-x.y.z, or javaGeom-x.y.z-dd
+first digit incremented following major refactoring of the code
+second digit incremented when many new features are added, or when many
+	classes or methods have been changed
+third digit is incremented for bug fixes, and addition of small new features
+two additional digits can be added for the addition of few bug fixes compared
+	to the previous version
