@@ -1,0 +1,2597 @@
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{hyperref}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 1
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+JavaGeom: a java library for geometrical computations
+\end_layout
+
+\begin_layout Standard
+JavaGeom is a library for creating geometrical objects (such as lines, circles,
+ ellipses, polygons...), getting information on them (length of a curve, number
+ of points of a polygon...) or between them (get intersection point of 
+\begin_inset Formula $2$
+\end_inset
+
+ lines...), and manipulating them (affine transforms, clipping, compositions...).
+ The aim of the library is to provide a simple but efficient tool to be
+ embed in applications requiring geometry calculations, e.g.
+ vectorial drawing software, computer-aided design, dynamic geometry, or
+ research programs.
+\end_layout
+
+\begin_layout Standard
+The library is developed using the Java language.
+\end_layout
+
+\begin_layout Standard
+CAUTION: this document is a set of working notes, and may be strongly outdated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+TODO: split doc into several documents for each section, and add a general
+ introducting doc.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+TODO: find a typography convention for class names
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+Library organization
+\end_layout
+
+\begin_layout Subsection
+Packages hierarchy
+\end_layout
+
+\begin_layout Standard
+Packages are divided depending on the type of geoemtry used : geom2d for
+ euclidean plane geometry, geom3d for euclidean space geometry, or geom3s
+ for spherical geometry.
+ Subpackages could include specialized shape types.
+\end_layout
+
+\begin_layout Subsubsection
+Subpackages for math.geom2d
+\end_layout
+
+\begin_layout Description
+curve hierarchy of curves and of domains
+\end_layout
+
+\begin_layout Description
+line straight lines and line segments
+\end_layout
+
+\begin_layout Description
+polygon domains bounded by straight objects
+\end_layout
+
+\begin_layout Description
+transform affine and vectorial transforms in the plane
+\end_layout
+
+\begin_layout Description
+conic circle, ellipse, parabola and hyperbola, and derived classes
+\end_layout
+
+\begin_layout Subsection
+Java version
+\end_layout
+
+\begin_layout Standard
+Java 1.5 for first version.
+\end_layout
+
+\begin_layout Standard
+Second version is planned to support generic collections, and to have a
+ more detailed package subdivision: subpackages 'shapes', 'graph'.
+ main package will contain interface hierarchy, utility classes, and utility
+ implementations.
+\end_layout
+
+\begin_layout Section
+Conventions
+\end_layout
+
+\begin_layout Standard
+We use the convention to call 'XXXSet' collections of objects which are
+ not linked together, such as a set of points, and 'PolyXXX' collections
+ of objects which form an other object, like Polyline2D.
+\end_layout
+
+\begin_layout Chapter
+Base classes
+\end_layout
+
+\begin_layout Section
+Utility classes
+\end_layout
+
+\begin_layout Standard
+Some classes which are not geometrical 'shapes' are needed to represent
+ displacement, angles, or measures made on shapes.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Vector2D"
+
+\end_inset
+
+Vector2D
+\end_layout
+
+\begin_layout Standard
+Represents a translation in the plane, without changing orientation angle.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Proposal: change to an interface, and implement as CartesianVector2D, PolarVecto
+r2D.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+x translation in 
+\begin_inset Formula $Ox$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Description
+y translation in 
+\begin_inset Formula $Oy$
+\end_inset
+
+ direction
+\end_layout
+
+\begin_layout Description
+Vector2D(Point2D) constructor from a point
+\end_layout
+
+\begin_layout Description
+Vector2D(double,double) constructor from 2 shifts
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:PolarVector2D"
+
+\end_inset
+
+PolarVector2D
+\end_layout
+
+\begin_layout Standard
+A class which derives from Vector2D, which can specify the shift in polar
+ coordinates (
+\begin_inset Formula $\rho$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta$
+\end_inset
+
+).
+ Fields 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ are computed accordingly.
+ Note: 
+\begin_inset Formula $\rho$
+\end_inset
+
+ can be negative.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Angle2D"
+
+\end_inset
+
+Angle2D
+\end_layout
+
+\begin_layout Standard
+This class is an utility class containing various methods useful when working
+ with angles: add ad subtract angles, by keeping the result between 0 and
+ 
+\begin_inset Formula $2\pi$
+\end_inset
+
+, checking if a angle is between 2 others.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Box2D"
+
+\end_inset
+
+Box2D
+\end_layout
+
+\begin_layout Standard
+An isothetic rectangle.
+ Inner fields: xmin, xmax, ymin and ymax.
+\end_layout
+
+\begin_layout Section
+Basic class hierarchy
+\end_layout
+
+\begin_layout Standard
+Most classes in javaGeom2d implement the 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Shape2D]{Shape2D}
+\end_layout
+
+\end_inset
+
+ interface, which derive in interfacs 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Point2D]{Point2D}
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Curve2D]{Curve2D}
+\end_layout
+
+\end_inset
+
+, and 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Domain2D]{Domain2D}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Shape2D"
+
+\end_inset
+
+Shape2D 
+\end_layout
+
+\begin_layout Standard
+A shape which can be drawn in the plane, i.e.
+ an arbitrary set of points.
+ Shapes are divided into 3 types, depending on their inner dimension: points
+ (dimension 0), curves (dimension 1) and domains (dimension 2).
+ Each type is represented by the corresponding interface.
+\end_layout
+
+\begin_layout Standard
+The library handles unbounded shapes like straight lines, parabolas or hyperbola
+s.
+ Some methods are provided to check if a given shape is bounded, and to
+ clip it if this is not the case.
+\end_layout
+
+\begin_layout Standard
+Methods are available to check if points belongs to the shape, and to compute
+ distance from point to shape.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+contains(Point2D) checks if the shape contains a point.
+ 
+\end_layout
+
+\begin_layout Description
+getDistance(point) computes distance from a point to the shape.
+\end_layout
+
+\begin_layout Description
+isBounded() return true if the shape can be included in a box big enough.
+ Unbounded shapes (such as straight lines, parabola, hyperbola...) need to
+ be clipped before being displayed.
+\end_layout
+
+\begin_layout Description
+clip(Box2D) returns the parts of the shape which belong to the box.
+ It is maybe better to provide some clipping methods in Box2D class.
+\end_layout
+
+\begin_layout Description
+transform(AffineTransform2D) return the shape obtained after the given affine
+ transform.
+ This is useful for designing drawing programs, for which one can rotate,
+ resize or shear geometric primitives.
+\end_layout
+
+\begin_layout Subsection
+EmptySet2D
+\end_layout
+
+\begin_layout Standard
+Special class which allows to return a result as a Shape2D, even when result
+ is empty.
+ For example: when computing intersection of 2 parallel lines.
+ Need to decide when this class is useful, or if it can simply be replaced
+ by a null reference.
+\end_layout
+
+\begin_layout Section
+Points
+\end_layout
+
+\begin_layout Standard
+A point is defined by 2 coordinate 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+.
+ Two points are equal if they have the same Cartesian coordinates.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Point2D"
+
+\end_inset
+
+Point2D
+\end_layout
+
+\begin_layout Standard
+This is the base class, which extends java.geom.Point2D.Double.
+ While Point2D is the base class of the geometry, it is preferable that
+ each shape can interact with java Points as well.
+\end_layout
+
+\begin_layout Subsection
+AbstractPoint2D
+\end_layout
+
+\begin_layout Standard
+A proposal for an interface, allowing to consider both 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:PolarPoint2D]{PolarPoint2D}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Point2D]{Point2D}
+\end_layout
+
+\end_inset
+
+ as implementation of the same interface.
+ Another option is to consider Point2D as an interface, and implement as
+ CartesianPoint2D and PolarPoint2D.
+\end_layout
+
+\begin_layout Description
+getX() returns the 
+\begin_inset Formula $x$
+\end_inset
+
+ coordinate
+\end_layout
+
+\begin_layout Description
+getY() returns the 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinate
+\end_layout
+
+\begin_layout Subsection
+Point2D.INFINITY_POINT 
+\end_layout
+
+\begin_layout Standard
+This is a point located at the infinity (both coordinate are 
+\begin_inset Formula $+\infty$
+\end_inset
+
+).
+ It can be used for giving the result of geometric operations, such as the
+ intersection point of 
+\begin_inset Formula $2$
+\end_inset
+
+ parallel lines.
+ Useful ? -> consider it later, if want to consider projective geometry.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:PointSet2D"
+
+\end_inset
+
+PointSet2D
+\end_layout
+
+\begin_layout Standard
+A set of points.
+ Distance to this shape is the distance to the nearest point of the set.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:PolarPoint2D"
+
+\end_inset
+
+PolarPoint2D
+\end_layout
+
+\begin_layout Standard
+A utility class, used for creating a point from a base point, and a polar
+ vector.
+\end_layout
+
+\begin_layout Section
+Domains of the plane
+\end_layout
+
+\begin_layout Standard
+All the shapes that can be filled.
+ Hausdorff dimension of such shapes is 
+\begin_inset Formula $2$
+\end_inset
+
+.
+ Boundary is a curve, implementing the 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+hyperref[sub:Boundary2D]{Boundary2D}
+\end_layout
+
+\end_inset
+
+ interface.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Domain2D"
+
+\end_inset
+
+Domain2D
+\end_layout
+
+\begin_layout Standard
+The should be able to locate points (inside, outside, on the boundary),
+ and to return their boundary.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+getBoundary():Boundary2D return the boundary curve or the set of boundary
+ curves of the domain.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:GenericDomain2D"
+
+\end_inset
+
+GenericDomain2D
+\end_layout
+
+\begin_layout Standard
+This is a concrete implementation of a domain defined by an arbitrary boundary
+ curve.
+ Most computations are delegated to the boundary curve.
+\end_layout
+
+\begin_layout Subsubsection
+Constructor
+\end_layout
+
+\begin_layout Description
+Domain2D(Boundary2D) construction using a boundary as argument.
+\end_layout
+
+\begin_layout Chapter
+Curves
+\end_layout
+
+\begin_layout Section
+Curve hierarchy
+\end_layout
+
+\begin_layout Standard
+The hierarchy of curve interfaces and classes is illustrated on figure 
+\begin_inset LatexCommand ref
+reference "fig:Hierarchy-of-curves"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+TODO: separate hierarchy of oriented curve for a first presentation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/curveHierarchy.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+\begin_inset LatexCommand label
+name "fig:Hierarchy-of-curves"
+
+\end_inset
+
+Hierarchy of curves
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Curve2D"
+
+\end_inset
+
+Curve2D
+\end_layout
+
+\begin_layout Standard
+The generic interface for curves in the plane.
+ It actually defines parametric curves.
+ Each point of the curve can be identified by its curvilinear coordinate.
+ This curvilinear coordinate belongs to an interval 
+\begin_inset Formula $[t_{0};t_{1}]$
+\end_inset
+
+, which can be known by using methods getT0() and getT1().
+\end_layout
+
+\begin_layout Standard
+For non continuous curves, different parametrization.
+ One possibility is to use 
+\begin_inset Formula $[0;2n-1]$
+\end_inset
+
+ where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of curves.
+ For 
+\begin_inset Formula $t\in[2k;2k+1],\, k=0,1,...n-1$
+\end_inset
+
+, the point belong to the 
+\begin_inset Formula $k$
+\end_inset
+
+-st curve.
+ For 
+\begin_inset Formula $t\in[2k+1;2k+2],\, k=0,1,...n-2$
+\end_inset
+
+, the point is the ending point of a curve, either the 
+\begin_inset Formula $k$
+\end_inset
+
+-st or the 
+\begin_inset Formula $(k+1)$
+\end_inset
+
+-st.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+getT0():double return the beginning of parameterization domain
+\end_layout
+
+\begin_layout Description
+getT1():double return the end of parameterization domain
+\end_layout
+
+\begin_layout Description
+getPoint(t):Point2D return the point corresponding to given parameter
+\end_layout
+
+\begin_layout Description
+getFirstPoint():Point2D return the first point of the curve.
+ Can be an infinite point in the case of an infinite shape.
+\end_layout
+
+\begin_layout Description
+getLastPoint():Point2D return the last point of the curve.
+ Can be an infinite point in the case of an infinite shape.
+\end_layout
+
+\begin_layout Description
+getPosition(point):double compute curve position of a point.
+ Ideally, parameter is a point belonging to the curve, but it is possible
+ to consider position of the projection of the point on the curve.
+ Result is comprised in the interval given by 
+\begin_inset Formula $t_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $t_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+getDistance(Point2D),getDistance(double,double) return the distance to a
+ point.
+ Not always easy to implement (ex: conics), but this method is necessary
+ to interactively select a curve.
+\end_layout
+
+\begin_layout Description
+getIntersections(LinearObject):Point2D[] return intersection points with
+ a straight line, or a linear object.
+ This function can be used to compute clipping with rectangle, or even polygons.
+\end_layout
+
+\begin_layout Description
+[deprecated]getSmoothPieces():SmoothCurve2D[] return smooth curves which
+ compose this curve.
+ Deprecated, as there is no special use of this function.
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Some algorithms may use this function.
+ For example, detail the 'strokification' of a curve, ie Minkowski addition
+ with a ball.
+ Maybe need a method to extract continuous pieces ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+getContinuousCurves():ContinuousCurve[]
+\end_layout
+
+\begin_layout Description
+getReverseCurve() returns the same curve, but with inverted parametrization.
+ 
+\end_layout
+
+\begin_layout Description
+getSubCurve(t0,t1):Curve2D method of Curve2D or ContinuousCurve2D.
+ Extract a portion of the curve.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ContinuousCurve2D"
+
+\end_inset
+
+ContinuousCurve2D
+\end_layout
+
+\begin_layout Standard
+A curve that can be drawn without leaving the stroke out of the paper.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+getFirstTangent():Vector2D get the tangent at the first point (if defined)
+\end_layout
+
+\begin_layout Description
+getLastTangent():Vector2D get the tangent at the last point (if defined)
+\end_layout
+
+\begin_layout Description
+?getLeftTangent(t):Vector2D return the tangent vector when arriving on the
+ point (not defined for the the first point of the curve)
+\end_layout
+
+\begin_layout Description
+?getRightTangent(t):Vector2D return the tangent vector when leaving the
+ point (not defined for the the last point of the curve)
+\end_layout
+
+\begin_layout Description
+isClosed():boolean return true if the curve is closed (the first point is
+ the same as the last point).
+\end_layout
+
+\begin_layout Description
+getSmoothPieces():SmoothCurve2D[] return the set of smooth curves composing
+ the shape.
+\end_layout
+
+\begin_layout Description
+appendPath(GeneralPath):GeneralPath add the piece of curve to the path.
+ If the curve is closed, it starts with a 'moveTo()' command.
+ Anyway, it starts with a 'lineTo()', 'quadTo()' or 'cubicTo()'.
+ This allows to concatenate easily continuous curves.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:SmoothCurve2D"
+
+\end_inset
+
+SmoothCurve2D
+\end_layout
+
+\begin_layout Standard
+A curve without corners.
+ This is the smallest unit to define curves.
+\end_layout
+
+\begin_layout Standard
+A tangent line and a normal line are defined for each point of the curve.
+ It is possible to draw an approximation of a thick curve by using tangent
+ information on a set of points along the curve.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+getTangentVector(t):Vector2D get the tangent vector for the specified position
+\end_layout
+
+\begin_layout Description
+getCurvature(t):double returns the curvature for a point of the curve.
+\end_layout
+
+\begin_layout Description
+?getNormal(t):Vector2D get the normal vector.
+ Not sure this is very useful ?
+\end_layout
+
+\begin_layout Section
+Oriented curves
+\end_layout
+
+\begin_layout Standard
+In a boudary representation of planar shapes, curves are used to determine
+ if point lie inside or outside the boundary.
+ Several interfaces define the behaviour of boundary curves (such as straight
+ lines, conics...), or of curves which can be used as a part of a boundary
+ (such as line segments, coinic arcs...).
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:OrientedCurve2D"
+
+\end_inset
+
+OrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+An OrientedCurve2D defines an 'inside' and an 'outside'.
+ It is typically a part of the boundary of a domain.
+ Several OrientedCurve2D chained together form a ContinuousBoundary2D.
+ One or several ContinousBoundary2D form a Boundary2D.
+ 
+\end_layout
+
+\begin_layout Standard
+If the curve is closed, the domain is definite.
+ The same if the curve is infinite (parabola, line...).
+ For open curves which are bounded, we can consider the extension of the
+ curve by adding line arcs at the beginning and at the end of the curve,
+ resulting in an infinite curve.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+getWindingAngle(Point):double return the angle portion the curve turn around
+ the given point.
+ Result is a signed angle.
+\end_layout
+
+\begin_layout Description
+getSignedDistance(Point):double signed distance from the point to the curve.
+ Result is positive for a point outside the curve, negative for a point
+ inside the curve, and zero for a point on the curve.
+\end_layout
+
+\begin_layout Description
+?getNormalCone(t):AngularWedge2D return the normal cone of the boundary,
+ towards ouside.
+ Should return an object AngularWedge2D, to be implemented, defined by a
+ Point, a starting angle and a signed angular extent.
+\end_layout
+
+\begin_layout Description
+isInside(point):boolean return true if the point is located on the 'inside'
+ part of the curve.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Boundary2D"
+
+\end_inset
+
+Boundary2D
+\end_layout
+
+\begin_layout Standard
+A Boundary2D is used to describe the boundary of a Domain2D.
+ It defines interior and exterior for every point of the plane.
+ It extends OrientedCurve2D, and is composed of one or several ContinuousOriente
+dCurve2D.
+ Each continuous boundary curve is either a closed curve, or an infinite
+ curve.
+\end_layout
+
+\begin_layout Subsubsection
+Abstract methods
+\end_layout
+
+\begin_layout Description
+?getWindingNumber(Boundary2D,Point2D):double renvoie le nombre de fois où
+ la courbe tourne autour du point.
+ Peut être un nombre non entier (ex: une droite).
+\end_layout
+
+\begin_layout Description
+?getWindingNumber(Point2D) renvoie le nombre de fois où la courbe tourne
+ autour du point.
+ Peut être un nombre non entier (ex: une droite).
+\end_layout
+
+\begin_layout Description
+getBoundaryCurves():ContinuousOrientedCurve2D[] return a set of ContinuousBounda
+ry2D.
+ 
+\end_layout
+
+\begin_layout Description
+?getClippedBoundary(Box):return a curve which is the boundary of the domain
+ clipped by the given box.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ContinuousOrientedCurve2D"
+
+\end_inset
+
+ContinuousOrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+It is both a ContinuousCurve2D and an OrientedCurve2D.
+ The reason of the existence of this class is to be able to separate the
+ different components of a Boundary2D.
+ A ContinuousBoundary2D is either bounded and closed, or an infinite curve,
+ such as a straight line or a parabola.
+ 
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ContinuousBoundary2D"
+
+\end_inset
+
+ContinuousBoundary2D
+\end_layout
+
+\begin_layout Standard
+same as ContinuousOrientedCurve2D, but implements Boundary2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:SmoothOrientedCurve2D"
+
+\end_inset
+
+SmoothOrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+A continuous boundary which is moreover smooth.
+ Can be used as a shortcut for not specifying multiple interface, and to
+ define a continuous oriented curve from multiple smooth oriented pieces.
+ This is the smallest unit to define boundaries.
+\end_layout
+
+\begin_layout Section
+Some curve Implementations
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:CurveSet2D"
+
+\end_inset
+
+CurveSet2D
+\end_layout
+
+\begin_layout Standard
+A set of curves in the plane.
+ Curves are not supposed to be contiguous.
+\end_layout
+
+\begin_layout Standard
+As a CurveSet2D is an implementation of Curve2D, the composition can be
+ recursive: a CurveSet2D contains one or several CurveSet2D, which contain
+ also one or several CurveSet2D...
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ContinuousCurveSet2D"
+
+\end_inset
+
+ContinuousCurveSet2D
+\end_layout
+
+\begin_layout Standard
+Extends CurveSet2D, but each element of the set is a continuous curve.
+ Some processing can be applied if the curve is an instance of a CurveSet2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ContinuousOrientedCurveSet2D"
+
+\end_inset
+
+ContinuousOrientedCurveSet2D
+\end_layout
+
+\begin_layout Standard
+Extends CurveSet2D, but each element of the set is a continuous oriented
+ curve.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:BoundarySet2D"
+
+\end_inset
+
+BoundarySet2D 
+\end_layout
+
+\begin_layout Standard
+An implementation of a Boundary2D.
+ This class provides an efficient way to define a planar domain by a set
+ of ContinuousBoundary2D.
+ This class has the same behaviour as CurveSet2D, but contains only ContinuousOr
+ientedCurve2D.
+ Name could be ContinuousOrientedCurveSet2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:PolyCurve2D"
+
+\end_inset
+
+PolyCurve2D
+\end_layout
+
+\begin_layout Standard
+Basically the same as a CurveSet2D, but it contains only continuous curves,
+ and each curve is connected to the following one.
+ This class implements ContinuousCurve2D.
+ It is different from CurveSet2D, as curves are not linked in CurveSet2D.
+ Maybe add an interface AbstractCurveSet2D, with getCurves() method ?
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:PolyOrientedCurve2D"
+
+\end_inset
+
+PolyOrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+A continuous curve, composed of smooth oriented curves.
+ This class extends PolyCurve2D, and implements ContinuousOrientedCurve2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:BoundaryPolyCurve2D"
+
+\end_inset
+
+BoundaryPolyCurve2D
+\end_layout
+
+\begin_layout Standard
+A continuous set of oriented curves, which defines a domain.
+\end_layout
+
+\begin_layout Section
+Algorithms on curves
+\end_layout
+
+\begin_layout Subsection
+Clip a Curve Set
+\end_layout
+
+\begin_layout Standard
+Consider clipping with a box, i.e.\InsetSpace ~
+an isothetic rectangle.
+\end_layout
+
+\begin_layout Standard
+for a curve set, recursively clip each curve of the set, and add to a new
+ CurveSet2D
+\end_layout
+
+\begin_layout Subsection
+Clip a Boundary2D
+\end_layout
+
+\begin_layout Standard
+The same, but the result is a Boundary2D.
+ need to take care of order of clipping.
+\end_layout
+
+\begin_layout Standard
+Idea: compute intersections, order intersections, then link intersection
+ on the edge of the box.
+\end_layout
+
+\begin_layout Subsection
+Point in PolyOrientedCurve2D
+\end_layout
+
+\begin_layout Standard
+There are two possible algorithms: either use a variant of ray intersections
+ count, or use orientation with respect to the closest oriented curve composing
+ the set.
+\end_layout
+
+\begin_layout Subsection
+Length of a Curve
+\end_layout
+
+\begin_layout Standard
+For many simple curves (e.g.\InsetSpace \space{}
+circles, circle arcs, polylines), there is an
+ explicit formula for computing there length.
+ For a generic smooth curve, the use of a derivative allows to compute length
+ of any curve by numerical integration.
+ Need to specify tolerance limit.
+\end_layout
+
+\begin_layout Chapter
+Lines and segments
+\end_layout
+
+\begin_layout Section
+Basic hierarchy
+\end_layout
+
+\begin_layout Standard
+A straight object is an object which can be embedded in a Straight line.
+ There are 3 straight objects in javaGeom: straight lines, line segments,
+ and rays.
+ A more generic class called 'LineArc2D' is used, which can be derived in
+ each of these three classes.
+ 
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LinearShape2D"
+
+\end_inset
+
+LinearShape2D
+\end_layout
+
+\begin_layout Standard
+The interface for all objects which can be embedded into a straight line.
+ Maybe could be renamd as LinearShape2D ?
+\end_layout
+
+\begin_layout Description
+getSupportLine():StraightLine2D return the supporting line
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LinearShape2D"
+
+\end_inset
+
+AbstractLine2D
+\end_layout
+
+\begin_layout Standard
+This abstract class gathers most of computation for classes like straight
+ lines, line segments, and rays.
+\end_layout
+
+\begin_layout Section
+Implementations
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:StraightLine2D"
+
+\end_inset
+
+StraightLine2D
+\end_layout
+
+\begin_layout Standard
+A specialization of AbstractLine2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LineSegment2D"
+
+\end_inset
+
+LineSegment2D
+\end_layout
+
+\begin_layout Standard
+A specialization of AbstractLine2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Ray2D"
+
+\end_inset
+
+Ray2D
+\end_layout
+
+\begin_layout Standard
+A specialization of AbstractLine2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LineArc2D"
+
+\end_inset
+
+LineArc2D
+\end_layout
+
+\begin_layout Standard
+It is defined from an origin, a vector, and the 
+\begin_inset Formula $2$
+\end_inset
+
+ limits of the parameterization.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LineObject2D"
+
+\end_inset
+
+LineObject2D
+\end_layout
+
+\begin_layout Standard
+A line object is defined from 2 points.
+ Properties of the object, such as vector or length, are computed from point
+ references each time methods are called.
+ This is a littl bit slower than line arcs, but allows to change line by
+ changing the reference points.
+\end_layout
+
+\begin_layout Chapter
+Polylines and polygons
+\end_layout
+
+\begin_layout Section
+Polylines
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Polyline2D"
+
+\end_inset
+
+Polyline2D
+\end_layout
+
+\begin_layout Standard
+Polyline is a set of points which describe a curve composed of several line
+ segments.
+ It is typically the boundary of a polygon.
+\end_layout
+
+\begin_layout Description
+getLineSegments()
+\end_layout
+
+\begin_layout Description
+getLength() sum of the lengths of each line segment.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:ClosedPolyline2D"
+
+\end_inset
+
+ClosedPolyline2D
+\end_layout
+
+\begin_layout Standard
+A specialization of PolyLine2D, dedicated to represente boundary of simple
+ polygons.
+\end_layout
+
+\begin_layout Section
+Polygons
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Polygon2D"
+
+\end_inset
+
+Polygon2D
+\end_layout
+
+\begin_layout Standard
+Interface for polygons, which concerns all Domain2D whose boundary is composed
+ uniquely of line segments.
+\end_layout
+
+\begin_layout Description
+getVertices():Collection<Point2D>
+\end_layout
+
+\begin_layout Description
+getEdges():Collection<LineSegment2D>
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:SimplePolygon2D"
+
+\end_inset
+
+SimplePolygon2D
+\end_layout
+
+\begin_layout Standard
+A polygon defined from an array of points.
+ The boundary of a simple polygon is a closed polyline (a 
+\begin_inset Quotes eld
+\end_inset
+
+ring
+\begin_inset Quotes erd
+\end_inset
+
+ in JTS).
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:MultiplePolygon2D"
+
+\end_inset
+
+MultiplePolygon2D
+\end_layout
+
+\begin_layout Standard
+A general Polygon 2D can be composed of several disjoint parts, and can
+ contains holes.
+ The boundary of a Polygon2D is a set of closed polylines.
+\end_layout
+
+\begin_layout Section
+Rectangles
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Maybe can be gathered under a class AbstractRectangle2D or RectangularShape2D
+ ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Rectangle2D"
+
+\end_inset
+
+Rectangle2D
+\end_layout
+
+\begin_layout Standard
+Defined from a corner, width and length, and orientation.
+\end_layout
+
+\begin_layout Subsection
+CenteredRectangle2D
+\end_layout
+
+\begin_layout Standard
+defined from a center, width and length, and orientation.
+\end_layout
+
+\begin_layout Section
+Other polygons
+\end_layout
+
+\begin_layout Standard
+Square2D ? RegularPolygon2D ? IndexedPolygon2D ?
+\end_layout
+
+\begin_layout Section
+Algorithms on polygons
+\end_layout
+
+\begin_layout Standard
+geometric operations: union, intersection, subtraction of polygons
+\end_layout
+
+\begin_layout Standard
+Minkowski sum of polygons
+\end_layout
+
+\begin_layout Standard
+computation of (signed) area and of perimeter length 
+\end_layout
+
+\begin_layout Standard
+clipping of polygon
+\end_layout
+
+\begin_layout Standard
+triangulation of a polygon
+\end_layout
+
+\begin_layout Standard
+convex hull of a set of points.
+\end_layout
+
+\begin_layout Chapter
+Circles, ellipses and other conics
+\end_layout
+
+\begin_layout Section
+Conics
+\end_layout
+
+\begin_layout Standard
+The general equation for conics in the javaGeom2d libary has the following
+ form:
+\begin_inset Formula \[
+ax^{2}+bxy+cy^{2}+dx+ey+f=0\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Conic types
+\end_layout
+
+\begin_layout Standard
+Types of conics are ellipses, parabola and hyperbolas.
+\end_layout
+
+\begin_layout Section
+Ellipse
+\end_layout
+
+\begin_layout Standard
+algebraic equation of an ellipse:
+\begin_inset Formula \[
+\frac{x^{2}}{a^{2}}+\frac{y^{2}}{b^{2}}=1\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parabola
+\end_layout
+
+\begin_layout Subsection
+Representation
+\end_layout
+
+\begin_layout Standard
+We use the following representation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\left\{ \begin{array}{ccl}
+x(t) & = & t\\
+y(t) & = & at^{2}\end{array}\right.,\, t\in\mathbb{R}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Hyperbola
+\end_layout
+
+\begin_layout Standard
+composed of 2 branches
+\end_layout
+
+\begin_layout Standard
+Algebraic equation of an hyperbola :
+\begin_inset Formula \[
+\frac{x^{2}}{a^{2}}-\frac{y^{2}}{b^{2}}=1\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Classes hierarchy
+\end_layout
+
+\begin_layout Standard
+An interface Conic2D, and 3 subclasses : Ellipse2D, Parabola2D, Hyperbola2D.
+ The class Circle2D inherits Ellipse2D.
+ The class Hyperbola2D contains two instances of HyperbolaBranch2D.
+\end_layout
+
+\begin_layout Standard
+Arcs of conics are implemented in 4 classes : EllipseArc2D, CircleArc2D,
+ ParabolaArc2D and HyperbolaBranchArc2D.
+\end_layout
+
+\begin_layout Section
+Implementations
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Conic2D"
+
+\end_inset
+
+Conic2D
+\end_layout
+
+\begin_layout Standard
+This is the interface for all conics.
+ This interface provides methods for accessing conic type (ellipse, parabola),
+ and conic parameter (center, focus, direction vectors...).
+ 
+\end_layout
+
+\begin_layout Standard
+Conic2D is an extension of OrientedCurve2D, not of ContinuousCurve2D.
+ This is due to the fact that hyperbolas are decomposed into 2 branches.
+ 
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Ellipse2D"
+
+\end_inset
+
+Ellipse2D
+\end_layout
+
+\begin_layout Standard
+Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Circle2D"
+
+\end_inset
+
+Circle2D
+\end_layout
+
+\begin_layout Standard
+A circle inherits Ellipse2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Parabola2D"
+
+\end_inset
+
+Parabola2D
+\end_layout
+
+\begin_layout Standard
+Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Hyperbola2D"
+
+\end_inset
+
+Hyperbola2D
+\end_layout
+
+\begin_layout Standard
+An hyperbola is composed from 2 branches.
+ Therefore, a general class Hyperbola2D can be defined as an implementation
+ of OrientedCurve2D, which refers to 
+\begin_inset Formula $2$
+\end_inset
+
+ HyperbolaBranch2D, which are implementations of ContinuousOrientedCurve2D.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:EllipseArc2D"
+
+\end_inset
+
+EllipseArc2D and CircleArc2D
+\end_layout
+
+\begin_layout Standard
+A cheap implementation is to keep a reference to the supporting conic, and
+ to add tests specific to angle management.
+\end_layout
+
+\begin_layout Standard
+A reference to the support conic (ellipse or circle) is kept as member.
+ Bounds of the arc are specified by the start angle and the angle extent.
+ The arc is direct if the angle extent is positive.
+ endAngle is simply startAngle+angleExtent.
+ The bounds for parameterization are given by 
+\begin_inset Formula $t_{0}=0$
+\end_inset
+
+ and 
+\begin_inset Formula $t_{1}=\left|\mbox{angleExtent}\right|$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+An ellipse arc or circle arc can be created by specifying either start angle
+ and angle extent, or bounding angles, but in the latter case one have to
+ specify whether the arc is directed or not.
+\end_layout
+
+\begin_layout Subsubsection
+Constructors
+\end_layout
+
+\begin_layout Description
+EllipseArc(Ellipse,\InsetSpace ~
+start,\InsetSpace ~
+extent)
+\end_layout
+
+\begin_layout Description
+EllipseArc(Ellipse,\InsetSpace ~
+start,\InsetSpace ~
+end,\InsetSpace ~
+direct)
+\end_layout
+
+\begin_layout Description
+EllipseArc(xc,\InsetSpace ~
+yc,\InsetSpace ~
+r1,\InsetSpace ~
+r1,\InsetSpace ~
+theta,\InsetSpace ~
+start,\InsetSpace ~
+extent)
+\end_layout
+
+\begin_layout Description
+EllipseArc(xc,\InsetSpace ~
+yc,\InsetSpace ~
+r1,\InsetSpace ~
+r1,\InsetSpace ~
+theta,\InsetSpace ~
+start,\InsetSpace ~
+end,\InsetSpace ~
+direct)
+\end_layout
+
+\begin_layout Chapter
+Polynomial curves
+\end_layout
+
+\begin_layout Standard
+A quite common way used to describe abritrary curves.
+ Different representations exist.
+\end_layout
+
+\begin_layout Section
+Representations
+\end_layout
+
+\begin_layout Subsection
+Polynomial curves
+\end_layout
+
+\begin_layout Standard
+Parametrization of each coordinate is simply given by the suites of polynom
+ coefficients.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ferguson curves
+\end_layout
+
+\begin_layout Standard
+They use Hermite representation: coordinate of extreme poitns, and derivatives.
+ Usually defined for degree 3, coefficients for higher degrees are less
+ intuitive.
+\end_layout
+
+\begin_layout Subsection
+Bezier Curves
+\end_layout
+
+\begin_layout Standard
+Define a curve by several control points.
+\end_layout
+
+\begin_layout Subsection
+NURBS
+\end_layout
+
+\begin_layout Standard
+Extension of Bezier curves, allow exact representation of conics.
+\end_layout
+
+\begin_layout Section
+Cubic Bezier curve
+\end_layout
+
+\begin_layout Standard
+Currently only cubic Bezier curve defined by 4 control points is implemented.
+\end_layout
+
+\begin_layout Chapter
+Transforms
+\end_layout
+
+\begin_layout Standard
+Need to think a little bit further on transforms hierarchy, and on implementatio
+n of AffineTransform.
+\end_layout
+
+\begin_layout Section
+Planar Transforms
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Translation2D"
+
+\end_inset
+
+Translation2D
+\end_layout
+
+\begin_layout Standard
+A translation is an isometry, a motion, and a direct transform.
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $v_{x}$
+\end_inset
+
+ and 
+\begin_inset Formula $v_{y}$
+\end_inset
+
+ are coordinates of the vector 
+\begin_inset Formula $v$
+\end_inset
+
+, the transform is expressed as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+T_{v}=\left[\begin{array}{ccc}
+1 & 0 & v_{x}\\
+0 & 1 & v_{y}\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The composition of wo translations with translation vectors 
+\begin_inset Formula $(x_{1},y_{1})$
+\end_inset
+
+ and 
+\begin_inset Formula $(x_{2},y_{2})$
+\end_inset
+
+ is another translation with translation vector 
+\begin_inset Formula $(x_{1}+x_{2},y_{1}+y_{2})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Rotation2D"
+
+\end_inset
+
+Rotation2D
+\end_layout
+
+\begin_layout Standard
+A rotation is a motion, a direct transform and an isometry.
+\end_layout
+
+\begin_layout Subsubsection
+Matrix representation
+\end_layout
+
+\begin_layout Standard
+If 
+\begin_inset Formula $\theta$
+\end_inset
+
+ is the angle of rotation, the transform matrix is as follow:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+R_{\theta}=\left[\begin{array}{ccc}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a rotation around a point 
+\begin_inset Formula $c=(c_{x},c_{y})$
+\end_inset
+
+, the transforms becomes:
+\begin_inset Formula \[
+R_{c,\theta}=T_{x}R_{\theta}T_{-x}=\left[\begin{array}{ccc}
+\cos\theta & -\sin\theta & c_{x}\left(1-\cos\theta\right)+c_{y}\sin\theta\\
+\sin\theta & \cos\theta & c_{y}\left(1-\cos\theta\right)-c_{x}\sin\theta\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Compositions
+\end_layout
+
+\begin_layout Standard
+The composition with another rotation whith same center, is a new rotation,
+ whose center is the same as the two rotations, and whose angle is the sum
+ of the two rotation angles.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+R_{c,\theta_{1}}\circ R_{c,\theta_{2}}=R_{c,\theta_{1}+\theta_{2}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Homothecy2D"
+
+\end_inset
+
+Homothecy2D
+\end_layout
+
+\begin_layout Standard
+Is a similarity.
+ Is direct if factor is positive.
+\end_layout
+
+\begin_layout Standard
+Homothecy around origin by a factor 
+\begin_inset Formula $s$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+H_{k}=\left[\begin{array}{ccc}
+s & 0 & 0\\
+0 & s & 0\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Homothecy by a factor 
+\begin_inset Formula $s$
+\end_inset
+
+ around a given point 
+\begin_inset Formula $c=(c_{x},c_{y})$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+H_{c,s}=T_{x}H_{s}T_{-x}=\left[\begin{array}{ccc}
+s & 0 & \left(1-s\right)c_{x}\\
+0 & s & \left(1-s\right)c_{y}\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "Scaling2D"
+
+\end_inset
+
+Scaling2D
+\end_layout
+
+\begin_layout Standard
+Similar to homothecy, but scaling coefficient is not the same in each direction.
+ Then, this is not a similarity anymore.
+\end_layout
+
+\begin_layout Standard
+For a scaling with coefficients 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+and 
+\begin_inset Formula $s_{2}$
+\end_inset
+
+, matrix is expressed as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+S_{c,s_{x},s_{y}}=\left[\begin{array}{ccc}
+s_{x} & 0 & \left(1-s_{x}\right)c_{x}\\
+0 & s_{y} & \left(1-s_{y}\right)c_{y}\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "LineReflection2D"
+
+\end_inset
+
+LineReflection2D
+\end_layout
+
+\begin_layout Standard
+Reflection about a line.
+ Is an indirect isometry.
+\end_layout
+
+\begin_layout Standard
+Note: to be implemented in StraightLine2D class.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "PointSymmetry2D"
+
+\end_inset
+
+PointReflection2D
+\end_layout
+
+\begin_layout Standard
+Symmetry around a point.
+ Is an isometry.
+\end_layout
+
+\begin_layout Standard
+Note: to be implemented in Point2D class.
+\end_layout
+
+\begin_layout Section
+Transform interface hierarchy
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Transform2D"
+
+\end_inset
+
+Transform2D
+\end_layout
+
+\begin_layout Standard
+can transform any point to another point, or an array of points.
+ Preallocation must be considered for arrays, and differences between java
+ and javaGeom kept in mind.
+\end_layout
+
+\begin_layout Description
+transformPoint(Point2D):Point2D
+\end_layout
+
+\begin_layout Description
+transformPoint(Point2D,Point2D):Point2D
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Bijection2D"
+
+\end_inset
+
+Bijection2D
+\end_layout
+
+\begin_layout Standard
+Transforms which can be inverted.
+ interface which extends Transform2D.
+\end_layout
+
+\begin_layout Description
+getInverse():Bijection2D return the inverse transform
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:LinearTransform2D"
+
+\end_inset
+
+LinearTransform2D
+\end_layout
+
+\begin_layout Standard
+Tranforms which can be represented with a matrix, such as affine transforms
+ or projective transforms.
+ Such transforms preserve alignment of points.
+\end_layout
+
+\begin_layout Section
+Implementation
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:AffineTransform2D"
+
+\end_inset
+
+AffineTransform2D
+\end_layout
+
+\begin_layout Standard
+Tranforms which can be represented with a 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ matrix.
+ Such transforms preserve parallelness of lines.
+ A transform can be modified by concatenating with another transform.
+ 
+\end_layout
+
+\begin_layout Standard
+AffineTransform2D is given as a class, and is immutable.
+\end_layout
+
+\begin_layout Description
+getMatrix():double[][]
+\end_layout
+
+\begin_layout Description
+abstract\InsetSpace ~
+getCoefficients():double[]
+\end_layout
+
+\begin_layout Description
+transformVector(Vector2D):Vector2D
+\end_layout
+
+\begin_layout Description
+isMotion():boolean if transform is the composition of a translation and
+ a rotation
+\end_layout
+
+\begin_layout Description
+isIsometry():boolean if transform keeps the unsigned area of the transformed
+ shape unchanged.
+\end_layout
+
+\begin_layout Description
+isSimilarity():boolean if the transformed shape is the same as the original
+ shapes, up to a scaling factor.
+\end_layout
+
+\begin_layout Description
+isDirect():boolean is true if transformed shapes keep the same orientation
+\end_layout
+
+\begin_layout Description
+getAsAwtTransform():java.awt.geom.AffineTransform
+\end_layout
+
+\begin_layout Description
+static\InsetSpace ~
+createRotation(...):AffineTransform2D same as in java class
+\end_layout
+
+\begin_layout Description
+setToXXX(...) set transform to the transform XXX, with specific parameters.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Section
+Other transforms
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "ProjectiveTransform2D"
+
+\end_inset
+
+ProjectiveTransform2D
+\end_layout
+
+\begin_layout Standard
+Transforms a quadrilateral into another quadrilateral, without preserving
+ parallelness.
+ This is a superinterface of AffineTransform2D, and extends Bijection2D.
+ In the case of affine transforms, it preserves parallelness.
+ Can be represented with a matrix, but needs homogeneous coordinate.
+\end_layout
+
+\begin_layout Description
+getProjectiveMatrix return a 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ array of double
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "LinearTransform2D"
+
+\end_inset
+
+LinearTransform2D
+\end_layout
+
+\begin_layout Standard
+A transform which can be represented using a matrix.
+ A little bit more general than ProjectiveTransform, as perspective projections
+ can also be represented using matrices.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "CircleInversion2D"
+
+\end_inset
+
+CircleInversion2D
+\end_layout
+
+\begin_layout Standard
+maybe subclass of linear transform.
+ Think about it...
+\end_layout
+
+\begin_layout Subsection
+Projections
+\end_layout
+
+\begin_layout Standard
+Project points on a line, a circle, or another shape.
+ Some ones can be represented with a matrix (orthogonal projection).
+ extends Transform2D, but not Bijection2D.
+\end_layout
+
+\begin_layout Section
+Algorithms for transforms
+\end_layout
+
+\begin_layout Subsection
+Computing inverse of a matrix
+\end_layout
+
+\begin_layout Standard
+Suppose marix 
+\begin_inset Formula $A$
+\end_inset
+
+ is given in the form
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+A=\left[\begin{array}{ccc}
+m_{00} & m_{01} & m_{02}\\
+m_{10} & m_{11} & m_{12}\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then, inverse 
+\begin_inset Formula $A^{-1}$
+\end_inset
+
+ of matrix 
+\begin_inset Formula $A$
+\end_inset
+
+ is given by
+\begin_inset Formula \[
+A^{-1}=\frac{1}{m_{00}m_{11}-m_{01}m_{10}}\left[\begin{array}{ccc}
+m_{11} & -m_{01} & m_{01}m_{12}-m_{02}m_{11}\\
+-m_{10} & m_{00} & m_{02}m_{10}-m_{00}m_{12}\\
+0 & 0 & 1\end{array}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test if affine transform is a similarity
+\end_layout
+
+\begin_layout Standard
+We need to check if matrix is orthogonal.
+ Apparently, It is enough to check that
+\begin_inset Formula \[
+m_{00}m_{01}+m_{10}m_{11}=0\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Test if affine transform is a motion or an isometry
+\end_layout
+
+\begin_layout Standard
+First computes the determinant of the matrix.
+ It equals 
+\begin_inset Formula $1$
+\end_inset
+
+ for a motion, and its absolute value equals 
+\begin_inset Formula $1$
+\end_inset
+
+ for an isometry.
+\end_layout
+
+\begin_layout Chapter
+Planned extensions
+\end_layout
+
+\begin_layout Section
+Geometric Graphs
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "GeometricGraph2D"
+
+\end_inset
+
+GeometricGraph2D
+\end_layout
+
+\begin_layout Standard
+By 'geometric graph', we consider graphs whose vertices are points.
+ It is an instance of Shape2D.
+\end_layout
+
+\begin_layout Standard
+provides methods for accessing vertices and edges.
+ maybe faces.
+\end_layout
+
+\begin_layout Standard
+need exterior library for this.
+ Jung ? JGraphT ?
+\end_layout
+
+\begin_layout Description
+getEdges():Collection<ContinuousCurve2D>
+\end_layout
+
+\begin_layout Description
+getVertices():Collection<Point2D>
+\end_layout
+
+\begin_layout Section
+Other models
+\end_layout
+
+\begin_layout Subsection
+Polynomial curves
+\end_layout
+
+\begin_layout Standard
+Each coordinate is defined by a polynomial.
+ Derivatives and normals are easy to calculate, but need maybe some library
+ to handle polynomials.
+\end_layout
+
+\begin_layout Subsection
+Lissajous curves
+\end_layout
+
+\begin_layout Standard
+Same as polynomial curves, except the model is different.
+\end_layout
+
+\begin_layout Subsection
+Fourier contour
+\end_layout
+
+\begin_layout Standard
+Useful for studying the contour of real objects.
+ Such model can have practical application.
+\end_layout
+
+\begin_layout Section
+Stochastic geometry
+\end_layout
+
+\begin_layout Standard
+implement creation of random shapes, such as point processes, line processe,
+ boolean models...
+\end_layout
+
+\begin_layout Standard
+need efficient statistics library.
+\end_layout
+
+\begin_layout Standard
+Idea is to create a stochastic process, whose realizations are shapes.
+ 
+\end_layout
+
+\begin_layout Section
+Other geometries
+\end_layout
+
+\begin_layout Subsection
+Spherical geometry
+\end_layout
+
+\begin_layout Subsection
+Hyperbolic geometry
+\end_layout
+
+\begin_layout Subsection
+Projection/Cartography
+\end_layout
+
+\begin_layout Subsection
+Projective geometry
+\end_layout
+
+\begin_layout Section
+Other shapes
+\end_layout
+
+\begin_layout Subsection
+Fractals
+\end_layout
+
+\begin_layout Standard
+Need to have a more general interface system.
+ Maybe as a different set, which can produce instances of Shape2D for different
+ level of iteration (for iterated fractals).
+\end_layout
+
+\begin_layout Subsection
+Federer sets
+\end_layout
+
+\begin_layout Subsection
+Topological properties
+\end_layout
+
+\begin_layout Standard
+This type of shapes should be able to make a difference between a set, its
+ closure, and its interior.
+\end_layout
+
+\begin_layout Subsection
+Infinite spirals
+\end_layout
+
+\begin_layout Standard
+Some bounded shapes can have infinite parametrization.
+ 
+\end_layout
+
+\end_body
+\end_document
