@@ -1,6 +1,6 @@
 Changes of javaGeom library
 
-javaGeom-0.6.3 (2008-??-??, rev. ???)
+javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features
 - instances of Domain2D can be complemented

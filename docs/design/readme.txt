@@ -1,0 +1,3 @@
+This directory contains notes about the design of the library.
+Most of these notes are incomplete, and are a just a set of ideas.
+Many of them are written in french, also...
