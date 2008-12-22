@@ -1,9 +1,11 @@
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -47,7 +49,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	/**
 	 * Returns true if this branch is the positive one, i.e. it contains the
 	 * positive axis in the basis of the supporting hyperbola.
-	 * @return
+	 * @return true if this branch contains the positive axis.
 	 */
 	public boolean isPositiveBranch(){
 		return positive;
@@ -101,6 +103,10 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 
 	public Domain2D getDomain() {
 		return new GenericDomain2D(this);
+	}
+
+	public void fill(Graphics2D g2){
+		g2.fill(this.getGeneralPath());
 	}
 
 
@@ -382,5 +388,10 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
 		return getGeneralPath().getPathIterator(trans, flatness);
+	}
+	
+	/** Throws an infiniteShapeException */
+	public void draw(Graphics2D g) {
+		throw new UnboundedShapeException();
 	}
 }

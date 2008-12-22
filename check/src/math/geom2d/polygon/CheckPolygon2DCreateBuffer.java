@@ -79,14 +79,14 @@ public class CheckPolygon2DCreateBuffer extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 	
-		g2.setColor(Color.BLACK);
-		g2.draw(polygon.getBoundary());
-				
 		Domain2D buffer = Polygon2DUtils.createBuffer(polygon, 10);
 		g2.setColor(Color.CYAN);
-		g2.fill(buffer);
+		buffer.fill(g2);
 		g2.setColor(Color.BLUE);
-		g2.draw(buffer);
+		buffer.getBoundary().draw(g2);
+		
+		g2.setColor(Color.BLACK);
+		polygon.getBoundary().draw(g2);
 	}
 
 	public final static void main(String[] args){		

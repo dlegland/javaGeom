@@ -1,5 +1,6 @@
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -91,6 +93,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public Polyline2D getAsPolyline(int n) {
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		Point2D[] points = new Point2D[n+1];
 		
 		// avoid the cases where t0 and/or t1 is infinite
@@ -325,6 +328,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	}
 
 	public java.awt.geom.GeneralPath getGeneralPath(){
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		return this.getAsPolyline(100).getGeneralPath();
 	}
 	
@@ -335,5 +339,10 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
 		return getGeneralPath().getPathIterator(trans, flatness);
 	}
+	
+	public void draw(Graphics2D g) {
+		g.draw(this.getGeneralPath());
+	}
+
 
 }

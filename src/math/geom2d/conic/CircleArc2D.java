@@ -156,7 +156,8 @@ public class CircleArc2D extends EllipseArc2D{
 	 * convert position on curve to angle with circle center.
 	 */
 	private double positionToAngle(double t){
-		if(t>Math.abs(angleExtent)) t = angleExtent;
+		if(t>Math.abs(angleExtent)) 
+			t = Math.abs(angleExtent);
 		if(t<0) t = 0;
 		if(angleExtent<0) t = -t;		
 		t = t + startAngle;
@@ -210,7 +211,7 @@ public class CircleArc2D extends EllipseArc2D{
 	}
 
 	/**
-	 * @deprecated: do not use boolean 'direct' anymore
+	 * @deprecated do not use boolean 'direct' anymore
 	 */
 	@Deprecated
 	public void setArc(Point2D center, double radius, double start, double end, boolean direct){
@@ -234,13 +235,40 @@ public class CircleArc2D extends EllipseArc2D{
 	// methods from interface OrientedCurve2D
 	
 	public double getWindingAngle(java.awt.geom.Point2D point) {
-		Point2D p1 = getPoint(startAngle);
-		Point2D p2 = getPoint(startAngle+angleExtent);
+		Point2D p1 = getFirstPoint();
+		Point2D p2 = getLastPoint();
 
 		// compute angle of point with extreme points
 		double angle1 = Angle2D.getHorizontalAngle(point, p1);
 		double angle2 = Angle2D.getHorizontalAngle(point, p2);
 		
+//		boolean b0 = circle.isInside(point);
+//		boolean b1 = new StraightLine2D(p1, 
+//				this.getTangent(0)).isInside(point);
+//		boolean b2 = new StraightLine2D(p2, 
+//				this.getTangent(Math.abs(angleExtent))).isInside(point);
+//		
+//		// True if point is located in 'triangular' area formed by arc edge
+//		// and tangents at extremities
+//		boolean bl = new StraightLine2D(p2, p1).isInside(point) && b1 && b2;
+//		
+//		if(angleExtent>0){
+//			if(b0 || bl){
+//				if(angle2>angle1) return angle2 - angle1;
+//				else return 2*Math.PI - angle1 + angle2;
+//			}else{
+//				if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
+//				else return angle2 - angle1;
+//			}
+//		}else{
+//			if(b0 || bl){
+//				if(angle1>angle2) return angle1 - angle2;
+//				else return 2*Math.PI - angle2 + angle1;
+//			}else{
+//				if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
+//				else return angle1 - angle2;
+//			}
+//		}
 		// test on which 'side' of the arc the point lie
 		boolean b1 = (new StraightLine2D(p1, p2)).isInside(point);
 		boolean b2 = ellipse.isInside(point);
@@ -254,13 +282,21 @@ public class CircleArc2D extends EllipseArc2D{
 				else return angle2 - angle1;
 			}
 		}else{
-			if(b1 || b2){
-				if(angle1>angle2) return angle1 - angle2;
-				else return 2*Math.PI - angle2 + angle1;
+			if(!b1 || b2){
+				if(angle1>angle2) return angle2 - angle1;
+				else return angle2 - angle1 - 2*Math.PI;
 			}else{
-				if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
-				else return angle1 - angle2;
+				if(angle1>angle2) return angle2 - angle1 + 2*Math.PI;
+				else return angle2 - angle1;
 			}
+//		}else{
+//			if(b1 || b2){
+//				if(angle1>angle2) return angle1 - angle2;
+//				else return 2*Math.PI - angle2 + angle1;
+//			}else{
+//				if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
+//				else return angle1 - angle2;
+//			}
 		}
 	}
 
@@ -282,18 +318,18 @@ public class CircleArc2D extends EllipseArc2D{
 		if(inCircle)
 			return angleExtent>0 ?  -dist : dist;
 
-		Point2D p1 = getPoint(startAngle);
-		Point2D p2 = getPoint(startAngle+angleExtent);
+		Point2D p1 = circle.getPoint(startAngle);
+		Point2D p2 = circle.getPoint(startAngle+angleExtent);
 		boolean onLeft = (new StraightLine2D(p1, p2)).isInside(point);
 		
 		if(direct && !onLeft)	return dist;
 		if(!direct && onLeft)	return -dist;
 
-		boolean left1 = (new Ray2D(p1, this.getTangent(startAngle))).isInside(point);
+		boolean left1 = (new Ray2D(p1, circle.getTangent(startAngle))).isInside(point);
 		if(direct && !left1) return dist;
 		if(!direct && left1) return -dist;
 		
-		boolean left2 = (new Ray2D(p2, this.getTangent(startAngle+angleExtent))).isInside(point);
+		boolean left2 = (new Ray2D(p2, circle.getTangent(startAngle+angleExtent))).isInside(point);
 		if(direct && !left2) return dist;
 		if(!direct && left2) return -dist;
 
@@ -423,6 +459,39 @@ public class CircleArc2D extends EllipseArc2D{
 		return list;
 	}
 
+	public double project(java.awt.geom.Point2D point) {
+		double angle = circle.project(point);
+		
+		// Case of an angle contained in the circle arc
+		if(Angle2D.containsAngle(startAngle, startAngle+angleExtent,
+				angle, angleExtent>0)){
+			if(angleExtent>0)
+				return Angle2D.formatAngle(angle-startAngle);
+			else
+				return Angle2D.formatAngle(startAngle-angle);
+		}
+		
+		Point2D p1 = this.getFirstPoint();
+		Point2D p2 = this.getLastPoint();
+		if(p1.getDistance(point)<p2.getDistance(point))
+			return 0;
+		else
+			return Math.abs(angleExtent);
+	
+//		// convert to arc parameterization
+//		if(angleExtent>0)
+//			angle = Angle2D.formatAngle(angle-startAngle);
+//		else
+//			angle = Angle2D.formatAngle(startAngle-angle);
+//		
+//		// ensure projection lies on the arc
+//		if(angle<0) return 0;
+//		if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
+//		
+//		return angle;
+	}
+
+
 	// ====================================================================
 	// methods from interface Shape2D
 	
@@ -452,14 +521,19 @@ public class CircleArc2D extends EllipseArc2D{
 	 */
 	public CircleArc2D getSubCurve(double t0, double t1){
 		// convert position to angle
-		t0 = Angle2D.formatAngle(startAngle + t0);
-		t1 = Angle2D.formatAngle(startAngle + t1);
+		if(angleExtent>0){
+			t0 = Angle2D.formatAngle(startAngle + t0);
+			t1 = Angle2D.formatAngle(startAngle + t1);
+		}else{
+			t0 = Angle2D.formatAngle(startAngle - t0);
+			t1 = Angle2D.formatAngle(startAngle - t1);
+		}
 		
 		// check bounds of angles
 		if(!Angle2D.containsAngle(startAngle, startAngle+angleExtent, t0, angleExtent>0))
 			t0 = startAngle;
 		if(!Angle2D.containsAngle(startAngle, startAngle+angleExtent, t1, angleExtent>0))
-			t1 = angleExtent;
+			t1 = Angle2D.formatAngle(startAngle + angleExtent);
 		
 		// create new arc
 		return new CircleArc2D(circle, t0, t1, angleExtent>0);
@@ -471,7 +545,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 */
 	public CircleArc2D getReverseCurve(){
 		return new CircleArc2D(this.circle, 
-				startAngle+angleExtent, -angleExtent);
+				Angle2D.formatAngle(startAngle+angleExtent), -angleExtent);
 	}
 		
 	/**
@@ -650,33 +724,29 @@ public class CircleArc2D extends EllipseArc2D{
 		return false;
 	}
 	
-	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		double cot = Math.cos(circle.theta);
-		double sit = Math.sin(circle.theta);
-		double xc = circle.xc;
-		double yc = circle.yc;
-		double r = circle.r;
-		double endAngle = startAngle+angleExtent;
-		
-		// position to the first point
-		path.lineTo((float)(xc+r*Math.cos(startAngle)*cot-r*Math.sin(startAngle)*sit), 
-					(float)(yc+r*Math.cos(startAngle)*sit+r*Math.sin(startAngle)*cot));
-
-		if(angleExtent>0)
-			for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit), 
-							(float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-		else
-			for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-				path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit), 
-							(float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-
-		// position to the last point
-		path.lineTo((float)(xc+r*Math.cos(endAngle)*cot-r*Math.sin(endAngle)*sit), 
-					(float)(yc+r*Math.cos(endAngle)*sit+r*Math.sin(endAngle)*cot));
-
-		return path;
-	}
+//	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
+//		double cot = Math.cos(circle.theta);
+//		double sit = Math.sin(circle.theta);
+//		double xc = circle.xc;
+//		double yc = circle.yc;
+//		double r = circle.r;
+//		double endAngle = startAngle+angleExtent;
+//		
+//		if(angleExtent>0)
+//			for(double t=startAngle; t<endAngle; t+=angleExtent/100)
+//				path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit), 
+//							(float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
+//		else
+//			for(double t=startAngle; t>endAngle; t+=angleExtent/100)
+//				path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit), 
+//							(float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
+//
+//		// position to the last point
+//		path.lineTo((float)(xc+r*Math.cos(endAngle)*cot-r*Math.sin(endAngle)*sit), 
+//					(float)(yc+r*Math.cos(endAngle)*sit+r*Math.sin(endAngle)*cot));
+//
+//		return path;
+//	}
 	
 	
 //	/* (non-Javadoc)
@@ -714,7 +784,7 @@ public class CircleArc2D extends EllipseArc2D{
 	 * Get the path, with moveTo().
 	 * @return the general path for this circle
 	 */
-	protected java.awt.geom.GeneralPath getGeneralPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		// Creates the path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		Point2D point = getFirstPoint();

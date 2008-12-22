@@ -38,7 +38,7 @@ public abstract class Polyline2DUtils {
 		result.setClosed(polyline instanceof ClosedPolyline2D);
 		
 		// evacuate degenerate case.
-		if(polyline.getPoints().size()<2) return result;
+		if(polyline.getVertices().size()<2) return result;
 		
 		
 		// ----- declarations -----
@@ -72,7 +72,7 @@ public abstract class Polyline2DUtils {
 			p0 		= line0.getProjectedPoint(v2);
 
 			// extract current vertices, and current parallel
-			iterator = polyline.getPoints().iterator();
+			iterator = polyline.getVertices().iterator();
 			v1 = iterator.next();
 			v2 = iterator.next();
 			line = new StraightLine2D(v1, v2).getParallel(d);
@@ -95,7 +95,7 @@ public abstract class Polyline2DUtils {
 			line0 	= line;
 		}else{			
 			// extract current vertices
-			iterator = polyline.getPoints().iterator();
+			iterator = polyline.getVertices().iterator();
 			v1 = iterator.next();
 			v2 = iterator.next();
 			
@@ -143,7 +143,7 @@ public abstract class Polyline2DUtils {
 		
 		if(polyline instanceof ClosedPolyline2D){
 			// current line segment join the last point to the first point
-			iterator = polyline.getPoints().iterator();
+			iterator = polyline.getVertices().iterator();
 			v1 = v2;
 			v2 = iterator.next();
 			line = new StraightLine2D(v1, v2).getParallel(d);
@@ -195,7 +195,7 @@ public abstract class Polyline2DUtils {
 		result.setClosed(true);
 		
 		// evacuate degenerate case.
-		if(polyline.getPoints().size()<2) return result;
+		if(polyline.getVertices().size()<2) return result;
 		
 		
 		// ----- declarations -----
@@ -228,7 +228,7 @@ public abstract class Polyline2DUtils {
 		p0 		= line0.getProjectedPoint(v2);
 
 		// extract current vertices, and current parallel
-		iterator = polyline.getPoints().iterator();
+		iterator = polyline.getVertices().iterator();
 		v1 = iterator.next();
 		v2 = iterator.next();
 		line = new StraightLine2D(v1, v2).getParallel(d);
@@ -287,7 +287,7 @@ public abstract class Polyline2DUtils {
 		// ----- Post processing -----
 		
 		// current line segment join the last point to the first point
-		iterator = polyline.getPoints().iterator();
+		iterator = polyline.getVertices().iterator();
 		v1 = v2;
 		v2 = iterator.next();
 		line = new StraightLine2D(v1, v2).getParallel(d);

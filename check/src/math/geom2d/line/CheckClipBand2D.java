@@ -38,20 +38,15 @@ public class CheckClipBand2D extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-//		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, Math.PI/3);
-//
-//		Boundary2D clipped = Boundary2DUtil.clipBoundary(wedge1, box);
-//		Boundary2D rotated = wedge1.transform(rot);
-//		
 		g2.setColor(Color.CYAN);
-		g2.fill(band.getDomain().clip(box));	
+		band.getDomain().clip(box).fill(g2);	
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(line1.clip(box));
-		g2.draw(line2.clip(box));
+		line1.clip(box).draw(g2);
+		line2.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getBoundary());
+		box.getBoundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

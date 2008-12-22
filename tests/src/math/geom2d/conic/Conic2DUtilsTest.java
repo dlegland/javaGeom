@@ -55,7 +55,8 @@ public class Conic2DUtilsTest extends TestCase {
 		assertTrue(ellRot.equals(conic));
 
 		// Ellipse transformed by a rotation then by a translation
-		AffineTransform2D RT 	= tra.compose(rot);
+		//AffineTransform2D RT 	= tra.compose(rot);
+		AffineTransform2D RT = rot.chain(tra);
 		Ellipse2D ellRotTra	= new Ellipse2D(10, 20, 40, 30, Math.PI/6);
 		coefs2 	= Conic2DUtils.transform(coefs, RT);
 		conic 	= Conic2DUtils.reduceConic(coefs2);

@@ -33,7 +33,6 @@ import javax.swing.*;
 
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Hyperbola2D;
 import math.geom2d.conic.HyperbolaBranch2D;
 import math.geom2d.conic.HyperbolaBranchArc2D;
@@ -59,7 +58,8 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		double y0 = 150;
 		double a  = 50;
 		double b  = 30;
-		double theta = Math.PI/3;
+		double theta = Math.PI/6;
+		//double theta = 0;
 		hyperbola = new Hyperbola2D(x0, y0, a, b, theta, true);
 		
 		box = new Box2D(50, 250, 50, 250);
@@ -83,7 +83,7 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 	
 		// isolate second branch and an arc
 		HyperbolaBranch2D branch2 = (HyperbolaBranch2D) hyperbola.getLastCurve();
-		HyperbolaBranchArc2D arc2 = new HyperbolaBranchArc2D(branch2, -tmax, tmax);
+		//HyperbolaBranchArc2D arc2 = new HyperbolaBranchArc2D(branch2, -tmax, tmax);
 
 		g2.setColor(Color.BLUE);
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
@@ -94,12 +94,12 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 //		g2.setColor(Color.BLUE);
 //		g2.draw(clippedBoundary);
 		g2.setColor(Color.CYAN);
-		g2.fill(clippedBoundary);
+		clippedBoundary.getDomain().fill(g2);
 		
 		// Draw the arcs
 		g2.setColor(Color.BLACK);
-		g2.draw(arc1);
-		g2.draw(arc2);
+		arc1.draw(g2);
+		arc1.draw(g2);
 		
 		// Get focal points
 		Point2D focus1 = hyperbola.getFocus1();
@@ -107,8 +107,8 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		
 		// Draw focal points
 		g2.setColor(Color.BLUE);
-		g2.fill(new Circle2D(focus1, 4));
-		g2.fill(new Circle2D(focus2, 4));
+		focus1.draw(g2, 4);
+		focus2.draw(g2, 4);
 		
 		// Get intersections with some lines
 		StraightLine2D line1 = new StraightLine2D(50, 50, 10, 0);
@@ -123,13 +123,13 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		// Draw point sets
 		g2.setColor(Color.RED);
 		for(Point2D point : points1)
-			g2.fill(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		for(Point2D point : points2)
-			g2.fill(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		for(Point2D point : points3)
-			g2.fill(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		for(Point2D point : points4)
-			g2.fill(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		
 		
 		// Compute intersections of branches with lines
@@ -137,9 +137,9 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		points4 = hyperbola.getIntersections(line4);
 		
 		for(Point2D point : points2)
-			g2.fill(new Circle2D(point, 4));
+			point.draw(g2, 4);
 		for(Point2D point : points4)
-			g2.fill(new Circle2D(point, 4));
+			point.draw(g2, 4);
 
 		
 		// The clipping of first branch
@@ -149,7 +149,7 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
-			g2.draw(clippedCurve.getAsPolyline(4));
+			clippedCurve.getAsPolyline(4).draw(g2);
 		}
 				
 //		// Draw the clipped hyperbola
@@ -166,19 +166,17 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
-			g2.draw(clippedCurve.getAsPolyline(4));
+			clippedCurve.getAsPolyline(4).draw(g2);
 		}
 			
 		// Draw parabola origin
 		Point2D p1 = hyperbola.getCenter();
-		g2.fill(new Circle2D(p1, 4));
+		p1.draw(g2, 4);
 		
 		// Draw the bounding box
 		g2.setStroke(new BasicStroke(1.0f));
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getBoundary());
-
-		
+		box.getBoundary().draw(g2);
 	}
 
 	public final static void main(String[] args){
@@ -189,6 +187,5 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		frame.setContentPane(panel);
 		frame.setSize(500, 400);
 		frame.setVisible(true);
-		
 	}
 }

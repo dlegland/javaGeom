@@ -67,10 +67,11 @@ public interface OrientedCurve2D extends Curve2D {
 	public abstract double getSignedDistance(double x, double y);
 
 	/**
-	 * return true if the point is 'inside' the domain bounded by the curve.
+	 * Returns true if the point is 'inside' the domain bounded by the curve.
 	 * @param pt a point in the plane
 	 * @return true if the point is on the left side of the curve.
 	 */
+	//TODO: think about either deprecate or better define
 	public abstract boolean isInside(java.awt.geom.Point2D pt);
 	
 	public abstract OrientedCurve2D getReverseCurve();

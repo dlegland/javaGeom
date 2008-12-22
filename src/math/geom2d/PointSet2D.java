@@ -25,6 +25,7 @@
  */
 package math.geom2d;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.*;
@@ -36,11 +37,12 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  */
 public class PointSet2D implements Shape2D, Iterable<Point2D>{
-
+	//TODO: could consider as Interface, and use different implementations
+	
 	/**
 	 * The inner collection of points composing the set.
 	 */
-	protected Collection<Point2D> points = null;
+	protected ArrayList<Point2D> points = null;
 	
 	/**
 	 * Creates a new PointSet2D without any points.
@@ -118,6 +120,7 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	 * @return the collection of points
 	 */
 	public Iterator<Point2D> getPoints(){
+		//TODO: should return a collection to be consistent with other such methods
 		return points.iterator();
 	}
 	
@@ -131,9 +134,18 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	
 	/**
 	 * Return the number of points in the set.
+	 * @deprecated use getPointNumber() instead
 	 * @return the number of points
 	 */
 	public int getPointsNumber(){
+		return points.size();
+	}
+	
+	/**
+	 * Returns the number of points in the set.
+	 * @return the number of points
+	 */
+	public int getPointNumber(){
 		return points.size();
 	}
 	
@@ -293,11 +305,30 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 		return path.getPathIterator(trans, flatness);
 	}
 
+	/**
+	 * Draws the point set on the specified Graphics2D, using default radius
+	 * equal to 1.
+	 * @param g2 the graphics to draw the point set
+	 */
+	public void draw(Graphics2D g2){
+		this.draw(g2, 1);
+	}
+
+	/**
+	 * Draws the point set on the specified Graphics2D, by filling a disc with
+	 * a given radius.
+	 * @param g2 the graphics to draw the point set
+	 */
+	public void draw(Graphics2D g2, double r){		
+		for(Point2D point : points)
+			g2.fill(new java.awt.geom.Ellipse2D.Double(
+					point.x-r, point.y-r, 2*r, 2*r));
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator<Point2D> iterator() {
 		return points.iterator();
 	}
-
 }

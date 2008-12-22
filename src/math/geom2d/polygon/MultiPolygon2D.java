@@ -1,5 +1,6 @@
 package math.geom2d.polygon;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -7,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
@@ -66,7 +68,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		ArrayList<SimplePolygon2D> polygons = 
 			new ArrayList<SimplePolygon2D>();
 		for(ClosedPolyline2D polyline : polylines)
-			polygons.add(new SimplePolygon2D(polyline.getPoints()));
+			polygons.add(new SimplePolygon2D(polyline.getVertices()));
 		return polygons;
 	}
 	
@@ -82,6 +84,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return new BoundarySet2D<ClosedPolyline2D>(polylines);
 	}
 
+	public Polygon2D complement(){
+		ArrayList<ClosedPolyline2D> reverseLines =
+			new ArrayList<ClosedPolyline2D>(polylines.size());
+		for(ClosedPolyline2D line : polylines)
+			reverseLines.add(line.getReverseCurve());
+		return new MultiPolygon2D(reverseLines);
+	}
 	
 	// ===================================================================
 	// methods inherited from interface AbstractPolygon2D
@@ -92,18 +101,56 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 			edges.addAll(line.getEdges());
 		return edges;
 	}
+	
+	public int getEdgeNumber(){
+		int count = 0;
+		for(ClosedPolyline2D line : polylines)
+			count += line.getVertexNumber();
+		return count;
+	}
 
 	public Collection<math.geom2d.Point2D> getVertices() {
 		ArrayList<math.geom2d.Point2D> points = new ArrayList<math.geom2d.Point2D>();
 		for(ClosedPolyline2D line : polylines)
-			points.addAll(line.getPoints());
+			points.addAll(line.getVertices());
 		return points;
 	}
 
+	/**
+	 * Returns the i-th vertex of the polygon.
+	 * @param i index of the vertex, between 0 and the number of vertices
+	 */
+	public Point2D getVertex(int i){
+		int count = 0;
+		ClosedPolyline2D boundary = null;
+		
+		for(ClosedPolyline2D polyline : polylines){
+			int nv = polyline.getVertexNumber();
+			if(count+nv>i){
+				boundary = polyline;
+				break;
+			}
+			count += nv;
+		}
+		
+		if(boundary==null)
+			throw new IndexOutOfBoundsException();
+		
+		return boundary.getVertex(i-count);
+	}
+	
+	/**
+	 * @deprecated use getVertexNumber instead (0.6.3)
+	 */
+	@Deprecated
 	public int getVerticesNumber() {
+		return getVertexNumber();
+	}
+
+	public int getVertexNumber() {
 		int count = 0;
 		for(ClosedPolyline2D line : polylines)
-			count += line.getVerticesNumber();
+			count += line.getVertexNumber();
 		return count;
 	}
 
@@ -205,6 +252,15 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	public PathIterator getPathIterator(AffineTransform at, double fl) {
 		return this.getBoundary().getPathIterator(at, fl);
 	}
+
+	public void draw(Graphics2D g2){
+		g2.draw(this.getBoundary().getGeneralPath());
+	}
+
+	public void fill(Graphics2D g){
+		g.fill(this.getBoundary().getGeneralPath());
+	}
+	
 
 	public boolean intersects(Rectangle2D rect) {
 		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());

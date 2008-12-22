@@ -187,4 +187,129 @@ public class ParabolaArc2DTest extends TestCase {
 		assertTrue(clippedArc.equals(curve));		
 	}
 	
+	public void testIsInside_Direct(){
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+		Point2D pt;
+		
+		// inside parent parabola
+		pt = new Point2D(0, 2);
+		assertTrue(arc.isInside(pt));
+
+		// inside first tangent
+		pt = new Point2D(-2, 3.5);
+		assertTrue(arc.isInside(pt));
+
+		// inside second tangent
+		pt = new Point2D(3, 8.5);
+		assertTrue(arc.isInside(pt));
+
+		// outside parent parabola, but inside both tangents
+		pt = new Point2D(.5, 0);
+		assertTrue(!arc.isInside(pt));
+
+		// outside first tangent
+		pt = new Point2D(-1, 0);
+		assertTrue(!arc.isInside(pt));
+
+		// outside second tangent
+		pt = new Point2D(2, 0);
+		assertTrue(!arc.isInside(pt));
+
+		// outside both tangent
+		pt = new Point2D(1, -4);
+		assertTrue(!arc.isInside(pt));
+	}
+
+	public void testIsInside_Inverse(){
+		Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+		Point2D pt;
+		
+		// inside parent parabola
+		pt = new Point2D(0, -2);
+		assertTrue(!arc.isInside(pt));
+
+		// inside first tangent
+		pt = new Point2D(-2, 2);
+		assertTrue(arc.isInside(pt));
+
+		// inside second tangent
+		pt = new Point2D(4, -4);
+		assertTrue(arc.isInside(pt));
+
+		// outside parent parabola, but inside both tangents
+		pt = new Point2D(.5, 0);
+		assertTrue(arc.isInside(pt));
+
+		// outside first tangent
+		pt = new Point2D(-2, -3.5);
+		assertTrue(!arc.isInside(pt));
+
+		// outside second tangent
+		pt = new Point2D(3, -8.5);
+		assertTrue(!arc.isInside(pt));
+
+		// outside both tangent
+		pt = new Point2D(1, 4);
+		assertTrue(arc.isInside(pt));
+	}
+	
+	public void testGetWindingAnglePoint2D_Direct(){
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+		Point2D pt;
+		double eps = 1e-12;
+		
+		pt = new Point2D(0, 2);
+		assertEquals(arc.getWindingAngle(pt), Math.PI, eps);
+		
+		pt = new Point2D(-1, 4);
+		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		
+		pt = new Point2D(2, 1);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		
+		
+		parabola = new Parabola2D(0, 0, 1, Math.PI);
+		arc = new ParabolaArc2D(parabola, -1, 2);
+		
+		pt = new Point2D(0, -2);
+		assertEquals(arc.getWindingAngle(pt), Math.PI, eps);
+		
+		pt = new Point2D(1, -4);
+		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		
+		pt = new Point2D(-2, -1);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);		
+	}
+	
+	public void testGetWindingAnglePoint2D_Inverse(){
+		Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
+		ParabolaArc2D arc = new ParabolaArc2D(parabola, -2, 1);
+		Point2D pt;
+		double eps = 1e-12;
+		
+		pt = new Point2D(0, -2);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI, eps);
+		
+		pt = new Point2D(1, -4);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		
+		pt = new Point2D(-2, -1);
+		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		
+		
+		parabola = new Parabola2D(0, 0, -1, Math.PI);
+		arc = new ParabolaArc2D(parabola, -2, 1);
+		
+		pt = new Point2D(0, 2);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI, eps);
+		
+		pt = new Point2D(-1, 4);
+		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		
+		pt = new Point2D(2, 1);
+		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);		
+	}
 }

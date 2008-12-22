@@ -24,6 +24,7 @@
 // package
 package math.geom2d;
 
+import java.awt.Graphics2D;
 import java.util.Collection;
 
 import math.geom2d.conic.Circle2D;
@@ -124,7 +125,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * Dot product is zero if the vectors defined by the 2 points are 
 	 * orthogonal. It is positive if vectors are in the same direction, and
 	 * negative if they are in opposite direction. 
-	 * @deprecated: use Vector2D.dot() method instead
+	 * @deprecated use Vector2D.dot() method instead
 	 */
 	@Deprecated
 	public final static double dot(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
@@ -137,7 +138,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * cross product is zero for colinear vector. It is positive if angle
 	 * between vector 1 and vector 2 is comprised between 0 and PI, and
 	 * negative otherwise.
-	 * @deprecated: use Vector2D.cross() method instead
+	 * @deprecated use Vector2D.cross() method instead
 	 */
 	@Deprecated
 	public final static double cross(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
@@ -153,21 +154,20 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 	
 	/**
-	 * test if the three points are colinear.
+	 * Tests if the three points are colinear.
 	 * @return true if three points lie on the same line.
 	 */
 	public final static boolean isColinear(
 			java.awt.geom.Point2D p1, 
 			java.awt.geom.Point2D p2, 
 			java.awt.geom.Point2D p3){	
-		//TODO: makes the method more robust
 		double dx1, dx2, dy1, dy2;
 		dx1 = p2.getX()-p1.getX();
 		dy1 = p2.getY()-p1.getY();
 		dx2 = p3.getX()-p1.getX();
 		dy2 = p3.getY()-p1.getY();
 
-		// test if the two lines are parallel
+		// tests if the two lines are parallel
 		return Math.abs(dx1*dy2 - dy1*dx2)<Shape2D.ACCURACY;
 	}
 	
@@ -423,19 +423,6 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return( getX()>=r.getX() && getX()<=r.getX()+r.getWidth() && 
 				getY()>=r.getY() && getY()<=r.getY()+r.getHeight() );
 	}
-
-	/**
-	 * Returns either the point itself, or the shape EMPTY_SET, depending on
-	 * whether the point lies inside the specified box.
-	 */
-	public Shape2D getClippedShape(Box2D box){
-		if(x<box.getMinX()) return Shape2D.EMPTY_SET;
-		if(y<box.getMinY()) return Shape2D.EMPTY_SET;
-		if(x>box.getMaxX()) return Shape2D.EMPTY_SET;
-		if(y>box.getMaxY()) return Shape2D.EMPTY_SET;
-		
-		return this;
-	}
 	
 	/**
 	 * Returns either the point itself, or the shape EMPTY_SET, depending on
@@ -466,5 +453,23 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return new Point2D(
 			x*tab[0] + y*tab[1] + tab[2],
 			x*tab[3] + y*tab[4] + tab[5] );
+	}
+	
+	/**
+	 * Draws the point on the specified Graphics2D, using default radius
+	 * equal to 1.
+	 * @param g2 the graphics to draw the point
+	 */
+	public void draw(Graphics2D g2){
+		this.draw(g2, 1);
+	}
+
+	/**
+	 * Draws the point on the specified Graphics2D, by filling a disc with a
+	 * given radius.
+	 * @param g2 the graphics to draw the point
+	 */
+	public void draw(Graphics2D g2, double r){		
+		g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, 2*r, 2*r));
 	}
 }

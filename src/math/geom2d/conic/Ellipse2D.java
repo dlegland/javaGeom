@@ -24,6 +24,7 @@
 // package
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -170,9 +171,11 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	 * @param trans an affine transform
 	 * @return the transformed ellipse, centered around origin
 	 */
-	public final static Ellipse2D transformCentered(Ellipse2D ellipse, AffineTransform2D trans){
+	public final static Ellipse2D transformCentered(Ellipse2D ellipse,
+			AffineTransform2D trans){
 		// Extract inner parameter of ellipse
-		double r1 = ellipse.r1;		double r2 = ellipse.r2;		
+		double r1 = ellipse.r1;
+		double r2 = ellipse.r2;		
 		double theta = ellipse.theta;
 		
 		// precompute some parts
@@ -569,17 +572,36 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 
 	/**
 	 * Returns the length of the first semi-axis of the ellipse.
+	 * @deprecated use getSemiMajorAxisLength() instead
 	 */
+	@Deprecated
 	public double getLength1(){
 		return r1;
 	}
 
 	/**
-	 * Returns the length of the second semi-axis of the ellipse.
+	 * Returns the length of the major semi-axis of the ellipse.
 	 */
+	public double getSemiMajorAxisLength(){
+		return r1;
+	}
+	
+	/**
+	 * Returns the length of the second semi-axis of the ellipse.
+	 * @deprecated use getSemiMinorAxisLength() instead
+	 */
+	@Deprecated
 	public double getLength2(){
 		return r2;
 	}
+	
+	/**
+	 * Returns the length of the minor semi-axis of the ellipse.
+	 */
+	public double getSemiMinorAxisLength(){
+		return r2;
+	}
+	
 	
 	/**
 	 * Computes eccentricity of ellipse, depending on the lengths of the
@@ -664,6 +686,10 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		return new GenericDomain2D(this);
 	}
 
+	public void fill(Graphics2D g2){
+		g2.fill(this.getGeneralPath());
+	}
+
 	
 	// ===================================================================
 	// methods of OrientedCurve2D interface
@@ -689,10 +715,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		Point2D pt = rot.transform(point, new Point2D());
 		double xp = (pt.getX() - this.xc)/this.r1;
 		double yp = (pt.getY() - this.yc)/this.r2;
-		if (direct)
-			return xp*xp + yp*yp < 1;
-		else
-			return xp*xp + yp*yp > 1;
+		return (xp*xp + yp*yp < 1) ^ !direct;
 	}
 	
 	public double getSignedDistance(java.awt.geom.Point2D point){
@@ -849,6 +872,9 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		xp = xp/this.r1;
 		yp = yp/this.r2;
 		
+		if(!direct)
+			yp = -yp;
+		
 		// compute angle
 		double angle = Angle2D.getHorizontalAngle(xp, yp);
 		
@@ -858,6 +884,11 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 			return Double.NaN;
 	}
 	
+	/**
+	 * Computes the approximate projection position of the point on the
+	 * ellipse. The ellipse is first converted to a unit circle, then the
+	 * angular position of the point is computed in the transformed basis.
+	 */
 	public double project(java.awt.geom.Point2D point){
 		double xp = point.getX();
 		double yp = point.getY();
@@ -986,13 +1017,14 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	 */
 	public Collection<Point2D> getIntersections(LinearShape2D line){
 		// Compute the transform2D which transforms ellipse into unit circle
-		AffineTransform2D trans = new AffineTransform2D();
-		trans = trans.compose(AffineTransform2D.createScaling(1/this.r1, 1/this.r2));
-		trans = trans.compose(AffineTransform2D.createRotation(-this.theta));
-		trans = trans.compose(AffineTransform2D.createTranslation(-this.xc, -this.yc));
+		AffineTransform2D sca, rot, tra;
+		sca = AffineTransform2D.createScaling(r1, r2);
+		rot = AffineTransform2D.createRotation(theta);
+		tra = AffineTransform2D.createTranslation(xc, yc);
+		AffineTransform2D toUnit = sca.chain(rot).chain(tra).invert();
 		
 		// transform the line accordingly
-		LinearShape2D line2 = line.transform(trans);
+		LinearShape2D line2 = line.transform(toUnit);
 		
 		// The list of intersections
 		Collection<Point2D> points;
@@ -1132,9 +1164,6 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
 		
-		// position to the first point
-		path.moveTo((float)(xc+r1*cot), (float)(yc+r1*sit));
-
 		// draw each line of the boundary
 		if(direct)
 			for(double t=.1; t<=2*Math.PI; t+=.1)
@@ -1145,13 +1174,13 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 				path.lineTo((float)(xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit), 
 							(float)(yc-r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
 		
-		// loop to the first point
+		// loop to the first/last point
 		path.lineTo((float)(xc+r1*cot), (float)(yc+r1*sit));
 		
 		return path;
 	}
 	
-	protected java.awt.geom.GeneralPath getGeneralPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
 		double cot = Math.cos(theta);
@@ -1168,20 +1197,36 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		return path;
 	}
 	
+	public void draw(Graphics2D g){
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+		java.awt.geom.AffineTransform trans = 
+			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);		
+		g.draw(trans.createTransformedShape(ellipse));
+	}
 
 	
 	/** 
 	 * Return pathiterator for this circle.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+		java.awt.geom.AffineTransform rot = 
+			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
+		return rot.createTransformedShape(ellipse).getPathIterator(trans);
 	}
 
 	/**
 	 * Return pathiterator for this circle.
 	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
+	public java.awt.geom.PathIterator getPathIterator(
+			java.awt.geom.AffineTransform trans, double flatness){
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+		java.awt.geom.AffineTransform rot = 
+			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
+		return rot.createTransformedShape(ellipse).getPathIterator(trans, flatness);
 	}
 	
 	

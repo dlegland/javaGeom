@@ -47,7 +47,7 @@ public class DrawCircleDemo extends JPanel{
 		g.fillRect(30, 30, 180, 150);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.BLUE);
-		g2.draw(circle);
+		circle.draw(g2);
 	}
 
 	public final static void main(String[] args){

@@ -5,6 +5,7 @@ package math.geom2d.curve;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -37,21 +38,24 @@ public class CheckDrawCurveSet2D extends JPanel{
 		g2.setStroke(new BasicStroke(2.0f));
 	
 		Box2D box = new Box2D(0, 200, 0, 200);
-		Domain2D domain =  circleSet.getDomain();
+		Domain2D domain =  circleSet.getDomain().complement();
 
 		g2.setColor(Color.CYAN);
-		g2.fill(domain.clip(box));
+		Domain2D clipped = domain.clip(box);
+		clipped.fill(g2);
+		
 		g2.setColor(Color.BLUE);
-		g2.draw(domain.getBoundary().clip(box));
+		domain.getBoundary().clip(box).draw(g2);
 	}
 	
 	public final static void main(String[] args){
 		System.out.println("draw a curve set");
 		
 		JPanel panel = new CheckDrawCurveSet2D();
+		panel.setPreferredSize(new Dimension(500, 400));
 		JFrame frame = new JFrame("Draw curve set demo");
 		frame.setContentPane(panel);
-		frame.setSize(500, 400);
+		frame.pack();
 		frame.setVisible(true);
 		
 	}

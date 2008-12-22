@@ -73,18 +73,18 @@ public class CheckEllipseArc2DTransform extends JPanel{
 		// Clip the ellipse to produce ellipse arcs
 		CurveSet2D<? extends Curve2D> clipped = ellipse.clip(box);
 		g2.setColor(Color.CYAN);
-		g2.draw(ellipse);
+		ellipse.draw(g2);
 		g2.setColor(Color.BLUE);
-		g2.draw(clipped);
+		clipped.draw(g2);
 		
 		AffineTransform2D trans = AffineTransform2D.createLineReflection(
 				new StraightLine2D(150, 150, 1, 0));
 		g2.setColor(Color.CYAN);
-		g2.draw(ellipse.transform(trans));
+		ellipse.transform(trans).draw(g2);
 		g2.setColor(Color.BLUE);
 		CurveSet2D<? extends Curve2D> transformed = clipped.transform(trans);
 		//g2.draw(clipped.getFirstCurve().transform(trans));
-		g2.draw(transformed);
+		transformed.draw(g2);
 	}
 
 	public final static void main(String[] args){

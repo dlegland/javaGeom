@@ -25,6 +25,7 @@
  */
 package math.geom2d.domain;
 
+import java.awt.Graphics2D;
 import java.util.Collection;
 
 import math.geom2d.transform.AffineTransform2D;
@@ -36,6 +37,13 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  */
 public interface Boundary2D extends OrientedCurve2D {
+
+	/**
+	 * Returns true if the point is 'inside' the domain bounded by the curve.
+	 * @param pt a point in the plane
+	 * @return true if the point is on the left side of the curve.
+	 */
+	public abstract boolean isInside(java.awt.geom.Point2D pt);
 
 	/**
 	 * Returns the different continuous curves composing the boundary
@@ -57,4 +65,6 @@ public interface Boundary2D extends OrientedCurve2D {
 	 * Forces the subclasses to return an instance of Boundary2D.
 	 */
 	public abstract Boundary2D transform(AffineTransform2D trans);
+	
+	public abstract void fill(Graphics2D g2);
 }

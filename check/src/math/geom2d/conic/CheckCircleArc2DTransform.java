@@ -36,16 +36,13 @@ public class CheckCircleArc2DTransform  extends JPanel{
 		AffineTransform2D symmetry = AffineTransform2D.createLineReflection(line);
 		
 		g2.setColor(Color.blue);
-		g2.draw(circle);
-		g2.draw(circle.transform(symmetry));
+		circle.draw(g2);
+		circle.transform(symmetry).draw(g2);
 		
-		g2.setColor(Color.black);
-
 		g2.setColor(Color.red);
 		g2.setStroke(new BasicStroke(2f));
-		g2.draw(arc);
-		g2.draw(arc.transform(symmetry));
-
+		arc.draw(g2);
+		arc.transform(symmetry).draw(g2);
 	}
 
 	public final static void main(String[] args){

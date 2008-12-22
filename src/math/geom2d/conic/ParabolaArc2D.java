@@ -25,12 +25,15 @@
  */
 package math.geom2d.conic;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -41,6 +44,7 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -103,10 +107,36 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	// methods implementing the OrientedCurve2D interface
 
 	public double getWindingAngle(java.awt.geom.Point2D point) {
-		if(isInside(point))
-			return Math.PI*2;
-		else
-			return 0.0;
+		double angle0, angle1;
+		
+		boolean direct = parabola.isDirect();
+		boolean inside = this.isInside(point);
+		
+		if(Double.isInfinite(t0)){
+			angle0 = parabola.getAngle() + (direct ? +1 : -1)*Math.PI/2;
+		} else {
+			angle0 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t0));
+		}
+		
+		if(Double.isInfinite(t1)){
+			angle1 = parabola.getAngle() + (direct ? +1 : -1)*Math.PI/2;
+		} else {
+			angle1 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t1));
+		}
+		
+		if(inside){
+			// turn CCW -> return positive angle
+			if(angle0>angle1)
+				return 2*Math.PI - angle0 + angle1;
+			else
+				return angle1 - angle0;
+		} else {
+			// turn CW -> return negative angle
+			if(angle0>angle1)
+				return angle1 - angle0;
+			else
+				return (angle1-angle0) - 2*Math.PI;
+		}
 	}
 
 	public double getSignedDistance(java.awt.geom.Point2D p) {
@@ -120,12 +150,30 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	}
 
 	public boolean isInside(java.awt.geom.Point2D point) {
-		if (parabola.isInside(point)) return true;
-		//TODO: implement it
-		// compose with ray emanating from ending points
-		return false;
+		boolean direct = parabola.isDirect();
+		boolean inside = parabola.isInside(point);
+		if(inside && direct) return true;
+		if(!inside && !direct) return false;
+		
+		double pos = parabola.project(point);
+		
+		if(pos<t0){
+			Point2D p0 	= parabola.getPoint(t0);
+			Vector2D v0 = parabola.getTangent(t0);
+			StraightLine2D line0 = new StraightLine2D(p0, v0);
+			return line0.isInside(point);
+		}
+		
+		if(pos>t1){
+			Point2D p1 	= parabola.getPoint(t1);
+			Vector2D v1 = parabola.getTangent(t1);
+			StraightLine2D line1 = new StraightLine2D(p1, v1);
+			return line1.isInside(point);
+		}
+		return !direct;
 	}
 
+	
 	// ==========================================================
 	// methods implementing the SmoothCurve2D interface
 	
@@ -134,7 +182,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	}
 
 	/**
-	 * returns the curvature of the parabola arc.
+	 * Returns the curvature of the parabola arc.
 	 */
 	public double getCurvature(double t){
 		return parabola.getCurvature(t);
@@ -150,7 +198,7 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return list;
 	}
 
-	// return false, by definition of a conic arc
+	/** Returns false, by definition of a parabola arc */
 	public boolean isClosed() {
 		return false;
 	}
@@ -268,13 +316,20 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return this.getAsPolyline(100).getDistance(x, y);
 	}
 	
-	/** return true if the arc is bounded, i.e. if both limits are finite.*/
+	/** 
+	 * Returns true if the arc is bounded, i.e. if both limits are finite.
+	 */
 	public boolean isBounded(){
-		return (t0!=Double.NEGATIVE_INFINITY && t1!=Double.POSITIVE_INFINITY);
+		if (t0==Double.NEGATIVE_INFINITY) return false;
+		if (t1==Double.POSITIVE_INFINITY) return false;
+		return true;
 	}
 
+	/**
+	 * Return true if t1<t0.
+	 */
 	public boolean isEmpty(){
-		return false;
+		return t1<=t0;
 	}
 
 	/**
@@ -380,10 +435,12 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	// Drawing methods
 	
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		return this.getAsPolyline(32).appendPath(path);
 	}
 	
 	public java.awt.geom.GeneralPath getGeneralPath(){
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		return this.getAsPolyline(32).getGeneralPath();
 	}
 	
@@ -395,6 +452,11 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return getGeneralPath().getPathIterator(trans, flatness);
 	}
 	
+	public void draw(Graphics2D g) {
+		g.draw(this.getGeneralPath());
+	}
+
+
 	// ====================================================================
 	// Methods inherited from object interface
 	

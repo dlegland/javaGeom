@@ -186,8 +186,7 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 
 	
 	// ===================================================================
-	// accessors
-
+	// Methods specific to Line shapes
 	
 	public Point2D getOrigin(){
 		return new Point2D(x0, y0);
@@ -229,75 +228,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < Shape2D.ACCURACY);
 	}
 	
-
-	/** 
-	 * Always returns false, because we can not come back to starting point if we
-	 * always go straight ...
-	 */
-	public boolean isClosed(){
-		return false;
-	}
-
-	/** 
-	 * Returns a set of smooth curves. Actually, return the curve itself.
-	 */
-	public Collection<? extends SmoothOrientedCurve2D> getSmoothPieces() {
-		ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
-		list.add(this);
-		return list;
-	}
-
-	/**
-	 * Get the distance of the StraightObject2d to the given point. This method is not
-	 * designed to be used directly, because AbstractLine2D is an abstract class, 
-	 * but it can be used by subclasses to help computations.
-	 */
-	public double getDistance(Point2D p){
-		return getDistance(p.getX(), p.getY());
-	}
-
-	/**
-	 * Get the distance of the StraightObject2d to the given point. This method is not
-	 * designed to be used directly, because AbstractLine2D is an abstract class, 
-	 * but it can be used by subclasses to help computations.
-	 * @param x , y : position of point
-	 * @return distance between this object and the point (x,y)
-	 */
-	public double getDistance(double x, double y){
-		return Math.abs((y-y0)*dx-(x-x0)*dy)/Math.sqrt(dx*dx+dy*dy);
-	}
-
-	/**
-	 * Get the signed distance of the StraightObject2d to the given point. The signed
-	 * distance is positive if point lies 'to the right' of the line, when moving in
-	 * the direction given by direction vector. This method is not
-	 * designed to be used directly, because AbstractLine2D is an abstract class, 
-	 * but it can be used by subclasses to help computations.
-	 */
-	public double getSignedDistance(java.awt.geom.Point2D p){
-		return getSignedDistance(p.getX(), p.getY());
-	}
-
-	/**
-	 * Get the signed distance of the StraightObject2d to the given point. The signed
-	 * distance is positive if point lies 'to the right' of the line, when moving in
-	 * the direction given by direction vector. This method is not
-	 * designed to be used directly, because AbstractLine2D is an abstract class, 
-	 * but it can be used by subclasses to help computations.
-	 */
-	public double getSignedDistance(double x, double y){
-		return ((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy);
-	}
-
-	/**
-	 * return true if the given point lies to the left of the line when travelling along
-	 * the line in the direcion given by its direction vector.
-	 * @param p the point to test
-	 * @return true if point p lies on the 'left' of the line.
-	 */
-	public boolean isInside(Point2D p){
-		return( (p.getX()-x0)*dy-(p.getY()-y0)*dx < 0);
-	}
 
 	/**
 	 * Returns the matrix of parametric representation of the line. Result has
@@ -363,7 +293,7 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 
 
-	public double getPositionOnLine(Point2D point){
+	public double getPositionOnLine(java.awt.geom.Point2D point){
 		return getPositionOnLine(point.getX(), point.getY());
 	}
 	
@@ -422,16 +352,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		return null;
 	}
 
-	/**
-	 * Return the projection of point p on the line. The returned point can be used
-	 * to compute distance from point to line.
-	 * @param p a point outside the line (if point p lies on the line, it is returned)
-	 * @return the projection of the point p on the line
-	 */
-	public Point2D getProjectedPoint(Point2D p){
-		return getProjectedPoint(p.getX(), p.getY());
-	}
-	
 	public StraightLine2D getSupportingLine(){
 		return new StraightLine2D(this);
 	}
@@ -444,6 +364,16 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	@Deprecated
 	public StraightLine2D getSupportLine(){
 		return new StraightLine2D(this);
+	}
+	
+	/**
+	 * Return the projection of point p on the line. The returned point can be used
+	 * to compute distance from point to line.
+	 * @param p a point outside the line (if point p lies on the line, it is returned)
+	 * @return the projection of the point p on the line
+	 */
+	public Point2D getProjectedPoint(Point2D p){
+		return getProjectedPoint(p.getX(), p.getY());
 	}
 	
 	/**
@@ -509,28 +439,7 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		return new StraightLine2D(point, -this.dy, this.dx);		
 	}
 	
-	
-	// ===================================================================
-	// mutators
 
-
-	// ===================================================================
-	// general methods
-
-	public boolean contains(java.awt.geom.Point2D p) {
-		return this.contains(p.getX(), p.getY());
-	}
-
-	/** Returns false, because a line cannot contain a rectangle.*/
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
-	/** Returns false, because a line cannot contain a rectangle.*/
-	public boolean contains(java.awt.geom.Rectangle2D r){
-		return false;
-	}
-	
 	// ===================================================================
 	// methods of OrientedCurve2D interface
 	
@@ -559,6 +468,27 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		}
 	}
 
+	/**
+	 * Get the signed distance of the StraightObject2d to the given point. The signed
+	 * distance is positive if point lies 'to the right' of the line, when moving in
+	 * the direction given by direction vector. This method is not
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
+	 * but it can be used by subclasses to help computations.
+	 */
+	public double getSignedDistance(java.awt.geom.Point2D p){
+		return getSignedDistance(p.getX(), p.getY());
+	}
+
+	/**
+	 * Get the signed distance of the StraightObject2d to the given point. The signed
+	 * distance is positive if point lies 'to the right' of the line, when moving in
+	 * the direction given by direction vector. This method is not
+	 * designed to be used directly, because AbstractLine2D is an abstract class, 
+	 * but it can be used by subclasses to help computations.
+	 */
+	public double getSignedDistance(double x, double y){
+		return ((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy);
+	}
 
 	/**
 	 * Returns true if the given point lies to the left of the line when
@@ -588,6 +518,27 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	
 	
 	// ===================================================================
+	// methods implementing the ContinuousCurve2D interface
+	
+	/** 
+	 * Always returns false, because we can not come back to starting point
+	 * if we always go straight...
+	 */
+	public boolean isClosed(){
+		return false;
+	}
+
+	/** 
+	 * Returns a set of smooth curves. Actually, return the curve itself.
+	 */
+	public Collection<? extends SmoothOrientedCurve2D> getSmoothPieces() {
+		ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
+		list.add(this);
+		return list;
+	}
+
+
+	// ===================================================================
 	// methods implementing the Curve2D interface
 	
 	/**
@@ -598,13 +549,14 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * If point does not belong to edge, returns Double.NaN.
 	 */
 	public double getPosition(java.awt.geom.Point2D point){
-		double pos;
-		// uses the direction with the biggest derivative of line arc, 
-		// in order to avoid divisions by zero.		
-		if(Math.abs(dx)>Math.abs(dy))
-			pos = (point.getX()-x0)/dx;
-		else
-			pos = (point.getY()-y0)/dy;
+//		double pos;
+//		// uses the direction with the biggest derivative of line arc, 
+//		// in order to avoid divisions by zero.		
+//		if(Math.abs(dx)>Math.abs(dy))
+//			pos = (point.getX()-x0)/dx;
+//		else
+//			pos = (point.getY()-y0)/dy;
+		double pos = this.getPositionOnLine(point);
 		
 		// return either pos or NaN
 		if(pos<this.getT0()) return Double.NaN;
@@ -622,13 +574,14 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * one is the closest. 
 	 */
 	public double project(java.awt.geom.Point2D point){
-		double pos;
-		// uses the direction with the biggest derivative of line arc, 
-		// in order to avoid divisions by zero.		
-		if(Math.abs(dx)>Math.abs(dy))
-			pos = (point.getX()-x0)/dx;
-		else
-			pos = (point.getY()-y0)/dy;
+//		double pos;
+//		// uses the direction with the biggest derivative of line arc, 
+//		// in order to avoid divisions by zero.		
+//		if(Math.abs(dx)>Math.abs(dy))
+//			pos = (point.getX()-x0)/dx;
+//		else
+//			pos = (point.getY()-y0)/dy;
+		double pos = this.getPositionOnLine(point);
 		
 		// Bounds between t0 and t1
 		return Math.min(Math.max(pos, this.getT0()), this.getT1());
@@ -675,6 +628,29 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 	
 	/**
+	 * Gets the distance of the StraightObject2d to the given point.
+	 * This method is not designed to be used directly, because AbstractLine2D
+	 * is an abstract class, but it can be called by subclasses to help
+	 * computations.
+	 */
+	public double getDistance(Point2D p){
+		return getDistance(p.getX(), p.getY());
+	}
+
+	/**
+	 * Gets the distance of the StraightObject2d to the given point.
+	 * This method is not designed to be used directly, because AbstractLine2D
+	 * is an abstract class, but it can be used by subclasses to help
+	 * computations.
+	 * @param x x-coordinate of the point
+	 * @param y y-coordinate of the point
+	 * @return distance between this object and the point (x,y)
+	 */
+	public double getDistance(double x, double y){
+		return Math.abs((y-y0)*dx-(x-x0)*dy)/Math.hypot(dx, dy);
+	}
+
+	/**
 	 * Returns false.
 	 */
 	public boolean isEmpty(){
@@ -703,6 +679,21 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	
 	// ===================================================================
 	// methods of Shape interface
+	
+
+	public boolean contains(java.awt.geom.Point2D p) {
+		return this.contains(p.getX(), p.getY());
+	}
+
+	/** Returns false, because a line cannot contain a rectangle.*/
+	public boolean contains(double x, double y, double w, double h){
+		return false;
+	}
+
+	/** Returns false, because a line cannot contain a rectangle.*/
+	public boolean contains(java.awt.geom.Rectangle2D r){
+		return false;
+	}
 	
 	/**
 	 * Tests if the Line intersects the interior of a specified rectangle2D.

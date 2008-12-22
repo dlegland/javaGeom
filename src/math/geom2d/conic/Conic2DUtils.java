@@ -253,7 +253,7 @@ public class Conic2DUtils {
 	public final static double[] transform(double[] coefs, 
 			AffineTransform2D trans){
 		// Extract coefficients of the inverse transform
-		double[][] mat = trans.getInverseTransform().getAffineMatrix();
+		double[][] mat = trans.invert().getAffineMatrix();
 		double a = mat[0][0];
 		double b = mat[1][0];
 		double c = mat[0][1];
@@ -412,8 +412,8 @@ public class Conic2DUtils {
 				sca = AffineTransform2D.createScaling(0, d),
 				rot = AffineTransform2D.createRotation(theta),
 				tra = AffineTransform2D.createTranslation(xc, yc);
-			AffineTransform2D trans = tra.compose(rot).compose(sca);
-			
+			//AffineTransform2D trans = tra.compose(rot).compose(sca);
+			AffineTransform2D trans = sca.chain(rot).chain(tra);
 			return Conic2DUtils.transform(coefs, trans);
 		}
 

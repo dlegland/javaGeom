@@ -30,7 +30,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -68,14 +67,14 @@ public class CheckRotateParabola2D extends JPanel{
 			Parabola2D rotated = parabola.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			g2.fill(rotated.getDomain().clip(box));
+			rotated.getDomain().clip(box).fill(g2);
 			g2.setColor(Color.BLUE);
-			g2.draw(rotated.clip(box));
+			rotated.clip(box).draw(g2);
 		}
 		
 		// Draw parabola origin
 		Point2D p1 = parabola.getPoint(0);
-		g2.fill(new Circle2D(p1, 4));
+		new Disc2D(p1, 4).fill(g2);
 	}
 
 	public final static void main(String[] args){

@@ -33,22 +33,36 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Interface for all conics : parametric conics, or ellipses, parabolas, and
- * hyperbolas.
+ * Interface for all conic curves: parametric conics, or ellipses, parabolas,
+ * and hyperbolas. Degenerate conics are also encompassed by this interface.
  */
 public interface Conic2D extends OrientedCurve2D{
+	//TODO: makeConic2D inherits Boundary2D
 	
 	// ===================================================================
 	// constants
 
+	/**
+	 * The different types of conic.
+	 */
 	public enum Type {
+		/** 
+		 * Degenerate conic, for example a conic given by the equation
+		 *  <code>x^2+1=0</code>)*/
 		NOT_A_CONIC, 
+		/** Ellipse */
 		ELLIPSE, 
+		/** Hyperbola*/
 		HYPERBOLA,
+		/** Parabola*/
 		PARABOLA,
+		/** Circle */
 		CIRCLE,
+		/** Straight Line */
 		STRAIGHT_LINE,
+		/** Union of two lines */
 		TWO_LINES,
+		/** Single point */
 		POINT;
 	}
 	
@@ -81,7 +95,7 @@ public interface Conic2D extends OrientedCurve2D{
 
 
 	/** 
-	 * Return eccentricity of the conic.
+	 * Returns the eccentricity of the conic.
 	 */
 	public abstract double getEccentricity();
 

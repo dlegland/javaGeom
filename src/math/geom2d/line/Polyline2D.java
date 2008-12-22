@@ -25,6 +25,7 @@
  */
 package math.geom2d.line;
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
@@ -106,17 +107,45 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	
 	/**
 	 * Return the inner collection of points.
+	 * @deprecated use getVertices() instead (0.6.3)
 	 */
 	public Collection<Point2D> getPoints(){
 		return points;
+	}
+	
+	/**
+	 * Returns the vertices of the polyline.
+	 */
+	public Collection<Point2D> getVertices(){
+		return points;
 	}	
 	
+	/**
+	 * Returns the i-th vertex of the polyline.
+	 * @param i index of the vertex, between 0 and the number of vertices
+	 */
+	public Point2D getVertex(int i){
+		return points.get(i);
+	}
+	
+	/**
+	 * 
+	 * @deprecated use getVertexNumber() instead (0.6.3)
+	 */
 	public int getVerticesNumber(){
 		return points.size();
 	}
 	
 	/**
-	 * return an array of LineSegment2D. The number of edges is the number of
+	 * Returns the number of vertices.
+	 * @return the number of vertices
+	 */
+	public int getVertexNumber(){
+		return points.size();
+	}
+	
+	/**
+	 * Returns an array of LineSegment2D. The number of edges is the number of
 	 * vertices minus one.
 	 * @return the edges of the polyline
 	 */
@@ -157,6 +186,9 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return new Polyline2D(points);
 	}
 
+	// ===================================================================
+	// Methods implementing OrientedCurve2D interface
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.OrientedCurve2D#getSignedDistance(double, double)
 	 */
@@ -645,7 +677,11 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return this.getGeneralPath().getPathIterator(trans, flatness);
 	}
 
-	
+	public void draw(Graphics2D g) {
+		g.draw(this.getGeneralPath());
+	}
+
+
 	// ===================================================================
 	// Methods inherited from the Object Class
 	

@@ -25,14 +25,15 @@
  */
 package math.geom2d.line;
 
-import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.polygon.Polygon2DUtils;
 import math.geom2d.transform.AffineTransform2D;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -139,6 +140,10 @@ public class ClosedPolyline2D extends Polyline2D implements
 	public Domain2D getDomain() {
 		return new GenericDomain2D(this);
 	}
+	
+	public void fill(Graphics2D g2){
+		g2.fill(this.getGeneralPath());
+	}
 
 	
 	// ===================================================================
@@ -148,15 +153,16 @@ public class ClosedPolyline2D extends Polyline2D implements
 	 * @see math.geom2d.OrientedCurve2D#getSignedDistance(double, double)
 	 */
 	public double getSignedDistance(double x, double y) {
-		double minDist = Double.POSITIVE_INFINITY;
-		double dist = Double.POSITIVE_INFINITY;
-		
-		for(LineSegment2D edge : this.getEdges()){
-			dist = edge.getSignedDistance(x, y);
-			if(Math.abs(dist)<Math.abs(minDist))
-				minDist = dist;
-		}		
-		return minDist;
+		return (this.isInside(x, y) ? -1 : 1)*this.getDistance(x, y);
+//		double minDist = Double.POSITIVE_INFINITY;
+//		double dist = Double.POSITIVE_INFINITY;
+//		
+//		for(LineSegment2D edge : this.getEdges()){
+//			dist = edge.getSignedDistance(x, y);
+//			if(Math.abs(dist)<Math.abs(minDist))
+//				minDist = dist;
+//		}		
+//		return minDist;
 	}
 
 	/* (non-Javadoc)
@@ -170,35 +176,46 @@ public class ClosedPolyline2D extends Polyline2D implements
 	 * @see math.geom2d.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
 	 */
 	public double getWindingAngle(java.awt.geom.Point2D point) {
-		double angle = 0;
-		for(LineSegment2D edge : this.getEdges())
-			angle += edge.getWindingAngle(point);		
-		return angle;
+		int wn = Polygon2DUtils.windingNumber(this.points, point);
+		return wn*2*Math.PI;
+//		double angle = 0;
+//		for(LineSegment2D edge : this.getEdges())
+//			angle += edge.getWindingAngle(point);		
+//		return angle;
 	}
 
+	public boolean isInside(double x, double y){
+		return this.isInside(new Point2D(x, y));
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.OrientedCurve2D#isInside(java.awt.geom.Point2D)
 	 */
 	public boolean isInside(java.awt.geom.Point2D point) {
-
-		Point2D p1 = this.getPoint(points.size()-1);
-		Point2D p2;
-		double alpha;
-		double angle = 0;
+		//TODO: choose convention for points on the boundary
+		int wn = Polygon2DUtils.windingNumber(this.points, point);
+		if(wn==1) return true;
+		if(this.contains(point)) return true;
+		return false;
 		
-		for (int i=0; i<this.points.size(); i++) {
-			p2 = (Point2D) this.points.get(i);
-			alpha = Angle2D.getAngle(p1, point, p2);
-			if(alpha>Math.PI) alpha -=Math.PI*2;
-			angle += alpha;
-//		      p1.h = polygon[i].h - p.h;
-//		      p1.v = polygon[i].v - p.v;
-//		      p2.h = polygon[(i+1)%n].h - p.h;
-//		      p2.v = polygon[(i+1)%n].v - p.v;
-//		      angle += Angle2D(p1.h,p1.v,p2.h,p2.v);
-			p1 = p2;
-		}
-		return angle > 0;			
+//		Point2D p1 = this.getPoint(points.size()-1);
+//		Point2D p2;
+//		double alpha;
+//		double angle = 0;
+//		
+//		for (int i=0; i<this.points.size(); i++) {
+//			p2 = (Point2D) this.points.get(i);
+//			alpha = Angle2D.getAngle(p1, point, p2);
+//			if(alpha>Math.PI) alpha -=Math.PI*2;
+//			angle += alpha;
+////		      p1.h = polygon[i].h - p.h;
+////		      p1.v = polygon[i].v - p.v;
+////		      p2.h = polygon[(i+1)%n].h - p.h;
+////		      p2.v = polygon[(i+1)%n].v - p.v;
+////		      angle += Angle2D(p1.h,p1.v,p2.h,p2.v);
+//			p1 = p2;
+//		}
+//		return angle > 0;			
 	}
 
 	// ===================================================================

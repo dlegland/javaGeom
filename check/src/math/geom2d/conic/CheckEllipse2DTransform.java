@@ -30,7 +30,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.Ellipse2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -68,13 +67,16 @@ public class CheckEllipse2DTransform extends JPanel{
 			
 		for(int i=0; i<8; i++){
 			double theta = i*Math.PI*2/8;
-			AffineTransform2D rot = AffineTransform2D.createRotation(origin, theta);
+			AffineTransform2D rot = 
+				AffineTransform2D.createRotation(origin, theta);
 			Ellipse2D rotated = ellipse.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			g2.fill(rotated.getDomain().clip(box));
+			rotated.getDomain().clip(box).fill(g2);
 			g2.setColor(Color.BLUE);
-			g2.draw(rotated);
+			rotated.draw(g2);
+			g2.setColor(Color.BLACK);
+			rotated.clip(box).draw(g2);
 		}
 
 		// Also draw a scaled version of the ellipse
@@ -82,17 +84,17 @@ public class CheckEllipse2DTransform extends JPanel{
 		Ellipse2D scaled = ellipse.transform(rot);
 		
 		g2.setColor(Color.CYAN);
-		g2.fill(scaled.getDomain().clip(box));
+		scaled.getDomain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
-		g2.draw(scaled.clip(box));
+		scaled.clip(box).draw(g2);
 
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getAsRectangle());
+		box.draw(g2);
 
 		// Draw transform origin
 		Point2D p1 = new Point2D(x0, y0);
-		g2.fill(new Circle2D(p1, 4));
+		p1.draw(g2, 2);
 	}
 
 	public final static void main(String[] args){

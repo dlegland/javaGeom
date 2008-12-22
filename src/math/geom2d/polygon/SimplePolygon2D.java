@@ -25,14 +25,16 @@
 package math.geom2d.polygon;
 
 // Imports
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -165,35 +167,36 @@ public class SimplePolygon2D implements Polygon2D{
 	 * @return the number of windings of the curve around the point
 	 */
 	public int getWindingNumber(double x, double y){
-	   int wn = 0;    // the winding number counter
-
-	   Point2D point = new Point2D(x, y);
-	   Point2D previous = points.get(points.size()-1);
-	   double x1 = previous.getX();
-	   double y1 = previous.getY();
-	   double x2, y2;
-	   
-	   for(Point2D p : points){
-		   // second vertex of current edge
-		   x2 = p.getX();
-		   y2 = p.getY();
-		   
-		   if(y1<=y){
-			   if(y2>y)	// an upward crossing
-				   if (new LineSegment2D(x1, y1, x2, y2).isInside(point))
-					   wn++;
-		   }else{
-			   if(y2<=y)	// a downward crossing
-				   if (!(new LineSegment2D(x1, y1, x2, y2).isInside(point)))
-					   wn--;
-		   }
-
-		   // for next iteration
-		   x1 = x2;
-		   y1 = y2;
-	   }
-
-	   return wn;
+		return Polygon2DUtils.windingNumber(points, new Point2D(x, y));
+//	   int wn = 0;    // the winding number counter
+//
+//	   Point2D point = new Point2D(x, y);
+//	   Point2D previous = points.get(points.size()-1);
+//	   double x1 = previous.getX();
+//	   double y1 = previous.getY();
+//	   double x2, y2;
+//	   
+//	   for(Point2D p : points){
+//		   // second vertex of current edge
+//		   x2 = p.getX();
+//		   y2 = p.getY();
+//		   
+//		   if(y1<=y){
+//			   if(y2>y)	// an upward crossing
+//				   if (new LineSegment2D(x1, y1, x2, y2).isInside(point))
+//					   wn++;
+//		   }else{
+//			   if(y2<=y)	// a downward crossing
+//				   if (!(new LineSegment2D(x1, y1, x2, y2).isInside(point)))
+//					   wn--;
+//		   }
+//
+//		   // for next iteration
+//		   x1 = x2;
+//		   y1 = y2;
+//	   }
+//
+//	   return wn;
 	}
 
 	// ===================================================================
@@ -208,9 +211,26 @@ public class SimplePolygon2D implements Polygon2D{
 	}
 
 	/**
-	 * Return the number of vertices.
+	 * Returns the i-th vertex of the polygon.
+	 * @param i index of the vertex, between 0 and the number of vertices
 	 */
-	public int getVerticesNumber(){
+	public Point2D getVertex(int i){
+		return points.get(i);
+	}
+
+	/**
+	 * @deprecated use getVertexNumber instead (0.6.3)
+	 */
+	@Deprecated
+	public int getVerticesNumber() {
+		return getVertexNumber();
+	}
+
+	/**
+	 * Return the number of vertices of the polygon.
+	 * @since 0.6.3
+	 */
+	public int getVertexNumber(){
 		return points.size();
 	}
 	
@@ -234,6 +254,11 @@ public class SimplePolygon2D implements Polygon2D{
 		return edges;
 	}
 
+	public int getEdgeNumber(){
+		return points.size();
+	}
+	
+	
 	/**
 	 * remove all the vertices of the polygon.
 	 */
@@ -256,6 +281,22 @@ public class SimplePolygon2D implements Polygon2D{
 				new ClosedPolyline2D(array));
 	}
 
+	/** 
+	 * Returns the polygon created by reversing the order of the vertices.
+	 */
+	public SimplePolygon2D complement(){
+		int nPoints = this.points.size();
+		
+		Point2D[] res = new Point2D[nPoints];
+		
+		if(nPoints>0)
+			res[0] = this.points.get(0);
+		
+		for(int i=1; i<nPoints; i++){
+			res[i] = this.points.get(nPoints-i);
+		}
+		return new SimplePolygon2D(res);
+	}
 
 	// ===================================================================
 	// methods inherited from Shape2D interface
@@ -306,12 +347,12 @@ public class SimplePolygon2D implements Polygon2D{
 	/**
 	 * Return the shape formed by the polygon clipped by the given box. 
 	 */
-	public Shape2D clip(Box2D box){
+	public Domain2D clip(Box2D box){
 		BoundarySet2D<ContinuousBoundary2D> boundarySet = 
 			Boundary2DUtils.clipBoundary(this.getBoundary(), box);
 			
 		//TODO: should return an instance of MultiPolygon2D.
-		return boundarySet;
+		return new GenericDomain2D(boundarySet);
 	}
 	
 	/**
@@ -332,21 +373,27 @@ public class SimplePolygon2D implements Polygon2D{
 	public boolean isEmpty(){
 		return points.size()==0;
 	}
+	
 	/** 
-	 * Return the new Polygon created by an affine transform of this polygon.
+	 * Returns the new Polygon created by an affine transform of this polygon.
+	 * If the transform is not direct, the order of vertices is reversed.
 	 */
 	public SimplePolygon2D transform(AffineTransform2D trans){
 		int nPoints = this.points.size();
 		
 		Point2D[] array = new Point2D[nPoints];
-		Point2D[] res = new Point2D[nPoints];		
+		Point2D[] res = new Point2D[nPoints];
+		
 		for(int i=0; i<nPoints; i++){
-			array[i] = (Point2D) this.points.get(i);
+			array[i] = this.points.get(i);
 			res[i] = new Point2D();
 		}
-		
 		trans.transform(array, res);
-		return new SimplePolygon2D(res);
+		
+		SimplePolygon2D poly = new SimplePolygon2D(res);
+		if(!trans.isDirect()) poly = poly.complement();
+		
+		return poly;
 	}
 
 
@@ -549,6 +596,14 @@ public class SimplePolygon2D implements Polygon2D{
 		return this.getGeneralPath().getPathIterator(trans, flatness);
 	}
 	
+	public void draw(Graphics2D g2){
+		g2.draw(this.getGeneralPath());
+	}
+
+	public void fill(Graphics2D g){
+		g.fill(this.getGeneralPath());
+	}
+
 	// ===================================================================
 	// methods inherited from Object interface
 	
@@ -563,7 +618,7 @@ public class SimplePolygon2D implements Polygon2D{
 		
 		SimplePolygon2D polygon = (SimplePolygon2D) obj;
 		
-		if(polygon.getVerticesNumber()!=this.getVerticesNumber())
+		if(polygon.getVertexNumber()!=this.getVertexNumber())
 			return false;
 		
 		if(!polygon.getBoundingBox().equals(this.getBoundingBox()))

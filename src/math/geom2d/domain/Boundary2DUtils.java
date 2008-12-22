@@ -15,7 +15,6 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 
 /**
@@ -143,6 +142,9 @@ public abstract class Boundary2DUtils {
 		double[] startPositions = new double[nc];
 		double[] endPositions 	= new double[nc];
 		
+		// Flag indicating if the curve intersects the boundary of the box
+		boolean intersect = false;
+		
 		// also create array of curves
 		ContinuousOrientedCurve2D[] curves = new ContinuousOrientedCurve2D[nc]; 
 		
@@ -167,6 +169,9 @@ public abstract class Boundary2DUtils {
 			// compute positions of first point and last point on box boundary
 			startPositions[i] 	= boxBoundary.getPosition(curve.getFirstPoint());
 			endPositions[i] 	= boxBoundary.getPosition(curve.getLastPoint());
+			
+			// set up the flag
+			intersect = true;
 		}
 		
 		// theoretical number of boundary curves. Set to the number of clipped
@@ -265,6 +270,16 @@ public abstract class Boundary2DUtils {
 			c++;
 		}
 
+		// Add processing when the box boundary does not intersect the curve.
+		// In this case add the boundary of the box to the resulting boundary
+		// set.
+		if(!intersect){
+			Point2D vertex = box.getVertices().iterator().next();
+			if(boundary.isInside(vertex))
+				res.addCurve(box.getAsRectangle().getBoundary().getFirstCurve());
+		}
+		
+		// return the result
 		return res;
 	}
 	
@@ -303,13 +318,13 @@ public abstract class Boundary2DUtils {
 	}
 	
 	/**
-	 * 
+	 * Extracts a portion of the boundary of a bounded box.
 	 * @param box the box from which one extract a portion of boundary
-	 * @param t0 the position of portion beginning
-	 * @param t1 the position of portion ending
-	 * @return
+	 * @param p0 the first point of the portion
+	 * @param p1 the last point of the portion
+	 * @return the portion of the bounding box boundary as a Polyline2D
 	 */
-	public final static ContinuousOrientedCurve2D getBoundaryPortion(
+	public final static Polyline2D getBoundaryPortion(
 			Box2D box, Point2D p0, Point2D p1){
 		Boundary2D boundary = box.getBoundary();
 		
@@ -321,9 +336,9 @@ public abstract class Boundary2DUtils {
 		int ind0 = (int) Math.floor(t0);
 		int ind1 = (int) Math.floor(t1);
 		
-		// Simple case: returns only a line segment
+		// Simple case: returns a polyline with only 2 vertices
 		if(ind0==ind1 && t0<t1)
-			return new LineSegment2D(p0, p1);
+			return new Polyline2D(new Point2D[]{p0, p1});
 		
 		// Create an array to store vertices
 		// Array can contain at most 6 vertices: 4 for the box corners, 

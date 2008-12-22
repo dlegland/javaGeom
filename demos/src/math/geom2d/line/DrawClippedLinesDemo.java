@@ -50,7 +50,7 @@ public class DrawClippedLinesDemo extends JPanel {
 		for(StraightLine2D line : lines){
 			 clipped = line.clip(outerBox);
 			 if(!clipped.isEmpty())
-				 g2.draw(clipped);
+				 clipped.draw(g2);
 		}
 		
 		// Draw lines in inner box
@@ -59,7 +59,7 @@ public class DrawClippedLinesDemo extends JPanel {
 		for(StraightLine2D line : lines){
 			 clipped = line.clip(innerBox);
 			 if(!clipped.isEmpty())
-				 g2.draw(clipped);
+				 clipped.draw(g2);
 		}
 	}
 	

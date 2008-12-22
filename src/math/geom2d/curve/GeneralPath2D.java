@@ -18,7 +18,7 @@ import java.awt.Shape;
 /**
  * The <code>GeneralPath</code> class represents a geometric path 
  * constructed from straight lines, and quadratic and cubic
- * (B&eacute;zier) curves.  It can contain multiple subpaths.
+ * (Bezier) curves.  It can contain multiple subpaths.
  * <p>
  * The winding rule specifies how the interior of a path is
  * determined.  There are two types of winding rules:  
@@ -111,7 +111,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Adds a point to the path by moving to the specified
 	 * coordinates.
-	 * @param x,y the specified coordinates
+	 * @param x the x-coordinate of the destination
+	 * @param y the y-coordinate of the destination
 	 */
 	public synchronized void moveTo(double x, double y) {
 		path.moveTo((float)x, (float)y);
@@ -129,7 +130,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Adds a point to the path by drawing a straight line from the
 	 * current coordinates to the new specified coordinates.
-	 * @param x,y the specified coordinates
+	 * @param x the x-coordinate of the destination
+	 * @param y the y-coordinate of the destination
 	 */
 	public synchronized void lineTo(double x, double y) {
 		path.lineTo((float)x, (float)y);
@@ -138,7 +140,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Adds a point to the path by drawing a straight line from the
 	 * current coordinates to the new specified coordinates.
-	 * @param x,y the specified coordinates
+	 * @param p the coordinate of the destionation point
 	 */
 	public synchronized void lineTo(java.awt.geom.Point2D p) {
 		path.lineTo((float)p.getX(), (float)p.getY());
@@ -150,9 +152,10 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	 * coordinates and the coordinates (x2,&nbsp;y2), using the 
 	 * specified point (x1,&nbsp;y1) as a quadratic parametric control
 	 * point.
-	 * @param x1,y1 the coordinates of the first quadratic control
-	 *		point
-	 * @param x2,y2 the coordinates of the final endpoint
+	 * @param x1 the x-coordinate of the control point
+	 * @param y1 the y-coordinate of the control point
+	 * @param x2 the x-coordinate of the end point
+	 * @param y2 the y-coordinate of the end point
 	 */
 	public synchronized void quadTo(double x1, double y1, double x2, double y2) {
 		path.quadTo((float)x1, (float)y1, (float)x2, (float)y2);
@@ -164,9 +167,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	 * coordinates and the coordinates (x2,&nbsp;y2), using the 
 	 * specified point (x1,&nbsp;y1) as a quadratic parametric control
 	 * point.
-	 * @param x1,y1 the coordinates of the first quadratic control
-	 *		point
-	 * @param x2,y2 the coordinates of the final endpoint
+	 * @param p1 the control point
+	 * @param p2 the end point
 	 */
 	public synchronized void quadTo(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
 		path.quadTo((float)p1.getX(), (float)p1.getY(), (float)p2.getX(), (float)p2.getY());
@@ -174,15 +176,16 @@ public final class GeneralPath2D implements Shape, Cloneable {
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
-	 * drawing a B&eacute;zier curve that intersects both the current
+	 * drawing a Bezier curve that intersects both the current
 	 * coordinates and the coordinates (x3,&nbsp;y3), using the    
 	 * specified points (x1,&nbsp;y1) and (x2,&nbsp;y2) as
-	 * B&eacute;zier control points.
-	 * @param x1,y1 the coordinates of the first B&eacute;ezier
-	 *		control point
-	 * @param x2,y2 the coordinates of the second B&eacute;zier
-	 *		control point
-	 * @param x3,y3 the coordinates of the final endpoint
+	 * Bezier control points.
+	 * @param x1 the x-coordinate of the first control point
+	 * @param y1 the y-coordinate of the first control point
+	 * @param x2 the x-coordinate of the second control point
+	 * @param y2 the y-coordinate of the second control point
+	 * @param x3 the x-coordinate of the end point
+	 * @param y3 the y-coordinate of the end point
 	 */
 	public synchronized void curveTo(double x1, double y1,
 		double x2, double y2, double x3, double y3) {
@@ -191,15 +194,13 @@ public final class GeneralPath2D implements Shape, Cloneable {
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
-	 * drawing a B&eacute;zier curve that intersects both the current
+	 * drawing a Bezier curve that intersects both the current
 	 * coordinates and the coordinates (x3,&nbsp;y3), using the    
 	 * specified points (x1,&nbsp;y1) and (x2,&nbsp;y2) as
-	 * B&eacute;zier control points.
-	 * @param x1,y1 the coordinates of the first B&eacute;ezier
-	 *		control point
-	 * @param x2,y2 the coordinates of the second B&eacute;zier
-	 *		control point
-	 * @param x3,y3 the coordinates of the final endpoint
+	 * Bezier control points.
+	 * @param p1 the coordinates of the first control point
+	 * @param p2 the coordinates of the second control point
+	 * @param p3 the coordinates of the final endpoint
 	 */
 	public synchronized void curveTo(java.awt.geom.Point2D p1, 
 		java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
@@ -353,7 +354,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Tests if the specified coordinates are inside the boundary of 
 	 * this <code>Shape</code>.
-	 * @param x,y the specified coordinates
+	 * @param x the x-coordinate of the point
+	 * @param y the y-coordinate of the point
 	 * @return <code>true</code> if the specified coordinates are inside this 
 	 * <code>Shape</code>; <code>false</code> otherwise
 	 */
@@ -375,7 +377,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Tests if the specified rectangular area is inside the boundary of
 	 * this <code>Shape</code>.
-	 * @param x,y the specified coordinates
+	 * @param x the x coordinate of the rectangle
+	 * @param y the y coordinate of the rectangle
 	 * @param w the width of the specified rectangular area
 	 * @param h the height of the specified rectangular area
 	 * @return <code>true</code> if this <code>Shape</code> contains 
@@ -399,7 +402,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
 	/**
 	 * Tests if the interior of this <code>Shape</code> intersects the 
 	 * interior of a specified set of rectangular coordinates.
-	 * @param x,y the specified coordinates
+	 * @param x the position of the left corner
+	 * @param y the position of the bottom corner
 	 * @param w the width of the specified rectangular coordinates
 	 * @param h the height of the specified rectangular coordinates
 	 * @return <code>true</code> if this <code>Shape</code> and the 

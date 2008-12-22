@@ -37,16 +37,15 @@ public class CheckClosedPolyline2DGetParallel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(polyline);
-		
+		polyline.draw(g2);
 		
 		g2.setColor(Color.BLUE);
 
 		parallel = Polyline2DUtils.createClosedParallel(polyline, 20);
-		g2.draw(parallel);
+		parallel.draw(g2);
 		
 		parallel = Polyline2DUtils.createClosedParallel(polyline, -10);
-		g2.draw(parallel);
+		parallel.draw(g2);
 	}
 	
 	public final static void main(String[] args){

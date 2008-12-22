@@ -26,12 +26,13 @@
 
 package math.geom2d.domain;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
-import math.geom2d.Shape2D;
+import math.geom2d.Point2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -48,15 +49,25 @@ public class GenericDomain2D implements Domain2D {
 
 	protected Boundary2D boundary = null;
 
-
 	public GenericDomain2D(Boundary2D boundary){
 		this.boundary = boundary;
 	}
 	
 
+	// ===================================================================
+	// methods implementing the Domain2D interface
+
 	public Boundary2D getBoundary() {		
 		return boundary;
 	}
+
+	public Domain2D complement() {
+		return new GenericDomain2D(boundary.getReverseCurve());
+	}
+
+	
+	// ===================================================================
+	// methods implementing the Shape2D interface
 
 	public double getDistance(java.awt.geom.Point2D p) {
 		return Math.max(boundary.getSignedDistance(p.getX(), p.getY()), 0);
@@ -67,31 +78,52 @@ public class GenericDomain2D implements Domain2D {
 	}
 
 	/**
-	 * return always true.
+	 * Returns true if the domain is bounded. The domain is unbounded if
+	 * either its boundary is unbounded, or a point located outside of the
+	 * boundary bounding box is located inside of the domain.
 	 */
 	public boolean isBounded() {
-		return true;
+		// If boundary is not bounded, the domain is not bounded.
+		if(!boundary.isBounded()) return false;
+		
+		// If boundary is bounded, get the bounding box, choose a point
+		// outside of the box, and check if its belongs to the domain.
+		Box2D box = boundary.getBoundingBox();
+		Point2D point = new Point2D(box.getMinX(), box.getMinY());
+		
+		return !boundary.isInside(point);
 	}
 
 	public boolean isEmpty(){
 		return boundary.isEmpty()&&!this.contains(0,0);
 	}
 
-	public Shape2D clip(Box2D box) {
-		return new GenericDomain2D(Boundary2DUtils.clipBoundary(this.getBoundary(), box));
-	}
-
-	public Box2D getBoundingBox() {
-		//TODO: manage infinite domains
-		return boundary.getBoundingBox();
+	public Domain2D clip(Box2D box) {
+		return new GenericDomain2D(Boundary2DUtils.clipBoundary(
+				this.getBoundary(), box));
 	}
 
 	/**
-	 * return a new domain which is created from the transformed domain of 
+	 * If the domain is bounded, returns the bounding box of its boundary, 
+	 * otherwise returns an infinite bounding box.
+	 */
+	public Box2D getBoundingBox() {
+		if(this.isBounded())
+			return boundary.getBoundingBox();
+		return new Box2D(
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+	}
+
+	/**
+	 * Returns a new domain which is created from the transformed domain of 
 	 * this boundary.
 	 */
 	public GenericDomain2D transform(AffineTransform2D trans) {
-		return new GenericDomain2D((Boundary2D) boundary.transform(trans));
+		Boundary2D transformed = boundary.transform(trans);
+		if(!trans.isDirect())
+			transformed = transformed.getReverseCurve();
+		return new GenericDomain2D(transformed);
 	}
 
 	public boolean contains(double x, double y) {
@@ -105,6 +137,9 @@ public class GenericDomain2D implements Domain2D {
 		if(contains(x, y+h)) return true;
 		return false;
 	}
+
+	// ===================================================================
+	// methods implementing the Shape interface
 
 	public boolean intersects(double x, double y, double w, double h){
 		return boundary.intersects(x, y, w, h);
@@ -129,7 +164,8 @@ public class GenericDomain2D implements Domain2D {
 	}
 
 	public boolean contains(Rectangle2D rect) {
-		return contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+		return contains(rect.getX(), rect.getY(), 
+				rect.getWidth(), rect.getHeight());
 	}
 
 	public boolean intersects(Rectangle2D rect) {
@@ -140,8 +176,16 @@ public class GenericDomain2D implements Domain2D {
 		return boundary.getPathIterator(trans);
 	}
 
-	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
+	public PathIterator getPathIterator(AffineTransform trans, 
+			double flatness) {
 		return boundary.getPathIterator(trans, flatness);
 	}
+	
+	public void draw(Graphics2D g2){
+		g2.draw(boundary.getGeneralPath());
+	}
 
+	public void fill(Graphics2D g){
+		g.fill(boundary.getGeneralPath());
+	}
 }

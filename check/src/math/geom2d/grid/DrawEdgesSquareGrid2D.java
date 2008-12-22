@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.Disc2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawEdgesSquareGrid2D  extends JPanel{
@@ -29,15 +29,15 @@ public class DrawEdgesSquareGrid2D  extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
+		box.getAsRectangle().getBoundary().draw(g2);
 		
 		g2.setColor(Color.BLACK);
 		Collection<LineSegment2D> lines = grid.getEdges(box);
 		for(LineSegment2D line : lines)
-			g2.draw(line);
+			line.draw(g2);
 
 		g.setColor(Color.RED);
-		g2.draw(new Circle2D(x0, y0, 3));
+		new Disc2D(x0, y0, 4).fill(g2);
 	}
 
 	public final static void main(String[] args){
@@ -48,5 +48,5 @@ public class DrawEdgesSquareGrid2D  extends JPanel{
 		frame.setContentPane(panel);
 		frame.setSize(400, 400);
 		frame.setVisible(true);
-		
-	}}
+	}
+}

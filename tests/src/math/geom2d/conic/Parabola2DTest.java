@@ -317,8 +317,24 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
 	}
-	
-	public void testTransform_AffineTransform2D(){
+
+	public void testGetCurvatureDouble(){
+		double xv = 0;
+		double yv = 0;
+		double a = 1;
+		double theta = 0;
+		
+		Parabola2D parabola = new Parabola2D(xv, yv, a, theta);
+		
+		double t0 = 0;
+		assertEquals(parabola.getCurvature(t0), 2*a, 1e-12);
+		
+		double t1 = 1;
+		double k1 = 2*a/Math.pow(Math.hypot(1, 2*a*t1), 3);		
+		assertEquals(parabola.getCurvature(t1), k1, 1e-12);
+	}
+
+	public void testTransformAffineTransform2D(){
 		double a = 2;
 		Parabola2D base = new Parabola2D(0, 0, a, 0);
 		
@@ -341,4 +357,72 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(reflected.equals(new Parabola2D(0, 0, -a, 0)));
 	}
 	
+	public void testIsInsidePoint2D_Direct(){
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		Point2D pt;
+		
+		pt = new Point2D(0, 2);
+		assertTrue(parabola.isInside(pt));
+		
+		pt = new Point2D(0, -2);
+		assertTrue(!parabola.isInside(pt));		
+		
+		pt = new Point2D(-2, 10);
+		assertTrue(parabola.isInside(pt));
+		
+		pt = new Point2D(-2, 0);
+		assertTrue(!parabola.isInside(pt));		
+		
+		pt = new Point2D(2, 10);
+		assertTrue(parabola.isInside(pt));
+		
+		pt = new Point2D(2, 0);
+		assertTrue(!parabola.isInside(pt));		
+	}
+	
+	public void testIsInsidePoint2D_Inverse(){
+		Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
+		Point2D pt;
+		
+		pt = new Point2D(0, -2);
+		assertTrue(!parabola.isInside(pt));
+		
+		pt = new Point2D(0, 2);
+		assertTrue(parabola.isInside(pt));		
+		
+		pt = new Point2D(-2, -10);
+		assertTrue(!parabola.isInside(pt));
+		
+		pt = new Point2D(-2, 0);
+		assertTrue(parabola.isInside(pt));		
+		
+		pt = new Point2D(2, -10);
+		assertTrue(!parabola.isInside(pt));
+		
+		pt = new Point2D(2, 0);
+		assertTrue(parabola.isInside(pt));		
+	}
+	
+	public void testGetWindingAnglePoint2D(){
+		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+		Parabola2D inverse = new Parabola2D(0, 0, -1, 0);
+		Point2D pt;
+		double eps = 1e-12;
+		
+		// point inside a direct parabola
+		pt = new Point2D(1, 2);
+		assertEquals(parabola.getWindingAngle(pt), Math.PI*2, eps);
+		
+		// point outside a direct parabola
+		pt = new Point2D(1, -2);
+		assertEquals(parabola.getWindingAngle(pt), 0, eps);
+		
+		// point inside an inverse parabola
+		pt = new Point2D(1, 2);
+		assertEquals(inverse.getWindingAngle(pt), 0, eps);
+		
+		// point outside an ibverse parabola
+		pt = new Point2D(1, -2);
+		assertEquals(inverse.getWindingAngle(pt), -2*Math.PI, eps);
+	}
 }

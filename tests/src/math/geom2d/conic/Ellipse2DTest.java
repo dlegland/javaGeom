@@ -58,7 +58,7 @@ public class Ellipse2DTest extends TestCase {
 		Ellipse2D base = new Ellipse2D(20, 30, 10, 4, Math.PI/3);
 		Point2D focus1 = base.getFocus1();
 		Point2D focus2 = base.getFocus2();
-		double chord = base.getLength1()*2;
+		double chord = base.getSemiMajorAxisLength()*2;
 		Ellipse2D created = Ellipse2D.create(focus1, focus2, chord);
 		
 		assertTrue(base.equals(created));

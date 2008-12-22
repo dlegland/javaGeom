@@ -25,6 +25,7 @@
  */
 package math.geom2d.line;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -94,8 +95,8 @@ public class LineArc2D extends AbstractLine2D
 	 * on the line.
 	 * @param x1 the x-coordinate of the first point
 	 * @param y1 the y-coordinate of the first point
-	 * @param x2 the x-coordinate of the direction vector
-	 * @param y2 the y-coordinate of the direction vector
+	 * @param dx the x-coordinate of the direction vector
+	 * @param dy the y-coordinate of the direction vector
 	 * @param t0 the starting position of the arc
 	 * @param t1 the ending position of the arc
 	 */
@@ -325,20 +326,22 @@ public class LineArc2D extends AbstractLine2D
 	}
 
 	
-	public java.awt.geom.GeneralPath getInnerPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.lineTo((float)(x0+t0*dx), (float)(y0+t0*dy));
+		path.moveTo((float)(x0+t0*dx), (float)(y0+t0*dy));
 		path.lineTo((float)(x0+t1*dx), (float)(y0+t1*dy));
 		return path;		
 	}
 	
 	/**
 	 * Appends a line to the current path. If t0 or t1 is infinite, 
-	 * does not append anything.
+	 * throws a new UnboundedShapeException.
 	 * @param path the path to modify
 	 * @return the modified path
 	 */
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
+		if(!this.isBounded()) throw new UnboundedShapeException();
 		if(t0==Double.NEGATIVE_INFINITY) return path;
 		if(t1==Double.POSITIVE_INFINITY) return path;
 		path.lineTo((float)getX1(), (float)getY1());
@@ -351,22 +354,20 @@ public class LineArc2D extends AbstractLine2D
 	 * Return pathiterator for this line arc.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)(x0+t0*dx), (float)(y0+t0*dy));
-		path.lineTo((float)(x0+t1*dx), (float)(y0+t1*dy));
-		return path.getPathIterator(t);
+		return this.getGeneralPath().getPathIterator(t);
 	}
 
 	/** 
 	 * Return PathIterator for this line arc.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)(x0+t0*dx), (float)(y0+t0*dy));
-		path.lineTo((float)(x0+t1*dx), (float)(y0+t1*dy));
-		return path.getPathIterator(t, flatness);
+		return this.getGeneralPath().getPathIterator(t, flatness);
 	}
 	
+	public void draw(Graphics2D g) {
+		g.draw(this.getGeneralPath());
+	}
+
 	public LineArc2D transform(AffineTransform2D trans){
 		double[] tab = trans.getCoefficients();
 		double x1 = x0*tab[0] + y0*tab[1] + tab[2];

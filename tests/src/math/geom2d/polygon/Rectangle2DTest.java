@@ -50,7 +50,7 @@ public class Rectangle2DTest extends TestCase {
 
 	public void testGetVerticesNumber() {
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
-		assertEquals(rect.getVerticesNumber(), 4);
+		assertEquals(rect.getVertexNumber(), 4);
 	}
 
 	public void testGetDistance(){

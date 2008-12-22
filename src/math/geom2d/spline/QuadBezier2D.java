@@ -23,6 +23,7 @@
 
 package math.geom2d.spline;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -143,7 +144,7 @@ public class QuadBezier2D
 	
 	/**
 	 * Use winding angle of approximated polyline
-	 * @see math.geom2d.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
+	 * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
 	 */
 	public double getWindingAngle(java.awt.geom.Point2D point) {
 		return this.getAsPolyline(100).getWindingAngle(point);
@@ -167,7 +168,7 @@ public class QuadBezier2D
 	}
 
 	/**
-	 * @see math.geom2d.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
+	 * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
 	 */
 	public double getSignedDistance(double x, double y) {
 		if(isInside(new Point2D(x, y)))
@@ -196,7 +197,7 @@ public class QuadBezier2D
 		double xs = 2*c[0][2];
 		double ys = 2*c[1][2];
 		
-		return (xp*ys - yp*xs)/Math.pow(Math.hypot(xp, yp), 1.5);
+		return (xp*ys - yp*xs)/Math.pow(Math.hypot(xp, yp), 3);
 	}
 	
 	// ===================================================================
@@ -254,14 +255,14 @@ public class QuadBezier2D
 
 	/**
 	 * Use approximation, by replacing Bezier curve with a polyline. 
-	 * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
+	 * @see math.geom2d.curve.Curve2D#getIntersections(math.geom2d.line.LinearShape2D)
 	 */
 	public Collection<Point2D> getIntersections(LinearShape2D line) {
 		return this.getAsPolyline(100).getIntersections(line);
 	}
 
 	/**
-	 * @see math.geom2d.Curve2D#getPoint(double)
+	 * @see math.geom2d.curve.Curve2D#getPoint(double)
 	 */
 	public Point2D getPoint(double t) {
 		t = Math.min(Math.max(t, 0), 1);
@@ -419,25 +420,24 @@ public class QuadBezier2D
 				trans.transform(this.getP2())) ;
 	}
 	
+	public void draw(Graphics2D g){
+		g.draw(this);
+	}
 	
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		Point2D p = new Point2D();
-		for(double t=0; t<1;t+=.01){
-			p = this.getPoint(t);
-			path.lineTo((float)p.getX(), (float)p.getY());
-		}
-		p = this.getPoint(getT1());
-		path.lineTo((float)p.getX(), (float)p.getY());
+		Point2D p2 = this.getControl();
+		Point2D p3 = this.getLastPoint();
+		path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
 		return path;
 	}
 	
-	public java.awt.geom.GeneralPath getInnerPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		Point2D p = new Point2D();
-		for(double t=0; t<1;t+=.01){
-			p = this.getPoint(t);
-			path.lineTo((float)p.getX(), (float)p.getY());
-		}
+		Point2D p1 = this.getFirstPoint();
+		Point2D p2 = this.getControl();
+		Point2D p3 = this.getLastPoint();
+		path.moveTo(p1.getX(), p1.getY());
+		path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
 		return path;
 	}
 

@@ -26,6 +26,7 @@
 package math.geom2d.conic;
 
 
+import java.awt.Graphics2D;
 import java.util.*;
 
 import math.geom2d.Angle2D;
@@ -148,8 +149,8 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 * @see math.geom2d.ContinuousCurve2D#getViewAngle(math.geom2d.Point2D)
 	 */
 	public double getWindingAngle(java.awt.geom.Point2D point) {
-		Point2D p1 = getPoint(startAngle);
-		Point2D p2 = getPoint(startAngle+angleExtent);
+		Point2D p1 = getPoint(0);
+		Point2D p2 = getPoint(Math.abs(angleExtent));
 
 		// compute angle of point with extreme points
 		double angle1 = Angle2D.getHorizontalAngle(point, p1);
@@ -160,21 +161,28 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		boolean b2 = ellipse.isInside(point);
 		
 		if(angleExtent>0){
-			if(b1 || b2){
+			if(b1 || b2){	// inside of ellipse arc
 				if(angle2>angle1) return angle2 - angle1;
 				else return 2*Math.PI - angle1 + angle2;
-			}else{
+			}else{			// outside of ellipse arc
 				if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
 				else return angle2 - angle1;
 			}
 		}else{
-			if(b1 || b2){
-				if(angle1>angle2) return angle1 - angle2;
-				else return 2*Math.PI - angle2 + angle1;
+			if(!b1 || b2){
+				if(angle1>angle2) return angle2 - angle1;
+				else return angle2 - angle1 - 2*Math.PI;
 			}else{
-				if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
-				else return angle1 - angle2;
+				if(angle1>angle2) return angle2 - angle1 + 2*Math.PI;
+				else return angle2 - angle1;
 			}
+//			if(b1 || b2){
+//				if(angle1>angle2) return angle1 - angle2;
+//				else return 2*Math.PI - angle2 + angle1;
+//			}else{
+//				if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
+//				else return angle1 - angle2;
+//			}
 		}
 	}
 
@@ -260,14 +268,14 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return new Polyline2D(points); 
 	}
 
-	/** Return false, as an ellipse arc is never closed.*/
+	/** Returns false, as an ellipse arc is never closed.*/
 	public boolean isClosed() {
 		return false;
 	}
 
 	/** 
-	 * return a SmoothCurve array containing this ellipse arc.
-	 * @see math.geom2d.ContinuousCurve2D#getSmoothPieces()
+	 * Returns a SmoothCurve array containing this ellipse arc.
+	 * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
 	 */
 	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
 		ArrayList<EllipseArc2D> list = new ArrayList<EllipseArc2D>(1);
@@ -323,17 +331,33 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	public double project(java.awt.geom.Point2D point) {
 		double angle = ellipse.project(point);
 		
-		// convert to arc parameterization
-		if(angleExtent>0)
-			angle = Angle2D.formatAngle(angle-startAngle);
+		// Case of an angle contained in the ellipse arc
+		if(Angle2D.containsAngle(startAngle, startAngle+angleExtent,
+				angle, angleExtent>0)){
+			if(angleExtent>0)
+				return Angle2D.formatAngle(angle-startAngle);
+			else
+				return Angle2D.formatAngle(startAngle-angle);
+		}
+		
+		Point2D p1 = this.getFirstPoint();
+		Point2D p2 = this.getLastPoint();
+		if(p1.getDistance(point)<p2.getDistance(point))
+			return 0;
 		else
-			angle = Angle2D.formatAngle(startAngle-angle);
+			return Math.abs(angleExtent);
 		
-		// ensure projection lies on the arc
-		if(angle<0) return 0;
-		if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
-		
-		return angle;
+//		// convert to arc parameterization
+//		if(angleExtent>0)
+//			angle = Angle2D.formatAngle(angle-startAngle);
+//		else
+//			angle = Angle2D.formatAngle(startAngle-angle);
+//		
+//		// ensure projection lies on the arc
+//		if(angle<0) return 0;
+//		if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
+//		
+//		return angle;
 	}
 
 	/**
@@ -380,12 +404,12 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	}
 
 	/**
-	 * returns the ellipse arc which refers to the reversed parent ellipse,
+	 * Returns the ellipse arc which refers to the reversed parent ellipse,
 	 * with same start angle, and with opposite angle extent.
 	 */
 	public EllipseArc2D getReverseCurve(){
-		return new EllipseArc2D((Ellipse2D)this.ellipse.getReverseCurve(), 
-				startAngle, -angleExtent);
+		return new EllipseArc2D(ellipse, 
+				Angle2D.formatAngle(startAngle+angleExtent), -angleExtent);
 	}
 	
 	public Collection<ContinuousCurve2D> getContinuousCurves() {
@@ -395,7 +419,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	}
 
 	/**
-	 * return a new EllipseArc2D.
+	 * Returns a new EllipseArc2D.
 	 */
 	public EllipseArc2D getSubCurve(double t0, double t1){
 		// convert position to angle
@@ -595,46 +619,43 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		return false;
 	}
 
-	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		
-//		double cot = Math.cos(ellipse.theta);
-//		double sit = Math.sin(ellipse.theta);
-//		double xc = ellipse.xc;
-//		double yc = ellipse.yc;
-//		double r1 = ellipse.r1;
-//		double r2 = ellipse.r2;
-//		
-//		double t, x, y;
-		
+	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){		
 		//TODO: should be better to replace be cubic arcs
 		
 		int N = 60;
+		Point2D point;
+		
 		double dt = Math.abs(angleExtent)/(double)N;
-		for(int i=1; i<=N; i++){
-//			t = startAngle + ((double) i)*dt;
-//			x = r1*Math.cos(t);
-//			y = r2*Math.sin(t);
-			Point2D point = this.getPoint(i*dt);
+		for(int i=1; i<N; i++){
+			point = this.getPoint(i*dt);
 			path.lineTo((float)point.getX(), (float)point.getY());
 		}
+		
+		point = this.getLastPoint();
+		path.lineTo((float)point.getX(), (float)point.getY());
 		
 		return path;
 	}
 
-	protected java.awt.geom.GeneralPath getGeneralPath() {		
+	public java.awt.geom.GeneralPath getGeneralPath() {		
 		// create new path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
-		Point2D point;
-		
-		point = this.getFirstPoint();
+		// move to the first point 
+		Point2D point = this.getFirstPoint();
 		path.moveTo((float)point.getX(), (float)point.getY());
+		
+		// append the curve
 		path = this.appendPath(path);
 		
 		// return the final path
 		return path;		
 	}	
 	
+	public void draw(Graphics2D g2){
+		g2.draw(this.getGeneralPath());
+	}
+
 	/** 
 	 * Return pathiterator for this ellipse arc.
 	 */

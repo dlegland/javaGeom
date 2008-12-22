@@ -92,7 +92,7 @@ public interface ContinuousCurve2D extends Curve2D{
 	 * line segments. If the curve is closed, the method should return an 
 	 * instance of ClosedPolyline2D.
 	 * @param n the number of line segments
-	 * @return a closed polyline with <code>n</code> line segments.
+	 * @return a polyline with <code>n</code> line segments.
 	 */
 	public abstract Polyline2D getAsPolyline(int n);
 
@@ -101,7 +101,8 @@ public interface ContinuousCurve2D extends Curve2D{
 	 * @param path a path to modify
 	 * @return the modified path
 	 */
-	public abstract java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path);
+	public abstract java.awt.geom.GeneralPath appendPath(
+			java.awt.geom.GeneralPath path);
 	
 	public abstract ContinuousCurve2D getReverseCurve();
 

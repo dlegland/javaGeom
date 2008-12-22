@@ -31,6 +31,7 @@ import java.util.*;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.line.LineSegment2D;
 
 
 public class CurveSet2DTest extends TestCase {
@@ -136,6 +137,24 @@ public class CurveSet2DTest extends TestCase {
 		assertTrue(arc2h2.equals(sub1));
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc1h2.equals(sub1));
+	}
+	
+	public void testIsSingular() {
+		// Create a curve set with 2 line segments
+		LineSegment2D line1 = new LineSegment2D(
+				new Point2D(0, 0), new Point2D(2, 2));
+		LineSegment2D line2 = new LineSegment2D(
+				new Point2D(2, 0), new Point2D(-2, 4));
+		CurveSet2D<LineSegment2D> set = new CurveSet2D<LineSegment2D>(
+				new LineSegment2D[]{line1, line2});
+		
+		assertTrue(set.isSingular(0));
+		assertTrue(!set.isSingular(0.5));
+		assertTrue(set.isSingular(1));
+		assertTrue(set.isSingular(1.5));
+		assertTrue(set.isSingular(2));
+		assertTrue(!set.isSingular(2.5));
+		assertTrue(set.isSingular(3));
 	}
 
 }

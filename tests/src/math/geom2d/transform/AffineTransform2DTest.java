@@ -138,18 +138,34 @@ public class AffineTransform2DTest extends TestCase {
 		
 	}
 	
-	public void testGetInverseTransform(){
+	public void testInvert(){
 		AffineTransform2D trans1  = new AffineTransform2D(1, 0, 5, 0, 1, 10);	
-		AffineTransform2D trans1i = (AffineTransform2D)trans1.getInverseTransform();
+		AffineTransform2D trans1i = trans1.invert();
 		AffineTransform2D trans2  = new AffineTransform2D(1, 0, -5, 0, 1, -10);
 
 		assertTrue(trans2.equals(trans1i));
-		assertTrue(trans1.equals(trans1i.getInverseTransform()));
+		assertTrue(trans1.equals(trans1i.invert()));
 		
 		AffineTransform2D trans = new AffineTransform2D(1, 2, 3, 4, 5, 6);
-		assertTrue(trans.equals(trans.getInverseTransform().getInverseTransform()));
+		assertTrue(trans.equals(trans.invert().invert()));
 	}
 	
+	public void testChainAffineTransform2D(){
+		double xc = 20;
+		double yc = 30;
+		double theta = Math.PI/3;
+		
+		// the reference transform
+		AffineTransform2D ref = 
+			AffineTransform2D.createRotation(xc, yc, theta);
+		
+		// Create the same transform using chain() method		
+		AffineTransform2D tra = AffineTransform2D.createTranslation(xc, yc);
+		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
+		AffineTransform2D trans = tra.invert().chain(rot).chain(tra);
+		
+		assertTrue(ref.equals(trans));		
+	}
 	
 	public void testEquals(){
 		AffineTransform2D trans  = new AffineTransform2D(1, 2, 3, 4, 5, 6);

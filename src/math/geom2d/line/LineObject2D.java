@@ -24,6 +24,7 @@
 // package
 package math.geom2d.line;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -101,6 +102,9 @@ public class LineObject2D extends AbstractLine2D{
 	}
 	
 	
+	// ===================================================================
+	// Methods specific to LineObject2D
+	
 	/**
 	 * Recompute (x0,y0) and (dx,dy) from position of points. If point1 is set to
 	 * null, recompute only (dx,dy). If point2 is set to null, recompute only (x0,y0).
@@ -115,6 +119,16 @@ public class LineObject2D extends AbstractLine2D{
 			dx = point2.getX()-x0;
 			dy = point2.getY()-y0;
 		}
+	}
+	
+	public void setPoint1(Point2D point){
+		point1 = point;
+		updateParameters();
+	}
+	
+	public void setPoint2(Point2D point){
+		point2 = point;
+		updateParameters();
 	}
 	
 
@@ -153,14 +167,6 @@ public class LineObject2D extends AbstractLine2D{
 		return equals((LineObject2D)obj);
 	}
 	
-	/**
-	 * Two LineObject2D are equals if the share the two same points, in the same order.
-	 * @param edge : the edge to compare to.
-	 * @return true if extremities of both edges are the same.
-	 */
-	public boolean equals(LineObject2D edge){
-		return point1==edge.point1 && point2==edge.point2;
-	}
 	
 	/**
 	 * Get the distance of the point (x, y) to this edge.
@@ -334,8 +340,7 @@ public class LineObject2D extends AbstractLine2D{
 		updateParameters();
 		return y0+dy;
 	}
-	
-	
+
 	/**
 	 * Return the opposite vertex of the edge.
 	 * @param point : one of the vertices of the edge
@@ -347,10 +352,13 @@ public class LineObject2D extends AbstractLine2D{
 		return null;
 	}
 	
+	
+	// ===================================================================
+	// methods inherited from SmoothCurve2D interface
+
 	public Vector2D getTangent(double t){
 		return new Vector2D(dx, dy);
 	}
-
 
 	/**
 	 * returns 0 as every straight object.
@@ -370,10 +378,17 @@ public class LineObject2D extends AbstractLine2D{
 		return new Polyline2D(points);
 	}
 
+	// ===================================================================
+	// methods inherited from Boundary2D interface
+
 	public ContinuousOrientedCurve2D[] getBoundaryCurves(){
 		return new ContinuousOrientedCurve2D[]{this};
 	}
 	
+	
+	// ===================================================================
+	// methods inherited from OrientedCurve2D interface
+
 	public double getWindingAngle(java.awt.geom.Point2D point){
 		updateParameters();
 		
@@ -398,6 +413,9 @@ public class LineObject2D extends AbstractLine2D{
 	public boolean isInside(java.awt.geom.Point2D point){
 		return this.getSignedDistance(point.getX(), point.getY())<0;
 	}
+
+	// ===================================================================
+	// methods inherited from Curve2D interface
 
 	/** 
 	 * Returns the parameter of the first point of the line Object. It is equal to
@@ -513,24 +531,27 @@ public class LineObject2D extends AbstractLine2D{
 		t1 = Math.min(t1, getT1());
 		return new LineArc2D(this, t0, t1);
 	}
-	
-	
-	// ===================================================================
-	// mutators
 
-
-	public void setPoint1(Point2D point){
-		point1 = point;
-		updateParameters();
-	}
 	
-	public void setPoint2(Point2D point){
-		point2 = point;
-		updateParameters();
+	public void draw(Graphics2D g) {
+		g.draw(this.getGeneralPath());
 	}
 
+	
 	// ===================================================================
-	// general methods
+	// methods inherited from Shape2D interface
+
+	public LineObject2D transform(AffineTransform2D trans){
+		updateParameters();
+		double[] tab = trans.getCoefficients();
+		double x1 = x0*tab[0] + y0*tab[1] + tab[2];
+		double y1 = x0*tab[3] + y0*tab[4] + tab[5];
+		return new LineObject2D(x1, y1, dx*tab[0]+dy*tab[1]+x1, dx*tab[3]+dy*tab[4]+y1);
+	}
+
+	
+	// ===================================================================
+	// methods inherited from Shape interface
 
 	/** 
 	 * Return true if the point (x, y) lies on the line, with precision given 
@@ -574,9 +595,9 @@ public class LineObject2D extends AbstractLine2D{
 	}
 
 	
-	public java.awt.geom.GeneralPath getInnerPath(){
+	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.lineTo((float)point1.getX(), (float)point1.getX());
+		path.moveTo((float)point1.getX(), (float)point1.getX());
 		path.lineTo((float)point2.getX(), (float)point2.getY());
 		return path;
 	}
@@ -592,10 +613,7 @@ public class LineObject2D extends AbstractLine2D{
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
 		updateParameters();
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+dx), (float)(y0+dy));
-		return path.getPathIterator(t);
+		return this.getGeneralPath().getPathIterator(t);
 	}
 
 	/** 
@@ -603,12 +621,9 @@ public class LineObject2D extends AbstractLine2D{
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
 		updateParameters();
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+dx), (float)(y0+dy));
-		return path.getPathIterator(t, flatness);
+		return this.getGeneralPath().getPathIterator(t, flatness);
 	}
-	
+
 	/**
 	 * Tests if the Line intersects the interior of a specified rectangular area.
 	 */
@@ -623,17 +638,21 @@ public class LineObject2D extends AbstractLine2D{
 		return false;
 	}
 
-	public LineObject2D transform(AffineTransform2D trans){
-		updateParameters();
-		double[] tab = trans.getCoefficients();
-		double x1 = x0*tab[0] + y0*tab[1] + tab[2];
-		double y1 = x0*tab[3] + y0*tab[4] + tab[5];
-		return new LineObject2D(x1, y1, dx*tab[0]+dy*tab[1]+x1, dx*tab[3]+dy*tab[4]+y1);
-	}
+	// ===================================================================
+	// methods inherited from Object interface
 
 	public String toString(){
 		updateParameters();
 		return Double.toString(x0).concat(new String(" ")).concat(Double.toString(y0)).concat(
 			new String(" ")).concat(Double.toString(dx)).concat(new String(" ")).concat(Double.toString(dy));
+	}
+	
+	/**
+	 * Two LineObject2D are equals if the share the two same points, in the same order.
+	 * @param edge : the edge to compare to.
+	 * @return true if extremities of both edges are the same.
+	 */
+	public boolean equals(LineObject2D edge){
+		return point1==edge.point1 && point2==edge.point2;
 	}
 }

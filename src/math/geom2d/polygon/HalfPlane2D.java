@@ -24,13 +24,16 @@
 // package
 package math.geom2d.polygon;
 
+import java.awt.Graphics2D;
+
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -63,18 +66,21 @@ public class HalfPlane2D implements Domain2D{
 	
 	
 	// ===================================================================
-	// methods inherited from AbstractDomain2D interface
+	// methods implementing the Domain2D interface
 
 	/** 
 	 * Returns the straight line that defines the limit of this half-plane.
 	 */
-	public Boundary2D getBoundary(){
+	public StraightLine2D getBoundary(){
 		return line;
 	}
 	
+	public HalfPlane2D complement(){
+		return new HalfPlane2D(line.getReverseCurve());
+	}
 	
 	// ===================================================================
-	// methods inherited from Shape2D interface
+	// methods implementing the Shape2D interface
 
 	/** Always returns false, because a half-plane is not bounded.*/
 	public boolean isBounded(){return false;}
@@ -109,8 +115,9 @@ public class HalfPlane2D implements Domain2D{
 		return line.getSignedDistance(p);
 	}
 	
-	public Shape2D clip(Box2D box){
-		return Boundary2DUtils.clipBoundary(this.getBoundary(), box);
+	public Domain2D clip(Box2D box){
+		return new GenericDomain2D(Boundary2DUtils.clipBoundary(
+				this.getBoundary(), box));
 	}
 	
 	/** 
@@ -225,16 +232,30 @@ public class HalfPlane2D implements Domain2D{
 	}
 
 	/** 
-	 * Returns PathIterator of halfplane clipped by the default clipping window.
+	 * Throws an UnboundedShapeException.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		return clip(defaultClipWindow).getPathIterator(t);	
+		throw new UnboundedShapeException();	
 	}
 
 	/** 
-	 * Returns PathIterator of halfplane clipped by the default clipping window.
+	 * Throws an UnboundedShapeException.
 	 */
 	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		return clip(defaultClipWindow).getPathIterator(t, flatness);
+		throw new UnboundedShapeException();	
+	}
+	
+	/** 
+	 * Throws an UnboundedShapeException.
+	 */
+	public void draw(Graphics2D g2){
+		throw new UnboundedShapeException();	
+	}
+
+	/** 
+	 * Throws an UnboundedShapeException.
+	 */
+	public void fill(Graphics2D g){
+		throw new UnboundedShapeException();	
 	}
 }
