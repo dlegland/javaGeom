@@ -4,6 +4,10 @@
 package math.geom2d.conic;
 
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -11,7 +15,9 @@ import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -376,6 +382,17 @@ public class Conic2DUtils {
 		
 		public Conic2D transform(AffineTransform2D trans){
 			return this;
+		}
+
+		public void fill(Graphics2D g2) {
+		}
+
+		public Collection<ContinuousBoundary2D> getBoundaryCurves() {
+			return new ArrayList<ContinuousBoundary2D>(0);
+		}
+
+		public Domain2D getDomain() {
+			return Domain2D.EMPTY_DOMAIN2D;
 		}		
 	}
 	
@@ -402,10 +419,6 @@ public class Conic2DUtils {
 			this.addCurve(baseLine.getParallel(-d).getReverseCurve());
 		}
 		
-		public double[] getCartesianEquation() {
-			return getConicCoefficients();
-		}
-
 		public double[] getConicCoefficients() {
 			double[] coefs = {0, 0, 1, 0, 0, -1};
 			AffineTransform2D 

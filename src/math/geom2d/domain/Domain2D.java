@@ -43,6 +43,8 @@ import math.geom2d.transform.AffineTransform2D;
  * ConicCurve2D. 
  */
 public interface Domain2D extends Shape2D{
+	
+	public final static Domain2D EMPTY_DOMAIN2D = new EmptyDomain2D();
 
 	/**
 	 * Returns the boundary of the set. This boundary is either a continuous
@@ -77,4 +79,40 @@ public interface Domain2D extends Shape2D{
 	 * @since 0.6.3
 	 */
 	public abstract void fill(Graphics2D g2);
+	
+	/** 
+	 * Definition of an empty domain. Should preferably be
+	 * accessed through the EMPTY_DOMAIN static variable.
+	 * @author dlegland
+	 *
+	 */
+	public static class EmptyDomain2D extends Shape2D.EmptySet2D 
+	implements Domain2D {
+
+		public EmptyDomain2D() {
+		}
+		
+		public Domain2D complement() {
+			//TODO: return full domain
+			return this;
+		}
+
+		public void draw(Graphics2D g2) {
+		}
+
+		public void fill(Graphics2D g2) {
+		}
+
+		public Boundary2D getBoundary() {
+			return Boundary2D.EMPTY_BOUNDARY;
+		}
+		
+		public Domain2D transform(AffineTransform2D trans){
+			return this;
+		}
+		
+		public Domain2D clip(Box2D box){
+			return this;
+		}
+	}
 }

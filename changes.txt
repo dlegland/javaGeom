@@ -3,6 +3,8 @@ Changes of javaGeom library
 javaGeom-0.?.? (2008-??.??, rev. ???)
 
 New features
+- Conic2D implements Boundary2D
+- added Domain2D.EMPTY_DOMAIN and Boundary2D.EMPTY_BOUNDARY
 
 Regressions
 - Shape2D does not inherit from java.awt.Shape anymore
@@ -11,6 +13,7 @@ Regressions
 	+ Polygon2D.getVerticesNumber()
 	+ PointSet2D.getPointsNumber()
 
+	
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features

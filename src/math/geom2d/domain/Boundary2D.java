@@ -26,8 +26,14 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Box2D;
+import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -38,6 +44,9 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public interface Boundary2D extends OrientedCurve2D {
 
+	public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
+	
+	
 	/**
 	 * Returns true if the point is 'inside' the domain bounded by the curve.
 	 * @param pt a point in the plane
@@ -67,4 +76,55 @@ public interface Boundary2D extends OrientedCurve2D {
 	public abstract Boundary2D transform(AffineTransform2D trans);
 	
 	public abstract void fill(Graphics2D g2);
+	
+	public static class EmptyBoundary2D extends Curve2D.EmptyCurve2D
+	implements Boundary2D{
+
+		public void fill(Graphics2D g2) {
+		}
+
+		public Collection<ContinuousBoundary2D> getBoundaryCurves() {
+			return new ArrayList<ContinuousBoundary2D>();
+		}
+
+		public Domain2D getDomain() {
+			return Domain2D.EMPTY_DOMAIN2D;
+		}
+
+		/** 
+		 * Always return false, as a point can not be contained in an
+		 * empty boundary.
+		 */
+		public boolean isInside(Point2D pt) {
+			return false;
+		}
+
+		public double getSignedDistance(Point2D point) {
+			return Double.NaN;
+		}
+
+		public double getSignedDistance(double x, double y) {
+			return Double.NaN;
+		}
+
+		public double getWindingAngle(Point2D point) {
+			return Double.NaN;
+		}
+
+		public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
+			return new ArrayList<ContinuousCurve2D>(0);
+		}
+
+		public Boundary2D getReverseCurve() {
+			return this;
+		}
+
+		public Boundary2D transform(AffineTransform2D trans) {
+			return this;
+		}
+
+		public CurveSet2D<? extends OrientedCurve2D> clip(Box2D box) {
+			return new CurveSet2D<OrientedCurve2D>();
+		}
+	}
 }
