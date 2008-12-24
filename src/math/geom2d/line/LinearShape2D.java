@@ -31,17 +31,16 @@ public interface LinearShape2D extends Curve2D {
 	public abstract Point2D getOrigin();
 
 	/**
-	 * Returns the unique intersection with a linear shape. 
-	 * If the intersection doesn't exist (parallel lines), returns null.
-	 */
-	public abstract Point2D getIntersection(LinearShape2D line);
-	
-	/**
 	 * Return one direction vector of the linear shape.
 	 * @return a direction vector
 	 */
 	public abstract Vector2D getVector();
 	
+	/**
+	 * Returns the unique intersection with a linear shape. 
+	 * If the intersection doesn't exist (parallel lines), returns null.
+	 */
+	public abstract Point2D getIntersection(LinearShape2D line);
+	
 	public LinearShape2D transform(AffineTransform2D trans);
-
 }

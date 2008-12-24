@@ -26,9 +26,9 @@
  */
 package math.geom2d.line;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.polygon.HRectangle2D;
 import junit.framework.TestCase;
 
 /**
@@ -228,13 +228,13 @@ public class LineSegment2DTest extends TestCase {
 		assertTrue(!edge.contains(1, 4));
 	}
 
-	public void testGetBounds2D() {
+	public void testGetBoundingBox() {
 		LineSegment2D edge;		
 
 		// diagonal edge
 		edge = new LineSegment2D(1, 1, 3, 2);
-		HRectangle2D rect = (HRectangle2D) edge.getBounds2D();
-		assertTrue(rect.equals(new HRectangle2D(1, 1, 2, 1)));
+		Box2D box = edge.getBoundingBox();
+		assertTrue(box.equals(new Box2D(1, 3, 1, 2)));
 	}
 
 	public void testEquals(){

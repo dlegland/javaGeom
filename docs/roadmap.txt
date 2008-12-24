@@ -19,6 +19,7 @@ Other pending questions:
 - line segments with direct access to vertices (like LineObject2D) ?
 	Call it Line2D ?
 - introduce points in homogeneous coordinates ?
+- introduce Direction2D ?
 
 
 Version numbering:

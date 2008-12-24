@@ -34,7 +34,6 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.HRectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -72,23 +71,6 @@ public class Circle2DTest extends TestCase {
 		assertTrue(!circle.contains(0, 0));
 	}
 	
-	public void testIntersectsRectangle(){
-		Circle2D circle = new Circle2D(0, 0, 10);
-		// rectangle totally inside circle
-		assertTrue(circle.intersects(0, 0, 1, 1));
-		
-		// circle totally inside rectangle
-		assertTrue(circle.intersects(-50, -50, 100, 100));
-	}
-	
-	public void testIntersectsRectangle2(){
-		Circle2D circle = new Circle2D(0, 0, 10);
-		// rectangle totally inside circle
-		assertTrue(circle.intersects(new HRectangle2D(0, 0, 1, 1)));
-		
-		// circle totally inside rectangle
-		assertTrue(circle.intersects(new HRectangle2D(-50, -50, 100, 100)));
-	}
 	
 	public void testGetPositionPoint2D() {
 		Circle2D circle;

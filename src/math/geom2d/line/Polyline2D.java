@@ -106,14 +106,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	}
 	
 	/**
-	 * Return the inner collection of points.
-	 * @deprecated use getVertices() instead (0.6.3)
-	 */
-	public Collection<Point2D> getPoints(){
-		return points;
-	}
-	
-	/**
 	 * Returns the vertices of the polyline.
 	 */
 	public Collection<Point2D> getVertices(){
@@ -126,14 +118,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 	 */
 	public Point2D getVertex(int i){
 		return points.get(i);
-	}
-	
-	/**
-	 * 
-	 * @deprecated use getVertexNumber() instead (0.6.3)
-	 */
-	public int getVerticesNumber(){
-		return points.size();
 	}
 	
 	/**
@@ -578,54 +562,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		return this.contains(point.getX(), point.getY());
 	}
 
-	/** 
-	 * Return false, as a curve can not contain a Rectangle 
-	 */
-	public boolean contains(double xr, double yr, double wr, double hr) {
-		return false;
-	}
 
-	/** 
-	 * Return false, as a curve can not contain a Rectangle 
-	 */
-	public boolean contains(java.awt.geom.Rectangle2D rect) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getBounds()
-	 */
-	public java.awt.Rectangle getBounds() {
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getBounds2D()
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D() {
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(double, double, double, double)
-	 */
-	public boolean intersects(double xr, double yr, double wr, double hr) {
-		for(LineSegment2D edge : this.getEdges())
-			if(edge.intersects(xr, yr, wr, hr))
-				return true;
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(java.awt.geom.Rectangle2D)
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	// ===================================================================
-	// Methods inherited from Shape interface
-	
 	/* (non-Javadoc)
 	 * @see math.geom2d.ContinuousCurve2D#appendPath(java.awt.geom.GeneralPath)
 	 */
@@ -661,20 +598,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D{
 		}
 		
 		return path;
-	}
-	
-	/** 
-	 * Return pathiterator for this polyline.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this polyline.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
 	}
 
 	public void draw(Graphics2D g) {

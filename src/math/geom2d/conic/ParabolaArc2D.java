@@ -41,11 +41,9 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -391,45 +389,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 		return contains(point.getX(), point.getY());
 	}
 
-	public boolean intersects(double xr, double yr, double wr, double hr){
-		for(LineSegment2D edge : new Rectangle2D(xr, yr, wr, hr).getEdges())
-			if(this.getIntersections(edge).size()>0) 
-				return true;
-		return false;
-	}
-
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	/**
-	 * return false, as every curve.
-	 */
-	public boolean contains(double arg0, double arg1, double arg2, double arg3) {
-		return false;
-	}
-
-	/**
-	 * return false, as every curve.
-	 */
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
-	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
 
 	// ====================================================================
 	// Drawing methods
@@ -442,14 +401,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
 	public java.awt.geom.GeneralPath getGeneralPath(){
 		if(!this.isBounded()) throw new UnboundedShapeException();
 		return this.getAsPolyline(32).getGeneralPath();
-	}
-	
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans) {
-		return getGeneralPath().getPathIterator(trans);
-	}
-
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
-		return getGeneralPath().getPathIterator(trans, flatness);
 	}
 	
 	public void draw(Graphics2D g) {

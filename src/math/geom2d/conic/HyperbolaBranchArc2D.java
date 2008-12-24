@@ -1,8 +1,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -300,49 +298,13 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 		return true;
 	}
 
-	/** Returns false: a curve does not contain a rectangle*/
-	public boolean contains(java.awt.geom.Rectangle2D r) {
-		return false;
-	}
-
-	/** Returns false: a curve does not contain a rectangle*/
-	public boolean contains(double x, double y, double w, double h) {
-		return false;
-	}
-
-	public boolean intersects(java.awt.geom.Rectangle2D r) {
-		return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-	}
-
-	public boolean intersects(double xr, double yr, double wr, double hr) {
-		// TODO Auto-generated method stub
-		return this.getAsPolyline(100).intersects(xr, yr, wr, hr);
-	}
-
-	public java.awt.Rectangle getBounds() {
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	public java.awt.geom.Rectangle2D getBounds2D() {
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
 	public java.awt.geom.GeneralPath getGeneralPath(){
+		
 		if(!this.isBounded()) throw new UnboundedShapeException();
 		return this.getAsPolyline(100).getGeneralPath();
 	}
 	
-	public PathIterator getPathIterator(AffineTransform trans) {
-		return getGeneralPath().getPathIterator(trans);
+	public void draw(Graphics2D g2) {
+		this.getAsPolyline(100).draw(g2);
 	}
-
-	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
-		return getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
-	public void draw(Graphics2D g) {
-		g.draw(this.getGeneralPath());
-	}
-
-
 }

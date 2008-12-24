@@ -42,7 +42,7 @@ import java.util.*;
  * Paramaterized curves are actually considered. Parameterization is left
  * to the implementation.
  */
-public interface Curve2D extends Shape2D{
+public interface Curve2D extends Shape2D {
 
 	// ===================================================================
 	// constants
@@ -175,11 +175,9 @@ public interface Curve2D extends Shape2D{
 	 */
 	public abstract CurveSet2D<? extends Curve2D> clip(Box2D box);
 	
-	public abstract java.awt.geom.GeneralPath getGeneralPath();
-	
 	/**
 	 * Draws the curve on the given Graphics2D object.
-	 * @param g2 the grahics to draw the curve
+	 * @param g2 the graphics to draw the curve
 	 * @since 0.6.3
 	 */
 	public abstract void draw(Graphics2D g2);
@@ -210,10 +208,6 @@ public interface Curve2D extends Shape2D{
 		}
 
 		public Point2D getPoint(double t) {
-			return null;
-		}
-
-		public Point2D getPoint(double t, Point2D point) {
 			return null;
 		}
 
@@ -255,10 +249,6 @@ public interface Curve2D extends Shape2D{
 		
 		public CurveSet2D<? extends Curve2D> clip(Box2D box){
 			return null;
-		}
-		
-		public java.awt.geom.GeneralPath getGeneralPath(){
-			return  null;
 		}
 		
 		public void draw(Graphics2D g){			

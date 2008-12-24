@@ -1,10 +1,6 @@
 package math.geom2d.polygon;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 import math.geom2d.Box2D;
@@ -91,6 +87,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 			reverseLines.add(line.getReverseCurve());
 		return new MultiPolygon2D(reverseLines);
 	}
+
 	
 	// ===================================================================
 	// methods inherited from interface AbstractPolygon2D
@@ -139,14 +136,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return boundary.getVertex(i-count);
 	}
 	
-	/**
-	 * @deprecated use getVertexNumber instead (0.6.3)
-	 */
-	@Deprecated
-	public int getVerticesNumber() {
-		return getVertexNumber();
-	}
-
 	public int getVertexNumber() {
 		int count = 0;
 		for(ClosedPolyline2D line : polylines)
@@ -154,6 +143,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return count;
 	}
 
+	
 	// ===================================================================
 	// methods inherited from interface Shape2D
 	
@@ -227,32 +217,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return this.contains(new math.geom2d.Point2D(x, y)); 
 	}
 
-	public boolean contains(Rectangle2D rect) {
-		return this.contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	public boolean contains(double xr, double yr, double wr, double hr) {
-		if (this.getBoundary().intersects(xr, yr, wr, hr)) return false;
-		if (this.contains(xr, yr)) return true;
-		return false;
-	}
-
-	public Rectangle getBounds() {
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	public Rectangle2D getBounds2D() {
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	public PathIterator getPathIterator(AffineTransform at) {
-		return this.getBoundary().getPathIterator(at);
-	}
-
-	public PathIterator getPathIterator(AffineTransform at, double fl) {
-		return this.getBoundary().getPathIterator(at, fl);
-	}
-
 	public void draw(Graphics2D g2){
 		g2.draw(this.getBoundary().getGeneralPath());
 	}
@@ -260,17 +224,4 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	public void fill(Graphics2D g){
 		g.fill(this.getBoundary().getGeneralPath());
 	}
-	
-
-	public boolean intersects(Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	public boolean intersects(double xr, double yr, double wr, double hr) {
-		if (this.contains(xr, yr)) return true;
-		if (this.getBoundary().intersects(xr, yr, wr, hr)) return true;
-		return false;
-	}
-
-
 }

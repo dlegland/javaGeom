@@ -29,7 +29,6 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.ClosedPolyline2D;
@@ -89,38 +88,10 @@ implements Polygon2D{
 	/** Always returns true, because a rectangle is always bounded.*/
 	public boolean isBounded(){return true;}
 	
-	/**
-	 * Test if the specified Shape is totally contained in this Rectangle.
-	 * Note that the test is performed on the bounding box of the shape, then
-	 * for rotated rectangles, this method can return false with a shape totally
-	 * contained in the rectangle. The problem does not exist for horizontal
-	 * rectangle, since edges of rectangle and bounding box are parallel.
-	 */
-	public boolean containsBounds(Shape2D shape){
-		if(!shape.isBounded()) return false;
-		for(Point2D vertex : new Box2D(shape.getBounds()).getVertices())
-			if(!contains(vertex)) return false;
-
-		return true;
-	}
-	
 	
 	// ===================================================================
 	// accessors
-		
-	/**
-	 * @deprecated use getVertices() instead.
-	 */
-	@Deprecated
-	public Iterator<Point2D> getPoints(){
-		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
-		points.add(new Point2D(x, y));
-		points.add(new Point2D(x+width, y));
-		points.add(new Point2D(x+width, y+height));
-		points.add(new Point2D(x, y+height));
-		return points.iterator();
-	}
-	
+			
 	public Collection<Point2D> getVertices(){
 		ArrayList<Point2D> points = new ArrayList<Point2D>(4);
 		points.add(new Point2D(x, y));
@@ -143,14 +114,6 @@ implements Polygon2D{
 		default: 
 			throw new IndexOutOfBoundsException();
 		}
-	}
-
-	/**
-	 * @deprecated use getVertexNumber instead (0.6.3)
-	 */
-	@Deprecated
-	public int getVerticesNumber() {
-		return getVertexNumber();
 	}
 
 	/**

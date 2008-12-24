@@ -25,9 +25,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -239,14 +237,6 @@ public class InvertedRay2D extends AbstractLine2D{
 	// ===================================================================
 	// methods implementing the Shape interface
 
-	public PathIterator getPathIterator(AffineTransform at) {
-		throw new UnboundedShapeException();
-	}
-
-	public PathIterator getPathIterator(AffineTransform at, double flatness) {
-		throw new UnboundedShapeException();
-	}
-
 	/** Throws an infiniteShapeException */
 	public void draw(Graphics2D g) {
 		throw new UnboundedShapeException();
@@ -254,7 +244,7 @@ public class InvertedRay2D extends AbstractLine2D{
 
 	
 	// ===================================================================
-	// methods implementing the Shape interface
+	// methods implementing the Object interface
 
 	public boolean equals(Object obj){
 		if(!(obj instanceof InvertedRay2D)) return false;

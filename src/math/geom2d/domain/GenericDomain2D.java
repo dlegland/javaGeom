@@ -27,9 +27,6 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -130,62 +127,19 @@ public class GenericDomain2D implements Domain2D {
 		return boundary.getSignedDistance(x, y)<=0;
 	}
 
-	public boolean contains(double x, double y, double w, double h){
-		if(contains(x, y)) return true;
-		if(contains(x+w, y)) return true;
-		if(contains(x+w, y+h)) return true;
-		if(contains(x, y+h)) return true;
-		return false;
-	}
 
 	// ===================================================================
 	// methods implementing the Shape interface
-
-	public boolean intersects(double x, double y, double w, double h){
-		return boundary.intersects(x, y, w, h);
-	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
 
 	public boolean contains(java.awt.geom.Point2D p) {
 		return contains(p.getX(), p.getY());
 	}
 
-	public boolean contains(Rectangle2D rect) {
-		return contains(rect.getX(), rect.getY(), 
-				rect.getWidth(), rect.getHeight());
-	}
-
-	public boolean intersects(Rectangle2D rect) {
-		return false;
-	}
-
-	public PathIterator getPathIterator(AffineTransform trans) {
-		return boundary.getPathIterator(trans);
-	}
-
-	public PathIterator getPathIterator(AffineTransform trans, 
-			double flatness) {
-		return boundary.getPathIterator(trans, flatness);
-	}
-	
 	public void draw(Graphics2D g2){
-		g2.draw(boundary.getGeneralPath());
+		boundary.draw(g2);
 	}
 
-	public void fill(Graphics2D g){
-		g.fill(boundary.getGeneralPath());
+	public void fill(Graphics2D g2){
+		boundary.fill(g2);
 	}
 }

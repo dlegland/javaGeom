@@ -40,7 +40,6 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
@@ -548,26 +547,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		boolean direct = !(angleExtent>0 ^ trans.isDirect());
 		return new EllipseArc2D(ell, startPos, endPos, direct);
 	}
-
-
-	// ====================================================================
-	// methods from interface java.awt.Shape
 	
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-
 	/* (non-Javadoc)
 	 * @see java.awt.Shape#contains(double, double)
 	 */
@@ -580,43 +560,6 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 	 */
 	public boolean contains(java.awt.geom.Point2D point) {
 		return contains(point.getX(), point.getY());
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(double, double, double, double)
-	 */
-	public boolean intersects(double x, double y, double w, double h) {
-		// circle arc contained in the rectangle
-		if(new Box2D(x, x+w, y, y+h).contains(getFirstPoint())) return true;
-		if(new Box2D(x, x+w, y, y+h).contains(getLastPoint())) return true;
-		
-		if(this.getIntersections(new LineSegment2D(x, y, x+w, y)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y, x+w, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y+h, x, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x, y+h, x, y)).size()>0) 
-			return true;
-			
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(java.awt.geom.Rectangle2D)
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	/** return always false, as every curve */
-	public boolean contains(double xr, double yr, double wr, double hr) {
-		return false;
-	}
-
-	/** return always false, as every curve */
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
 	}
 
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){		
@@ -656,19 +599,6 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		g2.draw(this.getGeneralPath());
 	}
 
-	/** 
-	 * Return pathiterator for this ellipse arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this ellipse arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
-	}
 
 	// ====================================================================
 	// methods from interface Object
@@ -683,7 +613,8 @@ public class EllipseArc2D implements SmoothOrientedCurve2D{
 		if(Math.abs(ellipse.yc-arc.ellipse.yc)>Shape2D.ACCURACY) return false;
 		if(Math.abs(ellipse.r1-arc.ellipse.r1)>Shape2D.ACCURACY) return false;
 		if(Math.abs(ellipse.r2-arc.ellipse.r2)>Shape2D.ACCURACY) return false;
-		if(Math.abs(ellipse.theta-arc.ellipse.theta)>Shape2D.ACCURACY) return false;
+		if(Math.abs(ellipse.theta-arc.ellipse.theta)>Shape2D.ACCURACY)
+			return false;
 		
 		// test if angles are the same
 		if(!Angle2D.equals(startAngle, arc.startAngle)) return false;

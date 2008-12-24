@@ -240,18 +240,6 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 	}
 	
 	/**
-	 * Returns the curve corresponding to a given position.
-	 * @deprecated replaced by {@link #getChildCurve(double)} method
-	 * @param t the position on the set of curves, between 0 and twice the number of curves
-	 * @return the curve corresponding to the position.
-	 */
-	@Deprecated
-	public T getCurve(double t){
-		if(curves.size()==0) return null;
-		return curves.get(getCurveIndex(t));
-	}
-	
-	/**
 	 * Returns the child curve corresponding to a given position.
 	 * @param t the position on the set of curves, between 0 and twice the number of curves
 	 * @return the curve corresponding to the position.
@@ -649,43 +637,6 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return false;	
 	}
 
-	/** Always return false */
-	public boolean contains(java.awt.geom.Rectangle2D rect){
-		return false;	
-	}
-
-	/** Always return false */
-	public boolean contains(double x, double y, double w, double h){
-		return false;	
-	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	
-	public boolean intersects(java.awt.geom.Rectangle2D rect){
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-	
-	public boolean intersects(double x, double y, double w, double h){
-		for(Curve2D curve : curves){
-			if(curve.intersects(x, y, w, h))
-				return true;
-		}
-		return false;
-	}	
-
 	public java.awt.geom.GeneralPath getGeneralPath(){
 		// create new path
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
@@ -706,22 +657,6 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>{
 		return path;		
 	}
 	
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		java.awt.geom.GeneralPath path = getGeneralPath();
-		
-		if(path==null)
-			return null;
-		return path.getPathIterator(trans);		
-	}
-	
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		java.awt.geom.GeneralPath path = getGeneralPath();
-		
-		if(path==null)
-			return null;
-		return path.getPathIterator(trans, flatness);		
-	}	
-
 	public void draw(Graphics2D g2) {
 		g2.draw(this.getGeneralPath());
 	}

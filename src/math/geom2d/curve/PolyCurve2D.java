@@ -234,13 +234,4 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 		// return the final path
 		return path;		
 	}
-	
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return getGeneralPath().getPathIterator(trans);	
-	}
-	
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return getGeneralPath().getPathIterator(trans, flatness);	
-	}	
-
 }

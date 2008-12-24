@@ -239,23 +239,6 @@ public class LineSegment2D extends AbstractLine2D{
 		t = Math.min(Math.max(t, 0), 1);
 		return new Point2D(x0 + dx*t, y0 + dy*t);
 	}
-
-	/**
-	 * Gets position of the point on the edge. If point belongs to the edge, 
-	 * this position is defined by the ratio :<p>
-	 * <code> t = (xp - x0)/dx <\code>, or equivalently :<p>
-	 * <code> t = (yp - y0)/dy <\code>.<p>
-	 * If point does not belong to edge, return Double.NaN. The current implementation 
-	 * uses the direction with the biggest derivative, in order to avoid divisions 
-	 * by zero.
-	 */
-	public double getPosition(Point2D point){
-		if(!contains(point)) return Double.NaN;
-		if(Math.abs(dx)>Math.abs(dy))
-			return (point.getX()-x0)/dx;
-		else
-			return (point.getY()-y0)/dy;
-	}
 	
 	public Collection<Point2D> getSingularPoints() {
 		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
@@ -351,30 +334,9 @@ public class LineSegment2D extends AbstractLine2D{
 		return path;
 	}
 	
-	/** 
-	 * Return path iterator for this line arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+dx), (float)(y0+dy));
-		return path.getPathIterator(t);
-	}
-
-	/** 
-	 * Return PathIterator for this line arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+dx), (float)(y0+dy));
-		return path.getPathIterator(t, flatness);
-	}
-
 	
 	// ===================================================================
 	// Methods implementing the Object interface
-
 	
 	public boolean equals(Object obj){
 		if(!(obj instanceof LineSegment2D)) return false;

@@ -15,10 +15,8 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -105,8 +103,9 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return new GenericDomain2D(this);
 	}
 
-	public void fill(Graphics2D g2){
-		g2.fill(this.getGeneralPath());
+	/** Throws an UnboundedShapeException */
+	public void fill(Graphics2D g2) {
+		throw new UnboundedShapeException();
 	}
 
 
@@ -337,60 +336,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D{
 		return point.getX()>0;
 	}
 
-	/** return false, as an hyperbola branch can not contain a rectangle.*/
-	public boolean contains(java.awt.geom.Rectangle2D rect) {
-		return false;
-	}
-
-	/** return false, as an hyperbola branch can not contain a rectangle.*/
-	public boolean contains(double xr, double yr, double wr, double hr) {
-		return false;
-	}
-
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return this.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	/**
-	 * Returns true if one of the edges of the rectangle intersects the curve.
-	 */
-	public boolean intersects(double xr, double yr, double wr, double hr) {
-		for(LineSegment2D edge : new Rectangle2D(xr, yr, wr, hr).getEdges())
-			if(this.getIntersections(edge).size()>0) 
-				return true;
-		return false;
-	}
-
-	public java.awt.Rectangle getBounds() {
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	public java.awt.geom.Rectangle2D getBounds2D() {
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	/**
-	 * compute path of a HyperbolaBranchArc2D with -100<t<100.
-	 */
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		return new HyperbolaBranchArc2D(this, -100, 100).getGeneralPath();
-	}
-	
-	/**
-	 * return path iterator of a HyperbolaBranchArc2D with -100<t<100.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans) {
-		return getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * return path iterator of a HyperbolaBranchArc2D with -100<t<100.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
-		return getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
-	/** Throws an infiniteShapeException */
+	/** Throws an UnboundedShapeException */
 	public void draw(Graphics2D g) {
 		throw new UnboundedShapeException();
 	}

@@ -36,7 +36,7 @@ import math.geom2d.transform.AffineTransform2D;
  * Some direct implementations of Shape2D are Point2D, PointSet2D, or
  * Shape2D.EmptySet2D. 
  */
-public interface Shape2D extends java.awt.Shape {
+public interface Shape2D {
 
 	// ===================================================================
 	// constants
@@ -109,6 +109,16 @@ public interface Shape2D extends java.awt.Shape {
 		protected EmptySet2D(){		
 		}	
 
+		/** returns false.*/
+		public boolean contains(double arg0, double arg1) {
+			return false;
+		}
+
+		/** returns false.*/
+		public boolean contains(java.awt.geom.Point2D arg0) {
+			return false;
+		}
+
 		/**
 		 * Not defined for empty set, but returns POSITIVE_INFINITY.
 		 */
@@ -137,13 +147,13 @@ public interface Shape2D extends java.awt.Shape {
 			return true;
 		}
 
+		public Box2D getBoundingBox(){
+			return new Box2D(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+		}
+
 		/** returns EmptySet2D.*/
 		public Shape2D clip(Box2D box) {
 			return this;
-		}
-
-		public Box2D getBoundingBox(){
-			return new Box2D(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
 		}
 
 		/** returns EmptySet2D.*/
@@ -151,61 +161,8 @@ public interface Shape2D extends java.awt.Shape {
 			return this;
 		}
 
-		/** returns false.*/
-		public boolean contains(double arg0, double arg1) {
-			return false;
-		}
-
-		/** returns false.*/
-		public boolean contains(java.awt.geom.Rectangle2D r) {
-			return false;
-		}
-
-		/** returns false.*/
-		public boolean contains(double arg0,double arg1,double arg2,double arg3) {
-			return false;
-		}
-
-		/** returns false.*/
-		public boolean intersects(
-				double arg0,
-				double arg1,
-				double arg2,
-				double arg3) {
-			return false;
-		}
-
-		/** returns false.*/
-		public boolean intersects(java.awt.geom.Rectangle2D r) {
-			return false;
-		}
-
-		/** returns null.*/
-		public java.awt.Rectangle getBounds() {
-			return null;
-		}
-
-		/** returns false.*/
-		public boolean contains(java.awt.geom.Point2D arg0) {
-			return false;
-		}
-
-		/** returns null.*/
-		public java.awt.geom.Rectangle2D getBounds2D() {
-			return null;
-		}
-
-		public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0) {
-			return null;
-		}
-
-		public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform arg0, double arg1) {
-			return null;
-		}
-
 		public boolean equals(Object obj){
 			return (obj instanceof EmptySet2D);
 		}
 	}
-
 }

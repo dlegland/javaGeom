@@ -27,9 +27,7 @@ package math.geom2d.line;
 //Imports
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -550,16 +548,6 @@ public class StraightLine2D extends AbstractLine2D implements ContinuousBoundary
 	
 	/** Throws an infiniteShapeException */
 	public java.awt.geom.GeneralPath getGeneralPath() {
-		throw new UnboundedShapeException();
-	}
-	
-	/** Throws an infiniteShapeException */
-	public PathIterator getPathIterator(AffineTransform at) {
-		throw new UnboundedShapeException();
-	}
-
-	/** Throws an infiniteShapeException */
-	public PathIterator getPathIterator(AffineTransform at, double flatness){
 		throw new UnboundedShapeException();
 	}
 

@@ -27,9 +27,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -108,57 +105,15 @@ public class Disc2D implements Domain2D {
 		return circle.getSignedDistance(x, y)<=0;
 	}
 
-	public boolean contains(double x, double y, double w, double h){
-		if(contains(x, y)) return true;
-		if(contains(x+w, y)) return true;
-		if(contains(x+w, y+h)) return true;
-		if(contains(x, y+h)) return true;
-		return false;
-	}
-
 	public boolean contains(java.awt.geom.Point2D p) {
 		return contains(p.getX(), p.getY());
 	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	public boolean contains(Rectangle2D rect) {
-		return contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	public boolean intersects(double x, double y, double w, double h){
-		return circle.intersects(x, y, w, h);
-	}
-
-	public boolean intersects(Rectangle2D rect) {
-		return circle.intersects(rect);
-	}
-
-	public PathIterator getPathIterator(AffineTransform trans) {
-		return circle.getPathIterator(trans);
-	}
-
-	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
-		return circle.getPathIterator(trans, flatness);
-	}
 	
 	public void draw(Graphics2D g2){
-		g2.draw(circle.getGeneralPath());
+		circle.draw(g2);
 	}
 
 	public void fill(Graphics2D g2){
-		g2.fill(circle.getGeneralPath());
+		circle.fill(g2);
 	}
 }

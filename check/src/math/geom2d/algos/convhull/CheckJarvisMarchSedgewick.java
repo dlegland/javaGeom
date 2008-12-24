@@ -30,7 +30,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.polygon.Polygon2D;
 
 /**
@@ -74,12 +73,12 @@ public class CheckJarvisMarchSedgewick extends JPanel{
 		
 		g2.setColor(Color.BLACK);
 		for(Point2D point : points){
-			g2.fill(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		}
 		
 		Polygon2D hull = new JarvisMarch().convexHull(points);
 		g2.setColor(Color.BLUE);
-		g2.draw(hull);
+		hull.draw(g2);
 	}
 
 	public final static void main(String[] args){

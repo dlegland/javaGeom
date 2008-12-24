@@ -26,8 +26,6 @@
 package math.geom2d;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.util.*;
 
 import math.geom2d.transform.AffineTransform2D;
@@ -131,16 +129,6 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 		this.points.clear();
 	}
 	
-	
-	/**
-	 * Return the number of points in the set.
-	 * @deprecated use getPointNumber() instead
-	 * @return the number of points
-	 */
-	public int getPointsNumber(){
-		return points.size();
-	}
-	
 	/**
 	 * Returns the number of points in the set.
 	 * @return the number of points
@@ -222,20 +210,6 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 		return res;
 	}
 
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
 	/* (non-Javadoc)
 	 * @see java.awt.Shape#contains(double, double)
 	 */
@@ -251,58 +225,6 @@ public class PointSet2D implements Shape2D, Iterable<Point2D>{
 	 */
 	public boolean contains(java.awt.geom.Point2D point) {
 		return contains(point.getX(), point.getY());
-	}
-
-	/**
-	 * Return true if at least one of the points intersect the rectangle defined by
-	 * x0, y0 , w, and y.
-	 */
-	public boolean intersects(double x0, double y0, double w, double h) {
-		for(Point2D point : points)
-			if(point.intersects(x0, y0, w, h))
-				return true;
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(java.awt.geom.Rectangle2D)
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	/** Always return false : a point cannot contain a rectangle...*/
-	public boolean contains(double arg0, double arg1, double arg2, double arg3) {
-		return false;
-	}
-
-	/** Always return false : a point cannot contain a rectangle...*/
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform)
-	 */
-	public PathIterator getPathIterator(AffineTransform trans) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		for(Point2D point : points){
-			path.moveTo((float)point.getX(), (float)point.getY());
-		}
-		
-		return path.getPathIterator(trans);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform, double)
-	 */
-	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		for(Point2D point : points){
-			path.moveTo((float)point.getX(), (float)point.getY());
-		}
-		
-		return path.getPathIterator(trans, flatness);
 	}
 
 	/**

@@ -77,11 +77,11 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 		g2.fillRect(x0, y0, w*sx*4, h*sy*4);
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(new HRectangle2D(0, 0, 4*w, 4*h).transform(user2Display));
-		g2.draw(new HRectangle2D(w, 0, 2*w, 4*h).transform(user2Display));
-		g2.draw(new HRectangle2D(w, 0, 1*w, 4*h).transform(user2Display));
-		g2.draw(new HRectangle2D(0, h, 4*w, 2*h).transform(user2Display));
-		g2.draw(new HRectangle2D(0, h, 4*w, 1*h).transform(user2Display));
+		new HRectangle2D(0, 0, 4*w, 4*h).transform(user2Display).draw(g2);
+		new HRectangle2D(w, 0, 2*w, 4*h).transform(user2Display).draw(g2);
+		new HRectangle2D(w, 0, 1*w, 4*h).transform(user2Display).draw(g2);
+		new HRectangle2D(0, h, 4*w, 2*h).transform(user2Display).draw(g2);
+		new HRectangle2D(0, h, 4*w, 1*h).transform(user2Display).draw(g2);
 		
 		g2.setColor(Color.BLUE);
 		Box2D box;
@@ -96,11 +96,12 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 				rect = clip.getAsRectangle();
 				tra = AffineTransform2D.createTranslation(x*w, y*h);
 				g2.setColor(Color.CYAN);
-				g2.fill(rect.transform(tra).transform(user2Display));
+				rect.transform(tra).transform(user2Display).fill(g2);
 				g2.setColor(Color.BLUE);
-				g2.draw(rect.transform(tra).transform(user2Display));
+				rect.transform(tra).transform(user2Display).draw(g2);
 				g2.setColor(Color.LIGHT_GRAY);
-				g2.draw(clippingBox.getAsRectangle().transform(tra).transform(user2Display));
+				clippingBox.getAsRectangle().transform(tra).
+				transform(user2Display).draw(g2);
 			}
 		
 //		Shape2D bnd;

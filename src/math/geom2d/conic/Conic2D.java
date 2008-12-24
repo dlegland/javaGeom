@@ -80,12 +80,6 @@ public interface Conic2D extends OrientedCurve2D{
 	public abstract Type getConicType();
 
 	/** 
-	 * @deprecated use getConicCoefficients() instead
-	 */
-	@Deprecated
-	public abstract double[] getCartesianEquation();
-	
-	/** 
 	 * Returns the coefficient of the Cartesian representation of the conic.
 	 * Cartesian equation has the form :<p>
 	 * a*x^2 + b*x*y + c*y^2 + d*x + e*y + f<p>

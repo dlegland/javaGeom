@@ -43,11 +43,9 @@ import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Rectangle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -190,14 +188,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 
 	public Conic2D.Type getConicType() {
 		return Conic2D.Type.PARABOLA;
-	}
-
-	/**
-	 * @deprecated use getConicCoefficients instead
-	 */
-	@Deprecated
-	public double[] getCartesianEquation() {
-		return getConicCoefficients();
 	}
 
 	public double[] getConicCoefficients() {
@@ -488,31 +478,11 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// ===============================================
 	// Drawing methods (curve interface)
 	
-	/** 
-	 * returns the appended path of a ParabolaArc2D, with -100<t<100,
-	 * transformed as a polyline with 201 points.
-	 */
+	/** Throws an infiniteShapeException */
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		double t0 = -100;
-		double t1 = 100;
-		Point2D point = getPoint(t0);
-		for(double t=t0; t<=t1; t+=1){
-			point = getPoint(t);
-			path.lineTo((float)point.getX(), (float)point.getY());
-		}
-		point = getPoint(t1);
-		path.lineTo((float)point.getX(), (float)point.getY());
-			
-		return path;
+		throw new UnboundedShapeException();
 	}
 
-	/**
-	 * Computes path of a ParabolaArc2D with -100<t<100.
-	 */
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		return new ParabolaArc2D(this, -100, 100).getGeneralPath();
-	}
-		
 	/** Throws an infiniteShapeException */
 	public void draw(Graphics2D g) {
 		throw new UnboundedShapeException();
@@ -596,20 +566,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 	// ===============================================
 	// methods implementing the Shape interface
 	
-	/**
-	 * Returns bounding box of the parabola.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
 	public boolean contains(double x, double y) {
 		// Process the point to be in a basis such that parabola is vertical
 		Point2D p2 = formatPoint(new Point2D(x, y));
@@ -626,51 +582,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		return contains(point.getX(), point.getY());
 	}
 
-	/**
-	 * Returns true if one of the edges of the rectangle intersects the parabola.
-	 */
-	public boolean intersects(double xr, double yr, double wr, double hr) {
-		for(LineSegment2D edge : new Rectangle2D(xr, yr, wr, hr).getEdges())
-			if(this.getIntersections(edge).size()>0) 
-				return true;
-		return false;
-	}
 
-	/**
-	 * Returns true if one of the edges of the rectangle intersects the parabola.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-
-	/**
-	 * return false, as every curve.
-	 */
-	public boolean contains(double arg0, double arg1, double arg2, double arg3) {
-		return false;
-	}
-
-	/**
-	 * return false, as every curve.
-	 */
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
-	}
-
-	/**
-	 * Returns path iterator of a ParabolaArc2D with -100<t<100.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans) {
-		return getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Returns path iterator of a ParabolaArc2D with -100<t<100.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness) {
-		return getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
 	// ====================================================================
 	// Methods inherited from the object class	
 	
@@ -685,5 +597,4 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D, ContinuousBou
 		
 		return true;
 	}
-	
 }

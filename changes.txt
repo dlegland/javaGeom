@@ -1,5 +1,16 @@
 Changes of javaGeom library
 
+javaGeom-0.?.? (2008-??.??, rev. ???)
+
+New features
+
+Regressions
+- Shape2D does not inherit from java.awt.Shape anymore
+- removed Conic2D.getCartesianEquation()
+- removed obsolete methods:
+	+ Polygon2D.getVerticesNumber()
+	+ PointSet2D.getPointsNumber()
+
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features

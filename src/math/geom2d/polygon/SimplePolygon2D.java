@@ -219,14 +219,6 @@ public class SimplePolygon2D implements Polygon2D{
 	}
 
 	/**
-	 * @deprecated use getVertexNumber instead (0.6.3)
-	 */
-	@Deprecated
-	public int getVerticesNumber() {
-		return getVertexNumber();
-	}
-
-	/**
 	 * Return the number of vertices of the polygon.
 	 * @since 0.6.3
 	 */
@@ -400,16 +392,6 @@ public class SimplePolygon2D implements Polygon2D{
 	// ===================================================================
 	// methods inherited from Shape interface
 
-	/** return false, because a line cannot contain a rectangle.*/
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
-	/** return false, because a line cannot contain a rectangle.*/
-	public boolean contains(java.awt.geom.Rectangle2D r){
-		return false;
-	}
-	
 	/** 
 	 * Return true if the point p lies inside the polygon, with precision given by 
 	 * Shape2D.ACCURACY.
@@ -527,35 +509,6 @@ public class SimplePolygon2D implements Polygon2D{
 //		return edge.getSignedDistance(x, y)<=0;
 //	}
 
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	
-	/**
-	 * Tests if the Polygon intersects the interior of a specified rectangular area.
-	 */
-	public boolean intersects(double x, double y, double w, double h){
-		if(this.contains(x, y)) return true;
-		return this.getBoundingBox().getAsRectangle().intersects(x, y, w, h);
-	}
-
-	/**
-	 * Tests if the Polygon intersects the interior of a specified rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-	}
 
 	/** 
 	 * Return a general path iterator.
@@ -581,21 +534,7 @@ public class SimplePolygon2D implements Polygon2D{
 		
 		return path;
 	}
-	
-	/** 
-	 * Return pathiterator for this polygon.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this polygon.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
+		
 	public void draw(Graphics2D g2){
 		g2.draw(this.getGeneralPath());
 	}

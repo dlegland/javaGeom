@@ -44,7 +44,6 @@ import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -563,45 +562,18 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	}
 
 	/**
-	 * @deprecated use getConicCoefficients() instead.
-	 */
-	@Deprecated
-	public double[] getCartesianEquation(){
-		return getConicCoefficients();
-	}
-
-	/**
-	 * Returns the length of the first semi-axis of the ellipse.
-	 * @deprecated use getSemiMajorAxisLength() instead
-	 */
-	@Deprecated
-	public double getLength1(){
-		return r1;
-	}
-
-	/**
 	 * Returns the length of the major semi-axis of the ellipse.
 	 */
 	public double getSemiMajorAxisLength(){
 		return r1;
 	}
-	
-	/**
-	 * Returns the length of the second semi-axis of the ellipse.
-	 * @deprecated use getSemiMinorAxisLength() instead
-	 */
-	@Deprecated
-	public double getLength2(){
-		return r2;
-	}
-	
+		
 	/**
 	 * Returns the length of the minor semi-axis of the ellipse.
 	 */
 	public double getSemiMinorAxisLength(){
 		return r2;
 	}
-	
 	
 	/**
 	 * Computes eccentricity of ellipse, depending on the lengths of the
@@ -616,7 +588,7 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	}
 
 	/**
-	 * return center of ellipse.
+	 * Returns center of the ellipse.
 	 */
 	public Point2D getCenter(){
 		return new Point2D(xc, yc);
@@ -687,7 +659,11 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	}
 
 	public void fill(Graphics2D g2){
-		g2.fill(this.getGeneralPath());
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+		java.awt.geom.AffineTransform trans = 
+			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);		
+		g2.fill(trans.createTransformedShape(ellipse));
 	}
 
 	
@@ -1076,84 +1052,6 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	public boolean contains(double x, double y){
 		return this.getDistance(x, y)<Shape2D.ACCURACY;
 	}
-
-	/** returns false, as an ellipse cannot contains a rectangle */
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
-	/** returns false, as an ellipse cannot contains a rectangle.*/
-	public boolean contains(java.awt.geom.Rectangle2D rect){
-		return false;
-	}
-
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	/**
-	 * Tests if the Ellipse intersects the interior of a specified rectangular area.
-	 */
-	public boolean intersects(double x, double y, double w, double h) {
-		
-		// circle arc contained in the rectangle
-		if(new Box2D(x, x+w, y, y+h).contains(xc, yc)) return true;
-		
-		// if distance of first corner to center lower than radius, then intersect
-		if(Point2D.getDistance(x, y, xc, yc)<Math.min(r1, r2)) return true;
-		
-		if(this.getIntersections(new LineSegment2D(x, y, x+w, y)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y, x+w, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y+h, x, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x, y+h, x, y)).size()>0) 
-			return true;
-	
-		return false;
-	}
-
-	/**
-	 * Tests if the Ellipse intersects the interior of a specified rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-	}
-
-//	public java.awt.geom.GeneralPath getInnerPath(){
-//		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-//		double cot = Math.cos(theta);
-//		double sit = Math.sin(theta);
-//		
-////		// position to the first point
-////		path.moveTo((float)(xc+r1*cot), (float)(yc+r1*sit));
-//
-//		// draw each line of the boundary
-//		if(direct)
-//			for(double t=0; t<=2*Math.PI; t+=.1)
-//				path.lineTo((float)(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit), 
-//							(float)(yc+r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
-//		else
-//			for(double t=0; t<=2*Math.PI; t+=.1)
-//				path.lineTo((float)(xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit), 
-//							(float)(yc-r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
-//		
-//		// close to the last point
-//		path.closePath();
-//		return path;
-//	}
 	
 	/**
 	 * Add the path of the ellipse to the given path. 
@@ -1180,53 +1078,12 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 		return path;
 	}
 	
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		
-		// position to the first point
-		path.moveTo((float)(xc+r1*cot), (float)(yc+r1*sit));
-		
-		path = this.appendPath(path);
-		
-		// close to the last point
-		path.closePath();
-		
-		return path;
-	}
-	
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g2){
 		java.awt.geom.Ellipse2D.Double ellipse = 
 			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
 		java.awt.geom.AffineTransform trans = 
 			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);		
-		g.draw(trans.createTransformedShape(ellipse));
-	}
-
-	
-	/** 
-	 * Return pathiterator for this circle.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		java.awt.geom.Ellipse2D.Double ellipse = 
-			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
-		java.awt.geom.AffineTransform rot = 
-			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
-		return rot.createTransformedShape(ellipse).getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this circle.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(
-			java.awt.geom.AffineTransform trans, double flatness){
-		java.awt.geom.Ellipse2D.Double ellipse = 
-			new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
-		java.awt.geom.AffineTransform rot = 
-			java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
-		return rot.createTransformedShape(ellipse).getPathIterator(trans, flatness);
+		g2.draw(trans.createTransformedShape(ellipse));
 	}
 	
 	
@@ -1236,14 +1093,14 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D{
 	public boolean equals(Object obj){
 		if(!(obj instanceof Ellipse2D)) return false;
 		
-		Ellipse2D conic = (Ellipse2D) obj;
+		Ellipse2D ell = (Ellipse2D) obj;
 		
-		if(!conic.getCenter().equals(this.getCenter())) return false;
-		if(Math.abs(conic.getLength1()-this.getLength1())>Shape2D.ACCURACY) return false;
-		if(Math.abs(conic.getLength2()-this.getLength2())>Shape2D.ACCURACY) return false;
-		if(Math.abs(Angle2D.formatAngle(conic.getAngle()-this.getAngle()))
+		if(!ell.getCenter().equals(this.getCenter())) return false;
+		if(Math.abs(ell.r1-this.r1)>Shape2D.ACCURACY) return false;
+		if(Math.abs(ell.r2-this.r2)>Shape2D.ACCURACY) return false;
+		if(Math.abs(Angle2D.formatAngle(ell.getAngle()-this.getAngle()))
 				>Shape2D.ACCURACY) return false;
-		if(conic.isDirect()!=this.isDirect()) return false;
+		if(ell.isDirect()!=this.isDirect()) return false;
 		return true;
 	}
 	

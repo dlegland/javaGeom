@@ -27,7 +27,6 @@ package math.geom2d;
 import java.awt.Graphics2D;
 import java.util.Collection;
 
-import math.geom2d.conic.Circle2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -44,7 +43,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 
 	/**
 	 * The point located at the infinity. This point is virtual, it
-	 * is contained in every inifinite shape, such as straight lines,
+	 * is contained in every infinite shape, such as straight lines,
 	 * hyperbolas and parabolas.
 	 */
 	public final static Point2D INFINITY_POINT = new Point2D(
@@ -53,6 +52,8 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	
 	// ===================================================================
 	// class variables
+	
+	// coordinates are inherited from java class for Point
 	
 	
 	// ===================================================================
@@ -78,7 +79,8 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	/**
 	 * Constructor from two java awt.geom Point2D, summing their coordinates. 
 	 */
-	public Point2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2){
+	public Point2D(java.awt.geom.Point2D point1, 
+			java.awt.geom.Point2D point2){
 		super(point1.getX()+point2.getX(), point1.getY()+point2.getY());
 	}
 	
@@ -92,7 +94,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	
 	
 	// ===================================================================
-	// static functions
+	// static methods
 
 	/**
 	 * Creates a new point from polar coordinates <code>rho</code> and
@@ -106,50 +108,28 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * Creates a new point from polar coordinates <code>rho</code> and
 	 * <code>theta</code>, from the given point.
 	 */
-	public final static Point2D createPolar(Point2D point, double rho, double theta){
-		return new Point2D(point.getX()+rho*Math.cos(theta), point.getY()+rho*Math.sin(theta));
+	public final static Point2D createPolar(Point2D point, 
+			double rho, double theta){
+		return new Point2D(point.getX()+rho*Math.cos(theta), 
+				point.getY()+rho*Math.sin(theta));
 	}
 
 	/**
 	 * Creates a new point from polar coordinates <code>rho</code> and
 	 * <code>theta</code>, from the position (x0,y0).
 	 */
-	public final static Point2D createPolar(double x0, double y0, double rho, double theta){
+	public final static Point2D createPolar(double x0, double y0, 
+			double rho, double theta){
 		return new Point2D(x0+rho*Math.cos(theta), y0+rho*Math.sin(theta));
 	}
-
 	
-	/**
-	 * Gets the dot product of the two points, defined by: <p>
-	 * <code> x1*y2 + x2*y1</code> <p>
-	 * Dot product is zero if the vectors defined by the 2 points are 
-	 * orthogonal. It is positive if vectors are in the same direction, and
-	 * negative if they are in opposite direction. 
-	 * @deprecated use Vector2D.dot() method instead
-	 */
-	@Deprecated
-	public final static double dot(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
-		return p1.getX()*p2.getX()+p1.getY()*p2.getY();
-	}
-	
-	/**
-	 * Gets the cross product of the two points, defined by : <p>
-	 * <code> x1*y2 - x2*y1</code><p>
-	 * cross product is zero for colinear vector. It is positive if angle
-	 * between vector 1 and vector 2 is comprised between 0 and PI, and
-	 * negative otherwise.
-	 * @deprecated use Vector2D.cross() method instead
-	 */
-	@Deprecated
-	public final static double cross(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
-		return p1.getX()*p2.getY()-p2.getX()*p1.getY();
-	}
-	
-	public final static double getDistance(double x1, double y1, double x2, double y2){
+	public final static double getDistance(double x1, double y1, 
+			double x2, double y2){
 		return Math.hypot(x2-x1, y2-y1); 
 	}
 	
-	public final static double getDistance(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
+	public final static double getDistance(java.awt.geom.Point2D p1, 
+			java.awt.geom.Point2D p2){
 		return getDistance(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 	
@@ -198,7 +178,7 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	
 	public final static Point2D midPoint(
 			java.awt.geom.Point2D p1, java.awt.geom.Point2D p2){
-		return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2); 
+		return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2);
 	}
 
 	/**
@@ -221,7 +201,8 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * @param points a collection of points
 	 * @return the centroid of the points
 	 */
-	public final static Point2D centroid(Collection<? extends Point2D> points){
+	public final static Point2D centroid(
+			Collection<? extends Point2D> points){
 		int n = points.size();
 		double sx = 0, sy=0;
 		for(Point2D point : points){
@@ -239,7 +220,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * @return the centroid of the 3 points
 	 */
 	public final static Point2D centroid(
-			java.awt.geom.Point2D pt1, java.awt.geom.Point2D pt2, java.awt.geom.Point2D pt3){
+			java.awt.geom.Point2D pt1, 
+			java.awt.geom.Point2D pt2, 
+			java.awt.geom.Point2D pt3) {
 		return new Point2D(
 			(pt1.getX() + pt2.getX() + pt3.getX())/3, 
 			(pt1.getY() + pt2.getY() + pt3.getY())/3
@@ -248,26 +231,22 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	
 	
 	// ===================================================================
-	// accessors
+	// Methods specific to Point2D
 
-	/**
-	 * Compute the distance between this and the point <code>point</code>.
-	 */
-	public double getDistance(java.awt.geom.Point2D point){
-		return getDistance(point.getX(), point.getY());
+	public Point2D plus(java.awt.geom.Point2D p){
+		return new Point2D(p.getX()+x, p.getY()+y);
 	}
 	
-	/**
-	 * Compute the distance between current point and point with coordinate 
-	 * <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for 
-	 * better robustness than simple square root.
-	 */
-	public double getDistance(double x, double y){
-		return Math.hypot(getX()-x, getY()-y);
+	public Point2D minus(java.awt.geom.Point2D p){
+		return new Point2D(x-p.getX(), y-p.getY());
 	}
+	
+	
+	// ===================================================================
+	// Methods specific to Point2D
 
 	/** 
-	 * Convert point to an integer version. Coordinates are rounded to the 
+	 * Convert point to an integer version. Coordinates are rounded to the
 	 * nearest integer.
 	 * @return an instance of java.awt.Point
 	 */
@@ -290,9 +269,6 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 		return new java.awt.geom.Point2D.Float((float)x, (float)y);
 	}
 	
-	// ===================================================================
-	// modifiers
-
 	/** 
 	 * Set location specified as polar coordinate : distance from origin +
 	 * angle with horizontal.
@@ -306,13 +282,31 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 * Set location at distance 'rho' from given point, and making an
 	 * angle 'theta' with horizontal.
 	 */
-	public void setPolarLocation(java.awt.geom.Point2D point, double rho, double theta){
+	public void setPolarLocation(java.awt.geom.Point2D point,
+			double rho, double theta){
 		x = point.getX()+rho*Math.cos(theta);
 		y = point.getY()+rho*Math.sin(theta);
 	}
 
+	
 	// ===================================================================
-	// general methods
+	// Methods implementing Shape2D interface
+
+	/**
+	 * Compute the distance between this and the point <code>point</code>.
+	 */
+	public double getDistance(java.awt.geom.Point2D point){
+		return getDistance(point.getX(), point.getY());
+	}
+	
+	/**
+	 * Compute the distance between current point and point with coordinate 
+	 * <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for 
+	 * better robustness than simple square root.
+	 */
+	public double getDistance(double x, double y){
+		return Math.hypot(getX()-x, getY()-y);
+	}
 
 	/**
 	 * Returns true if the point is bounded. A point is unbounded if at least
@@ -346,85 +340,6 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	}
 
 	/**
-	 * Always return false.
-	 */
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
-	/**
-	 * Always return false.
-	 */
-	public boolean contains(java.awt.geom.Rectangle2D r){
-		return false;
-	}
-
-	/**
-	 * Two points are considered equal if their Euclidean distance is less
-	 * than Shape2D.ACCURACY.
-	 */
-	public boolean equals(Object obj){
-		if(!(obj instanceof java.awt.geom.Point2D)) return false;
-		java.awt.geom.Point2D p = (java.awt.geom.Point2D) obj;
-		return this.distance(p.getX(), p.getY())<Shape2D.ACCURACY;
-	}
-	
-	public Point2D plus(java.awt.geom.Point2D p){
-		return new Point2D(p.getX()+x, p.getY()+y);
-	}
-	
-	public Point2D minus(java.awt.geom.Point2D p){
-		return new Point2D(x-p.getX(), y-p.getY());
-	}
-	
-	
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	/** Returns a circle enclosing the point*/
-	public java.awt.geom.PathIterator getPathIterator(
-			java.awt.geom.AffineTransform trans){
-		return new Circle2D(this, 1).getPathIterator(trans);
-	}
-
-	/** 
-	 * Returns a circle enclosing the point, whose radius is the specified
-	 * flatness.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(
-			java.awt.geom.AffineTransform trans, double flatness){
-		return new Circle2D(this, 1).getPathIterator(trans, flatness);
-	}
-
-	/**
-	 * Tests if the Point2D intersects the interior of a specified rectangular
-	 * area.
-	 */
-	public boolean intersects(double x, double y, double w, double h){
-		return( getX()>=x && getX()<=x+w && getY()>=y && getY()<=y+h);
-	}
-
-	/**
-	 * Tests if the Point2D intersects the interior of a specified
-	 * rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return( getX()>=r.getX() && getX()<=r.getX()+r.getWidth() && 
-				getY()>=r.getY() && getY()<=r.getY()+r.getHeight() );
-	}
-	
-	/**
 	 * Returns either the point itself, or the shape EMPTY_SET, depending on
 	 * whether the point lies inside the specified box.
 	 */
@@ -455,6 +370,10 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 			x*tab[3] + y*tab[4] + tab[5] );
 	}
 	
+	
+	// ===================================================================
+	// Graphical methods
+
 	/**
 	 * Draws the point on the specified Graphics2D, using default radius
 	 * equal to 1.
@@ -471,5 +390,19 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D{
 	 */
 	public void draw(Graphics2D g2, double r){		
 		g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, 2*r, 2*r));
+	}
+	
+	
+	// ===================================================================
+	// Override of Object methods
+	
+	/**
+	 * Two points are considered equal if their Euclidean distance is less
+	 * than Shape2D.ACCURACY.
+	 */
+	public boolean equals(Object obj){
+		if(!(obj instanceof java.awt.geom.Point2D)) return false;
+		java.awt.geom.Point2D p = (java.awt.geom.Point2D) obj;
+		return this.distance(p.getX(), p.getY())<Shape2D.ACCURACY;
 	}
 }

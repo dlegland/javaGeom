@@ -52,13 +52,6 @@ public interface Polygon2D extends Domain2D{
 	
 	/** 
 	 * Returns the number of vertices of the polygon
-	 * @deprecated use getVertexNumber() instead (0.6.3)
-	 */
-	@Deprecated
-	public abstract int getVerticesNumber();
-
-	/** 
-	 * Returns the number of vertices of the polygon
 	 * @since 0.6.3
 	 */
 	public abstract int getVertexNumber();

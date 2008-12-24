@@ -24,6 +24,7 @@
 // package
 package math.geom2d.line;
 
+//Imports
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -40,20 +41,21 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
 
-// Imports
-
 /**
- * Base class for straight curves, such as straight lines, rays, or edges.<p><p>
- * Internal representation of straight objects is parametric :
- * (x0, y0) is a point in the object, and (dx, dy) is a direction vector of the line.<p>
- * If the line is defined by two point, we can set (x0,y0) to the first point,
- * and (dx,dy) to the vector (p1, p2). <p>
- * Then, coordinates for a point (x,y) such as x=x0+t*dx and y=y0+t=dy,
+ * <p>Base class for straight curves, such as straight lines, rays, or edges.
+ * </p>
+ * <p>Internal representation of straight objects is parametric:
+ * (x0, y0) is a point in the object, and (dx, dy) is a direction vector
+ * of the line.</p>
+ * <p>If the line is defined by two point, we can set (x0,y0) to the first
+ * point, and (dx,dy) to the vector (p1, p2).</p>
+ * <p>Then, coordinates for a point (x,y) such as x=x0+t*dx and y=y0+t=dy,
  * t between 0 and 1 give a point inside p1 and p2, t<0 give a point 'before'
  * p1, and t>1 give a point 'after' p2, so it is convenient to easily manage
  * edges, rays and straight lines.<p>
  */
-public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearShape2D{
+public abstract class AbstractLine2D 
+implements SmoothOrientedCurve2D, LinearShape2D{
 
 	// ===================================================================
 	// constants
@@ -76,10 +78,11 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	// static methods
 
 	/**
-	 * Returns the unique intersection of two straight objects. If intersection doesn't
-	 * exist (parallel lines), return null.
+	 * Returns the unique intersection of two straight objects. 
+	 * If intersection doesn't exist (parallel lines), return null.
 	 */
-	public final static Point2D getIntersection(AbstractLine2D l1, AbstractLine2D l2){
+	public final static Point2D getIntersection(AbstractLine2D l1, 
+			AbstractLine2D l2){
 		double t = ((l1.y0-l2.y0)*l2.dx - (l1.x0-l2.x0)*l2.dy ) / 
 			(l1.dx*l2.dy - l1.dy*l2.dx) ;
 		return new Point2D(l1.x0+t*l1.dx, l1.y0+t*l1.dy);
@@ -88,80 +91,27 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	/**
 	 * Test if the two linear objects are located on the same straight line.
 	 */
-	public final static boolean isColinear(AbstractLine2D line1, AbstractLine2D line2){		
+	public final static boolean isColinear(AbstractLine2D line1, 
+			AbstractLine2D line2){		
 		// test if the two lines are parallel
-		if(Math.abs(line1.dx*line2.dy - line1.dy*line2.dx)>ACCURACY) return false;
+		if(Math.abs(line1.dx*line2.dy - line1.dy*line2.dx)>ACCURACY) 
+			return false;
 		
-		// test if the two lines share at least one point (see contains() method
-		// for details on tests)
-		return(Math.abs((line2.y0-line1.y0)*line2.dx-(line2.x0-line1.x0)*line2.dy)/
+		// test if the two lines share at least one point (see the contains()
+		// method for details on tests)
+		return(Math.abs((line2.y0-line1.y0)*line2.dx-
+				(line2.x0-line1.x0)*line2.dy)/
 			Math.hypot(line2.dx, line2.dy)<Shape2D.ACCURACY);
 	}
 
 	/**
 	 * Test if the two linear objects are parallel.
 	 */
-	public final static boolean isParallel(AbstractLine2D line1, AbstractLine2D line2){		
+	public final static boolean isParallel(AbstractLine2D line1, 
+			AbstractLine2D line2){		
 		return(Math.abs(line1.dx*line2.dy - line1.dy*line2.dx)<ACCURACY);
 	}
 
-//	/** 
-//	 * Returns the horizontal angle formed by the line joining the two given points.
-//	 */
-//	public final static double getHorizontalAngle(Point2D p1, Point2D p2){
-//		return (Math.atan2(p2.getY()-p1.getY(), p2.getX()-p1.getX()) + 2*Math.PI)%(2*Math.PI);
-//	}
-//
-//	/** 
-//	 * Returns the horizontal angle formed by the line joining the two given points.
-//	 */
-//	public final static double getHorizontalAngle(double x1, double y1, double x2, double y2){
-//		return (Math.atan2(y2-y1, x2-x1) + 2*Math.PI)%(2*Math.PI);
-//	}
-//
-//
-//	/**
-//	 * Gets angle between two (directed) straight objects. Result is given in radians, 
-//	 * between 0 and 2*PI.
-//	 */
-//	public final static double getAngle(AbstractLine2D obj1, AbstractLine2D obj2){
-//		double angle1 = obj1.getHorizontalAngle();
-//		double angle2 = obj2.getHorizontalAngle();
-//		return (angle2-angle1+Math.PI*2)%(Math.PI*2);
-//	}
-//	
-//	public final static double getAngle(Point2D p1, Point2D p2, Point2D p3){
-//		double angle1 = getHorizontalAngle(p2, p1);
-//		double angle2 = getHorizontalAngle(p2, p3);
-//		return (angle2-angle1+Math.PI*2)%(Math.PI*2);
-//	}
-//
-//	public final static double getAngle(double x1, double y1, double x2, double y2, double x3, double y3){
-//		double angle1 = getHorizontalAngle(x2, y2, x1, y1);
-//		double angle2 = getHorizontalAngle(x2, y2, x1, y1);
-//		return (angle2-angle1+Math.PI*2)%(Math.PI*2);
-//	}
-//	
-//	
-//	public final static double getAbsoluteAngle(Point2D p1, Point2D p2, Point2D p3){
-//		double angle1 = new LineSegment2D(p2, p1).getHorizontalAngle();
-//		double angle2 = new LineSegment2D(p2, p3).getHorizontalAngle();
-//		angle1 = (angle2-angle1+Math.PI*2)%(Math.PI*2);
-//		if(angle1<Math.PI) return angle1;
-//		else return Math.PI*2-angle1;
-//	}
-//
-//	public final static double getAbsoluteAngle(double x1, double y1, double x2, double y2, 
-//		double x3, double y3){
-////			double angle1 = new LineSegment2D(x2, y2, x1, y1).getHorizontalAngle();
-////			double angle2 = new LineSegment2D(x2, y2, x3, y3).getHorizontalAngle();
-//			double angle1 = getHorizontalAngle(x2, y2, x1, y1);
-//			double angle2 = getHorizontalAngle(x2, y2, x3, y3);
-//			angle1 = (angle2-angle1+Math.PI*2)%(Math.PI*2);
-//			if(angle1<Math.PI) return angle1;
-//			else return Math.PI*2-angle1;
-//	}
-	
 	
 	// ===================================================================
 	// Protected constructors
@@ -200,14 +150,16 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		// test if the two lines are parallel
 		if(!isParallel(linear)) return false;
 		
-		// test if the two lines share at least one point (see contains() method
-		// for details on tests)
+		// test if the two lines share at least one point (see the contains()
+		// method for details on tests)
 		StraightLine2D line = linear.getSupportingLine();
 		if(Math.abs(dx)>Math.abs(dy)){
-			if(Math.abs((line.x0-x0)*dy/dx+y0-line.y0) > Shape2D.ACCURACY) return false;
+			if(Math.abs((line.x0-x0)*dy/dx+y0-line.y0) > Shape2D.ACCURACY)
+				return false;
 			else return true;
 		}else{
-			if(Math.abs((line.y0-y0)*dx/dy+x0-line.x0) > Shape2D.ACCURACY) return false;
+			if(Math.abs((line.y0-y0)*dx/dy+x0-line.x0) > Shape2D.ACCURACY)
+				return false;
 			else return true;
 		}
 	}
@@ -221,17 +173,18 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	
 
 	/** 
-	 * Returns true if the point (x, y) lies on the line covering the object, with 
-	 * precision given by Shape2D.ACCURACY.
+	 * Returns true if the point (x, y) lies on the line covering the object,
+	 * with precision given by Shape2D.ACCURACY.
 	 */
 	protected boolean supportContains(double x, double y){
-		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < Shape2D.ACCURACY);
+		return(Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy) < 
+				Shape2D.ACCURACY);
 	}
 	
 
 	/**
 	 * Returns the matrix of parametric representation of the line. Result has
-	 * the form : <p>
+	 * the form: <p>
 	 * [ x0  dx ] <p>
 	 * [ y0  dy ] <p>
 	 * It can be easily extended to higher dimensions and/or higher polynomial
@@ -247,8 +200,10 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 		
 	/** 
-	 * Returns the coefficient of the cartesian representation of the line. Cartesian
-	 * equation has the form : ax+by+c=0. The returned array is {a, b, c}.
+	 * Returns the coefficient of the Cartesian representation of the line. 
+	 * Cartesian equation has the form:
+	 * <code>ax+by+c=0</code>
+	 * @return the array {a, b, c}.
 	 */
 	public double[] getCartesianEquation(){
 		double tab[] = new double[3];
@@ -260,8 +215,10 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 
 	
 	/**
-	 * Returns two coefficients : the minimal distance between the straight line covering
-	 * this object and the origin, and the angle of object with horizontal.
+	 * Returns polar coefficients.
+	 * @return an array of 2 elements, the first one is the distance to
+	 * the origin, the second one is the angle with horizontal, between 0 and
+	 * 2*PI.
 	 */
 	public double[] getPolarCoefficients(){
 		double tab[] = new double[2];
@@ -273,8 +230,12 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 
 	/**
-	 * Returns the polar coefficients, but distance to origin can be negative : this
-	 * allows representation of directed lines.
+	 * Returns the signed polar coefficients.
+	 * Distance to origin can be negative: this allows representation
+	 * of directed lines.
+	 * @return an array of 2 elements, the first one is the signed distance to
+	 * the origin, the second one is the angle with horizontal, between 0 and
+	 * 2*PI.
 	 */
 	public double[] getSignedPolarCoefficients(){
 		double tab[] = new double[2];
@@ -285,8 +246,8 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	
 	
 	/** 
-	 * Gets Angle with axis (O,i), counted counter-clockwise. Result is given between
-	 * 0 and 2*pi.
+	 * Gets Angle with axis (O,i), counted counter-clockwise. 
+	 * Result is given between 0 and 2*pi.
 	 */
 	public double getHorizontalAngle(){
 		return (Math.atan2(dy, dx) + 2*Math.PI)%(2*Math.PI);
@@ -355,21 +316,12 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	public StraightLine2D getSupportingLine(){
 		return new StraightLine2D(this);
 	}
-
-	/**
-	 * returns one straight line which contains this straight object.
-	 * @deprecated replaced by getSupportingLine()
-	 * @return the Straight line which contains this object
-	 */
-	@Deprecated
-	public StraightLine2D getSupportLine(){
-		return new StraightLine2D(this);
-	}
 	
 	/**
-	 * Return the projection of point p on the line. The returned point can be used
-	 * to compute distance from point to line.
-	 * @param p a point outside the line (if point p lies on the line, it is returned)
+	 * Return the projection of point p on the line. 
+	 * The returned point can be used to compute distance from point to line.
+	 * @param p a point outside the line (if point p lies on the line,
+	 * it is returned)
 	 * @return the projection of the point p on the line
 	 */
 	public Point2D getProjectedPoint(Point2D p){
@@ -377,8 +329,8 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 	
 	/**
-	 * Return the projection of point p on the line. The returned point can be used
-	 * to compute distance from point to line.
+	 * Return the projection of point p on the line. 
+	 * The returned point can be used to compute distance from point to line.
 	 * @param x : coordinate x of point to be projected
 	 * @param y : coordinate y of point to be projected
 	 * @return the projection of the point p on the line
@@ -395,7 +347,8 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	
 	/**
 	 * Return the symmetric of point p relative to this straight line.
-	 * @param p a point outside the line (if point p lies on the line, it is returned)
+	 * @param p a point outside the line (if point p lies on the line,
+	 * it is returned)
 	 * @return the projection of the point p on the line
 	 */
 	public Point2D getSymmetric(Point2D p){
@@ -410,8 +363,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * @return the projection of the point (x,y) on the line
 	 */
 	public Point2D getSymmetric(double x, double y){
-		//if(contains(x, y))return new Point2D(x, y);
-
 		// compute position on the line
 		double t = 2*getPositionOnLine(x, y);
 			
@@ -452,12 +403,14 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		if(t0==Double.NEGATIVE_INFINITY)
 			angle1 = Angle2D.getHorizontalAngle(-dx, -dy);
 		else
-			angle1 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t0*dx, y0+t0*dy);
+			angle1 = Angle2D.getHorizontalAngle(
+					point.getX(), point.getY(), x0+t0*dx, y0+t0*dy);
 		
 		if(t1==Double.POSITIVE_INFINITY)
 			angle2 = Angle2D.getHorizontalAngle(dx, dy);
 		else
-			angle2 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+t1*dx, y0+t1*dy);
+			angle2 = Angle2D.getHorizontalAngle(
+					point.getX(), point.getY(), x0+t1*dx, y0+t1*dy);
 		
 		if(this.isInside(point)){
 			if(angle2>angle1) return angle2 - angle1;
@@ -549,13 +502,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * If point does not belong to edge, returns Double.NaN.
 	 */
 	public double getPosition(java.awt.geom.Point2D point){
-//		double pos;
-//		// uses the direction with the biggest derivative of line arc, 
-//		// in order to avoid divisions by zero.		
-//		if(Math.abs(dx)>Math.abs(dy))
-//			pos = (point.getX()-x0)/dx;
-//		else
-//			pos = (point.getY()-y0)/dy;
 		double pos = this.getPositionOnLine(point);
 		
 		// return either pos or NaN
@@ -574,13 +520,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * one is the closest. 
 	 */
 	public double project(java.awt.geom.Point2D point){
-//		double pos;
-//		// uses the direction with the biggest derivative of line arc, 
-//		// in order to avoid divisions by zero.		
-//		if(Math.abs(dx)>Math.abs(dy))
-//			pos = (point.getX()-x0)/dx;
-//		else
-//			pos = (point.getY()-y0)/dy;
 		double pos = this.getPositionOnLine(point);
 		
 		// Bounds between t0 and t1
@@ -611,21 +550,15 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	}
 
 	public Collection<ContinuousCurve2D> getContinuousCurves() {
-		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
+		ArrayList<ContinuousCurve2D> list = 
+			new ArrayList<ContinuousCurve2D>(1);
 		list.add(this);
 		return list;
 	}	
 
 	
 	// ===================================================================
-	// methods of Shape2D interface
-	
-	/**
-	 * Get the distance of the point (x, y) to this object.
-	 */
-	public double getDistance(java.awt.geom.Point2D p){
-		return getDistance(p.getX(), p.getY());
-	}
+	// methods implementing the Shape2D
 	
 	/**
 	 * Gets the distance of the StraightObject2d to the given point.
@@ -633,10 +566,10 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 * is an abstract class, but it can be called by subclasses to help
 	 * computations.
 	 */
-	public double getDistance(Point2D p){
+	public double getDistance(java.awt.geom.Point2D p){
 		return getDistance(p.getX(), p.getY());
 	}
-
+	
 	/**
 	 * Gets the distance of the StraightObject2d to the given point.
 	 * This method is not designed to be used directly, because AbstractLine2D
@@ -648,6 +581,10 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 	 */
 	public double getDistance(double x, double y){
 		return Math.abs((y-y0)*dx-(x-x0)*dy)/Math.hypot(dx, dy);
+	}
+
+	public boolean contains(java.awt.geom.Point2D p) {
+		return this.contains(p.getX(), p.getY());
 	}
 
 	/**
@@ -675,53 +612,4 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D, LinearSha
 		}
 		return result;
 	}
-	
-	
-	// ===================================================================
-	// methods of Shape interface
-	
-
-	public boolean contains(java.awt.geom.Point2D p) {
-		return this.contains(p.getX(), p.getY());
-	}
-
-	/** Returns false, because a line cannot contain a rectangle.*/
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
-	/** Returns false, because a line cannot contain a rectangle.*/
-	public boolean contains(java.awt.geom.Rectangle2D r){
-		return false;
-	}
-	
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return !clip(new Box2D(r)).isEmpty();
-	}
-
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangular area.
-	 */
-	public boolean intersects(double x, double y, double w, double h){
-		return clip(new Box2D(x, x+w, y, y+h)).isEmpty();
-	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-
 }

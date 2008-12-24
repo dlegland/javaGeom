@@ -47,7 +47,7 @@ public class CheckDrawRotatedRays extends JPanel{
 			//g2.draw(ray.clip(box));
 		
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getBoundary());
+		box.getBoundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){
