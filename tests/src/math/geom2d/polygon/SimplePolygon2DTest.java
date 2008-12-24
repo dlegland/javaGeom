@@ -153,7 +153,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(centro.equals(poly.getCentroid()));
 	}
 	
-	public void testGetBounds2D(){
+	public void testGetBoundingBox(){
 		Point2D points[] = new Point2D[6];
 		points[0] = new Point2D(40, 70);
 		points[1] = new Point2D(40, 50);
@@ -164,22 +164,7 @@ public class SimplePolygon2DTest extends TestCase {
 		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		Box2D box = new Box2D(20, 80, 10, 70);
-		Box2D bounds = new Box2D(poly.getBounds2D());
+		Box2D bounds = poly.getBoundingBox();
 		assertTrue(box.equals(bounds));
-	}
-
-	public void testContainsBounds(){
-		Point2D points[] = new Point2D[6];
-		points[0] = new Point2D(40, 70);
-		points[1] = new Point2D(40, 50);
-		points[2] = new Point2D(20, 50);
-		points[3] = new Point2D(60, 10);
-		points[4] = new Point2D(60, 30);
-		points[5] = new Point2D(80, 30);
-		SimplePolygon2D poly = new SimplePolygon2D(points);
-		
-		Rectangle2D rect = new Rectangle2D(20, 10, 60, 60);
-		//Rectangle2D bounds = new Rectangle2D(poly.getBounds2D());
-		assertTrue(rect.containsBounds(poly));
 	}
 }

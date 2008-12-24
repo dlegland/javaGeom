@@ -30,7 +30,6 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
@@ -179,24 +178,6 @@ public class Rectangle2D implements Polygon2D{
 	// methods inherited from interface AbstractPolygon2D	
 	
 	/**
-	 * Returns the vertices of the rectangle.
-	 * @deprecated use getVertices() method instead.
-	 * @return the vertices of the rectangle.
-	 */
-	@Deprecated
-	public Iterator<Point2D> getPoints(){
-		AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
-		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
-		
-		array.add(new Point2D(x0, y0).transform(rot));
-		array.add(new Point2D(x0+w, y0).transform(rot));
-		array.add(new Point2D(x0+w, y0+h).transform(rot));
-		array.add(new Point2D(x0, y0+h).transform(rot));
-		
-		return array.iterator();
-	}		
-	
-	/**
 	 * Returns the vertices of the rectangle as a collection of points.
 	 * @return the vertices of the rectangle.
 	 */
@@ -230,14 +211,6 @@ public class Rectangle2D implements Polygon2D{
 		}
 	}
 	
-	/**
-	 * @deprecated use getVertexNumber instead (0.6.3)
-	 */
-	@Deprecated
-	public int getVerticesNumber() {
-		return getVertexNumber();
-	}
-
 	/**
 	 * Return the number of vertices of the rectangle, which is 4.
 	 * @since 0.6.3
@@ -425,90 +398,6 @@ public class Rectangle2D implements Polygon2D{
 //		line.setPoints(x3, y3, x0, y0);		
 		if(line.getSignedDistance(x, y)>0) return false;
 		return true;
-	}
-	
-	public boolean contains(double x, double y, double w, double h){
-		if(!contains(x, y)) return false;
-		if(!contains(x+w, y)) return false;
-		if(!contains(x+w,y+h)) return false;
-		if(!contains(x, y+h)) return false;
-		return false;
-	}
-	
-	public boolean contains(java.awt.geom.Rectangle2D rect){
-		return contains(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-	}
-	
-	/**
-	 * Test if the specified Shape is totally contained in this Rectangle.
-	 * Note that the test is performed on the bounding box of the shape, then
-	 * for rotated rectangles, this method can return false with a shape totally
-	 * contained in the rectangle. The problem does not exist for horizontal
-	 * rectangle, since edges of rectangle and bounding box are parallel.
-	 */
-	public boolean containsBounds(Shape2D shape){
-		// check if shape is bounded
-		if(!shape.isBounded())
-			return false;
-		
-		// If at least one vertex is inside rectangle, return false
-		Collection<Point2D> points = new Box2D(shape.getBounds2D()).getVertices();
-		for(Point2D point : points)
-			if(!this.contains(point)) 
-				return false;
-
-		// Otherwise return true
-		return true;
-	}
-	
-	public boolean intersects(double x0, double y0, double w0, double h0){
-		return false;
-	}
-	
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return false;
-	}
-	
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+w*cot), (float)(w*sit+y0));
-		path.lineTo((float)(w*cot-h*sit+x0), (float)(w*sit+h*cot+y0));
-		path.lineTo((float)(-h*sit+x0), (float)(h*cot+y0));
-		path.lineTo((float)x0, (float)y0);
-				
-		return path.getPathIterator(t);
-	}
-
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		
-		path.moveTo((float)x0, (float)y0);
-		path.lineTo((float)(x0+w*cot), (float)(w*sit+y0));
-		path.lineTo((float)(w*cot-h*sit+x0), (float)(w*sit+h*cot+y0));
-		path.lineTo((float)(-h*sit+x0), (float)(h*cot+y0));
-		path.lineTo((float)x0, (float)y0);
-				
-		return path.getPathIterator(t, flatness);
 	}
 	
 	public void draw(Graphics2D g2){

@@ -86,10 +86,12 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 	// Methods implementing Boundary2D interface
 	
 	/**
-	 * return a ArrayList<ContinuousBoundary2D> containing only <code>this</code>.
+	 * return a ArrayList<ContinuousBoundary2D> containing only
+	 * <code>this</code>.
 	 */
 	public Collection<ContinuousBoundary2D> getBoundaryCurves(){
-		ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(1);
+		ArrayList<ContinuousBoundary2D> list =
+			new ArrayList<ContinuousBoundary2D>(1);
 		list.add(this);
 		return list;
 	}
@@ -105,7 +107,8 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 	// ===================================================================
 	// Methods implementing OrientedCurve2D interface
 	
-	public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve(){
+	public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> 
+	getReverseCurve(){
 		ContinuousOrientedCurve2D[] curves2 = 
 			new ContinuousOrientedCurve2D[curves.size()];
 		int n=curves.size();
@@ -114,7 +117,8 @@ public class BoundaryPolyCurve2D <T extends ContinuousOrientedCurve2D>
 		return new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves2);
 	}
 
-	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
+	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> transform(
+			AffineTransform2D trans) {
 		BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result = 
 			new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
 		for(ContinuousOrientedCurve2D curve : curves)

@@ -199,11 +199,6 @@ public class LineObject2D extends AbstractLine2D{
 		return super.getSignedDistance(x, y);
 	}
 
-
-	public boolean isPositivelyOriented(Point2D point){
-		return this.getSignedDistance(point.getX(), point.getY())<0;
-	}
-
 	public double[][] getParametric(){
 		updateParameters();
 		return super.getParametric();
@@ -567,11 +562,6 @@ public class LineObject2D extends AbstractLine2D{
 		return t>=0 && t<=1 && b;
 	}
 
-	/** Return false, because an line cannot contain a rectangle.*/
-	public boolean contains(double x, double y, double w, double h){
-		return false;
-	}
-
 	/** 
 	 * Return true if the point p lies on the line, with precision given by 
 	 * Shape2D.ACCURACY.
@@ -579,21 +569,6 @@ public class LineObject2D extends AbstractLine2D{
 	public boolean contains(java.awt.geom.Point2D p){
 		return contains(p.getX(), p.getY());
 	}
-
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
 	
 	public java.awt.geom.GeneralPath getGeneralPath(){
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
@@ -608,24 +583,9 @@ public class LineObject2D extends AbstractLine2D{
 		return path;
 	}
 	
-	/** 
-	 * Return pathiterator for this edge.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		updateParameters();
-		return this.getGeneralPath().getPathIterator(t);
-	}
-
-	/** 
-	 * Return pathiterator for this edge.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		updateParameters();
-		return this.getGeneralPath().getPathIterator(t, flatness);
-	}
-
 	/**
-	 * Tests if the Line intersects the interior of a specified rectangular area.
+	 * Tests if the Line intersects the interior of a specified rectangular
+	 * area.
 	 */
 	public boolean intersects(double x, double y, double w, double h){
 		return false;
@@ -643,12 +603,15 @@ public class LineObject2D extends AbstractLine2D{
 
 	public String toString(){
 		updateParameters();
-		return Double.toString(x0).concat(new String(" ")).concat(Double.toString(y0)).concat(
-			new String(" ")).concat(Double.toString(dx)).concat(new String(" ")).concat(Double.toString(dy));
+		return Double.toString(x0).concat(new String(" ")).
+		concat(Double.toString(y0)).concat(
+			new String(" ")).concat(Double.toString(dx)).
+			concat(new String(" ")).concat(Double.toString(dy));
 	}
 	
 	/**
-	 * Two LineObject2D are equals if the share the two same points, in the same order.
+	 * Two LineObject2D are equals if the share the two same points,
+	 * in the same order.
 	 * @param edge : the edge to compare to.
 	 * @return true if extremities of both edges are the same.
 	 */

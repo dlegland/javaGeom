@@ -154,15 +154,6 @@ public class ClosedPolyline2D extends Polyline2D implements
 	 */
 	public double getSignedDistance(double x, double y) {
 		return (this.isInside(x, y) ? -1 : 1)*this.getDistance(x, y);
-//		double minDist = Double.POSITIVE_INFINITY;
-//		double dist = Double.POSITIVE_INFINITY;
-//		
-//		for(LineSegment2D edge : this.getEdges()){
-//			dist = edge.getSignedDistance(x, y);
-//			if(Math.abs(dist)<Math.abs(minDist))
-//				minDist = dist;
-//		}		
-//		return minDist;
 	}
 
 	/* (non-Javadoc)
@@ -178,10 +169,6 @@ public class ClosedPolyline2D extends Polyline2D implements
 	public double getWindingAngle(java.awt.geom.Point2D point) {
 		int wn = Polygon2DUtils.windingNumber(this.points, point);
 		return wn*2*Math.PI;
-//		double angle = 0;
-//		for(LineSegment2D edge : this.getEdges())
-//			angle += edge.getWindingAngle(point);		
-//		return angle;
 	}
 
 	public boolean isInside(double x, double y){
@@ -232,10 +219,6 @@ public class ClosedPolyline2D extends Polyline2D implements
 	// ===================================================================
 	// Methods inherited from interface Curve2D
 
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
-	 */
 	/**
 	 * Returns point from position as double. Position t can be from 0 to n, 
 	 * with n equal to the number of vertices of the polyline.
@@ -442,19 +425,5 @@ public class ClosedPolyline2D extends Polyline2D implements
 		path.closePath();
 		
 		return path;
-	}
-	
-	/** 
-	 * Return pathiterator for this polyline.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this polyline.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
 	}
 }

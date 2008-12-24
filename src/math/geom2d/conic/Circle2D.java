@@ -181,28 +181,14 @@ public class Circle2D extends Ellipse2D {
 	public boolean isCircle(){return true;}			
 
 	/**
-	 * return cartesian equation of the circle:<p>
+	 * Returns cartesian equation of the circle:<p>
 	 * <code>(x-xc)^2 + (y-yc)^2 = r^2</code>, giving:<p>
 	 * <code>x^2 + 0*x*y + y^2 -2*xc*x -2*yc*y + xc*xc+yc*yc-r*r = 0</code>.
 	 */
-	public double[] getCartesianEquation(){
+	public double[] getConicCoefficients(){
 		return new double[]{1, 0, 1, -2*xc, -2*yc, xc*xc+yc*yc-r*r};
 	}
 
-	/**
-	 * Returns the length of the first semi-axis of the ellipse.
-	 */
-	public double getLength1(){
-		return r;
-	}
-
-	/**
-	 * Returns the length of the second semi-axis of the ellipse.
-	 */
-	public double getLength2(){
-		return r;
-	}
-	
 	/**
 	 * Return 0, which is the eccentricity of a circle by definition.
 	 */
@@ -424,21 +410,6 @@ public class Circle2D extends Ellipse2D {
 		return Math.abs(getDistance(x, y))<=Shape2D.ACCURACY;
 	}
 
-	/**
-	 * Return bounding box of the circle.
-	 */
-	public java.awt.Rectangle getBounds() {
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-
-	/**
-	 * Return more precise bounds of the circle.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D() {
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-	
-
 	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
 		double cot = Math.cos(theta);
 		double sit = Math.sin(theta);
@@ -458,42 +429,14 @@ public class Circle2D extends Ellipse2D {
 		
 		return path;
 	}
-	
-
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		
-		// position to the first point
-		path.moveTo((float)(xc+r), (float)(yc));
-
-		// draw the circle
-		path = this.appendPath(path);
-		
-		// close to the last point
-		path.closePath();
-		return path;
-	}
-	
 	public void draw(Graphics2D g2){
 		java.awt.geom.Ellipse2D.Double ellipse = 
 			new java.awt.geom.Ellipse2D.Double(xc-r, yc-r, 2*r, 2*r);
 		g2.draw(ellipse);
 	}
 
-	/** 
-	 * Return pathiterator for this circle.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return this.getGeneralPath().getPathIterator(trans);
-	}
 
-	/**
-	 * Return pathiterator for this circle.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return this.getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
 	// ===================================================================
 	// methods of Object interface
 	

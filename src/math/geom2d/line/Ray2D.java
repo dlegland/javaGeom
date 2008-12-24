@@ -25,9 +25,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -243,18 +241,6 @@ public class Ray2D extends AbstractLine2D{
 	}
 
 
-	// ===================================================================
-	// methods implementing the Shape interface
-
-	public PathIterator getPathIterator(AffineTransform at) {
-		throw new UnboundedShapeException();
-	}
-
-	public PathIterator getPathIterator(AffineTransform at, double flatness) {
-		throw new UnboundedShapeException();
-	}
-	
-	
 	// ===================================================================
 	// methods implementing the Object interface
 	

@@ -36,7 +36,6 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
@@ -84,30 +83,6 @@ public class CircleArc2D extends EllipseArc2D{
 	 */
 	public CircleArc2D(Circle2D circle, double startAngle, double endAngle, boolean direct){
 		this(circle.xc, circle.yc, circle.r, startAngle, endAngle, direct);
-	}
-
-	// Constructors based on circles and points
-	
-	/**
-	 * create a new circle arc based on an already existing circle, and two 
-	 * points giving angles of arc, specifying whether arc is direct or not.
-	 * @deprecated as this is a too much specific function.
-	 */
-	public CircleArc2D(Circle2D circle, Point2D startPoint, Point2D endPoint, boolean direct){
-		this(circle.getCenter(), circle.getRadius(), 0, 0, direct);
-		// update angle information
-		Point2D center = circle.getCenter();
-		this.startAngle = Angle2D.getHorizontalAngle(center, startPoint);
-		this.angleExtent = Angle2D.formatAngle(Angle2D.getHorizontalAngle(center, endPoint)-startAngle);
-		if(!direct)	angleExtent = angleExtent - Math.PI*2;
-	}
-
-	/**
-	 * create a new circle arc based on an already existing circle, and two 
-	 * points giving angles of arc, assuming arc is direct.
-	 */
-	public CircleArc2D(Circle2D circle, Point2D startPoint, Point2D endPoint){
-		this(circle, startPoint, endPoint, true);
 	}
 
 	// Constructors based on points
@@ -165,20 +140,6 @@ public class CircleArc2D extends EllipseArc2D{
 	}
 	
 	/**
-	 * @deprecated  should access radius from supporting circle
-	 */
-	public double getRadius(){
-		return circle.getRadius();
-	}
-	
-	/**
-	 * @deprecated  should access center from supporting circle
-	 */
-	public Point2D getCenter(){
-		return circle.getCenter();
-	}
-	
-	/**
 	 * Returns the circle which contains the circle arc.
 	 */
 	public Circle2D getSupportCircle(){
@@ -210,18 +171,6 @@ public class CircleArc2D extends EllipseArc2D{
 		angleExtent = extent;
 	}
 
-	/**
-	 * @deprecated do not use boolean 'direct' anymore
-	 */
-	@Deprecated
-	public void setArc(Point2D center, double radius, double start, double end, boolean direct){
-		circle.xc = center.getX();
-		circle.yc = center.getY();
-		circle.r = radius;
-		startAngle = start;
-		angleExtent = end-start;
-	}
-	
 	public boolean isDirect(){
 		return angleExtent>0;
 	}
@@ -572,7 +521,7 @@ public class CircleArc2D extends EllipseArc2D{
 	}
 
 	/**
-	 * return an instance of EllipseArc2D, or CircleArc2D if transform is a
+	 * Returns an instance of EllipseArc2D, or CircleArc2D if transform is a
 	 * similarity.
 	 */
 	@Override
@@ -688,41 +637,6 @@ public class CircleArc2D extends EllipseArc2D{
 			return Angle2D.formatAngle(angle-startAngle) >= 
 				Angle2D.formatAngle(angleExtent); 
 	}
-
-	public boolean intersects(double x, double y, double w, double h) {
-		
-		// circle arc contained in the rectangle
-		if(new Box2D(x, x+w, y, y+h).contains(circle.xc, circle.yc)) return true;
-		
-		// if distance of first corner to center lower than radius, then intersect
-		if(Point2D.getDistance(x, y, circle.xc, circle.yc)<circle.r) return true;
-		
-		if(this.getIntersections(new LineSegment2D(x, y, x+w, y)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y, x+w, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x+w, y+h, x, y+h)).size()>0) 
-			return true;
-		if(this.getIntersections(new LineSegment2D(x, y+h, x, y)).size()>0) 
-			return true;
-	
-		
-		return false;
-	}
-
-	public boolean intersects(java.awt.geom.Rectangle2D r) {
-		return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-	}
-
-	/** Always return false */
-	public boolean contains(double arg0, double arg1, double arg2, double arg3) {
-		return false;
-	}
-
-	/** Always return false */
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
-	}
 	
 //	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
 //		double cot = Math.cos(circle.theta);
@@ -793,21 +707,6 @@ public class CircleArc2D extends EllipseArc2D{
 		return path;
 	}
 	
-	/** 
-	 * Return pathiterator for this circle arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans){
-		return getGeneralPath().getPathIterator(trans);
-	}
-
-	/**
-	 * Return pathiterator for this circle arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform trans, double flatness){
-		return getGeneralPath().getPathIterator(trans, flatness);
-	}
-	
-
  	/**
 	 * two circle arc arre equal if the have same center, same radius, same 
 	 * starting and ending angles, and same orientation.

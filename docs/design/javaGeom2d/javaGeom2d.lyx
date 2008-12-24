@@ -1,11 +1,12 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass report
 \begin_preamble
 \usepackage{hyperref}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -72,7 +75,7 @@ CAUTION: this document is a set of working notes, and may be strongly outdated.
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 TODO: split doc into several documents for each section, and add a general
  introducting doc.
 \end_layout
@@ -86,7 +89,7 @@ TODO: split doc into several documents for each section, and add a general
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 TODO: find a typography convention for class names
 \end_layout
 
@@ -96,7 +99,8 @@ TODO: find a typography convention for class names
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand tableofcontents
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
 
 \end_inset
 
@@ -175,6 +179,25 @@ We use the convention to call 'XXXSet' collections of objects which are
 Base classes
 \end_layout
 
+\begin_layout Standard
+This chapter describes the main classes of the library.
+ More specialized classes and implementations are defined in subpackages.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Create a Direction2D class with 2 fields dx and dy such that their hypot
+ equals 1 ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Utility classes
 \end_layout
@@ -185,7 +208,8 @@ Some classes which are not geometrical 'shapes' are needed to represent
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Vector2D"
 
 \end_inset
@@ -201,7 +225,7 @@ Represents a translation in the plane, without changing orientation angle.
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Proposal: change to an interface, and implement as CartesianVector2D, PolarVecto
 r2D.
 \end_layout
@@ -236,7 +260,8 @@ Vector2D(double,double) constructor from 2 shifts
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:PolarVector2D"
 
 \end_inset
@@ -272,7 +297,8 @@ A class which derives from Vector2D, which can specify the shift in polar
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Angle2D"
 
 \end_inset
@@ -291,7 +317,8 @@ This class is an utility class containing various methods useful when working
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Box2D"
 
 \end_inset
@@ -313,7 +340,7 @@ Most classes in javaGeom2d implement the
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -326,7 +353,7 @@ hyperref[sub:Shape2D]{Shape2D}
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -339,7 +366,7 @@ hyperref[sub:Point2D]{Point2D}
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -352,7 +379,7 @@ hyperref[sub:Curve2D]{Curve2D}
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -365,7 +392,8 @@ hyperref[sub:Domain2D]{Domain2D}
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Shape2D"
 
 \end_inset
@@ -454,7 +482,8 @@ A point is defined by 2 coordinate
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Point2D"
 
 \end_inset
@@ -477,7 +506,7 @@ A proposal for an interface, allowing to consider both
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -490,7 +519,7 @@ hyperref[sub:PolarPoint2D]{PolarPoint2D}
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -540,7 +569,8 @@ This is a point located at the infinity (both coordinate are
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:PointSet2D"
 
 \end_inset
@@ -554,7 +584,8 @@ A set of points.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:PolarPoint2D"
 
 \end_inset
@@ -582,7 +613,7 @@ All the shapes that can be filled.
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -595,7 +626,8 @@ hyperref[sub:Boundary2D]{Boundary2D}
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Domain2D"
 
 \end_inset
@@ -618,7 +650,8 @@ getBoundary():Boundary2D return the boundary curve or the set of boundary
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:GenericDomain2D"
 
 \end_inset
@@ -650,7 +683,8 @@ Curve hierarchy
 
 \begin_layout Standard
 The hierarchy of curve interfaces and classes is illustrated on figure 
-\begin_inset LatexCommand ref
+\begin_inset CommandInset ref
+LatexCommand ref
 reference "fig:Hierarchy-of-curves"
 
 \end_inset
@@ -662,7 +696,7 @@ reference "fig:Hierarchy-of-curves"
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 TODO: separate hierarchy of oriented curve for a first presentation.
 \end_layout
 
@@ -677,7 +711,7 @@ wide false
 sideways false
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/curveHierarchy.eps
 
@@ -686,11 +720,12 @@ status open
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Caption
 
-\begin_layout Standard
-\begin_inset LatexCommand label
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
 name "fig:Hierarchy-of-curves"
 
 \end_inset
@@ -709,7 +744,8 @@ Hierarchy of curves
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Curve2D"
 
 \end_inset
@@ -725,42 +761,9 @@ The generic interface for curves in the plane.
 \begin_inset Formula $[t_{0};t_{1}]$
 \end_inset
 
-, which can be known by using methods getT0() and getT1().
-\end_layout
-
-\begin_layout Standard
-For non continuous curves, different parametrization.
- One possibility is to use 
-\begin_inset Formula $[0;2n-1]$
-\end_inset
-
- where 
-\begin_inset Formula $n$
-\end_inset
-
- is the number of curves.
- For 
-\begin_inset Formula $t\in[2k;2k+1],\, k=0,1,...n-1$
-\end_inset
-
-, the point belong to the 
-\begin_inset Formula $k$
-\end_inset
-
--st curve.
- For 
-\begin_inset Formula $t\in[2k+1;2k+2],\, k=0,1,...n-2$
-\end_inset
-
-, the point is the ending point of a curve, either the 
-\begin_inset Formula $k$
-\end_inset
-
--st or the 
-\begin_inset Formula $(k+1)$
-\end_inset
-
--st.
+, which can be known by using methods getT0() and getT1().The position of
+ the point corresponding to a given parametrization value is left to curve
+ implementation.
 \end_layout
 
 \begin_layout Subsubsection
@@ -824,7 +827,7 @@ getIntersections(LinearObject):Point2D[] return intersection points with
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Some algorithms may use this function.
  For example, detail the 'strokification' of a curve, ie Minkowski addition
  with a ball.
@@ -851,7 +854,8 @@ getSubCurve(t0,t1):Curve2D method of Curve2D or ContinuousCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ContinuousCurve2D"
 
 \end_inset
@@ -903,7 +907,8 @@ appendPath(GeneralPath):GeneralPath add the piece of curve to the path.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:SmoothCurve2D"
 
 \end_inset
@@ -953,7 +958,8 @@ In a boudary representation of planar shapes, curves are used to determine
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:OrientedCurve2D"
 
 \end_inset
@@ -1006,7 +1012,8 @@ isInside(point):boolean return true if the point is located on the 'inside'
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Boundary2D"
 
 \end_inset
@@ -1051,7 +1058,8 @@ ry2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ContinuousOrientedCurve2D"
 
 \end_inset
@@ -1069,7 +1077,8 @@ It is both a ContinuousCurve2D and an OrientedCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ContinuousBoundary2D"
 
 \end_inset
@@ -1082,7 +1091,8 @@ same as ContinuousOrientedCurve2D, but implements Boundary2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:SmoothOrientedCurve2D"
 
 \end_inset
@@ -1102,7 +1112,8 @@ Some curve Implementations
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:CurveSet2D"
 
 \end_inset
@@ -1121,8 +1132,48 @@ As a CurveSet2D is an implementation of Curve2D, the composition can be
  also one or several CurveSet2D...
 \end_layout
 
+\begin_layout Standard
+Several parametrization can be chosen for curve set.
+ The chosen option is to use a parametrisation between 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $2n-1$
+\end_inset
+
+ where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of curves.
+ For 
+\begin_inset Formula $t\in[2k;2k+1],\, k=0,1,...n-1$
+\end_inset
+
+, the point belong to the 
+\begin_inset Formula $k$
+\end_inset
+
+-st curve.
+ For 
+\begin_inset Formula $t\in[2k+1;2k+2],\, k=0,1,...n-2$
+\end_inset
+
+, the point is the ending point of a curve, either the 
+\begin_inset Formula $k$
+\end_inset
+
+-st or the 
+\begin_inset Formula $(k+1)$
+\end_inset
+
+-st one.
+\end_layout
+
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ContinuousCurveSet2D"
 
 \end_inset
@@ -1136,7 +1187,8 @@ Extends CurveSet2D, but each element of the set is a continuous curve.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ContinuousOrientedCurveSet2D"
 
 \end_inset
@@ -1150,7 +1202,8 @@ Extends CurveSet2D, but each element of the set is a continuous oriented
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:BoundarySet2D"
 
 \end_inset
@@ -1168,7 +1221,8 @@ ientedCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:PolyCurve2D"
 
 \end_inset
@@ -1185,7 +1239,8 @@ Basically the same as a CurveSet2D, but it contains only continuous curves,
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:PolyOrientedCurve2D"
 
 \end_inset
@@ -1199,7 +1254,8 @@ A continuous curve, composed of smooth oriented curves.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:BoundaryPolyCurve2D"
 
 \end_inset
@@ -1220,7 +1276,10 @@ Clip a Curve Set
 \end_layout
 
 \begin_layout Standard
-Consider clipping with a box, i.e.\InsetSpace ~
+Consider clipping with a box, i.e.
+\begin_inset space ~
+\end_inset
+
 an isothetic rectangle.
 \end_layout
 
@@ -1258,9 +1317,12 @@ Length of a Curve
 \end_layout
 
 \begin_layout Standard
-For many simple curves (e.g.\InsetSpace \space{}
-circles, circle arcs, polylines), there is an
- explicit formula for computing there length.
+For many simple curves (e.g.
+\begin_inset space \space{}
+\end_inset
+
+circles, circle arcs, polylines), there is an explicit formula for computing
+ there length.
  For a generic smooth curve, the use of a derivative allows to compute length
  of any curve by numerical integration.
  Need to specify tolerance limit.
@@ -1284,7 +1346,8 @@ A straight object is an object which can be embedded in a Straight line.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LinearShape2D"
 
 \end_inset
@@ -1302,7 +1365,8 @@ getSupportLine():StraightLine2D return the supporting line
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LinearShape2D"
 
 \end_inset
@@ -1320,7 +1384,8 @@ Implementations
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:StraightLine2D"
 
 \end_inset
@@ -1333,7 +1398,8 @@ A specialization of AbstractLine2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LineSegment2D"
 
 \end_inset
@@ -1346,7 +1412,8 @@ A specialization of AbstractLine2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Ray2D"
 
 \end_inset
@@ -1359,7 +1426,8 @@ A specialization of AbstractLine2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LineArc2D"
 
 \end_inset
@@ -1376,7 +1444,8 @@ It is defined from an origin, a vector, and the
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LineObject2D"
 
 \end_inset
@@ -1401,7 +1470,8 @@ Polylines
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Polyline2D"
 
 \end_inset
@@ -1424,7 +1494,8 @@ getLength() sum of the lengths of each line segment.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:ClosedPolyline2D"
 
 \end_inset
@@ -1442,7 +1513,8 @@ Polygons
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Polygon2D"
 
 \end_inset
@@ -1464,7 +1536,8 @@ getEdges():Collection<LineSegment2D>
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:SimplePolygon2D"
 
 \end_inset
@@ -1486,7 +1559,8 @@ ring
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:MultiplePolygon2D"
 
 \end_inset
@@ -1508,7 +1582,7 @@ Rectangles
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Maybe can be gathered under a class AbstractRectangle2D or RectangularShape2D
  ?
 \end_layout
@@ -1519,7 +1593,8 @@ Maybe can be gathered under a class AbstractRectangle2D or RectangularShape2D
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Rectangle2D"
 
 \end_inset
@@ -1677,7 +1752,8 @@ Implementations
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Conic2D"
 
 \end_inset
@@ -1699,7 +1775,8 @@ Conic2D is an extension of OrientedCurve2D, not of ContinuousCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Ellipse2D"
 
 \end_inset
@@ -1712,7 +1789,8 @@ Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Circle2D"
 
 \end_inset
@@ -1725,7 +1803,8 @@ A circle inherits Ellipse2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Parabola2D"
 
 \end_inset
@@ -1738,7 +1817,8 @@ Implements ContinuousOrientedCurve2D, and SmoothCurve2D.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Hyperbola2D"
 
 \end_inset
@@ -1757,7 +1837,8 @@ An hyperbola is composed from 2 branches.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:EllipseArc2D"
 
 \end_inset
@@ -1797,36 +1878,90 @@ Constructors
 \end_layout
 
 \begin_layout Description
-EllipseArc(Ellipse,\InsetSpace ~
-start,\InsetSpace ~
+EllipseArc(Ellipse,
+\begin_inset space ~
+\end_inset
+
+start,
+\begin_inset space ~
+\end_inset
+
 extent)
 \end_layout
 
 \begin_layout Description
-EllipseArc(Ellipse,\InsetSpace ~
-start,\InsetSpace ~
-end,\InsetSpace ~
+EllipseArc(Ellipse,
+\begin_inset space ~
+\end_inset
+
+start,
+\begin_inset space ~
+\end_inset
+
+end,
+\begin_inset space ~
+\end_inset
+
 direct)
 \end_layout
 
 \begin_layout Description
-EllipseArc(xc,\InsetSpace ~
-yc,\InsetSpace ~
-r1,\InsetSpace ~
-r1,\InsetSpace ~
-theta,\InsetSpace ~
-start,\InsetSpace ~
+EllipseArc(xc,
+\begin_inset space ~
+\end_inset
+
+yc,
+\begin_inset space ~
+\end_inset
+
+r1,
+\begin_inset space ~
+\end_inset
+
+r1,
+\begin_inset space ~
+\end_inset
+
+theta,
+\begin_inset space ~
+\end_inset
+
+start,
+\begin_inset space ~
+\end_inset
+
 extent)
 \end_layout
 
 \begin_layout Description
-EllipseArc(xc,\InsetSpace ~
-yc,\InsetSpace ~
-r1,\InsetSpace ~
-r1,\InsetSpace ~
-theta,\InsetSpace ~
-start,\InsetSpace ~
-end,\InsetSpace ~
+EllipseArc(xc,
+\begin_inset space ~
+\end_inset
+
+yc,
+\begin_inset space ~
+\end_inset
+
+r1,
+\begin_inset space ~
+\end_inset
+
+r1,
+\begin_inset space ~
+\end_inset
+
+theta,
+\begin_inset space ~
+\end_inset
+
+start,
+\begin_inset space ~
+\end_inset
+
+end,
+\begin_inset space ~
+\end_inset
+
 direct)
 \end_layout
 
@@ -1901,7 +2036,8 @@ Planar Transforms
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "Translation2D"
 
 \end_inset
@@ -1958,7 +2094,8 @@ The composition of wo translations with translation vectors
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "Rotation2D"
 
 \end_inset
@@ -2031,7 +2168,8 @@ R_{c,\theta_{1}}\circ R_{c,\theta_{2}}=R_{c,\theta_{1}+\theta_{2}}\]
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "Homothecy2D"
 
 \end_inset
@@ -2089,7 +2227,8 @@ s & 0 & \left(1-s\right)c_{x}\\
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "Scaling2D"
 
 \end_inset
@@ -2127,7 +2266,8 @@ s_{x} & 0 & \left(1-s_{x}\right)c_{x}\\
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "LineReflection2D"
 
 \end_inset
@@ -2145,7 +2285,8 @@ Note: to be implemented in StraightLine2D class.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "PointSymmetry2D"
 
 \end_inset
@@ -2167,7 +2308,8 @@ Transform interface hierarchy
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Transform2D"
 
 \end_inset
@@ -2190,7 +2332,8 @@ transformPoint(Point2D,Point2D):Point2D
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Bijection2D"
 
 \end_inset
@@ -2208,7 +2351,8 @@ getInverse():Bijection2D return the inverse transform
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:LinearTransform2D"
 
 \end_inset
@@ -2227,7 +2371,8 @@ Implementation
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:AffineTransform2D"
 
 \end_inset
@@ -2255,7 +2400,10 @@ getMatrix():double[][]
 \end_layout
 
 \begin_layout Description
-abstract\InsetSpace ~
+abstract
+\begin_inset space ~
+\end_inset
+
 getCoefficients():double[]
 \end_layout
 
@@ -2287,7 +2435,10 @@ getAsAwtTransform():java.awt.geom.AffineTransform
 \end_layout
 
 \begin_layout Description
-static\InsetSpace ~
+static
+\begin_inset space ~
+\end_inset
+
 createRotation(...):AffineTransform2D same as in java class
 \end_layout
 
@@ -2304,7 +2455,8 @@ Other transforms
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "ProjectiveTransform2D"
 
 \end_inset
@@ -2329,7 +2481,8 @@ getProjectiveMatrix return a
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "LinearTransform2D"
 
 \end_inset
@@ -2344,7 +2497,8 @@ A transform which can be represented using a matrix.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "CircleInversion2D"
 
 \end_inset
@@ -2457,7 +2611,8 @@ Geometric Graphs
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "GeometricGraph2D"
 
 \end_inset

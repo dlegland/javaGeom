@@ -105,21 +105,21 @@ public class DrawVennDiagram extends JPanel{
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		g2.draw(lineX.clip(box));
-		g2.draw(lineY.clip(box));
-		g2.draw(c0);
+		lineX.clip(box).draw(g2);
+		lineY.clip(box).draw(g2);
+		c0.draw(g2);
 		
 		
-		g2.draw(cd);
+		cd.draw(g2);
 		
 		PolyCurve2D<CircleArc2D> ce = this.createVennCurve(4);
-		g2.draw(ce);
+		ce.draw(g2);
 		
 		PolyCurve2D<CircleArc2D> cf = this.createVennCurve(5);
-		g2.draw(cf);
+		cf.draw(g2);
 		
 		PolyCurve2D<CircleArc2D> cg = this.createVennCurve(6);
-		g2.draw(cg);
+		cg.draw(g2);
 	
 //		g2.draw(cad0);
 //		g2.draw(cad1);

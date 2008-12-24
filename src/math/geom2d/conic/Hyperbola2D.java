@@ -281,14 +281,6 @@ implements Conic2D{
 		return new double[]{a, b, c, d, e, f};
 	}
 
-	/**
-	 * @deprecated use getConicCoefficients instead
-	 */
-	@Deprecated
-	public double[] getCartesianEquation() {
-		return getConicCoefficients();
-	}
-
 	public Point2D getCenter() {
 		return new Point2D(xc, yc);
 	}

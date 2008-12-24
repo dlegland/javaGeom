@@ -57,8 +57,9 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 		// draw test points with edge
 		g.setColor(Color.BLUE);
 		for(Point2D point : points){
-			LineSegment2D edge = new LineSegment2D(point, grid.getClosestVertex(point));
-			g2.draw(edge);
+			LineSegment2D edge = new LineSegment2D(point,
+					grid.getClosestVertex(point));
+			edge.draw(g2);
 			new Disc2D(point, 2).fill(g2);
 		}
 	}

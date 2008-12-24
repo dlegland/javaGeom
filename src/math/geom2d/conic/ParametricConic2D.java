@@ -27,8 +27,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.util.*;
 
 import math.geom2d.*;
@@ -91,14 +89,6 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	 */
 	public Type getConicType() {
 		return conic.getConicType();
-	}
-
-	/**
-	 * @deprecated use getConicCoefficients instead
-	 */
-	@Deprecated
-	public double[] getCartesianEquation() {
-		return getConicCoefficients();
 	}
 
 	/* (non-Javadoc)
@@ -264,85 +254,15 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see java.awt.Shape#contains(double, double, double, double)
-	 */
-	public boolean contains(
-		double arg0,
-		double arg1,
-		double arg2,
-		double arg3) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(double, double, double, double)
-	 */
-	public boolean intersects(
-		double arg0,
-		double arg1,
-		double arg2,
-		double arg3) {
-		return false;
-	}
-
-	/* (non-Javadoc)
 	 * @see java.awt.Shape#contains(java.awt.geom.Point2D)
 	 */
 	public boolean contains(java.awt.geom.Point2D point) {
 		return conic.contains(point);
 	}
 
-	/**
-	 * Return bounding box of the shape.
-	 */
-	public java.awt.Rectangle getBounds(){
-		return this.getBoundingBox().getAsAWTRectangle();
-	}
-	
-	/**
-	 * Return more precise bounds for the shape.
-	 */
-	public java.awt.geom.Rectangle2D getBounds2D(){
-		return this.getBoundingBox().getAsAWTRectangle2D();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#contains(java.awt.geom.Rectangle2D)
-	 */
-	public boolean contains(java.awt.geom.Rectangle2D arg0) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#intersects(java.awt.geom.Rectangle2D)
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D rect) {
-		return conic.intersects(rect);
-	}
-	
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform)
-	 */
-	public PathIterator getPathIterator(AffineTransform trans) {
-		return conic.getPathIterator(trans);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform, double)
-	 */
-	public PathIterator getPathIterator(AffineTransform trans, double flatness) {
-		return conic.getPathIterator(trans, flatness);
-	}
-	
 	public void draw(Graphics2D g) {
 		conic.draw(g);
 	}
-
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		return conic.getGeneralPath();
-	}
-	
 
 	/**
 	 * When internal parameters are modified, recompute type, focal...

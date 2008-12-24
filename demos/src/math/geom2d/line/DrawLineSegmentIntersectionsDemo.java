@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.PointSet2D;
-import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.CurveSet2D;
 
 /**
@@ -56,19 +55,19 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 		// Draw lines in outer box
 		g2.setColor(Color.BLUE);
 		for(LineSegment2D line : lines)
-			g2.draw(line);	
+			line.draw(g2);
 		
 		// Draw points in inner box
 		g2.setStroke(new BasicStroke(3.0f));
 		g2.setColor(Color.RED);
 		for(Point2D point : points){
 			if(box.contains(point))
-				 g2.fill(new Circle2D(point, 3));
+				 point.draw(g2, 3);
 		}
 		
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke(1.0f));
-		g2.draw(box.getBoundary());
+		box.getBoundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

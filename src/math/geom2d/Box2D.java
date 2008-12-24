@@ -341,14 +341,6 @@ public class Box2D {
 		return points;
 	}
 
-	/** 
-	 * Returns the number of vertices of the box.
-	 * @deprecated use getVertexNumber() instead (0.6.3)
-	 */
-	public int getVerticesNumber(){
-		return this.getVertices().size();
-	}
-
 	/** Returns the number of vertices of the box. */
 	public int getVertexNumber(){
 		return this.getVertices().size();
@@ -477,12 +469,12 @@ public class Box2D {
 
 	public void draw(Graphics2D g2){
 		if(!isBounded()) throw new UnboundedShapeException();
-		g2.draw(this.getBoundary().getGeneralPath());
+		this.getBoundary().draw(g2);
 	}
 	
 	public void fill(Graphics2D g2){
 		if(!isBounded()) throw new UnboundedShapeException();
-		g2.fill(this.getBoundary().getGeneralPath());
+		this.getBoundary().fill(g2);
 	}
 	
 	public Box2D getBoundingBox(){

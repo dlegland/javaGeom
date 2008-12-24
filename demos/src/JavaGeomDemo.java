@@ -51,41 +51,41 @@ public class JavaGeomDemo extends JPanel{
 		Point2D p2 = new Point2D(180, 100);
 				
 		// Draw the points
-		g2.draw(new Circle2D(p1, 2));
-		g2.draw(new Circle2D(p2, 2));
+		p1.draw(g2, 2);
+		p2.draw(g2, 2);
 		
 		// Create and draw a circle
 		Circle2D circle1 = new Circle2D(80, 120, 40);
-		g2.draw(circle1);
+		circle1.draw(g2);
 		
 		// Create a line
 		StraightLine2D line1 = new StraightLine2D(p1, p2);
 		
 		// Draw the line, after clipping
 		Box2D box = new Box2D(0, 200, 0, 200);
-		g2.draw(line1.clip(box));
+		line1.clip(box).draw(g2);
 		
 		Point2D p3 = new Point2D(20, 120);
 		Point2D p4 = new Point2D(40, 140);
 		
 		// Create line segment
 		LineSegment2D  edge  = new LineSegment2D(p3, p4);
-		g2.draw(edge);
+		edge.draw(g2);
 		
 		// Compute a median line, and draw it
 		StraightLine2D line2 = StraightLine2D.createMedian(p3, p4);
-		g2.draw(new Circle2D(p3, 2));
-		g2.draw(new Circle2D(p4, 2));
-		g2.draw(line2.clip(box));
+		p4.draw(g2, 2);
+		p4.draw(g2, 2);
+		line2.clip(box).draw(g2);
 
 		// Compute intersection between 2 lines
 		Point2D intLine = line2.getIntersection(line1);
-		g2.draw(new Circle2D(intLine, 2));
+		intLine.draw(g2, 2);
 		
 		// Compute intersections between a circle and lines
 		Collection<Point2D> intCircle = circle1.getIntersections(line2);
 		for(Point2D point : intCircle)
-			g2.draw(new Circle2D(point, 2));
+			point.draw(g2, 2);
 		
 		// Create some affine transforms
 		AffineTransform2D sca = AffineTransform2D.createScaling(p4, 2, .8);
@@ -93,9 +93,9 @@ public class JavaGeomDemo extends JPanel{
 		AffineTransform2D rot = AffineTransform2D.createRotation(p4, Math.PI/2);
 		
 		// Display the transformed shapes.
-		g2.draw(circle1.transform(sca));
-		g2.draw(circle1.transform(tra));
-		g2.draw(line2.transform(rot).clip(box));
+		circle1.transform(sca).draw(g2);
+		circle1.transform(tra).draw(g2);
+		line2.transform(rot).clip(box).draw(g2);
 	}
 
 	public final static void main(String[] args){
