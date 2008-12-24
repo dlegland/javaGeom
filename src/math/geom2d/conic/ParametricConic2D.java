@@ -33,7 +33,9 @@ import math.geom2d.*;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -106,6 +108,18 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 	}
 
 	
+	// ===================================================================
+	// methods inherited from interface Boundary2D
+
+	public Collection<ContinuousBoundary2D> getBoundaryCurves() {
+		return conic.getBoundaryCurves();
+	}
+
+	public Domain2D getDomain() {
+		return conic.getDomain();
+	}
+
+
 	// ===================================================================
 	// methods inherited from interface OrientedCurve2D
 
@@ -260,8 +274,12 @@ public class ParametricConic2D implements Curve2D, Conic2D {
 		return conic.contains(point);
 	}
 
-	public void draw(Graphics2D g) {
-		conic.draw(g);
+	public void fill(Graphics2D g2) {
+		conic.fill(g2);
+	}
+
+	public void draw(Graphics2D g2) {
+		conic.draw(g2);
 	}
 
 	/**

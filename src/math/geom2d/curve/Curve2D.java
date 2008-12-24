@@ -47,6 +47,7 @@ public interface Curve2D extends Shape2D {
 	// ===================================================================
 	// constants
 	
+	public final static Curve2D EMPTY_CURVE = new EmptyCurve2D();
 
 	// ===================================================================
 	// class variables
@@ -183,7 +184,8 @@ public interface Curve2D extends Shape2D {
 	public abstract void draw(Graphics2D g2);
 	
 	/**
-	 * Utilitary class for representing empty curves.
+	 * Utilitary class for representing empty curves. Should preferably be
+	 * accessed through the EMPTY_CURVE static variable.
 	 * @author dlegland
 	 */
 	static class EmptyCurve2D extends Shape2D.EmptySet2D implements Curve2D{

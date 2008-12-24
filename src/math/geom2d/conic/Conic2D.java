@@ -26,8 +26,8 @@ package math.geom2d.conic;
 
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.domain.OrientedCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports
@@ -36,8 +36,7 @@ import math.geom2d.transform.AffineTransform2D;
  * Interface for all conic curves: parametric conics, or ellipses, parabolas,
  * and hyperbolas. Degenerate conics are also encompassed by this interface.
  */
-public interface Conic2D extends OrientedCurve2D{
-	//TODO: makeConic2D inherits Boundary2D
+public interface Conic2D extends Boundary2D{
 	
 	// ===================================================================
 	// constants
