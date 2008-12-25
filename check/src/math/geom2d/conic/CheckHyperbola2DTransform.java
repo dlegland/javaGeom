@@ -95,7 +95,7 @@ public class CheckHyperbola2DTransform extends JPanel{
 
 		// Draw transform origin
 		Point2D p1 = new Point2D(x0, y0);
-		new Disc2D(p1, 4).fill(g2);
+		p1.draw(g2, 4);
 	}
 
 	public final static void main(String[] args){

@@ -99,8 +99,8 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// Draw focal points
 		g2.setColor(Color.BLUE);
-		new Disc2D(focus1, 4).fill(g2);
-		new Disc2D(focus2, 4).fill(g2);
+		focus1.draw(g2, 4);
+		focus2.draw(g2, 4);
 		
 		// Get intersections with some lines
 		StraightLine2D line1 = new StraightLine2D(50, 50, 10, 0);
@@ -115,13 +115,13 @@ public class DrawHyperbolaDemo extends JPanel{
 		// Draw point sets
 		g2.setColor(Color.RED);
 		for(Point2D point : points1)
-			new Disc2D(point, 2).fill(g2);
+			point.draw(g2, 2);
 		for(Point2D point : points2)
-			new Disc2D(point, 2).fill(g2);
+			point.draw(g2, 2);
 		for(Point2D point : points3)
-			new Disc2D(point, 2).fill(g2);
+			point.draw(g2, 2);
 		for(Point2D point : points4)
-			new Disc2D(point, 2).fill(g2);
+			point.draw(g2, 2);
 		
 		
 		// Compute intersections of branches with lines
@@ -129,9 +129,9 @@ public class DrawHyperbolaDemo extends JPanel{
 		points4 = hyperbola.getIntersections(line4);
 		
 		for(Point2D point : points2)
-			new Disc2D(point, 4).fill(g2);
+			point.draw(g2, 4);
 		for(Point2D point : points4)
-			new Disc2D(point, 4).fill(g2);
+			point.draw(g2, 4);
 
 		
 		// The clipping of first branch
@@ -163,7 +163,7 @@ public class DrawHyperbolaDemo extends JPanel{
 			
 		// Draw parabola origin
 		Point2D p1 = hyperbola.getCenter();
-		new Disc2D(p1, 4).fill(g2);
+		p1.draw(g2, 4);
 		
 		// Draw the bounding box
 		g2.setStroke(new BasicStroke(1.0f));

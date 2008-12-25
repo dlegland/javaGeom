@@ -1367,7 +1367,7 @@ getSupportLine():StraightLine2D return the supporting line
 \begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:LinearShape2D"
+name "sub:AbstractLine2D"
 
 \end_inset
 

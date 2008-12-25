@@ -1,4 +1,4 @@
-/* file : CheckRotateParabola2D.java
+/* file : CheckPolygon2D_Clip2.java
  * 
  * Project : Euclide
  *
@@ -20,71 +20,68 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 1 avr. 2007
+ * Created on 19 avr. 2007
  *
  */
 
-package math.geom2d.conic;
+package math.geom2d.polygon;
 
 import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.conic.Parabola2D;
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.polygon.SimplePolygon2D;
 
 
-public class CheckRotateParabola2D extends JPanel{
+public class CheckPolygon2D_Clip2 extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
-	double x0 = 150;
-	double y0 = 150;
-	double a  = .1;
-
-	Parabola2D parabola = null;
+	SimplePolygon2D polygon = null;
 	Box2D box = null;
 	
-	public CheckRotateParabola2D() {
+	public CheckPolygon2D_Clip2() {
 		super();
 		
-		parabola = new Parabola2D(x0, y0+30, a, 0);
+		Point2D p1 = new Point2D(200, 100);
+		Point2D p2 = new Point2D(350, 250);
+		Point2D p3 = new Point2D(250, 350);
+		Point2D p4 = new Point2D(100, 200);
+		polygon = new SimplePolygon2D(new Point2D[]{p1, p2, p3, p4});
 		
 		box = new Box2D(50, 250, 50, 250);
-	
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
-			
-
-		g2.setColor(Color.BLACK);
-		g2.draw(box.getAsRectangle());
-
-		for(int i=0; i<8; i++){
-			double theta = i*Math.PI*2/8;
-			AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
-			Parabola2D rotated = parabola.transform(rot);
-
-			g2.setColor(Color.CYAN);
-			rotated.getDomain().clip(box).fill(g2);
-			g2.setColor(Color.BLUE);
-			rotated.clip(box).draw(g2);
-		}
+	
+		g2.setColor(Color.BLUE);
+		box.getAsRectangle().getBoundary().draw(g2);
 		
-		// Draw parabola origin
-		Point2D p1 = parabola.getPoint(0);
-		p1.draw(g2, 4);
+		Boundary2D boundary = polygon.getBoundary();
+
+		// Draw initial polygon
+		g2.setColor(Color.YELLOW);
+		polygon.fill(g2);		
+		g2.setColor(Color.BLUE);
+		boundary.draw(g2);
+
+		// draw clipped polygon
+		g2.setColor(Color.CYAN);
+		polygon.clip(box).fill(g2);
+		g2.setColor(Color.BLUE);
+		g2.setStroke(new BasicStroke(2.0f));
+		boundary.clip(box).draw(g2);
 	}
 
 	public final static void main(String[] args){
-		System.out.println("should draw a parabola");
+		System.out.println("should draw a clipped polygon");
 		
-		JPanel panel = new CheckRotateParabola2D();
-		JFrame frame = new JFrame("Check rotations of parabola");
+		JPanel panel = new CheckPolygon2D_Clip2();
+		JFrame frame = new JFrame("Clip Polygon demo (2)");
 		frame.setContentPane(panel);
-		frame.setSize(500, 400);
-		frame.setVisible(true);
-		
+		frame.setSize(400, 400);
+		frame.setVisible(true);	
 	}
 }

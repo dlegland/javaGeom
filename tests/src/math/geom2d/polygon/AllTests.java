@@ -37,7 +37,6 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.polygon");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(HalfPlane2DTest.class));
 		suite.addTest(new TestSuite(MultiPolygon2DTest.class));
 		suite.addTest(new TestSuite(SimplePolygon2DTest.class));
 		suite.addTest(new TestSuite(Rectangle2DTest.class));

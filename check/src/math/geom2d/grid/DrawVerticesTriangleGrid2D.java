@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.conic.Disc2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawVerticesTriangleGrid2D  extends JPanel{
@@ -39,11 +38,11 @@ public class DrawVerticesTriangleGrid2D  extends JPanel{
 
 		// draw vertices of the grid, as black circles
 		for(Point2D point : grid.getVertices(box))
-			new Disc2D(point, 3).fill(g2);
+			point.draw(g2, 3);
 
 		// draw the origin, as a red circle 
 		g.setColor(Color.RED);
-		new Disc2D(x0, y0, 3).fill(g2);
+		new Point2D(x0, y0).draw(g2, 3);
 	}
 
 	public final static void main(String[] args){
