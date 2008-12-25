@@ -80,7 +80,7 @@ public class DrawOblicParabolaDemo extends JPanel{
 		
 		// Draw parabola origin
 		Point2D p1 = parabola.getPoint(0);
-		new Disc2D(p1, 4).fill(g2);
+		p1.draw(g2, 4);
 		
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);

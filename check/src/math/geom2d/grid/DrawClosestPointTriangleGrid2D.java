@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.conic.Disc2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawClosestPointTriangleGrid2D  extends JPanel{
@@ -41,7 +40,7 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 
 		// draw vertices of the grid, as black circles
 		for(Point2D point : grid.getVertices(box))
-			new Disc2D(point, 3).fill(g2);
+			point.draw(g2, 3);
 
 		Point2D[] points = new Point2D[]{
 				new Point2D(x0+s/3+3*s, y0+s/3),
@@ -60,7 +59,7 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 			LineSegment2D edge = new LineSegment2D(point,
 					grid.getClosestVertex(point));
 			edge.draw(g2);
-			new Disc2D(point, 2).fill(g2);
+			point.draw(g2, 2);
 		}
 	}
 

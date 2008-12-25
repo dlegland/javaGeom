@@ -348,21 +348,6 @@ public class LineArc2D extends AbstractLine2D
 		path.lineTo((float)getX2(), (float)getY2());
 		return path;
 	}
-
-	
-	/** 
-	 * Return pathiterator for this line arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t){
-		return this.getGeneralPath().getPathIterator(t);
-	}
-
-	/** 
-	 * Return PathIterator for this line arc.
-	 */
-	public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform t, double flatness){
-		return this.getGeneralPath().getPathIterator(t, flatness);
-	}
 	
 	public void draw(Graphics2D g) {
 		g.draw(this.getGeneralPath());

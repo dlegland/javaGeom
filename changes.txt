@@ -8,12 +8,14 @@ New features
 
 Regressions
 - Shape2D does not inherit from java.awt.Shape anymore
-- removed Conic2D.getCartesianEquation()
+- removed useless classes:
+	+ Disc2D, ParametricConic2D, HalfPlane2D
 - removed obsolete methods:
 	+ Polygon2D.getVerticesNumber()
 	+ PointSet2D.getPointsNumber()
+	+ Conic2D.getCartesianEquation()
 
-	
+		
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.conic.Disc2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
 
 public class DrawEdgesTriangleGrid2D  extends JPanel{
@@ -37,7 +37,7 @@ public class DrawEdgesTriangleGrid2D  extends JPanel{
 			line.draw(g2);
 
 		g.setColor(Color.RED);
-		new Disc2D(x0, y0, 3).fill(g2);
+		new Point2D(x0, y0).draw(g2, 3);
 	}
 
 	public final static void main(String[] args){
