@@ -24,7 +24,7 @@
  *
  */
 
-package math.geom2d.algos.convhull;
+package math.geom2d.polygon.convhull;
 
 import java.awt.*;
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package math.geom2d.algos.convhull;
+package math.geom2d.polygon.convhull;
 
 import math.geom2d.Point2D;
 import math.geom2d.PointSet2D;
