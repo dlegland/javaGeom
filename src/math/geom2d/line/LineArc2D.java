@@ -131,7 +131,7 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
         if (t0!=Double.NEGATIVE_INFINITY)
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
     }
 
     /**
@@ -144,7 +144,7 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
         if (t1!=Double.POSITIVE_INFINITY)
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
     }
 
     public double getX1() {
@@ -215,8 +215,8 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
         if (t>t1)
             t = t1;
 
-        if (t==Double.NEGATIVE_INFINITY||t==Double.POSITIVE_INFINITY)
-            return Point2D.INFINITY_POINT;
+        if (Double.isInfinite(t))
+            throw new UnboundedShapeException();
         else
             return new Point2D(x0+dx*t, y0+dy*t);
     }
@@ -228,10 +228,10 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
      * @return the last point of the arc
      */
     public Point2D getFirstPoint() {
-        if (t0!=Double.NEGATIVE_INFINITY)
+        if (!Double.isInfinite(t0))
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
     }
 
     /**
@@ -241,10 +241,10 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
      * @return the last point of the arc
      */
     public Point2D getLastPoint() {
-        if (t1!=Double.POSITIVE_INFINITY)
+        if (!Double.isInfinite(t1))
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
     }
 
     public Collection<Point2D> getSingularPoints() {

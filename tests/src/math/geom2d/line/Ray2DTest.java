@@ -28,6 +28,7 @@
 package math.geom2d.line;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import junit.framework.TestCase;
@@ -62,8 +63,11 @@ public class Ray2DTest extends TestCase {
 	
 	public void testGetLastPoint(){
 		Ray2D ray1 = new Ray2D(2, 2, 1, 0);
-		Point2D lastPoint = ray1.getLastPoint();
-		assertTrue(lastPoint==Point2D.INFINITY_POINT);
+		try {
+            ray1.getLastPoint();
+            fail("Should throw an InfiniteShapeException");
+        }catch(UnboundedShapeException ex){         
+        }
 	}
 	
 	public void testGetBoundingBox(){
