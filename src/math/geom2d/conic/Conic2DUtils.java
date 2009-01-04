@@ -182,7 +182,7 @@ public class Conic2DUtils {
 
         if (at<0&&bt<0) {
             System.err.println("Conic2DUtils.reduceConic(): found A<0 and C<0");
-            return new EmptyConic2D(coefs);
+            return null;
         }
 
         // Case of an ellipse
@@ -337,6 +337,11 @@ public class Conic2DUtils {
         }
     }
 
+    /**
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes
+     */
+    @Deprecated
     static class EmptyConic2D extends Curve2D.EmptyCurve2D implements Conic2D {
 
         double[] coefs;
@@ -403,7 +408,7 @@ public class Conic2DUtils {
         }
 
         public Domain2D getDomain() {
-            return Domain2D.EMPTY_DOMAIN2D;
+            return null;
         }
     }
 

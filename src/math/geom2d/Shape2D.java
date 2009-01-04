@@ -47,6 +47,10 @@ public interface Shape2D {
      */
     public final static double  ACCURACY  = 1e-12;
 
+    /**
+     * @deprecated methods returning empty result should return null (0.7.0)
+     */
+    @Deprecated
     public final static Shape2D EMPTY_SET = new EmptySet2D();
 
     public abstract boolean contains(double x, double y);
@@ -109,8 +113,11 @@ public interface Shape2D {
     /**
      * An empty set is a shape which does not contain any point.
      * 
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes (0.7.0)
      * @author Legland
      */
+    @Deprecated
     public class EmptySet2D implements Shape2D {
 
         protected EmptySet2D() {
