@@ -22,6 +22,7 @@
  */
 
 // package
+
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
@@ -34,85 +35,93 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Interface for shapes that draws an 'interior' and an 'exterior'. A 
+ * Interface for shapes that draws an 'interior' and an 'exterior'. An
  * AbstractDomain2D can be defined with a non-self intersecting set of Curve2D,
  * and contains all points lying 'on the left' of the parent curve.
  * <p>
- * Some Shape may seem very similar, for example Conic2D and ConicCurve2D.
- * The reason is that a point can be contained in a Conic2D but not in the
- * ConicCurve2D. 
+ * Some Shape may seem very similar, for example Conic2D and ConicCurve2D. The
+ * reason is that a point can be contained in a Conic2D but not in the
+ * ConicCurve2D.
  */
-public interface Domain2D extends Shape2D{
-	
-	public final static Domain2D EMPTY_DOMAIN2D = new EmptyDomain2D();
+public interface Domain2D extends Shape2D {
 
-	/**
-	 * Returns the boundary of the set. This boundary is either a continuous
-	 * non intersecting curve (connected domain), or a set of non intersecting
-	 * continuous curve (one continuous non-intersection for each connected
-	 * part of the domain). <p>
-	 * The returned curve is oriented, with an interior and an exterior.
-	 * @return the boundary of the domain
-	 */
-	public abstract Boundary2D getBoundary();
-	
-	/**
-	 * Returns the domain which complements this domain in the plane.
-	 * @return the complement of this domain.
-	 * @since 0.6.3
-	 */
-	public abstract Domain2D complement();
-	
-	public abstract Domain2D transform(AffineTransform2D transform);
-	public abstract Domain2D clip(Box2D box);
-	
-	/**
-	 * Draws the boundary of the domain, using current Stroke and color.
-	 * @param g2 the Graphics to draw on
-	 * @since 0.6.3
-	 */
-	public abstract void draw(Graphics2D g2);
-	
-	/**
-	 * Fills the interior of the domain, using the Graphics current Paint.
-	 * @param g2 the Graphics to fill on
-	 * @since 0.6.3
-	 */
-	public abstract void fill(Graphics2D g2);
-	
-	/** 
-	 * Definition of an empty domain. Should preferably be
-	 * accessed through the EMPTY_DOMAIN static variable.
-	 * @author dlegland
-	 *
-	 */
-	public static class EmptyDomain2D extends Shape2D.EmptySet2D 
-	implements Domain2D {
+    public final static Domain2D EMPTY_DOMAIN2D = new EmptyDomain2D();
 
-		public EmptyDomain2D() {
-		}
-		
-		public Domain2D complement() {
-			//TODO: return full domain
-			return this;
-		}
+    /**
+     * Returns the boundary of the set. This boundary is either a continuous non
+     * intersecting curve (connected domain), or a set of non intersecting
+     * continuous curve (one continuous non-intersection for each connected part
+     * of the domain).
+     * <p>
+     * The returned curve is oriented, with an interior and an exterior.
+     * 
+     * @return the boundary of the domain
+     */
+    public abstract Boundary2D getBoundary();
 
-		public void draw(Graphics2D g2) {
-		}
+    /**
+     * Returns the domain which complements this domain in the plane.
+     * 
+     * @return the complement of this domain.
+     * @since 0.6.3
+     */
+    public abstract Domain2D complement();
 
-		public void fill(Graphics2D g2) {
-		}
+    public abstract Domain2D transform(AffineTransform2D transform);
 
-		public Boundary2D getBoundary() {
-			return Boundary2D.EMPTY_BOUNDARY;
-		}
-		
-		public Domain2D transform(AffineTransform2D trans){
-			return this;
-		}
-		
-		public Domain2D clip(Box2D box){
-			return this;
-		}
-	}
+    public abstract Domain2D clip(Box2D box);
+
+    /**
+     * Draws the boundary of the domain, using current Stroke and color.
+     * 
+     * @param g2 the Graphics to draw on
+     * @since 0.6.3
+     */
+    public abstract void draw(Graphics2D g2);
+
+    /**
+     * Fills the interior of the domain, using the Graphics current Paint.
+     * 
+     * @param g2 the Graphics to fill on
+     * @since 0.6.3
+     */
+    public abstract void fill(Graphics2D g2);
+
+    /**
+     * Definition of an empty domain. Should preferably be accessed through the
+     * EMPTY_DOMAIN static variable.
+     * 
+     * @author dlegland
+     */
+    public static class EmptyDomain2D extends Shape2D.EmptySet2D implements
+            Domain2D {
+
+        public EmptyDomain2D() {
+        }
+
+        public Domain2D complement() {
+            // TODO: return full domain
+            return this;
+        }
+
+        public void draw(Graphics2D g2) {
+        }
+
+        public void fill(Graphics2D g2) {
+        }
+
+        public Boundary2D getBoundary() {
+            return Boundary2D.EMPTY_BOUNDARY;
+        }
+
+        @Override
+        public Domain2D transform(AffineTransform2D trans) {
+            return this;
+        }
+
+        @Override
+        public Domain2D clip(Box2D box) {
+            return this;
+        }
+    }
 }

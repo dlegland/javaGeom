@@ -23,6 +23,7 @@
  * Created on 1 avr. 2007
  *
  */
+
 package math.geom2d.domain;
 
 import math.geom2d.transform.AffineTransform2D;
@@ -30,12 +31,13 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * A continuous boundary is a continuous oriented curve which delimits a
  * connected planar domain.
+ * 
  * @author dlegland
  */
 public interface ContinuousBoundary2D extends Boundary2D,
-		ContinuousOrientedCurve2D {
-	
-	public abstract ContinuousBoundary2D getReverseCurve();
+        ContinuousOrientedCurve2D {
 
-	public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
+    public abstract ContinuousBoundary2D getReverseCurve();
+
+    public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
 }

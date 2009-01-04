@@ -23,6 +23,7 @@
  * Created on 28 nov. 2006
  *
  */
+
 package math.geom3d.transform;
 
 import math.geom3d.Point3D;
@@ -31,9 +32,8 @@ import math.geom3d.Point3D;
  * @author dlegland
  */
 public interface Transform3D {
-	
-	
-	public abstract Point3D[] transformPoints(Point3D[] src, Point3D[] dst);
-	
-	public abstract Point3D transformPoint(Point3D src, Point3D dst);
+
+    public abstract Point3D[] transformPoints(Point3D[] src, Point3D[] dst);
+
+    public abstract Point3D transformPoint(Point3D src, Point3D dst);
 }

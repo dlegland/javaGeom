@@ -23,6 +23,7 @@
  * Created on 25 déc. 2006
  *
  */
+
 package math.geom2d.domain;
 
 import math.geom2d.Box2D;
@@ -30,20 +31,21 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
 
-
 /**
- * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D
- * is a continuous, oriented and non self-intersecting curve.
+ * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D is
+ * a continuous, oriented and non self-intersecting curve.
+ * 
  * @author dlegland
  */
-public interface ContinuousOrientedCurve2D extends ContinuousCurve2D, OrientedCurve2D{
-	
-	public abstract ContinuousOrientedCurve2D getReverseCurve();
+public interface ContinuousOrientedCurve2D extends ContinuousCurve2D,
+        OrientedCurve2D {
 
-	public abstract ContinuousOrientedCurve2D getSubCurve(double t0, double t1);
+    public abstract ContinuousOrientedCurve2D getReverseCurve();
 
-	public abstract ContinuousOrientedCurve2D transform(AffineTransform2D trans);
+    public abstract ContinuousOrientedCurve2D getSubCurve(double t0, double t1);
 
-	public abstract CurveSet2D<? extends ContinuousOrientedCurve2D>
-	clip(Box2D box);
+    public abstract ContinuousOrientedCurve2D transform(AffineTransform2D trans);
+
+    public abstract CurveSet2D<? extends ContinuousOrientedCurve2D> clip(
+            Box2D box);
 }

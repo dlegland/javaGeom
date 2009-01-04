@@ -29,6 +29,7 @@ package math.geom2s;
 /**
  * A great circle is a particular SmallCircle2S with radius pi/2. It separates
  * the sphere in two equal parts.
+ * 
  * @author Legland
  */
 public class GreatCircle2S extends SmallCircle2S {

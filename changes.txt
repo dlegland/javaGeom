@@ -1,4 +1,4 @@
-Changes of javaGeom library
+Changes in javaGeom library
 
 javaGeom-0.?.? (2008-??.??, rev. ???)
 
@@ -7,7 +7,8 @@ New features
 - added Domain2D.EMPTY_DOMAIN and Boundary2D.EMPTY_BOUNDARY
 
 Regressions
-- Shape2D does not inherit from java.awt.Shape anymore
+- Shape2D does not inherit from java.awt.Shape anymore, reducing the number of
+	methods for most classes
 - removed useless classes:
 	+ Disc2D, ParametricConic2D, HalfPlane2D
 - removed obsolete methods:
@@ -15,7 +16,7 @@ Regressions
 	+ PointSet2D.getPointsNumber()
 	+ Conic2D.getCartesianEquation()
 
-		
+
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features

@@ -22,41 +22,36 @@
  */
 
 // package
+
 package math.geom2d.transform;
 
 // Imports
 
 /**
- * Interface for all bijective transformations in the euclidean plane.
- * A transformation is a bijection if there is a direct relation from
- * sources to output. In this case, this means we can find the inverse 
- * transformation for each bijection.
+ * Interface for all bijective transformations in the euclidean plane. A
+ * transformation is a bijection if there is a direct relation from sources to
+ * output. In this case, this means we can find the inverse transformation for
+ * each bijection.
  */
-public interface Bijection2D extends Transform2D{
+public interface Bijection2D extends Transform2D {
 
+    // ===================================================================
+    // constants
 
-	// ===================================================================
-	// constants
-	
+    // ===================================================================
+    // class variables
 
-	// ===================================================================
-	// class variables
-	
-	
-	// ===================================================================
-	// constructors
-	
-	
-	// ===================================================================
-	// accessors
+    // ===================================================================
+    // constructors
 
+    // ===================================================================
+    // accessors
 
-	// ===================================================================
-	// modifiers
+    // ===================================================================
+    // modifiers
 
+    // ===================================================================
+    // general methods
 
-	// ===================================================================
-	// general methods
-
-	public abstract Bijection2D getInverseTransform();
+    public abstract Bijection2D getInverseTransform();
 }

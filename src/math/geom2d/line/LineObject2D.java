@@ -22,6 +22,7 @@
  */
 
 // package
+
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
@@ -43,17 +44,22 @@ import math.geom2d.transform.AffineTransform2D;
 // Imports
 
 /**
- * Straight Object defined from 2 points. This object keep points reference in memory,
- * then changing location of point obtained with <code> getPoint2() </code> or
- * <code> getPoint2() </code> will change properties of line.<p>
- * Moreover, type of object can change if one or both of the ending points are set
- * to <code> null</code>. It is then an easy way represent Straight Lines, Edges or 
- * Rays in the same class. If both points exist, object is like an Edge2D. If one 
- * only the two points is set to <code> null </code>, it is like a Ray2D, with
- * orientation depending one the missing point. If the two Points are set to <code> 
- * null </code>, then the object is like a StraightLine2D. <p>
+ * Straight Object defined from 2 points. This object keep points reference in
+ * memory, then changing location of point obtained with
+ * <code> getPoint2() </code> or <code> getPoint2() </code> will change
+ * properties of line.
  * <p>
- * Example :<p>
+ * Moreover, type of object can change if one or both of the ending points are
+ * set to <code> null</code>. It is then an easy way represent Straight Lines,
+ * Edges or Rays in the same class. If both points exist, object is like an
+ * Edge2D. If one only the two points is set to <code> null </code>, it is like
+ * a Ray2D, with orientation depending one the missing point. If the two Points
+ * are set to <code> 
+ * null </code>, then the object is like a StraightLine2D.
+ * <p>
+ * <p>
+ * Example :
+ * <p>
  * <code>
  * // Create an Edge2D<br>
  * LineObject2D line = new LineObject2D(new Point2D(0, 0), new Point2D(1, 2));<br>
@@ -66,556 +72,615 @@ import math.geom2d.transform.AffineTransform2D;
  * line.setPoint1(null);<br>
  * // Transform into Line2D, going through (2,3) and (4,5) :<br>
  * line.setPoint2(null);<br>
- * </code><p><p>
- * This class is maybe slower than Edge2D or StraightLine2D, because parameters are
- * updated each time a computation is made, causing lot of additional processing.
+ * </code>
+ * <p>
+ * <p>
+ * This class is maybe slower than Edge2D or StraightLine2D, because parameters
+ * are updated each time a computation is made, causing lot of additional
+ * processing.
  */
-public class LineObject2D extends AbstractLine2D{
+public class LineObject2D extends AbstractLine2D {
 
+    // ===================================================================
+    // constants
 
-	// ===================================================================
-	// constants
-	
+    // ===================================================================
+    // class variables
 
-	// ===================================================================
-	// class variables
-	
-	private Point2D point1=null;
-	private Point2D point2=null;
-	
-	
-	// ===================================================================
-	// constructors
-	
-	/** Define a new Edge with two extremities. */
-	public LineObject2D(Point2D point1, Point2D point2){
-		super(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2.getY()-point1.getY());
-		this.point1 = point1;
-		this.point2 = point2;
-	}
-	
-	/** Define a new Edge with two extremities. */
-	public LineObject2D(double x1, double y1, double x2, double y2){
-		super(x1, y1, x2-x1, y2-y1);
-		point1 = new Point2D(x1, y1);
-		point2 = new Point2D(x2, y2);
-	}
-	
-	
-	// ===================================================================
-	// Methods specific to LineObject2D
-	
-	/**
-	 * Recompute (x0,y0) and (dx,dy) from position of points. If point1 is set to
-	 * null, recompute only (dx,dy). If point2 is set to null, recompute only (x0,y0).
-	 * If both points are set to null , recompute nothing.
-	 */
-	private void updateParameters(){
-		if(point1!=null){
-			x0 = point1.getX();
-			y0 = point1.getY();
-		}
-		if(point2!=null){
-			dx = point2.getX()-x0;
-			dy = point2.getY()-y0;
-		}
-	}
-	
-	public void setPoint1(Point2D point){
-		point1 = point;
-		updateParameters();
-	}
-	
-	public void setPoint2(Point2D point){
-		point2 = point;
-		updateParameters();
-	}
-	
+    private Point2D point1 = null;
+    private Point2D point2 = null;
 
-	// ===================================================================
-	// accessors
-	
-	/** 
-	 * return true only if both <code> point1</code> and <code>point2</code>
-	 * are not set to null. If one of the two points is null, it is a Ray.
-	 * If both points are set to null, it is a Straight Line.
-	 */
-	public boolean isBounded(){
-		return point1!=null && point2!=null;
-	}
+    // ===================================================================
+    // constructors
 
-	public boolean isEmpty(){
-		return false;
-	}
+    /** Define a new Edge with two extremities. */
+    public LineObject2D(Point2D point1, Point2D point2) {
+        super(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2
+                .getY()
+                -point1.getY());
+        this.point1 = point1;
+        this.point2 = point2;
+    }
 
-	public boolean isColinear(LinearShape2D line){		
-		updateParameters();
-		return super.isColinear(line);
-	}
+    /** Define a new Edge with two extremities. */
+    public LineObject2D(double x1, double y1, double x2, double y2) {
+        super(x1, y1, x2-x1, y2-y1);
+        point1 = new Point2D(x1, y1);
+        point2 = new Point2D(x2, y2);
+    }
 
-	/**
-	 * Test if the this object is parallel to the given one. This method is overloaded
-	 * to update parameters before computation.
-	 */
-	public boolean isParallel(LinearShape2D line){		
-		updateParameters();
-		return super.isParallel(line);
-	}
+    // ===================================================================
+    // Methods specific to LineObject2D
 
-	public boolean equals(Object obj){
-		if(!(obj instanceof LineObject2D)) return false;
-		return equals((LineObject2D)obj);
-	}
-	
-	
-	/**
-	 * Get the distance of the point (x, y) to this edge.
-	 */
-	public double getDistance(java.awt.geom.Point2D p){
-		return getDistance(p.getX(), p.getY());
-	}
-	
-	/**
-	 * Get the distance of the point (x, y) to this edge.
-	 */
-	public double getDistance(double x, double y){
-		updateParameters();
-		Point2D proj = super.getProjectedPoint(x, y);
-		if(contains(proj)) return proj.distance(x, y);
-		double d1=Double.POSITIVE_INFINITY;
-		double d2=Double.POSITIVE_INFINITY;
-		if(point1!=null) d1 = Math.sqrt((x0-x)*(x0-x) + (y0-y)*(y0-y));
-		if(point2!=null) d2 = Math.sqrt((x0+dx-x)*(x0+dx-x) + (y0+dy-y)*(y0+dy-y));
-		//System.out.println("dist lineObject2D : " + Math.min(d1, d2));
-		return Math.min(d1, d2);
-	}
+    /**
+     * Recompute (x0,y0) and (dx,dy) from position of points. If point1 is set
+     * to null, recompute only (dx,dy). If point2 is set to null, recompute only
+     * (x0,y0). If both points are set to null , recompute nothing.
+     */
+    private void updateParameters() {
+        if (point1!=null) {
+            x0 = point1.getX();
+            y0 = point1.getY();
+        }
+        if (point2!=null) {
+            dx = point2.getX()-x0;
+            dy = point2.getY()-y0;
+        }
+    }
 
-	public double getSignedDistance(java.awt.geom.Point2D p){
-		return getSignedDistance(p.getX(), p.getY());
-	}
+    public void setPoint1(Point2D point) {
+        point1 = point;
+        updateParameters();
+    }
 
-	public double getSignedDistance(double x, double y){
-		updateParameters();
-		return super.getSignedDistance(x, y);
-	}
+    public void setPoint2(Point2D point) {
+        point2 = point;
+        updateParameters();
+    }
 
-	public double[][] getParametric(){
-		updateParameters();
-		return super.getParametric();
-	}
+    // ===================================================================
+    // accessors
 
-	public double[] getCartesianEquation(){
-		updateParameters();
-		return super.getCartesianEquation();
-	}
+    /**
+     * return true only if both <code> point1</code> and <code>point2</code>
+     * are not set to null. If one of the two points is null, it is a Ray. If
+     * both points are set to null, it is a Straight Line.
+     */
+    public boolean isBounded() {
+        return point1!=null&&point2!=null;
+    }
 
-	public double[] getPolarCoefficients(){
-		updateParameters();
-		return super.getPolarCoefficients();
-	}
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
-	public double[] getSignedPolarCoefficients(){
-		updateParameters();
-		return super.getSignedPolarCoefficients();
-	}		
+    @Override
+    public boolean isColinear(LinearShape2D line) {
+        updateParameters();
+        return super.isColinear(line);
+    }
 
-	public double getHorizontalAngle(){
-		updateParameters();
-		return super.getHorizontalAngle();
-	}
+    /**
+     * Test if the this object is parallel to the given one. This method is
+     * overloaded to update parameters before computation.
+     */
+    @Override
+    public boolean isParallel(LinearShape2D line) {
+        updateParameters();
+        return super.isParallel(line);
+    }
 
-	public Point2D getProjectedPoint(Point2D p){
-		updateParameters();
-		return super.getProjectedPoint(p);
-	}
-	
-	public Point2D getProjectedPoint(double x, double y){
-		updateParameters();
-		return super.getProjectedPoint(x, y);
-	}
-	
-	/**
-	 * Create a straight line parallel to this object, and going through the
-	 * given point.
-	 * @param point the point to go through
-	 * @return the parallel through the point
-	 */
-	public StraightLine2D getParallel(Point2D point){
-		updateParameters();
-		return null;		
-	}
-	
-	/**
-	 * Create a straight line perpendicular to this object, and going through 
-	 * the given point.
-	 * @param point : the point to go through
-	 * @return the perpendicular through point
-	 */
-	public StraightLine2D getPerpendicular(Point2D point){
-		updateParameters();
-		return super.getPerpendicular(point);		
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LineObject2D))
+            return false;
+        return equals((LineObject2D) obj);
+    }
 
-	/**
-	 * Clip the line object by a box. The result is an instance of
-	 * CurveSet2D<LineArc2D>, which 
-	 * contains only instances of LineArc2D. If the line object is not
-	 * clipped, the result is an instance of
-	 * CurveSet2D<LineArc2D> which contains 0 curves.
-	 */
-	public CurveSet2D<? extends LineArc2D> clip(Box2D box) {
-		// Clip the curve
-		CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
-		
-		// Stores the result in appropriate structure
-		CurveSet2D<LineArc2D> result =
-			new CurveSet2D<LineArc2D> ();
-		
-		// convert the result
-		for(Curve2D curve : set.getCurves()){
-			if (curve instanceof LineArc2D)
-				result.addCurve((LineArc2D) curve);
-		}
-		return result;
-	}
+    /**
+     * Get the distance of the point (x, y) to this edge.
+     */
+    @Override
+    public double getDistance(java.awt.geom.Point2D p) {
+        return getDistance(p.getX(), p.getY());
+    }
 
+    /**
+     * Get the distance of the point (x, y) to this edge.
+     */
+    @Override
+    public double getDistance(double x, double y) {
+        updateParameters();
+        Point2D proj = super.getProjectedPoint(x, y);
+        if (contains(proj))
+            return proj.distance(x, y);
+        double d1 = Double.POSITIVE_INFINITY;
+        double d2 = Double.POSITIVE_INFINITY;
+        if (point1!=null)
+            d1 = Math.sqrt((x0-x)*(x0-x)+(y0-y)*(y0-y));
+        if (point2!=null)
+            d2 = Math.sqrt((x0+dx-x)*(x0+dx-x)+(y0+dy-y)*(y0+dy-y));
+        // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
+        return Math.min(d1, d2);
+    }
 
-	/**
-	 * Return more precise bounds for the LineObject. Return an instance of HRectangle2D.
-	 */
-	public Box2D getBoundingBox(){
-		if(point1==null || point2==null)
-			return new Box2D(
-					Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
-					Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-		updateParameters();
-		return new Box2D(x0, x0+dx, y0, y0+dy);
-	}
+    @Override
+    public double getSignedDistance(java.awt.geom.Point2D p) {
+        return getSignedDistance(p.getX(), p.getY());
+    }
 
-	/** 
-	 * Returns the length of the edge.
-	 */
-	public double getLength(){
-		updateParameters();
-		return Math.sqrt(dx*dx + dy*dy);
-	}
-	
-	/**
-	 * Return the first point of the edge. It corresponds to getPoint(0).
-	 * @return the first point.
-	 */
-	public Point2D getPoint1(){
-		return point1;
-	}
-	
-	/**
-	 * Return the last point of the edge. It corresponds to getPoint(1).
-	 * @return the last point.
-	 */
-	public Point2D getPoint2(){
-		return point2;
-	}
-	
-	public double getX1(){
-		if(point1==null) return x0;
-		else return point1.getX();
-	}	
-	
-	public double getY1(){
-		if(point1==null) return y0;
-		else return point1.getY();
-	}
-	
-	public double getX2(){
-		updateParameters();
-		return x0+dx;
-	}
-	
-	public double getY2(){
-		updateParameters();
-		return y0+dy;
-	}
+    @Override
+    public double getSignedDistance(double x, double y) {
+        updateParameters();
+        return super.getSignedDistance(x, y);
+    }
 
-	/**
-	 * Return the opposite vertex of the edge.
-	 * @param point : one of the vertices of the edge
-	 * @return the other vertex
-	 */
-	public Point2D getOtherPoint(Point2D point){
-		if(point.equals(point1)) return point2;
-		if(point.equals(point2)) return point1;
-		return null;
-	}
-	
-	
-	// ===================================================================
-	// methods inherited from SmoothCurve2D interface
+    @Override
+    public double[][] getParametric() {
+        updateParameters();
+        return super.getParametric();
+    }
 
-	public Vector2D getTangent(double t){
-		return new Vector2D(dx, dy);
-	}
+    @Override
+    public double[] getCartesianEquation() {
+        updateParameters();
+        return super.getCartesianEquation();
+    }
 
-	/**
-	 * returns 0 as every straight object.
-	 */
-	public double getCurvature(double t){
-		return 0.0;
-	}
+    @Override
+    public double[] getPolarCoefficients() {
+        updateParameters();
+        return super.getPolarCoefficients();
+    }
 
-	public Polyline2D getAsPolyline(int n){
-		updateParameters();
-		Point2D[] points = new Point2D[n+1];
-		double t0 = this.getT0();
-		double t1 = this.getT1();
-		double dt = (t1-t0)/n;
-		for(int i=0; i<n; i++)
-			points[i] = this.getPoint((double)i*dt + t0);
-		return new Polyline2D(points);
-	}
+    @Override
+    public double[] getSignedPolarCoefficients() {
+        updateParameters();
+        return super.getSignedPolarCoefficients();
+    }
 
-	// ===================================================================
-	// methods inherited from Boundary2D interface
+    @Override
+    public double getHorizontalAngle() {
+        updateParameters();
+        return super.getHorizontalAngle();
+    }
 
-	public ContinuousOrientedCurve2D[] getBoundaryCurves(){
-		return new ContinuousOrientedCurve2D[]{this};
-	}
-	
-	
-	// ===================================================================
-	// methods inherited from OrientedCurve2D interface
+    @Override
+    public Point2D getProjectedPoint(Point2D p) {
+        updateParameters();
+        return super.getProjectedPoint(p);
+    }
 
-	public double getWindingAngle(java.awt.geom.Point2D point){
-		updateParameters();
-		
-		double angle0 = super.getHorizontalAngle();
-		double angle1 = (angle0 + Math.PI) % (2*Math.PI);
-		if(point1!=null)
-			angle1 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0, y0);
-		
-		double angle2 = angle0;
-		if(point2!=null)
-			angle2 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0+dx, y0+dy);
-		
-		if(this.isInside(point)){
-			if(angle2>angle1) return angle2 - angle1;
-			else return 2*Math.PI - angle1 + angle2;
-		}else{
-			if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
-			else return angle2 - angle1;
-		}
-	}
+    @Override
+    public Point2D getProjectedPoint(double x, double y) {
+        updateParameters();
+        return super.getProjectedPoint(x, y);
+    }
 
-	public boolean isInside(java.awt.geom.Point2D point){
-		return this.getSignedDistance(point.getX(), point.getY())<0;
-	}
+    /**
+     * Create a straight line parallel to this object, and going through the
+     * given point.
+     * 
+     * @param point the point to go through
+     * @return the parallel through the point
+     */
+    @Override
+    public StraightLine2D getParallel(Point2D point) {
+        updateParameters();
+        return null;
+    }
 
-	// ===================================================================
-	// methods inherited from Curve2D interface
+    /**
+     * Create a straight line perpendicular to this object, and going through
+     * the given point.
+     * 
+     * @param point : the point to go through
+     * @return the perpendicular through point
+     */
+    @Override
+    public StraightLine2D getPerpendicular(Point2D point) {
+        updateParameters();
+        return super.getPerpendicular(point);
+    }
 
-	/** 
-	 * Returns the parameter of the first point of the line Object. It is equal to
-	 * 0 in the case of edge or positive Rays, and equals -Infinity in the case of
-	 * StraightLine or negative rays.
-	 */
-	public double getT0(){
-		if(point1==null) return Double.NEGATIVE_INFINITY;
-		return 0.0;
-	}
+    /**
+     * Clip the line object by a box. The result is an instance of CurveSet2D<LineArc2D>,
+     * which contains only instances of LineArc2D. If the line object is not
+     * clipped, the result is an instance of CurveSet2D<LineArc2D> which
+     * contains 0 curves.
+     */
+    @Override
+    public CurveSet2D<? extends LineArc2D> clip(Box2D box) {
+        // Clip the curve
+        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
-	/**
-	* Returns the parameter of the first point of the line Object. It is equal to
-	* 1 in the case of edge or negative Rays, and equals +Infinity in the case of
-	* StraightLine or positive rays.
-	*/
-	public double getT1(){
-		if(point2==null) return Double.POSITIVE_INFINITY;
-		return 1.0;
-	}
+        // Stores the result in appropriate structure
+        CurveSet2D<LineArc2D> result = new CurveSet2D<LineArc2D>();
 
+        // convert the result
+        for (Curve2D curve : set.getCurves()) {
+            if (curve instanceof LineArc2D)
+                result.addCurve((LineArc2D) curve);
+        }
+        return result;
+    }
 
-	public Point2D getPoint(double t){		
-		if(t<0 && point1==null) return null;
-		if(t>1 && point2==null) return null;
-		if(t==0 && point1!=null) return point1;
-		if(t==1 && point2!=null) return point2;
-		updateParameters();
-		return new Point2D(x0 + dx*t, y0+dy*t);
-	}
+    /**
+     * Return more precise bounds for the LineObject. Return an instance of
+     * HRectangle2D.
+     */
+    public Box2D getBoundingBox() {
+        if (point1==null||point2==null)
+            return new Box2D(Double.NEGATIVE_INFINITY,
+                    Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
+                    Double.POSITIVE_INFINITY);
+        updateParameters();
+        return new Box2D(x0, x0+dx, y0, y0+dy);
+    }
 
-	/**
-	 * Get the first point of the curve. 
-	 * @return the first point of the curve
-	 */
-	public Point2D getFirstPoint(){
-		return point1;
-	}
-	
-	/**
-	 * Get the last point of the curve. 
-	 * @return the last point of the curve.
-	 */
-	public Point2D getLastPoint(){
-		return point2;
-	}
+    /**
+     * Returns the length of the edge.
+     */
+    public double getLength() {
+        updateParameters();
+        return Math.sqrt(dx*dx+dy*dy);
+    }
 
-	public Collection<Point2D> getSingularPoints(){
-		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-		if(point1!=null)
-			list.add(point1);
-		if(point2!=null)
-			list.add(point2);
-		return list;
-	}
-	
-	public boolean isSingular(double pos) {
-		if(Double.isInfinite(pos)) return false;
-		if(Math.abs(pos)<Shape2D.ACCURACY && point1!=null) return true;
-		if(Math.abs(pos-1)<Shape2D.ACCURACY && point2!=null) return true;
-		return false;
-	}
-	
-	/**
-	 * Gets position of the point on the line. If point belongs to the line, 
-	 * this position is defined by the ratio :<p>
-	 * <code> t = (xp - x0)/dx <\code>, or equivalently :<p>
-	 * <code> t = (yp - y0)/dy <\code>.<p>
-	 * If point does not belong to edge, return Double.NaN. The current implementation 
-	 * uses the direction with the biggest derivative, in order to avoid divisions 
-	 * by zero.
-	 */
-	public double getPosition(java.awt.geom.Point2D point){
-		if(!contains(point)) return Double.NaN;
-		// not useful to update, because parameters were updated in contains() method
-		//updateParameters();
-		if(Math.abs(dx)>Math.abs(dy))
-			return (point.getX()-x0)/dx;
-		else
-			return (point.getY()-y0)/dy;
-	}
-	
-	public double project(java.awt.geom.Point2D point){
-		updateParameters();
-		double t;
-		if(Math.abs(dx)>Math.abs(dy))
-			t = (point.getX()-x0)/dx;
-		else
-			t = (point.getY()-y0)/dy;
-		return Math.min(Math.max(t, getT0()), getT1());
-	}
+    /**
+     * Return the first point of the edge. It corresponds to getPoint(0).
+     * 
+     * @return the first point.
+     */
+    public Point2D getPoint1() {
+        return point1;
+    }
 
-	
-	/**
-	 * return the line object which starts at <code>point2</code> and ends at
-	 * <code>point1</code>.
-	 */
-	public LineObject2D getReverseCurve(){
-		return new LineObject2D(point2, point1);
-	}
+    /**
+     * Return the last point of the edge. It corresponds to getPoint(1).
+     * 
+     * @return the last point.
+     */
+    public Point2D getPoint2() {
+        return point2;
+    }
 
-	public Collection<ContinuousCurve2D> getContinuousCurves() {
-		ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-		list.add(this);
-		return list;
-	}
+    public double getX1() {
+        if (point1==null)
+            return x0;
+        else
+            return point1.getX();
+    }
 
-	/** Return a new LineArc2D, which is the portion of the linearc delimited
-	 * by parameters t0 and t1.
-	 */
-	public LineArc2D getSubCurve(double t0, double t1){
-		t0 = Math.max(t0, getT0());
-		t1 = Math.min(t1, getT1());
-		return new LineArc2D(this, t0, t1);
-	}
+    public double getY1() {
+        if (point1==null)
+            return y0;
+        else
+            return point1.getY();
+    }
 
-	
-	public void draw(Graphics2D g) {
-		g.draw(this.getGeneralPath());
-	}
+    public double getX2() {
+        updateParameters();
+        return x0+dx;
+    }
 
-	
-	// ===================================================================
-	// methods inherited from Shape2D interface
+    public double getY2() {
+        updateParameters();
+        return y0+dy;
+    }
 
-	public LineObject2D transform(AffineTransform2D trans){
-		updateParameters();
-		double[] tab = trans.getCoefficients();
-		double x1 = x0*tab[0] + y0*tab[1] + tab[2];
-		double y1 = x0*tab[3] + y0*tab[4] + tab[5];
-		return new LineObject2D(x1, y1, dx*tab[0]+dy*tab[1]+x1, dx*tab[3]+dy*tab[4]+y1);
-	}
+    /**
+     * Return the opposite vertex of the edge.
+     * 
+     * @param point : one of the vertices of the edge
+     * @return the other vertex
+     */
+    public Point2D getOtherPoint(Point2D point) {
+        if (point.equals(point1))
+            return point2;
+        if (point.equals(point2))
+            return point1;
+        return null;
+    }
 
-	
-	// ===================================================================
-	// methods inherited from Shape interface
+    // ===================================================================
+    // methods inherited from SmoothCurve2D interface
 
-	/** 
-	 * Return true if the point (x, y) lies on the line, with precision given 
-	 * by Shape2D.ACCURACY.
-	 */
-	public boolean contains(double x, double y){
-		updateParameters();
-		boolean b = super.supportContains(x, y);
-		double t;
-		if(Math.abs(dx)>Math.abs(dy)) t = (x-x0)/dx;
-		else t = (y-y0)/dy;
-		
-		return t>=0 && t<=1 && b;
-	}
+    @Override
+    public Vector2D getTangent(double t) {
+        return new Vector2D(dx, dy);
+    }
 
-	/** 
-	 * Return true if the point p lies on the line, with precision given by 
-	 * Shape2D.ACCURACY.
-	 */
-	public boolean contains(java.awt.geom.Point2D p){
-		return contains(p.getX(), p.getY());
-	}
-	
-	public java.awt.geom.GeneralPath getGeneralPath(){
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo((float)point1.getX(), (float)point1.getX());
-		path.lineTo((float)point2.getX(), (float)point2.getY());
-		return path;
-	}
+    /**
+     * returns 0 as every straight object.
+     */
+    @Override
+    public double getCurvature(double t) {
+        return 0.0;
+    }
 
-	public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-		path.lineTo((float)point1.getX(), (float)point1.getX());
-		path.lineTo((float)point2.getX(), (float)point2.getY());
-		return path;
-	}
-	
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangular
-	 * area.
-	 */
-	public boolean intersects(double x, double y, double w, double h){
-		return false;
-	}
+    public Polyline2D getAsPolyline(int n) {
+        updateParameters();
+        Point2D[] points = new Point2D[n+1];
+        double t0 = this.getT0();
+        double t1 = this.getT1();
+        double dt = (t1-t0)/n;
+        for (int i = 0; i<n; i++)
+            points[i] = this.getPoint(i*dt+t0);
+        return new Polyline2D(points);
+    }
 
-	/**
-	 * Tests if the Line intersects the interior of a specified rectangle2D.
-	 */
-	public boolean intersects(java.awt.geom.Rectangle2D r){
-		return false;
-	}
+    // ===================================================================
+    // methods inherited from Boundary2D interface
 
-	// ===================================================================
-	// methods inherited from Object interface
+    public ContinuousOrientedCurve2D[] getBoundaryCurves() {
+        return new ContinuousOrientedCurve2D[] { this };
+    }
 
-	public String toString(){
-		updateParameters();
-		return Double.toString(x0).concat(new String(" ")).
-		concat(Double.toString(y0)).concat(
-			new String(" ")).concat(Double.toString(dx)).
-			concat(new String(" ")).concat(Double.toString(dy));
-	}
-	
-	/**
-	 * Two LineObject2D are equals if the share the two same points,
-	 * in the same order.
-	 * @param edge : the edge to compare to.
-	 * @return true if extremities of both edges are the same.
-	 */
-	public boolean equals(LineObject2D edge){
-		return point1==edge.point1 && point2==edge.point2;
-	}
+    // ===================================================================
+    // methods inherited from OrientedCurve2D interface
+
+    @Override
+    public double getWindingAngle(java.awt.geom.Point2D point) {
+        updateParameters();
+
+        double angle0 = super.getHorizontalAngle();
+        double angle1 = (angle0+Math.PI)%(2*Math.PI);
+        if (point1!=null)
+            angle1 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0,
+                    y0);
+
+        double angle2 = angle0;
+        if (point2!=null)
+            angle2 = Angle2D.getHorizontalAngle(point.getX(), point.getY(), x0
+                    +dx, y0+dy);
+
+        if (this.isInside(point)) {
+            if (angle2>angle1)
+                return angle2-angle1;
+            else
+                return 2*Math.PI-angle1+angle2;
+        } else {
+            if (angle2>angle1)
+                return angle2-angle1-2*Math.PI;
+            else
+                return angle2-angle1;
+        }
+    }
+
+    @Override
+    public boolean isInside(java.awt.geom.Point2D point) {
+        return this.getSignedDistance(point.getX(), point.getY())<0;
+    }
+
+    // ===================================================================
+    // methods inherited from Curve2D interface
+
+    /**
+     * Returns the parameter of the first point of the line Object. It is equal
+     * to 0 in the case of edge or positive Rays, and equals -Infinity in the
+     * case of StraightLine or negative rays.
+     */
+    public double getT0() {
+        if (point1==null)
+            return Double.NEGATIVE_INFINITY;
+        return 0.0;
+    }
+
+    /**
+     * Returns the parameter of the first point of the line Object. It is equal
+     * to 1 in the case of edge or negative Rays, and equals +Infinity in the
+     * case of StraightLine or positive rays.
+     */
+    public double getT1() {
+        if (point2==null)
+            return Double.POSITIVE_INFINITY;
+        return 1.0;
+    }
+
+    public Point2D getPoint(double t) {
+        if (t<0&&point1==null)
+            return null;
+        if (t>1&&point2==null)
+            return null;
+        if (t==0&&point1!=null)
+            return point1;
+        if (t==1&&point2!=null)
+            return point2;
+        updateParameters();
+        return new Point2D(x0+dx*t, y0+dy*t);
+    }
+
+    /**
+     * Get the first point of the curve.
+     * 
+     * @return the first point of the curve
+     */
+    public Point2D getFirstPoint() {
+        return point1;
+    }
+
+    /**
+     * Get the last point of the curve.
+     * 
+     * @return the last point of the curve.
+     */
+    public Point2D getLastPoint() {
+        return point2;
+    }
+
+    public Collection<Point2D> getSingularPoints() {
+        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+        if (point1!=null)
+            list.add(point1);
+        if (point2!=null)
+            list.add(point2);
+        return list;
+    }
+
+    public boolean isSingular(double pos) {
+        if (Double.isInfinite(pos))
+            return false;
+        if (Math.abs(pos)<Shape2D.ACCURACY&&point1!=null)
+            return true;
+        if (Math.abs(pos-1)<Shape2D.ACCURACY&&point2!=null)
+            return true;
+        return false;
+    }
+
+    /**
+     * Gets position of the point on the line. If point belongs to the line,
+     * this position is defined by the ratio :
+     * <p>
+     * <code> t = (xp - x0)/dx <\code>, or equivalently :<p>
+     * <code> t = (yp - y0)/dy <\code>.<p>
+     * If point does not belong to edge, return Double.NaN. The current implementation 
+     * uses the direction with the biggest derivative, in order to avoid divisions 
+     * by zero.
+     */
+    @Override
+    public double getPosition(java.awt.geom.Point2D point) {
+        if (!contains(point))
+            return Double.NaN;
+        // not useful to update, because parameters were updated in contains()
+        // method
+        // updateParameters();
+        if (Math.abs(dx)>Math.abs(dy))
+            return (point.getX()-x0)/dx;
+        else
+            return (point.getY()-y0)/dy;
+    }
+
+    @Override
+    public double project(java.awt.geom.Point2D point) {
+        updateParameters();
+        double t;
+        if (Math.abs(dx)>Math.abs(dy))
+            t = (point.getX()-x0)/dx;
+        else
+            t = (point.getY()-y0)/dy;
+        return Math.min(Math.max(t, getT0()), getT1());
+    }
+
+    /**
+     * return the line object which starts at <code>point2</code> and ends at
+     * <code>point1</code>.
+     */
+    public LineObject2D getReverseCurve() {
+        return new LineObject2D(point2, point1);
+    }
+
+    @Override
+    public Collection<ContinuousCurve2D> getContinuousCurves() {
+        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
+        list.add(this);
+        return list;
+    }
+
+    /**
+     * Return a new LineArc2D, which is the portion of the linearc delimited by
+     * parameters t0 and t1.
+     */
+    @Override
+    public LineArc2D getSubCurve(double t0, double t1) {
+        t0 = Math.max(t0, getT0());
+        t1 = Math.min(t1, getT1());
+        return new LineArc2D(this, t0, t1);
+    }
+
+    public void draw(Graphics2D g) {
+        g.draw(this.getGeneralPath());
+    }
+
+    // ===================================================================
+    // methods inherited from Shape2D interface
+
+    @Override
+    public LineObject2D transform(AffineTransform2D trans) {
+        updateParameters();
+        double[] tab = trans.getCoefficients();
+        double x1 = x0*tab[0]+y0*tab[1]+tab[2];
+        double y1 = x0*tab[3]+y0*tab[4]+tab[5];
+        return new LineObject2D(x1, y1, dx*tab[0]+dy*tab[1]+x1, dx*tab[3]+dy
+                *tab[4]+y1);
+    }
+
+    // ===================================================================
+    // methods inherited from Shape interface
+
+    /**
+     * Return true if the point (x, y) lies on the line, with precision given by
+     * Shape2D.ACCURACY.
+     */
+    public boolean contains(double x, double y) {
+        updateParameters();
+        boolean b = super.supportContains(x, y);
+        double t;
+        if (Math.abs(dx)>Math.abs(dy))
+            t = (x-x0)/dx;
+        else
+            t = (y-y0)/dy;
+
+        return t>=0&&t<=1&&b;
+    }
+
+    /**
+     * Return true if the point p lies on the line, with precision given by
+     * Shape2D.ACCURACY.
+     */
+    @Override
+    public boolean contains(java.awt.geom.Point2D p) {
+        return contains(p.getX(), p.getY());
+    }
+
+    public java.awt.geom.GeneralPath getGeneralPath() {
+        java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+        path.moveTo((float) point1.getX(), (float) point1.getX());
+        path.lineTo((float) point2.getX(), (float) point2.getY());
+        return path;
+    }
+
+    public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
+        path.lineTo((float) point1.getX(), (float) point1.getX());
+        path.lineTo((float) point2.getX(), (float) point2.getY());
+        return path;
+    }
+
+    /**
+     * Tests if the Line intersects the interior of a specified rectangular
+     * area.
+     */
+    public boolean intersects(double x, double y, double w, double h) {
+        return false;
+    }
+
+    /**
+     * Tests if the Line intersects the interior of a specified rectangle2D.
+     */
+    public boolean intersects(java.awt.geom.Rectangle2D r) {
+        return false;
+    }
+
+    // ===================================================================
+    // methods inherited from Object interface
+
+    @Override
+    public String toString() {
+        updateParameters();
+        return Double.toString(x0).concat(new String(" ")).concat(
+                Double.toString(y0)).concat(new String(" ")).concat(
+                Double.toString(dx)).concat(new String(" ")).concat(
+                Double.toString(dy));
+    }
+
+    /**
+     * Two LineObject2D are equals if the share the two same points, in the same
+     * order.
+     * 
+     * @param edge : the edge to compare to.
+     * @return true if extremities of both edges are the same.
+     */
+    public boolean equals(LineObject2D edge) {
+        return point1==edge.point1&&point2==edge.point2;
+    }
 }
