@@ -340,18 +340,14 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
         return point;
     }
 
-    /**
-     * Returns the constant Point2D.INFINITY_POINT.
-     */
+    /** Throws an infiniteShapeException */
     public Point2D getFirstPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
-    /**
-     * Returns the constant Point2D.INFINITY_POINT.
-     */
+    /** Throws an infiniteShapeException */
     public Point2D getLastPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
     /**

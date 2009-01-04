@@ -174,8 +174,9 @@ public class Ray2D extends AbstractLine2D {
         return new Point2D(x0, y0);
     }
 
+    /** Throws an infiniteShapeException */
     public Point2D getLastPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
     public Point2D getPoint(double t) {

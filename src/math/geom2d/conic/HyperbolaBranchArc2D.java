@@ -124,15 +124,21 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
     // ===================================================================
     // methods inherited from Curve2D interface
 
+    /**
+     * If t0 equals minus infinity, throws an UnboundedShapeException.
+     */
     public Point2D getFirstPoint() {
         if (t0==Double.NEGATIVE_INFINITY)
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
         return this.getPoint(t0);
     }
 
+    /**
+     * If t1 equals infinity, throws an UnboundedShapeException.
+     */
     public Point2D getLastPoint() {
-        if (t0==Double.POSITIVE_INFINITY)
-            return Point2D.INFINITY_POINT;
+        if (t1==Double.POSITIVE_INFINITY)
+            throw new UnboundedShapeException();
         return this.getPoint(t1);
     }
 
@@ -165,7 +171,12 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
         return inters;
     }
 
-    public Point2D getPoint(double t) {
+    /**
+     * If t0 equals minus infinity, throws an UnboundedShapeException.
+     */
+   public Point2D getPoint(double t) {
+       if(Double.isInfinite(t))
+           throw new UnboundedShapeException();
         t = Math.min(Math.max(t, t0), t1);
         return branch.getPoint(t);
     }

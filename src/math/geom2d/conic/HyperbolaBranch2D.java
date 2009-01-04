@@ -170,12 +170,14 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
     // ===================================================================
     // methods inherited from Curve2D interface
 
+    /** Throws an UnboundedShapeException */
     public Point2D getFirstPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
+    /** Throws an UnboundedShapeException */
     public Point2D getLastPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
     public Collection<Point2D> getSingularPoints() {
@@ -192,7 +194,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
 
     public Point2D getPoint(double t) {
         if (Double.isInfinite(t))
-            return Point2D.INFINITY_POINT;
+            throw new UnboundedShapeException();
 
         double x, y;
         if (positive) {

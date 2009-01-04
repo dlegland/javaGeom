@@ -15,7 +15,8 @@ Regressions
 	+ Polygon2D.getVerticesNumber()
 	+ PointSet2D.getPointsNumber()
 	+ Conic2D.getCartesianEquation()
-
+- deprecate classes with doubtful use:
+	+ Point2D.INFINITY_POINT
 
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 

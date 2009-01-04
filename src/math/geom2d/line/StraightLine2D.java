@@ -445,12 +445,14 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods implementing the Curve2D interface
 
+    /** Throws an infiniteShapeException */
     public Point2D getFirstPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
+    /** Throws an infiniteShapeException */
     public Point2D getLastPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
     /** Returns an empty list of points. */

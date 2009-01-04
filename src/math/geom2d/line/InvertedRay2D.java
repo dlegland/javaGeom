@@ -171,8 +171,9 @@ public class InvertedRay2D extends AbstractLine2D {
     // ===================================================================
     // methods implementing the Curve2D interface
 
+    /** Throws an infiniteShapeException */
     public Point2D getFirstPoint() {
-        return Point2D.INFINITY_POINT;
+        throw new UnboundedShapeException();
     }
 
     public Point2D getLastPoint() {
