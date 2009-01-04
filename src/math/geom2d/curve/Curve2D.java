@@ -49,6 +49,9 @@ public interface Curve2D extends Shape2D {
     // ===================================================================
     // constants
 
+    /**
+     * @deprecated (0.7.0)
+     */
     public final static Curve2D EMPTY_CURVE = new EmptyCurve2D();
 
     // ===================================================================
@@ -192,8 +195,11 @@ public interface Curve2D extends Shape2D {
      * Utilitary class for representing empty curves. Should preferably be
      * accessed through the EMPTY_CURVE static variable.
      * 
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes  (0.7.0)
      * @author dlegland
      */
+    @Deprecated
     static class EmptyCurve2D extends Shape2D.EmptySet2D implements Curve2D {
 
         protected EmptyCurve2D() {

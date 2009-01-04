@@ -45,6 +45,9 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public interface Boundary2D extends OrientedCurve2D {
 
+    /**
+     * @deprecated  (0.7.0)
+     */
     public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
 
     /**
@@ -79,6 +82,12 @@ public interface Boundary2D extends OrientedCurve2D {
 
     public abstract void fill(Graphics2D g2);
 
+    /**
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes  (0.7.0)
+     * @author dlegland
+     */
+    @Deprecated
     public static class EmptyBoundary2D extends Curve2D.EmptyCurve2D implements
             Boundary2D {
 
@@ -90,7 +99,7 @@ public interface Boundary2D extends OrientedCurve2D {
         }
 
         public Domain2D getDomain() {
-            return Domain2D.EMPTY_DOMAIN2D;
+            return null;
         }
 
         /**

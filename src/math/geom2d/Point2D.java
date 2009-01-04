@@ -347,15 +347,15 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
      * Returns either the point itself, or the shape EMPTY_SET, depending on
      * whether the point lies inside the specified box.
      */
-    public Shape2D clip(Box2D box) {
+    public Point2D clip(Box2D box) {
         if (x<box.getMinX())
-            return Shape2D.EMPTY_SET;
+            return null;
         if (y<box.getMinY())
-            return Shape2D.EMPTY_SET;
+            return null;
         if (x>box.getMaxX())
-            return Shape2D.EMPTY_SET;
+            return null;
         if (y>box.getMaxY())
-            return Shape2D.EMPTY_SET;
+            return null;
 
         return this;
     }

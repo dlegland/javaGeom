@@ -45,6 +45,11 @@ import math.geom2d.transform.AffineTransform2D;
  */
 public interface Domain2D extends Shape2D {
 
+    /**
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes
+     */
+    @Deprecated
     public final static Domain2D EMPTY_DOMAIN2D = new EmptyDomain2D();
 
     /**
@@ -91,8 +96,11 @@ public interface Domain2D extends Shape2D {
      * Definition of an empty domain. Should preferably be accessed through the
      * EMPTY_DOMAIN static variable.
      * 
+     * @deprecated empty shapes are represented by null value, reducing the
+     *      total number of classes
      * @author dlegland
      */
+    @Deprecated
     public static class EmptyDomain2D extends Shape2D.EmptySet2D implements
             Domain2D {
 
@@ -111,7 +119,7 @@ public interface Domain2D extends Shape2D {
         }
 
         public Boundary2D getBoundary() {
-            return Boundary2D.EMPTY_BOUNDARY;
+            return null;
         }
 
         @Override
