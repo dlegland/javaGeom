@@ -238,7 +238,6 @@ public class Parabola2DTest extends TestCase {
 	
 		CurveSet2D<?> clippedCurve;
 		
-		
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
 		Curve2D curve = clippedCurve.getFirstCurve();
 		

@@ -290,9 +290,11 @@ public abstract class Curve2DUtils {
         CurveSet2D<SmoothCurve2D> res = new CurveSet2D<SmoothCurve2D>();
 
         // extract first point of the curve, or a point arbitrarily far
-        Point2D point1 = curve.getFirstPoint();
+        Point2D point1;
         if (Double.isInfinite(curve.getT0()))
             point1 = curve.getPoint(-1000);
+        else
+            point1 = curve.getFirstPoint();
 
         // Extract first valid intersection point, if it exists
         double pos1, pos2;

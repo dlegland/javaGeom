@@ -2,7 +2,7 @@
  * 
  */
 
-package math.geom2d.algos.convhull;
+package math.geom2d.polygon.convhull;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,8 @@ import math.geom2d.polygon.SimplePolygon2D;
 /**
  * Computes the convex hull of a set of points as a single Polygon2D.
  * 
- * @deprecated moved into package math.geom2d.polygon.convhull (0.7.0)
  * @author dlegland
  */
-@Deprecated
 public class JarvisMarch {
 
     /**
