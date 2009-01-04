@@ -22,6 +22,7 @@
  */
 
 // package
+
 package math.geom2d.transform;
 
 // Imports
@@ -30,40 +31,35 @@ import math.geom2d.Point2D;
 /**
  * general class for all transformation in the plane, linear or not linear.
  */
-public interface Transform2D{
+public interface Transform2D {
 
+    // ===================================================================
+    // constants
 
-	// ===================================================================
-	// constants
-	
+    // ===================================================================
+    // class variables
 
-	// ===================================================================
-	// class variables
-	
-	
-	// ===================================================================
-	// constructors
-	
-	
-	// ===================================================================
-	// accessors
+    // ===================================================================
+    // constructors
 
+    // ===================================================================
+    // accessors
 
-	// ===================================================================
-	// modifiers
+    // ===================================================================
+    // modifiers
 
+    // ===================================================================
+    // general methods
 
-	// ===================================================================
-	// general methods
+    /** Transforms a point */
+    public abstract Point2D transform(java.awt.geom.Point2D src);
 
-	/** Transforms a point */
-	public abstract Point2D transform(java.awt.geom.Point2D src);
+    /** Transforms a point, share memory */
+    public abstract Point2D transform(java.awt.geom.Point2D src, Point2D dst);
 
-	/** Transforms a point, share memory*/
-	public abstract Point2D transform(java.awt.geom.Point2D src, Point2D dst);
-	
-	/** Transforms an array of points, and returns the transformed points.*/
-	
-	public abstract Point2D[] transform(java.awt.geom.Point2D[] src, Point2D[] dst);
-	
+    /** Transforms an array of points, and returns the transformed points. */
+
+    public abstract Point2D[] transform(java.awt.geom.Point2D[] src,
+            Point2D[] dst);
+
 }

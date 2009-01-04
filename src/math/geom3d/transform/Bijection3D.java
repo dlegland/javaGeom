@@ -23,14 +23,16 @@
  * Created on 28 nov. 2006
  *
  */
+
 package math.geom3d.transform;
 
 /**
  * A transformation in the space that have an inverse.
+ * 
  * @author dlegland
  */
 public interface Bijection3D extends Transform3D {
-	
-	public abstract Bijection3D getInverseTransform();
-	
+
+    public abstract Bijection3D getInverseTransform();
+
 }

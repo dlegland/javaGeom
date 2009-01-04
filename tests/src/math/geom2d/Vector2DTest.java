@@ -26,8 +26,8 @@
  */
 
 package math.geom2d;
-import junit.framework.TestCase;
 
+import junit.framework.TestCase;
 
 /**
  * @author Legland
@@ -36,6 +36,7 @@ public class Vector2DTest extends TestCase {
 
 	/**
 	 * Constructor for Vector2DTest.
+	 * 
 	 * @param arg0
 	 */
 	public Vector2DTest(String arg0) {
@@ -49,8 +50,8 @@ public class Vector2DTest extends TestCase {
 	/**
 	 * Test colinearity for instance of vector
 	 */
-	public void testIsColinearVector2D() {	
-		
+	public void testIsColinearVector2D() {
+
 		Vector2D v1 = new Vector2D(1, 2);
 		Vector2D v2 = new Vector2D(2, 4);
 		Vector2D v3 = new Vector2D(-4, -8);
@@ -69,14 +70,14 @@ public class Vector2DTest extends TestCase {
 		assertTrue(!v2.isColinear(v1));
 		assertTrue(!v2.isColinear(v3));
 		assertTrue(!v3.isColinear(v1));
-		assertTrue(!v3.isColinear(v2));		
+		assertTrue(!v3.isColinear(v2));
 	}
-	
+
 	/**
 	 * Test colinearity detection in static method
 	 */
-	public void testIsColinearVector2DVector2D() {	
-		
+	public void testIsColinearVector2DVector2D() {
+
 		Vector2D v1 = new Vector2D(1, 2);
 		Vector2D v2 = new Vector2D(2, 4);
 		Vector2D v3 = new Vector2D(-4, -8);
@@ -95,26 +96,46 @@ public class Vector2DTest extends TestCase {
 		assertTrue(!Vector2D.isColinear(v2, v1));
 		assertTrue(!Vector2D.isColinear(v2, v3));
 		assertTrue(!Vector2D.isColinear(v3, v1));
-		assertTrue(!Vector2D.isColinear(v3, v2));		
+		assertTrue(!Vector2D.isColinear(v3, v2));
 	}
 
-	public void testGetOpposite(){
-		Vector2D v1 = new Vector2D(2, 3);
-		assertEquals(v1.getOpposite(), new Vector2D(-2, -3));		
-	}
-
-	public void testNormalize(){
-		Vector2D v1 = new Vector2D(2, 3);
-		v1.normalize();
-		assertEquals(v1, new Vector2D(2.0/Math.sqrt(13), 3.0/Math.sqrt(13)));		
-	}
-
-	public void testGetNormalizedVector(){
-		Vector2D v1 	= new Vector2D(2, 3);
-		Vector2D v1n 	= new Vector2D(2.0/Math.sqrt(13), 3.0/Math.sqrt(13));
-		assertEquals(v1.getNormalizedVector(), v1n);		
+	public void testIsOrthogonalVector2D() {
+		Vector2D v1 = new Vector2D(1, 2);
+		Vector2D v2 = new Vector2D(2, 4);
+		Vector2D v3 = new Vector2D(-6, 3);
+		Vector2D v4 = new Vector2D(3, 4);
+		
+		// parallel vectors
+		assertTrue(!v1.isOrthogonal(v1));
+		assertTrue(!v1.isOrthogonal(v2));
+		assertTrue(!v2.isOrthogonal(v1));
+		
+		// orthogonal vectors
+		assertTrue(v1.isOrthogonal(v3));
+		assertTrue(v2.isOrthogonal(v3));
+		
+		// other vectors
+		assertTrue(!v1.isOrthogonal(v4));
+		assertTrue(!v3.isOrthogonal(v4));
 	}
 	
+	public void testGetOpposite() {
+		Vector2D v1 = new Vector2D(2, 3);
+		assertEquals(v1.getOpposite(), new Vector2D(-2, -3));
+	}
+
+	public void testNormalize() {
+		Vector2D v1 = new Vector2D(2, 3);
+		v1.normalize();
+		assertEquals(v1, new Vector2D(2.0 / Math.sqrt(13), 3.0 / Math.sqrt(13)));
+	}
+
+	public void testGetNormalizedVector() {
+		Vector2D v1 = new Vector2D(2, 3);
+		Vector2D v1n = new Vector2D(2.0 / Math.sqrt(13), 3.0 / Math.sqrt(13));
+		assertEquals(v1.getNormalizedVector(), v1n);
+	}
+
 	/*
 	 * Test for boolean equals(Object)
 	 */
@@ -124,7 +145,7 @@ public class Vector2DTest extends TestCase {
 		Vector2D v3 = new Vector2D(1, 3);
 		Vector2D v4 = new Vector2D(2, 4);
 		Vector2D v5 = new Vector2D(3, 2);
-		
+
 		assertTrue(v1.equals(v1));
 		assertTrue(v1.equals(v2));
 		assertTrue(!v1.equals(v3));

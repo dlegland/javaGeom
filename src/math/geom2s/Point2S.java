@@ -28,12 +28,12 @@ package math.geom2s;
 
 /**
  * A point in spherical coordinates.
+ * 
  * @author Legland
  */
 public class Point2S implements Shape2S {
-	
-	
-	public Point2S(double phi, double theta){
-	}
+
+    public Point2S(double phi, double theta) {
+    }
 
 }

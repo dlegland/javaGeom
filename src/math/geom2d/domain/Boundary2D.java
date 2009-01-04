@@ -23,6 +23,7 @@
  * Created on 25 déc. 2006
  *
  */
+
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
@@ -37,94 +38,99 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * A Boundary2D is the curve which defines the contour of a domain in the
- * plane. It is compound of one or several non-intersecting and oriented 
- * curves. 
+ * A Boundary2D is the curve which defines the contour of a domain in the plane.
+ * It is compound of one or several non-intersecting and oriented curves.
+ * 
  * @author dlegland
  */
 public interface Boundary2D extends OrientedCurve2D {
 
-	public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
-	
-	
-	/**
-	 * Returns true if the point is 'inside' the domain bounded by the curve.
-	 * @param pt a point in the plane
-	 * @return true if the point is on the left side of the curve.
-	 */
-	public abstract boolean isInside(java.awt.geom.Point2D pt);
+    public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
 
-	/**
-	 * Returns the different continuous curves composing the boundary
-	 */
-	public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
-	
-	/**
-	 * Returns the domain delimited by this boundary.
-	 * @return the domain delimited by this boundary
-	 */
-	public abstract Domain2D getDomain();
-	
-	/**
-	 * Forces the subclasses to return an instance of Boundary2D.
-	 */
-	public abstract Boundary2D getReverseCurve();
+    /**
+     * Returns true if the point is 'inside' the domain bounded by the curve.
+     * 
+     * @param pt a point in the plane
+     * @return true if the point is on the left side of the curve.
+     */
+    public abstract boolean isInside(java.awt.geom.Point2D pt);
 
-	/**
-	 * Forces the subclasses to return an instance of Boundary2D.
-	 */
-	public abstract Boundary2D transform(AffineTransform2D trans);
-	
-	public abstract void fill(Graphics2D g2);
-	
-	public static class EmptyBoundary2D extends Curve2D.EmptyCurve2D
-	implements Boundary2D{
+    /**
+     * Returns the different continuous curves composing the boundary
+     */
+    public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
 
-		public void fill(Graphics2D g2) {
-		}
+    /**
+     * Returns the domain delimited by this boundary.
+     * 
+     * @return the domain delimited by this boundary
+     */
+    public abstract Domain2D getDomain();
 
-		public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-			return new ArrayList<ContinuousBoundary2D>();
-		}
+    /**
+     * Forces the subclasses to return an instance of Boundary2D.
+     */
+    public abstract Boundary2D getReverseCurve();
 
-		public Domain2D getDomain() {
-			return Domain2D.EMPTY_DOMAIN2D;
-		}
+    /**
+     * Forces the subclasses to return an instance of Boundary2D.
+     */
+    public abstract Boundary2D transform(AffineTransform2D trans);
 
-		/** 
-		 * Always return false, as a point can not be contained in an
-		 * empty boundary.
-		 */
-		public boolean isInside(Point2D pt) {
-			return false;
-		}
+    public abstract void fill(Graphics2D g2);
 
-		public double getSignedDistance(Point2D point) {
-			return Double.NaN;
-		}
+    public static class EmptyBoundary2D extends Curve2D.EmptyCurve2D implements
+            Boundary2D {
 
-		public double getSignedDistance(double x, double y) {
-			return Double.NaN;
-		}
+        public void fill(Graphics2D g2) {
+        }
 
-		public double getWindingAngle(Point2D point) {
-			return Double.NaN;
-		}
+        public Collection<ContinuousBoundary2D> getBoundaryCurves() {
+            return new ArrayList<ContinuousBoundary2D>();
+        }
 
-		public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
-			return new ArrayList<ContinuousCurve2D>(0);
-		}
+        public Domain2D getDomain() {
+            return Domain2D.EMPTY_DOMAIN2D;
+        }
 
-		public Boundary2D getReverseCurve() {
-			return this;
-		}
+        /**
+         * Always return false, as a point can not be contained in an empty
+         * boundary.
+         */
+        public boolean isInside(Point2D pt) {
+            return false;
+        }
 
-		public Boundary2D transform(AffineTransform2D trans) {
-			return this;
-		}
+        public double getSignedDistance(Point2D point) {
+            return Double.NaN;
+        }
 
-		public CurveSet2D<? extends OrientedCurve2D> clip(Box2D box) {
-			return new CurveSet2D<OrientedCurve2D>();
-		}
-	}
+        public double getSignedDistance(double x, double y) {
+            return Double.NaN;
+        }
+
+        public double getWindingAngle(Point2D point) {
+            return Double.NaN;
+        }
+
+        @Override
+        public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
+            return new ArrayList<ContinuousCurve2D>(0);
+        }
+
+        @Override
+        public Boundary2D getReverseCurve() {
+            return this;
+        }
+
+        @Override
+        public Boundary2D transform(AffineTransform2D trans) {
+            return this;
+        }
+
+        @Override
+        public CurveSet2D<? extends OrientedCurve2D> clip(Box2D box) {
+            return new CurveSet2D<OrientedCurve2D>();
+        }
+    }
 }

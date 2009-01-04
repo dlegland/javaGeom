@@ -31,22 +31,22 @@ import math.geom2d.Vector2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * Interface for smooth and continuous curves. They accept first and second 
- * derivative at every point, and can be drawn with a parametric
- * representation for every values of t comprised between T0 and T1.
- * Every Curve2D is a compound of several SmoothCurve2D.
+ * Interface for smooth and continuous curves. They accept first and second
+ * derivative at every point, and can be drawn with a parametric representation
+ * for every values of t comprised between T0 and T1. Every Curve2D is a
+ * compound of several SmoothCurve2D.
  */
-public interface SmoothCurve2D extends ContinuousCurve2D{
+public interface SmoothCurve2D extends ContinuousCurve2D {
 
-	public abstract Vector2D getTangent(double t);
-	
-	public abstract double getCurvature(double t);
-	
-	public abstract SmoothCurve2D getReverseCurve();
+    public abstract Vector2D getTangent(double t);
 
-	public abstract SmoothCurve2D getSubCurve(double t0, double t1);
+    public abstract double getCurvature(double t);
 
-	public abstract CurveSet2D<? extends SmoothCurve2D> clip(Box2D box);
+    public abstract SmoothCurve2D getReverseCurve();
 
-	public abstract SmoothCurve2D transform(AffineTransform2D trans);
+    public abstract SmoothCurve2D getSubCurve(double t0, double t1);
+
+    public abstract CurveSet2D<? extends SmoothCurve2D> clip(Box2D box);
+
+    public abstract SmoothCurve2D transform(AffineTransform2D trans);
 }

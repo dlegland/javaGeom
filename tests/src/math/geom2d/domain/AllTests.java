@@ -39,6 +39,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(Boundary2DUtilsTest.class));
 		suite.addTest(new TestSuite(BoundaryPolyCurve2DTest.class));
+		suite.addTest(new TestSuite(GenericDomain2DTest.class));
 		suite.addTest(new TestSuite(PolyOrientedCurve2DTest.class));
 		//$JUnit-END$
 		return suite;

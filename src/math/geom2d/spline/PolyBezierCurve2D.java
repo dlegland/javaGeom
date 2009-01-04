@@ -23,6 +23,7 @@
  * Created on 8 mai 2006
  *
  */
+
 package math.geom2d.spline;
 
 import java.util.Collection;
@@ -33,48 +34,48 @@ import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A set of Bezier curves, making a continuous curve.
+ * 
  * @author dlegland
  */
 public class PolyBezierCurve2D extends PolyCurve2D<BezierCurve2D> {
 
-	public PolyBezierCurve2D() {
-		super();
-	}
+    public PolyBezierCurve2D() {
+        super();
+    }
 
-	public PolyBezierCurve2D(BezierCurve2D[] curves) {
-		super(curves);
-	}
-	
-	public PolyBezierCurve2D(Collection<BezierCurve2D> curves) {
-		super(curves);
-	}
-	
-	/**
-	 * returns a new PolyBezierCurve2D.
-	 */
-	@Override
-	public PolyBezierCurve2D clip(Box2D box) {
-		// Clip the curve
-		CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
-		
-		// Stores the result in appropriate structure
-		PolyBezierCurve2D result = new PolyBezierCurve2D ();
-		
-		// convert the result
-		for(Curve2D curve : set.getCurves()){
-			if (curve instanceof BezierCurve2D)
-				result.addCurve((BezierCurve2D) curve);
-		}
-		return result;
-	}
-	
-	@Override
-	public PolyBezierCurve2D transform(AffineTransform2D trans) {
-		PolyBezierCurve2D result = new PolyBezierCurve2D();
-		for(BezierCurve2D curve : curves)
-			result.addCurve(curve.transform(trans));
-		return result;
-	}
+    public PolyBezierCurve2D(BezierCurve2D[] curves) {
+        super(curves);
+    }
 
+    public PolyBezierCurve2D(Collection<BezierCurve2D> curves) {
+        super(curves);
+    }
+
+    /**
+     * returns a new PolyBezierCurve2D.
+     */
+    @Override
+    public PolyBezierCurve2D clip(Box2D box) {
+        // Clip the curve
+        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+
+        // Stores the result in appropriate structure
+        PolyBezierCurve2D result = new PolyBezierCurve2D();
+
+        // convert the result
+        for (Curve2D curve : set.getCurves()) {
+            if (curve instanceof BezierCurve2D)
+                result.addCurve((BezierCurve2D) curve);
+        }
+        return result;
+    }
+
+    @Override
+    public PolyBezierCurve2D transform(AffineTransform2D trans) {
+        PolyBezierCurve2D result = new PolyBezierCurve2D();
+        for (BezierCurve2D curve : curves)
+            result.addCurve(curve.transform(trans));
+        return result;
+    }
 
 }

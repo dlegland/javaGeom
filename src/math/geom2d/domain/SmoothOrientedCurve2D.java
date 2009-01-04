@@ -31,18 +31,17 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * Interface for smooth and oriented curves. The aim of this interface 
- * is mainly to specify refinement of method declarations.
+ * Interface for smooth and oriented curves. The aim of this interface is mainly
+ * to specify refinement of method declarations.
  */
-public interface SmoothOrientedCurve2D 
-extends SmoothCurve2D, ContinuousOrientedCurve2D {
-	
-	public abstract SmoothOrientedCurve2D getReverseCurve();
-	
-	public abstract SmoothOrientedCurve2D getSubCurve(double t0, double t1);
-	
-	public abstract CurveSet2D<? extends SmoothOrientedCurve2D> 
-	clip(Box2D box);
-	
-	public abstract SmoothOrientedCurve2D transform(AffineTransform2D trans);
+public interface SmoothOrientedCurve2D extends SmoothCurve2D,
+        ContinuousOrientedCurve2D {
+
+    public abstract SmoothOrientedCurve2D getReverseCurve();
+
+    public abstract SmoothOrientedCurve2D getSubCurve(double t0, double t1);
+
+    public abstract CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box);
+
+    public abstract SmoothOrientedCurve2D transform(AffineTransform2D trans);
 }
