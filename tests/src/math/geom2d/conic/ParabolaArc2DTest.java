@@ -28,14 +28,14 @@ package math.geom2d.conic;
 import java.util.Collection;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.line.Polyline2D;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.StraightLine2D;
-import junit.framework.TestCase;
+import math.geom2d.polygon.Polyline2D;
 
 public class ParabolaArc2DTest extends TestCase {
 

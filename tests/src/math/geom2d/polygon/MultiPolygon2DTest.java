@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import java.util.*;
 
 import math.geom2d.Point2D;
-import math.geom2d.line.ClosedPolyline2D;
 
 public class MultiPolygon2DTest extends TestCase {
 
@@ -52,12 +51,12 @@ public class MultiPolygon2DTest extends TestCase {
 	}
 	
 	public void testGetVertex(){
-		ClosedPolyline2D tri1 = new ClosedPolyline2D(new Point2D[]{
+	    Ring2D tri1 = new Ring2D(new Point2D[]{
 				new Point2D(0, 0), new Point2D(10, 0), new Point2D(10, 10)});
-		ClosedPolyline2D tri2 = new ClosedPolyline2D(new Point2D[]{
+		Ring2D tri2 = new Ring2D(new Point2D[]{
 				new Point2D(20, 0), new Point2D(30, 0), new Point2D(30, 10)});
 		MultiPolygon2D poly = new MultiPolygon2D(
-				new ClosedPolyline2D[]{tri1,tri2});
+				new Ring2D[]{tri1,tri2});
 		
 		assertEquals(poly.getVertex(0), new Point2D(0, 0));
 		assertEquals(poly.getVertex(1), new Point2D(10, 0));

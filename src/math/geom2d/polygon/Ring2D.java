@@ -24,13 +24,14 @@
  *
  */
 
-package math.geom2d.line;
+package math.geom2d.polygon;
 
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.line.LineSegment2D;
 import math.geom2d.polygon.Polygon2DUtils;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -40,33 +41,36 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Extends Polyline2D, by considering that the last point is connected to the
- * first one. A ClosedPolyline2D can be used as boundary for Polygons.
- * 
- * @deprecated use math.geom2d.polygon.Ring2D instead (0.7.0)
+ * <p>
+ * A Ring2D is a Polyline2D whose last point is connected to the first one.
+ * This is typically the boundary of a SimplePolygon2D.
+ * </p>
+ * <p>
+ * The name 'Ring2D' was used for 2 reasons:
+ * <ul><li>it is short</li> <li>it is consistent with the JTS name</li></ul>
+ * </p>
  * @author dlegland
  */
-@Deprecated
-public class ClosedPolyline2D extends Polyline2D implements
+public class Ring2D extends Polyline2D implements
         ContinuousBoundary2D {
 
-    public ClosedPolyline2D() {
+    public Ring2D() {
         super();
     }
 
-    public ClosedPolyline2D(Point2D initialPoint) {
+    public Ring2D(Point2D initialPoint) {
         super(initialPoint);
     }
 
-    public ClosedPolyline2D(Point2D[] points) {
+    public Ring2D(Point2D[] points) {
         super(points);
     }
 
-    public ClosedPolyline2D(double[] xcoords, double[] ycoords) {
+    public Ring2D(double[] xcoords, double[] ycoords) {
         super(xcoords, ycoords);
     }
 
-    public ClosedPolyline2D(Collection<? extends Point2D> points) {
+    public Ring2D(Collection<? extends Point2D> points) {
         super(points);
     }
 
@@ -196,6 +200,7 @@ public class ClosedPolyline2D extends Polyline2D implements
      */
     @Override
     public boolean isInside(java.awt.geom.Point2D point) {
+        // TODO: choose convention for points on the boundary
         int wn = Polygon2DUtils.windingNumber(this.points, point);
         if (wn==1)
             return true;
@@ -319,7 +324,7 @@ public class ClosedPolyline2D extends Polyline2D implements
      * the original curve (same pointers).
      */
     @Override
-    public ClosedPolyline2D getReverseCurve() {
+    public Ring2D getReverseCurve() {
         Point2D[] points2 = new Point2D[points.size()];
         int n = points.size();
         if (n>0) {
@@ -327,7 +332,7 @@ public class ClosedPolyline2D extends Polyline2D implements
             for (int i = 1; i<n; i++)
                 points2[i] = points.get(n-i);
         }
-        return new ClosedPolyline2D(points2);
+        return new Ring2D(points2);
     }
 
     /**
@@ -391,11 +396,11 @@ public class ClosedPolyline2D extends Polyline2D implements
      * Return the transformed shape, as a ClosePolyline2D.
      */
     @Override
-    public ClosedPolyline2D transform(AffineTransform2D trans) {
+    public Ring2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[points.size()];
         for (int i = 0; i<points.size(); i++)
             pts[i] = trans.transform(points.get(i));
-        return new ClosedPolyline2D(pts);
+        return new Ring2D(pts);
     }
 
     // /**

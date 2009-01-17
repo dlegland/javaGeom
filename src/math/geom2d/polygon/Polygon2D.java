@@ -31,7 +31,6 @@ import java.util.*;
 import math.geom2d.Point2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
-import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -68,7 +67,7 @@ public interface Polygon2D extends Domain2D {
     // ===================================================================
     // general methods
 
-    public abstract BoundarySet2D<ClosedPolyline2D> getBoundary();
+    public abstract BoundarySet2D<Ring2D> getBoundary();
 
     /**
      * Returns the new Polygon created by an affine transform of this polygon.

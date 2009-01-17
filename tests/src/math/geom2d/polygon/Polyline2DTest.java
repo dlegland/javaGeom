@@ -25,12 +25,13 @@
  * Created on 27 déc. 2003
  */
 
-package math.geom2d.line;
+package math.geom2d.polygon;
 import junit.framework.TestCase;
 
 import java.util.*;
 
 import math.geom2d.Point2D;
+import math.geom2d.line.StraightLine2D;
 
 /**
  * @author Legland

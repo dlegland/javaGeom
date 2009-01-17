@@ -1,7 +1,7 @@
 /**
  * 
  */
-package math.geom2d.line;
+package math.geom2d.polygon;
 
 import java.awt.Color;
 import java.awt.Graphics;

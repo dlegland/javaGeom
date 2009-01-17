@@ -39,6 +39,7 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports
@@ -87,8 +88,8 @@ public class LineObject2D extends AbstractLine2D {
     // ===================================================================
     // class variables
 
-    private Point2D point1 = null;
-    private Point2D point2 = null;
+    private Point2D point1;
+    private Point2D point2;
 
     // ===================================================================
     // constructors

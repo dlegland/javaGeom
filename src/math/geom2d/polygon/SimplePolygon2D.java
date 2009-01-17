@@ -36,7 +36,6 @@ import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -269,12 +268,12 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Returns a closed polyline, which encloses the polygon.
      */
-    public BoundarySet2D<ClosedPolyline2D> getBoundary() {
+    public BoundarySet2D<Ring2D> getBoundary() {
         Point2D[] array = new Point2D[this.points.size()];
         for (int i = 0; i<this.points.size(); i++)
             array[i] = this.points.get(i);
 
-        return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(array));
+        return new BoundarySet2D<Ring2D>(new Ring2D(array));
     }
 
     /**
