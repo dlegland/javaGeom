@@ -31,8 +31,14 @@ import java.util.Collection;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * A point in the plane defined by its 2 Cartesian coordinates x and y. The
- * class provides static methods to compute distance between two points.
+ * <p>
+ * A point in the plane defined by its 2 Cartesian coordinates x and y.
+ * The class provides static methods to compute distance between two points.
+ * </p>
+ * <p>
+ * Important note: in a future release, Point2D will not extend 
+ * <code>java.awt.geom.Point2D.Double<code> any more.
+ * </p>
  */
 public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
 
@@ -87,7 +93,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
     /**
      * Constructor from a java awt.geom Point2D, and two double. The (x,y)
      * coordinates are added to the coordinates of given point.
+     * @deprecated use Point2D.createPolar() instead (0.7.0)
      */
+    @Deprecated
     public Point2D(java.awt.geom.Point2D point1, double x, double y) {
         super(point1.getX()+x, point1.getY()+y);
     }
@@ -109,8 +117,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
      */
     public final static Point2D createPolar(Point2D point, double rho,
             double theta) {
-        return new Point2D(point.getX()+rho*Math.cos(theta), point.getY()+rho
-                *Math.sin(theta));
+        return new Point2D(
+                point.getX()+rho*Math.cos(theta),
+                point.getY()+rho*Math.sin(theta));
     }
 
     /**
@@ -127,9 +136,16 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
         return Math.hypot(x2-x1, y2-y1);
     }
 
+    /**
+     * Computes the euclidean distance between two points.
+     * Uses robust comutation (via Math.hypot() method).
+     * @param p1 the first point
+     * @param p2 the second point
+     * @return the euclidean distance between p1 and p2.
+     */
     public final static double getDistance(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
-        return getDistance(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+        return Math.hypot(p1.getX()-p2.getX(), p1.getY()-p2.getY());
     }
 
     /**
@@ -226,10 +242,12 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
      */
     public final static Point2D centroid(java.awt.geom.Point2D pt1,
             java.awt.geom.Point2D pt2, java.awt.geom.Point2D pt3) {
-        return new Point2D((pt1.getX()+pt2.getX()+pt3.getX())/3, (pt1.getY()
-                +pt2.getY()+pt3.getY())/3);
+        return new Point2D(
+                (pt1.getX()+pt2.getX()+pt3.getX())/3, 
+                (pt1.getY()+pt2.getY()+pt3.getY())/3);
     }
 
+    
     // ===================================================================
     // Methods specific to Point2D
 
@@ -241,6 +259,62 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
         return new Point2D(x-p.getX(), y-p.getY());
     }
 
+    /**
+     * Returns the new point translated by amount given in each direction.
+     * @param tx the translation in x direction
+     * @param ty the translation in y direction
+     * @return the translated point
+     */
+    public Point2D translate(double tx, double ty) {
+        return new Point2D(this.x+tx, this.y+ty);
+    }
+    
+    /**
+     * Returns the new point scaled by amount given in each direction.
+     * @param kx the scale factor in x direction
+     * @param ky the scale factor in y direction
+     * @return the scaled point
+     */
+    public Point2D scale(double kx, double ky) {
+        return new Point2D(this.x*kx, this.y*ky);
+    }
+    
+    /**
+     * Returns the new point scaled by the same amount in each direction.
+     * @param k the scale factor
+     * @return the scaled point
+     */
+    public Point2D scale(double k) {
+        return new Point2D(this.x*k, this.y*k);
+    }
+    
+    /**
+     * Rotates the point by a given angle around the origin.
+     * @param theta the angle of rotation
+     * @return the rotated point.
+     */
+    public Point2D rotate(double theta){
+        double cot = Math.cos(theta);
+        double sit = Math.sin(theta);
+        return new Point2D(x*cot-y*sit, x*sit+y*cot);
+    }
+      
+    /**
+     * Rotates the point by a given angle around an arbitrary center.
+     * @param center the center of the rotation
+     * @param theta the angle of rotation
+     * @return the rotated point.
+     */
+    public Point2D rotate(Point2D center, double theta){
+        double cx = center.getX();
+        double cy = center.getY();
+        double cot = Math.cos(theta);
+        double sit = Math.sin(theta);
+        return new Point2D(
+                x*cot-y*sit+(1-cot)*cx+sit*cy, 
+                x*sit+y*cot+(1-cot)*cy-sit*cx);
+    }
+    
     // ===================================================================
     // Methods specific to Point2D
 
@@ -377,7 +451,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
      */
     public Point2D transform(AffineTransform2D trans) {
         double[] tab = trans.getCoefficients();
-        return new Point2D(x*tab[0]+y*tab[1]+tab[2], x*tab[3]+y*tab[4]+tab[5]);
+        return new Point2D(
+                x*tab[0]+y*tab[1]+tab[2], 
+                x*tab[3]+y*tab[4]+tab[5]);
     }
 
     // ===================================================================

@@ -366,8 +366,9 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
      * Returns the bezier curve given by control points taken in reverse order.
      */
     public BezierCurve2D getReverseCurve() {
-        return new BezierCurve2D(this.getP2(), this.getCtrlP2(), this
-                .getCtrlP1(), this.getP1());
+        return new BezierCurve2D(
+                this.getP2(), this.getCtrlP2(),
+                this.getCtrlP1(), this.getP1());
     }
 
     /**
@@ -380,12 +381,8 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
             return null;
 
         double dt = t1-t0;
-        Vector2D v0 = getTangent(t0);
-        Vector2D v1 = getTangent(t1);
-        v0.setX(v0.getX()*dt);
-        v0.setY(v0.getY()*dt);
-        v1.setX(v1.getX()*dt);
-        v1.setY(v1.getY()*dt);
+        Vector2D v0 = getTangent(t0).times(dt);
+        Vector2D v1 = getTangent(t1).times(dt);
         return new BezierCurve2D(getPoint(t0), v0, getPoint(t1), v1);
     }
 

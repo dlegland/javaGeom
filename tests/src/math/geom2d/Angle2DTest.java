@@ -56,6 +56,38 @@ public class Angle2DTest extends TestCase {
 		assertEquals(Angle2D.getHorizontalAngle(1, 2, -1, 4), 3*Math.PI/4, 1e-14);
 		assertEquals(Angle2D.getHorizontalAngle(1, 2, -2, -1), 5*Math.PI/4, 1e-14);
 	}
+	
+    /**
+     * Test Angle2D.getHorizontalAngle(Point2D) with all multiple of pi/4.
+     */
+    public void testGetAngle() {
+        double eps = 1e-14;
+        
+        Point2D p1 = new Point2D(10, 0);
+        assertEquals(Angle2D.getHorizontalAngle(p1), 0, eps);
+        
+        Point2D p2 = new Point2D(10, 10);
+        assertEquals(Angle2D.getHorizontalAngle(p2), Math.PI/4, eps);
+        
+        Point2D p3 = new Point2D(0, 10);
+        assertEquals(Angle2D.getHorizontalAngle(p3), Math.PI/2, eps);
+        
+        Point2D p4 = new Point2D(-10, 10);
+        assertEquals(Angle2D.getHorizontalAngle(p4), 3*Math.PI/4, eps);
+        
+        Point2D p5 = new Point2D(-10, 0);
+        assertEquals(Angle2D.getHorizontalAngle(p5), Math.PI, eps);
+        
+        Point2D p6 = new Point2D(-10, -10);
+        assertEquals(Angle2D.getHorizontalAngle(p6), 5*Math.PI/4, eps);
+        
+        Point2D p7 = new Point2D(0, -10);
+        assertEquals(Angle2D.getHorizontalAngle(p7), 3*Math.PI/2, eps);
+        
+        Point2D p8 = new Point2D(10, -10);
+        assertEquals(Angle2D.getHorizontalAngle(p8), 7*Math.PI/4, eps);
+    }
+
 
 	/*
 	 * Test method for 'math.geom2d.Angle2D.getAngle(StraightObject2D, StraightObject2D)'

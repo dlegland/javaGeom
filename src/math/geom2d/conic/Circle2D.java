@@ -141,11 +141,19 @@ public class Circle2D extends Ellipse2D {
         return r;
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setRadius(double radius) {
         this.r = radius;
         this.r1 = this.r2 = radius;
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setCircle(double xc, double yc, double r) {
         this.xc = xc;
         this.yc = yc;
@@ -154,6 +162,10 @@ public class Circle2D extends Ellipse2D {
         this.r2 = r;
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setCircle(Point2D center, double r) {
         this.xc = center.getX();
         this.yc = center.getY();

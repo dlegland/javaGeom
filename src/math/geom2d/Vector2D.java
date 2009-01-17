@@ -141,14 +141,26 @@ public class Vector2D {
     // ===================================================================
     // modifiers
 
+    /**
+     * @deprecated vectors will become imutable in a future release
+     */
+    @Deprecated
     public void setX(double x) {
         this.x = x;
     }
 
+    /**
+     * @deprecated vectors will become imutable in a future release
+     */
+    @Deprecated
     public void setY(double y) {
         this.y = y;
     }
 
+    /**
+     * @deprecated vectors will become imutable in a future release
+     */
+    @Deprecated
     public void setVector(double x, double y) {
         this.x = x;
         this.y = y;
@@ -157,7 +169,9 @@ public class Vector2D {
     /**
      * Set location specified as polar coordinate : distance from origin + angle
      * with horizontal.
+     * @deprecated vectors will become imutable in a future release
      */
+    @Deprecated
     public void setAsPolar(double rho, double theta) {
         x = rho*Math.cos(theta);
         y = rho*Math.sin(theta);
@@ -185,7 +199,7 @@ public class Vector2D {
     /**
      * Returns the angle with the horizontal axis, in radians.
      * 
-     * @return the horizontal angle
+     * @return the horizontal angle of the vector
      */
     public double getAngle() {
         return Angle2D.getHorizontalAngle(this);
@@ -262,7 +276,7 @@ public class Vector2D {
     }
 
     /**
-     * Return the sum of current vector with vector given as parameter. Inner
+     * Returns the sum of current vector with vector given as parameter. Inner
      * fields are not modified.
      */
     public Vector2D plus(Vector2D v) {
@@ -270,13 +284,23 @@ public class Vector2D {
     }
 
     /**
-     * Return the subtraction of current vector with vector given as parameter.
-     * Inner fields are not modified.
+     * Returns the subtraction of current vector with vector given as
+     * parameter. Inner fields are not modified.
      */
     public Vector2D minus(Vector2D v) {
         return new Vector2D(x-v.getX(), y-v.getY());
     }
 
+    /**
+     * Multiplies the vector by a scalar amount. Inner fields are not 
+     * @param k the scale factor
+     * @return the scaled vector
+     * @since 0.7.0
+     */
+    public Vector2D times(double k) {
+        return new Vector2D(this.x*k, this.y*k);
+    }
+    
     /**
      * Transform the vector, by using only the first 4 parameters of the
      * transform. Translation of a vector returns the same vector.

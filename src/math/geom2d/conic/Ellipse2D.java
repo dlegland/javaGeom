@@ -262,11 +262,19 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     // ===================================================================
     // Methods specific to Ellipse2D
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setEllipse(double xc, double yc, double r1, double r2,
             double theta) {
         this.setEllipse(xc, yc, r1, r2, theta, true);
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setEllipse(double xc, double yc, double r1, double r2,
             double theta, boolean direct) {
         this.xc = xc;
@@ -277,19 +285,35 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
         this.direct = direct;
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setEllipse(Point2D center, double r1, double r2, double theta) {
         this.setEllipse(center.getX(), center.getY(), r1, r2, theta, true);
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setEllipse(Point2D center, double r1, double r2, double theta,
             boolean direct) {
         this.setEllipse(center.getX(), center.getY(), r1, r2, theta, direct);
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setCenter(Point2D center) {
         this.setCenter(center.getX(), center.getY());
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setCenter(double x, double y) {
         this.xc = x;
         this.yc = y;

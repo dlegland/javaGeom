@@ -4,7 +4,7 @@ Roadmap for javageom Library
 0.7.0 	
 - (done) remove dependency from Shape2D
 - (done) deprecate all EMPTY_SHAPES
-- deprecate setters for 'simple shapes': vectors, points, transforms.
+- (done) deprecate setters for 'simple shapes': vectors, points, transforms.
 - (done) move polygon algos into polygon subpackage
 - move Polylines into polygon package
 

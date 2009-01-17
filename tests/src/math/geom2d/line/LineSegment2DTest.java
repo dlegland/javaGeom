@@ -48,7 +48,31 @@ public class LineSegment2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LineSegment2DTest.class);
 	}
 
+	public void testGetLength() {
+        Point2D p1 = new Point2D(10, 10);
+        Point2D p2 = new Point2D(40, 50);
+        LineSegment2D edge = new LineSegment2D(p1, p2);
+        assertEquals(50, edge.getLength(), 1e-14);    
+	}
 	
+	public void testGetOtherPoint() {
+        Point2D p1 = new Point2D(10, 10);
+        Point2D p2 = new Point2D(40, 50);
+        Point2D p3 = new Point2D(20, 30);
+        LineSegment2D edge = new LineSegment2D(p1, p2);
+        
+        assertEquals(p2, edge.getOtherPoint(p1));    
+        assertEquals(p1, edge.getOtherPoint(p2));    
+        assertEquals(null, edge.getOtherPoint(p3));    
+	}
+
+	public void testIsBounded() {
+        Point2D p1 = new Point2D(10, 10);
+        Point2D p2 = new Point2D(40, 50);
+        LineSegment2D edge = new LineSegment2D(p1, p2);
+        assertTrue(edge.isBounded());    
+	}
+
 	public void testIntersects(){
 		Point2D p1 = new Point2D(10, 10);
 		Point2D p2 = new Point2D(20, 30);
@@ -205,27 +229,27 @@ public class LineSegment2DTest extends TestCase {
 		assertTrue(edge.contains(1, 1));
 		assertTrue(edge.contains(3, 2));
 		assertTrue(edge.contains(2, 1.5));
-		assertTrue(!edge.contains(0, 0));
-		assertTrue(!edge.contains(-1, 0));
-		assertTrue(!edge.contains(5, 3));
+		assertFalse(edge.contains(0, 0));
+		assertFalse(edge.contains(-1, 0));
+		assertFalse(edge.contains(5, 3));
 		
 		// horizontal edge
 		edge = new LineSegment2D(1, 1, 3, 1);
 		assertTrue(edge.contains(1, 1));
 		assertTrue(edge.contains(3, 1));
 		assertTrue(edge.contains(2, 1));
-		assertTrue(!edge.contains(0, 0));
-		assertTrue(!edge.contains(0, 1));
-		assertTrue(!edge.contains(4, 1));
+		assertFalse(edge.contains(0, 0));
+		assertFalse(edge.contains(0, 1));
+		assertFalse(edge.contains(4, 1));
 
 		// vertical edge
 		edge = new LineSegment2D(1, 1, 1, 3);
 		assertTrue(edge.contains(1, 1));
 		assertTrue(edge.contains(1, 3));
 		assertTrue(edge.contains(1, 2));
-		assertTrue(!edge.contains(0, 0));
-		assertTrue(!edge.contains(1, 0));
-		assertTrue(!edge.contains(1, 4));
+		assertFalse(edge.contains(0, 0));
+		assertFalse(edge.contains(1, 0));
+		assertFalse(edge.contains(1, 4));
 	}
 
 	public void testGetBoundingBox() {

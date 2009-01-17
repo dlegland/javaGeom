@@ -76,6 +76,59 @@ public class Point2DTest extends TestCase {
 		assertEquals(p1.getDistance(0, 0), Math.sqrt(13), Shape2D.ACCURACY);
 	}
 
+	public void testTranslate() {
+	    // base point
+	    Point2D p1 = new Point2D(10, 20);
+	    
+	    // test with positive translate
+        Point2D p2 = new Point2D(14, 25);
+        assertTrue(p1.translate(4, 5).equals(p2));
+        
+        // test with negative translate
+        Point2D p3 = new Point2D(6, 15);
+        assertTrue(p1.translate(-4, -5).equals(p3));
+	}
+	
+    public void testScaleDoubleDouble() {
+        // base point
+        Point2D p1 = new Point2D(10, 20);
+        
+        // test with >1 factor
+        Point2D p2 = new Point2D(20, 60);
+        assertTrue(p1.scale(2, 3).equals(p2));
+        
+        // test with <1 factor
+        Point2D p3 = new Point2D(5, 4);
+        assertEquals(p1.scale(1./2., 1./5.), p3);
+    }
+    
+    public void testScaleDouble() {
+        // base point
+        Point2D p1 = new Point2D(10, 20);
+        
+        // test with >1 factor
+        Point2D p2 = new Point2D(20, 40);
+        assertTrue(p1.scale(2).equals(p2));
+        
+        // test with <1 factor
+        Point2D p3 = new Point2D(5, 10);
+        assertEquals(p1.scale(1./2.), p3);
+    }
+    
+	public void testRotate() {
+        // base point
+        Point2D p1 = new Point2D(10, 20);
+        
+        // test with basic angle
+        Point2D p2 = new Point2D(-20, 10);
+        assertTrue(p1.rotate(Math.PI/2).equals(p2));
+        
+        // test with center
+        Point2D p3 = new Point2D(0, 10);
+        assertEquals(p1.rotate(new Point2D(10, 10), Math.PI/2), p3);
+	}
+	
+	
 	public void testIsBounded() {
 		Point2D p1 = new Point2D(2, 3);
 		Point2D p2 = new Point2D(1, 4);

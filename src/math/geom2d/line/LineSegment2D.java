@@ -152,8 +152,8 @@ public class LineSegment2D extends AbstractLine2D {
     /**
      * Return the opposite vertex of the edge.
      * 
-     * @param point : one of the vertices of the edge
-     * @return the other vertex
+     * @param point one of the vertices of the edge
+     * @return the other vertex, or null if point is nor a vertex of the edge
      */
     public Point2D getOtherPoint(Point2D point) {
         if (point.equals(new Point2D(x0, y0)))
@@ -173,6 +173,10 @@ public class LineSegment2D extends AbstractLine2D {
         return new StraightLine2D(x0+dx*.5, y0+dy*.5, -dy, dx);
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setLineSegment(Point2D p1, Point2D p2) {
         this.x0 = p1.getX();
         this.y0 = p1.getY();
@@ -180,6 +184,10 @@ public class LineSegment2D extends AbstractLine2D {
         this.dy = p2.getY()-this.y0;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setLineSegment(double x1, double y1, double x2, double y2) {
         this.x0 = x1;
         this.y0 = y1;
@@ -343,6 +351,10 @@ public class LineSegment2D extends AbstractLine2D {
         g.draw(new java.awt.geom.Line2D.Double(x0, y0, x0+dx, y0+dy));
     }
 
+    /**
+     * deprecated
+     */
+    @Deprecated
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         path.moveTo((float) x0, (float) y0);
