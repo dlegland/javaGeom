@@ -272,7 +272,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
     /**
      * Set location specified as polar coordinate : distance from origin + angle
      * with horizontal.
+     * @deprecated use Point2D.createPolar() instead (0.7.0)
      */
+    @Deprecated
     public void setPolarLocation(double rho, double theta) {
         x = rho*Math.cos(theta);
         y = rho*Math.sin(theta);
@@ -281,7 +283,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
     /**
      * Set location at distance 'rho' from given point, and making an angle
      * 'theta' with horizontal.
+     * @deprecated use Point2D.createPolar() instead (0.7.0)
      */
+    @Deprecated
     public void setPolarLocation(java.awt.geom.Point2D point, double rho,
             double theta) {
         x = point.getX()+rho*Math.cos(theta);

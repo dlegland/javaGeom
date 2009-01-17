@@ -14,7 +14,8 @@ Regressions
 	+ Polygon2D.getVerticesNumber()
 	+ PointSet2D.getPointsNumber()
 	+ Conic2D.getCartesianEquation()
-- deprecate classes with doubtful use:
+	+ Transform2D.transform(Point2D, Point2D) -> Point will become immutable
+- deprecated classes with doubtful use:
 	+ empty shapes
 	+ Point2D.INFINITY_POINT
 

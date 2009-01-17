@@ -700,7 +700,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     public boolean isInside(java.awt.geom.Point2D point) {
         AffineTransform2D rot = AffineTransform2D.createRotation(this.xc,
                 this.yc, -this.theta);
-        Point2D pt = rot.transform(point, new Point2D());
+        Point2D pt = rot.transform(point);
         double xp = (pt.getX()-this.xc)/this.r1;
         double yp = (pt.getY()-this.yc)/this.r2;
         return (xp*xp+yp*yp<1)^!direct;
@@ -728,11 +728,13 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
         double sit = Math.sin(theta);
 
         if (direct)
-            return new Vector2D(-r1*Math.sin(t)*cot-r2*Math.cos(t)*sit, -r1
-                    *Math.sin(t)*sit+r2*Math.cos(t)*cot);
+            return new Vector2D(
+                    -r1*Math.sin(t)*cot-r2*Math.cos(t)*sit,
+                    -r1*Math.sin(t)*sit+r2*Math.cos(t)*cot);
         else
-            return new Vector2D(r1*Math.sin(t)*cot+r2*Math.cos(t)*sit, r1
-                    *Math.sin(t)*sit-r2*Math.cos(t)*cot);
+            return new Vector2D(
+                    r1*Math.sin(t)*cot+r2*Math.cos(t)*sit,
+                    r1*Math.sin(t)*sit-r2*Math.cos(t)*cot);
     }
 
     /**

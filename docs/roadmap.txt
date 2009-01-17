@@ -3,9 +3,10 @@ Roadmap for javageom Library
 
 0.7.0 	
 - (done) remove dependency from Shape2D
-- deprecate all EMPTY_SHAPES
+- (done) deprecate all EMPTY_SHAPES
 - deprecate setters for 'simple shapes': vectors, points, transforms.
-- move polygon algos into polygon subpackage
+- (done) move polygon algos into polygon subpackage
+- move Polylines into polygon package
 
 0.8.0
 - remove all EMPTY_SHAPES
@@ -26,6 +27,8 @@ Other pending questions:
 	Call it Line2D ?
 - introduce points in homogeneous coordinates ?
 - introduce Direction2D ?
+- lot of redundancies between ClosedPolyline2D and SimplePolygon2D
+- introduce exception for parallel line ?
 
 
 Version numbering:
