@@ -19,7 +19,11 @@ Regressions
 	+ empty shapes
 	+ Point2D.INFINITY_POINT
 
-	
+Code
+- moved Polylines into polygon package, and renamed 'ClosedPolyline2D' as
+    'Ring2D'
+    
+    
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features

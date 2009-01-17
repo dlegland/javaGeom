@@ -24,7 +24,7 @@
  *
  */
 
-package math.geom2d.line;
+package math.geom2d.polygon;
 
 import java.awt.Graphics2D;
 import java.util.*;
@@ -38,16 +38,17 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.LinearShape2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A polyline is a continuous curve where each piece of the curve is a
  * LineSegment2D.
  * 
- * @deprecated use math.geom2d.polygon.Polyline2D instead (0.7.0)
  * @author dlegland
  */
-@Deprecated
 public class Polyline2D implements ContinuousOrientedCurve2D {
 
     protected ArrayList<Point2D> points = new ArrayList<Point2D>();
@@ -170,14 +171,14 @@ public class Polyline2D implements ContinuousOrientedCurve2D {
     // ===================================================================
     // Methods inherited from ContinuousCurve2D
 
-    public math.geom2d.polygon.Polyline2D getAsPolyline(int n) {
+    public Polyline2D getAsPolyline(int n) {
         Point2D[] points = new Point2D[n+1];
         double t0 = this.getT0();
         double t1 = this.getT1();
         double dt = (t1-t0)/n;
         for (int i = 0; i<n; i++)
             points[i] = this.getPoint(i*dt+t0);
-        return new math.geom2d.polygon.Polyline2D(points);
+        return new Polyline2D(points);
     }
 
     // ===================================================================
@@ -230,7 +231,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D {
      * @see math.geom2d.OrientedCurve2D#isInside(java.awt.geom.Point2D)
      */
     public boolean isInside(java.awt.geom.Point2D pt) {
-        if (new ClosedPolyline2D(this.getPointArray()).isInside(pt))
+        if (new Ring2D(this.getPointArray()).isInside(pt))
             return true;
 
         if (this.points.size()<3)

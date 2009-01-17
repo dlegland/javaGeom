@@ -35,7 +35,6 @@ import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -246,7 +245,7 @@ public class Rectangle2D implements Polygon2D {
     // ===================================================================
     // methods implementing the Domain2D interface
 
-    public BoundarySet2D<ClosedPolyline2D> getBoundary() {
+    public BoundarySet2D<Ring2D> getBoundary() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
@@ -255,7 +254,7 @@ public class Rectangle2D implements Polygon2D {
         pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
         pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
 
-        return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
+        return new BoundarySet2D<Ring2D>(new Ring2D(pts));
     }
 
     public Polygon2D complement() {

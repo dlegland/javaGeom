@@ -25,13 +25,14 @@
  * Created on 16 Apr. 2007
  */
 
-package math.geom2d.line;
+package math.geom2d.polygon;
 import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.line.StraightLine2D;
 
 import junit.framework.TestCase;
 
@@ -39,18 +40,18 @@ import junit.framework.TestCase;
 /**
  * @author Legland
  */
-public class ClosedPolyline2DTest extends TestCase {
+public class Ring2DTest extends TestCase {
 
 	/**
 	 * Constructor for ClosedClosedPolyline2DTest.
 	 * @param arg0
 	 */
-	public ClosedPolyline2DTest(String arg0) {
+	public Ring2DTest(String arg0) {
 		super(arg0);
 	}
 
 	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(ClosedPolyline2DTest.class);
+		junit.awtui.TestRunner.run(Ring2DTest.class);
 	}
 
 	public void testAddLine(){
@@ -59,7 +60,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[1] = new Point2D(10, 0);
 		points[2] = new Point2D(10, 10);
 		points[3] = new Point2D(20, 20);
-		ClosedPolyline2D line = new ClosedPolyline2D(points);
+		Ring2D line = new Ring2D(points);
 		line.addPoint(new Point2D(30, 20));
 		assertEquals(line.getVertexNumber(), points.length+1);		
 	}
@@ -73,7 +74,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		
 		// create polyline
-		ClosedPolyline2D line1 = new ClosedPolyline2D(points);
+		Ring2D line1 = new Ring2D(points);
 
 		// find the first point
 		Point2D p00 = new Point2D(0, 0);
@@ -106,7 +107,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[2] = new Point2D(20, -5);
 		
 		// create polyline
-		ClosedPolyline2D poly = new ClosedPolyline2D(points);
+		Ring2D poly = new Ring2D(points);
 
 		// line to intersect with
 		StraightLine2D line = new StraightLine2D(0, 0, 1, 0);
@@ -134,7 +135,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		
 		// create polyline, and subcurve
-		ClosedPolyline2D line1 = new ClosedPolyline2D(points);
+		Ring2D line1 = new Ring2D(points);
 		Polyline2D sub = (Polyline2D) line1.getSubCurve(.5, 2.5);
 		
 		// to check result
@@ -147,7 +148,7 @@ public class ClosedPolyline2DTest extends TestCase {
 	}
 	
 	public void testClip_Box2D(){
-		ClosedPolyline2D polyline1 = new ClosedPolyline2D(new Point2D[]{
+		Ring2D polyline1 = new Ring2D(new Point2D[]{
 				new Point2D(-5, -5),
 				new Point2D(5, -5),
 				new Point2D(5, 5),
@@ -166,7 +167,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		
 		
 		// Oblic polyline, cutting the box in two points
-		polyline1 = new ClosedPolyline2D(new Point2D[]{
+		polyline1 = new Ring2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(20, -20),
 				new Point2D(40, 0),
@@ -185,7 +186,7 @@ public class ClosedPolyline2DTest extends TestCase {
 	}
 	
 	public void testGetSignedArea(){
-		ClosedPolyline2D polyline = new ClosedPolyline2D(new Point2D[]{
+		Ring2D polyline = new Ring2D(new Point2D[]{
 				new Point2D(20, 10),
 				new Point2D(20, 20),
 				new Point2D(10, 20),
@@ -194,7 +195,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		assertEquals(polyline.getSignedArea(), 100, 1e-10);
 		assertEquals(polyline.getArea(), 100, 1e-10);
 
-		ClosedPolyline2D invert = new ClosedPolyline2D(new Point2D[]{
+		Ring2D invert = new Ring2D(new Point2D[]{
 				new Point2D(20, 10),
 				new Point2D(10, 10),
 				new Point2D(10, 20),
@@ -205,7 +206,7 @@ public class ClosedPolyline2DTest extends TestCase {
 	}
 	
 	public void testIsInside(){
-		ClosedPolyline2D polyline = new ClosedPolyline2D(new Point2D[]{
+		Ring2D polyline = new Ring2D(new Point2D[]{
 				new Point2D(150, 50),
 				new Point2D(150, 150),
 				new Point2D(100, 100),
@@ -224,7 +225,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		assertTrue(!polyline.isInside(new Point2D(0, 50)));		
 
 		// Try the other orientation
-		polyline = new ClosedPolyline2D(new Point2D[]{
+		polyline = new Ring2D(new Point2D[]{
 				new Point2D(50, 50),
 				new Point2D(50, 150),
 				new Point2D(100, 100),
@@ -255,7 +256,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[1] = new Point2D(40, 20);
 		points[2] = new Point2D(40, 60);
 		points[3] = new Point2D(20, 60);
-		ClosedPolyline2D poly = new ClosedPolyline2D(points);
+		Ring2D poly = new Ring2D(points);
 		
 
 		assertTrue(poly.isInside(20, 20));
@@ -278,7 +279,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[3] = new Point2D(60, 10);
 		points[4] = new Point2D(60, 30);
 		points[5] = new Point2D(80, 30);
-		poly = new ClosedPolyline2D(points);
+		poly = new Ring2D(points);
 		
 		// classic case
 		assertTrue(poly.isInside(60, 40));
@@ -294,7 +295,7 @@ public class ClosedPolyline2DTest extends TestCase {
 		points[5] = new Point2D(10, 10);
 		points[6] = new Point2D(40, 10);
 		points[7] = new Point2D(40, 60);
-		poly = new ClosedPolyline2D(points);
+		poly = new Ring2D(points);
 		
 		// classic cases
 		assertTrue(poly.isInside(15, 15));

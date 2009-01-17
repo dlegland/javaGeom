@@ -31,8 +31,6 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.domain.Domain2D;
-import math.geom2d.line.ClosedPolyline2D;
-import math.geom2d.polygon.SimplePolygon2D;
 
 
 public class CheckPolygon2DCreateBuffer extends JPanel{
@@ -69,10 +67,10 @@ public class CheckPolygon2DCreateBuffer extends JPanel{
 		polygon1 = new SimplePolygon2D(points1);
 		polygon2 = new SimplePolygon2D(points2);
 		
-		polygon = new MultiPolygon2D(new ClosedPolyline2D[]{
-				new ClosedPolyline2D(points1),
-				new ClosedPolyline2D(points2),
-				new ClosedPolyline2D(points3) });
+		polygon = new MultiPolygon2D(new Ring2D[]{
+				new Ring2D(points1),
+				new Ring2D(points2),
+				new Ring2D(points3) });
 		
 	}
 	

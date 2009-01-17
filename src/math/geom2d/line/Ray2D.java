@@ -35,6 +35,7 @@ import math.geom2d.UnboundedShapeException;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports

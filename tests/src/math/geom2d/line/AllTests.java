@@ -37,13 +37,11 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.line");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(ClosedPolyline2DTest.class));
 		suite.addTest(new TestSuite(InvertedRay2DTest.class));
-		suite.addTest(new TestSuite(LineSegment2DTest.class));
 		suite.addTest(new TestSuite(LineArc2DTest.class));
 		suite.addTest(new TestSuite(LineObject2DTest.class));
-		suite.addTest(new TestSuite(Polyline2DTest.class));
-		suite.addTest(new TestSuite(Ray2DTest.class));
+		suite.addTest(new TestSuite(LineSegment2DTest.class));
+        suite.addTest(new TestSuite(Ray2DTest.class));
 		suite.addTest(new TestSuite(StraightLine2DTest.class));
 		suite.addTest(new TestSuite(StraightObject2DTest.class));
 		//$JUnit-END$

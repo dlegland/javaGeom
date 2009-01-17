@@ -32,7 +32,6 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
-import math.geom2d.line.ClosedPolyline2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.AffineTransform2D;
 
@@ -140,13 +139,13 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return 4;
     }
 
-    public BoundarySet2D<ClosedPolyline2D> getBoundary() {
+    public BoundarySet2D<Ring2D> getBoundary() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
         pts[1] = new Point2D(width+x, y);
         pts[2] = new Point2D(width+x, y+height);
         pts[3] = new Point2D(x, y+height);
-        return new BoundarySet2D<ClosedPolyline2D>(new ClosedPolyline2D(pts));
+        return new BoundarySet2D<Ring2D>(new Ring2D(pts));
     }
 
     public Polygon2D complement() {

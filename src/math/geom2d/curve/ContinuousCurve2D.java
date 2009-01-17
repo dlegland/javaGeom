@@ -29,7 +29,7 @@ package math.geom2d.curve;
 import java.util.*;
 
 import math.geom2d.Box2D;
-import math.geom2d.line.Polyline2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**

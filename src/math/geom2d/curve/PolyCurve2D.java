@@ -26,12 +26,14 @@
 
 package math.geom2d.curve;
 
-import math.geom2d.Point2D;
-import math.geom2d.Box2D;
-import math.geom2d.line.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-import java.util.*;
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
+import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A PolyCurve2D is a set of piecewise smooth curve arcs, such that the end of a

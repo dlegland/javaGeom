@@ -36,7 +36,7 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.Polyline2D;
+import math.geom2d.polygon.Polyline2D;
 
 public class Curve2DUtilsTest extends TestCase {
 

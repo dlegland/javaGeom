@@ -27,7 +27,8 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
@@ -37,16 +38,16 @@ import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.Polyline2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**

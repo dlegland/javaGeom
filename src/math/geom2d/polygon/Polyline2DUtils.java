@@ -2,7 +2,7 @@
  * 
  */
 
-package math.geom2d.line;
+package math.geom2d.polygon;
 
 import java.util.Iterator;
 
@@ -13,15 +13,15 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.StraightLine2D;
 
 /**
  * Some utility functions for manipulating Polyline2D.
  * 
  * @author dlegland
- * @deprecated use math.geom2d.polygon.Polyline2DUtils instead (0.7.0)
  * @since 0.6.3
  */
-@Deprecated
 public abstract class Polyline2DUtils {
 
     /**
@@ -33,12 +33,13 @@ public abstract class Polyline2DUtils {
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
      */
-    public final static PolyOrientedCurve2D<SmoothOrientedCurve2D> createParallel(
-            Polyline2D polyline, double d) {
+    public final static PolyOrientedCurve2D<SmoothOrientedCurve2D> 
+    createParallel(Polyline2D polyline, double d) {
 
         // Collection of parallel curves
-        PolyOrientedCurve2D<SmoothOrientedCurve2D> result = new PolyOrientedCurve2D<SmoothOrientedCurve2D>();
-        result.setClosed(polyline instanceof ClosedPolyline2D);
+        PolyOrientedCurve2D<SmoothOrientedCurve2D> result = 
+            new PolyOrientedCurve2D<SmoothOrientedCurve2D>();
+        result.setClosed(polyline instanceof Ring2D);
 
         // evacuate degenerate case.
         if (polyline.getVertices().size()<2)
@@ -63,7 +64,7 @@ public abstract class Polyline2DUtils {
 
         // ----- Initializations -----
 
-        if (polyline instanceof ClosedPolyline2D) {
+        if (polyline instanceof Ring2D) {
             // Add eventually a circle arc, and the first line segment.
 
             // Extract parallel to last edge
@@ -121,6 +122,7 @@ public abstract class Polyline2DUtils {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
+                // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
@@ -140,7 +142,7 @@ public abstract class Polyline2DUtils {
 
         // ----- Post processing -----
 
-        if (polyline instanceof ClosedPolyline2D) {
+        if (polyline instanceof Ring2D) {
             // current line segment join the last point to the first point
             iterator = polyline.getVertices().iterator();
             v1 = v2;
@@ -152,6 +154,7 @@ public abstract class Polyline2DUtils {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
+                // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
@@ -184,11 +187,13 @@ public abstract class Polyline2DUtils {
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
      */
-    public final static BoundaryPolyCurve2D<SmoothOrientedCurve2D> createClosedParallel(
-            ClosedPolyline2D polyline, double d) {
+    public final static BoundaryPolyCurve2D<SmoothOrientedCurve2D>
+    createClosedParallel(
+            Ring2D polyline, double d) {
 
         // Collection of parallel curves
-        BoundaryPolyCurve2D<SmoothOrientedCurve2D> result = new BoundaryPolyCurve2D<SmoothOrientedCurve2D>();
+        BoundaryPolyCurve2D<SmoothOrientedCurve2D> result = 
+            new BoundaryPolyCurve2D<SmoothOrientedCurve2D>();
         result.setClosed(true);
 
         // evacuate degenerate case.
@@ -260,6 +265,7 @@ public abstract class Polyline2DUtils {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
+                // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
@@ -290,6 +296,7 @@ public abstract class Polyline2DUtils {
             // Line is going to the right -> add the previous line segment
             // truncated at corner
             p2 = line.getIntersection(line0);
+            // TODO: need mode precise control
             result.addCurve(new LineSegment2D(p1, p2));
             p1 = p2;
         } else {

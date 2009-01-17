@@ -34,8 +34,8 @@ import math.geom2d.conic.Parabola2D;
 import math.geom2d.conic.ParabolaArc2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.line.ClosedPolyline2D;
-import math.geom2d.line.Polyline2D;
+import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.Polyline2D;
 
 
 public class DrawOblicParabolaDemo extends JPanel{
@@ -65,7 +65,7 @@ public class DrawOblicParabolaDemo extends JPanel{
 		Polyline2D polyline = arc.getAsPolyline(10);
 		
 		g2.setColor(Color.YELLOW);
-		new GenericDomain2D(new ClosedPolyline2D(polyline.getVertices())).fill(g2);
+		new GenericDomain2D(new Ring2D(polyline.getVertices())).fill(g2);
 
 		g2.setColor(Color.BLUE);
 		box.getBoundary().draw(g2);

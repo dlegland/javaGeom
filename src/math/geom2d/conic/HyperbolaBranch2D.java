@@ -16,8 +16,8 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.line.Polyline2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**

@@ -6,11 +6,11 @@ Roadmap for javageom Library
 - (done) deprecate all EMPTY_SHAPES
 - (done) deprecate setters for 'simple shapes': vectors, points, transforms.
 - (done) move polygon algos into polygon subpackage
-- move Polylines into polygon package
+- (done) move Polylines into polygon package
 
 0.8.0
 - remove all EMPTY_SHAPES
-- make Point2D and Vector2D immutable shapes
+- make simple classes (like Point2D, Vector2D, StraightLine2D...) immutable
 - remove inheritance of Point2D from java Point, as this introduces too many
 	bug potentialities.
 

@@ -43,9 +43,9 @@ import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.ClosedPolyline2D;
+import math.geom2d.polygon.Ring2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.line.Polyline2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports
@@ -792,7 +792,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
         else
             for (int i = 0; i<n; i++)
                 points[i] = this.getPoint(-(double) i*dt+t0);
-        return new ClosedPolyline2D(points);
+        return new Ring2D(points);
     }
 
     /**
