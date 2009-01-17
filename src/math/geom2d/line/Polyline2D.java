@@ -569,7 +569,7 @@ public class Polyline2D implements ContinuousOrientedCurve2D {
     public Polyline2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[points.size()];
         for (int i = 0; i<points.size(); i++)
-            pts[i] = trans.transform(points.get(i), pts[i]);
+            pts[i] = trans.transform(points.get(i));
         return new Polyline2D(pts);
     }
 

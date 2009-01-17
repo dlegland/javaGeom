@@ -454,11 +454,13 @@ public class AffineTransform2D implements Bijection2D {
      */
     public AffineTransform2D chain(AffineTransform2D that) {
         double[][] m2 = that.getAffineMatrix();
-        return new AffineTransform2D(m2[0][0]*this.m00+m2[0][1]*this.m10,
-                m2[0][0]*this.m01+m2[0][1]*this.m11, m2[0][0]*this.m02+m2[0][1]
-                        *this.m12+m2[0][2],
-                m2[1][0]*this.m00+m2[1][1]*this.m10, m2[1][0]*this.m01+m2[1][1]
-                        *this.m11, m2[1][0]*this.m02+m2[1][1]*this.m12+m2[1][2]);
+        return new AffineTransform2D(
+                m2[0][0]*this.m00+m2[0][1]*this.m10,
+                m2[0][0]*this.m01+m2[0][1]*this.m11,
+                m2[0][0]*this.m02+m2[0][1]*this.m12+m2[0][2],
+                m2[1][0]*this.m00+m2[1][1]*this.m10, 
+                m2[1][0]*this.m01+m2[1][1]*this.m11,
+                m2[1][0]*this.m02+m2[1][1]*this.m12+m2[1][2]);
     }
 
     /**
@@ -513,7 +515,8 @@ public class AffineTransform2D implements Bijection2D {
         if (Math.abs(det)<Shape2D.ACCURACY)
             throw new NonInvertibleTransformException();
 
-        return new AffineTransform2D(m11/det, -m01/det, (m01*m12-m02*m11)/det,
+        return new AffineTransform2D(
+                m11/det, -m01/det, (m01*m12-m02*m11)/det,
                 -m10/det, m00/det, (m02*m10-m00*m12)/det);
     }
 
@@ -541,23 +544,31 @@ public class AffineTransform2D implements Bijection2D {
         double coef[] = getCoefficients();
 
         for (int i = 0; i<src.length; i++)
-            dst[i].setLocation(new Point2D(src[i].getX()*coef[0]+src[i].getY()
-                    *coef[1]+coef[2], src[i].getX()*coef[3]+src[i].getY()
-                    *coef[4]+coef[5]));
+            dst[i].setLocation(new Point2D(
+                    src[i].getX()*coef[0]+src[i].getY()*coef[1]+coef[2],
+                    src[i].getX()*coef[3]+src[i].getY()*coef[4]+coef[5]));
         return dst;
     }
 
     public Point2D transform(java.awt.geom.Point2D src) {
-        return transform(src, new Point2D());
+        double coef[] = this.getCoefficients();
+        Point2D dst = new Point2D(
+                src.getX()*coef[0]+src.getY()*coef[1]+coef[2], 
+                src.getX()*coef[3]+src.getY()*coef[4]+coef[5]);
+        return dst;
     }
 
+    /**
+     * deprecated use transform() instead. (0.7.0)
+     */
+    @Deprecated
     public Point2D transform(java.awt.geom.Point2D src, Point2D dst) {
         double coef[] = getCoefficients();
         if (dst==null)
             dst = new Point2D();
-        dst.setLocation(src.getX()*coef[0]+src.getY()*coef[1]+coef[2], src
-                .getX()
-                *coef[3]+src.getY()*coef[4]+coef[5]);
+        dst.setLocation(
+                src.getX()*coef[0]+src.getY()*coef[1]+coef[2], 
+                src.getX()*coef[3]+src.getY()*coef[4]+coef[5]);
         return dst;
     }
 

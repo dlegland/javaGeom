@@ -393,7 +393,7 @@ public class ClosedPolyline2D extends Polyline2D implements
     public ClosedPolyline2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[points.size()];
         for (int i = 0; i<points.size(); i++)
-            pts[i] = trans.transform(points.get(i), pts[i]);
+            pts[i] = trans.transform(points.get(i));
         return new ClosedPolyline2D(pts);
     }
 

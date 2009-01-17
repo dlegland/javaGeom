@@ -52,8 +52,9 @@ public class AffineTransform2DTest extends TestCase {
 		Point2D center = new Point2D(10, 20);
 		Point2D point = new Point2D(10+5, 20);
 		double theta = Math.PI/4;
-		AffineTransform2D trans = AffineTransform2D.createRotation(center, theta);
-		Point2D point2 = trans.transform(point, new Point2D());
+		AffineTransform2D trans = 
+		    AffineTransform2D.createRotation(center, theta);
+		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(10+Math.sqrt(2)*5/2, 20+Math.sqrt(2)*5/2);
 		assertTrue(expect.distance(point2)<1e-14);
 	}
@@ -65,7 +66,7 @@ public class AffineTransform2DTest extends TestCase {
 		double y0 = 5;
 		Point2D point = new Point2D(x0, y0);
 		AffineTransform2D trans = AffineTransform2D.createScaling(s1, s2);
-		Point2D point2 = trans.transform(point, new Point2D());
+		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(x0*s1, y0*s2);
 		assertTrue(expect.distance(point2)<1e-14);
 	}	
@@ -79,8 +80,9 @@ public class AffineTransform2DTest extends TestCase {
 		double s2 = 3;
 		Point2D center = new Point2D(xc, yc);
 		Point2D point = new Point2D(x0, y0);
-		AffineTransform2D trans = AffineTransform2D.createScaling(center, s1, s2);
-		Point2D point2 = trans.transform(point, new Point2D());
+		AffineTransform2D trans = 
+		    AffineTransform2D.createScaling(center, s1, s2);
+		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D((x0-xc)*s1+xc, (y0-yc)*s2+yc);
 		assertTrue(expect.distance(point2)<1e-14);
 	}	
@@ -89,7 +91,7 @@ public class AffineTransform2DTest extends TestCase {
 		Vector2D vector = new Vector2D(10, 20);
 		Point2D point = new Point2D(3, 5);
 		AffineTransform2D trans = AffineTransform2D.createTranslation(vector);
-		Point2D point2 = trans.transform(point, new Point2D());
+		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(13, 25);
 		assertTrue(expect.distance(point2)<1e-14);
 	}

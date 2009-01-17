@@ -93,7 +93,7 @@ public class CircleInversion2D implements Transform2D {
      * <li>Polyline2D is transformed into a continuous set of circle arcs</li>
      * </ul>
      */
-    public Shape2D transform(Shape2D shape) {
+    public Shape2D transformShape(Shape2D shape) {
 
         if (shape instanceof Point2D) {
             double xc = circle.getCenter().getX();
@@ -135,8 +135,8 @@ public class CircleInversion2D implements Transform2D {
                 // transform limits of edges, to obtain limits of arc
                 Point2D p1 = segment.getFirstPoint();
                 Point2D p2 = segment.getLastPoint();
-                p1 = this.transform(p1, new Point2D());
-                p2 = this.transform(p2, new Point2D());
+                p1 = this.transformPoint(p1);
+                p2 = this.transformPoint(p2);
 
                 // compute start and end angles of arc
                 double theta1 = Angle2D.getHorizontalAngle(c2, p1);
@@ -156,8 +156,8 @@ public class CircleInversion2D implements Transform2D {
             // transform the two extreme points of the circle
             Collection<Point2D> points = circle.getIntersections(line);
             Iterator<Point2D> iter = points.iterator();
-            Point2D p1 = this.transform(iter.next(), new Point2D());
-            Point2D p2 = this.transform(iter.next(), new Point2D());
+            Point2D p1 = this.transformPoint(iter.next());
+            Point2D p2 = this.transformPoint(iter.next());
 
             // get center and diameter of transformed circle
             double d = p1.getDistance(p2);
@@ -171,13 +171,32 @@ public class CircleInversion2D implements Transform2D {
             // transform each edge into a circle arc
             ArrayList<CircleArc2D> arcs = new ArrayList<CircleArc2D>();
             for (LineSegment2D edge : edges)
-                arcs.add((CircleArc2D) this.transform(edge));
+                arcs.add((CircleArc2D) this.transformShape(edge));
 
             // create new shape by putting all arcs together
             return new PolyCurve2D<CircleArc2D>(arcs);
         }
 
         return null;
+    }
+
+    
+     /**
+      * @deprecated use transformShape() instead (0.7.0)
+      */
+    @Deprecated
+    public Shape2D transform(Shape2D shape) {
+        return this.transformShape(shape);
+    }
+
+    
+    private Point2D transformPoint(java.awt.geom.Point2D pt) {
+        Point2D center = circle.getCenter();
+        double r = circle.getRadius();
+
+        double d = r*r/Point2D.getDistance(pt, center);
+        double theta = Angle2D.getHorizontalAngle(center, pt);
+        return Point2D.createPolar(center, d, theta);
     }
 
     public Point2D transform(java.awt.geom.Point2D pt) {
@@ -187,18 +206,6 @@ public class CircleInversion2D implements Transform2D {
         double d = r*r/Point2D.getDistance(pt, center);
         double theta = Angle2D.getHorizontalAngle(center, pt);
         return Point2D.createPolar(center, d, theta);
-    }
-
-    public Point2D transform(java.awt.geom.Point2D pt, Point2D dst) {
-        if (dst==null)
-            dst = new Point2D();
-        Point2D center = circle.getCenter();
-        double r = circle.getRadius();
-
-        double d = r*r/Point2D.getDistance(pt, center);
-        double theta = Angle2D.getHorizontalAngle(center, pt);
-        dst.setPolarLocation(center, d, theta);
-        return dst;
     }
 
     /** Transforms an array of points, and returns the transformed points. */
