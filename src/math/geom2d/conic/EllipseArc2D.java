@@ -621,6 +621,10 @@ public class EllipseArc2D implements SmoothOrientedCurve2D {
         return path;
     }
 
+    /**
+     * @deprecated 
+     */
+    @Deprecated
     public java.awt.geom.GeneralPath getGeneralPath() {
         // create new path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

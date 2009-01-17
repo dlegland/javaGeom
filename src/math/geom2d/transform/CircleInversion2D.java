@@ -68,12 +68,11 @@ public class CircleInversion2D implements Transform2D {
     // accessors
 
     public void setCircle(double xc, double yc, double r) {
-        this.circle.setCircle(xc, yc, r);
+        this.circle = new Circle2D(xc, yc, r);
     }
 
     public void setCircle(Circle2D circle) {
-        this.circle.setCenter(circle.getCenter());
-        this.circle.setRadius(circle.getRadius());
+        this.circle = new Circle2D(circle.getCenter(), circle.getRadius());
     }
 
     // ===================================================================

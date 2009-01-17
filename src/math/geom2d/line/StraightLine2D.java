@@ -329,6 +329,10 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods specific to StraightLine2D
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setLine(double x0, double y0, double dx, double dy) {
         this.x0 = x0;
         this.y0 = y0;
@@ -336,6 +340,10 @@ public class StraightLine2D extends AbstractLine2D implements
         this.dy = dy;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setPoints(double x1, double y1, double x2, double y2) {
         this.x0 = x1;
         this.y0 = y1;
@@ -343,6 +351,10 @@ public class StraightLine2D extends AbstractLine2D implements
         this.dy = y2-y1;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setLine(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) {
         this.x0 = p1.getX();
         this.y0 = p1.getY();
@@ -350,6 +362,10 @@ public class StraightLine2D extends AbstractLine2D implements
         this.dy = p2.getY()-y0;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setLine(LinearShape2D linear) {
         StraightLine2D line = linear.getSupportingLine();
         this.x0 = line.x0;
@@ -358,6 +374,10 @@ public class StraightLine2D extends AbstractLine2D implements
         this.dy = line.dy;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setCartesianEquation(double a, double b, double c) {
         dx = -b;
         dy = a;
@@ -432,6 +452,7 @@ public class StraightLine2D extends AbstractLine2D implements
         }
     }
 
+    
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 
@@ -442,6 +463,7 @@ public class StraightLine2D extends AbstractLine2D implements
         throw new UnboundedShapeException();
     }
 
+    
     // ===================================================================
     // methods implementing the Curve2D interface
 
@@ -519,13 +541,16 @@ public class StraightLine2D extends AbstractLine2D implements
 
     public Box2D getBoundingBox() {
         if (Math.abs(dx)<0)
-            return new Box2D(x0, x0, Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY);
+            return new Box2D(
+                    x0, x0, 
+                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         if (Math.abs(dy)<0)
-            return new Box2D(Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, x0, y0);
+            return new Box2D(
+                    Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+                    x0, y0);
 
-        return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
+        return new Box2D(
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
@@ -535,10 +560,14 @@ public class StraightLine2D extends AbstractLine2D implements
     @Override
     public StraightLine2D transform(AffineTransform2D trans) {
         double[] tab = trans.getCoefficients();
-        return new StraightLine2D(x0*tab[0]+y0*tab[1]+tab[2], x0*tab[3]+y0
-                *tab[4]+tab[5], dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4]);
+        return new StraightLine2D(
+                x0*tab[0]+y0*tab[1]+tab[2], 
+                x0*tab[3]+y0*tab[4]+tab[5], 
+                dx*tab[0]+dy*tab[1], 
+                dx*tab[3]+dy*tab[4]);
     }
 
+    
     // ===================================================================
     // methods implementing the Shape interface
 
@@ -569,6 +598,7 @@ public class StraightLine2D extends AbstractLine2D implements
         throw new UnboundedShapeException();
     }
 
+    
     // ===================================================================
     // methods implementing the Object interface
 

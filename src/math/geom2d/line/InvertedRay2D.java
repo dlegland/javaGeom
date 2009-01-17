@@ -130,6 +130,10 @@ public class InvertedRay2D extends AbstractLine2D {
     // ===================================================================
     // methods specific to InvertedRay2D
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setRay(double x0, double y0, double dx, double dy) {
         this.x0 = x0;
         this.y0 = y0;
@@ -137,6 +141,10 @@ public class InvertedRay2D extends AbstractLine2D {
         this.dy = dy;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setRay(Point2D p1, Point2D p2) {
         this.x0 = p1.getX();
         this.y0 = p1.getY();
@@ -144,6 +152,10 @@ public class InvertedRay2D extends AbstractLine2D {
         this.dy = p2.getY()-this.y0;
     }
 
+    /**
+     * @deprecated lines will become imutable in a future release
+     */
+    @Deprecated
     public void setRay(Point2D point, Vector2D vect) {
         this.x0 = point.getX();
         this.y0 = point.getY();

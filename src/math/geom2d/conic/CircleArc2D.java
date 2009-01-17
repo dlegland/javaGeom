@@ -156,7 +156,9 @@ public class CircleArc2D extends EllipseArc2D {
      * Change the center of the support circle.
      * 
      * @param point the new center of the arc.
+     * @deprecated conics will become imutable in a future release
      */
+    @Deprecated
     public void setCenter(Point2D point) {
         circle.xc = point.getX();
         circle.yc = point.getY();
@@ -166,11 +168,17 @@ public class CircleArc2D extends EllipseArc2D {
      * Change the radius of the support circle
      * 
      * @param r the new radius
+     * @deprecated conics will become imutable in a future release
      */
+    @Deprecated
     public void setRadius(double r) {
         circle.r = r;
     }
 
+    /**
+     * @deprecated conics will become imutable in a future release
+     */
+    @Deprecated
     public void setArc(Point2D center, double radius, double start,
             double extent) {
         circle.xc = center.getX();
@@ -739,11 +747,9 @@ public class CircleArc2D extends EllipseArc2D {
     // }
 
     /**
-     * Get the path, with moveTo().
-     * 
-     * @return the general path for this circle
+     * @deprecated 
      */
-    @Override
+    @Deprecated
     public java.awt.geom.GeneralPath getGeneralPath() {
         // Creates the path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

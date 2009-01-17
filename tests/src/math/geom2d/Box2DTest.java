@@ -37,7 +37,10 @@ public class Box2DTest extends TestCase {
 	public void testContains_DoubleDouble(){
 		Box2D box = new Box2D(-1, 1, -1, 1);
 		assertTrue(box.contains(0, 0));
-		assertTrue(!box.contains(-1, 2));
+        assertFalse(box.contains(-2, 0));
+        assertFalse(box.contains(2, 0));
+        assertFalse(box.contains(0, 2));
+        assertFalse(box.contains(0, -2));
 	}	
 	
 	public void testTransform(){
@@ -50,7 +53,17 @@ public class Box2DTest extends TestCase {
 		assertTrue(box.transform(rot).equals(new Box2D(-1, 1, -1, 1)));
 	}
 	
-	public void testGetBoundary(){
+	public void testGetWidth() {
+	    Box2D box = new Box2D(-10, 10, -20, 20);
+	    assertEquals(20, box.getWidth(), 1e-14);
+	}
+    
+    public void testGetHeight() {
+        Box2D box = new Box2D(-10, 10, -20, 20);
+        assertEquals(40, box.getHeight(), 1e-14);
+    }
+
+    public void testGetBoundary() {
 		// naming convention:
 		// box + 4 digits, each digit correspond to bounding info in one direction
 		// in order: x0 x1 y0 y1
