@@ -17,7 +17,7 @@ import math.geom2d.polygon.SimplePolygon2D;
  * 
  * @author dlegland
  */
-public class JarvisMarch2D {
+public class JarvisMarch2D implements ConvexHull2D {
 
     /**
      * Creates a new Convex hull calculator.
