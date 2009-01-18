@@ -33,11 +33,12 @@ import math.geom2d.*;
 import math.geom2d.polygon.Polygon2D;
 
 /**
- * Check the transformation of Ellipses by affine transforms.
+ * Check computation of convex hull using Jarvis March, on point set given in
+ * R. Sedgewick's book.
  * @author dlegland
  *
  */
-public class CheckJarvisMarchSedgewick extends JPanel{
+public class CheckGrahamScan2DSedgewick extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
 	
@@ -45,7 +46,7 @@ public class CheckJarvisMarchSedgewick extends JPanel{
 	Polygon2D hull;
 
 	
-	public CheckJarvisMarchSedgewick() {
+	public CheckGrahamScan2DSedgewick() {
 		super();
 		
 		// Point coordinate are multiplied by 10 for better drawing
@@ -76,16 +77,16 @@ public class CheckJarvisMarchSedgewick extends JPanel{
 			point.draw(g2, 2);
 		}
 		
-		Polygon2D hull = new JarvisMarch().convexHull(points);
+		Polygon2D hull = new GrahamScan2D().convexHull(points.getPoints());
 		g2.setColor(Color.BLUE);
 		hull.draw(g2);
 	}
 
 	public final static void main(String[] args){
-		System.out.println("Check convex hull by Jarvis march");
+		System.out.println("Check convex hull by Graham scan");
 		
-		JPanel panel = new CheckJarvisMarchSedgewick();
-		JFrame frame = new JFrame("Convex hull by Jarvis march");
+		JPanel panel = new CheckGrahamScan2DSedgewick();
+		JFrame frame = new JFrame("Convex hull by Graham scan");
 		frame.setContentPane(panel);
 		frame.setSize(500, 400);
 		frame.setVisible(true);

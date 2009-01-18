@@ -57,6 +57,40 @@ public class Angle2DTest extends TestCase {
 		assertEquals(Angle2D.getHorizontalAngle(1, 2, -2, -1), 5*Math.PI/4, 1e-14);
 	}
 	
+	/**
+	 * Tests with one central point, and 8 points all around.
+	 */
+	public void testGetPseudoAnglePoint2DPoint2D() {
+	    double tx = 5;
+	    double ty = 5;	    
+	    double eps = 1e-14;
+        Point2D p0 = new Point2D(10, 10);
+        
+        Point2D p1 = new Point2D(10+tx, 10);
+        assertEquals(0, Angle2D.getPseudoAngle(p0, p1), eps);
+        
+        Point2D p2 = new Point2D(10+tx, 10+ty);
+        assertEquals(45, Angle2D.getPseudoAngle(p0, p2), eps);
+        
+        Point2D p3 = new Point2D(10, 10+ty);
+        assertEquals(90, Angle2D.getPseudoAngle(p0, p3), eps);
+        
+        Point2D p4 = new Point2D(10-tx, 10+ty);
+        assertEquals(135, Angle2D.getPseudoAngle(p0, p4), eps);
+        
+        Point2D p5 = new Point2D(10-tx, 10);
+        assertEquals(180, Angle2D.getPseudoAngle(p0, p5), eps);
+        
+        Point2D p6 = new Point2D(10-tx, 10-ty);
+        assertEquals(225, Angle2D.getPseudoAngle(p0, p6), eps);
+        
+        Point2D p7 = new Point2D(10, 10-ty);
+        assertEquals(270, Angle2D.getPseudoAngle(p0, p7), eps);
+        
+        Point2D p8 = new Point2D(10+tx, 10-ty);
+        assertEquals(315, Angle2D.getPseudoAngle(p0, p8), eps);
+	}
+	
     /**
      * Test Angle2D.getHorizontalAngle(Point2D) with all multiple of pi/4.
      */

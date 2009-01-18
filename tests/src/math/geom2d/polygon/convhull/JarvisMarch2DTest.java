@@ -5,7 +5,7 @@ import math.geom2d.PointSet2D;
 import math.geom2d.polygon.Polygon2D;
 import junit.framework.TestCase;
 
-public class JarvisMarchTest extends TestCase {
+public class JarvisMarch2DTest extends TestCase {
 
 	public void testConvexHull_Lozenge() {
 		PointSet2D pointSet = new PointSet2D(new Point2D[]{
@@ -14,7 +14,7 @@ public class JarvisMarchTest extends TestCase {
 				new Point2D(1, 2),
 				new Point2D(0, 1)});
 		
-		Polygon2D hull = new JarvisMarch().convexHull(pointSet);
+		Polygon2D hull = new JarvisMarch2D().convexHull(pointSet.getPoints());
 		
 		assertTrue(hull!=null);
 		assertTrue(hull instanceof Polygon2D);
@@ -33,7 +33,7 @@ public class JarvisMarchTest extends TestCase {
 				new Point2D(1, 1),
 				new Point2D(0, 1)});
 		
-		Polygon2D hull = new JarvisMarch().convexHull(pointSet);
+		Polygon2D hull = new JarvisMarch2D().convexHull(pointSet.getPoints());
 		
 		assertTrue(hull!=null);
 		assertTrue(hull instanceof Polygon2D);

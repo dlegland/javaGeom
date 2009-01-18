@@ -104,6 +104,29 @@ public class Angle2D {
     }
 
     /**
+     * <p>Computes the pseudo-angle of a line joining the 2 points. The
+     * pseudo-angle has same ordering property has natural angle, but is 
+     * expected to be computed faster. The result is given between 0 and 360.
+     * </p>
+     * @param p1 the initial point
+     * @param p2 the final point
+     * @return the pseudo angle of line joining p1 to p2
+     */public final static double getPseudoAngle(java.awt.geom.Point2D p1,
+             java.awt.geom.Point2D p2) {
+         double dx =  p2.getX()-p1.getX();
+         double dy =  p2.getY()-p1.getY();
+         double s = Math.abs(dx)+Math.abs(dy);
+         double t = (s==0) ? 0.0 : dy/s;
+         if(dx<0) {
+             t = 2-t;
+         } else 
+             if (dy<0) {
+                 t += 4;
+             }
+         return t*90;
+    }
+
+    /**
      * Gets angle between two (directed) straight objects. Result is given in
      * radians, between 0 and 2*PI.
      */

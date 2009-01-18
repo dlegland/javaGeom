@@ -3,7 +3,9 @@ Changes in javaGeom library
 javaGeom-0.?.? (2008-??.??, rev. ???)
 
 New features
+- Added Convex hull by Graham scan
 - Conic2D now implements Boundary2D
+- added Angle2D.getPseudoAngle();
 
 Regressions
 - Shape2D does not inherit from java.awt.Shape anymore, reducing the number of

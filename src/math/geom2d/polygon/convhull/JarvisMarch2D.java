@@ -5,6 +5,7 @@
 package math.geom2d.polygon.convhull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
@@ -16,8 +17,14 @@ import math.geom2d.polygon.SimplePolygon2D;
  * 
  * @author dlegland
  */
-public class JarvisMarch {
+public class JarvisMarch2D {
 
+    /**
+     * Creates a new Convex hull calculator.
+     */
+    public JarvisMarch2D(){
+    }
+    
     /**
      * Computes the convex hull of a set of points as a single Polygon2D.
      * Current implementation start at the point with lowest y-coord. The points
@@ -25,7 +32,7 @@ public class JarvisMarch {
      * SimplePolygon2D. Complexity is O(n*h), with n number of points, h number
      * of points of the hull. Worst case complexity is O(n^2).
      */
-    public Polygon2D convexHull(Iterable<Point2D> points) {
+    public Polygon2D convexHull(Collection<? extends Point2D> points) {
         // Init iteration on points
         Point2D lowestPoint = null;
         double y;
@@ -63,7 +70,7 @@ public class JarvisMarch {
     }
 
     private Point2D findNextPoint(Point2D basePoint, double startAngle,
-            Iterable<Point2D> points) {
+            Collection<? extends Point2D> points) {
         Point2D minPoint = null;
         double minAngle = Double.MAX_VALUE;
         double angle;
