@@ -37,7 +37,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.polygon.convhull");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(JarvisMarchTest.class));
+		suite.addTest(new TestSuite(GrahamScan2DTest.class));
+		suite.addTest(new TestSuite(JarvisMarch2DTest.class));
         //$JUnit-END$
 		return suite;
 	}

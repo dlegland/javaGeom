@@ -125,10 +125,8 @@ public class PointSet2D implements Shape2D, Iterable<Point2D> {
      * 
      * @return the collection of points
      */
-    public Iterator<Point2D> getPoints() {
-        // TODO: should return a collection to be consistent with other such
-        // methods
-        return points.iterator();
+    public Collection<Point2D> getPoints() {
+        return Collections.unmodifiableList(points);
     }
 
     /**
