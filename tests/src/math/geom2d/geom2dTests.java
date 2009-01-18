@@ -1,5 +1,5 @@
 /*
- * File : AllTests.java
+ * File : geom2dTests.java
  *
  * Project : geometry
  *
@@ -32,7 +32,7 @@ import junit.framework.TestSuite;
 /**
  * @author Legland
  */
-public class geom2dTest {
+public class geom2dTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Tests for package math.geom2d");
