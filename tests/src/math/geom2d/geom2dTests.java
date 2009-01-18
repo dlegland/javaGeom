@@ -42,6 +42,7 @@ public class geom2dTests {
 		suite.addTest(math.geom2d.curve.AllTests.suite());
 		suite.addTest(math.geom2d.domain.AllTests.suite());
 		suite.addTest(math.geom2d.line.AllTests.suite());
+        suite.addTest(math.geom2d.point.AllTests.suite());
         suite.addTest(math.geom2d.polygon.AllTests.suite());
         suite.addTest(math.geom2d.polygon.convhull.AllTests.suite());
 		suite.addTest(math.geom2d.spline.AllTests.suite());

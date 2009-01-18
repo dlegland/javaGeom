@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding=".svn/|math/.svn/|math/geom2d/.svn/|math/geom2d/algos/.svn/|math/geom2d/algos/convhull/.svn/|math/geom2d/conic/.svn/|math/geom2d/curve/.svn/|math/geom2d/domain/.svn/|math/geom2d/graph/.svn/|math/geom2d/grid/.svn/|math/geom2d/line/.svn/|math/geom2d/polygon/.svn/|math/geom2d/polygon/convhull/.svn/|math/geom2d/spline/.svn/|math/geom2d/transform/.svn/|math/geom2s/.svn/|math/geom3d/.svn/|math/geom3d/curve/.svn/|math/geom3d/line/.svn/|math/geom3d/plane/.svn/|math/geom3d/transform/.svn/|math/utils/.svn/" kind="src" path="src"/>
+	<classpathentry kind="src" output="essais/bin" path="essais/src"/>
 	<classpathentry kind="src" output="tune/bin" path="tune/src"/>
 	<classpathentry excluding=".svn/|math/.svn/|math/geom2d/.svn/|math/geom2d/algos/.svn/|math/geom2d/conic/.svn/|math/geom2d/curve/.svn/|math/geom2d/domain/.svn/|math/geom2d/grid/.svn/|math/geom2d/line/.svn/|math/geom2d/polygon/.svn/|math/geom2d/polygon/convhull/.svn/|math/geom2d/spline/.svn/" kind="src" output="check/bin" path="check/src"/>
 	<classpathentry excluding=".svn/|math/.svn/|math/geom2d/.svn/|math/geom2d/conic/.svn/|math/geom2d/line/.svn/" kind="src" output="demos/bin" path="demos/src"/>
