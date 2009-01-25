@@ -104,12 +104,12 @@ public abstract class Curve2DUtils {
 
         // convert list to point array, sorted wrt to their position on the
         // curve
-        SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
+        SortedSet<Double> set = new TreeSet<Double>();
         for (Point2D p : points)
-            set.add(new java.lang.Double(curve.getPosition(p)));
+            set.add(new Double(curve.getPosition(p)));
 
         // iterator on the intersection positions
-        Iterator<java.lang.Double> iter = set.iterator();
+        Iterator<Double> iter = set.iterator();
 
         // ----- remove intersections which do not cross the boundary
 

@@ -4,6 +4,8 @@
 
 package math.geom2d.polygon;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.Angle2D;
@@ -314,5 +316,27 @@ public abstract class Polyline2DUtils {
 
         // Return the resulting curve
         return result;
+    }
+    
+    /**
+     * Return all intersection points between the 2 polylines.
+     * @param poly1 a polyline
+     * @param poly2 a polyline
+     * @return the set of intersection points
+     */
+    public final static Collection<Point2D> intersect(
+            Polyline2D poly1, Polyline2D poly2) {
+        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        
+        Point2D point;
+        for(LineSegment2D edge1 : poly1.getEdges()){
+            for(LineSegment2D edge2 : poly2.getEdges()){
+                point = edge1.getIntersection(edge2);
+                if(point!=null)
+                    points.add(point);
+            }
+        }
+
+        return points;
     }
 }
