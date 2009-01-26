@@ -23,7 +23,8 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Branch of an Hyperbola2D.
  */
-public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
+public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D,
+Cloneable {
 
     Hyperbola2D hyperbola = null;
     boolean     positive  = true;
@@ -151,13 +152,13 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
         return list;
     }
 
-    /** return false, by definition of Hyperbola branch */
+    /** Return false, by definition of Hyperbola branch */
     public boolean isClosed() {
         return false;
     }
 
     /**
-     * returns a hyperbola arc with -100<t<100 transformed into polyline.
+     * Returns a hyperbola arc with -100<t<100 transformed into polyline.
      */
     public Polyline2D getAsPolyline(int n) {
         return new HyperbolaBranchArc2D(this, -100, 100).getAsPolyline(n);
@@ -167,6 +168,7 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
         return new HyperbolaBranchArc2D(this, -100, 100).appendPath(path);
     }
 
+    
     // ===================================================================
     // methods inherited from Curve2D interface
 
@@ -272,6 +274,10 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
         return result;
     }
 
+    
+    // ===================================================================
+    // methods inherited from Shape2D interface
+
     /** Returns a bounding box with infinite bounds in every direction */
     public Box2D getBoundingBox() {
         return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
@@ -323,9 +329,6 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
                 this.positive);
     }
 
-    // ===================================================================
-    // methods inherited from Shape interface
-
     public boolean contains(java.awt.geom.Point2D point) {
         return this.contains(point.getX(), point.getY());
     }
@@ -340,5 +343,23 @@ public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D {
     /** Throws an UnboundedShapeException */
     public void draw(Graphics2D g) {
         throw new UnboundedShapeException();
+    }
+    
+    // ===================================================================
+    // methods overriding Object class
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof HyperbolaBranch2D))
+            return false;
+        HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
+        
+        if(!hyperbola.equals(branch.hyperbola)) return false;
+        return positive==branch.positive;
+    }
+    
+    @Override
+    public HyperbolaBranch2D clone() {
+        return new HyperbolaBranch2D(hyperbola.clone(), positive);
     }
 }

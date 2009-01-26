@@ -48,7 +48,7 @@ import math.geom2d.polygon.Ring2D;
  * <code>x</code> and <code>y</code>. It also provides methods for clipping
  * others shapes, depending on their type.
  */
-public class Box2D {
+public class Box2D implements Cloneable {
 
     // ===================================================================
     // class variables
@@ -563,5 +563,10 @@ public class Box2D {
             return false;
 
         return true;
+    }
+    
+    @Override
+    public Box2D clone() {
+        return new Box2D(xmin, xmax, ymin, ymax);
     }
 }

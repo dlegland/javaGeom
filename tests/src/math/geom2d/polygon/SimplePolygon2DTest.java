@@ -167,4 +167,16 @@ public class SimplePolygon2DTest extends TestCase {
 		Box2D bounds = poly.getBoundingBox();
 		assertTrue(box.equals(bounds));
 	}
+	
+    public void testClone() {
+        SimplePolygon2D polygon = new SimplePolygon2D(new Point2D[]{
+                new Point2D(150, 50),
+                new Point2D(150, 150),
+                new Point2D(100, 100),
+                new Point2D(50, 150),
+                new Point2D(50, 50)
+        });
+        
+        assertTrue(polygon.equals(polygon.clone()));
+    }
 }

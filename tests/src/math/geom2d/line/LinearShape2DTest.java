@@ -1,5 +1,5 @@
 /*
- * File : StraightObject2DTest.java
+ * File : LinearShape2DTest.java
  *
  * Project : geometry
  *
@@ -32,18 +32,18 @@ import junit.framework.TestCase;
 /**
  * @author Legland
  */
-public class StraightObject2DTest extends TestCase {
+public class LinearShape2DTest extends TestCase {
 
 	/**
 	 * Constructor for StraightObject2DTest.
 	 * @param arg0
 	 */
-	public StraightObject2DTest(String arg0) {
+	public LinearShape2DTest(String arg0) {
 		super(arg0);
 	}
 
 	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(StraightObject2DTest.class);
+		junit.awtui.TestRunner.run(LinearShape2DTest.class);
 	}
 	
 	

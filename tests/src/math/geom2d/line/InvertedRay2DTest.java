@@ -112,4 +112,9 @@ public class InvertedRay2DTest extends TestCase {
 		assertTrue(clipped.iterator().next().equals(
 				new LineSegment2D(-10, 2, 2, 2)));
 	}
+	
+    public void testClone(){
+        InvertedRay2D ray = new InvertedRay2D(10, 20, 30, 40);
+        assertTrue(ray.equals(ray.clone()));
+    }
 }

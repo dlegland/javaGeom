@@ -344,8 +344,8 @@ public class SimplePolygon2D implements Polygon2D {
      * Return the shape formed by the polygon clipped by the given box.
      */
     public Domain2D clip(Box2D box) {
-        BoundarySet2D<ContinuousBoundary2D> boundarySet = Boundary2DUtils
-                .clipBoundary(this.getBoundary(), box);
+        BoundarySet2D<ContinuousBoundary2D> boundarySet = 
+            Boundary2DUtils.clipBoundary(this.getBoundary(), box);
 
         // TODO: should return an instance of MultiPolygon2D.
         return new GenericDomain2D(boundarySet);
@@ -576,5 +576,13 @@ public class SimplePolygon2D implements Polygon2D {
         }
 
         return true;
+    }
+    
+    @Override
+    public SimplePolygon2D clone() {
+        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
+        for(Point2D point : points)
+            array.add(point.clone());
+        return new SimplePolygon2D(array);
     }
 }

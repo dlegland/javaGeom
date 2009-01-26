@@ -180,4 +180,16 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(!polyline.isInside(new Point2D(200, 50)));
 		assertTrue(!polyline.isInside(new Point2D(0, 50)));
 	}
+	
+	public void testClone() {
+        Polyline2D polyline = new Polyline2D(new Point2D[]{
+                new Point2D(150, 50),
+                new Point2D(150, 150),
+                new Point2D(100, 100),
+                new Point2D(50, 150),
+                new Point2D(50, 50)
+        });
+	    
+        assertTrue(polyline.equals(polyline.clone()));
+	}
 }

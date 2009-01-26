@@ -46,7 +46,7 @@ import math.geom2d.transform.AffineTransform2D;
  * which are instances of HyperbolaBranch2D.
  */
 public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
-        Conic2D {
+        Conic2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -308,12 +308,12 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return new Point2D(-c*Math.cos(theta)+xc, -c*Math.sin(theta)+yc);
     }
 
-    /** Return 0 */
+    /** Return a */
     public double getLength1() {
         return a;
     }
 
-    /** Return 0 */
+    /** Return b */
     public double getLength2() {
         return b;
     }
@@ -381,8 +381,8 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
 
             double delta = b*b-4*a*c;
             if (delta<=0) {
-                System.out
-                        .println("Intersection with horizontal line should alays give positive delta");
+                System.out.println(
+                        "Intersection with horizontal line should alays give positive delta");
                 return points;
             }
 
@@ -443,7 +443,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     }
 
     /**
-     * Transforms this hyperbola by an affine transform.
+     * Transforms this Hyperbola by an affine transform.
      */
     @Override
     public Hyperbola2D transform(AffineTransform2D trans) {
@@ -455,7 +455,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return result;
     }
 
-    /** Throws an infiniteShapeException */
+    /** Throws an UnboundedShapeException */
     @Override
     public void draw(Graphics2D g) {
         throw new UnboundedShapeException();
@@ -488,4 +488,8 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return true;
     }
 
+    @Override
+    public Hyperbola2D clone() {
+        return new Hyperbola2D(xc, yc, a, b, theta, direct);
+    }
 }

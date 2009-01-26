@@ -53,7 +53,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public class ParabolaArc2D implements SmoothOrientedCurve2D {
+public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
 
     protected Parabola2D parabola = new Parabola2D();
 
@@ -376,8 +376,11 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
     // methods implementing the Shape interface
 
     public boolean contains(double x, double y) {
+        // Check on parent parabola
         if (!parabola.contains(x, y))
             return false;
+        
+        // Check if position of point is inside of bounds
         double t = parabola.getPosition(new Point2D(x, y));
         if (t<this.t0)
             return false;
@@ -427,5 +430,10 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D {
             return false;
 
         return true;
+    }
+    
+    @Override
+    public ParabolaArc2D clone() {
+        return new ParabolaArc2D(parabola.clone(), t0, t1);
     }
 }

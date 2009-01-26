@@ -623,4 +623,9 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
         }
         return result;
     }
+    
+    /**
+     * Ensures public declaration of clone(), and ensures valid return type.
+     */
+    public abstract AbstractLine2D clone();
 }

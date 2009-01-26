@@ -544,4 +544,13 @@ public class CircleArc2DTest extends TestCase {
 		assertEquals(arc1.project(new Point2D(x0+r/2, y0+r*.8)), 0, eps);
 		assertEquals(arc1.project(new Point2D(x0+r*.8, y0+r/2)), theta2-theta1, eps);
 	}
+	
+    public void testClone() {
+        Circle2D circle = new Circle2D(10, 20, 30);
+        CircleArc2D arc = new CircleArc2D(circle, Math.PI/2, Math.PI);
+        assertTrue(arc.equals(arc.clone()));
+        
+        arc = new CircleArc2D(circle, Math.PI/2, -Math.PI);
+        assertTrue(arc.equals(arc.clone()));
+    }
 }

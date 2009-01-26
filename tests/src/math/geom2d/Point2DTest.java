@@ -198,4 +198,8 @@ public class Point2DTest extends TestCase {
 		assertTrue(!p1.equals(p5));
 	}
 
+	public void testClone() {
+	    Point2D point = new Point2D(10, 20);
+	    assertTrue(point.equals(point.clone()));
+	}
 }

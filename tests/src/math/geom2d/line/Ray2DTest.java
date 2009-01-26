@@ -125,4 +125,9 @@ public class Ray2DTest extends TestCase {
 		assertEquals(ray1.getWindingAngle(p3), 3*Math.PI/4, 1e-14);
 		assertEquals(ray1.getWindingAngle(p4), Math.PI/4, 1e-14);
 	}
+	
+	public void testClone(){
+	    Ray2D ray = new Ray2D(10, 20, 30, 40);
+	    assertTrue(ray.equals(ray.clone()));
+	}
 }

@@ -39,11 +39,11 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(InvertedRay2DTest.class));
 		suite.addTest(new TestSuite(LineArc2DTest.class));
-		suite.addTest(new TestSuite(LineObject2DTest.class));
+		suite.addTest(new TestSuite(LinearShape2DTest.class));
+        suite.addTest(new TestSuite(LineObject2DTest.class));
 		suite.addTest(new TestSuite(LineSegment2DTest.class));
         suite.addTest(new TestSuite(Ray2DTest.class));
 		suite.addTest(new TestSuite(StraightLine2DTest.class));
-		suite.addTest(new TestSuite(StraightObject2DTest.class));
 		//$JUnit-END$
 		return suite;
 	}

@@ -124,4 +124,12 @@ public class EllipseArc2DTest extends TestCase {
 		assertTrue(transformed.equals(new EllipseArc2D(ell2, 0, -Math.PI/2)));
 	}
 	
+    public void testClone() {
+        Ellipse2D ellipse = new Ellipse2D(10, 20, 30, 40, Math.PI/3);
+        EllipseArc2D arc = new EllipseArc2D(ellipse, Math.PI/2, Math.PI);
+        assertTrue(arc.equals(arc.clone()));
+        
+        arc = new EllipseArc2D(ellipse, Math.PI/2, -Math.PI);
+        assertTrue(arc.equals(arc.clone()));
+    }
 }

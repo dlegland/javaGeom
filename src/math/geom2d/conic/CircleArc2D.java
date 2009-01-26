@@ -55,7 +55,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public class CircleArc2D extends EllipseArc2D {
+public class CircleArc2D extends EllipseArc2D implements Cloneable {
 
     protected Circle2D circle;
 
@@ -760,7 +760,7 @@ public class CircleArc2D extends EllipseArc2D {
     }
 
     /**
-     * two circle arc arre equal if the have same center, same radius, same
+     * Two circle arc are equal if the have same center, same radius, same
      * starting and ending angles, and same orientation.
      */
     @Override
@@ -776,6 +776,8 @@ public class CircleArc2D extends EllipseArc2D {
         if (Math.abs(circle.xc-arc.circle.xc)>Shape2D.ACCURACY)
             return false;
         if (Math.abs(circle.yc-arc.circle.yc)>Shape2D.ACCURACY)
+            return false;
+        if (Math.abs(circle.r-arc.circle.r)>Shape2D.ACCURACY)
             return false;
         if (Math.abs(circle.r1-arc.circle.r1)>Shape2D.ACCURACY)
             return false;
@@ -796,4 +798,8 @@ public class CircleArc2D extends EllipseArc2D {
         return true;
     }
 
+    @Override
+    public CircleArc2D clone() {
+        return new CircleArc2D(circle.clone(), startAngle, angleExtent);
+    }
 }

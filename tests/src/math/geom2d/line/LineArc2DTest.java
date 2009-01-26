@@ -185,26 +185,6 @@ public class LineArc2DTest extends TestCase {
 		assertTrue(!edge.contains(1, 4));
 	}
 
-	public void testEqualsLineArc2D(){
-		LineArc2D edge1 = new LineArc2D(1, 2, 2, 2, 0, 1);
-		assertTrue(edge1.equals(edge1));
-		LineArc2D edge2 = new LineArc2D(3, 4, -2, -2, 0, 1);
-		assertTrue(edge1.equals(edge2));
-		assertTrue(edge2.equals(edge1));
-		
-		LineArc2D edge3 = new LineArc2D(1, 4, 2, -2, 0, 1);
-		assertTrue(!edge1.equals(edge3));
-		assertTrue(!edge2.equals(edge3));
-		assertTrue(!edge3.equals(edge1));
-		assertTrue(!edge3.equals(edge2));
-		
-		LineArc2D edge4 = new LineArc2D(1, 2, 2, 0, 0, 1);
-		assertTrue(!edge1.equals(edge4));
-		assertTrue(!edge2.equals(edge4));
-		assertTrue(!edge4.equals(edge1));
-		assertTrue(!edge4.equals(edge2));		
-	}
-
 	public void testGetViewAnglePoint2D(){
 		
 		Point2D p1 = new Point2D(1, 1);
@@ -235,5 +215,30 @@ public class LineArc2DTest extends TestCase {
 		LineArc2D arc2 = new LineArc2D(3, 4, 1, 2, 1, 2);
 		LineArc2D sub  = (LineArc2D) arc1.getSubCurve(1, 2);
 		assertTrue(arc2.equals(sub));
-	}	
+	}
+	
+    public void testEqualsLineArc2D(){
+        LineArc2D edge1 = new LineArc2D(1, 2, 2, 2, 0, 1);
+        assertTrue(edge1.equals(edge1));
+        LineArc2D edge2 = new LineArc2D(3, 4, -2, -2, 0, 1);
+        assertTrue(edge1.equals(edge2));
+        assertTrue(edge2.equals(edge1));
+        
+        LineArc2D edge3 = new LineArc2D(1, 4, 2, -2, 0, 1);
+        assertTrue(!edge1.equals(edge3));
+        assertTrue(!edge2.equals(edge3));
+        assertTrue(!edge3.equals(edge1));
+        assertTrue(!edge3.equals(edge2));
+        
+        LineArc2D edge4 = new LineArc2D(1, 2, 2, 0, 0, 1);
+        assertTrue(!edge1.equals(edge4));
+        assertTrue(!edge2.equals(edge4));
+        assertTrue(!edge4.equals(edge1));
+        assertTrue(!edge4.equals(edge2));       
+    }
+
+    public void testClone() {
+        LineArc2D arc = new LineArc2D(10, 20, 30, 40, -1, 2);
+        assertTrue(arc.equals(arc.clone()));
+    }
 }

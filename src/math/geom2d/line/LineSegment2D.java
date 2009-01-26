@@ -41,7 +41,7 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Straight Edge defined by two points.
  */
-public class LineSegment2D extends AbstractLine2D {
+public class LineSegment2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
     // constants
@@ -381,5 +381,10 @@ public class LineSegment2D extends AbstractLine2D {
         if (Math.abs(dy-edge.dy)>Shape2D.ACCURACY)
             return false;
         return true;
+    }
+    
+    @Override
+    public LineSegment2D clone() {
+        return new LineSegment2D(x0, y0, x0+dx, y0+dy);
     }
 }

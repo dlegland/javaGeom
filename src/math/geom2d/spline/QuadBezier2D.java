@@ -49,7 +49,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @author Legland
  */
 public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
-        SmoothCurve2D, ContinuousOrientedCurve2D {
+        SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -440,4 +440,24 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
         return path;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof java.awt.geom.QuadCurve2D.Double))
+            return false;
+        
+        java.awt.geom.QuadCurve2D.Double bezier = 
+            (java.awt.geom.QuadCurve2D.Double) obj;
+        if(Math.abs(this.x1-bezier.x1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.y1-bezier.y1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrlx-bezier.ctrlx)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrly-bezier.ctrly)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.x2-bezier.x2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.y2-bezier.y2)>Shape2D.ACCURACY) return false;
+        
+        return true;
+    }
+    
+    public QuadBezier2D clone() {
+        return new QuadBezier2D(x1, y1, ctrlx, ctrly, x2, y2);
+    }
 }
