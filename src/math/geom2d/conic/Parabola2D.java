@@ -67,7 +67,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  */
 public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
-        ContinuousBoundary2D {
+        ContinuousBoundary2D, Cloneable {
 
     /** Coordinate of the vertex */
     protected double xv    = 0, yv = 0;
@@ -583,9 +583,9 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
             return false;
         Parabola2D parabola = (Parabola2D) obj;
 
-        if ((this.xv-parabola.xv)>Shape2D.ACCURACY)
+        if ((this.xv-parabola.xv)>Shape2D.ACCURACY) 
             return false;
-        if ((this.yv-parabola.yv)>Shape2D.ACCURACY)
+        if ((this.yv-parabola.yv)>Shape2D.ACCURACY) 
             return false;
         if ((this.a-parabola.a)>Shape2D.ACCURACY)
             return false;
@@ -593,5 +593,10 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
             return false;
 
         return true;
+    }
+    
+    @Override
+    public Parabola2D clone() {
+        return new Parabola2D(xv, yv, a, theta);
     }
 }

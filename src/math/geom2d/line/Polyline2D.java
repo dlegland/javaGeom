@@ -660,4 +660,12 @@ public class Polyline2D implements ContinuousOrientedCurve2D {
                 return false;
         return true;
     }
+    
+    @Override
+    public Polyline2D clone() {
+        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
+        for(Point2D point : points)
+            array.add(point.clone());
+        return new Polyline2D(array);
+    }
 }

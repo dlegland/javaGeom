@@ -40,7 +40,8 @@ import math.geom2d.transform.AffineTransform2D;
  * <code>java.awt.geom.Point2D.Double<code> any more.
  * </p>
  */
-public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
+public class Point2D extends java.awt.geom.Point2D.Double
+implements Shape2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -85,7 +86,9 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
 
     /**
      * Constructor from two java awt.geom Point2D, summing their coordinates.
+     * @deprecated since 0.7.0
      */
+    @Deprecated
     public Point2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
         super(point1.getX()+point2.getX(), point1.getY()+point2.getY());
     }
@@ -492,5 +495,10 @@ public class Point2D extends java.awt.geom.Point2D.Double implements Shape2D {
             return false;
         java.awt.geom.Point2D p = (java.awt.geom.Point2D) obj;
         return this.distance(p.getX(), p.getY())<Shape2D.ACCURACY;
+    }
+    
+    @Override
+    public Point2D clone() {
+        return new Point2D(x, y);
     }
 }

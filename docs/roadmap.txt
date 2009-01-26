@@ -20,7 +20,13 @@ Roadmap for javageom Library
 - Partial support of 3D (lines, polygons) can be provided
 
 
+Decisions:
+- simple shapes and objects should be immutable
+- equality tests for complex objects: point order is relevant
+
+
 Other pending questions:
+- should Ring2D extends Polyline2D ?
 - keep double methods (one with x,y, other with point2D) when using points ?
 - introduce finite grids
 - line segments with direct access to vertices (like LineObject2D) ?

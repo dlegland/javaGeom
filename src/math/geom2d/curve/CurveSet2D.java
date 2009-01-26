@@ -47,7 +47,8 @@ import java.util.*;
  * 
  * @author Legland
  */
-public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T> {
+public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>,
+Cloneable {
 
     /** The inner array of curves */
     protected ArrayList<T> curves = new ArrayList<T>();
@@ -705,7 +706,6 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T> {
      */
     @Override
     public boolean equals(Object obj) {
-
         // check class, and cast type
         if (!(obj instanceof CurveSet2D))
             return false;
@@ -715,26 +715,27 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T> {
         if (this.getCurveNumber()!=curveSet.getCurveNumber())
             return false;
 
-        boolean ok;
-
-        // iterate on the curves of the first set
-        for (Curve2D curve1 : this.getCurves()) {
-            ok = false;
-
-            // check for each curve of second set if it correspond to curve1
-            for (Curve2D curve2 : curveSet.getCurves()) {
-                if (curve1.equals(curve2)) {
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok)
+        // return false if at least one couple of curves does not match
+        for(int i=0; i<curves.size(); i++)
+            if(!curves.get(i).equals(curveSet.curves.get(i)))
                 return false;
-        }
+        
+        // otherwise return true
         return true;
     }
 
-    /*
+    @Override
+    public CurveSet2D<? extends Curve2D> clone() {
+        ArrayList<Curve2D> array = new ArrayList<Curve2D>(curves.size());
+        for(T curve : curves)
+            array.add(curve);
+        return new CurveSet2D<Curve2D>(array);
+    }
+    
+    // ===================================================================
+    // methods implementing the Iterable interface
+
+   /*
      * (non-Javadoc)
      * 
      * @see java.lang.Iterable#iterator()

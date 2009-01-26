@@ -53,7 +53,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public class EllipseArc2D implements SmoothOrientedCurve2D {
+public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
 
     /** The supporting ellipse */
     protected Ellipse2D ellipse;
@@ -673,5 +673,9 @@ public class EllipseArc2D implements SmoothOrientedCurve2D {
 
         return true;
     }
-
+    
+    @Override
+    public EllipseArc2D clone() {
+        return new EllipseArc2D(ellipse, startAngle, angleExtent);
+    }
 }

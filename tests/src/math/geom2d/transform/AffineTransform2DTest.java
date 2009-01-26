@@ -140,6 +140,19 @@ public class AffineTransform2DTest extends TestCase {
 		
 	}
 	
+    public void testIsIdentityAffineTransform2D(){
+        AffineTransform2D trans;
+        
+        trans = new AffineTransform2D();
+        assertTrue(trans.isIdentity());
+
+        trans = AffineTransform2D.createScaling(1, 1);
+        assertTrue(trans.isIdentity());
+        
+        trans = AffineTransform2D.createScaling(2, .5);
+        assertFalse(trans.isIdentity());
+    }
+    
 	public void testInvert(){
 		AffineTransform2D trans1  = new AffineTransform2D(1, 0, 5, 0, 1, 10);	
 		AffineTransform2D trans1i = trans1.invert();
@@ -174,4 +187,8 @@ public class AffineTransform2DTest extends TestCase {
 		assertTrue(trans.equals(trans));
 	}
 	
+	public void testClone() {
+        AffineTransform2D trans  = new AffineTransform2D(1, 2, 3, 4, 5, 6);
+        assertTrue(trans.equals(trans.clone()));
+	}
 }

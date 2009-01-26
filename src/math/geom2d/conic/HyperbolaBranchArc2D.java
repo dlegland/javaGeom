@@ -27,7 +27,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  */
 public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
-        SmoothCurve2D {
+        SmoothCurve2D, Cloneable {
 
     /** The supporting hyperbola branch */
     HyperbolaBranch2D branch = null;
@@ -92,10 +92,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
         if (!this.isBounded())
             throw new UnboundedShapeException();
         Point2D[] points = new Point2D[n+1];
-
-        // avoid the cases where t0 and/or t1 is infinite
-        double t0 = Math.max(this.t0, -100);
-        double t1 = Math.min(this.t1, 100);
 
         double dt = (t1-t0)/n;
         points[0] = this.getPoint(t0);
@@ -236,7 +232,8 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
     // methods inherited from Shape2D interface
 
     public Box2D getBoundingBox() {
-        // TODO Auto-generated method stub
+        if (!this.isBounded())
+            throw new UnboundedShapeException();
         return this.getAsPolyline(100).getBoundingBox();
     }
 
@@ -296,9 +293,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
         return new HyperbolaBranchArc2D(branch2, startPos, endPos);
     }
 
-    // ===================================================================
-    // methods inherited from Shape interface
-
     public boolean contains(java.awt.geom.Point2D p) {
         return this.contains(p.getX(), p.getY());
     }
@@ -323,5 +317,25 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
 
     public void draw(Graphics2D g2) {
         this.getAsPolyline(100).draw(g2);
+    }
+    
+    // ===================================================================
+    // methods overriding object
+  
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof HyperbolaBranchArc2D))
+            return false;
+        HyperbolaBranchArc2D arc = (HyperbolaBranchArc2D) obj;
+        
+        if(!branch.equals(arc.branch)) return false;
+        if(Math.abs(t0-arc.t0)>Shape2D.ACCURACY) return false;
+        if(Math.abs(t1-arc.t1)>Shape2D.ACCURACY) return false;
+        return true;
+    }
+
+    @Override
+    public HyperbolaBranchArc2D clone() {
+        return new HyperbolaBranchArc2D(branch.clone(), t0, t1);
     }
 }

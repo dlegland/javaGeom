@@ -308,5 +308,15 @@ public class Ring2DTest extends TestCase {
 		assertTrue(!poly.isInside(5, 35));		
 	}
 
-	
+    public void testClone() {
+        Ring2D ring = new Ring2D(new Point2D[]{
+                new Point2D(150, 50),
+                new Point2D(150, 150),
+                new Point2D(100, 100),
+                new Point2D(50, 150),
+                new Point2D(50, 50)
+        });
+        
+        assertTrue(ring.equals(ring.clone()));
+    }	
 }

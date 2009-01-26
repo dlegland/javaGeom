@@ -241,4 +241,24 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         // return the final path
         return path;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // check class, and cast type
+        if (!(obj instanceof CurveSet2D))
+            return false;
+        PolyCurve2D<?> curveSet = (PolyCurve2D<?>) obj;
+
+        // check the number of curves in each set
+        if (this.getCurveNumber()!=curveSet.getCurveNumber())
+            return false;
+
+        // return false if at least one couple of curves does not match
+        for(int i=0; i<curves.size(); i++)
+            if(!this.curves.get(i).equals(curveSet.curves.get(i)))
+                return false;
+        
+        // otherwise return true
+        return true;
+    }
 }

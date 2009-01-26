@@ -101,4 +101,17 @@ public class HyperbolaBranch2DTest extends TestCase {
 
 	}
 
+	public void testClone() {
+        Hyperbola2D hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3);
+        HyperbolaBranch2D branch1 = new HyperbolaBranch2D(hyperbola, true);
+        HyperbolaBranch2D branch2 = new HyperbolaBranch2D(hyperbola, false);
+        assertTrue(branch1.equals(branch1.clone()));
+        assertTrue(branch2.equals(branch2.clone()));
+        
+        hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3, false);
+        branch1 = new HyperbolaBranch2D(hyperbola, true);
+        branch2 = new HyperbolaBranch2D(hyperbola, false);
+        assertTrue(branch1.equals(branch1.clone()));
+        assertTrue(branch2.equals(branch2.clone()));
+	}
 }

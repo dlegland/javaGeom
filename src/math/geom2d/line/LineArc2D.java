@@ -41,8 +41,8 @@ import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * LineArc2D is a generic class to represent edges, straight lines, and rays. It
- * is defeined as a StraightObject2D : origin point, and direction vector.
+ * LineArc2D is a generic class to represent edges, straight lines, and rays.
+ * It is defined like other linear shapes: origin point, and direction vector.
  * Moreover, two internal variables t0 and t1 define the limit of the object
  * (with t0<t1). t0=0 and t1=1: this is an edge. t0=-inf and t1=inf: this is a
  * straight line. t0=0 and t1=inf: this is a ray.
@@ -50,7 +50,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @author dlegland
  */
 public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
-        ContinuousOrientedCurve2D {
+        ContinuousOrientedCurve2D, Cloneable {
 
     protected double t0 = 0;
     protected double t1 = 1;
@@ -88,7 +88,7 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
      * @param line the line to copy
      */
     public LineArc2D(LineArc2D line) {
-        this(line.x0, line.y0, line.dx, line.dy, line.t0, line.t0);
+        this(line.x0, line.y0, line.dx, line.dy, line.t0, line.t1);
     }
 
     /**
@@ -124,7 +124,7 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
 
     /**
      * Return the first point of the edge. In the case of a line, or a ray
-     * starting from -infinity, returns Point2D.INFINITY_POINT.
+     * starting from -infinity, throws an UnboundedShapeException.
      * 
      * @return the first point of the arc
      */
@@ -137,7 +137,7 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
 
     /**
      * Return the last point of the edge. In the case of a line, or a ray ending
-     * at infinity, returns Point2D.INFINITY_POINT.
+     * at infinity, throws an UnboundedShapeException.
      * 
      * @return the last point of the arc.
      */
@@ -196,15 +196,16 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
     // methods of Curve2D interface
 
     /**
-     * Returns the parameter of the first point of the edge, arbitrarly set to
-     * 0.
+     * Returns the parameter of the first point of the line arc, 
+     * arbitrarily set to 0.
      */
     public double getT0() {
         return t0;
     }
 
     /**
-     * Returns the parameter of the last point of the edge, arbitraly set to 1.
+     * Returns the parameter of the last point of the line arc, 
+     * arbitrarily set to 1.
      */
     public double getT1() {
         return t1;
@@ -451,5 +452,10 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
         if (getPoint2().getDistance(arc.getPoint1())>ACCURACY)
             return false;
         return true;
+    }
+    
+    @Override
+    public LineArc2D clone() {
+        return new LineArc2D(x0, y0, dx, dy, t0, t1);
     }
 }

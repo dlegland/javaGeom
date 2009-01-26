@@ -105,4 +105,9 @@ public class Box2DTest extends TestCase {
 		Boundary2D bnd1100 = box1100.getBoundary();
 		assertTrue(bnd1100.equals(new StraightLine2D(x1, y1, 1, 0)));
 	}
+    
+    public void testClone() {
+        Box2D box = new Box2D(-10, 10, -20, 20);
+        assertEquals(box, box.clone());
+    }
 }

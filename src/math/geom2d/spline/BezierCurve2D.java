@@ -48,10 +48,12 @@ import math.geom2d.transform.AffineTransform2D;
  * @author Legland
  */
 public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
-        SmoothCurve2D, ContinuousOrientedCurve2D {
+        SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
+    //TODO: rename as CubicBezier2D ?
+    
     // ===================================================================
     // constructors
 
@@ -274,14 +276,14 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
     // methods from Curve2D interface
 
     /**
-     * returns 0, as Bezier curve is parametrized between 0 and 1.
+     * returns 0, as Bezier curve is parameterized between 0 and 1.
      */
     public double getT0() {
         return 0;
     }
 
     /**
-     * Returns 1, as Bezier curve is parametrized between 0 and 1.
+     * Returns 1, as Bezier curve is parameterized between 0 and 1.
      */
     public double getT1() {
         return 1;
@@ -326,7 +328,8 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
     }
 
     /**
-     * Singular points of a Bezier curve are the first point and the last point.
+     * Singular points of a Bezier curve are the first point and the last
+     * point.
      */
     public Collection<Point2D> getSingularPoints() {
         ArrayList<Point2D> list = new ArrayList<Point2D>(2);
@@ -363,7 +366,8 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
     }
 
     /**
-     * Returns the bezier curve given by control points taken in reverse order.
+     * Returns the Bezier curve given by control points taken in reverse
+     * order.
      */
     public BezierCurve2D getReverseCurve() {
         return new BezierCurve2D(
@@ -423,15 +427,12 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
     }
 
     /**
-     * Clip the circle arc by a box. The result is an instance of
-     * ContinuousOrientedCurveSet2D<BezierCurve2D>, which contains only
-     * instances of EllipseArc2D. If the ellipse arc is not clipped, the result
-     * is an instance of ContinuousOrientedCurveSet2D<BezierCurve2D> which
-     * contains 0 curves.
+     * Clip the Bezier curve by a box. REturn a set of BezierCurve2D.
      */
     public CurveSet2D<? extends BezierCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
+        CurveSet2D<SmoothCurve2D> set = 
+            Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveSet2D<BezierCurve2D> result = new CurveSet2D<BezierCurve2D>();
@@ -446,8 +447,9 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
 
     public Box2D getBoundingBox() {
         java.awt.geom.Rectangle2D rect = this.getBounds2D();
-        return new Box2D(rect.getMinX(), rect.getMaxX(), rect.getMinY(), rect
-                .getMaxY());
+        return new Box2D(
+                rect.getMinX(), rect.getMaxX(),
+                rect.getMinY(), rect.getMaxY());
     }
 
     /**
@@ -455,10 +457,11 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
      * is simply done by transforming control points of the curve.
      */
     public BezierCurve2D transform(AffineTransform2D trans) {
-        return new BezierCurve2D(trans.transform(this.getP1()), trans
-                .transform(this.getCtrlP1()),
-                trans.transform(this.getCtrlP2()), trans
-                        .transform(this.getP2()));
+        return new BezierCurve2D(
+                trans.transform(this.getP1()), 
+                trans.transform(this.getCtrlP1()),
+                trans.transform(this.getCtrlP2()),
+                trans.transform(this.getP2()));
     }
 
     public void draw(Graphics2D g) {
@@ -492,4 +495,27 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
         return list;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof java.awt.geom.CubicCurve2D.Double))
+            return false;
+        
+        java.awt.geom.CubicCurve2D.Double bezier = 
+            (java.awt.geom.CubicCurve2D.Double) obj;
+        if(Math.abs(this.x1-bezier.x1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.y1-bezier.y1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrlx1-bezier.ctrlx1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrly1-bezier.ctrly1)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrlx2-bezier.ctrlx2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.ctrly2-bezier.ctrly2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.x2-bezier.x2)>Shape2D.ACCURACY) return false;
+        if(Math.abs(this.y2-bezier.y2)>Shape2D.ACCURACY) return false;
+        
+        return true;
+    }
+    
+    @Override
+    public BezierCurve2D clone() {
+        return new BezierCurve2D(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
+    }
 }

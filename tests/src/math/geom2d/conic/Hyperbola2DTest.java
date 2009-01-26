@@ -182,4 +182,12 @@ public class Hyperbola2DTest extends TestCase {
 //		java.awt.geom.PathIterator path = clipped.getPathIterator(
 //				new java.awt.geom.AffineTransform());
 //	}
+	
+	public void testClone() {
+	    Hyperbola2D hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3);
+	    assertTrue(hyperbola.equals(hyperbola.clone()));
+	    
+	    hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3, false);
+        assertTrue(hyperbola.equals(hyperbola.clone()));
+	}
 }

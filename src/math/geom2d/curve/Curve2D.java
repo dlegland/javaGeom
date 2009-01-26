@@ -44,7 +44,7 @@ import java.util.*;
  * Paramaterized curves are actually considered. Parameterization is left to the
  * implementation.
  */
-public interface Curve2D extends Shape2D {
+public interface Curve2D extends Shape2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -192,6 +192,13 @@ public interface Curve2D extends Shape2D {
     public abstract void draw(Graphics2D g2);
 
     /**
+     * Overrides Object declaration to ensure Curve2D implementation are
+     * cloned as Curve2D.
+     * @return the cloned curve
+     */
+    public abstract Curve2D clone();
+    
+    /**
      * Utilitary class for representing empty curves. Should preferably be
      * accessed through the EMPTY_CURVE static variable.
      * 
@@ -268,6 +275,10 @@ public interface Curve2D extends Shape2D {
         }
 
         public void draw(Graphics2D g) {
+        }
+        
+        public EmptyCurve2D clone() {
+            return new EmptyCurve2D();
         }
     }
 }

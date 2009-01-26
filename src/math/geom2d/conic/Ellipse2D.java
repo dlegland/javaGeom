@@ -56,7 +56,7 @@ import math.geom2d.transform.AffineTransform2D;
  * semiaxis : the second semi axis can be greater than the first one.
  */
 public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
-        ContinuousBoundary2D {
+        ContinuousBoundary2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -68,10 +68,13 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     protected double  xc;
     protected double  yc;
 
-    /** length of semi axis */
-    protected double  r1, r2;
+    /** length of major semi-axis */
+    protected double  r1;
+    
+    /** length of minor semi-axis */
+    protected double  r2;
 
-    /** orientation of first semi major axis */
+    /** orientation of major semi-axis */
     protected double  theta  = 0;
 
     /** directed ellipse or not */
@@ -1149,9 +1152,14 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     }
 
     @Override
+    public Ellipse2D clone() {
+        return new Ellipse2D(xc, yc, r1, r2, theta, direct);
+    }
+    
+    @Override
     public String toString() {
-        return String.format("%f %f %f %f %f", xc, yc, r1, r2, Math
-                .toDegrees(theta));
+        return String.format(
+                "%f %f %f %f %f", xc, yc, r1, r2, Math.toDegrees(theta));
     }
 
     // /**

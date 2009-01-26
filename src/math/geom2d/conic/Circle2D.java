@@ -50,7 +50,7 @@ import math.geom2d.line.StraightLine2D;
  * 
  * @author dlegland
  */
-public class Circle2D extends Ellipse2D {
+public class Circle2D extends Ellipse2D implements Cloneable {
 
     /** the radius of the circle. */
     protected double r = 0;
@@ -503,9 +503,13 @@ public class Circle2D extends Ellipse2D {
     }
 
     @Override
-    public String toString() {
-        return String.format(Locale.US, "Circle2D (%7.2f, %7.2f, %7.2f)", xc,
-                yc, r);
+    public Circle2D clone() {
+        return new Circle2D(xc, yc, r, direct);
     }
-
+    
+    @Override
+    public String toString() {
+        return String.format(Locale.US, 
+                "Circle2D (%7.2f, %7.2f, %7.2f)", xc, yc, r);
+    }
 }

@@ -266,4 +266,8 @@ public class Vector2DTest extends TestCase {
 		assertTrue(!v1.equals(v5));
 	}
 
+    public void testClone() {
+        Vector2D vector = new Vector2D(10, 20);
+        assertTrue(vector.equals(vector.clone()));
+    }
 }

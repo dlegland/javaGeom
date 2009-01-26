@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
 
 /**
  * @author Legland
@@ -246,4 +247,9 @@ public class StraightLine2DTest extends TestCase {
 		assertEquals(line3.getWindingAngle(p4), Math.PI, 1e-14);		
 	}
 
+	public void testClone() {
+	    StraightLine2D line = new StraightLine2D(new Point2D(10, 20), 
+	            new Vector2D(30, 40));
+	    assertTrue(line.equals(line.clone()));
+	}
 }

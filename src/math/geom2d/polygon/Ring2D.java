@@ -110,8 +110,8 @@ public class Ring2D extends Polyline2D implements
     // Methods specific to Polyline2D
 
     /**
-     * return an array of LineSegment2D. The number of edges is the same as the
-     * number of vertices.
+     * Returns an array of LineSegment2D. The number of edges is the same as
+     * the number of vertices.
      * 
      * @return the edges of the polyline
      */
@@ -141,8 +141,8 @@ public class Ring2D extends Polyline2D implements
     // Methods inherited from Boundary2D
 
     public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
-                1);
+        ArrayList<ContinuousBoundary2D> list = 
+            new ArrayList<ContinuousBoundary2D>(1);
         list.add(this);
         return list;
     }
@@ -465,5 +465,27 @@ public class Ring2D extends Polyline2D implements
         path.closePath();
 
         return path;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Ring2D))
+            return false;
+        Ring2D ring = (Ring2D) object;
+
+        if (points.size()!=ring.points.size())
+            return false;
+        for (int i = 0; i<points.size(); i++)
+            if (!(points.get(i)).equals(ring.points.get(i)))
+                return false;
+        return true;
+    }
+    
+    @Override
+    public Ring2D clone() {
+        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
+        for(Point2D point : points)
+            array.add(point.clone());
+        return new Ring2D(array);
     }
 }

@@ -39,7 +39,7 @@ import math.geom2d.line.LinearShape2D;
  * creating specialized instances, by using static methods.
  * <p>
  */
-public class AffineTransform2D implements Bijection2D {
+public class AffineTransform2D implements Bijection2D, Cloneable {
 
     // coefficients for x coordinate.
     protected double m00, m01, m02;
@@ -585,5 +585,10 @@ public class AffineTransform2D implements Bijection2D {
                 return false;
 
         return true;
+    }
+    
+    @Override
+    public AffineTransform2D clone() {
+        return new AffineTransform2D(m00, m01, m02, m10, m11, m12);
     }
 }

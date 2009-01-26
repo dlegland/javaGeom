@@ -50,7 +50,7 @@ import math.geom2d.transform.AffineTransform2D;
  * of the Cartesian equation.
  */
 public class StraightLine2D extends AbstractLine2D implements
-        ContinuousBoundary2D {
+        ContinuousBoundary2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -617,5 +617,10 @@ public class StraightLine2D extends AbstractLine2D implements
         if (Math.abs(dy-line.dy)>Shape2D.ACCURACY)
             return false;
         return true;
+    }
+    
+    @Override
+    public StraightLine2D clone() {
+        return new StraightLine2D(x0, y0, dx, dy);
     }
 }

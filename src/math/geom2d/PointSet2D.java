@@ -36,7 +36,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public class PointSet2D implements Shape2D, Iterable<Point2D> {
+public class PointSet2D implements Shape2D, Iterable<Point2D>, Cloneable {
 
     // TODO: could consider as Interface, and use different implementations
 
@@ -275,5 +275,32 @@ public class PointSet2D implements Shape2D, Iterable<Point2D> {
      */
     public Iterator<Point2D> iterator() {
         return points.iterator();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof PointSet2D))
+            return false;
+        
+        PointSet2D set = (PointSet2D) obj;
+        for(Point2D point : this){
+            if(!set.contains(point))
+                return false;
+        }
+        
+        for(Point2D point : set){
+            if(!this.contains(point))
+                return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public PointSet2D clone() {
+        PointSet2D set = new PointSet2D(this.getPointNumber());
+        for(Point2D point : this)
+            set.addPoint(point.clone());
+        return set;
     }
 }

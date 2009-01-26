@@ -49,7 +49,7 @@ import math.geom2d.transform.AffineTransform2D;
  * with <code>t<code> comprised between -INFINITY and 0.
  * This is complementary class to Ray2D.
  */
-public class InvertedRay2D extends AbstractLine2D {
+public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
     // constants
@@ -276,4 +276,8 @@ public class InvertedRay2D extends AbstractLine2D {
         return true;
     }
 
+    @Override
+    public InvertedRay2D clone() {
+        return new InvertedRay2D(x0, y0, dx, dy);
+    }
 }

@@ -86,4 +86,21 @@ public class MultiPolygon2DTest extends TestCase {
 		assertTrue(!polygon.contains(new Point2D(15, 5)));
 	}
 
+	public void testClone() {
+        Point2D[] pts1 = new Point2D[]{
+                new Point2D(0, 0), new Point2D(10, 0),
+                new Point2D(10, 10), new Point2D(0, 10) };
+        SimplePolygon2D pol1 = new SimplePolygon2D(pts1);
+        
+        Point2D[] pts2 = new Point2D[]{
+                new Point2D(20, 0), new Point2D(30, 0),
+                new Point2D(30, 10), new Point2D(20, 10) };
+        SimplePolygon2D pol2 = new SimplePolygon2D(pts2);       
+        
+        MultiPolygon2D polygon = new MultiPolygon2D();
+        polygon.addPolygon(pol1);
+        polygon.addPolygon(pol2);
+
+        assertTrue(polygon.equals(polygon.clone()));
+	}
 }

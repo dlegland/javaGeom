@@ -80,7 +80,7 @@ import math.geom2d.transform.AffineTransform2D;
  * are updated each time a computation is made, causing lot of additional
  * processing.
  */
-public class LineObject2D extends AbstractLine2D {
+public class LineObject2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
     // constants
@@ -170,13 +170,6 @@ public class LineObject2D extends AbstractLine2D {
     public boolean isParallel(LinearShape2D line) {
         updateParameters();
         return super.isParallel(line);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof LineObject2D))
-            return false;
-        return equals((LineObject2D) obj);
     }
 
     /**
@@ -678,10 +671,22 @@ public class LineObject2D extends AbstractLine2D {
      * Two LineObject2D are equals if the share the two same points, in the same
      * order.
      * 
-     * @param edge : the edge to compare to.
+     * @param obj the edge to compare to.
      * @return true if extremities of both edges are the same.
      */
-    public boolean equals(LineObject2D edge) {
+    @Override
+    public boolean equals(Object obj) {
+        // check class
+        if(!(obj instanceof LineObject2D))
+            return false;
+        
+        // cast class, and compare members
+        LineObject2D edge = (LineObject2D) obj;
         return point1==edge.point1&&point2==edge.point2;
+    }
+    
+    @Override
+    public LineObject2D clone() {
+        return new LineObject2D(point1.clone(), point2.clone());
     }
 }

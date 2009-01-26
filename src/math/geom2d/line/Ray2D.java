@@ -48,7 +48,7 @@ import math.geom2d.transform.AffineTransform2D;
  * <code>y(t) = y0+t*dy<code></p> 
  * With <code>t<code> comprised between 0 and +INFINITY.
  */
-public class Ray2D extends AbstractLine2D {
+public class Ray2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
     // constants
@@ -271,4 +271,9 @@ public class Ray2D extends AbstractLine2D {
         return true;
     }
 
+    @Override
+    public Ray2D clone() {
+        return new Ray2D(x0, y0, dx, dy);
+        
+    }
 }

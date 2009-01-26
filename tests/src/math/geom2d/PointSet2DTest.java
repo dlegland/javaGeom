@@ -81,4 +81,10 @@ public class PointSet2DTest extends TestCase {
 		assertTrue(!set.contains(new Point2D(20, 20)));
 	}
 
+	public void testClone() {
+	    PointSet2D set = new PointSet2D(new Point2D[]{
+	            new Point2D(0, 0), new Point2D(10, 20), new Point2D(30, 40)
+	    });
+	    assertTrue(set.equals(set.clone()));
+	}
 }

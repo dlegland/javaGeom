@@ -38,8 +38,9 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for math.geom2d.polygon");
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(MultiPolygon2DTest.class));
-        suite.addTest(new TestSuite(Polyline2DTest.class));
-		suite.addTest(new TestSuite(Rectangle2DTest.class));
+		suite.addTest(new TestSuite(Polyline2DTest.class));
+		suite.addTest(new TestSuite(Polygon2DUtilsTest.class));
+        suite.addTest(new TestSuite(Rectangle2DTest.class));
         suite.addTest(new TestSuite(Ring2DTest.class));
         suite.addTest(new TestSuite(SimplePolygon2DTest.class));
         //$JUnit-END$

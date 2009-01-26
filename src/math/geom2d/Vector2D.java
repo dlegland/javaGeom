@@ -33,7 +33,7 @@ import math.geom2d.transform.AffineTransform2D;
  * A vector in the 2D plane. Provides methods to compute cross product and dot
  * product, addition and subtraction of vectors.
  */
-public class Vector2D {
+public class Vector2D implements Cloneable {
 
     // ===================================================================
     // constants
@@ -322,5 +322,10 @@ public class Vector2D {
             return false;
         Vector2D v = (Vector2D) obj;
         return (Math.abs(v.getX()-x)<Shape2D.ACCURACY&&Math.abs(v.getY()-y)<Shape2D.ACCURACY);
+    }
+    
+    @Override
+    public Vector2D clone() {
+        return new Vector2D(x, y);
     }
 }
