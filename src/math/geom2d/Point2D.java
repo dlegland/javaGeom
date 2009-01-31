@@ -141,7 +141,7 @@ implements Shape2D, Cloneable {
 
     /**
      * Computes the euclidean distance between two points.
-     * Uses robust comutation (via Math.hypot() method).
+     * Uses robust computation (via Math.hypot() method).
      * @param p1 the first point
      * @param p2 the second point
      * @return the euclidean distance between p1 and p2.

@@ -242,6 +242,15 @@ public class Rectangle2D implements Polygon2D {
         return 4;
     }
 
+    /* (non-Javadoc)
+     * @see math.geom2d.polygon.Polygon2D#getRings()
+     */
+    public Collection<Ring2D> getRings() {
+        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
+        rings.add(new Ring2D(this.getVertices()));
+        return rings;
+    }
+
     // ===================================================================
     // methods implementing the Domain2D interface
 

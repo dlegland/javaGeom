@@ -29,10 +29,14 @@ import java.util.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.domain.BoundaryPolyCurve2D;
+import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.polygon.Ring2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
@@ -177,6 +181,18 @@ public class CircleInversion2D implements Transform2D {
 
             // create new shape by putting all arcs together
             return new PolyCurve2D<CircleArc2D>(arcs);
+        } else if (shape instanceof Polygon2D) {
+            // get all rings of polygon
+            Collection<Ring2D> rings = ((Polygon2D) shape).getRings();
+
+            // for each ring, create a curve formed by several circle arcs
+            ArrayList<BoundaryPolyCurve2D<CircleArc2D>> curves = 
+                new ArrayList<BoundaryPolyCurve2D<CircleArc2D>>(rings.size());    
+            for (Ring2D ring : rings)
+                curves.add(this.transformRing(ring));
+
+            // create new shape by putting all boundaries together
+            return new BoundarySet2D<BoundaryPolyCurve2D<CircleArc2D>>(curves);
         }
 
         return null;
@@ -192,7 +208,7 @@ public class CircleInversion2D implements Transform2D {
     }
 
     
-    private Point2D transformPoint(java.awt.geom.Point2D pt) {
+    public Point2D transformPoint(java.awt.geom.Point2D pt) {
         Point2D center = circle.getCenter();
         double r = circle.getRadius();
 
@@ -201,6 +217,19 @@ public class CircleInversion2D implements Transform2D {
         return Point2D.createPolar(center, d, theta);
     }
 
+    public BoundaryPolyCurve2D<CircleArc2D> transformRing(Ring2D ring) {    
+        // get all edges of the ring
+        Collection<LineSegment2D> edges = ring.getEdges();
+
+        // transform each edge into a circle arc
+        ArrayList<CircleArc2D> arcs = new ArrayList<CircleArc2D>();
+        for (LineSegment2D edge : edges)
+            arcs.add((CircleArc2D) this.transformShape(edge));
+
+        // create new shape by putting all arcs together
+        return new BoundaryPolyCurve2D<CircleArc2D>(arcs);
+    }
+    
     public Point2D transform(java.awt.geom.Point2D pt) {
         Point2D center = circle.getCenter();
         double r = circle.getRadius();

@@ -331,8 +331,8 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     @Override
     public double getPosition(java.awt.geom.Point2D point) {
-        double angle = Angle2D.getHorizontalAngle(xc, yc, point.getX(), point
-                .getY());
+        double angle = 
+            Angle2D.getHorizontalAngle(xc, yc, point.getX(), point.getY());
         if (direct)
             return Angle2D.formatAngle(angle-theta);
         else
@@ -464,15 +464,24 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
+        double cost, sint;
 
         if (direct)
-            for (double t = .1; t<Math.PI*2; t += .1)
-                path.lineTo((float) (xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit),
-                        (float) (yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
+            for (double t = .1; t<Math.PI*2; t += .1) {
+                cost = Math.cos(t);
+                sint = Math.sin(t);
+                path.lineTo(
+                        (float) (xc+r*cost*cot-r*sint*sit),
+                        (float) (yc+r*cost*sit+r*sint*cot));
+            }
         else
-            for (double t = .1; t<Math.PI*2; t += .1)
-                path.lineTo((float) (xc+r*Math.cos(t)*cot+r*Math.sin(t)*sit),
-                        (float) (yc+r*Math.cos(t)*sit-r*Math.sin(t)*cot));
+            for (double t = .1; t<Math.PI*2; t += .1) {
+                cost = Math.cos(t);
+                sint = Math.sin(t);
+                path.lineTo(
+                        (float) (xc+r*cost*cot+r*sint*sit),
+                        (float) (yc+r*cost*sit-r*sint*cot));
+            }
 
         // line to first point
         path.lineTo((float) (xc+r*cot), (float) (yc+r*sit));
@@ -482,8 +491,8 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     @Override
     public void draw(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(
-                xc-r, yc-r, 2*r, 2*r);
+        java.awt.geom.Ellipse2D.Double ellipse = 
+            new java.awt.geom.Ellipse2D.Double(xc-r, yc-r, 2*r, 2*r);
         g2.draw(ellipse);
     }
 
