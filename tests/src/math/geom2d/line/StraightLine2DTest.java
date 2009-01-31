@@ -63,9 +63,45 @@ public class StraightLine2DTest extends TestCase {
 		assertTrue(!line.isBounded());
 	}
 
+	public void testIsColinear() {
+	    // lines roughly horizontal
+	    StraightLine2D lineA1 = new StraightLine2D(2, 1, 4, 2);
+	    StraightLine2D lineA2 = new StraightLine2D(6, 3, 2, 1);
+	    StraightLine2D lineA3 = new StraightLine2D(6, 4, 2, 1);
+	    assertTrue(lineA1.isColinear(lineA2));
+	    assertTrue(lineA2.isColinear(lineA1));
+        assertFalse(lineA1.isColinear(lineA3));
+
+        // lines roughly vertical
+        StraightLine2D lineB1 = new StraightLine2D(1, 2, 2, 4);
+        StraightLine2D lineB2 = new StraightLine2D(3, 6, 1, 2);
+        StraightLine2D lineB3 = new StraightLine2D(4, 6, 1, 2);
+        assertTrue(lineB1.isColinear(lineB2));
+        assertTrue(lineB2.isColinear(lineB1));
+        assertFalse(lineB1.isColinear(lineB3));
+	}
+
+	public void testIsParallel() {
+	    // lines roughly horizontal
+        StraightLine2D lineA1 = new StraightLine2D(2, 1, 4, 2);
+        StraightLine2D lineA2 = new StraightLine2D(6, 3, 2, 1);
+        StraightLine2D lineA3 = new StraightLine2D(6, 4, 2, 1);
+	    assertTrue(lineA1.isParallel(lineA2));
+	    assertTrue(lineA2.isParallel(lineA1));
+	    assertTrue(lineA1.isParallel(lineA3));
+
+	    // lines roughly vertical
+        StraightLine2D lineB1 = new StraightLine2D(1, 2, 2, 4);
+        StraightLine2D lineB2 = new StraightLine2D(3, 6, 1, 2);
+        StraightLine2D lineB3 = new StraightLine2D(4, 6, 1, 2);
+	    assertTrue(lineB1.isParallel(lineB2));
+	    assertTrue(lineB2.isParallel(lineB1));
+	    assertTrue(lineB1.isParallel(lineB3));
+	}
+
 	public void testEquals() {
-		StraightLine2D line1 = new StraightLine2D(1, 2, 1, 1);
-		StraightLine2D line2 = new StraightLine2D(2, 3, 1, 1);
+	    StraightLine2D line1 = new StraightLine2D(1, 2, 1, 1);
+	    StraightLine2D line2 = new StraightLine2D(2, 3, 1, 1);
 		StraightLine2D line3 = new StraightLine2D(1, 2, -1, -1);
 		StraightLine2D line4 = new StraightLine2D(2, 3, 2, 2);
 		

@@ -93,6 +93,42 @@ public class LineSegment2DTest extends TestCase {
 		assertTrue(!LineSegment2D.intersects(edge3, edge2));
 	}
 	
+    public void testIsColinear() {
+        // lines roughly horizontal
+        LineSegment2D lineA1 = new LineSegment2D(new Point2D(2, 1), new Point2D(6, 3));
+        LineSegment2D lineA2 = new LineSegment2D(new Point2D(6, 3), new Point2D(8, 4));
+        LineSegment2D lineA3 = new LineSegment2D(new Point2D(6, 4), new Point2D(8, 5));
+        assertTrue(lineA1.isColinear(lineA2));
+        assertTrue(lineA2.isColinear(lineA1));
+        assertFalse(lineA1.isColinear(lineA3));
+
+        // lines roughly vertical
+        LineSegment2D lineB1 = new LineSegment2D(new Point2D(1, 2), new Point2D(3, 6));
+        LineSegment2D lineB2 = new LineSegment2D(new Point2D(3, 6), new Point2D(4, 8));
+        LineSegment2D lineB3 = new LineSegment2D(new Point2D(4, 6), new Point2D(5, 8));
+        assertTrue(lineB1.isColinear(lineB2));
+        assertTrue(lineB2.isColinear(lineB1));
+        assertFalse(lineB1.isColinear(lineB3));
+    }
+
+    public void testIsParallel() {
+        // lines roughly horizontal
+        LineSegment2D lineA1 = new LineSegment2D(new Point2D(2, 1), new Point2D(6, 3));
+        LineSegment2D lineA2 = new LineSegment2D(new Point2D(6, 3), new Point2D(8, 4));
+        LineSegment2D lineA3 = new LineSegment2D(new Point2D(6, 4), new Point2D(8, 5));
+        assertTrue(lineA1.isParallel(lineA2));
+        assertTrue(lineA2.isParallel(lineA1));
+        assertTrue(lineA1.isParallel(lineA3));
+
+        // lines roughly vertical
+        LineSegment2D lineB1 = new LineSegment2D(new Point2D(1, 2), new Point2D(3, 6));
+        LineSegment2D lineB2 = new LineSegment2D(new Point2D(3, 6), new Point2D(4, 8));
+        LineSegment2D lineB3 = new LineSegment2D(new Point2D(4, 6), new Point2D(5, 8));
+        assertTrue(lineB1.isParallel(lineB2));
+        assertTrue(lineB2.isParallel(lineB1));
+        assertTrue(lineB1.isParallel(lineB3));
+    }
+
 	/*
 	 * Test for double getDistance(Point2D)
 	 */
@@ -259,6 +295,11 @@ public class LineSegment2DTest extends TestCase {
 		edge = new LineSegment2D(1, 1, 3, 2);
 		Box2D box = edge.getBoundingBox();
 		assertTrue(box.equals(new Box2D(1, 3, 1, 2)));
+	}
+	
+	public void testGetReverseCurve() {
+	    LineSegment2D edge = new LineSegment2D(1, 1, 3, 2);
+	    assertEquals(edge.getReverseCurve(), new LineSegment2D(3, 2, 1, 1));
 	}
 
 	public void testEquals(){
