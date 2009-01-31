@@ -24,6 +24,7 @@ Regressions
 Code
 - moved Polylines into polygon package, and renamed 'ClosedPolyline2D' as
     'Ring2D'
+- renamed 'LineObject2D' to 'Line2D', and changed its implementation
     
     
 javaGeom-0.6.3 (2008-12-22, rev. 167)

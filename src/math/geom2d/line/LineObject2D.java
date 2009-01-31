@@ -38,26 +38,15 @@ import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 
 /**
- * Straight Object defined from 2 points. This object keep points reference in
- * memory, then changing location of point obtained with
- * <code> getPoint2() </code> or <code> getPoint2() </code> will change
- * properties of line.
- * <p>
- * Moreover, type of object can change if one or both of the ending points are
- * set to <code> null</code>. It is then an easy way represent Straight Lines,
- * Edges or Rays in the same class. If both points exist, object is like an
- * Edge2D. If one only the two points is set to <code> null </code>, it is like
- * a Ray2D, with orientation depending one the missing point. If the two Points
- * are set to <code> 
- * null </code>, then the object is like a StraightLine2D.
- * <p>
+ * Line object defined from 2 points. This object keep points reference in
+ * memory, and recomputes properties directly from points. LineObject2D is
+ * mutable.
  * <p>
  * Example :
  * <p>
@@ -65,21 +54,19 @@ import math.geom2d.transform.AffineTransform2D;
  * // Create an Edge2D<br>
  * LineObject2D line = new LineObject2D(new Point2D(0, 0), new Point2D(1, 2));<br>
  * // Change direction of line, by changing second point :<br>
- * line.getPoint2().setLocation(4, 5);<br>
- * // Change position and direction of the line, by changing second point. 'line' is<br>
- * // now the edge (2,3)-(4,5)<br>
+ * line.setPoint2(new Point2D(4, 5));<br>
+ * // Change position and direction of the line, by changing first point. <br>
+ * // 'line' is now the edge (2,3)-(4,5)<br>
  * line.setPoint1(new Point2D(2, 3));<br>
- * // Transform into Ray2D :<br>
- * line.setPoint1(null);<br>
- * // Transform into Line2D, going through (2,3) and (4,5) :<br>
- * line.setPoint2(null);<br>
  * </code>
  * <p>
  * <p>
  * This class is maybe slower than Edge2D or StraightLine2D, because parameters
  * are updated each time a computation is made, causing lot of additional
  * processing.
+ * @deprecated use Line2D instead
  */
+@Deprecated
 public class LineObject2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
@@ -88,22 +75,28 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // class variables
 
+    /**
+     * The origin point.
+     */
     private Point2D point1;
+    
+    /**
+     * The destination point.
+     */
     private Point2D point2;
 
     // ===================================================================
     // constructors
 
-    /** Define a new Edge with two extremities. */
+    /** Define a new LineObject2D with two extremities. */
     public LineObject2D(Point2D point1, Point2D point2) {
-        super(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2
-                .getY()
-                -point1.getY());
+        super(point1.getX(), point1.getY(), 
+                point2.getX()-point1.getX(), point2.getY()-point1.getY());
         this.point1 = point1;
         this.point2 = point2;
     }
 
-    /** Define a new Edge with two extremities. */
+    /** Define a new LineObject2D with two extremities. */
     public LineObject2D(double x1, double y1, double x2, double y2) {
         super(x1, y1, x2-x1, y2-y1);
         point1 = new Point2D(x1, y1);
@@ -143,12 +136,10 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     // accessors
 
     /**
-     * return true only if both <code> point1</code> and <code>point2</code>
-     * are not set to null. If one of the two points is null, it is a Ray. If
-     * both points are set to null, it is a Straight Line.
+     * Returns true
      */
     public boolean isBounded() {
-        return point1!=null&&point2!=null;
+        return true;
     }
 
     @Override
@@ -318,7 +309,7 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
      */
     public double getLength() {
         updateParameters();
-        return Math.sqrt(dx*dx+dy*dy);
+        return Math.hypot(dx, dy);
     }
 
     /**
@@ -340,27 +331,19 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     }
 
     public double getX1() {
-        if (point1==null)
-            return x0;
-        else
-            return point1.getX();
+        return point1.getX();
     }
 
     public double getY1() {
-        if (point1==null)
-            return y0;
-        else
-            return point1.getY();
+        return point1.getY();
     }
 
     public double getX2() {
-        updateParameters();
-        return x0+dx;
+        return point2.getX();
     }
 
     public double getY2() {
-        updateParameters();
-        return y0+dy;
+        return point2.getY();
     }
 
     /**
@@ -382,11 +365,12 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
 
     @Override
     public Vector2D getTangent(double t) {
+        updateParameters();
         return new Vector2D(dx, dy);
     }
 
     /**
-     * returns 0 as every straight object.
+     * Returns 0 as every straight object.
      */
     @Override
     public double getCurvature(double t) {
@@ -402,13 +386,6 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
         for (int i = 0; i<n; i++)
             points[i] = this.getPoint(i*dt+t0);
         return new Polyline2D(points);
-    }
-
-    // ===================================================================
-    // methods inherited from Boundary2D interface
-
-    public ContinuousOrientedCurve2D[] getBoundaryCurves() {
-        return new ContinuousOrientedCurve2D[] { this };
     }
 
     // ===================================================================
@@ -451,36 +428,24 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     // methods inherited from Curve2D interface
 
     /**
-     * Returns the parameter of the first point of the line Object. It is equal
-     * to 0 in the case of edge or positive Rays, and equals -Infinity in the
-     * case of StraightLine or negative rays.
+     * Returns 0.
      */
     public double getT0() {
-        if (point1==null)
-            return Double.NEGATIVE_INFINITY;
         return 0.0;
     }
 
     /**
-     * Returns the parameter of the first point of the line Object. It is equal
-     * to 1 in the case of edge or negative Rays, and equals +Infinity in the
-     * case of StraightLine or positive rays.
+     * Returns 1.
      */
     public double getT1() {
-        if (point2==null)
-            return Double.POSITIVE_INFINITY;
         return 1.0;
     }
 
     public Point2D getPoint(double t) {
-        if (t<0&&point1==null)
+        if (t<0)
             return null;
-        if (t>1&&point2==null)
+        if (t>1)
             return null;
-        if (t==0&&point1!=null)
-            return point1;
-        if (t==1&&point2!=null)
-            return point2;
         updateParameters();
         return new Point2D(x0+dx*t, y0+dy*t);
     }
@@ -505,10 +470,8 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
 
     public Collection<Point2D> getSingularPoints() {
         ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        if (point1!=null)
-            list.add(point1);
-        if (point2!=null)
-            list.add(point2);
+        list.add(point1);
+        list.add(point2);
         return list;
     }
 
@@ -557,7 +520,7 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * return the line object which starts at <code>point2</code> and ends at
+     * Returns the line object which starts at <code>point2</code> and ends at
      * <code>point1</code>.
      */
     public LineObject2D getReverseCurve() {
@@ -591,20 +554,17 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
 
     @Override
     public LineObject2D transform(AffineTransform2D trans) {
-        updateParameters();
-        double[] tab = trans.getCoefficients();
-        double x1 = x0*tab[0]+y0*tab[1]+tab[2];
-        double y1 = x0*tab[3]+y0*tab[4]+tab[5];
-        return new LineObject2D(x1, y1, dx*tab[0]+dy*tab[1]+x1, dx*tab[3]+dy
-                *tab[4]+y1);
+        return new LineObject2D(
+                point1.transform(trans), 
+                point2.transform(trans));
     }
 
     // ===================================================================
     // methods inherited from Shape interface
 
     /**
-     * Return true if the point (x, y) lies on the line, with precision given by
-     * Shape2D.ACCURACY.
+     * Returns true if the point (x, y) lies on the line, with precision given
+     * by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
         updateParameters();
@@ -640,21 +600,6 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
         return path;
     }
 
-    /**
-     * Tests if the Line intersects the interior of a specified rectangular
-     * area.
-     */
-    public boolean intersects(double x, double y, double w, double h) {
-        return false;
-    }
-
-    /**
-     * Tests if the Line intersects the interior of a specified rectangle2D.
-     */
-    public boolean intersects(java.awt.geom.Rectangle2D r) {
-        return false;
-    }
-
     // ===================================================================
     // methods inherited from Object interface
 
@@ -668,8 +613,8 @@ public class LineObject2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * Two LineObject2D are equals if the share the two same points, in the same
-     * order.
+     * Two LineObject2D are equals if the share the two same points, 
+     * in the same order.
      * 
      * @param obj the edge to compare to.
      * @return true if extremities of both edges are the same.

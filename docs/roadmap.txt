@@ -29,11 +29,8 @@ Other pending questions:
 - should Ring2D extends Polyline2D ?
 - keep double methods (one with x,y, other with point2D) when using points ?
 - introduce finite grids
-- line segments with direct access to vertices (like LineObject2D) ?
-	Call it Line2D ?
 - introduce points in homogeneous coordinates ?
 - introduce Direction2D ?
-- lot of redundancies between ClosedPolyline2D and SimplePolygon2D
 - introduce exception for parallel line ?
 
 
