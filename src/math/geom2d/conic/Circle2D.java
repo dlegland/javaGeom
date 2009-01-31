@@ -117,6 +117,11 @@ public class Circle2D extends Ellipse2D implements Cloneable {
         this(center.getX(), center.getY(), radius, true);
     }
 
+    /** Create a new circle with specified center, radius and orientation */
+    public Circle2D(Point2D center, double radius, boolean direct) {
+        this(center.getX(), center.getY(), radius, direct);
+    }
+
     /** Create a new circle with specified center and radius */
     public Circle2D(double xcenter, double ycenter, double radius) {
         this(xcenter, ycenter, radius, true);
@@ -142,7 +147,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
-     * @deprecated conics will become imutable in a future release
+     * @deprecated conics will become immutable in a future release
      */
     @Deprecated
     public void setRadius(double radius) {
@@ -151,7 +156,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
-     * @deprecated conics will become imutable in a future release
+     * @deprecated conics will become immutable in a future release
      */
     @Deprecated
     public void setCircle(double xc, double yc, double r) {
@@ -163,7 +168,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
-     * @deprecated conics will become imutable in a future release
+     * @deprecated conics will become immutable in a future release
      */
     @Deprecated
     public void setCircle(Point2D center, double r) {
@@ -189,7 +194,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     @Override
     public Type getConicType() {
-        return Conic2D.Type.ELLIPSE;
+        return Conic2D.Type.CIRCLE;
     }
 
     @Override
@@ -242,15 +247,19 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     public Vector2D getTangent(double t) {
         if (!direct)
             t = -t;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot  = Math.cos(theta);
+        double sit  = Math.sin(theta);
+        double cost = Math.cos(t);
+        double sint = Math.sin(t);
 
         if (direct)
-            return new Vector2D(-r*Math.sin(t)*cot-r*Math.cos(t)*sit, -r
-                    *Math.sin(t)*sit+r*Math.cos(t)*cot);
+            return new Vector2D(
+                    -r*sint*cot-r*cost*sit, 
+                    -r*sint*sit+r*cost*cot);
         else
-            return new Vector2D(r*Math.sin(t)*cot+r*Math.cos(t)*sit, r
-                    *Math.sin(t)*sit-r*Math.cos(t)*cot);
+            return new Vector2D(
+                    r*sint*cot+r*cost*sit,
+                    r*sint*sit-r*cost*cot);
     }
 
     // ===================================================================
@@ -279,9 +288,9 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     @Override
     public double getSignedDistance(double x, double y) {
         if (direct)
-            return java.awt.geom.Point2D.distance(xc, yc, x, y)-r;
+            return Point2D.getDistance(xc, yc, x, y)-r;
         else
-            return r-java.awt.geom.Point2D.distance(xc, yc, x, y);
+            return r-Point2D.getDistance(xc, yc, x, y);
     }
 
     // ===================================================================
@@ -361,14 +370,14 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     @Override
     public double getDistance(java.awt.geom.Point2D point) {
-        return Math.abs(java.awt.geom.Point2D.distance(xc, yc, point.getX(),
+        return Math.abs(Point2D.getDistance(xc, yc, point.getX(),
                 point.getY())
                 -r);
     }
 
     @Override
     public double getDistance(double x, double y) {
-        return Math.abs(java.awt.geom.Point2D.distance(xc, yc, x, y)-r);
+        return Math.abs(Point2D.getDistance(xc, yc, x, y)-r);
     }
 
     /**

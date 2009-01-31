@@ -29,6 +29,7 @@ import java.util.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
@@ -61,6 +62,12 @@ public class Circle2DTest extends TestCase {
 		assertTrue(Circle2D.create(p3, p2, p1).equals(circle));
 	}
 	
+	public void testGetParallel() {
+	    Circle2D circle = new Circle2D(10, 20, 30);
+	    Circle2D parallel = circle.getParallel(10);
+	    assertEquals(parallel, new Circle2D(10, 20, 40));
+	}
+	
 	public void testContainsDoubleDouble() {
 		Circle2D circle = new Circle2D(0, 0, 10);
 		
@@ -71,6 +78,25 @@ public class Circle2DTest extends TestCase {
 		assertTrue(!circle.contains(0, 0));
 	}
 	
+	public void testGetConicType () {
+	    Circle2D circle = new Circle2D();
+	    assertEquals(circle.getConicType(), Conic2D.Type.CIRCLE);
+	}
+	
+	public void testGetTangent() {
+	    double r = 10;
+	    Circle2D circle = new Circle2D(10, 20, r);
+        assertEquals(circle.getTangent(0), new Vector2D(0, r));
+        assertEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0));
+        assertEquals(circle.getTangent(Math.PI), new Vector2D(0, -r));
+        assertEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0));
+	    
+        circle = new Circle2D(10, 20, r, false);
+        assertEquals(circle.getTangent(0), new Vector2D(0, -r));
+        assertEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0));
+        assertEquals(circle.getTangent(Math.PI), new Vector2D(0, r));
+        assertEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0));
+	}
 	
 	public void testGetPositionPoint2D() {
 		Circle2D circle;
@@ -115,16 +141,30 @@ public class Circle2DTest extends TestCase {
 	 */
 	public void testGetDistancePoint2D() {
 		Circle2D circle = new Circle2D(0, 0, 10);
-		assertEquals(circle.getDistance(10, 0), 0, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(10, 0)), 0, 1e-14);
 		
 		circle = new Circle2D(2, 3, 4);
-		assertEquals(circle.getDistance(2, 3), 4, 1e-14);
-		assertEquals(circle.getDistance(6, 3), 0, 1e-14);
-		assertEquals(circle.getDistance(2, 7), 0, 1e-14);
-		assertEquals(circle.getDistance(-2, 3), 0, 1e-14);
-		assertEquals(circle.getDistance(2, -1), 0, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(2, 3)), 4, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(6, 3)), 0, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(2, 7)), 0, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(-2, 3)), 0, 1e-14);
+		assertEquals(circle.getDistance(new Point2D(2, -1)), 0, 1e-14);
 	}
 	
+    /*
+     * Test for double getDistance(Point2D)
+     */
+    public void testGetSignedDistancePoint2D() {
+        Circle2D circle = new Circle2D(0, 0, 10);
+        assertEquals(circle.getSignedDistance(new Point2D(10, 0)), 0, 1e-14);
+        
+        assertEquals(circle.getSignedDistance(new Point2D(0, 0)), -10, 1e-14);
+        assertEquals(circle.getSignedDistance(new Point2D(6, 0)), -4, 1e-14);
+        assertEquals(circle.getSignedDistance(new Point2D(0, 6)), -4, 1e-14);
+        assertEquals(circle.getSignedDistance(new Point2D(-6, 0)), -4, 1e-14);
+        assertEquals(circle.getSignedDistance(new Point2D(0, -6)), -4, 1e-14);
+    }
+    
 	/*
 	 * Test for boolean isInside(Point2D)
 	 */
