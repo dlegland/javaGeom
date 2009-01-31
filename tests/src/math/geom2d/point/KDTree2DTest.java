@@ -9,7 +9,9 @@
 package math.geom2d.point;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
@@ -91,5 +93,28 @@ public class KDTree2DTest extends TestCase {
         
         assertEquals(tree.nearestNeighbor(new Point2D(11, 18)), new Point2D(14, 18));
         assertEquals(tree.nearestNeighbor(new Point2D(13, 0)), new Point2D(7, 6));
+   }
+
+    public void testRangeSearch() {
+        ArrayList<Point2D> points = new ArrayList<Point2D>(3);
+        points.add(new Point2D(-15, 0));
+        points.add(new Point2D(15, 0));
+        points.add(new Point2D(0, -15));
+        points.add(new Point2D(0, 15));
+        points.add(new Point2D(-5, 5));
+        points.add(new Point2D(-5, -5));
+        points.add(new Point2D(5, 5));
+        points.add(new Point2D(5, -5));
+        KDTree2D tree = new KDTree2D(points);
+        
+        Box2D range = new Box2D(-10, 10, -10, 10);
+        
+        Collection<Point2D> result = tree.rangeSearch(range);
+        
+        assertEquals(result.size(), 4);
+        assertTrue(result.contains(new Point2D(-5, 5)));
+        assertTrue(result.contains(new Point2D(5, 5)));
+        assertTrue(result.contains(new Point2D(-5, -5)));
+        assertTrue(result.contains(new Point2D(5, -5)));
    }
 }

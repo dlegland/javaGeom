@@ -202,9 +202,29 @@ public class SimplePolygon2D implements Polygon2D {
         //
         // return wn;
     }
+    
+    /**
+     * remove all the vertices of the polygon.
+     * @deprecated use clearVertices instead
+     */
+    @Deprecated
+    public void clearPoints() {
+        this.points.clear();
+    }
+
+    /**
+     * Removes all the vertices of the polygon.
+     */
+    public void clearVertices() {
+        this.points.clear();
+    }
+    
+    public void setVertex(int index, Point2D position) {
+        this.points.set(index, position);
+    }
 
     // ===================================================================
-    // methods inherited from AbstractSimplePolygon2D interface
+    // methods inherited from Polygon2D interface
 
     /**
      * Returns the points of the polygon. The result is a pointer to the inner
@@ -224,7 +244,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Return the number of vertices of the polygon.
+     * Returns the number of vertices of the polygon.
      * 
      * @since 0.6.3
      */
@@ -233,7 +253,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Return the set of edges, as a collection of LineSegment2D.
+     * Returns the set of edges, as a collection of LineSegment2D.
      */
     public Collection<LineSegment2D> getEdges() {
 
@@ -251,22 +271,28 @@ public class SimplePolygon2D implements Polygon2D {
         return edges;
     }
 
+    /**
+     * Returns the number of edges. For a simple polygon, this equals the
+     * number of vertices.
+     */
     public int getEdgeNumber() {
         return points.size();
     }
 
-    /**
-     * remove all the vertices of the polygon.
+    /* (non-Javadoc)
+     * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public void clearPoints() {
-        this.points.clear();
+    public Collection<Ring2D> getRings() {
+        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
+        rings.add(new Ring2D(points));
+        return rings;
     }
 
     // ===================================================================
     // methods inherited from Domain2D interface
 
     /**
-     * Returns a closed polyline, which encloses the polygon.
+     * Returns a set of one Ring2D, which encloses the polygon.
      */
     public BoundarySet2D<Ring2D> getBoundary() {
         Point2D[] array = new Point2D[this.points.size()];
@@ -297,7 +323,7 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Shape2D interface
 
     /**
-     * Get the distance of the point to the polygon. This is actually the
+     * Returns the distance of the point to the polygon. This is actually the
      * minimal distance computed for each edge if the polygon, or ZERO if the
      * point belong to the polygon.
      */
@@ -306,7 +332,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Get the distance of the point to the polygon. This is actually the
+     * Returns the distance of the point to the polygon. This is actually the
      * minimal distance computed for each edge if the polygon, or ZERO if the
      * point belong to the polygon.
      */
@@ -317,7 +343,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Get the signed distance of the shape to the given point : this distance
+     * Returns the signed distance of the shape to the given point: this distance
      * is positive if the point lies outside the shape, and is negative if the
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
@@ -327,7 +353,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Get the signed distance of the shape to the given point : this distance
+     * Returns the signed distance of the shape to the given point: this distance
      * is positive if the point lies outside the shape, and is negative if the
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
@@ -341,7 +367,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Return the shape formed by the polygon clipped by the given box.
+     * Returns the shape formed by the polygon clipped by the given box.
      */
     public Domain2D clip(Box2D box) {
         BoundarySet2D<ContinuousBoundary2D> boundarySet = 
@@ -352,15 +378,14 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Return the bounding box of the polygon.
+     * Returns the bounding box of the polygon.
      */
     public Box2D getBoundingBox() {
         return getBoundary().getBoundingBox();
     }
 
     /**
-     * Always returns true if polygon is oriented counter-clockwise, false
-     * otherwise.
+     * Returns true if polygon is oriented counter-clockwise, false otherwise.
      */
     public boolean isBounded() {
         return this.getSignedArea()>0;
@@ -405,7 +430,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Return true if the point (x, y) lies inside the polygon, with precision
+     * Returns true if the point (x, y) lies inside the polygon, with precision
      * given by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
@@ -415,7 +440,7 @@ public class SimplePolygon2D implements Polygon2D {
 
     // The following is a old algorithm, based on the principle:
     // find closest edge, and check if point is located on the left side of edge.
-    // If point is close to a vertex, chech if point is located on the left side
+    // If point is close to a vertex, check if point is located on the left side
     // of each neighbor edges.
     // Not used because to complicated, but seems to work....
     //
@@ -553,7 +578,7 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Object interface
 
     /**
-     * Test if the two polygons are equal. Test first the number of vertices,
+     * Tests if the two polygons are equal. Test first the number of vertices,
      * then the bounding boxes, then if each vertex of the polygon is contained
      * in the vertices array of this polygon.
      */

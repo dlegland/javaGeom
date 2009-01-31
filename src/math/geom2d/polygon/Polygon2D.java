@@ -63,7 +63,14 @@ public interface Polygon2D extends Domain2D {
 
     /** Returns the number of edges of the polygon */
     public abstract int getEdgeNumber();
+    
+    /**
+     * Returns the set of rings comprising the boundary of this polygon.
+     * @return the set of boundary rings.
+     */
+    public abstract Collection<Ring2D> getRings();
 
+    
     // ===================================================================
     // general methods
 

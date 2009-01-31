@@ -74,6 +74,17 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     // ===================================================================
+    // methods implementing the Polygon2D interface
+
+  
+    /* (non-Javadoc)
+     * @see math.geom2d.polygon.Polygon2D#getRings()
+     */
+    public Collection<Ring2D> getRings() {
+        return Collections.unmodifiableList(rings);
+    }
+
+    // ===================================================================
     // methods inherited from interface AbstractDomain2D
 
     public BoundarySet2D<Ring2D> getBoundary() {

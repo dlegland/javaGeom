@@ -148,6 +148,15 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return new BoundarySet2D<Ring2D>(new Ring2D(pts));
     }
 
+    /* (non-Javadoc)
+     * @see math.geom2d.polygon.Polygon2D#getRings()
+     */
+    public Collection<Ring2D> getRings() {
+        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
+        rings.add(new Ring2D(this.getVertices()));
+        return rings;
+    }
+
     public Polygon2D complement() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
