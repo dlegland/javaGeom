@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.PointSet2D;
+import math.geom2d.point.PointSet2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.LineSegment2D;
 

@@ -367,6 +367,12 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     // Methods implementing the Object interface
 
     @Override
+    public String toString() {
+        return new String("LineSegment2D[(" + x0 + ", " + y0 + ")-(" 
+                + (x0+dx) + ", " + (y0+dy) + ")]");
+    }
+    
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof LineSegment2D))
             return false;

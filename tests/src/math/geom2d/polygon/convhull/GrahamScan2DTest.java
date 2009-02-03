@@ -1,7 +1,7 @@
 package math.geom2d.polygon.convhull;
 
 import math.geom2d.Point2D;
-import math.geom2d.PointSet2D;
+import math.geom2d.point.PointSet2D;
 import math.geom2d.polygon.Polygon2D;
 import junit.framework.TestCase;
 

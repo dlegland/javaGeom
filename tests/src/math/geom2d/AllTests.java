@@ -40,7 +40,6 @@ public class AllTests {
 		suite.addTest(new TestSuite(Angle2DTest.class));
 		suite.addTest(new TestSuite(Box2DTest.class));
 		suite.addTest(new TestSuite(Point2DTest.class));
-		suite.addTest(new TestSuite(PointSet2DTest.class));
 		suite.addTest(new TestSuite(Vector2DTest.class));
 		//$JUnit-END$
 		return suite;

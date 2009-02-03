@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.PointSet2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.point.PointSet2D;
 
 /**
  * @author dlegland
