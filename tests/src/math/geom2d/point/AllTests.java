@@ -21,7 +21,8 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for math.geom2d.point");
         //$JUnit-BEGIN$
-        suite.addTestSuite(KDTree2DTest.class);
+        suite.addTest(new TestSuite(KDTree2DTest.class));
+        suite.addTest(new TestSuite(PointSet2DTest.class));
         //$JUnit-END$
         return suite;
     }

@@ -485,6 +485,11 @@ implements Shape2D, Cloneable {
     // ===================================================================
     // Override of Object methods
 
+    @Override
+    public String toString() {
+        return new String("Point2D[" + x + ", "+y+"]");
+    }
+    
     /**
      * Two points are considered equal if their Euclidean distance is less than
      * Shape2D.ACCURACY.

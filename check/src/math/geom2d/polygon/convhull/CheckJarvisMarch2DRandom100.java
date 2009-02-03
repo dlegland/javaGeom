@@ -30,6 +30,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.point.PointSet2D;
 import math.geom2d.polygon.Polygon2D;
 
 /**

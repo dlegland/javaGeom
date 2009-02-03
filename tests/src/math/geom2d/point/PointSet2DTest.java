@@ -1,5 +1,7 @@
-package math.geom2d;
+package math.geom2d.point;
 
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
 public class PointSet2DTest extends TestCase {
