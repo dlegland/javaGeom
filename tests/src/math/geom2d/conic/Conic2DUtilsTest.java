@@ -1,10 +1,10 @@
 package math.geom2d.conic;
 
+import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
-import junit.framework.TestCase;
 
 public class Conic2DUtilsTest extends TestCase {
 

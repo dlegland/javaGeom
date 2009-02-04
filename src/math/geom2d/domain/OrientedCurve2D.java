@@ -26,10 +26,10 @@
 
 package math.geom2d.domain;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An OrientedCurve2D defines an 'inside' and an 'outside'. It is typically a

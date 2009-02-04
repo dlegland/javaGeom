@@ -25,9 +25,9 @@
  */
 package math.geom2d.conic;
 
-import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
 import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.line.StraightLine2D;
 
 public class EllipseArc2DTest extends TestCase {
 

@@ -2,7 +2,7 @@
  * 
  */
 
-package math.geom2d.transform;
+package math.geom2d;
 
 /**
  * @author dlegland

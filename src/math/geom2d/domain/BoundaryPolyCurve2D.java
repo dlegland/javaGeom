@@ -27,9 +27,10 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.AffineTransform2D;
 
 /**
  * A single continuous oriented curve, which defines the boundary of a planar

@@ -27,10 +27,9 @@ package math.geom2d.domain;
 
 import java.awt.Graphics2D;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Boundary2D;
-import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 

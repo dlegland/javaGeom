@@ -29,6 +29,8 @@ package math.geom2d.conic;
 import java.util.Collection;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
@@ -36,9 +38,6 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
-
-import junit.framework.TestCase;
 
 /**
  * @author Legland

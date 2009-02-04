@@ -27,13 +27,14 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.curve.CurveSet2D;
 
 /**
  * A BoundarySet2D is a set of continuous oriented curves. Each curve of the set

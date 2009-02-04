@@ -1,11 +1,11 @@
 package math.geom2d.conic;
 
+import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.transform.AffineTransform2D;
-import junit.framework.TestCase;
 
 public class Hyperbola2DTest extends TestCase {
 

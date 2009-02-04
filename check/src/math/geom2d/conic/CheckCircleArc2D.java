@@ -14,7 +14,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.AffineTransform2D;
 
 public class CheckCircleArc2D  extends JPanel{
 

@@ -26,14 +26,14 @@
 package math.geom2d.curve;
 
 // Imports
-import math.geom2d.Shape2D;
-import math.geom2d.Point2D;
-import math.geom2d.Box2D;
-import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.line.LinearShape2D;
-
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.Collection;
+
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.line.LinearShape2D;
 
 /**
  * Interface for all linear and pieces smooth curves : polylines, conics, lines

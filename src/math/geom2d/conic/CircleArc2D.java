@@ -28,6 +28,7 @@ package math.geom2d.conic;
 
 import java.util.*;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -40,7 +41,6 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A circle arc, defined by the center and the radius of the containing circle,

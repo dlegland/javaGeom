@@ -29,10 +29,10 @@ package math.geom2d.point;
 import java.awt.Graphics2D;
 import java.util.*;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Represent the union of a finite number of Point2D.

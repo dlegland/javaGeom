@@ -28,9 +28,12 @@ package math.geom2d.spline;
 
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.curve.*;
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.PolyCurve2D;
 
 /**
  * A set of Bezier curves, making a continuous curve.

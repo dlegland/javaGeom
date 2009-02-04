@@ -10,13 +10,13 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland

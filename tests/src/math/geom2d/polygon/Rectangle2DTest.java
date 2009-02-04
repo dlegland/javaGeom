@@ -26,10 +26,10 @@
  */
 package math.geom2d.polygon;
 
+import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Shape2D;
 import math.geom2d.domain.Domain2D;
-import math.geom2d.transform.AffineTransform2D;
-import junit.framework.TestCase;
 
 /**
  * @author Legland

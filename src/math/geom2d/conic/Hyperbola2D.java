@@ -29,15 +29,15 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.line.StraightLine2D;
 
 // Imports
 

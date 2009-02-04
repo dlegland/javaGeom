@@ -37,7 +37,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(Angle2DTest.class));
+		suite.addTest(new TestSuite(AffineTransform2DTest.class));
+        suite.addTest(new TestSuite(Angle2DTest.class));
 		suite.addTest(new TestSuite(Box2DTest.class));
 		suite.addTest(new TestSuite(Point2DTest.class));
 		suite.addTest(new TestSuite(Vector2DTest.class));

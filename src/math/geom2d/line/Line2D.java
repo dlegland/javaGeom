@@ -29,18 +29,18 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.OrientedCurve2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 
