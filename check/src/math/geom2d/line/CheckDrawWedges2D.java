@@ -10,12 +10,12 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland

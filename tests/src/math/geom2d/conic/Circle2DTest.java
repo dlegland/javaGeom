@@ -23,10 +23,11 @@
 
 package math.geom2d.conic;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
-
-import java.util.*;
-
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
@@ -35,7 +36,6 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author Legland

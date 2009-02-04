@@ -4,6 +4,7 @@ javaGeom-0.?.? (2008-??.??, rev. ???)
 
 New features
 - Added Convex hull by Graham scan
+- Added KDTree2D
 - Conic2D now implements Boundary2D
 - added Angle2D.getPseudoAngle();
 
@@ -24,12 +25,14 @@ Regressions
 Code
 - moved Polylines into polygon package, and renamed 'ClosedPolyline2D' as
     'Ring2D'
+- moved PointSet2D into point package
 - renamed 'LineObject2D' to 'Line2D', and changed its implementation
     
     
 javaGeom-0.6.3 (2008-12-22, rev. 167)
 
 New features
+- Added Convex hull by Jarvis March
 - instances of Domain2D can be complemented
 - added methods to draw shapes:
 	+ Curve2D.draw(),

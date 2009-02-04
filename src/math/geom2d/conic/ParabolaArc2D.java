@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -45,7 +46,6 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An arc of parabola, defined by a parent parabola, and two limits for the

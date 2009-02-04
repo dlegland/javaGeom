@@ -25,11 +25,11 @@
 
 package math.geom2d.conic;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 

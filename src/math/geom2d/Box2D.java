@@ -29,16 +29,16 @@ package math.geom2d;
 
 // Imports
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.line.AbstractLine2D;
-import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HRectangle2D;
 import math.geom2d.polygon.Ring2D;

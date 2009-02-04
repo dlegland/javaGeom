@@ -27,15 +27,15 @@
 
 package math.geom2d.conic;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
-
-import java.util.*;
-
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author Legland

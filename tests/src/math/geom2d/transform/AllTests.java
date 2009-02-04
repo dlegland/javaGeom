@@ -37,7 +37,6 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.transform");
 		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(AffineTransform2DTest.class));
 		//$JUnit-END$
 		return suite;
 	}

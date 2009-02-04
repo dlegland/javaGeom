@@ -27,20 +27,20 @@
 package math.geom2d.domain;
 
 // Imports
+import java.util.Collection;
+
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.transform.AffineTransform2D;
-
-import java.util.*;
 
 /**
  * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the

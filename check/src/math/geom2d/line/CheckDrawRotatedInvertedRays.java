@@ -10,9 +10,9 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland

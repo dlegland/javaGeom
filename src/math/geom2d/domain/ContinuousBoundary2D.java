@@ -26,7 +26,7 @@
 
 package math.geom2d.domain;
 
-import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.AffineTransform2D;
 
 /**
  * A continuous boundary is a continuous oriented curve which delimits a

@@ -26,12 +26,16 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
-import math.geom2d.conic.Parabola2D;
-import math.geom2d.transform.AffineTransform2D;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 
 
 public class CheckRotateParabola2D extends JPanel{

@@ -30,15 +30,15 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.UnboundedShapeException;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShapeException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * LineArc2D is a generic class to represent edges, straight lines, and rays.

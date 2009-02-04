@@ -28,9 +28,9 @@ package math.geom2d.curve;
 // Imports
 import java.util.*;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Interface for all curves which can be drawn with one stroke. This includes

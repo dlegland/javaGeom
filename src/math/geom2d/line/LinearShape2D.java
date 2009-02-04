@@ -4,10 +4,10 @@
 
 package math.geom2d.line;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A curve that can be inscribed in a straight line, line a ray, a straight

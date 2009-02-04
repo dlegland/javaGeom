@@ -32,17 +32,17 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Representation of straight lines. Such lines can be constructed using two

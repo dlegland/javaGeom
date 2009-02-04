@@ -25,11 +25,10 @@
  * Created on 25 déc. 2003
  */
  
-package math.geom2d.transform;
-import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
-import math.geom2d.line.StraightLine2D;
+package math.geom2d;
+
 import junit.framework.TestCase;
+import math.geom2d.line.StraightLine2D;
 
 /**
  * @author Legland

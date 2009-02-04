@@ -26,10 +26,10 @@
 
 package math.geom2d.domain;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D is
