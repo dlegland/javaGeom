@@ -30,6 +30,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointSet2D;
 import math.geom2d.polygon.Polygon2D;
 
@@ -58,7 +59,7 @@ public class CheckJarvisMarch2DRandom100 extends JPanel{
 		    array[i] = new Point2D(
 		            Math.random()*200+100, 
 		            Math.random()*200+100);
-		points = new PointSet2D(array);
+		points = new PointArray2D(array);
 	}
 	
 	public void paintComponent(Graphics g){

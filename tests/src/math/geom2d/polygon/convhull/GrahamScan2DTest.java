@@ -1,14 +1,14 @@
 package math.geom2d.polygon.convhull;
 
 import math.geom2d.Point2D;
-import math.geom2d.point.PointSet2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.polygon.Polygon2D;
 import junit.framework.TestCase;
 
 public class GrahamScan2DTest extends TestCase {
 
 	public void testConvexHull_Lozenge() {
-		PointSet2D pointSet = new PointSet2D(new Point2D[]{
+	    PointArray2D pointSet = new PointArray2D(new Point2D[]{
 				new Point2D(1, 0),
 				new Point2D(2, 1),
 				new Point2D(1, 2),
@@ -22,7 +22,7 @@ public class GrahamScan2DTest extends TestCase {
 	}
 
 	public void testConvexHull_Square() {
-		PointSet2D pointSet = new PointSet2D(new Point2D[]{
+	    PointArray2D pointSet = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(1, 0),
 				new Point2D(.2, .2),

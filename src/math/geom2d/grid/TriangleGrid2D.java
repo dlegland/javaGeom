@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
@@ -289,7 +290,7 @@ public class TriangleGrid2D implements Grid2D {
                 array.add(line.getPoint(j*s+t0));
         }
 
-        return new PointSet2D(array);
+        return new PointArray2D(array);
     }
 
 }

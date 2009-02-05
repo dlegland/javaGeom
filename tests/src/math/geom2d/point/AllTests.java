@@ -22,7 +22,7 @@ public class AllTests {
         TestSuite suite = new TestSuite("Test for math.geom2d.point");
         //$JUnit-BEGIN$
         suite.addTest(new TestSuite(KDTree2DTest.class));
-        suite.addTest(new TestSuite(PointSet2DTest.class));
+        suite.addTest(new TestSuite(PointArray2DTest.class));
         //$JUnit-END$
         return suite;
     }

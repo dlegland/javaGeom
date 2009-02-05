@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.point.PointSet2D;
+import math.geom2d.point.PointArray2D;
 
 /**
  * @author dlegland
@@ -28,7 +28,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 	Box2D box = new Box2D(100, 500, 100, 400);
 	
 	CurveSet2D<LineSegment2D> lines = new CurveSet2D<LineSegment2D>();
-	PointSet2D points = new PointSet2D();
+	PointArray2D points = new PointArray2D();
 	
 	public DrawLineSegmentIntersectionsDemo(){
 		Point2D point1, point2;
