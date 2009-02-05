@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointSet2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.LineSegment2D;
@@ -163,6 +164,6 @@ public class SquareGrid2D implements Grid2D {
                 array.add(new Point2D(x, y));
 
         // return the set of lines
-        return new PointSet2D(array);
+        return new PointArray2D(array);
     }
 }

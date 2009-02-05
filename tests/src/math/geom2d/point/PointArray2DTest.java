@@ -4,10 +4,10 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
-public class PointSet2DTest extends TestCase {
+public class PointArray2DTest extends TestCase {
 
 	public void testGetDistancePoint2D() {
-		PointSet2D set = new PointSet2D(new Point2D[]{
+		PointArray2D set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),
 				new Point2D(0, 10),
@@ -27,12 +27,12 @@ public class PointSet2DTest extends TestCase {
 	}
 
 	public void testIsEmpty() {
-		PointSet2D set;
+		PointArray2D set;
 		
-		set = new PointSet2D();
+		set = new PointArray2D();
 		assertTrue(set.isEmpty());
 		
-		set = new PointSet2D(new Point2D[]{
+		set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),
 				new Point2D(0, 10),
@@ -44,19 +44,19 @@ public class PointSet2DTest extends TestCase {
 	}
 
 	public void testClip() {
-		PointSet2D set = new PointSet2D(new Point2D[]{
+		PointArray2D set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),
 				new Point2D(0, 10),
 				new Point2D(10, 10)});
 		Box2D box = new Box2D(-5, 5, -5, 5);
 		
-		PointSet2D clipped = set.clip(box);
+		PointArray2D clipped = set.clip(box);
 		assertTrue(clipped.getPointNumber()==1);
 	}
 
 	public void testGetBoundingBox() {
-		PointSet2D set = new PointSet2D(new Point2D[]{
+		PointArray2D set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),
 				new Point2D(0, 10),
@@ -66,7 +66,7 @@ public class PointSet2DTest extends TestCase {
 	}
 
 	public void testContainsPoint2D() {
-		PointSet2D set = new PointSet2D(new Point2D[]{
+		PointArray2D set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),
 				new Point2D(0, 10),
@@ -84,7 +84,7 @@ public class PointSet2DTest extends TestCase {
 	}
 
 	public void testClone() {
-	    PointSet2D set = new PointSet2D(new Point2D[]{
+	    PointArray2D set = new PointArray2D(new Point2D[]{
 	            new Point2D(0, 0), new Point2D(10, 20), new Point2D(30, 40)
 	    });
 	    assertTrue(set.equals(set.clone()));

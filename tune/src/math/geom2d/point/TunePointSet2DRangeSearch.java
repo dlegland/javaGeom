@@ -61,7 +61,7 @@ public class TunePointSet2DRangeSearch {
 		                Math.random()*200+100));        
 
 		    // Compute time for creating convex hull
-		    set = new PointSet2D(points);
+		    set = new PointArray2D(points);
 		    long t0 = System.currentTimeMillis();
 		    set.clip(range);
             long t1 = System.currentTimeMillis();

@@ -49,7 +49,7 @@ public class TunePointSet2DNearestNeighbor {
         long[] times = new long[nIter];
         double total = 0;
         
-        PointSet2D set;
+        PointArray2D set;
         
 		for (int i=0; i<nIter; i++) {
 		    // Generate point coordinates
@@ -60,7 +60,7 @@ public class TunePointSet2DNearestNeighbor {
 		                Math.random()*200+100));        
 
 		    // Compute time for creating convex hull
-		    set = new PointSet2D(points);
+		    set = new PointArray2D(points);
 		    Point2D point = new Point2D(200, 200);
 		    
 		    long t0 = System.currentTimeMillis();

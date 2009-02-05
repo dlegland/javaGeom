@@ -30,6 +30,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointSet2D;
 import math.geom2d.polygon.Polygon2D;
 
@@ -51,7 +52,7 @@ public class CheckGrahamScan2DSedgewick extends JPanel{
 		super();
 		
 		// Point coordinate are multiplied by 10 for better drawing
-		points = new PointSet2D(new Point2D[]{
+		points = new PointArray2D(new Point2D[]{
 				new Point2D(30, 90), 
 				new Point2D(110, 10), 
 				new Point2D(60, 80), 
