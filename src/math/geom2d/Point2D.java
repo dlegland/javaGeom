@@ -26,9 +26,12 @@
 package math.geom2d;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.point.PointShape2D;
 
 /**
  * <p>
@@ -41,7 +44,7 @@ import math.geom2d.AffineTransform2D;
  * </p>
  */
 public class Point2D extends java.awt.geom.Point2D.Double
-implements Shape2D, Cloneable {
+implements PointShape2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -480,6 +483,32 @@ implements Shape2D, Cloneable {
      */
     public void draw(Graphics2D g2, double r) {
         g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, 2*r, 2*r));
+    }
+
+    // ===================================================================
+    // Methods implementing the PointShape2D interface
+
+    /* (non-Javadoc)
+     * @see math.geom2d.point.PointShape2D#getPointNumber()
+     */
+    public int getPointNumber() {
+        return 1;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.point.PointShape2D#getPoints()
+     */
+    public Collection<Point2D> getPoints() {
+        ArrayList<Point2D> array = new ArrayList<Point2D>(1);
+        array.add(this);
+        return array;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
+     */
+    public Iterator<Point2D> iterator() {
+        return this.getPoints().iterator();
     }
 
     // ===================================================================

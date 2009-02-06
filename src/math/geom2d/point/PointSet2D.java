@@ -11,14 +11,13 @@ package math.geom2d.point;
 import java.util.Collection;
 
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 
 
 /**
  * @author dlegland
  *
  */
-public interface PointSet2D extends Shape2D, Iterable<Point2D> {
+public interface PointSet2D extends PointShape2D, Iterable<Point2D> {
 
     /**
      * Adds a new point to the set of point. If point is not an instance of

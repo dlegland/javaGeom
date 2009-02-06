@@ -21,9 +21,11 @@ import math.geom2d.line.StraightLine2D;
  * A data structure for storing a great number of points. During construction
  * of the tree, median point in current coordinate is chosen for each step,
  * ensuring the final tree is balanced. The cost for retrieving a point is 
- * O(log n).
+ * O(log n).<br>
  * The cost for building the tree is O(n log^2 n), that can take some time for
- * large points sets.
+ * large points sets.<br>
+ * This implementation is semi-dynamic: points can be added, but can not be
+ * removed.
  * @author dlegland
  *
  */
