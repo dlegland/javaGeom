@@ -4,6 +4,8 @@ javaGeom-0.?.? (2008-??.??, rev. ???)
 
 New features
 - Added Convex hull by Graham scan
+- Added point package, which contains point set implementations, and the
+	interface PointShape2D.
 - Added KDTree2D
 - Conic2D now implements Boundary2D
 - added Angle2D.getPseudoAngle();
