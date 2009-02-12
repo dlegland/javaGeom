@@ -34,7 +34,7 @@ public abstract class Polyline2DUtils {
      * @return the curve parallel to the original curve at a distance d
      */
     public final static PolyOrientedCurve2D<SmoothOrientedCurve2D> createParallel(
-            Polyline2D polyline, double d) {
+            math.geom2d.polygon.Polyline2D polyline, double d) {
 
         // Collection of parallel curves
         PolyOrientedCurve2D<SmoothOrientedCurve2D> result = new PolyOrientedCurve2D<SmoothOrientedCurve2D>();
