@@ -10,6 +10,8 @@ package math.geom2d.point;
 
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 
 
@@ -23,7 +25,7 @@ public interface PointSet2D extends PointShape2D, Iterable<Point2D> {
      * Adds a new point to the set of point. If point is not an instance of
      * Point2D, a Point2D with same location is added instead of point.
      * 
-     * @param point
+     * @param point the initial point in the set
      */
     public void addPoint(java.awt.geom.Point2D point);
 
@@ -47,4 +49,8 @@ public interface PointSet2D extends PointShape2D, Iterable<Point2D> {
      * @return the number of points
      */
     public int getPointNumber();
+    
+    public abstract PointSet2D transform(AffineTransform2D trans);
+    
+    public abstract PointSet2D clip(Box2D box);
 }

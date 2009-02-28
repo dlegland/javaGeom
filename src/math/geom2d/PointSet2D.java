@@ -29,24 +29,26 @@ public class PointSet2D extends PointArray2D {
     }
 
     /**
-     * @param n
+     * @param n the number of points in the set
      */
     public PointSet2D(int n) {
         super(n);
     }
 
     /**
-     * @param points
+     * @param points the initial array of points
      */
     public PointSet2D(Point2D[] points) {
         super(points);
     }
 
     /**
-     * @param points
+     * @param points the initial collection of points
      */
     public PointSet2D(Collection<? extends Point2D> points) {
         super(points);
     }
+    
+    
 
 }

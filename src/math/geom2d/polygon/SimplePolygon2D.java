@@ -100,7 +100,7 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Add a point as the last vertex.
      */
-    public void addPoint(Point2D point) {
+    public void addVertex(Point2D point) {
         this.points.add(point);
     }
 
@@ -109,10 +109,30 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @param point the vertex to be removed.
      */
-    public void removePoint(Point2D point) {
+    public void removeVertex(Point2D point) {
         this.points.remove(point);
     }
 
+    /**
+     * Add a point as the last vertex.
+     * @deprecated replaced by addVertex() (0.7.1)
+     */
+    @Deprecated
+    public void addPoint(Point2D point) {
+        this.points.add(point);
+    }
+
+    /**
+     * Remove a vertex of the polygon.
+     * 
+     * @deprecated replaced by removeVertex() (0.7.1)
+     * @param point the vertex to be removed.
+     */
+    @Deprecated
+    public void removePoint(Point2D point) {
+        this.points.remove(point);
+    }
+    
     /**
      * Computes area of the polygon, by returning the absolute value of the
      * signed area.

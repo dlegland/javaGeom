@@ -26,6 +26,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -250,6 +251,13 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         double x1 = x0*tab[0]+y0*tab[1]+tab[2];
         double y1 = x0*tab[3]+y0*tab[4]+tab[5];
         return new Ray2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4]);
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        throw new UnboundedShapeException();
     }
 
     // ===================================================================

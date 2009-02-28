@@ -27,6 +27,7 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -639,6 +640,13 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
 
         // return the final path
         return path;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
     }
 
     public void draw(Graphics2D g2) {

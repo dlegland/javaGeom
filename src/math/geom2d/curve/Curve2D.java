@@ -27,6 +27,7 @@ package math.geom2d.curve;
 
 // Imports
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -52,6 +53,7 @@ public interface Curve2D extends Shape2D, Cloneable {
     /**
      * @deprecated (0.7.0)
      */
+    @Deprecated
     public final static Curve2D EMPTY_CURVE = new EmptyCurve2D();
 
     // ===================================================================
@@ -184,6 +186,12 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract CurveSet2D<? extends Curve2D> clip(Box2D box);
 
     /**
+     * @since 0.7.1
+     * @return the shape corresponding to this curve
+     */
+    public java.awt.Shape getAsAWTShape() ;
+    
+    /**
      * Draws the curve on the given Graphics2D object.
      * 
      * @param g2 the graphics to draw the curve
@@ -271,6 +279,13 @@ public interface Curve2D extends Shape2D, Cloneable {
 
         @Override
         public CurveSet2D<? extends Curve2D> clip(Box2D box) {
+            return null;
+        }
+
+        /* (non-Javadoc)
+         * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+         */
+        public Shape getAsAWTShape() {
             return null;
         }
 

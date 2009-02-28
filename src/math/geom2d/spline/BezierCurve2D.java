@@ -24,6 +24,7 @@
 package math.geom2d.spline;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -487,6 +488,13 @@ public class BezierCurve2D extends java.awt.geom.CubicCurve2D.Double implements
         path.curveTo(p2.getX(), p2.getY(), p3.getX(), p3.getY(), p4.getX(), p4
                 .getY());
         return path;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
     }
 
     public Collection<ContinuousCurve2D> getContinuousCurves() {

@@ -26,6 +26,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -562,6 +563,13 @@ Cloneable {
         path.moveTo((float) p1.getX(), (float) p1.getX());
         path.lineTo((float) p2.getX(), (float) p2.getY());
         return path;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {

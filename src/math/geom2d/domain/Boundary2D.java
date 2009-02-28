@@ -48,6 +48,7 @@ public interface Boundary2D extends OrientedCurve2D {
     /**
      * @deprecated  (0.7.0)
      */
+    @Deprecated
     public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
 
     /**
