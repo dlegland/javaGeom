@@ -2,6 +2,7 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -339,6 +340,13 @@ Cloneable {
             return false;
         Point2D point = hyperbola.toLocal(new Point2D(x, y));
         return point.getX()>0;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        throw new UnboundedShapeException();
     }
 
     /** Throws an UnboundedShapeException */

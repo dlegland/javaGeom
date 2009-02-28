@@ -27,6 +27,7 @@
 package math.geom2d.polygon;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -641,6 +642,13 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
         }
 
         return path;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
     }
 
     public void draw(Graphics2D g) {

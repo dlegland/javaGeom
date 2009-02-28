@@ -26,6 +26,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -354,12 +355,18 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     /**
      * deprecated
      */
-    @Deprecated
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         path.moveTo((float) x0, (float) y0);
         path.lineTo((float) (x0+dx), (float) (y0+dy));
         return path;
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
     }
 
     // ===================================================================

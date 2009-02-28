@@ -26,6 +26,7 @@
 package math.geom2d.line;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -254,6 +255,13 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     /** Throws an infiniteShapeException */
     public void draw(Graphics2D g) {
+        throw new UnboundedShapeException();
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
         throw new UnboundedShapeException();
     }
 

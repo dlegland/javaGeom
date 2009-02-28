@@ -27,6 +27,7 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -572,6 +573,13 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
 
     public boolean contains(java.awt.geom.Point2D point) {
         return contains(point.getX(), point.getY());
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        throw new UnboundedShapeException();
     }
 
     // ====================================================================

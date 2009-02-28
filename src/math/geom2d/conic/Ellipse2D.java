@@ -26,6 +26,7 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -1094,6 +1095,21 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
         return this.getDistance(x, y)<Shape2D.ACCURACY;
     }
 
+    public java.awt.geom.GeneralPath getGeneralPath() {
+        // precompute cosine and sine of angle
+        double cot = Math.cos(theta);
+        double sit = Math.sin(theta);
+        
+        // create new path
+        java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+        
+        // move to the first point
+        path.moveTo((float) (xc+r1*cot), (float) (yc+r1*sit));
+
+        // return path after adding curve
+        return this.appendPath(path);
+    }
+    
     /**
      * Add the path of the ellipse to the given path.
      * 
@@ -1120,11 +1136,18 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
         return path;
     }
 
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
+        return this.getGeneralPath();
+    }
+
     public void draw(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(
-                xc-r1, yc-r2, 2*r1, 2*r2);
-        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform
-                .getRotateInstance(theta, xc, yc);
+        java.awt.geom.Ellipse2D.Double ellipse = 
+            new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+        java.awt.geom.AffineTransform trans = 
+            java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
         g2.draw(trans.createTransformedShape(ellipse));
     }
 

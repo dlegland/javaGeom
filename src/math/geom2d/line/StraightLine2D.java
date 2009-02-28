@@ -28,6 +28,7 @@ package math.geom2d.line;
 //Imports
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -591,6 +592,13 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
+        throw new UnboundedShapeException();
+    }
+
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+     */
+    public Shape getAsAWTShape() {
         throw new UnboundedShapeException();
     }
 
