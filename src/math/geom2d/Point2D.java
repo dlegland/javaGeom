@@ -428,10 +428,11 @@ implements PointShape2D, Cloneable {
     }
 
     /**
-     * Returns either the point itself, or the shape EMPTY_SET, depending on
+     * Returns either the point itself, or null, depending on
      * whether the point lies inside the specified box.
      */
     public Point2D clip(Box2D box) {
+        //TODO: return a PointSet2D ?
         if (x<box.getMinX())
             return null;
         if (y<box.getMinY())
