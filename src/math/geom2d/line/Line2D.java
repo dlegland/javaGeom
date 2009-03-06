@@ -63,9 +63,10 @@ import math.geom2d.polygon.Polyline2D;
  * </code>
  * <p>
  * <p>
- * This class is maybe slower than Edge2D or StraightLine2D, because parameters
+ * This class may be slower than Edge2D or StraightLine2D, because parameters
  * are updated each time a computation is made, causing lot of additional
- * processing.
+ * processing. Moreover, as inner point fields are public, it is not as safe
+ * as LineSegment2D.
  */
 public class Line2D implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, 
 Cloneable {
@@ -560,7 +561,7 @@ Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        path.moveTo((float) p1.getX(), (float) p1.getX());
+        path.moveTo((float) p1.getX(), (float) p1.getY());
         path.lineTo((float) p2.getX(), (float) p2.getY());
         return path;
     }
@@ -573,7 +574,7 @@ Cloneable {
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        path.lineTo((float) p1.getX(), (float) p1.getX());
+        path.lineTo((float) p1.getX(), (float) p1.getY());
         path.lineTo((float) p2.getX(), (float) p2.getY());
         return path;
     }

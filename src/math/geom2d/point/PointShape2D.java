@@ -10,6 +10,8 @@ package math.geom2d.point;
 
 import java.util.Collection;
 
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 
@@ -36,4 +38,15 @@ public interface PointShape2D extends Shape2D, Iterable<Point2D> {
      * @return the number of points
      */
     public int getPointNumber();
+    
+    /**
+     * Transforms the point shape by an affine transform. 
+     * The result is an instance of PointShape2D.
+     */
+    public abstract PointShape2D transform(AffineTransform2D trans);
+
+    /**
+     * When a PointShape2D is clipped, the result is still a PointShape2D.
+     */
+    public abstract PointShape2D clip(Box2D box);
 }

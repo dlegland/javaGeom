@@ -1,6 +1,6 @@
 Changes in javaGeom library
 
-javaGeom-0.?.? (2008-??.??, rev. ???)
+javaGeom-0.7.0 (2008-02-17, rev. 192)
 
 New features
 - Added Convex hull by Graham scan
