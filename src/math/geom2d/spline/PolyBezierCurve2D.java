@@ -40,17 +40,20 @@ import math.geom2d.curve.PolyCurve2D;
  * 
  * @author dlegland
  */
-public class PolyBezierCurve2D extends PolyCurve2D<BezierCurve2D> {
+public class PolyBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
+	//TODO: rename
+	//TODO: add static methods for building curve
+	
     public PolyBezierCurve2D() {
         super();
     }
 
-    public PolyBezierCurve2D(BezierCurve2D[] curves) {
+    public PolyBezierCurve2D(CubicBezierCurve2D[] curves) {
         super(curves);
     }
 
-    public PolyBezierCurve2D(Collection<BezierCurve2D> curves) {
+    public PolyBezierCurve2D(Collection<CubicBezierCurve2D> curves) {
         super(curves);
     }
 
@@ -67,8 +70,8 @@ public class PolyBezierCurve2D extends PolyCurve2D<BezierCurve2D> {
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
-            if (curve instanceof BezierCurve2D)
-                result.addCurve((BezierCurve2D) curve);
+            if (curve instanceof CubicBezierCurve2D)
+                result.addCurve((CubicBezierCurve2D) curve);
         }
         return result;
     }
@@ -76,7 +79,7 @@ public class PolyBezierCurve2D extends PolyCurve2D<BezierCurve2D> {
     @Override
     public PolyBezierCurve2D transform(AffineTransform2D trans) {
         PolyBezierCurve2D result = new PolyBezierCurve2D();
-        for (BezierCurve2D curve : curves)
+        for (CubicBezierCurve2D curve : curves)
             result.addCurve(curve.transform(trans));
         return result;
     }

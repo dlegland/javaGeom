@@ -23,8 +23,6 @@
 
 package math.geom2d.spline;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,18 +37,18 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * An extension of the QuadCurve2D curve provided in java.awt.geom, with support
  * for SmoothCurve2D and OrientedCurve2D.
  * 
+ * @deprecated replaced by QuadBezierCurve2D (0.7.1)
  * @author Legland
  */
-public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
-        SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
+@Deprecated
+public class QuadBezier2D extends QuadBezierCurve2D
+implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -106,223 +104,28 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
     // ===================================================================
     // methods specific to QuadBezier2D
 
-    public Point2D getControl() {
-        return new Point2D(ctrlx, ctrly);
-    }
-
-    /**
-     * Returns the matrix of parametric representation of the line. Result is a
-     * 2x3 array with coefficients:
-     * <p>
-     * <code>[ cx0  cx1 cx2] </code>
-     * <p>
-     * <code>[ cy0  cy1 cy2] </code>
-     * <p>
-     * Coefficients are from the parametric equation : <code>
-     * x(t) = cx0 + cx1*t + cx2*t^2 
-     * y(t) = cy0 + cy1*t + cy2*t^2
-     * </code>
-     */
-    public double[][] getParametric() {
-        double[][] tab = new double[2][3];
-        tab[0][0] = x1;
-        tab[0][1] = 2*ctrlx-2*x1;
-        tab[0][2] = x2-2*ctrlx+x1;
-
-        tab[1][0] = y1;
-        tab[1][1] = 2*ctrly-2*y1;
-        tab[1][2] = y2-2*ctrly+y1;
-        return tab;
-    }
-
-    // ===================================================================
-    // methods from OrientedCurve2D interface
-
-    /**
-     * Use winding angle of approximated polyline
-     * 
-     * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
-     */
-    public double getWindingAngle(java.awt.geom.Point2D point) {
-        return this.getAsPolyline(100).getWindingAngle(point);
-    }
-
-    /**
-     * return true if the point is 'inside' the domain bounded by the curve.
-     * Uses a polyline approximation.
-     * 
-     * @param pt a point in the plane
-     * @return true if the point is on the left side of the curve.
-     */
-    public boolean isInside(java.awt.geom.Point2D pt) {
-        return this.getAsPolyline(100).isInside(pt);
-    }
-
-    public double getSignedDistance(java.awt.geom.Point2D point) {
-        if (isInside(point))
-            return -getDistance(point.getX(), point.getY());
-        else
-            return getDistance(point.getX(), point.getY());
-    }
-
-    /**
-     * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
-     */
-    public double getSignedDistance(double x, double y) {
-        if (isInside(new Point2D(x, y)))
-            return -getDistance(x, y);
-        else
-            return getDistance(x, y);
-    }
-
-    // ===================================================================
-    // methods from SmoothCurve2D interface
-
-    public Vector2D getTangent(double t) {
-        double[][] c = getParametric();
-        double dx = c[0][1]+2*c[0][2]*t;
-        double dy = c[1][1]+2*c[1][2]*t;
-        return new Vector2D(dx, dy);
-    }
-
-    /**
-     * returns the curvature of the Curve.
-     */
-    public double getCurvature(double t) {
-        double[][] c = getParametric();
-        double xp = c[0][1]+2*c[0][2]*t;
-        double yp = c[1][1]+2*c[1][2]*t;
-        double xs = 2*c[0][2];
-        double ys = 2*c[1][2];
-
-        return (xp*ys-yp*xs)/Math.pow(Math.hypot(xp, yp), 3);
-    }
-
-    // ===================================================================
-    // methods from ContinousCurve2D interface
-
-    /**
-     * Creates a polyline with <code>n</code> line segments approximating the
-     * Bezier curve.
-     * 
-     * @param n number of line segments of polyline
-     * @return a polyline with <code>n</code> line segments.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-        for (int i = 0; i<n+1; i++)
-            points[i] = this.getPoint((double) i/(double) n);
-        return new Polyline2D(points);
-    }
-
+    @Override
     public Collection<? extends SmoothCurve2D> getSmoothPieces() {
         ArrayList<QuadBezier2D> list = new ArrayList<QuadBezier2D>(1);
         list.add(this);
         return list;
     }
 
-    /**
-     * The cubic curve is never closed.
-     */
-    public boolean isClosed() {
-        return false;
-    }
-
     // ===================================================================
     // methods from Curve2D interface
 
+    @Override
     public Collection<ContinuousCurve2D> getContinuousCurves() {
         ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
         list.add(this);
         return list;
     }
 
-    /**
-     * Returns 0, as Bezier curve is parametrized between 0 and 1.
-     */
-    public double getT0() {
-        return 0;
-    }
-
-    /**
-     * Returns 1, as Bezier curve is parametrized between 0 and 1.
-     */
-    public double getT1() {
-        return 1;
-    }
-
-    /**
-     * Use approximation, by replacing Bezier curve with a polyline.
-     * 
-     * @see math.geom2d.curve.Curve2D#getIntersections(math.geom2d.line.LinearShape2D)
-     */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
-        return this.getAsPolyline(100).getIntersections(line);
-    }
-
-    /**
-     * @see math.geom2d.curve.Curve2D#getPoint(double)
-     */
-    public Point2D getPoint(double t) {
-        t = Math.min(Math.max(t, 0), 1);
-        double[][] c = getParametric();
-        double x = c[0][0]+(c[0][1]+c[0][2]*t)*t;
-        double y = c[1][0]+(c[1][1]+c[1][2]*t)*t;
-        return new Point2D(x, y);
-    }
-
-    /**
-     * Get the first point of the curve.
-     * 
-     * @return the first point of the curve
-     */
-    public Point2D getFirstPoint() {
-        return new Point2D(this.x1, this.y1);
-    }
-
-    /**
-     * Get the last point of the curve.
-     * 
-     * @return the last point of the curve.
-     */
-    public Point2D getLastPoint() {
-        return new Point2D(this.x2, this.y2);
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        list.add(this.getFirstPoint());
-        list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-1)<Shape2D.ACCURACY)
-            return true;
-        return false;
-    }
-
-    /**
-     * Compute position by approximating cubic spline with a polyline.
-     */
-    public double getPosition(java.awt.geom.Point2D point) {
-        int N = 100;
-        return this.getAsPolyline(N).getPosition(point)/(N);
-    }
-
-    /**
-     * Compute position by approximating cubic spline with a polyline.
-     */
-    public double project(java.awt.geom.Point2D point) {
-        int N = 100;
-        return this.getAsPolyline(N).project(point)/(N);
-    }
 
     /**
      * Returns the bezier curve given by control points taken in reverse order.
      */
+    @Override
     public QuadBezier2D getReverseCurve() {
         return new QuadBezier2D(this.getP2(), this.getControl(), this.getP1());
     }
@@ -330,6 +133,7 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
     /**
      * Computes portion of BezierCurve. If t1<t0, returns null.
      */
+    @Override
     public QuadBezier2D getSubCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
@@ -353,36 +157,6 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
         return new QuadBezier2D(p0, control, p1);
     }
 
-    // ===================================================================
-    // methods from Shape2D interface
-
-    /**
-     * @see math.geom2d.Shape2D#getDistance(java.awt.geom.Point2D)
-     */
-    public double getDistance(java.awt.geom.Point2D p) {
-        return this.getDistance(p.getX(), p.getY());
-    }
-
-    /**
-     * Compute approximated distance, computed on a polyline.
-     * 
-     * @see math.geom2d.Shape2D#getDistance(double, double)
-     */
-    public double getDistance(double x, double y) {
-        return this.getAsPolyline(100).getDistance(x, y);
-    }
-
-    /**
-     * return true, a cubic Bezier Curve is always bounded.
-     */
-    public boolean isBounded() {
-        return true;
-    }
-
-    public boolean isEmpty() {
-        return false;
-    }
-
     /**
      * Clip the circle arc by a box. The result is an instance of
      * ContinuousOrientedCurveSet2D<QuadBezier2D>, which contains only
@@ -390,6 +164,7 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
      * is an instance of ContinuousOrientedCurveSet2D<QuadBezier2D>
      * which contains 0 curves.
      */
+    @Override
     public CurveSet2D<? extends QuadBezier2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
@@ -405,47 +180,16 @@ public class QuadBezier2D extends java.awt.geom.QuadCurve2D.Double implements
         return result;
     }
 
-    public Box2D getBoundingBox() {
-        java.awt.geom.Rectangle2D rect = this.getBounds2D();
-        return new Box2D(rect.getMinX(), rect.getMaxX(), rect.getMinY(), rect
-                .getMaxY());
-    }
-
     /**
      * Returns the Bezier Curve transformed by the given AffineTransform2D. This
      * is simply done by transforming control points of the curve.
      */
+    @Override
     public QuadBezier2D transform(AffineTransform2D trans) {
-        return new QuadBezier2D(trans.transform(this.getP1()), trans
-                .transform(this.getControl()), trans.transform(this.getP2()));
-    }
-
-    public void draw(Graphics2D g) {
-        g.draw(this);
-    }
-
-    public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        Point2D p2 = this.getControl();
-        Point2D p3 = this.getLastPoint();
-        path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-        return path;
-    }
-
-    public java.awt.geom.GeneralPath getGeneralPath() {
-        java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        Point2D p1 = this.getFirstPoint();
-        Point2D p2 = this.getControl();
-        Point2D p3 = this.getLastPoint();
-        path.moveTo(p1.getX(), p1.getY());
-        path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-        return path;
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
+        return new QuadBezier2D(
+        		trans.transform(this.getP1()),
+        		trans.transform(this.getControl()), 
+        		trans.transform(this.getP2()));
     }
 
     @Override

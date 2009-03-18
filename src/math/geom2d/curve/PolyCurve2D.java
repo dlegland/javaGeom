@@ -49,7 +49,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
     /** flag for indicating if the curve is closed or not (default is open) */
     protected boolean closed = false;
 
+    // ===================================================================
+    // Constructors
+
     public PolyCurve2D() {
+    }
+    
+    public PolyCurve2D(int n) {
+    	super(n);
     }
 
     public PolyCurve2D(T[] curves) {
@@ -70,8 +77,21 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         this.closed = closed;
     }
 
+    // ===================================================================
+    // Methids specific to PolyCurve2D
+
+    /**
+     * Toggle the 'closed' flag of the polycurve.
+     */
     public void setClosed(boolean b) {
         closed = b;
+    }
+
+    /**
+     * Returns true if the PolyCurve2D is closed.
+     */
+    public boolean isClosed() {
+        return closed;
     }
 
     public Polyline2D getAsPolyline(int n) {
@@ -82,10 +102,6 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         for (int i = 0; i<n; i++)
             points[i] = this.getPoint(i*dt+t0);
         return new Polyline2D(points);
-    }
-
-    public boolean isClosed() {
-        return closed;
     }
 
     /**
@@ -101,19 +117,22 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
     }
 
     /**
-     * return a collection containing only instances of SmoothCurve2D.
+     * Returns a collection containing only instances of SmoothCurve2D.
      * 
      * @param curve the curve to decompose
      * @return a collection of SmoothCurve2D
      */
     private final static Collection<SmoothCurve2D> getSmoothCurves(Curve2D curve) {
+    	// create array for result
         ArrayList<SmoothCurve2D> array = new ArrayList<SmoothCurve2D>();
 
+        // If curve is smooth, add it to the array and return.
         if (curve instanceof SmoothCurve2D) {
             array.add((SmoothCurve2D) curve);
             return array;
         }
 
+        // Otherwise, iterate on curves of the curve set
         if (curve instanceof CurveSet2D) {
             for (Curve2D curve2 : ((CurveSet2D<?>) curve).getCurves())
                 array.addAll(getSmoothCurves(curve2));
@@ -130,32 +149,44 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
 
     @Override
     public PolyCurve2D<? extends ContinuousCurve2D> getReverseCurve() {
-        ContinuousCurve2D[] curves2 = new ContinuousCurve2D[curves.size()];
-        int n = curves.size();
+    	// create array for storing reversed curves
+    	int n = curves.size();
+        ContinuousCurve2D[] curves2 = new ContinuousCurve2D[n];
+        
+        // reverse each curve
         for (int i = 0; i<n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
+        
+        // create the new reversed curve
         return new PolyCurve2D<ContinuousCurve2D>(curves2);
     }
 
     /**
-     * Return an instance of PolyCurve2D. If t0>t1 and curve is not closed,
+     * Returns an instance of PolyCurve2D. If t0>t1 and curve is not closed,
      * return a PolyCurve2D without curves inside.
      */
     @Override
     public PolyCurve2D<? extends ContinuousCurve2D> getSubCurve(double t0,
             double t1) {
-        CurveSet2D<?> set = super.getSubCurve(t0, t1);
-        PolyCurve2D<ContinuousCurve2D> subCurve = new PolyCurve2D<ContinuousCurve2D>();
-
+        // check limit conditions
         if (t1<t0&!this.isClosed())
-            return subCurve;
+            return new PolyCurve2D<ContinuousCurve2D>();
+
+        // Call the parent method
+        CurveSet2D<?> set = super.getSubCurve(t0, t1);
+        
+        // create result object, with appropriate numbe of curves
+        PolyCurve2D<ContinuousCurve2D> subCurve = 
+        	new PolyCurve2D<ContinuousCurve2D>(set.getCurveNumber());
+
+        // If a part is selected, the result is obviously open
         subCurve.setClosed(false);
 
-        // convert to PolySmoothCurve by adding curves.
-        Iterator<?> iter = set.getCurves().iterator();
-        while (iter.hasNext())
-            subCurve.addCurve((ContinuousCurve2D) iter.next());
+        // convert to PolySmoothCurve by adding curves, after class cast
+        for (Curve2D curve : set.getCurves())
+            subCurve.addCurve((ContinuousCurve2D) curve);
 
+        // return the resulting portion of curve
         return subCurve;
     }
 
