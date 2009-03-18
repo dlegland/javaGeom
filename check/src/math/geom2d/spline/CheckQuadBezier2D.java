@@ -20,7 +20,7 @@ public class CheckQuadBezier2D  extends JPanel{
 	Point2D p2 = new Point2D(300, 200);
 	Point2D[] points;
 	
-	QuadBezier2D bezier;
+	QuadBezierCurve2D bezier;
 	
 	public CheckQuadBezier2D(){
 		points = new Point2D[]{
@@ -29,7 +29,7 @@ public class CheckQuadBezier2D  extends JPanel{
 				new Point2D(300, 100)
 		};
 		
-		bezier = new QuadBezier2D(points);
+		bezier = new QuadBezierCurve2D(points);
 	}
 	
 	public void paintComponent(Graphics g){
@@ -44,7 +44,7 @@ public class CheckQuadBezier2D  extends JPanel{
 		for(Point2D point : points)
 			point.draw(g2, 5);
 		
-		QuadBezier2D bezier2 = bezier.getSubCurve(.5, .75);
+		QuadBezierCurve2D bezier2 = bezier.getSubCurve(.5, .75);
 		g2.setColor(Color.MAGENTA);
 		g2.setStroke(new BasicStroke(2.0f));
 		bezier2.draw(g2);

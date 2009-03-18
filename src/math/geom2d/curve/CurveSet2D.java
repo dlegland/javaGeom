@@ -56,7 +56,7 @@ public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>,
 Cloneable {
 
     /** The inner array of curves */
-    protected ArrayList<T> curves = new ArrayList<T>();
+    protected ArrayList<T> curves;
 
     // ===================================================================
     // static methods
@@ -125,6 +125,15 @@ Cloneable {
      * Empty constructor. Initializes an empty array of curves.
      */
     public CurveSet2D() {
+    	this.curves = new ArrayList<T>();
+    }
+
+    /**
+     * Empty constructor. Initializes an empty array of curves, 
+     * with a given size for allocating memory.
+     */
+    public CurveSet2D(int n) {
+    	this.curves = new ArrayList<T>(n);
     }
 
     /**
@@ -133,6 +142,7 @@ Cloneable {
      * @param curves the array of curves in the set
      */
     public CurveSet2D(T[] curves) {
+    	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
             this.addCurve(element);
     }
@@ -144,6 +154,7 @@ Cloneable {
      * @param curves the collection of curves to add to the set
      */
     public CurveSet2D(Collection<? extends T> curves) {
+    	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
     }
 
@@ -457,10 +468,15 @@ Cloneable {
     }
 
     public Curve2D getReverseCurve() {
-        Curve2D[] curves2 = new Curve2D[curves.size()];
-        int n = curves.size();
+    	int n = curves.size();
+        // create array of reversed curves
+        Curve2D[] curves2 = new Curve2D[n];
+        
+        // reverse each curve
         for (int i = 0; i<n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
+        
+        // create the reversed final curve
         return new CurveSet2D<Curve2D>(curves2);
     }
 
@@ -641,7 +657,10 @@ Cloneable {
      * transformed curves.
      */
     public CurveSet2D<? extends Curve2D> transform(AffineTransform2D trans) {
-        CurveSet2D<Curve2D> result = new CurveSet2D<Curve2D>();
+    	// Allocate array for result
+        CurveSet2D<Curve2D> result = new CurveSet2D<Curve2D>(curves.size());
+        
+        // add each transformed curve
         for (Curve2D curve : curves)
             result.addCurve(curve.transform(trans));
         return result;

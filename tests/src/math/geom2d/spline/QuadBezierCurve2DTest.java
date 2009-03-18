@@ -1,4 +1,4 @@
-/* File QuadBezier2DTest.java 
+/* File QuadBezierCurve2DTest.java 
  *
  * Project : geometry
  *
@@ -32,13 +32,13 @@ import junit.framework.TestCase;
 /**
  * @author Legland
  */
-public class QuadBezier2DTest extends TestCase {
+public class QuadBezierCurve2DTest extends TestCase {
 
 	/**
 	 * Constructor for QuadCurve2DTest.
 	 * @param arg0
 	 */
-	public QuadBezier2DTest(String arg0) {
+	public QuadBezierCurve2DTest(String arg0) {
 		super(arg0);
 	}
 
@@ -47,10 +47,10 @@ public class QuadBezier2DTest extends TestCase {
 		Point2D p2 = new Point2D(0, 1);
 		Point2D p3 = new Point2D(1, 1);
 		
-		QuadBezier2D bezier1 = new QuadBezier2D(p1, p2, p3);
+		QuadBezierCurve2D bezier1 = new QuadBezierCurve2D(p1, p2, p3);
 		double[][] tab = bezier1.getParametric();
 		
-		QuadBezier2D bezier2 = new QuadBezier2D(tab);
+		QuadBezierCurve2D bezier2 = new QuadBezierCurve2D(tab);
 		assertTrue(p1.equals(bezier2.getFirstPoint()));
 		assertTrue(p2.equals(bezier2.getControl()));
 		assertTrue(p3.equals(bezier2.getLastPoint()));
@@ -59,9 +59,9 @@ public class QuadBezier2DTest extends TestCase {
 		p2 = new Point2D(100, 200);
 		p3 = new Point2D(200, 100);
 		
-		bezier1 = new QuadBezier2D(p1, p2, p3);
+		bezier1 = new QuadBezierCurve2D(p1, p2, p3);
 		tab = bezier1.getParametric();		
-		bezier2 = new QuadBezier2D(tab);
+		bezier2 = new QuadBezierCurve2D(tab);
 		
 		assertTrue(p1.equals(bezier2.getFirstPoint()));
 		assertTrue(p2.equals(bezier2.getControl()));
@@ -77,7 +77,7 @@ public class QuadBezier2DTest extends TestCase {
 		Point2D p2 = new Point2D(0, 1);
 		Point2D p3 = new Point2D(1, 1);
 		
-		QuadBezier2D bezier1 = new QuadBezier2D(p1, p2, p3);
+		QuadBezierCurve2D bezier1 = new QuadBezierCurve2D(p1, p2, p3);
 		
 		assertEquals(bezier1.getPoint(0), p1);
 		assertEquals(bezier1.getPoint(1), p3);
@@ -88,7 +88,7 @@ public class QuadBezier2DTest extends TestCase {
 		Point2D p2 = new Point2D(0, 1);
 		Point2D p3 = new Point2D(1, 1);
 		
-		QuadBezier2D bezier1 = new QuadBezier2D(p1, p2, p3);
+		QuadBezierCurve2D bezier1 = new QuadBezierCurve2D(p1, p2, p3);
 		assertEquals(bezier1.getPosition(p1), 0, 1e-6);
 		assertEquals(bezier1.getPosition(p3), 1, 1e-6);		
 	}
@@ -98,14 +98,14 @@ public class QuadBezier2DTest extends TestCase {
 		Point2D p2 = new Point2D(0, 1);
 		Point2D p3 = new Point2D(1, 1);
 		
-		QuadBezier2D bezier1 = new QuadBezier2D(p1, p2, p3);
+		QuadBezierCurve2D bezier1 = new QuadBezierCurve2D(p1, p2, p3);
 
 		assertEquals(bezier1.getDistance(p1), 0, 1e-10);
 		assertEquals(bezier1.getDistance(p3), 0, 1e-10);
 	}
 	
 	public void testClone(){
-	    QuadBezier2D bezier = new QuadBezier2D(
+	    QuadBezierCurve2D bezier = new QuadBezierCurve2D(
 	            new Point2D(10, 20), new Point2D(30, 40), new Point2D(50, 60));
 	    
 	    assertTrue(bezier.equals(bezier.clone()));

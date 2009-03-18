@@ -22,7 +22,7 @@ public class CheckBezierCurve2D_getParallel  extends JPanel{
 	
 	public void paintComponent(Graphics g){
 		
-		BezierCurve2D bezier1 = new BezierCurve2D(p1, c1, c2, p2);
+		CubicBezierCurve2D bezier1 = new CubicBezierCurve2D(p1, c1, c2, p2);
 		
 		Graphics2D g2 = (Graphics2D) g;
 
@@ -31,7 +31,7 @@ public class CheckBezierCurve2D_getParallel  extends JPanel{
 		bezier1.draw(g2);
 		
 		
-//		BezierCurve2D bezier2 = bezier1.getParallel(20);
+//		CubicBezierCurve2D bezier2 = bezier1.getParallel(20);
 //		
 //		g2.setStroke(new BasicStroke());
 //		g2.draw(bezier2);
