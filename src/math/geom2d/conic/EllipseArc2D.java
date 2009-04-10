@@ -128,6 +128,18 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods specific to EllipseArc2D
 
+    public double getStartAngle() {
+    	return startAngle;
+    }
+    
+    public double getAngleExtent() {
+    	return angleExtent;
+    }
+    
+    public boolean isDirect() {
+    	return angleExtent>0;
+    }
+    
     public boolean containsAngle(double angle) {
         return Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle,
                 angleExtent>0);
