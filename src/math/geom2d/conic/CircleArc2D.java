@@ -152,6 +152,12 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
         return circle;
     }
 
+    public CircleArc2D getParallel (double dist) {
+    	return new CircleArc2D(circle.getCenter(), circle.getRadius()+dist,
+    			startAngle, angleExtent);
+    }
+    
+    
     /**
      * Change the center of the support circle.
      * 
