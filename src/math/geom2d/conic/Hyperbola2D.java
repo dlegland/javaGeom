@@ -70,7 +70,10 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     /** a flag indicating whether the hyperbola is direct or not */
     boolean           direct  = true;
 
+    /** The negative branch of the hyperbola */
     HyperbolaBranch2D branch1 = null;
+    
+    /** The positive branch of the hyperbola */
     HyperbolaBranch2D branch2 = null;
 
     /**
@@ -78,7 +81,8 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
      * conic type is Hyperbola, and hyperbola is centered.
      * 
      * @param coefs an array of double with at least 3 coefficients containing
-     *            coefficients for x^2, xy, and y^2 factors.
+     *            coefficients for x^2, xy, and y^2 factors. If the array is
+     *            longer, remaining coefficients are ignored.
      * @return the Hyperbola2D corresponding to given coefficients
      */
     public final static Hyperbola2D reduceCentered(double[] coefs) {
@@ -131,16 +135,16 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     }
 
     /**
-     * Transform an hyperbole, by supposing both the hyperbole is centered and
+     * Transform an hyperbola, by supposing both the hyperbola is centered and
      * the transform has no translation part.
      * 
-     * @param hyper an hyperbole
+     * @param hyper an hyperbola
      * @param trans an affine transform
-     * @return the transformed hyperbole, centered around origin
+     * @return the transformed hyperbola, centered around origin
      */
     public final static Hyperbola2D transformCentered(Hyperbola2D hyper,
             AffineTransform2D trans) {
-        // Extract inner parameter of ellipse
+        // Extract inner parameter of hyperbola
         double a = hyper.a;
         double b = hyper.b;
         double theta = hyper.theta;
@@ -153,16 +157,16 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         double cotSq = cot*cot;
         double sitSq = sit*sit;
 
-        // compute coefficients of the centered conis
+        // compute coefficients of the centered conic
         double A = cotSq/aSq-sitSq/bSq;
         double B = 2*cot*sit*(1/aSq+1/bSq);
         double C = sitSq/aSq-cotSq/bSq;
         double[] coefs = new double[] { A, B, C };
 
-        // Compute coefficients of the transformed conic
+        // Compute coefficients of the transformed conic, still centered
         double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
 
-        // reduce conic coefficients to Ellipse
+        // reduce conic coefficients to an hyperbola
         return Hyperbola2D.reduceCentered(coefs2);
     }
 
@@ -241,12 +245,106 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return line;
     }
 
-    // ===================================================================
-    // methods inherited from Conic2D interface
+    /**
+     * Returns the center of the Hyperbola. This point does not belong to the
+     * Hyperbola.
+     * @return the center point of the Hyperbola.
+     */
+    public Point2D getCenter() {
+        return new Point2D(xc, yc);
+    }
 
+    /** 
+     * Returns the angle made by the first direction vector with the horizontal
+     * axis.
+     */
     public double getAngle() {
         return theta;
     }
+
+    /** Returns a */
+    public double getLength1() {
+        return a;
+    }
+
+    /** Returns b */
+    public double getLength2() {
+        return b;
+    }
+
+    public boolean isDirect() {
+        return direct;
+    }
+
+    public Vector2D getVector1() {
+        return new Vector2D(Math.cos(theta), Math.sin(theta));
+    }
+
+    public Vector2D getVector2() {
+        return new Vector2D(-Math.sin(theta), Math.cos(theta));
+    }
+
+    /**
+     * Returns the focus located on the positive side of the main hyperbola
+     * axis.
+     */
+    public Point2D getFocus1() {
+        double c = Math.hypot(a, b);
+        return new Point2D(xc+c*Math.cos(theta), yc+c*Math.sin(theta));
+    }
+
+    /**
+     * Returns the focus located on the negative side of the main hyperbola
+     * axis.
+     */
+    public Point2D getFocus2() {
+        double c = Math.hypot(a, b);
+        return new Point2D(xc-c*Math.cos(theta), yc-c*Math.sin(theta));
+    }
+    
+    public HyperbolaBranch2D getPositiveBranch() {
+    	return branch2;
+    }
+
+    public HyperbolaBranch2D getNegativeBranch() {
+    	return branch1;
+    }
+    
+    public Collection<HyperbolaBranch2D> getBranches() {
+    	ArrayList<HyperbolaBranch2D> array = 
+    		new ArrayList<HyperbolaBranch2D>(2);
+    	array.add(branch1);
+    	array.add(branch2);
+    	return array;
+    }
+    
+    /**
+     * Returns the asymptotes of the hyperbola.
+     */
+    public Collection<StraightLine2D> getAsymptotes() {    	
+    	// Compute base direction vectors
+    	Vector2D v1 = new Vector2D(a, b);
+    	Vector2D v2 = new Vector2D(a, -b);
+    	
+    	// rotate by the angle of the hyperbola with Ox axis
+    	AffineTransform2D rot = AffineTransform2D.createRotation(this.theta);
+    	v1 = v1.transform(rot);
+    	v2 = v2.transform(rot);
+
+    	// init array for storing lines
+    	ArrayList<StraightLine2D> array = new ArrayList<StraightLine2D>(2);
+    	
+    	// add each asymptote
+    	Point2D center = this.getCenter();
+    	array.add(new StraightLine2D(center, v1));
+    	array.add(new StraightLine2D(center, v2));
+    	
+    	// return the array of asymptotes
+    	return array;
+    }
+
+    // ===================================================================
+    // methods inherited from Conic2D interface
 
     public double[] getConicCoefficients() {
         // scaling coefficients
@@ -286,10 +384,6 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return new double[] { a, b, c, d, e, f };
     }
 
-    public Point2D getCenter() {
-        return new Point2D(xc, yc);
-    }
-
     public Conic2D.Type getConicType() {
         return Conic2D.Type.HYPERBOLA;
     }
@@ -298,52 +392,9 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return Math.hypot(1, b*b/a/a);
     }
 
-    public Point2D getFocus1() {
-        double c = Math.hypot(a, b);
-        return new Point2D(c*Math.cos(theta)+xc, c*Math.sin(theta)+yc);
-    }
-
-    public Point2D getFocus2() {
-        double c = Math.hypot(a, b);
-        return new Point2D(-c*Math.cos(theta)+xc, -c*Math.sin(theta)+yc);
-    }
-
-    /** Return a */
-    public double getLength1() {
-        return a;
-    }
-
-    /** Return b */
-    public double getLength2() {
-        return b;
-    }
-
-    public Vector2D getVector1() {
-        return new Vector2D(Math.cos(theta), Math.sin(theta));
-    }
-
-    public Vector2D getVector2() {
-        return new Vector2D(-Math.sin(theta), Math.cos(theta));
-    }
-
-    public boolean isDirect() {
-        return direct;
-    }
-
-    @Override
-    public boolean contains(java.awt.geom.Point2D point) {
-        return this.contains(point.getX(), point.getY());
-    }
-
-    @Override
-    public boolean contains(double x, double y) {
-        Point2D point = toLocal(new Point2D(x, y));
-        double xa = point.getX()/a;
-        double yb = point.getY()/b;
-        double res = xa*xa-yb*yb-1;
-        // double res = x*x*b*b - y*y*a*a - a*a*b*b;
-        return Math.abs(res)<1e-6;
-    }
+    
+    // ===================================================================
+    // methods implementing the Curve2D interface
 
     @Override
     public Hyperbola2D getReverseCurve() {
@@ -442,6 +493,24 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return points;
     }
 
+    // ===================================================================
+    // methods implementing the Shape2D interface
+
+    @Override
+    public boolean contains(java.awt.geom.Point2D point) {
+        return this.contains(point.getX(), point.getY());
+    }
+
+    @Override
+    public boolean contains(double x, double y) {
+        Point2D point = toLocal(new Point2D(x, y));
+        double xa = point.getX()/a;
+        double yb = point.getY()/b;
+        double res = xa*xa-yb*yb-1;
+        // double res = x*x*b*b - y*y*a*a - a*a*b*b;
+        return Math.abs(res)<1e-6;
+    }
+
     /**
      * Transforms this Hyperbola by an affine transform.
      */
@@ -451,6 +520,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         Point2D center = this.getCenter().transform(trans);
         result.xc = center.getX();
         result.yc = center.getY();
+        //TODO: check convention for transform with indirect transform, see Curve2D.
         result.direct = this.direct^!trans.isDirect();
         return result;
     }
@@ -469,8 +539,10 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         if (!(obj instanceof Hyperbola2D))
             return false;
 
+        // Cast to hyperbola
         Hyperbola2D that = (Hyperbola2D) obj;
 
+        // check if each parameter is the same
         double eps = 1e-6;
         if (Math.abs(that.xc-this.xc)>eps)
             return false;
@@ -485,6 +557,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         if (this.direct!=that.direct)
             return false;
 
+        // same parameters, then same parabola
         return true;
     }
 

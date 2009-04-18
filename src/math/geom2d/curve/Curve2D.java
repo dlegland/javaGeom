@@ -178,6 +178,8 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Transforms the curve by an affine transform. The result is an instance of
      * Curve2D.
      */
+    //TODO: specifies orientation of transformed curve. Should we invert curve
+    // when transform is not direct ?
     public abstract Curve2D transform(AffineTransform2D trans);
 
     /**
