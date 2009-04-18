@@ -1,6 +1,12 @@
 Changes in javaGeom library
 
-javaGeom-0.7.0 (2008-02-17, rev. 192)
+javaGeom-0.7.1 (2009.??.??, rev. ??)
+
+- added accessors in Ellipse2D
+
+
+
+javaGeom-0.7.0 (2009-02-17, rev. 192)
 
 New features
 - Added Convex hull by Graham scan

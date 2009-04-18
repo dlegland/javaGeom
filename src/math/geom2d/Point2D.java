@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointShape2D;
 
 /**
@@ -376,14 +377,14 @@ implements PointShape2D, Cloneable {
     // Methods implementing Shape2D interface
 
     /**
-     * Compute the distance between this and the point <code>point</code>.
+     * Computes the distance between this and the point <code>point</code>.
      */
     public double getDistance(java.awt.geom.Point2D point) {
         return getDistance(point.getX(), point.getY());
     }
 
     /**
-     * Compute the distance between current point and point with coordinate
+     * Computes the distance between current point and point with coordinate
      * <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for
      * better robustness than simple square root.
      */
@@ -414,35 +415,40 @@ implements PointShape2D, Cloneable {
     }
 
     /**
-     * return true if the two points are equal.
+     * Returns true if the two points are equal.
      */
     public boolean contains(double x, double y) {
         return this.equals(new Point2D(x, y));
     }
 
     /**
-     * return true if the two points are equal.
+     * Returns true if the two points are equal.
      */
     public boolean contains(java.awt.geom.Point2D p) {
         return this.equals(p);
     }
 
     /**
-     * Returns either the point itself, or null, depending on
+     * Returns a PointSet2D, containing 0 or 1 point, depending on
      * whether the point lies inside the specified box.
      */
-    public Point2D clip(Box2D box) {
-        //TODO: return a PointSet2D ?
+    public math.geom2d.point.PointSet2D clip(Box2D box) {
+    	// init result array
+    	math.geom2d.point.PointSet2D set = new PointArray2D(0);
+    	
+    	// return empty array if point is clipped
         if (x<box.getMinX())
-            return null;
+            return set;
         if (y<box.getMinY())
-            return null;
+            return set;
         if (x>box.getMaxX())
-            return null;
+            return set;
         if (y>box.getMaxY())
-            return null;
+            return set;
 
-        return this;
+        // return an array with the point
+        set.addPoint(this);
+        return set;
     }
 
     /**

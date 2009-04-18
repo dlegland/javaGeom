@@ -28,9 +28,28 @@ import math.geom2d.polygon.Polyline2D;
 public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D,
 Cloneable {
 
+    // ===================================================================
+    // inner fields
+
+	/** The parent hyperbola */
     Hyperbola2D hyperbola = null;
+    
+    /** 
+     * This field is true if it crosses the positive axis, in the basis of the
+     * parent hyperbola.
+     */
     boolean     positive  = true;
 
+    
+    // ===================================================================
+    // Constructors
+
+    /**
+     * Generic constructor, using a parent Hyperbola, and a boolean to
+     * specifies if the branch is the right one (crossing the Ox axis on
+     * positive side, b true), or the left one (crossing the Oy axis on the
+     * negative side, b false).
+     */
     public HyperbolaBranch2D(Hyperbola2D hyperbola, boolean b) {
         this.hyperbola = hyperbola;
         this.positive = b;
@@ -244,19 +263,19 @@ Cloneable {
     }
 
     /**
-     * returns an instance of HyprbolaBranchArc2D initialized with
+     * Returns an instance of HyprbolaBranchArc2D initialized with
      * <code>this</code>.
      */
     public HyperbolaBranchArc2D getSubCurve(double t0, double t1) {
         return new HyperbolaBranchArc2D(this, t0, t1);
     }
 
-    /** returns Double.NEGATIVE_INFINITY. */
+    /** Returns Double.NEGATIVE_INFINITY. */
     public double getT0() {
         return Double.NEGATIVE_INFINITY;
     }
 
-    /** returns Double.POSITIVE_INFINITY. */
+    /** Returns Double.POSITIVE_INFINITY. */
     public double getT1() {
         return Double.POSITIVE_INFINITY;
     }
@@ -287,10 +306,10 @@ Cloneable {
     }
 
     /**
-     * Clip the circle arc by a box. The result is an instance of CurveSet2D<HyperbolaBranchArc2D>,
-     * which contains only instances of HyperbolaBranchArc2D. If the conic arc
-     * is not clipped, the result is an instance of CurveSet2D<HyperbolaBranchArc2D>
-     * which contains 0 curves.
+     * Clips the curve with a box. The result is an instance of
+     * CurveSet2D, which contains only instances of HyperbolaBranchArc2D. 
+     * If the curve does not intersect the boundary of the box,
+     * the result is an instance of CurveSet2D which contains 0 curves.
      */
     public CurveSet2D<? extends HyperbolaBranchArc2D> clip(Box2D box) {
         // Clip the curve
@@ -317,18 +336,29 @@ Cloneable {
         return projected.getDistance(x, y);
     }
 
-    /** return false, as an hyperbola branch is never bounded. */
+    /** Returns false, as an hyperbola branch is never bounded. */
     public boolean isBounded() {
         return false;
     }
 
+    /**
+     * Returns false, as an hyperbola branch is never empty.
+     */
     public boolean isEmpty() {
         return false;
     }
 
     public HyperbolaBranch2D transform(AffineTransform2D trans) {
-        return new HyperbolaBranch2D(this.hyperbola.transform(trans),
-                this.positive);
+    	// The transform the base hypebola, and a point of the branch
+    	Hyperbola2D hyperbola = this.hyperbola.transform(trans);
+    	Point2D base = this.getPoint(0).transform(trans);
+    	
+    	// compute distance of the transformed point to each branch
+    	double d1 = hyperbola.getPositiveBranch().getDistance(base);
+    	double d2 = hyperbola.getNegativeBranch().getDistance(base);
+    	
+    	// choose the 'positivity' of the branch from the closest branch
+        return new HyperbolaBranch2D(hyperbola, d1<d2);
     }
 
     public boolean contains(java.awt.geom.Point2D point) {

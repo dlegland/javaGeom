@@ -282,6 +282,7 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
     }
 
     public HyperbolaBranchArc2D transform(AffineTransform2D trans) {
+    	// transform the parent branch
         HyperbolaBranch2D branch2 = branch.transform(trans);
 
         // Compute position of end points on the transformed parabola
@@ -291,7 +292,12 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
                 : branch2.project(this.getLastPoint().transform(trans));
 
         // Compute the new arc
-        return new HyperbolaBranchArc2D(branch2, startPos, endPos);
+        if(startPos>endPos){
+        	return new HyperbolaBranchArc2D(branch2.getReverseCurve(), 
+        			endPos, startPos);
+        } else {
+        	return new HyperbolaBranchArc2D(branch2, startPos, endPos);
+        }
     }
 
     public boolean contains(java.awt.geom.Point2D p) {
