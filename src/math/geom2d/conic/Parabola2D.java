@@ -202,16 +202,42 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
     }
 
     public double[] getConicCoefficients() {
-        // computation shortcuts
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        double cot2 = cot*cot;
-        double sit2 = sit*sit;
+//        // computation shortcuts
+//        double cot = Math.cos(theta);
+//        double sit = Math.sin(theta);
+//        double cot2 = cot*cot;
+//        double sit2 = sit*sit;
+//        // Compute new coefficients after rotation of parabola located at
+//        // (xv,yv) by a rotation of angle theta around origin.
+//        return new double[] {
+//        		a*cot2, -2*a*cot*sit, a*sit2, 
+//        		-2*a*xv*cot-sit, 2*a*xv*sit-cot, a*xv*xv+yv };
 
-        // Compute new coefficients after rotation of parabola located at
-        // (xv,yv) by a rotation of angle theta around origin.
-        return new double[] { a*cot2, -2*a*cot*sit, a*sit2, -2*a*xv*cot-sit,
-                2*a*xv*sit-cot, a*xv*xv+yv };
+    	// The transformation matrix from base parabola y=x^2
+    	AffineTransform2D transform =
+    		AffineTransform2D.createRotation(theta).chain(
+    				AffineTransform2D.createTranslation(xv, yv));
+        	
+    	// Extract coefficients of inverse transform
+        double[][] coefs = transform.invert().getAffineMatrix();
+        double m00 = coefs[0][0];
+        double m01 = coefs[0][1];
+        double m02 = coefs[0][2];
+        double m10 = coefs[1][0];
+        double m11 = coefs[1][1];
+        double m12 = coefs[1][2];
+        
+        // Default conic coefficients are A=a, F=1.
+        // Compute result of transformed coefficients, which simplifies in:
+        double A = a*m00*m00;
+        double B = 2*a*m00*m01;
+        double C = a*m01*m01;
+        double D = 2*a*m00*m02 - m10;
+        double E = 2*a*m01*m02 - m11;
+        double F = a*m02*m02 - m12;
+        
+        // arrange into array
+        return new double[]{A, B, C, D, E, F};
     }
 
     /**
@@ -532,7 +558,8 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
 
     public Box2D getBoundingBox() {
         // TODO: manage parabolas with horizontal or vertical orientations
-        return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
+        return new Box2D(
+        		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
@@ -542,6 +569,7 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
      * direct or indirect.
      */
     public Parabola2D transform(AffineTransform2D trans) {
+    	//TODO: check if transform work also for non-motion transforms...
         Point2D vertex = this.getVertex().transform(trans);
         Point2D focus = this.getFocus().transform(trans);
         double a = 1/(4.0*Point2D.getDistance(vertex, focus));

@@ -74,9 +74,9 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * direction of <code>point2<\code>.
      */
     public Ray2D(Point2D point1, Point2D point2) {
-        this(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2
-                .getY()
-                -point1.getY());
+        this(point1.getX(), point1.getY(), 
+        		point2.getX()-point1.getX(),
+        		point2.getY()-point1.getY());
     }
 
     /**

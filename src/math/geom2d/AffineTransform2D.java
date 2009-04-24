@@ -176,8 +176,9 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         }
 
         // init coef of the new AffineTransform.
-        return new AffineTransform2D(cot, -sit, (1-cot)*cx+sit*cy, sit, cot,
-                (1-cot)*cy-sit*cx);
+        return new AffineTransform2D(
+        		cot, -sit, (1-cot)*cx+sit*cy, 
+        		sit, cot,  (1-cot)*cy-sit*cx);
     }
 
     /**

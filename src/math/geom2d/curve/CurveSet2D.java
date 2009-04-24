@@ -28,15 +28,12 @@ import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.line.StraightLine2D;
 
 /**
  * <p>
@@ -577,62 +574,18 @@ Cloneable {
     }
 
     /**
-     * Clip a curve, and return a CurveSet2D. If the curve is totally outside
+     * Clips a curve, and return a CurveSet2D. If the curve is totally outside
      * the box, return a CurveSet2D with 0 curves inside. If the curve is
      * totally inside the box, return a CurveSet2D with only one curve, which is
      * the original curve.
      */
     public CurveSet2D<? extends Curve2D> clip(Box2D box) {
-
-        // create array of points
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
-
-        // extract intersections with the box boundary
-        for (StraightLine2D edge : box.getClippingLines())
-            points.addAll(this.getIntersections(edge));
-
-        // convert list to point array, sorted wrt to their position on the
-        // curve
-        SortedSet<Double> set = new TreeSet<Double>();
-        for (Point2D p : points)
-            set.add(new java.lang.Double(this.getPosition(p)));
-
-        // Create CurveSet2D for storing the result
-        CurveSet2D<Curve2D> res = new CurveSet2D<Curve2D>();
-
-        // extract first point of the curve
-        Point2D point1 = this.getFirstPoint();
-
-        // if no intersection point, the curve is totally either inside or
-        // outside the box
-        if (set.size()==0) {
-            if (box.contains(point1))
-                res.addCurve(this);
-            return res;
-        }
-
-        double pos1, pos2;
-        Iterator<java.lang.Double> iter = set.iterator();
-
-        // different behavior depending if first point lies inside the box
-        if (this.contains(point1)&&!box.getBoundary().contains(point1))
-            res.addCurve(this.getSubCurve(this.getT0(), iter.next()));
-
-        // add the portions of curve between couples of intersections
-        while (iter.hasNext()) {
-            pos1 = iter.next().doubleValue();
-            if (iter.hasNext())
-                pos2 = iter.next().doubleValue();
-            else
-                pos2 = this.getT1();
-            res.addCurve(this.getSubCurve(pos1, pos2));
-        }
-
-        return res;
+    	// Simply calls the generic method in Curve2DUtils
+    	return Curve2DUtils.clipCurveSet(this, box);
     }
 
     /**
-     * Return bounding box for the CurveSet2D.
+     * Returns bounding box for the CurveSet2D.
      */
     public Box2D getBoundingBox() {
         double xmin = Double.MAX_VALUE;
@@ -653,7 +606,7 @@ Cloneable {
     }
 
     /**
-     * Transform each curve, and build a new CurveSet2D with the set of
+     * Transforms each curve, and build a new CurveSet2D with the set of
      * transformed curves.
      */
     public CurveSet2D<? extends Curve2D> transform(AffineTransform2D trans) {
@@ -667,8 +620,12 @@ Cloneable {
     }
 
     public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> continuousCurves = new ArrayList<ContinuousCurve2D>();
+    	// create array for storing result
+        ArrayList<ContinuousCurve2D> continuousCurves = 
+        	new ArrayList<ContinuousCurve2D>();
 
+        // Iterate on curves, and add either the curve itself, or the set of
+        // contiunous curves making the curve
         for (Curve2D curve : curves) {
             if (curve instanceof ContinuousCurve2D) {
                 continuousCurves.add((ContinuousCurve2D) curve);
@@ -701,12 +658,12 @@ Cloneable {
         // create new path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 
+        // check case of empty curve set
         if (curves.size()==0)
             return path;
 
-        Point2D point;
-
         // move to the first point of the first curves
+        Point2D point;
         for (ContinuousCurve2D curve : this.getContinuousCurves()) {
             point = curve.getFirstPoint();
             path.moveTo((float) point.getX(), (float) point.getY());
