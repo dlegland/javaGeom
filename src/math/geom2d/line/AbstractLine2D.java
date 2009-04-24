@@ -600,10 +600,10 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
     }
 
     /**
-     * Returns false.
+     * Returns false, unless both dx and dy equal 0.
      */
     public boolean isEmpty() {
-        return false;
+        return Math.hypot(dx, dy)<Shape2D.ACCURACY;
     }
 
     public abstract AbstractLine2D transform(AffineTransform2D transform);

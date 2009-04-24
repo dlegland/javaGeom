@@ -2,8 +2,12 @@ Changes in javaGeom library
 
 javaGeom-0.7.1 (2009.??.??, rev. ??)
 
+- added static builders for PolyBezierCurve2D
 - added accessors in Ellipse2D
-
+- added Hyperbola2D.getAsymptotes()
+- fixed bug in HyperbolaBranch2D
+- fixed clipping of Empty CurveSet2D
+- Point2D.clip now returns an instance of PointSet2D
 
 
 javaGeom-0.7.0 (2009-02-17, rev. 192)

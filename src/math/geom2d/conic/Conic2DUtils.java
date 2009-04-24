@@ -31,8 +31,8 @@ public class Conic2DUtils {
 
     public final static Conic2D reduceConic(double[] coefs) {
         if (coefs.length<6) {
-            System.err
-                    .println("Conic2DUtils.reduceConic: must provide 6 coefficients");
+            System.err.println(
+            		"Conic2DUtils.reduceConic: must provide 6 coefficients");
             return null;
         }
         boolean debug = false;
@@ -72,6 +72,10 @@ public class Conic2DUtils {
                 theta0 = Math.PI/4; // conic symmetric wrt diagonal
             else
                 theta0 = Angle2D.formatAngle(Math.atan2(b, a-c)/2);
+            
+            if(debug)
+            	System.out.println("conic main angle: " + 
+            			Math.toDegrees(theta0));
 
             // computation shortcuts
             double cot = Math.cos(theta0);
@@ -92,8 +96,9 @@ public class Conic2DUtils {
 
         // small control on the value of b1
         if (Math.abs(b1)>eps) {
-            System.err
-                    .println("Conic2DUtils.reduceConic: conic was not correctly transformed");
+            System.err.println(
+            		"Conic2DUtils.reduceConic: " + 
+            		"conic was not correctly transformed");
             return null;
         }
 
@@ -111,15 +116,15 @@ public class Conic2DUtils {
             if (debug)
                 System.out.println("horizontal parabola");
 
-            // Check degenerate case d=1
+            // Check degenerate case d=0
             if (Math.abs(d1)<eps) {
                 double delta = e1*e1-4*c1*f1;
                 if (delta>=0) {
                     // find the 2 roots
                     double ys = -e1/2.0/c1;
                     double dist = Math.sqrt(delta)/2.0/c1;
-                    Point2D center = new Point2D(0, ys)
-                            .transform(AffineTransform2D.createRotation(theta0));
+                    Point2D center = new Point2D(0, ys).transform(
+                            AffineTransform2D.createRotation(theta0));
                     return new ConicTwoLines2D(center, dist, theta0);
                 } else
                     return new EmptyConic2D(coefs);
@@ -130,10 +135,10 @@ public class Conic2DUtils {
             double e2 = -e1/d1;
             double f2 = -f1/d1;
 
-            // vertex of parabola
-            double xs = -e2/c2;
-            double ys = -(e2*e2-c2*f2)/c2;
-
+            // vertex of the parabola
+            double xs = -(e2*e2-4*c2*f2)/(4*c2);
+            double ys = -e2*.5/c2;
+            
             // create and return result
             return new Parabola2D(xs, ys, c2, theta0-Math.PI/2);
 
@@ -142,15 +147,15 @@ public class Conic2DUtils {
             if (debug)
                 System.out.println("vertical parabola");
 
-            // Check degenerate case d=1
+            // Check degenerate case d=0
             if (Math.abs(e1)<eps) {
                 double delta = d1*d1-4*a1*f1;
                 if (delta>=0) {
                     // find the 2 roots
                     double xs = -d1/2.0/a1;
                     double dist = Math.sqrt(delta)/2.0/a1;
-                    Point2D center = new Point2D(0, xs)
-                            .transform(AffineTransform2D.createRotation(theta0));
+                    Point2D center = new Point2D(0, xs).transform(
+                    		AffineTransform2D.createRotation(theta0));
                     return new ConicTwoLines2D(center, dist, theta0);
                 } else
                     return new EmptyConic2D(coefs);
@@ -162,9 +167,9 @@ public class Conic2DUtils {
             double f2 = -f1/e1;
 
             // vertex of parabola
-            double xs = -d2/a2;
-            double ys = -(d2*d2-a2*f2)/a2;
-
+            double xs = -d2*.5/a2;
+            double ys = -(d2*d2-4*a2*f2)/(4*a2);
+            
             // create and return result
             return new Parabola2D(xs, ys, a2, theta0);
         }
@@ -181,7 +186,8 @@ public class Conic2DUtils {
         double bt = num/c1;
 
         if (at<0&&bt<0) {
-            System.err.println("Conic2DUtils.reduceConic(): found A<0 and C<0");
+            System.err.println(
+            		"Conic2DUtils.reduceConic(): found A<0 and C<0");
             return null;
         }
 
@@ -215,8 +221,8 @@ public class Conic2DUtils {
 
     /**
      * Transforms a conic centered around the origin, by dropping the
-     * translation part of the transform. The array must be contains at least 3
-     * elements. If it contains 3 elements, the 3 remaining elements are
+     * translation part of the transform. The array must be contains at least
+     * 3 elements. If it contains 6 elements, the 3 remaining elements are
      * supposed to be 0, 0, and -1 in that order.
      * 
      * @param coefs an array of double with at least 3 coefficients

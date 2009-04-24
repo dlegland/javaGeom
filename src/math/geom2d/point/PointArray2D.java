@@ -184,31 +184,39 @@ public class PointArray2D implements PointSet2D, Cloneable {
      * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
      */
     public PointArray2D clip(Box2D box) {
-        PointArray2D res = new PointArray2D();
+    	// allocate memory for result
+        PointArray2D res = new PointArray2D(points.size());
 
-        for (Shape2D point : points) {
-            point = point.clip(box);
-            if (point instanceof java.awt.geom.Point2D)
-                if (point instanceof Point2D)
-                    res.points.add((Point2D) point);
-                else
-                    res.points.add(new Point2D((java.awt.geom.Point2D) point));
+        // select only points inside of box
+        for (Point2D point : points) {
+        	if(box.contains(point)) {
+        		res.addPoint(point);
+        	}
         }
+        
+        // use array the right size
+        res.points.trimToSize();
+        
+        // return result
         return res;
     }
 
     public Box2D getBoundingBox() {
+    	// init with max values in each direction
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double xmax = Double.MIN_VALUE;
         double ymax = Double.MIN_VALUE;
 
+        // update max values with each point
         for (Point2D point : points) {
             xmin = Math.min(xmin, point.getX());
             ymin = Math.min(ymin, point.getY());
             xmax = Math.max(xmax, point.getX());
             ymax = Math.max(ymax, point.getY());
         }
+        
+        // create the bounding box
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -218,7 +226,7 @@ public class PointArray2D implements PointSet2D, Cloneable {
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
     public PointArray2D transform(AffineTransform2D trans) {
-        PointArray2D res = new PointArray2D();
+        PointArray2D res = new PointArray2D(points.size());
 
         for (Point2D point : points)
             res.addPoint(point.transform(trans));

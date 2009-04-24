@@ -28,6 +28,7 @@ package math.geom2d.curve;
 import junit.framework.TestCase;
 import java.util.*;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.conic.CircleArc2D;
@@ -155,6 +156,14 @@ public class CurveSet2DTest extends TestCase {
 		assertTrue(set.isSingular(2));
 		assertTrue(!set.isSingular(2.5));
 		assertTrue(set.isSingular(3));
+	}
+	
+	public void testClipEmptyCurveSet() {
+		Box2D box = new Box2D(-10, 10, -10, 10);
+		
+		CurveSet2D<Curve2D> set1 = new CurveSet2D<Curve2D>();
+		CurveSet2D<?> clipped = set1.clip(box);
+		assertTrue(clipped.isEmpty());
 	}
 
 }
