@@ -36,7 +36,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -46,8 +46,6 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Polyline2D;
-import math.geom2d.polygon.Ring2D;
 
 // Imports
 
@@ -56,8 +54,8 @@ import math.geom2d.polygon.Ring2D;
  * and the lengths of the two axis. No convention is taken about lengths of
  * semiaxis : the second semi axis can be greater than the first one.
  */
-public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
-        ContinuousBoundary2D, Cloneable {
+public class Ellipse2D extends AbstractSmoothCurve2D
+implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -780,35 +778,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     // methods of ContinuousCurve2D interface
 
     /**
-     * Returns as a closed polyline with <code>n</code> line segments.
-     * 
-     * @param n the number of line segments
-     * @return a closed polyline with <code>n</code> line segments.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        if (this.direct)
-            for (int i = 0; i<n; i++)
-                points[i] = this.getPoint(i*dt+t0);
-        else
-            for (int i = 0; i<n; i++)
-                points[i] = this.getPoint(-(double) i*dt+t0);
-        return new Ring2D(points);
-    }
-
-    /**
-     * Returns a set of smooth curves, which contains only the ellipse.
-     */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<Ellipse2D> list = new ArrayList<Ellipse2D>(1);
-        list.add(this);
-        return list;
-    }
-
-    /**
      * return true, as an ellipse is always closed.
      */
     public boolean isClosed() {
@@ -862,17 +831,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
      */
     public Point2D getLastPoint() {
         return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        return new ArrayList<Point2D>(0);
-    }
-
-    /**
-     * Always returns false, as an ellipse does not have any singular point.
-     */
-    public boolean isSingular(double pos) {
-        return false;
     }
 
     public double getPosition(java.awt.geom.Point2D point) {
@@ -940,12 +898,6 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
      */
     public Ellipse2D getReverseCurve() {
         return new Ellipse2D(xc, yc, r1, r2, theta, !direct);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**
@@ -1182,7 +1134,7 @@ public class Ellipse2D implements SmoothOrientedCurve2D, Conic2D,
     @Override
     public String toString() {
         return String.format(
-                "%f %f %f %f %f", xc, yc, r1, r2, Math.toDegrees(theta));
+                "%f %f %f %f %f°", xc, yc, r1, r2, Math.toDegrees(theta));
     }
 
     // /**

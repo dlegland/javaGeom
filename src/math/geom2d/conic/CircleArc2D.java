@@ -347,13 +347,6 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     // ===================================================================
     // methods from interface ContinuousCurve2D
 
-    @Override
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
-        list.add(this);
-        return list;
-    }
-
     /**
      * a circle arc is never closed by definition.
      */
@@ -387,26 +380,6 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     public Point2D getPoint(double t) {
         t = this.positionToAngle(t);
         return circle.getPoint(t);
-    }
-
-    /**
-     * Get the first point of the curve.
-     * 
-     * @return the first point of the curve
-     */
-    @Override
-    public Point2D getFirstPoint() {
-        return circle.getPoint(startAngle);
-    }
-
-    /**
-     * Get the last point of the curve.
-     * 
-     * @return the last point of the curve.
-     */
-    @Override
-    public Point2D getLastPoint() {
-        return circle.getPoint(startAngle+angleExtent);
     }
 
     /**
@@ -751,19 +724,6 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     //		
     // return path;
     // }
-
-    /**
-     * @deprecated 
-     */
-    @Deprecated
-    public java.awt.geom.GeneralPath getGeneralPath() {
-        // Creates the path
-        java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        Point2D point = getFirstPoint();
-        path.moveTo((float) point.getX(), (float) point.getY());
-        this.appendPath(path);
-        return path;
-    }
 
     /**
      * Two circle arc are equal if the have same center, same radius, same

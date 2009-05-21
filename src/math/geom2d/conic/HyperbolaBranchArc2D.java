@@ -12,14 +12,13 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * An arc of hyperbola, defined from the parent hyperbola branch, and two
@@ -27,8 +26,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
-        SmoothCurve2D, Cloneable {
+public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D
+implements ContinuousOrientedCurve2D, SmoothCurve2D, Cloneable {
 
     /** The supporting hyperbola branch */
     HyperbolaBranch2D branch = null;
@@ -89,72 +88,13 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
         return this.getAsPolyline(60).appendPath(path);
     }
 
-    public Polyline2D getAsPolyline(int n) {
-        if (!this.isBounded())
-            throw new UnboundedShapeException();
-        Point2D[] points = new Point2D[n+1];
-
-        double dt = (t1-t0)/n;
-        points[0] = this.getPoint(t0);
-        for (int i = 1; i<n; i++)
-            points[i] = this.getPoint((i)*dt+t0);
-        points[n] = this.getPoint(t1);
-
-        return new Polyline2D(points);
-    }
-
-    /**
-     * returns an instance of ArrayList<SmoothCurve2D> containing only
-     * <code>this</code>.
-     */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<SmoothCurve2D> list = new ArrayList<SmoothCurve2D>();
-        list.add(this);
-        return list;
-    }
-
-    /** return false. */
+    /** Returns false. */
     public boolean isClosed() {
         return false;
     }
 
     // ===================================================================
     // methods inherited from Curve2D interface
-
-    /**
-     * If t0 equals minus infinity, throws an UnboundedShapeException.
-     */
-    public Point2D getFirstPoint() {
-        if (t0==Double.NEGATIVE_INFINITY)
-            throw new UnboundedShapeException();
-        return this.getPoint(t0);
-    }
-
-    /**
-     * If t1 equals infinity, throws an UnboundedShapeException.
-     */
-    public Point2D getLastPoint() {
-        if (t1==Double.POSITIVE_INFINITY)
-            throw new UnboundedShapeException();
-        return this.getPoint(t1);
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        if (t0!=Double.NEGATIVE_INFINITY)
-            list.add(this.getFirstPoint());
-        if (t1!=Double.POSITIVE_INFINITY)
-            list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos-t0)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-t1)<Shape2D.ACCURACY)
-            return true;
-        return false;
-    }
 
     public Collection<Point2D> getIntersections(LinearShape2D line) {
         Collection<Point2D> inters0 = this.branch.getIntersections(line);
@@ -200,12 +140,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
                 hyper.b, hyper.theta, !hyper.direct);
         return new HyperbolaBranchArc2D(new HyperbolaBranch2D(hyper2,
                 branch.positive), -t1, -t0);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**
@@ -316,7 +250,6 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
     }
 
     public java.awt.geom.GeneralPath getGeneralPath() {
-
         if (!this.isBounded())
             throw new UnboundedShapeException();
         return this.getAsPolyline(100).getGeneralPath();
@@ -326,7 +259,9 @@ public class HyperbolaBranchArc2D implements ContinuousOrientedCurve2D,
      * @see math.geom2d.curve.Curve2D#getAsAWTShape()
      */
     public Shape getAsAWTShape() {
-        throw new UnboundedShapeException();
+        if (!this.isBounded())
+            throw new UnboundedShapeException();
+        return this.getAsPolyline(100).getAsAWTShape();
     }
 
     public void draw(Graphics2D g2) {

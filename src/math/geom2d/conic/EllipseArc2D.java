@@ -37,7 +37,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -46,7 +46,6 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * An arc of ellipse. It is defined by a supporting ellipse, a starting angle,
@@ -55,7 +54,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
+public class EllipseArc2D extends AbstractSmoothCurve2D
+implements SmoothOrientedCurve2D, Cloneable {
 
     /** The supporting ellipse */
     protected Ellipse2D ellipse;
@@ -128,6 +128,10 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods specific to EllipseArc2D
 
+    public Ellipse2D getSupportingEllipse() {
+    	return ellipse;
+    }
+    
     public double getStartAngle() {
     	return startAngle;
     }
@@ -145,7 +149,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
                 angleExtent>0);
     }
 
-    /** Get angle associated to given position */
+    /** Returns the angle associated with the given position */
     public double getAngle(double position) {
         if (position<0)
             position = 0;
@@ -162,7 +166,7 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.ContinuousCurve2D#getViewAngle(math.geom2d.Point2D)
+     * @see math.geom2d.OrientedCurve2D#getViewAngle(math.geom2d.Point2D)
      */
     public double getWindingAngle(java.awt.geom.Point2D point) {
         Point2D p1 = getPoint(0);
@@ -289,34 +293,9 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods from interface ContinuousCurve2D
 
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-
-        double dt = this.angleExtent/n;
-        if (this.angleExtent>0)
-            for (int i = 0; i<n+1; i++)
-                points[i] = this.getPoint((i)*dt+startAngle);
-        else
-            for (int i = 0; i<n+1; i++)
-                points[i] = this.getPoint(-((double) i)*dt+startAngle);
-
-        return new Polyline2D(points);
-    }
-
     /** Returns false, as an ellipse arc is never closed. */
     public boolean isClosed() {
         return false;
-    }
-
-    /**
-     * Returns a SmoothCurve array containing this ellipse arc.
-     * 
-     * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
-     */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<EllipseArc2D> list = new ArrayList<EllipseArc2D>(1);
-        list.add(this);
-        return list;
     }
 
     // ====================================================================
@@ -402,39 +381,6 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
         // return angle;
     }
 
-    /**
-     * Get the first point of the curve.
-     * 
-     * @return the first point of the curve
-     */
-    public Point2D getFirstPoint() {
-        return this.getPoint(0);
-    }
-
-    /**
-     * Get the last point of the curve.
-     * 
-     * @return the last point of the curve.
-     */
-    public Point2D getLastPoint() {
-        return this.getPoint(Math.abs(angleExtent));
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        list.add(this.getFirstPoint());
-        list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-Math.abs(angleExtent))<Shape2D.ACCURACY)
-            return true;
-        return false;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -458,12 +404,6 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
     public EllipseArc2D getReverseCurve() {
         return new EllipseArc2D(ellipse, Angle2D.formatAngle(startAngle
                 +angleExtent), -angleExtent);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**
@@ -635,10 +575,6 @@ public class EllipseArc2D implements SmoothOrientedCurve2D, Cloneable {
         return path;
     }
 
-    /**
-     * @deprecated 
-     */
-    @Deprecated
     public java.awt.geom.GeneralPath getGeneralPath() {
         // create new path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

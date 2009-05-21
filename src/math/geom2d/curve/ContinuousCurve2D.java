@@ -54,21 +54,31 @@ public interface ContinuousCurve2D extends Curve2D {
     /**
      * constant for curves topologically equivalent to a closed edge. This is
      * the case for line segment, conic finite arcs, circle or ellipse arcs,
-     * Bezize Curves...
+     * Bezier Curves...
+     * @deprecated
      */
+	@Deprecated
     public final static int CLOSED_EDGE = 1;
 
     /**
      * Constant for curves topologically equivalent to an open edge. For
      * example, straight lines, parabolas, or hyperbolas.
+     * @deprecated
      */
+	@Deprecated
     public final static int OPEN_EDGE   = 2;
 
     /**
      * Constant for curves topologically equivalent to a circle. This includes
      * circles, ellipses, simple polygon boundaries.
+     * @deprecated
      */
+	@Deprecated
     public final static int LOOP        = 3;
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
     public final static int CIRCLE      = 3;
 
     // ===================================================================
@@ -88,7 +98,7 @@ public interface ContinuousCurve2D extends Curve2D {
     /**
      * Returns an approximation of the curve as a polyline with <code>n</code>
      * line segments. If the curve is closed, the method should return an
-     * instance of ClosedPolyline2D.
+     * instance of Ring2D.
      * 
      * @param n the number of line segments
      * @return a polyline with <code>n</code> line segments.
