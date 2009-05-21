@@ -28,8 +28,6 @@ package math.geom2d.line;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -37,7 +35,6 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.polygon.Polyline2D;
 
 // Imports
 
@@ -168,10 +165,6 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 
-    public Polyline2D getAsPolyline(int n) {
-        throw new UnboundedShapeException();
-    }
-
     /** Throws an infiniteShapeException */
     public GeneralPath appendPath(GeneralPath path) {
         throw new UnboundedShapeException();
@@ -185,28 +178,9 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the Curve2D interface
 
-    /** Throws an infiniteShapeException */
-    public Point2D getFirstPoint() {
-        throw new UnboundedShapeException();
-    }
-
-    public Point2D getLastPoint() {
-        return new Point2D(x0, y0);
-    }
-
     public Point2D getPoint(double t) {
         t = Math.min(t, 0);
         return new Point2D(x0+t*dx, y0+t*dy);
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(1);
-        list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        return Math.abs(pos)<Shape2D.ACCURACY;
     }
 
     public double getT0() {

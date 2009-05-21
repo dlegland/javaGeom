@@ -35,6 +35,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -60,8 +61,8 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
  * rays and straight lines.
  * <p>
  */
-public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
-        LinearShape2D {
+public abstract class AbstractLine2D extends AbstractSmoothCurve2D
+implements SmoothOrientedCurve2D, LinearShape2D {
 
     // ===================================================================
     // constants
@@ -140,14 +141,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
 
     // ===================================================================
     // Methods specific to Line shapes
-
-    public Point2D getOrigin() {
-        return new Point2D(x0, y0);
-    }
-
-    public Vector2D getVector() {
-        return new Vector2D(dx, dy);
-    }
 
     public boolean isColinear(LinearShape2D linear) {
         // test if the two lines are parallel
@@ -250,14 +243,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
         return tab;
     }
 
-    /**
-     * Gets Angle with axis (O,i), counted counter-clockwise. Result is given
-     * between 0 and 2*pi.
-     */
-    public double getHorizontalAngle() {
-        return (Math.atan2(dy, dx)+2*Math.PI)%(2*Math.PI);
-    }
-
     public double getPositionOnLine(java.awt.geom.Point2D point) {
         return getPositionOnLine(point.getX(), point.getY());
     }
@@ -271,56 +256,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
      */
     public double getPositionOnLine(double x, double y) {
         return ((y-y0)*dy+(x-x0)*dx)/(dx*dx+dy*dy);
-    }
-
-    /**
-     * Return the intersection points of the curve with the specified line. The
-     * length of the result array is the number of intersection points.
-     */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
-
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
-
-        Point2D point = getIntersection(line);
-        if (point==null)
-            return points;
-
-        // return array with the intersection point.
-        points.add(point);
-        return points;
-    }
-
-    /**
-     * Returns the unique intersection with a linear shape. If the intersection
-     * doesn't exist (parallel lines), returns null.
-     */
-    public Point2D getIntersection(LinearShape2D line) {
-        Vector2D vect = line.getVector();
-        double dx2 = vect.getX();
-        double dy2 = vect.getY();
-
-        // test if two lines are parallel
-        if (Math.abs(dx*dy2-dy*dx2)<Shape2D.ACCURACY)
-            return null;
-
-        // compute position on the line
-        Point2D origin = line.getOrigin();
-        double x2 = origin.getX();
-        double y2 = origin.getY();
-        double t = ((y0-y2)*dx2-(x0-x2)*dy2)/(dx*dy2-dy*dx2);
-
-        // compute position of intersection point
-        Point2D point = new Point2D(x0+t*dx, y0+t*dy);
-
-        // check if point is inside the bounds of the obejct. This test
-        // is left to derivated classes.
-        if (contains(point)&&line.contains(point))
-            return point;
-        return null;
-    }
-
-    public StraightLine2D getSupportingLine() {
-        return new StraightLine2D(this);
     }
 
     /**
@@ -403,6 +338,59 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
         return new StraightLine2D(point, -this.dy, this.dx);
     }
 
+    // ===================================================================
+    // Methods implementing the LinearShape2D interface
+
+    public Point2D getOrigin() {
+        return new Point2D(x0, y0);
+    }
+
+    public Vector2D getVector() {
+        return new Vector2D(dx, dy);
+    }
+
+    /**
+     * Gets Angle with axis (O,i), counted counter-clockwise. Result is given
+     * between 0 and 2*pi.
+     */
+    public double getHorizontalAngle() {
+        return (Math.atan2(dy, dx)+2*Math.PI)%(2*Math.PI);
+    }
+
+    /**
+     * Returns the unique intersection with a linear shape. If the intersection
+     * doesn't exist (parallel lines), returns null.
+     */
+    public Point2D getIntersection(LinearShape2D line) {
+        Vector2D vect = line.getVector();
+        double dx2 = vect.getX();
+        double dy2 = vect.getY();
+
+        // test if two lines are parallel
+        if (Math.abs(dx*dy2-dy*dx2)<Shape2D.ACCURACY)
+            return null;
+
+        // compute position on the line
+        Point2D origin = line.getOrigin();
+        double x2 = origin.getX();
+        double y2 = origin.getY();
+        double t = ((y0-y2)*dx2-(x0-x2)*dy2)/(dx*dy2-dy*dx2);
+
+        // compute position of intersection point
+        Point2D point = new Point2D(x0+t*dx, y0+t*dy);
+
+        // check if point is inside the bounds of the obejct. This test
+        // is left to derivated classes.
+        if (contains(point)&&line.contains(point))
+            return point;
+        return null;
+    }
+
+    public StraightLine2D getSupportingLine() {
+        return new StraightLine2D(this);
+    }
+
+    
     // ===================================================================
     // methods of OrientedCurve2D interface
 
@@ -495,17 +483,25 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
         return false;
     }
 
-    /**
-     * Returns a set of smooth curves. Actually, return the curve itself.
-     */
-    public Collection<? extends SmoothOrientedCurve2D> getSmoothPieces() {
-        ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
-        list.add(this);
-        return list;
-    }
-
     // ===================================================================
     // methods implementing the Curve2D interface
+
+    /**
+     * Return the intersection points of the curve with the specified line. The
+     * length of the result array is the number of intersection points.
+     */
+    public Collection<Point2D> getIntersections(LinearShape2D line) {
+
+        ArrayList<Point2D> points = new ArrayList<Point2D>();
+
+        Point2D point = getIntersection(line);
+        if (point==null)
+            return points;
+
+        // return array with the intersection point.
+        points.add(point);
+        return points;
+    }
 
     /**
      * Gets the position of the point on the line arc. If point belongs to the
@@ -562,12 +558,6 @@ public abstract class AbstractLine2D implements SmoothOrientedCurve2D,
         else
             return new LineSegment2D(this.getPoint(t0), this.getPoint(t1));
 
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     // ===================================================================

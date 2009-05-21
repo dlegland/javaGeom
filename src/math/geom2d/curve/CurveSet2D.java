@@ -397,13 +397,23 @@ Cloneable {
         return getLastCurve().getLastPoint();
     }
 
+    /**
+     * Computes the set of singular points as the set of singular points
+     * of each curve, plus the extremities of each curve.
+     * Each point is referenced only once.
+     */
     public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>();
-        for (Curve2D curve : curves)
+    	ArrayList<Point2D> points = new ArrayList<Point2D>();
+        for (Curve2D curve : curves){
             for (Point2D point : curve.getSingularPoints())
-                if (!list.contains(point))
-                    list.add(point);
-        return list;
+                if (!points.contains(point))
+                	points.add(point);
+            if(!Double.isInfinite(curve.getT0()))
+            	points.add(curve.getFirstPoint());
+            if(!Double.isInfinite(curve.getT1()))
+            	points.add(curve.getLastPoint());
+        }
+        return points;
     }
 
     public boolean isSingular(double pos) {
@@ -625,7 +635,7 @@ Cloneable {
         	new ArrayList<ContinuousCurve2D>();
 
         // Iterate on curves, and add either the curve itself, or the set of
-        // contiunous curves making the curve
+        // continuous curves making the curve
         for (Curve2D curve : curves) {
             if (curve instanceof ContinuousCurve2D) {
                 continuousCurves.add((ContinuousCurve2D) curve);
@@ -682,7 +692,8 @@ Cloneable {
     }
 
     public void draw(Graphics2D g2) {
-        g2.draw(this.getGeneralPath());
+    	for(Curve2D curve : curves)
+    		curve.draw(g2);
     }
 
     // ===================================================================

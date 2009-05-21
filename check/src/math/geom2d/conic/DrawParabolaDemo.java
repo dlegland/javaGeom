@@ -39,9 +39,8 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.polygon.Polyline2D;
-import math.geom2d.polygon.Ring2D;
 
 
 public class DrawParabolaDemo extends JPanel{
@@ -69,10 +68,10 @@ public class DrawParabolaDemo extends JPanel{
 	
 		ParabolaArc2D arc = new ParabolaArc2D(parabola, -30, 30);
 		
-		Polyline2D polyline = arc.getAsPolyline(10);
 		
 		g2.setColor(Color.YELLOW);
-		new GenericDomain2D(new Ring2D(polyline.getVertices())).fill(g2);
+		new GenericDomain2D(new BoundaryPolyCurve2D<ParabolaArc2D>(
+				new ParabolaArc2D[]{arc})).fill(g2);
 
 		g2.setColor(Color.BLUE);
 		box.getBoundary().draw(g2);
@@ -109,6 +108,5 @@ public class DrawParabolaDemo extends JPanel{
 		frame.setContentPane(panel);
 		frame.setSize(500, 400);
 		frame.setVisible(true);
-		
 	}
 }

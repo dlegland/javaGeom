@@ -38,7 +38,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -49,7 +49,6 @@ import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * A parabola, defined by its vertex, its orientation, and its pedal.
@@ -67,8 +66,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
-        ContinuousBoundary2D, Cloneable {
+public class Parabola2D extends AbstractSmoothCurve2D
+implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
 
     /** Coordinate of the vertex */
     protected double xv    = 0, yv = 0;
@@ -320,22 +319,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
     // methods implementing the ContinuousCurve2D interface
 
     /**
-     * Returns the polyline of the parabola arc from t=-100 to t=100.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        return new ParabolaArc2D(this, -100, 100).getAsPolyline(n);
-    }
-
-    /**
-     * Returns a collection containing only this parabola.
-     */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<Parabola2D> list = new ArrayList<Parabola2D>(1);
-        list.add(this);
-        return list;
-    }
-
-    /**
      * Returns false, as a parabola is an open curve.
      */
     public boolean isClosed() {
@@ -366,30 +349,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
         point = AffineTransform2D.createRotation(theta).transform(point);
         point = AffineTransform2D.createTranslation(xv, yv).transform(point);
         return point;
-    }
-
-    /** Throws an infiniteShapeException */
-    public Point2D getFirstPoint() {
-        throw new UnboundedShapeException();
-    }
-
-    /** Throws an infiniteShapeException */
-    public Point2D getLastPoint() {
-        throw new UnboundedShapeException();
-    }
-
-    /**
-     * Returns an empty collection of singular points.
-     */
-    public Collection<Point2D> getSingularPoints() {
-        return new ArrayList<Point2D>(0);
-    }
-
-    /**
-     * Always returns false, as a parabola does not have any singular point.
-     */
-    public boolean isSingular(double pos) {
-        return false;
     }
 
     /**
@@ -473,12 +432,6 @@ public class Parabola2D implements SmoothOrientedCurve2D, Conic2D,
      */
     public Parabola2D getReverseCurve() {
         return new Parabola2D(xv, yv, -a, Angle2D.formatAngle(theta+Math.PI));
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**

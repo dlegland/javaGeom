@@ -11,7 +11,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -20,13 +20,12 @@ import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * Branch of an Hyperbola2D.
  */
-public class HyperbolaBranch2D implements ContinuousBoundary2D, SmoothCurve2D,
-Cloneable {
+public class HyperbolaBranch2D extends AbstractSmoothCurve2D
+implements ContinuousBoundary2D, SmoothCurve2D, Cloneable {
 
     // ===================================================================
     // inner fields
@@ -163,26 +162,9 @@ Cloneable {
     // ===================================================================
     // methods inherited from ContinuousCurve2D interface
 
-    /**
-     * returns an instance of ArrayList<SmoothCurve2D> containing only
-     * <code>this</code>.
-     */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<SmoothCurve2D> list = new ArrayList<SmoothCurve2D>();
-        list.add(this);
-        return list;
-    }
-
     /** Return false, by definition of Hyperbola branch */
     public boolean isClosed() {
         return false;
-    }
-
-    /**
-     * Returns a hyperbola arc with -100<t<100 transformed into polyline.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        return new HyperbolaBranchArc2D(this, -100, 100).getAsPolyline(n);
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
@@ -192,28 +174,6 @@ Cloneable {
     
     // ===================================================================
     // methods inherited from Curve2D interface
-
-    /** Throws an UnboundedShapeException */
-    public Point2D getFirstPoint() {
-        throw new UnboundedShapeException();
-    }
-
-    /** Throws an UnboundedShapeException */
-    public Point2D getLastPoint() {
-        throw new UnboundedShapeException();
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        return new ArrayList<Point2D>(0);
-    }
-
-    /**
-     * Always returns false, as an hyperbola branch does not have any singular
-     * point.
-     */
-    public boolean isSingular(double pos) {
-        return false;
-    }
 
     public Point2D getPoint(double t) {
         if (Double.isInfinite(t))
@@ -254,12 +214,6 @@ Cloneable {
         Hyperbola2D hyper2 = new Hyperbola2D(hyperbola.xc, hyperbola.yc,
                 hyperbola.a, hyperbola.b, hyperbola.theta, !hyperbola.direct);
         return new HyperbolaBranch2D(hyper2, positive);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**

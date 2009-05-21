@@ -27,21 +27,18 @@ package math.geom2d.line;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.OrientedCurve2D;
-import math.geom2d.polygon.Polyline2D;
 
 // Imports
 
@@ -68,8 +65,8 @@ import math.geom2d.polygon.Polyline2D;
  * processing. Moreover, as inner point fields are public, it is not as safe
  * as LineSegment2D.
  */
-public class Line2D implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, 
-Cloneable {
+public class Line2D extends AbstractSmoothCurve2D
+implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -210,6 +207,29 @@ Cloneable {
         return new LineSegment2D(p1, p2).isParallel(line);
     }
 
+    public double[][] getParametric() {
+        return new LineSegment2D(p1, p2).getParametric();
+    }
+
+    public double[] getCartesianEquation() {
+        return new LineSegment2D(p1, p2).getCartesianEquation();
+    }
+
+    public double[] getPolarCoefficients() {
+        return new LineSegment2D(p1, p2).getPolarCoefficients();
+    }
+
+    public double[] getSignedPolarCoefficients() {
+        return new LineSegment2D(p1, p2).getSignedPolarCoefficients();
+    }
+
+    // ===================================================================
+    // methods implementing the LinearShape2D interface
+    
+    public double getHorizontalAngle() {
+        return new LineSegment2D(p1, p2).getHorizontalAngle();
+    }
+  
     /* (non-Javadoc)
      * @see math.geom2d.line.LinearShape2D#getIntersection(math.geom2d.line.LinearShape2D)
      */
@@ -238,26 +258,6 @@ Cloneable {
         return new Vector2D(p1, p2);
     }
 
-    public double[][] getParametric() {
-        return new LineSegment2D(p1, p2).getParametric();
-    }
-
-    public double[] getCartesianEquation() {
-        return new LineSegment2D(p1, p2).getCartesianEquation();
-    }
-
-    public double[] getPolarCoefficients() {
-        return new LineSegment2D(p1, p2).getPolarCoefficients();
-    }
-
-    public double[] getSignedPolarCoefficients() {
-        return new LineSegment2D(p1, p2).getSignedPolarCoefficients();
-    }
-
-    public double getHorizontalAngle() {
-        return new LineSegment2D(p1, p2).getHorizontalAngle();
-    }
-
     
     // ===================================================================
     // methods implementing the OrientedCurve2D interface
@@ -274,15 +274,6 @@ Cloneable {
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
     
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
-     */
-    public Collection<? extends Line2D> getSmoothPieces() {
-        ArrayList<Line2D> array = new ArrayList<Line2D>(1);
-        array.add(this);
-        return array;
-    }
-
     /**
      * Returns false.
      * @see math.geom2d.curve.ContinuousCurve2D#isClosed()
@@ -379,16 +370,6 @@ Cloneable {
         return 0.0;
     }
 
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        for (int i = 0; i<n; i++)
-            points[i] = this.getPoint(i*dt+t0);
-        return new Polyline2D(points);
-    }
-
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
@@ -432,6 +413,7 @@ Cloneable {
      * 
      * @return the first point of the curve
      */
+    @Override
     public Point2D getFirstPoint() {
         return p1;
     }
@@ -441,25 +423,9 @@ Cloneable {
      * 
      * @return the last point of the curve.
      */
+    @Override
     public Point2D getLastPoint() {
         return p2;
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        list.add(p1);
-        list.add(p2);
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Double.isInfinite(pos))
-            return false;
-        if (Math.abs(pos)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-1)<Shape2D.ACCURACY)
-            return true;
-        return false;
     }
 
     /**
@@ -486,12 +452,6 @@ Cloneable {
      */
     public Line2D getReverseCurve() {
         return new Line2D(p2, p1);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**

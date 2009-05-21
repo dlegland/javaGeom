@@ -27,8 +27,6 @@ package math.geom2d.line;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
@@ -36,7 +34,6 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * Straight Edge defined by two points.
@@ -209,15 +206,6 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
         return super.getSignedDistance(x, y)>0 ? d : -d;
     }
 
-    // ===================================================================
-    // Methods implementing the ContinuousCurve2D interface
-
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-        for (int i = 0; i<n; i++)
-            points[i] = this.getPoint((double) i/(double) n);
-        return new Polyline2D(points);
-    }
 
     // ===================================================================
     // Methods implementing the Curve2D interface
@@ -257,21 +245,6 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     public Point2D getPoint(double t) {
         t = Math.min(Math.max(t, 0), 1);
         return new Point2D(x0+dx*t, y0+dy*t);
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        list.add(this.getFirstPoint());
-        list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-1)<Shape2D.ACCURACY)
-            return true;
-        return false;
     }
 
     /**

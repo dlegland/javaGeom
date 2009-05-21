@@ -38,7 +38,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -46,7 +46,6 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * An arc of parabola, defined by a parent parabola, and two limits for the
@@ -54,14 +53,13 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
+public class ParabolaArc2D extends AbstractSmoothCurve2D
+implements SmoothOrientedCurve2D, Cloneable {
 
     protected Parabola2D parabola = new Parabola2D();
 
     protected double     t0       = -10;
     protected double     t1       = 10;
-
-    private boolean      debug    = false;
 
     public ParabolaArc2D(Parabola2D parabola, double t0, double t1) {
         this.parabola = parabola;
@@ -71,31 +69,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
 
     // ==========================================================
     // methods specific to ParabolaArc2D
-
-    /**
-     * Returns the polyline approximating this parabola arc, by using
-     * <code>N</code> line segments. If Parabola arc is not bounded (i.e. one
-     * of the bounds of the parametrization domain is infinite), parametriztion
-     * domain is bounded by an arbitrary value.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-
-        // avoid the cases where t0 and/or t1 is infinite
-        double t0 = Math.max(this.t0, -1000);
-        double t1 = Math.min(this.t1, 1000);
-        if (debug)
-            System.out.println("theta="+Math.toDegrees(parabola.theta)+" t0="
-                    +t0+" t1="+t1);
-
-        double dt = (t1-t0)/n;
-        points[0] = this.getPoint(t0);
-        for (int i = 1; i<n; i++)
-            points[i] = this.getPoint((i)*dt+t0);
-        points[n] = this.getPoint(t1);
-
-        return new Polyline2D(points);
-    }
 
     public Parabola2D getParabola() {
         return this.parabola;
@@ -190,12 +163,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
     // ==========================================================
     // methods implementing the ContinuousCurve2D interface
 
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<ParabolaArc2D> list = new ArrayList<ParabolaArc2D>(1);
-        list.add(this);
-        return list;
-    }
-
     /** Returns false, by definition of a parabola arc */
     public boolean isClosed() {
         return false;
@@ -221,37 +188,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
     public Point2D getPoint(double t) {
         t = Math.min(Math.max(t, t0), t1);
         return parabola.getPoint(t);
-    }
-
-    /**
-     * return the first point of the parabola arc.
-     */
-    public Point2D getFirstPoint() {
-        return this.getPoint(t0);
-    }
-
-    /**
-     * return the last point of the parabola arc.
-     */
-    public Point2D getLastPoint() {
-        return this.getPoint(t1);
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        if (t0!=Double.NEGATIVE_INFINITY)
-            list.add(this.getFirstPoint());
-        if (t1!=Double.POSITIVE_INFINITY)
-            list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos-t0)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-t1)<Shape2D.ACCURACY)
-            return true;
-        return false;
     }
 
     public double getPosition(java.awt.geom.Point2D point) {
@@ -288,12 +224,6 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
      */
     public ParabolaArc2D getReverseCurve() {
         return new ParabolaArc2D(this.parabola.getReverseCurve(), -t1, -t0);
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     public ParabolaArc2D getSubCurve(double t0, double t1) {
@@ -399,9 +329,26 @@ public class ParabolaArc2D implements SmoothOrientedCurve2D, Cloneable {
     // Drawing methods
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
+    	// Check curve is bounded
         if (!this.isBounded())
             throw new UnboundedShapeException();
-        return this.getAsPolyline(32).appendPath(path);
+
+        // Compute position and tangent at extremities
+        Point2D p1 = this.getFirstPoint();
+        Point2D p2 = this.getLastPoint();
+        Vector2D v1 = this.getTangent(this.getT0());
+        Vector2D v2 = this.getTangent(this.getT1());
+        
+        // Compute tangent lines at extremities
+        StraightLine2D line1 = new StraightLine2D(p1, v1);
+        StraightLine2D line2 = new StraightLine2D(p2, v2);
+        
+        // Compute intersection point of tangent lines
+        Point2D pc = line1.getIntersection(line2);
+        
+        // Use quadratic curve to represent (exactly) the parabola arc
+        path.quadTo(pc.getX(), pc.getY(), p2.getX(), p2.getY());
+        return path;
     }
 
     /* (non-Javadoc)

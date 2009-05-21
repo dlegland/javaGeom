@@ -28,18 +28,14 @@ package math.geom2d.line;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
-import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
  * LineArc2D is a generic class to represent edges, straight lines, and rays.
@@ -178,22 +174,6 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
     }
 
     // ===================================================================
-    // methods of ContinuousCurve2D interface
-
-    public Polyline2D getAsPolyline(int n) {
-        if (!this.isBounded())
-            throw new UnboundedShapeException();
-
-        Point2D[] points = new Point2D[n+1];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        for (int i = 0; i<n; i++)
-            points[i] = this.getPoint(i*dt+t0);
-        return new Polyline2D(points);
-    }
-
-    // ===================================================================
     // methods of Curve2D interface
 
     /**
@@ -222,56 +202,6 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
             throw new UnboundedShapeException();
         else
             return new Point2D(x0+dx*t, y0+dy*t);
-    }
-
-    /**
-     * Return the first point of the edge. In the case of a line, or a ray
-     * starting from -infinity, returns Point2D.INFINITY_POINT.
-     * 
-     * @return the last point of the arc
-     */
-    public Point2D getFirstPoint() {
-        if (!Double.isInfinite(t0))
-            return new Point2D(x0+t0*dx, y0+t0*dy);
-        else
-            throw new UnboundedShapeException();
-    }
-
-    /**
-     * Return the last point of the edge. In the case of a line, or a ray ending
-     * at infinity, returns Point2D.INFINITY_POINT.
-     * 
-     * @return the last point of the arc
-     */
-    public Point2D getLastPoint() {
-        if (!Double.isInfinite(t1))
-            return new Point2D(x0+t1*dx, y0+t1*dy);
-        else
-            throw new UnboundedShapeException();
-    }
-
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        if (t0!=Double.NEGATIVE_INFINITY)
-            list.add(this.getFirstPoint());
-        if (t1!=Double.POSITIVE_INFINITY)
-            list.add(this.getLastPoint());
-        return list;
-    }
-
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos-t0)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-t1)<Shape2D.ACCURACY)
-            return true;
-        return false;
-    }
-
-    @Override
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
     /**

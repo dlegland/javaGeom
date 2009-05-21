@@ -26,9 +26,9 @@
 
 package math.geom2d.curve;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -244,35 +244,32 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         // create new path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 
+        // avoid degenerate case
         if (curves.size()==0)
             return path;
 
-        // extract the first curve
-        Iterator<T> iter = curves.iterator();
-        ContinuousCurve2D curve = iter.next();
-
         // move to the first point
-        Point2D point;
-        point = curve.getFirstPoint();
+        Point2D point = this.getFirstPoint();
         path.moveTo((float) point.getX(), (float) point.getY());
 
         // add the path of the first curve
-        path = curve.appendPath(path);
-
-        // add the paths of the other curves
-        while (iter.hasNext())
-            path = iter.next().appendPath(path);
+        for(ContinuousCurve2D curve : curves)
+        	path = curve.appendPath(path);
 
         // eventually closes the curve
         if (closed) {
-            point = this.getFirstPoint();
-            path.lineTo((float) point.getX(), (float) point.getY());
+            path.closePath();
         }
 
         // return the final path
         return path;
     }
     
+    @Override
+     public void draw(Graphics2D g2) {
+    	g2.draw(this.getGeneralPath());
+    }
+
     @Override
     public boolean equals(Object obj) {
         // check class, and cast type

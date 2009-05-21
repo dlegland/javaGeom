@@ -488,8 +488,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         Point2D p2 = this.getControl1();
         Point2D p3 = this.getControl2();
         Point2D p4 = this.getLastPoint();
-        path.curveTo(p2.getX(), p2.getY(), p3.getX(), p3.getY(), p4.getX(), p4
-                .getY());
+        path.curveTo(
+        		p2.getX(), p2.getY(), 
+        		p3.getX(), p3.getY(), 
+        		p4.getX(), p4.getY());
         return path;
     }
 
