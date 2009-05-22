@@ -26,8 +26,6 @@
 
 package math.geom2d.polygon;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,7 +34,8 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -52,7 +51,8 @@ import math.geom2d.line.StraightLine2D;
  * 
  * @author dlegland
  */
-public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
+public class Polyline2D extends AbstractContinuousCurve2D
+implements ContinuousOrientedCurve2D, Cloneable {
 
     protected ArrayList<Point2D> points = new ArrayList<Point2D>();
 
@@ -110,7 +110,15 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
         points.remove(point);
     }
 
+    /**
+     * @deprecated replaced by clearVertices()
+     */
+    @Deprecated
     public void clearPoints() {
+        points.clear();
+    }
+
+    public void clearVertices() {
         points.clear();
     }
 
@@ -158,6 +166,11 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
         return edges;
     }
 
+    public LineSegment2D getEdge(int i) {
+    	int n = points.size();
+    	return new LineSegment2D(points.get(i), points.get((i+1)%n));
+    }
+    
     public LineSegment2D getFirstEdge() {
         if (points.size()<2)
             return null;
@@ -174,15 +187,23 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // Methods inherited from ContinuousCurve2D
 
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        for (int i = 0; i<n; i++)
-            points[i] = this.getPoint(i*dt+t0);
-        return new Polyline2D(points);
-    }
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 */
+	public Vector2D getLeftTangent(double t) {
+		int index = (int) Math.floor(t);
+		if(Math.abs(t-index)<Shape2D.ACCURACY)
+			index--;
+		return this.getEdge(index).getTangent(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 */
+	public Vector2D getRightTangent(double t) {
+		int index = (int) Math.ceil(t);
+		return this.getEdge(index).getTangent(0);
+	}
 
     // ===================================================================
     // Methods implementing OrientedCurve2D interface
@@ -436,12 +457,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
         return new Polyline2D(points2);
     }
 
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
-    }
-
     /**
      * Return an instance of Polyline2D. If t1 is lower than t0, return an
      * instance of Polyline2D with zero points.
@@ -642,17 +657,6 @@ public class Polyline2D implements ContinuousOrientedCurve2D, Cloneable {
         }
 
         return path;
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
-    }
-
-    public void draw(Graphics2D g) {
-        g.draw(this.getGeneralPath());
     }
 
     // ===================================================================

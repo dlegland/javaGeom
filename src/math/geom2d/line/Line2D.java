@@ -25,8 +25,6 @@
 
 package math.geom2d.line;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -473,10 +471,6 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
         return new LineSegment2D(p1, p2).getIntersections(line);
     }
 
-    public void draw(Graphics2D g) {
-        g.draw(this.getGeneralPath());
-    }
-
     // ===================================================================
     // methods inherited from Shape2D interface
 
@@ -526,15 +520,7 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
         return path;
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
-    }
-
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        path.lineTo((float) p1.getX(), (float) p1.getY());
         path.lineTo((float) p2.getX(), (float) p2.getY());
         return path;
     }

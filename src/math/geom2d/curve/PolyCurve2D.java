@@ -33,6 +33,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -78,7 +79,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
     }
 
     // ===================================================================
-    // Methids specific to PolyCurve2D
+    // Methods specific to PolyCurve2D
 
     /**
      * Toggle the 'closed' flag of the polycurve.
@@ -87,7 +88,24 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         closed = b;
     }
 
-    /**
+    // ===================================================================
+    // Methods implementing the ContinuousCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 */
+	public Vector2D getLeftTangent(double t) {
+		return this.getChildCurve(t).getLeftTangent(this.getLocalPosition(t));
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 */
+	public Vector2D getRightTangent(double t) {
+		return this.getChildCurve(t).getRightTangent(this.getLocalPosition(t));
+	}
+
+	/**
      * Returns true if the PolyCurve2D is closed.
      */
     public boolean isClosed() {
@@ -146,6 +164,9 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
                 +curve.getClass().getName());
         return array;
     }
+
+    // ===================================================================
+    // Methods implementing the ContinuousCurve2D interface
 
     @Override
     public PolyCurve2D<? extends ContinuousCurve2D> getReverseCurve() {
@@ -289,4 +310,5 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
         // otherwise return true
         return true;
     }
+
 }
