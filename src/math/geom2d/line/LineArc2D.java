@@ -26,9 +26,6 @@
 
 package math.geom2d.line;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -303,17 +300,6 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
         path.lineTo((float) getX1(), (float) getY1());
         path.lineTo((float) getX2(), (float) getY2());
         return path;
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
-    }
-
-    public void draw(Graphics2D g) {
-        g.draw(this.getGeneralPath());
     }
 
     @Override

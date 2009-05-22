@@ -261,6 +261,20 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods from ContinousCurve2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 */
+	public Vector2D getLeftTangent(double t) {
+		return this.getTangent(t);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 */
+	public Vector2D getRightTangent(double t) {
+		return this.getTangent(t);
+	}
+
     /**
      * Creates a polyline with <code>n</code> line segments approximating the
      * Bezier curve.

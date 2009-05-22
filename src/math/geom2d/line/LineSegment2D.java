@@ -25,9 +25,6 @@
 
 package math.geom2d.line;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
@@ -321,10 +318,6 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
         return path;
     }
 
-    public void draw(Graphics2D g) {
-        g.draw(new java.awt.geom.Line2D.Double(x0, y0, x0+dx, y0+dy));
-    }
-
     /**
      * deprecated
      */
@@ -333,13 +326,6 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
         path.moveTo((float) x0, (float) y0);
         path.lineTo((float) (x0+dx), (float) (y0+dy));
         return path;
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
     }
 
     // ===================================================================

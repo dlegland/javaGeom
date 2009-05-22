@@ -1,8 +1,6 @@
 
 package math.geom2d.conic;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -183,7 +181,8 @@ implements ContinuousOrientedCurve2D, SmoothCurve2D, Cloneable {
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<HyperbolaBranchArc2D> result = new CurveSet2D<HyperbolaBranchArc2D>();
+        CurveSet2D<HyperbolaBranchArc2D> result = 
+        	new CurveSet2D<HyperbolaBranchArc2D>();
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
@@ -255,18 +254,6 @@ implements ContinuousOrientedCurve2D, SmoothCurve2D, Cloneable {
         return this.getAsPolyline(100).getGeneralPath();
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        if (!this.isBounded())
-            throw new UnboundedShapeException();
-        return this.getAsPolyline(100).getAsAWTShape();
-    }
-
-    public void draw(Graphics2D g2) {
-        this.getAsPolyline(100).draw(g2);
-    }
     
     // ===================================================================
     // methods overriding object

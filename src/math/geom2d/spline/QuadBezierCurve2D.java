@@ -231,6 +231,20 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods from Curve2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 */
+	public Vector2D getLeftTangent(double t) {
+		return this.getTangent(t);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 */
+	public Vector2D getRightTangent(double t) {
+		return this.getTangent(t);
+	}
+
     public Collection<ContinuousCurve2D> getContinuousCurves() {
         ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
         list.add(this);

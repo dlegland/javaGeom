@@ -2,7 +2,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -167,8 +166,9 @@ implements ContinuousBoundary2D, SmoothCurve2D, Cloneable {
         return false;
     }
 
-    public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        return new HyperbolaBranchArc2D(this, -100, 100).appendPath(path);
+    public java.awt.geom.GeneralPath appendPath(
+    		java.awt.geom.GeneralPath path) {
+    	throw new UnboundedShapeException();
     }
 
     
@@ -255,7 +255,8 @@ implements ContinuousBoundary2D, SmoothCurve2D, Cloneable {
 
     /** Returns a bounding box with infinite bounds in every direction */
     public Box2D getBoundingBox() {
-        return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
+        return new Box2D(
+        		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
@@ -270,7 +271,8 @@ implements ContinuousBoundary2D, SmoothCurve2D, Cloneable {
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<HyperbolaBranchArc2D> result = new CurveSet2D<HyperbolaBranchArc2D>();
+        CurveSet2D<HyperbolaBranchArc2D> result = 
+        	new CurveSet2D<HyperbolaBranchArc2D>();
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
@@ -326,18 +328,6 @@ implements ContinuousBoundary2D, SmoothCurve2D, Cloneable {
         return point.getX()>0;
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        throw new UnboundedShapeException();
-    }
-
-    /** Throws an UnboundedShapeException */
-    public void draw(Graphics2D g) {
-        throw new UnboundedShapeException();
-    }
-    
     // ===================================================================
     // methods overriding Object class
 

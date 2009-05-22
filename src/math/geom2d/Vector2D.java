@@ -325,6 +325,11 @@ public class Vector2D implements Cloneable {
     }
     
     @Override
+    public String toString() {
+        return new String("Vector2D(" + x + ", "+y+")");
+    }
+    
+    @Override
     public Vector2D clone() {
         return new Vector2D(x, y);
     }

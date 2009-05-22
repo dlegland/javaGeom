@@ -30,6 +30,7 @@ import java.util.*;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.Vector2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -90,6 +91,9 @@ public interface ContinuousCurve2D extends Curve2D {
      */
     public abstract boolean isClosed();
 
+    public Vector2D getLeftTangent(double t);
+    public Vector2D getRightTangent(double t);
+    
     /**
      * Returns a set of smooth curves.
      */

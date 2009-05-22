@@ -26,7 +26,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -1088,13 +1087,6 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
         return path;
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
-    }
-
     public void draw(Graphics2D g2) {
         java.awt.geom.Ellipse2D.Double ellipse = 
             new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
@@ -1133,8 +1125,8 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
     
     @Override
     public String toString() {
-        return String.format(
-                "%f %f %f %f %f°", xc, yc, r1, r2, Math.toDegrees(theta));
+        return String.format("Ellipse2D(%f %f %f %f %f°)", 
+                xc, yc, r1, r2, Math.toDegrees(theta));
     }
 
     // /**

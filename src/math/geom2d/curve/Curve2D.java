@@ -37,8 +37,8 @@ import math.geom2d.Shape2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
- * Interface for all linear and pieces smooth curves : polylines, conics, lines
- * ... A Curve2D object can be a continuous object (line, spiral, conic, ...),
+ * Interface for piecewise smooth curves: polylines, conics, lines... 
+ * A Curve2D object can be a continuous object (line, spiral, conic...),
  * or the boundary of a Region. It can also be the union of several continuous
  * curves.
  * <p>

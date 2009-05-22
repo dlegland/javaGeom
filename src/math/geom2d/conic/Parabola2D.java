@@ -27,7 +27,6 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -464,11 +463,6 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
     }
 
     /** Throws an infiniteShapeException */
-    public void draw(Graphics2D g) {
-        throw new UnboundedShapeException();
-    }
-
-    /** Throws an infiniteShapeException */
     public void fill(Graphics2D g2) {
         throw new UnboundedShapeException();
     }
@@ -554,13 +548,6 @@ implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
 
     public boolean contains(java.awt.geom.Point2D point) {
         return contains(point.getX(), point.getY());
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        throw new UnboundedShapeException();
     }
 
     // ====================================================================

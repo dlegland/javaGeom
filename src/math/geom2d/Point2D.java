@@ -523,7 +523,7 @@ implements PointShape2D, Cloneable {
 
     @Override
     public String toString() {
-        return new String("Point2D[" + x + ", "+y+"]");
+        return new String("Point2D(" + x + ", "+y+")");
     }
     
     /**
