@@ -33,6 +33,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.polygon.Polyline2D;
 
@@ -270,13 +271,20 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
             return path;
 
         // move to the first point
-        Point2D point = this.getFirstPoint();
-        path.moveTo((float) point.getX(), (float) point.getY());
+        Point2D start, current;
+        start = this.getFirstPoint();
+        path.moveTo((float) start.getX(), (float) start.getY());
+        current = start;
 
         // add the path of the first curve
-        for(ContinuousCurve2D curve : curves)
+        for(ContinuousCurve2D curve : curves) {
+        	start = curve.getFirstPoint();
+        	if (start.distance(current)>Shape2D.ACCURACY)
+        		path.lineTo((float) start.getX(), (float) start.getY());
         	path = curve.appendPath(path);
-
+        	current = start;
+        }
+        
         // eventually closes the curve
         if (closed) {
             path.closePath();

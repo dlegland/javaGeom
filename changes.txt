@@ -1,13 +1,22 @@
 Changes in javaGeom library
 
-javaGeom-0.7.1 (2009.??.??, rev. ??)
+javaGeom-0.7.? (2009.??.??, rev. ??)
+
+- added Abstract classes to keep one single implementation of some methods:
+	+ AbstractSmoothCurve2D
+	+ AbstractContinuousCurve2D
+
+	
+javaGeom-0.7.1 (2009-04-24, rev. 198)
 
 - added static builders for PolyBezierCurve2D
-- added accessors in Ellipse2D
+- update class names in spline package
+- added accessors in Ellipse2D and EllipseArc2D
 - added Hyperbola2D.getAsymptotes()
 - fixed bug in HyperbolaBranch2D
 - fixed clipping of Empty CurveSet2D
 - Point2D.clip now returns an instance of PointSet2D
+- fixed bug in Line2D.
 
 
 javaGeom-0.7.0 (2009-02-17, rev. 192)

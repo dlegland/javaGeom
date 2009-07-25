@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import java.util.*;
 
 import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
 
 /**
@@ -48,6 +49,26 @@ public class Polyline2DTest extends TestCase {
 
 	public static void main(String[] args) {
 		junit.awtui.TestRunner.run(Polyline2DTest.class);
+	}
+
+	public void testGetLeftTangent(){
+		Polyline2D line = new Polyline2D(new Point2D[]{
+				new Point2D(10, 10),
+				new Point2D(20, 10),
+				new Point2D(20, 20)});
+		
+		assertTrue(line.getLeftTangent(1).equals(new Vector2D(10, 0)));
+		assertTrue(line.getLeftTangent(2).equals(new Vector2D(0, 10)));
+	}
+	
+	public void testGetRightTangent(){
+		Polyline2D line = new Polyline2D(new Point2D[]{
+				new Point2D(10, 10),
+				new Point2D(20, 10),
+				new Point2D(20, 20)});
+		
+		assertTrue(line.getRightTangent(0).equals(new Vector2D(10, 0)));
+		assertTrue(line.getRightTangent(1).equals(new Vector2D(0, 10)));
 	}
 
 	public void testAddLine(){
