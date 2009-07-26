@@ -32,7 +32,12 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.domain.Domain2D;
 
-
+/**
+ * Compute buffer (set of points located less than a given distance) from the
+ * polygon, for simple polygon, and polygon with hole.
+ * @author dlegland
+ *
+ */
 public class CheckPolygon2DCreateBuffer extends JPanel{
 
 	private static final long serialVersionUID = 7331324136801936514L;
@@ -67,10 +72,10 @@ public class CheckPolygon2DCreateBuffer extends JPanel{
 		polygon1 = new SimplePolygon2D(points1);
 		polygon2 = new SimplePolygon2D(points2);
 		
-		polygon = new MultiPolygon2D(new Ring2D[]{
-				new Ring2D(points1),
-				new Ring2D(points2),
-				new Ring2D(points3) });
+		polygon = new MultiPolygon2D(new LinearRing2D[]{
+				new LinearRing2D(points1),
+				new LinearRing2D(points2),
+				new LinearRing2D(points3) });
 		
 	}
 	

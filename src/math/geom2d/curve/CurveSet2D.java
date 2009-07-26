@@ -629,7 +629,7 @@ Cloneable {
         return result;
     }
 
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
+    public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
     	// create array for storing result
         ArrayList<ContinuousCurve2D> continuousCurves = 
         	new ArrayList<ContinuousCurve2D>();

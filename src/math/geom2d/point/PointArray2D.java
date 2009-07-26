@@ -27,19 +27,25 @@
 package math.geom2d.point;
 
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearShape2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * Represent the union of a finite number of Point2D.
  * 
  * @author dlegland
  */
-public class PointArray2D implements PointSet2D, Cloneable {
+public class PointArray2D 
+implements PointSet2D, CirculinearShape2D, Cloneable {
 
     /**
      * The inner collection of points composing the set.
@@ -146,7 +152,21 @@ public class PointArray2D implements PointSet2D, Cloneable {
         return points.size();
     }
 
-    /**
+
+    // ===================================================================
+    // Methods implementing CirculinearShape2D interface
+
+    public PointArray2D transform(CircleInversion2D inv) {
+    	
+    	PointArray2D array = new PointArray2D(points.size());
+    	
+    	for(Point2D point : points) 
+    		array.addPoint(point.transform(inv));
+    	
+    	return array;
+    }
+   
+   /**
      * Return distance to the closest point of the collection
      */
     public double getDistance(java.awt.geom.Point2D p) {

@@ -123,6 +123,18 @@ public class StraightLine2DTest extends TestCase {
 		assertTrue(line4.equals(line4));
 	}
 
+    public void testGetParallelDouble() {
+    	Point2D p1 = new Point2D(1, 1);
+    	Point2D p2 = new Point2D(1, 3);
+    	StraightLine2D line1 = new StraightLine2D(p1, p2);
+    	
+    	Point2D p1p = new Point2D(2, 1);
+    	Point2D p2p = new Point2D(2, 3);
+    	StraightLine2D line1p = new StraightLine2D(p1p, p2p);
+    	
+    	assertTrue(line1.getParallel(1).equals(line1p));
+    }
+
 	/*
 	 * Test for boolean contains(double, double)
 	 */

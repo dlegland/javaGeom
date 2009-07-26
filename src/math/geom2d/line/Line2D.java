@@ -25,18 +25,22 @@
 
 package math.geom2d.line;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.OrientedCurve2D;
+import math.geom2d.transform.CircleInversion2D;
 
 // Imports
 
@@ -64,7 +68,7 @@ import math.geom2d.domain.OrientedCurve2D;
  * as LineSegment2D.
  */
 public class Line2D extends AbstractSmoothCurve2D
-implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
+implements LinearShape2D, CirculinearElement2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -124,15 +128,6 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
 
     // ===================================================================
     // Methods specific to Line2D
-
-    /**
-     * Returns the length of the edge.
-     */
-    public double getLength() {
-        return Math.hypot(
-                p1.getX()-p2.getX(), 
-                p1.getY()-p2.getY());
-    }
 
     /**
      * Return the first point of the edge. It corresponds to getPoint(0).
@@ -205,6 +200,91 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
         return new LineSegment2D(p1, p2).isParallel(line);
     }
 
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public Line2D getParallel(double d) {
+		double x0 = getX1();
+		double y0 = getY1();
+		double dx = getX2()-x0;
+		double dy = getY2()-y0;
+        double dd = Math.sqrt(dx*dx+dy*dy);
+        return new Line2D(
+        		x0+dy*d/dd, y0-dx*d/dd, 
+        		x0+dx+dy*d/dd, y0+dy-dx*d/dd);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 */
+	public double getLength() {
+		return p1.getDistance(p2);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 */
+	public double getLength(double pos) {
+		double dx = p2.getX()-p1.getX();
+		double dy = p2.getY()-p1.getY();
+		return pos*Math.hypot(dx, dy);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 */
+	public double getPosition(double length) {
+		double dx = p2.getX()-p1.getX();
+		double dy = p2.getY()-p1.getY();
+		return length/Math.hypot(dx, dy);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearElement2D transform(CircleInversion2D inv) {
+		// Extract inversion parameters
+        Point2D center 	= inv.getCenter();
+        double r 		= inv.getRadius();
+        
+        // compute distance of line to inversion center
+        Point2D po 	= new StraightLine2D(this).getProjectedPoint(center);
+        double d 	= this.getDistance(po);
+        
+        // Degenerate case of a line passing through the center.
+        // returns the line itself.
+        if (Math.abs(d)<Shape2D.ACCURACY){
+        	Point2D p1 = this.getFirstPoint().transform(inv);
+        	Point2D p2 = this.getLastPoint().transform(inv);
+        	return new LineSegment2D(p1, p2);
+        }
+        
+        // angle from center to line
+        double angle = Angle2D.getHorizontalAngle(center, po);
+
+        // center of transformed circle
+        double r2 	= r*r/d/2;
+        Point2D c2 	= Point2D.createPolar(center, r2, angle);
+
+        // choose direction of circle arc
+        boolean direct = !this.isInside(center);
+        
+        // compute angle between center of transformed circle and end points
+        double theta1 = Angle2D.getHorizontalAngle(c2, p1);
+        double theta2 = Angle2D.getHorizontalAngle(c2, p2);
+        
+        // create the new circle arc
+        return new CircleArc2D(c2, r2, theta1, theta2, direct);
+	}
+	
+    // ===================================================================
+    // methods implementing the LinearShape2D interface
+
+	/* (non-Javadoc)
+	 */
     public double[][] getParametric() {
         return new LineSegment2D(p1, p2).getParametric();
     }
@@ -272,6 +352,15 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
     
+    /* (non-Javadoc)
+     * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
+     */
+    public Collection<? extends Line2D> getSmoothPieces() {
+        ArrayList<Line2D> array = new ArrayList<Line2D>(1);
+        array.add(this);
+        return array;
+    }
+
     /**
      * Returns false.
      * @see math.geom2d.curve.ContinuousCurve2D#isClosed()
@@ -450,6 +539,12 @@ implements LinearShape2D, SmoothCurve2D, OrientedCurve2D, Cloneable {
      */
     public Line2D getReverseCurve() {
         return new Line2D(p2, p1);
+    }
+
+    public Collection<? extends Line2D> getContinuousCurves() {
+        ArrayList<Line2D> list = new ArrayList<Line2D>(1);
+        list.add(this);
+        return list;
     }
 
     /**

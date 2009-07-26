@@ -15,7 +15,7 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
@@ -25,7 +25,7 @@ import math.geom2d.line.LinearShape2D;
  * @author dlegland
  */
 public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D
-implements ContinuousOrientedCurve2D, SmoothCurve2D, Cloneable {
+implements SmoothOrientedCurve2D, Cloneable {
 
     /** The supporting hyperbola branch */
     HyperbolaBranch2D branch = null;

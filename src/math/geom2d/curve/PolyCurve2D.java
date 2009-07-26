@@ -170,6 +170,13 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
     // Methods implementing the ContinuousCurve2D interface
 
     @Override
+    public Collection<? extends PolyCurve2D<?>> getContinuousCurves() {
+        ArrayList<PolyCurve2D<T>> list = new ArrayList<PolyCurve2D<T>>(1);
+        list.add(this);
+        return list;
+    }
+
+   @Override
     public PolyCurve2D<? extends ContinuousCurve2D> getReverseCurve() {
     	// create array for storing reversed curves
     	int n = curves.size();

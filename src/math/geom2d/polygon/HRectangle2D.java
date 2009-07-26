@@ -141,21 +141,21 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return 4;
     }
 
-    public BoundarySet2D<Ring2D> getBoundary() {
+    public BoundarySet2D<LinearRing2D> getBoundary() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
         pts[1] = new Point2D(width+x, y);
         pts[2] = new Point2D(width+x, y+height);
         pts[3] = new Point2D(x, y+height);
-        return new BoundarySet2D<Ring2D>(new Ring2D(pts));
+        return new BoundarySet2D<LinearRing2D>(new LinearRing2D(pts));
     }
 
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<Ring2D> getRings() {
-        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
-        rings.add(new Ring2D(this.getVertices()));
+    public Collection<LinearRing2D> getRings() {
+        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        rings.add(new LinearRing2D(this.getVertices()));
         return rings;
     }
 

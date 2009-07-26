@@ -57,31 +57,31 @@ public interface Boundary2D extends OrientedCurve2D {
      * @param pt a point in the plane
      * @return true if the point is on the left side of the curve.
      */
-    public abstract boolean isInside(java.awt.geom.Point2D pt);
+    public boolean isInside(java.awt.geom.Point2D pt);
 
     /**
      * Returns the different continuous curves composing the boundary
      */
-    public abstract Collection<ContinuousBoundary2D> getBoundaryCurves();
+    public Collection<? extends ContinuousBoundary2D> getBoundaryCurves();
 
     /**
      * Returns the domain delimited by this boundary.
      * 
      * @return the domain delimited by this boundary
      */
-    public abstract Domain2D getDomain();
+    public Domain2D getDomain();
 
     /**
      * Forces the subclasses to return an instance of Boundary2D.
      */
-    public abstract Boundary2D getReverseCurve();
+    public Boundary2D getReverseCurve();
 
     /**
      * Forces the subclasses to return an instance of Boundary2D.
      */
-    public abstract Boundary2D transform(AffineTransform2D trans);
+    public Boundary2D transform(AffineTransform2D trans);
 
-    public abstract void fill(Graphics2D g2);
+    public void fill(Graphics2D g2);
 
     /**
      * @deprecated empty shapes are represented by null value, reducing the

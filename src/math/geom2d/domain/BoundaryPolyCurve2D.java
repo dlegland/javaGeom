@@ -50,6 +50,10 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         super();
     }
 
+    public BoundaryPolyCurve2D(int n) {
+        super(n);
+    }
+
     public BoundaryPolyCurve2D(T[] curves) {
         super(curves);
     }
@@ -122,7 +126,8 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     @Override
     public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> transform(
             AffineTransform2D trans) {
-        BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
+        BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
+        	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
         for (ContinuousOrientedCurve2D curve : curves)
             result.addCurve(curve.transform(trans));
         return result;

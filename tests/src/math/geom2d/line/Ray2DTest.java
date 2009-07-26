@@ -51,6 +51,18 @@ public class Ray2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Ray2DTest.class);
 	}
 
+    public void testGetParallelDouble() {
+    	Point2D p1 = new Point2D(1, 1);
+    	Point2D p2 = new Point2D(1, 3);
+    	Ray2D line1 = new Ray2D(p1, p2);
+    	
+    	Point2D p1p = new Point2D(2, 1);
+    	Point2D p2p = new Point2D(2, 3);
+    	Ray2D line1p = new Ray2D(p1p, p2p);
+    	
+    	assertTrue(line1.getParallel(1).equals(line1p));
+    }
+
 	public void testIsBounded(){
 		Ray2D ray1 = new Ray2D(2, 2, 1, 0);
 		assertTrue(!ray1.isBounded());

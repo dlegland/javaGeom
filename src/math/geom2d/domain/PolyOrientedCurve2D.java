@@ -57,12 +57,24 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         super();
     }
 
+    public PolyOrientedCurve2D(int size) {
+        super(size);
+    }
+
     public PolyOrientedCurve2D(T[] curves) {
         super(curves);
     }
 
+    public PolyOrientedCurve2D(T[] curves, boolean closed) {
+        super(curves, closed);
+    }
+
     public PolyOrientedCurve2D(Collection<? extends T> curves) {
         super(curves);
+    }
+
+    public PolyOrientedCurve2D(Collection<? extends T> curves, boolean closed) {
+        super(curves, closed);
     }
 
     public double getWindingAngle(java.awt.geom.Point2D point) {
@@ -210,7 +222,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
 
     @Override
     public PolyOrientedCurve2D<?> transform(AffineTransform2D trans) {
-        PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
+        PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = 
+        	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
         for (ContinuousOrientedCurve2D curve : curves)
             result.addCurve(curve.transform(trans));
         return result;

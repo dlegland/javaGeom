@@ -35,15 +35,17 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
+import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * A polyline is a continuous curve where each piece of the curve is a
@@ -52,7 +54,8 @@ import math.geom2d.line.StraightLine2D;
  * @author dlegland
  */
 public class Polyline2D extends AbstractContinuousCurve2D
-implements ContinuousOrientedCurve2D, Cloneable {
+implements ContinuousCirculinearCurve2D, Cloneable {
+
 
     protected ArrayList<Point2D> points = new ArrayList<Point2D>();
 
@@ -155,7 +158,7 @@ implements ContinuousOrientedCurve2D, Cloneable {
      */
     public Collection<LineSegment2D> getEdges() {
         int n = points.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>();
+        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
 
         if (n<2)
             return edges;
@@ -165,12 +168,11 @@ implements ContinuousOrientedCurve2D, Cloneable {
 
         return edges;
     }
-
-    public LineSegment2D getEdge(int i) {
-    	int n = points.size();
-    	return new LineSegment2D(points.get(i), points.get((i+1)%n));
-    }
     
+    public LineSegment2D getEdge(int index) {
+    	return new LineSegment2D(points.get(index), points.get(index+1));
+    }
+
     public LineSegment2D getFirstEdge() {
         if (points.size()<2)
             return null;
@@ -183,6 +185,102 @@ implements ContinuousOrientedCurve2D, Cloneable {
             return null;
         return new LineSegment2D(points.get(n-2), points.get(n-1));
     }
+
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 */
+	public double getLength() {
+		double sum = 0;
+		for(LineSegment2D edge : this.getEdges())
+			sum += edge.getLength();
+		return sum;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 */
+	public double getLength(double pos) {
+		//init
+		double length = 0;
+		
+		// add length of each curve before current curve
+		int index = (int) Math.floor(pos);
+		for(int i=0; i<index; i++)
+			length += this.getEdge(i).getLength();
+		
+		// add portion of length for last curve
+		if(index<points.size()-1) {
+			double pos2 = pos-index;
+			length += this.getEdge(index).getLength(pos2);
+		}
+		
+		// return computed length
+		return length;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 */
+	public double getPosition(double length) {
+		
+		// position to compute
+		double pos = 0;
+		
+		// index of current curve
+		int index = 0;
+		
+		// cumulative length
+		double cumLength = this.getLength(this.getT0());
+		
+		// iterate on all curves
+		for(LineSegment2D edge : getEdges()) {
+			// length of current curve
+			double edgeLength = edge.getLength();
+			
+			// add either 2, or fraction of length
+			if(cumLength+edgeLength<length) {
+				cumLength += edgeLength;
+				index ++;
+			} else {
+				// add local position on current curve
+				double pos2 = edge.getPosition(length-cumLength);
+				pos = index + pos2;
+				break;
+			}			
+		}
+		
+		// return the result
+		return pos;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public ContinuousCirculinearCurve2D getParallel(double d) {
+		return CirculinearCurve2DUtils.createContinuousParallel(this, d);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public ContinuousCirculinearCurve2D transform(CircleInversion2D inv) {
+		
+		// Create array for storing transformed arcs
+		Collection<LineSegment2D> edges = this.getEdges();
+		ArrayList<ContinuousCirculinearCurve2D> arcs = 
+			new ArrayList<ContinuousCirculinearCurve2D>(edges.size());
+		
+		// Transform each arc
+		for(LineSegment2D edge : edges) {
+			arcs.add(edge.transform(inv));
+		}
+		
+		// create the transformed shape
+		return new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(arcs);
+	}
 
     // ===================================================================
     // Methods inherited from ContinuousCurve2D
@@ -255,7 +353,7 @@ implements ContinuousOrientedCurve2D, Cloneable {
      * @see math.geom2d.OrientedCurve2D#isInside(java.awt.geom.Point2D)
      */
     public boolean isInside(java.awt.geom.Point2D pt) {
-        if (new Ring2D(this.getPointArray()).isInside(pt))
+        if (new LinearRing2D(this.getPointArray()).isInside(pt))
             return true;
 
         if (this.points.size()<3)
@@ -292,7 +390,7 @@ implements ContinuousOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.ContinuousCurve2D#getSmoothPieces()
      */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+    public Collection<? extends LineSegment2D> getSmoothPieces() {
         return getEdges();
     }
 
@@ -456,6 +554,13 @@ implements ContinuousOrientedCurve2D, Cloneable {
         }
         return new Polyline2D(points2);
     }
+
+    public Collection<? extends Polyline2D> getContinuousCurves() {
+        ArrayList<Polyline2D> list = new ArrayList<Polyline2D>(1);
+        list.add(this);
+        return list;
+    }
+
 
     /**
      * Return an instance of Polyline2D. If t1 is lower than t0, return an
@@ -683,4 +788,5 @@ implements ContinuousOrientedCurve2D, Cloneable {
             array.add(point.clone());
         return new Polyline2D(array);
     }
+
 }

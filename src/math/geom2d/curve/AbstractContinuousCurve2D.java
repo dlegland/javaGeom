@@ -15,8 +15,8 @@ import java.util.Collection;
 
 import math.geom2d.Point2D;
 import math.geom2d.UnboundedShapeException;
+import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.polygon.Ring2D;
 
 
 /**
@@ -44,7 +44,7 @@ implements ContinuousCurve2D, Cloneable {
 			points[i] = this.getPoint(t0 + i*dt);
 
 		if(this.isClosed()) {
-			return new Ring2D(points);
+			return new LinearRing2D(points);
 		} else {
 			return new Polyline2D(points);
 		}

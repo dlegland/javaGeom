@@ -52,6 +52,10 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
     public BoundarySet2D() {
     }
 
+    public BoundarySet2D(int size) {
+    	super(size);
+    }
+
     public BoundarySet2D(T[] curves) {
         super(curves);
     }
@@ -138,7 +142,8 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
         CurveSet2D<? extends Curve2D> curveSet = super.getSubCurve(t0, t1);
 
         // create subcurve array
-        ArrayList<ContinuousOrientedCurve2D> curves = new ArrayList<ContinuousOrientedCurve2D>();
+        ArrayList<ContinuousOrientedCurve2D> curves = 
+        	new ArrayList<ContinuousOrientedCurve2D>();
         for (Curve2D curve : curveSet.getCurves())
             curves.add((ContinuousOrientedCurve2D) curve);
 
@@ -151,10 +156,10 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
 
     /**
      * Clip the curve by a box. The result is an instance of
-     * ContinuousOrientedCurveSet2D<ContinuousOrientedCurve2D>, which contains
-     * only instances of ContinuousOrientedCurve2D. If the curve is not clipped,
-     * the result is an instance of ContinuousOrientedCurveSet2D<ContinuousOrientedCurve2D>
-     * which contains 0 curves.
+     * CurveSet2D<ContinuousOrientedCurve2D>, which contains
+     * only instances of ContinuousOrientedCurve2D. 
+     * If the curve is not clipped, the result is an instance of 
+     * CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
      */
     @Override
     public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
@@ -162,7 +167,8 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
         CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<ContinuousOrientedCurve2D> result = new CurveSet2D<ContinuousOrientedCurve2D>();
+        CurveSet2D<ContinuousOrientedCurve2D> result = 
+        	new CurveSet2D<ContinuousOrientedCurve2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
@@ -175,7 +181,8 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
     @Override
     public BoundarySet2D<? extends ContinuousBoundary2D> transform(
             AffineTransform2D trans) {
-        BoundarySet2D<ContinuousBoundary2D> result = new BoundarySet2D<ContinuousBoundary2D>();
+        BoundarySet2D<ContinuousBoundary2D> result = 
+        	new BoundarySet2D<ContinuousBoundary2D>(curves.size());
         for (Curve2D curve : curves)
             result.addCurve((ContinuousBoundary2D) curve.transform(trans));
         return result;

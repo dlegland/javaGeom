@@ -32,6 +32,8 @@ import java.util.*;
 
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
+
 import math.geom2d.line.StraightLine2D;
 
 /**
@@ -51,6 +53,60 @@ public class Polyline2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Polyline2DTest.class);
 	}
 
+
+	public void testGetLength() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10), 
+				new Point2D(20, 10)});
+		
+		assertEquals(polyline.getLength(), 30, 1e-14);
+	}
+	
+	public void testGetLengthDouble() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10), 
+				new Point2D(20, 10)});
+		
+		assertEquals(polyline.getLength(0), 0, 1e-14);
+		assertEquals(polyline.getLength(.5), 5, 1e-14);
+		assertEquals(polyline.getLength(1), 10, 1e-14);
+		assertEquals(polyline.getLength(1.5), 15, 1e-14);
+		assertEquals(polyline.getLength(2), 20, 1e-14);
+		assertEquals(polyline.getLength(2.5), 25, 1e-14);
+		assertEquals(polyline.getLength(3), 30, 1e-14);
+	}
+	
+	public void testGetPositionDouble() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10), 
+				new Point2D(20, 10)});
+		
+		assertEquals(polyline.getPosition(0), 0, 1e-14);
+		assertEquals(polyline.getPosition(5), .5, 1e-14);
+		assertEquals(polyline.getPosition(10), 1, 1e-14);
+		assertEquals(polyline.getPosition(15), 1.5, 1e-14);
+		assertEquals(polyline.getPosition(20), 2, 1e-14);
+		assertEquals(polyline.getPosition(25), 2.5, 1e-14);
+		assertEquals(polyline.getPosition(30), 3, 1e-14);
+	}
+	
+	public void testGetParallelDouble() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(50, 50),
+				new Point2D(100, 50),
+				new Point2D(100, 100),
+				new Point2D(150, 100) });
+		
+		ContinuousCirculinearCurve2D parallel = polyline.getParallel(30);
+		assertTrue(parallel!=null);
+	}
+	
 	public void testGetLeftTangent(){
 		Polyline2D line = new Polyline2D(new Point2D[]{
 				new Point2D(10, 10),

@@ -34,7 +34,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 
 
 public class DrawBoundaryHoleDemo extends JPanel{
@@ -52,7 +52,7 @@ public class DrawBoundaryHoleDemo extends JPanel{
 
 		// build the different curves
 		Circle2D circle = new Circle2D(150, 150, 50, false);
-		Ring2D square = new Ring2D(new Point2D[]{
+		LinearRing2D square = new LinearRing2D(new Point2D[]{
 				new Point2D(50, 50),
 				new Point2D(250, 50),
 				new Point2D(250, 250),

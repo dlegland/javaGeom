@@ -35,12 +35,17 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
+
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * <p>
@@ -62,7 +67,7 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
  * <p>
  */
 public abstract class AbstractLine2D extends AbstractSmoothCurve2D
-implements SmoothOrientedCurve2D, LinearShape2D {
+implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
 
     // ===================================================================
     // constants
@@ -320,7 +325,7 @@ implements SmoothOrientedCurve2D, LinearShape2D {
      * Create a straight line parallel to this object, and going through the
      * given point.
      * 
-     * @param point : the point to go through
+     * @param point the point to go through
      * @return the parallel through the point
      */
     public StraightLine2D getParallel(Point2D point) {
@@ -338,7 +343,8 @@ implements SmoothOrientedCurve2D, LinearShape2D {
         return new StraightLine2D(point, -this.dy, this.dx);
     }
 
-    // ===================================================================
+   // ===================================================================
+
     // Methods implementing the LinearShape2D interface
 
     public Point2D getOrigin() {
@@ -390,7 +396,104 @@ implements SmoothOrientedCurve2D, LinearShape2D {
         return new StraightLine2D(this);
     }
 
+
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
     
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 */
+	public double getLength() {
+		if(!this.isBounded()) return Double.POSITIVE_INFINITY;
+		return (getT1()-getT0())*Math.hypot(dx, dy);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 */
+	public double getLength(double pos) {
+		return pos*Math.hypot(dx, dy);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 */
+	public double getPosition(double length) {
+		return length/Math.hypot(dx, dy);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearElement2D transform(CircleInversion2D inv) {
+		// Extract inversion parameters
+        Point2D center 	= inv.getCenter();
+        double r 		= inv.getRadius();
+        
+        // compute distance of line to inversion center
+        Point2D po 	= this.getProjectedPoint(center);
+        double d 	= this.getDistance(po);
+
+        // flag for indicating if line extremities are finite
+        boolean inf0 = Double.isInfinite(this.getT0());
+        boolean inf1 = Double.isInfinite(this.getT1());
+
+        // Degenerate case of a line passing through the center.
+        // returns the line itself.
+        if (Math.abs(d)<Shape2D.ACCURACY){
+        	if (inf0){
+        		if (inf1){
+        			// case of a straight line, which transform into itself
+        			return new StraightLine2D(this);
+        		} else {
+        			// case of an inverted ray, which transform into another
+        			// inverted ray
+        			Point2D p2 = this.getLastPoint().transform(inv);
+        			return new InvertedRay2D(p2, this.getVector());
+        		}
+        	} else {
+        		Point2D p1 = this.getFirstPoint().transform(inv);
+                if (inf1){
+        			// case of a ray, which transform into another ray
+        			return new Ray2D(p1, this.getVector());
+        		} else {
+        			// case of an line segment
+        			Point2D p2 = this.getLastPoint().transform(inv);
+        			return new LineSegment2D(p1, p2);
+        		}
+        	}
+        }
+        
+        // angle from center to line
+        double angle = Angle2D.getHorizontalAngle(center, po);
+
+        // center of transformed circle
+        double r2 	= r*r/d/2;
+        Point2D c2 	= Point2D.createPolar(center, r2, angle);
+
+        // choose direction of circle arc
+        boolean direct = !this.isInside(center);
+        
+        // case of a straight line
+        if (inf0 && inf1) {
+        	return new Circle2D(c2, r2, direct);
+        }
+        
+        // Compute the transform of the end points, which can be the center of
+        // the inversion circle in the case of an infinite line.
+        Point2D p1 = inf0 ? center : this.getFirstPoint();
+        Point2D p2 = inf1 ? center : this.getLastPoint();
+        
+        // compute angle between center of transformed circle and end points
+        double theta1 = Angle2D.getHorizontalAngle(c2, p1);
+        double theta2 = Angle2D.getHorizontalAngle(c2, p2);
+        
+        // create the new circle arc
+        return new CircleArc2D(c2, r2, theta1, theta2, direct);
+	}
+
+
     // ===================================================================
     // methods of OrientedCurve2D interface
 
@@ -490,8 +593,14 @@ implements SmoothOrientedCurve2D, LinearShape2D {
      * Return the intersection points of the curve with the specified line. The
      * length of the result array is the number of intersection points.
      */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<? extends AbstractLine2D> getSmoothPieces() {
+        ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
+        list.add(this);
+        return list;
+    }
 
+
+    public Collection<Point2D> getIntersections(LinearShape2D line) {
         ArrayList<Point2D> points = new ArrayList<Point2D>();
 
         Point2D point = getIntersection(line);
@@ -558,6 +667,13 @@ implements SmoothOrientedCurve2D, LinearShape2D {
         else
             return new LineSegment2D(this.getPoint(t0), this.getPoint(t1));
 
+    }
+
+    public Collection<? extends AbstractLine2D> getContinuousCurves() {
+        ArrayList<AbstractLine2D> list = 
+        	new ArrayList<AbstractLine2D>(1);
+        list.add(this);
+        return list;
     }
 
     // ===================================================================

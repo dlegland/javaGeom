@@ -178,27 +178,32 @@ public class CircleArc2DTest extends TestCase {
 		double r = 10;
 		
 		// Test with a centered circle arc and 4 edges in each main direction
-		CircleArc2D circle2 = new CircleArc2D(0, 0, 10, 3*Math.PI/8, 15*Math.PI/8);
-		Collection<Point2D> points1 = circle2.getIntersections(new LineSegment2D(0, 0, 20, 0));
-		Collection<Point2D> points2 = circle2.getIntersections(new LineSegment2D(0, 0, 0, 20));
-		Collection<Point2D> points3 = circle2.getIntersections(new LineSegment2D(0, 0, -20, 0));
-		Collection<Point2D> points4 = circle2.getIntersections(new LineSegment2D(0, 0, 0, -20));
+		CircleArc2D arc = new CircleArc2D(0, 0, 10, 3*Math.PI/8, 15*Math.PI/8);
+		Collection<Point2D> points1 = arc.getIntersections(new LineSegment2D(0, 0, 20, 0));
+		Collection<Point2D> points2 = arc.getIntersections(new LineSegment2D(0, 0, 0, 20));
+		Collection<Point2D> points3 = arc.getIntersections(new LineSegment2D(0, 0, -20, 0));
+		Collection<Point2D> points4 = arc.getIntersections(new LineSegment2D(0, 0, 0, -20));
 		assertTrue(points1.iterator().next().equals(new Point2D(r, 0)));
 		assertTrue(points2.iterator().next().equals(new Point2D(0, r)));
 		assertTrue(points3.iterator().next().equals(new Point2D(-r, 0)));
 		assertTrue(points4.iterator().next().equals(new Point2D(0, -r)));
 		
 		Collection<Point2D> points;
-		CircleArc2D arc2 = new CircleArc2D(0, 0, 10, Math.PI, -Math.PI);
-		points = arc2.getIntersections(new StraightLine2D(0, 0, 0, 1));
+		arc = new CircleArc2D(0, 0, 10, Math.PI, -Math.PI);
+		points = arc.getIntersections(new StraightLine2D(0, 0, 0, 1));
 		assertTrue(points.iterator().next().equals(new Point2D(0, r)));
 		
 		double r2 = Math.sqrt(3)*r/2;
-		arc2 = new CircleArc2D(0, 0, 10, Math.PI, -Math.PI);
-		points = arc2.getIntersections(new StraightLine2D(0, .5*r, 1, 0));
+		arc = new CircleArc2D(0, 0, 10, Math.PI, -Math.PI);
+		points = arc.getIntersections(new StraightLine2D(0, .5*r, 1, 0));
 		Point2D point = new Point2D(-r2, r*.5);
 		Point2D inter1 = points.iterator().next();
 		assertTrue(inter1.equals(point));
+		
+		arc = new CircleArc2D(50, 100, 50, Math.PI, Math.PI/2);
+		LineSegment2D line = new LineSegment2D(100, 0, 100, 100);
+		assertTrue(arc.getIntersections(line).size()==0);
+
 	}
 	
 	/**

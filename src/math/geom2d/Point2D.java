@@ -31,8 +31,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.circulinear.CirculinearShape2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointShape2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * <p>
@@ -45,8 +47,9 @@ import math.geom2d.point.PointShape2D;
  * </p>
  */
 public class Point2D extends java.awt.geom.Point2D.Double
-implements PointShape2D, Cloneable {
-
+implements PointShape2D, Cloneable, CirculinearShape2D {
+//TODO: make PointShape2D implements CirculinearShaope2D
+	
     // ===================================================================
     // constants
 
@@ -373,6 +376,22 @@ implements PointShape2D, Cloneable {
         y = point.getY()+rho*Math.sin(theta);
     }
 
+    // ===================================================================
+    // Methods implementing CirculinearShape2D interface
+
+    public Point2D transform(CircleInversion2D inv) {
+    	// get inversion parameters
+        Point2D center = inv.getCenter();
+        double r = inv.getRadius();
+
+        // compute distance and angle of transformed point
+        double d = r*r/Point2D.getDistance(this, center);
+        double theta = Angle2D.getHorizontalAngle(center, this);
+        
+        // create the new point
+        return Point2D.createPolar(center, d, theta);
+    }
+   
     // ===================================================================
     // Methods implementing Shape2D interface
 

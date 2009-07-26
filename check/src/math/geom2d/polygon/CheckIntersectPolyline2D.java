@@ -34,7 +34,7 @@ public class CheckIntersectPolyline2D extends JPanel{
 				new Point2D(150, 150),
 				new Point2D(50, 150) });
 		
-        polyline2 = new Ring2D(new Point2D[]{
+        polyline2 = new LinearRing2D(new Point2D[]{
                 new Point2D(80, 80),
                 new Point2D(200, 80),
                 new Point2D(200, 120),

@@ -247,16 +247,16 @@ public class Rectangle2D implements Polygon2D {
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<Ring2D> getRings() {
-        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
-        rings.add(new Ring2D(this.getVertices()));
+    public Collection<LinearRing2D> getRings() {
+        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        rings.add(new LinearRing2D(this.getVertices()));
         return rings;
     }
 
     // ===================================================================
     // methods implementing the Domain2D interface
 
-    public BoundarySet2D<Ring2D> getBoundary() {
+    public BoundarySet2D<LinearRing2D> getBoundary() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
@@ -265,7 +265,7 @@ public class Rectangle2D implements Polygon2D {
         pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
         pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
 
-        return new BoundarySet2D<Ring2D>(new Ring2D(pts));
+        return new BoundarySet2D<LinearRing2D>(new LinearRing2D(pts));
     }
 
     public Polygon2D complement() {

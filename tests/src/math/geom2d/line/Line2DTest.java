@@ -48,6 +48,18 @@ public class Line2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Line2DTest.class);
 	}
 
+    public void testGetParallelDouble() {
+    	Point2D p1 = new Point2D(1, 1);
+    	Point2D p2 = new Point2D(1, 3);
+    	Line2D line1 = new Line2D(p1, p2);
+    	
+    	Point2D p1p = new Point2D(2, 1);
+    	Point2D p2p = new Point2D(2, 3);
+    	Line2D line1p = new Line2D(p1p, p2p);
+    	
+    	assertTrue(line1.getParallel(1).equals(line1p));
+    }
+
 	/*
 	 * Test for double getDistance(Point2D)
 	 */

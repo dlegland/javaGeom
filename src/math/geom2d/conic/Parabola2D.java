@@ -45,7 +45,6 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 
@@ -65,8 +64,8 @@ import math.geom2d.line.StraightLine2D;
  * 
  * @author dlegland
  */
-public class Parabola2D extends AbstractSmoothCurve2D
-implements SmoothOrientedCurve2D, Conic2D, ContinuousBoundary2D, Cloneable {
+public class Parabola2D extends AbstractSmoothCurve2D 
+implements ContinuousBoundary2D, Conic2D, Cloneable {
 
     /** Coordinate of the vertex */
     protected double xv    = 0, yv = 0;

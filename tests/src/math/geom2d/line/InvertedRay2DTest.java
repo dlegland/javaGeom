@@ -47,6 +47,18 @@ public class InvertedRay2DTest extends TestCase {
 		super(arg0);
 	}
 
+    public void testGetParallelDouble() {
+    	Point2D p1 = new Point2D(1, 1);
+    	Point2D p2 = new Point2D(1, 3);
+    	InvertedRay2D line1 = new InvertedRay2D(p1, p2);
+    	
+    	Point2D p1p = new Point2D(2, 1);
+    	Point2D p2p = new Point2D(2, 3);
+    	InvertedRay2D line1p = new InvertedRay2D(p1p, p2p);
+    	
+    	assertTrue(line1.getParallel(1).equals(line1p));
+    }
+
 	public static void main(String[] args) {
 		junit.awtui.TestRunner.run(InvertedRay2DTest.class);
 	}

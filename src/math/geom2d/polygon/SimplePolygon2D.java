@@ -303,9 +303,9 @@ public class SimplePolygon2D implements Polygon2D {
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<Ring2D> getRings() {
-        ArrayList<Ring2D> rings = new ArrayList<Ring2D>(1);
-        rings.add(new Ring2D(points));
+    public Collection<LinearRing2D> getRings() {
+        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        rings.add(new LinearRing2D(points));
         return rings;
     }
 
@@ -313,14 +313,14 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Domain2D interface
 
     /**
-     * Returns a set of one Ring2D, which encloses the polygon.
+     * Returns a set of one LinearRing2D, which encloses the polygon.
      */
-    public BoundarySet2D<Ring2D> getBoundary() {
+    public BoundarySet2D<LinearRing2D> getBoundary() {
         Point2D[] array = new Point2D[this.points.size()];
         for (int i = 0; i<this.points.size(); i++)
             array[i] = this.points.get(i);
 
-        return new BoundarySet2D<Ring2D>(new Ring2D(array));
+        return new BoundarySet2D<LinearRing2D>(new LinearRing2D(array));
     }
 
     /**

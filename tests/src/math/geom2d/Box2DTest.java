@@ -28,7 +28,7 @@ package math.geom2d;
 import junit.framework.TestCase;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 
 public class Box2DTest extends TestCase {
 
@@ -87,7 +87,7 @@ public class Box2DTest extends TestCase {
 		// case of totally bounded box
 		Box2D box0000 = new Box2D(x1, x2, y1, y2);
 		Boundary2D bnd0000 = box0000.getBoundary();
-		assertTrue(bnd0000.equals(new Ring2D(
+		assertTrue(bnd0000.equals(new LinearRing2D(
 				new Point2D[]{p11, p21, p22, p12})));
 		
 		// case of totally unbounded box

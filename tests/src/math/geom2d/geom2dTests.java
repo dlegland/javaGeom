@@ -38,6 +38,7 @@ public class geom2dTests {
 		TestSuite suite = new TestSuite("Tests for package math.geom2d");
 		//$JUnit-BEGIN$
 		suite.addTest(math.geom2d.AllTests.suite());
+		suite.addTest(math.geom2d.circulinear.AllTests.suite());
 		suite.addTest(math.geom2d.conic.AllTests.suite());
 		suite.addTest(math.geom2d.curve.AllTests.suite());
 		suite.addTest(math.geom2d.domain.AllTests.suite());
