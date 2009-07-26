@@ -7,7 +7,7 @@ package math.geom2d.line;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
 
 /**
  * A curve that can be inscribed in a straight line, line a ray, a straight
@@ -15,7 +15,7 @@ import math.geom2d.curve.Curve2D;
  * 
  * @author dlegland
  */
-public interface LinearShape2D extends Curve2D {
+public interface LinearShape2D extends CirculinearCurve2D {
 
     public abstract StraightLine2D getSupportingLine();
 

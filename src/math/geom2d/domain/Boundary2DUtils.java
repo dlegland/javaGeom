@@ -34,9 +34,10 @@ public abstract class Boundary2DUtils {
     public final static CurveSet2D<ContinuousOrientedCurve2D> clipContinuousOrientedCurve(
             ContinuousOrientedCurve2D curve, Box2D box) {
 
-        CurveSet2D<ContinuousOrientedCurve2D> result = new CurveSet2D<ContinuousOrientedCurve2D>();
-        for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve,
-                box))
+        CurveSet2D<ContinuousOrientedCurve2D> result = 
+        	new CurveSet2D<ContinuousOrientedCurve2D>();
+        for (ContinuousCurve2D cont : 
+        	Curve2DUtils.clipContinuousCurve(curve, box))
             if (cont instanceof ContinuousOrientedCurve2D)
                 result.addCurve((ContinuousOrientedCurve2D) cont);
 
@@ -113,17 +114,19 @@ public abstract class Boundary2DUtils {
         // The set of boundary curves. Each curve of this set is either a
         // curve of the original boundary, or a composition of a portion of
         // original boundary with a portion of the box.
-        BoundarySet2D<ContinuousBoundary2D> res = new BoundarySet2D<ContinuousBoundary2D>();
+        BoundarySet2D<ContinuousBoundary2D> res = 
+        	new BoundarySet2D<ContinuousBoundary2D>();
 
         // to store result of curve clipping
         CurveSet2D<ContinuousOrientedCurve2D> clipped;
 
         // to store set of all clipped curves
-        CurveSet2D<ContinuousOrientedCurve2D> curveSet = new CurveSet2D<ContinuousOrientedCurve2D>();
+        CurveSet2D<ContinuousOrientedCurve2D> curveSet = 
+        	new CurveSet2D<ContinuousOrientedCurve2D>();
 
         // extract the oriented curves which constitutes the boundary
-        Collection<ContinuousBoundary2D> boundaryCurves = boundary
-                .getBoundaryCurves();
+        Collection<? extends ContinuousBoundary2D> boundaryCurves = 
+        	boundary.getBoundaryCurves();
 
         // Iterate on boundary curves: extract current curve (continuous and
         // oriented), clip it with box, and add clipped curves to the array
@@ -145,7 +148,8 @@ public abstract class Boundary2DUtils {
         boolean intersect = false;
 
         // also create array of curves
-        ContinuousOrientedCurve2D[] curves = new ContinuousOrientedCurve2D[nc];
+        ContinuousOrientedCurve2D[] curves = 
+        	new ContinuousOrientedCurve2D[nc];
 
         // boundary of the box
         Curve2D boxBoundary = box.getBoundary();
@@ -197,7 +201,8 @@ public abstract class Boundary2DUtils {
                 if (curve instanceof ContinuousBoundary2D) {
                     res.addCurve((ContinuousBoundary2D) curve);
                 } else {
-                    BoundaryPolyCurve2D<ContinuousOrientedCurve2D> bnd = new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
+                    BoundaryPolyCurve2D<ContinuousOrientedCurve2D> bnd = 
+                    	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
                     bnd.addCurve(curve);
                     res.addCurve(bnd);
                 }
@@ -209,7 +214,8 @@ public abstract class Boundary2DUtils {
             }
 
             // create a new Boundary curve
-            BoundaryPolyCurve2D<ContinuousOrientedCurve2D> boundary0 = new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
+            BoundaryPolyCurve2D<ContinuousOrientedCurve2D> boundary0 = 
+            	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
 
             // add current curve to boundary curve
             boundary0.addCurve(curve);
@@ -274,9 +280,7 @@ public abstract class Boundary2DUtils {
         if (!intersect) {
             Point2D vertex = box.getVertices().iterator().next();
             if (boundary.isInside(vertex))
-                res
-                        .addCurve(box.getAsRectangle().getBoundary()
-                                .getFirstCurve());
+                res.addCurve(box.getAsRectangle().getBoundary().getFirstCurve());
         }
 
         // return the result

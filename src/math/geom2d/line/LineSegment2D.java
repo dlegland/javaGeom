@@ -31,11 +31,14 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearElement2D;
+
 
 /**
  * Straight Edge defined by two points.
  */
-public class LineSegment2D extends AbstractLine2D implements Cloneable {
+public class LineSegment2D extends AbstractLine2D
+implements Cloneable, CirculinearElement2D {
 
     // ===================================================================
     // constants
@@ -47,7 +50,8 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     // static methods
 
     public final static StraightLine2D getMedian(LineSegment2D edge) {
-        return new StraightLine2D(edge.x0+edge.dx*.5, edge.y0+edge.dy*.5,
+        return new StraightLine2D(
+        		edge.x0+edge.dx*.5, edge.y0+edge.dy*.5,
                 -edge.dy, edge.dx);
     }
 
@@ -138,13 +142,6 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     // Methods specific to LineSegment2D
 
     /**
-     * Returns the length of the line segment.
-     */
-    public double getLength() {
-        return Math.hypot(dx, dy);
-    }
-
-    /**
      * Return the opposite vertex of the edge.
      * 
      * @param point one of the vertices of the edge
@@ -191,6 +188,26 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
     }
 
     // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+    /**
+     * Returns the length of the line segment.
+     */
+    public double getLength() {
+        return Math.hypot(dx, dy);
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public LineSegment2D getParallel(double d) {
+        double dd = Math.sqrt(dx*dx+dy*dy);
+        return new LineSegment2D(
+        		x0+dy*d/dd, y0-dx*d/dd, 
+        		x0+dx+dy*d/dd, y0+dy-dx*d/dd);
+	}
+
+    // ===================================================================
     // Methods implementing the OrientedCurve2D interface
 
     @Override
@@ -202,6 +219,48 @@ public class LineSegment2D extends AbstractLine2D implements Cloneable {
         double d = this.getDistance(x, y);
         return super.getSignedDistance(x, y)>0 ? d : -d;
     }
+    
+//    // ===================================================================
+//    // Methods implementing the CirculinearCurve2D interface
+//
+//	/* (non-Javadoc)
+//	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+//	 */
+//	public CirculinearCurve2D transform(CircleInversion2D inv) {
+//		// Extract inversion parameters
+//        Point2D center = inv.getCenter();
+//        double r = inv.getRadius();
+//        
+//        StraightLine2D line = this.getSupportingLine();
+//        
+//        Point2D po = line.getProjectedPoint(center);
+//        double d = line.getDistance(po);
+//
+//        // transform limits of edge, to obtain limits of arc
+//        Point2D p1 = this.getFirstPoint().transform(inv);
+//        Point2D p2 = this.getLastPoint().transform(inv);
+//
+//        // Degenerate case of a point belonging to the line:
+//        // the transform is the line itself.
+//        if (Math.abs(d)<Shape2D.ACCURACY){
+//        	return new LineSegment2D(p1, p2);
+//        }
+//        
+//        // angle from center to line
+//        double angle = Angle2D.getHorizontalAngle(center, po);
+//
+//        // center of transformed circle
+//        double r2 = r*r/d/2;
+//        Point2D c2 = Point2D.createPolar(center, r2, angle);
+//
+//        // compute start and end angles of arc
+//        double theta1 = Angle2D.getHorizontalAngle(c2, p1);
+//        double theta2 = Angle2D.getHorizontalAngle(c2, p2);
+//
+//        boolean direct = line.isInside(center);
+//
+//        return new CircleArc2D(c2, r2, theta1, theta2, direct);
+//	}
 
 
     // ===================================================================

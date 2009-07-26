@@ -72,8 +72,8 @@ public abstract class Polygon2DUtils {
         BoundarySet2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
             new BoundarySet2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
 
-        for (Ring2D polyline : polygon.getBoundary())
-            result.addCurve(Polyline2DUtils.createClosedParallel(polyline, d));
+        for (LinearRing2D ring : polygon.getBoundary())
+            result.addCurve(Polyline2DUtils.createClosedParallel(ring, d));
 
         return new GenericDomain2D(result);
     }
@@ -82,16 +82,16 @@ public abstract class Polygon2DUtils {
             Polygon2D polygon2) {
         
         // The resulting boundary
-        ArrayList<Ring2D> boundary = new ArrayList<Ring2D>();
+        ArrayList<LinearRing2D> boundary = new ArrayList<LinearRing2D>();
         
         // Extract polygon boundaries
-        BoundarySet2D<Ring2D> boundary1 = polygon1.getBoundary();
-        BoundarySet2D<Ring2D> boundary2 = polygon2.getBoundary();
+        BoundarySet2D<? extends LinearRing2D> boundary1 = polygon1.getBoundary();
+        BoundarySet2D<? extends LinearRing2D> boundary2 = polygon2.getBoundary();
         
         // compute intersections
         ArrayList<Point2D> intersections = new ArrayList<Point2D>();
-        for(Ring2D ring1 : boundary1.getCurves()){
-            for(Ring2D ring2 : boundary2.getCurves()){
+        for(LinearRing2D ring1 : boundary1.getCurves()){
+            for(LinearRing2D ring2 : boundary2.getCurves()){
                 intersections.addAll(Polyline2DUtils.intersect(ring1, ring2));
             }
         }
@@ -118,7 +118,7 @@ public abstract class Polygon2DUtils {
         //TODO: manage several boundaries
         
         // ---
-        // Manage next Ring2D
+        // Manage next LinearRing2D
         
         // prepare the point list for the new ring
         ArrayList<Point2D> points = new ArrayList<Point2D>();
@@ -137,7 +137,7 @@ public abstract class Polygon2DUtils {
         Point2D middlePoint = boundary1.getPoint(middlePos);
         //TODO: not sure about non continuous curves
         
-        BoundarySet2D<Ring2D> currentBoundary = 
+        BoundarySet2D<? extends LinearRing2D> currentBoundary = 
             polygon2.contains(middlePoint) ? boundary2 : boundary1;
         boolean isOnFirstBoundary = !polygon2.contains(middlePoint);
         

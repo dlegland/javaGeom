@@ -26,7 +26,8 @@
 
 package math.geom2d.conic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
@@ -34,13 +35,16 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.LinearShape2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * A circle arc, defined by the center and the radius of the containing circle,
@@ -55,7 +59,8 @@ import math.geom2d.line.LinearShape2D;
  * 
  * @author dlegland
  */
-public class CircleArc2D extends EllipseArc2D implements Cloneable {
+public class CircleArc2D extends EllipseArc2D
+implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     protected Circle2D circle;
 
@@ -147,16 +152,13 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
 
     /**
      * Returns the circle which contains the circle arc.
+     * @deprecated use getSupportingCircle instead
      */
+    @Deprecated
     public Circle2D getSupportCircle() {
         return circle;
     }
 
-    public CircleArc2D getParallel (double dist) {
-    	return new CircleArc2D(circle.getCenter(), circle.getRadius()+dist,
-    			startAngle, angleExtent);
-    }
-    
     
     /**
      * Change the center of the support circle.
@@ -198,9 +200,74 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
         return angleExtent>0;
     }
 
-    public double getLength() {
-        return circle.r*Math.abs(angleExtent);
+    // ===================================================================
+    // methods implementing CircularShape2D interface
+
+    /**
+     * Returns the circle which contains the circle arc.
+     */
+    public Circle2D getSupportingCircle() {
+        return circle;
     }
+
+    // ===================================================================
+    // Methods implementing the CirculinearCurve2D interface
+
+    public CircleArc2D getParallel (double dist) {
+    	double r = circle.getRadius();
+    	double r2 = Math.max(angleExtent>0 ? r+dist : r-dist, 0);
+    	return new CircleArc2D(
+    			circle.getCenter(), r2, 
+    			startAngle, angleExtent);
+    }
+    
+    public double getLength() {
+        return circle.getRadius()*Math.abs(angleExtent);
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 */
+	public double getLength(double pos) {
+		return pos*circle.getRadius();
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 */
+	public double getPosition(double length) {
+		return length/circle.getRadius();
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearElement2D transform(CircleInversion2D inv) {
+		// Extract inversion parameters
+        Point2D center = inv.getCenter();        
+        
+        // transform the extremities
+        Point2D p1 = this.getFirstPoint().transform(inv);
+        Point2D p2 = this.getLastPoint().transform(inv);
+        	
+        CirculinearElement2D element = circle.transform(inv);
+        
+        if(element instanceof Circle2D) {
+        	return new CircleArc2D(
+        			(Circle2D)element, 
+        			Angle2D.getHorizontalAngle(center, p1),
+        			Angle2D.getHorizontalAngle(center, p2),
+        			!this.isDirect());
+        } else if (element instanceof StraightLine2D) {
+            //TODO: add processing of special cases (arc contains transform center)            
+        	return new LineSegment2D(p1, p2);
+        } 
+        
+        System.err.println(
+        		"CircleArc2D.transform(): error in transforming circle by inversion");
+        return null;
+
+	}
 
     // ====================================================================
     // methods from interface OrientedCurve2D
@@ -347,6 +414,13 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     // ===================================================================
     // methods from interface ContinuousCurve2D
 
+    @Override
+    public Collection<? extends CircleArc2D> getSmoothPieces() {
+        ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
+        list.add(this);
+        return list;
+    }
+
     /**
      * a circle arc is never closed by definition.
      */
@@ -407,30 +481,7 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
      */
     @Override
     public Collection<Point2D> getIntersections(LinearShape2D line) {
-        // extract intersection with supporting circle
-        Collection<Point2D> points = circle.getIntersections(line);
-
-        // if no intersection, return empty array
-        if (points.size()==0)
-            return points;
-
-        // prepare iteration on points
-        // double[] angle = new double[points.length];
-        Point2D center = circle.getCenter();
-        ArrayList<Point2D> list = new ArrayList<Point2D>();
-
-        // iteration for each point
-        for (Point2D point : points) {
-            // angle of current point with horizontal
-            double angle = Angle2D.getHorizontalAngle(center, point);
-
-            // keep only points on the line, and with angle condition
-            if (this.containsAngle(angle)&&line.contains(point))
-                list.add(point);
-        }
-
-        // return result;
-        return list;
+    	return Circle2D.getIntersections(this, line);
     }
 
     @Override
@@ -527,6 +578,13 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     public CircleArc2D getReverseCurve() {
         return new CircleArc2D(this.circle, Angle2D.formatAngle(startAngle
                 +angleExtent), -angleExtent);
+    }
+
+    @Override
+    public Collection<? extends CircleArc2D> getContinuousCurves() {
+        ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
+        list.add(this);
+        return list;
     }
 
     /**
@@ -657,17 +715,15 @@ public class CircleArc2D extends EllipseArc2D implements Cloneable {
     @Override
     public boolean contains(double x, double y) {
         // Check if radius is correct
-        if (Math.abs(Point2D.getDistance(circle.xc, circle.yc, x, y)-circle.r)>Shape2D.ACCURACY)
+    	double r = circle.getRadius();
+        if (Math.abs(Point2D.getDistance(circle.xc, circle.yc, x, y)-r)>Shape2D.ACCURACY)
             return false;
 
-        // check if angle is contained in interval [startAngle-angleExtent]
+        // angle from circle center to point
         double angle = Angle2D.getHorizontalAngle(circle.xc, circle.yc, x, y);
-        if (angleExtent>0)
-            return Angle2D.formatAngle(angle-startAngle)<=Angle2D
-                    .formatAngle(angleExtent);
-        else
-            return Angle2D.formatAngle(angle-startAngle)>=Angle2D
-                    .formatAngle(angleExtent);
+        
+        // check if angle is contained in interval [startAngle-angleExtent]
+        return this.containsAngle(angle);
     }
 
     // public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){

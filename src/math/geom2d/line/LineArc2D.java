@@ -26,13 +26,15 @@
 
 package math.geom2d.line;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
-import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.SmoothOrientedCurve2D;
 
 /**
  * LineArc2D is a generic class to represent edges, straight lines, and rays.
@@ -43,8 +45,8 @@ import math.geom2d.domain.ContinuousOrientedCurve2D;
  * 
  * @author dlegland
  */
-public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
-        ContinuousOrientedCurve2D, Cloneable {
+public class LineArc2D extends AbstractLine2D 
+implements SmoothOrientedCurve2D, Cloneable {
 
     protected double t0 = 0;
     protected double t1 = 1;
@@ -59,7 +61,9 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
      * @param t1 the upper bound of line arc parameterization
      */
     public LineArc2D(Point2D point1, Point2D point2, double t0, double t1) {
-        this(point1.getX(), point1.getY(), point2.getX(), point2.getY(), t0, t1);
+        this(point1.getX(), point1.getY(), 
+        		point2.getX()-point1.getX(), point2.getY()-point1.getY(), 
+        		t0, t1);
     }
 
     /**
@@ -86,8 +90,8 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
     }
 
     /**
-     * Construct a line arc by the coordinate of two points and two positions on
-     * the line.
+     * Construct a line arc by the parameters of the supporting line and two
+     * positions on the line.
      * 
      * @param x1 the x-coordinate of the first point
      * @param y1 the y-coordinate of the first point
@@ -171,6 +175,34 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
     }
 
     // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public LineArc2D getParallel(double d) {
+        double dd = Math.hypot(dx, dy);
+        return new LineArc2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy, t0, t1);
+	}
+
+
+    // ===================================================================
+    // methods of ContinuousCurve2D interface
+
+    public math.geom2d.polygon.Polyline2D getAsPolyline(int n) {
+        if (!this.isBounded())
+            throw new UnboundedShapeException();
+
+        Point2D[] points = new Point2D[n+1];
+        double t0 = this.getT0();
+        double t1 = this.getT1();
+        double dt = (t1-t0)/n;
+        for (int i = 0; i<n; i++)
+            points[i] = this.getPoint(i*dt+t0);
+        return new math.geom2d.polygon.Polyline2D(points);
+    }
+
+    // ===================================================================
     // methods of Curve2D interface
 
     /**
@@ -199,6 +231,56 @@ public class LineArc2D extends AbstractLine2D implements SmoothCurve2D,
             throw new UnboundedShapeException();
         else
             return new Point2D(x0+dx*t, y0+dy*t);
+    }
+
+    /**
+     * Return the first point of the edge. In the case of a line, or a ray
+     * starting from -infinity, returns Point2D.INFINITY_POINT.
+     * 
+     * @return the last point of the arc
+     */
+    public Point2D getFirstPoint() {
+        if (!Double.isInfinite(t0))
+            return new Point2D(x0+t0*dx, y0+t0*dy);
+        else
+            throw new UnboundedShapeException();
+    }
+
+    /**
+     * Return the last point of the edge. In the case of a line, or a ray ending
+     * at infinity, returns Point2D.INFINITY_POINT.
+     * 
+     * @return the last point of the arc
+     */
+    public Point2D getLastPoint() {
+        if (!Double.isInfinite(t1))
+            return new Point2D(x0+t1*dx, y0+t1*dy);
+        else
+            throw new UnboundedShapeException();
+    }
+
+    public Collection<Point2D> getSingularPoints() {
+        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+        if (t0!=Double.NEGATIVE_INFINITY)
+            list.add(this.getFirstPoint());
+        if (t1!=Double.POSITIVE_INFINITY)
+            list.add(this.getLastPoint());
+        return list;
+    }
+
+    public boolean isSingular(double pos) {
+        if (Math.abs(pos-t0)<Shape2D.ACCURACY)
+            return true;
+        if (Math.abs(pos-t1)<Shape2D.ACCURACY)
+            return true;
+        return false;
+    }
+
+    @Override
+    public Collection<? extends LineArc2D> getContinuousCurves() {
+        ArrayList<LineArc2D> list = new ArrayList<LineArc2D>(1);
+        list.add(this);
+        return list;
     }
 
     /**

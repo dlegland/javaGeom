@@ -51,12 +51,12 @@ public class MultiPolygon2DTest extends TestCase {
 	}
 	
 	public void testGetVertex(){
-	    Ring2D tri1 = new Ring2D(new Point2D[]{
+	    LinearRing2D tri1 = new LinearRing2D(new Point2D[]{
 				new Point2D(0, 0), new Point2D(10, 0), new Point2D(10, 10)});
-		Ring2D tri2 = new Ring2D(new Point2D[]{
+		LinearRing2D tri2 = new LinearRing2D(new Point2D[]{
 				new Point2D(20, 0), new Point2D(30, 0), new Point2D(30, 10)});
 		MultiPolygon2D poly = new MultiPolygon2D(
-				new Ring2D[]{tri1,tri2});
+				new LinearRing2D[]{tri1,tri2});
 		
 		assertEquals(poly.getVertex(0), new Point2D(0, 0));
 		assertEquals(poly.getVertex(1), new Point2D(10, 0));

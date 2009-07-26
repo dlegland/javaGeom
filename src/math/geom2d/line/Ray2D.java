@@ -159,6 +159,18 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         this.dy = vect.getY();
     }
 
+
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public Ray2D getParallel(double d) {
+        double dd = Math.sqrt(dx*dx+dy*dy);
+        return new Ray2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+	}
+
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 

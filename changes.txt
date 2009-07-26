@@ -1,13 +1,17 @@
 Changes in javaGeom library
 
-javaGeom-0.7.? (2009.??.??, rev. ??)
+javaGeom-0.?.? (2009.??.??, rev. ??)
 
-- added Abstract classes to keep one single implementation of some methods:
-	+ AbstractSmoothCurve2D
-	+ AbstractContinuousCurve2D
+New features
+- Circulinear branch
 
-	
-javaGeom-0.7.1 (2009-04-24, rev. 198)
+Regressions
+- Ring2D renamed to LinearRing2D
+
+bug fixes
+- fixed bug in intersecting circle arc and line
+
+
 
 - added static builders for PolyBezierCurve2D
 - update class names in spline package

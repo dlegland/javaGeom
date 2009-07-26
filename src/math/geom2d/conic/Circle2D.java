@@ -27,21 +27,27 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Locale;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CircleLine2D;
+import math.geom2d.circulinear.CirculinearBoundary2D;
+import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * A circle in the plane, defined as the set of points located at an equal
@@ -50,7 +56,9 @@ import math.geom2d.line.StraightLine2D;
  * 
  * @author dlegland
  */
-public class Circle2D extends Ellipse2D implements Cloneable {
+public class Circle2D extends Ellipse2D
+implements Cloneable, CirculinearElement2D, CirculinearBoundary2D,
+CircularShape2D, CircleLine2D {
 
     /** the radius of the circle. */
     protected double r = 0;
@@ -62,6 +70,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
             Circle2D circle2) {
         ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
 
+        // extract center and radius of each circle
         Point2D center1 = circle1.getCenter();
         Point2D center2 = circle2.getCenter();
         double r1 = circle1.getRadius();
@@ -89,18 +98,74 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
+     * Compute intersections of a circle with a line. Return an array of
+     * Point2D, of size 0, 1 or 2 depending on the distance between circle and
+     * line. If there are 2 intersections points, the first one in the array is
+     * the first one on the line.
+     */
+    public final static Collection<Point2D> getIntersections(
+    		CircularShape2D circle,
+    		LinearShape2D line) {
+    	// initialize array of points (maximum 2 intersections)
+    	ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+
+    	// extract parameters of the circle
+    	Circle2D parent = circle.getSupportingCircle();
+    	Point2D center 	= parent.getCenter();
+    	double radius 	= parent.getRadius();
+    	
+    	// Compute line perpendicular to the test line, and going through the
+    	// circle center
+    	StraightLine2D perp = StraightLine2D.createPerpendicular(line, center);
+
+    	// Compute distance between line and circle center
+    	Point2D inter 	= perp.getIntersection(new StraightLine2D(line));
+    	double dist 	= inter.getDistance(center);
+
+    	// if the distance is the radius of the circle, return the
+    	// intersection point
+    	if (Math.abs(dist-radius)<Shape2D.ACCURACY) {
+    		if (line.contains(inter) && circle.contains(inter))
+    			intersections.add(inter);
+    		return intersections;
+    	}
+
+    	// compute angle of the line, and distance between 'inter' point and
+    	// each intersection point
+    	double angle 	= line.getHorizontalAngle();
+    	double d2 		= Math.sqrt(radius*radius-dist*dist);
+
+    	// Compute position and angle of intersection points
+    	Point2D p1 = Point2D.createPolar(inter, d2, angle+Math.PI);
+    	Point2D p2 = Point2D.createPolar(inter, d2, angle);
+
+    	// add points to the array only if they belong to the line
+    	if (line.contains(p1) && circle.contains(p1))
+    		intersections.add(p1);
+    	if (line.contains(p2) && circle.contains(p2))
+    		intersections.add(p2);
+
+    	// return the result
+    	return intersections;
+    }
+    
+    /**
      * Creates a circle containing 3 points.
      */
     public final static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
+    	// create two median lines
         StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);
         StraightLine2D line23 = StraightLine2D.createMedian(p2, p3);
 
+        // check medians are not parallel
         if (AbstractLine2D.isParallel(line12, line23))
             return null;
 
+        // Compute intersection of the medians, and circle radius
         Point2D center = AbstractLine2D.getIntersection(line12, line23);
         double radius = Point2D.getDistance(center, p2);
 
+        // return the created circle
         return new Circle2D(center, radius);
     }
 
@@ -136,11 +201,6 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     // ===================================================================
     // methods specific to class Circle2D
-
-    /** Returns perimeter of the circle (equal to 2*PI*radius). */
-    public double getLength() {
-        return r*Math.PI*2;
-    }
 
     public double getRadius() {
         return r;
@@ -179,16 +239,17 @@ public class Circle2D extends Ellipse2D implements Cloneable {
         this.r2 = r;
     }
 
+    // ===================================================================
+    // methods implementing CircularShape2D interface
+
     /**
-     * Return the parallel circle located at a distance d from this circle. For
-     * direct circle, distance is positive outside of the circle, and negative
-     * inside
+     * Returns the circle itself.
      */
-    @Override
-    public Circle2D getParallel(double d) {
-        return new Circle2D(xc, yc, Math.abs(r1+d), direct);
+    public Circle2D getSupportingCircle() {
+        return this;
     }
 
+    
     // ===================================================================
     // methods of Conic2D
 
@@ -203,7 +264,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
-     * Returns cartesian equation of the circle:
+     * Returns Cartesian equation of the circle:
      * <p>
      * <code>(x-xc)^2 + (y-yc)^2 = r^2</code>, giving:
      * <p>
@@ -223,7 +284,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     /**
-     * Return the first focus, whihc for a circle is the same point as the
+     * Return the first focus, which for a circle is the same point as the
      * center.
      */
     @Override
@@ -241,6 +302,82 @@ public class Circle2D extends Ellipse2D implements Cloneable {
     }
 
     // ===================================================================
+    // Methods implementing the CirculinearCurve2D interface
+
+    /**
+     * Returns the parallel circle located at a distance d from this circle.
+     * For direct circle, distance is positive outside of the circle,
+     * and negative inside. This is the contrary for indirect circles.
+     */
+    @Override
+    public Circle2D getParallel(double d) {
+    	double rp = Math.max(direct ? r+d : r-d, 0);
+        return new Circle2D(xc, yc, rp, direct);
+    }
+
+    /** Returns perimeter of the circle (equal to 2*PI*radius). */
+    public double getLength() {
+        return r*Math.PI*2;
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 */
+	public double getLength(double pos) {
+		return pos*this.r;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 */
+	public double getPosition(double length) {
+		return length/this.r;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CircleLine2D transform(CircleInversion2D inv) {
+		// Extract inversion parameters
+        Point2D center = inv.getCenter();        
+        Point2D c1 = this.getCenter();
+        
+        // If circles are concentric, creates directly the new circle
+        if(center.getDistance(c1)<Shape2D.ACCURACY) {
+        	double r0 = inv.getRadius();
+        	double r2 = r0*r0 / this.r;
+        	return new Circle2D(center, r2, this.direct);
+        }
+        
+        // line joining centers of the two circles
+        StraightLine2D line = new StraightLine2D(center, c1);
+
+        // transform the two extreme points of the circle
+        Collection<Point2D> points = this.getIntersections(line);
+        Iterator<Point2D> iter = points.iterator();
+        Point2D p1 = iter.next().transform(inv);
+        Point2D p2 = iter.next().transform(inv);
+
+        // If the circle contains the inversion center, it transforms into a
+        // straight line
+        if(this.getDistance(center)<Shape2D.ACCURACY) {
+        	Point2D p0 = center.getDistance(p1)<Shape2D.ACCURACY ? p2 : p1;
+        	p0 = p0.transform(inv);
+        	return StraightLine2D.createPerpendicular(line, p0);
+        } 
+        
+        // For regular cases, the circle transforms into an other circle
+        
+        // compute center and diameter of transformed circle
+        double d = p1.getDistance(p2);
+        c1 = Point2D.midPoint(p1, p2);
+
+        // create the transformed circle
+        return new Circle2D(c1, d/2, !this.isDirect());
+	}
+
+	
+	// ===================================================================
     // methods of SmoothCurve2D interface
 
     @Override
@@ -264,6 +401,15 @@ public class Circle2D extends Ellipse2D implements Cloneable {
 
     // ===================================================================
     // methods of ContinuousCurve2D interface
+
+    /**
+     * Returns a set of smooth curves, which contains only the circle.
+     */
+    public Collection<? extends Circle2D> getSmoothPieces() {
+        ArrayList<Circle2D> list = new ArrayList<Circle2D>(1);
+        list.add(this);
+        return list;
+    }
 
     // ===================================================================
     // methods of OrientedCurve2D interface
@@ -365,6 +511,13 @@ public class Circle2D extends Ellipse2D implements Cloneable {
         return new CircleArc2D(this, startAngle, extent);
     }
 
+    @Override
+    public Collection<? extends Circle2D> getContinuousCurves() {
+        ArrayList<Circle2D> list = new ArrayList<Circle2D>(1);
+        list.add(this);
+        return list;
+    }
+
     // ===================================================================
     // methods of Shape2D interface
 
@@ -388,41 +541,7 @@ public class Circle2D extends Ellipse2D implements Cloneable {
      */
     @Override
     public Collection<Point2D> getIntersections(LinearShape2D line) {
-        // initialize array of points
-        ArrayList<Point2D> intersections = new ArrayList<Point2D>();
-
-        // Compute line perpendicular to the test line, and going through the
-        // circle center
-        Point2D center = new Point2D(xc, yc);
-        StraightLine2D perp = StraightLine2D.createPerpendicular(line, center);
-
-        // Compute distance between line and circle center
-        Point2D inter = perp.getIntersection(new StraightLine2D(line));
-        double dist = inter.getDistance(xc, yc);
-
-        // if the distance is the radius of the circle, return the
-        // intersection point
-        if (Math.abs(dist-r)<Shape2D.ACCURACY) {
-            if (line.contains(inter))
-                intersections.add(inter);
-            return intersections;
-        }
-
-        // compute angle of the line, and distance between 'inter' point and
-        // each intersection point
-        double angle = line.getHorizontalAngle();
-        double d2 = Math.sqrt(r*r-dist*dist);
-
-        // Compute position and angle of intersection points
-        Point2D p1 = Point2D.createPolar(inter, d2, angle+Math.PI);
-        Point2D p2 = Point2D.createPolar(inter, d2, angle);
-
-        if (line.contains(p1))
-            intersections.add(p1);
-        if (line.contains(p2))
-            intersections.add(p2);
-
-        return intersections;
+    	return Circle2D.getIntersections(this, line);
     }
 
     /**
@@ -432,12 +551,13 @@ public class Circle2D extends Ellipse2D implements Cloneable {
      * which contains 0 curves.
      */
     @Override
-    public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
+    public CurveSet2D<? extends CirculinearElement2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<SmoothOrientedCurve2D> result = new CurveSet2D<SmoothOrientedCurve2D>();
+        CurveSet2D<CirculinearElement2D> result = 
+        	new CurveSet2D<CirculinearElement2D>();
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

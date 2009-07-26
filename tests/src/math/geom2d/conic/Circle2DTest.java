@@ -31,11 +31,13 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * @author Legland
@@ -66,6 +68,50 @@ public class Circle2DTest extends TestCase {
 	    Circle2D circle = new Circle2D(10, 20, 30);
 	    Circle2D parallel = circle.getParallel(10);
 	    assertEquals(parallel, new Circle2D(10, 20, 40));
+	    parallel = circle.getParallel(-10);
+	    assertEquals(parallel, new Circle2D(10, 20, 20));
+	    
+	}
+	
+	public void testGetParallelInverse() {
+	    Circle2D circle = new Circle2D(10, 20, 30, false);
+	    Circle2D parallel = circle.getParallel(10);
+	    assertEquals(parallel, new Circle2D(10, 20, 20, false));
+	    parallel = circle.getParallel(-10);
+	    assertEquals(parallel, new Circle2D(10, 20, 40, false));
+	}
+	
+	public void testTransformInversion2D () {
+		Circle2D base = new Circle2D(0, 0, 100);
+		CircleInversion2D inv = new CircleInversion2D(base);
+		
+		Circle2D circle;
+		CirculinearCurve2D res;
+		
+		// Circle inside base circle
+		circle = new Circle2D(60, 20, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof Circle2D);
+	    
+		// Circle outside base circle
+		circle = new Circle2D(160, 20, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof Circle2D);
+	    
+		// Circle touching base circle
+		circle = new Circle2D(100, 10, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof Circle2D);
+	    
+		// concentric circles
+		circle = new Circle2D(0, 0, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof Circle2D);
+	    
+		// Circle containing inversion center -> transform to line
+		circle = new Circle2D(30, 0, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof StraightLine2D);	    
 	}
 	
 	public void testContainsDoubleDouble() {
@@ -226,7 +272,11 @@ public class Circle2DTest extends TestCase {
 		assertTrue(points1.iterator().next().equals(new Point2D(10, 0)));
 		assertTrue(points2.iterator().next().equals(new Point2D(0, 10)));
 		assertTrue(points3.iterator().next().equals(new Point2D(-10, 0)));
-		assertTrue(points4.iterator().next().equals(new Point2D(0, -10)));		
+		assertTrue(points4.iterator().next().equals(new Point2D(0, -10)));
+		
+		circle = new Circle2D(50, 100, 50);
+		LineSegment2D line = new LineSegment2D(new Point2D(100, 0), new Point2D(100, 100));
+		assertTrue(circle.getIntersections(line).size()==1);
 	}
 	
 	public void testGetIntersectionsCircle2DCircle2D(){
@@ -266,7 +316,7 @@ public class Circle2DTest extends TestCase {
 	}
 	
 	
-	public void testTransform(){
+	public void testTransformAffineTransform2D(){
 		Circle2D circle = new Circle2D(2, 3, 4);
 		
 		Ellipse2D transformed;

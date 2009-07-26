@@ -26,15 +26,19 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
-import math.geom2d.conic.Parabola2D;
-import math.geom2d.conic.ParabolaArc2D;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 
 
@@ -65,7 +69,7 @@ public class DrawOblicParabolaDemo extends JPanel{
 		Polyline2D polyline = arc.getAsPolyline(10);
 		
 		g2.setColor(Color.YELLOW);
-		new GenericDomain2D(new Ring2D(polyline.getVertices())).fill(g2);
+		new GenericDomain2D(new LinearRing2D(polyline.getVertices())).fill(g2);
 
 		g2.setColor(Color.BLUE);
 		box.getBoundary().draw(g2);

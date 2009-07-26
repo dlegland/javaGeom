@@ -36,7 +36,7 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.Polyline2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
@@ -74,6 +74,14 @@ public class CircleInversion2D implements Transform2D {
     // ===================================================================
     // accessors
 
+    public Point2D getCenter() {
+    	return circle.getCenter();
+    }
+    
+    public double getRadius() {
+    	return circle.getRadius();
+    }
+    
     public void setCircle(double xc, double yc, double r) {
         this.circle = new Circle2D(xc, yc, r);
     }
@@ -183,12 +191,12 @@ public class CircleInversion2D implements Transform2D {
             return new PolyCurve2D<CircleArc2D>(arcs);
         } else if (shape instanceof Polygon2D) {
             // get all rings of polygon
-            Collection<Ring2D> rings = ((Polygon2D) shape).getRings();
+            Collection<? extends LinearRing2D> rings = ((Polygon2D) shape).getRings();
 
             // for each ring, create a curve formed by several circle arcs
             ArrayList<BoundaryPolyCurve2D<CircleArc2D>> curves = 
                 new ArrayList<BoundaryPolyCurve2D<CircleArc2D>>(rings.size());    
-            for (Ring2D ring : rings)
+            for (LinearRing2D ring : rings)
                 curves.add(this.transformRing(ring));
 
             // create new shape by putting all boundaries together
@@ -217,7 +225,7 @@ public class CircleInversion2D implements Transform2D {
         return Point2D.createPolar(center, d, theta);
     }
 
-    public BoundaryPolyCurve2D<CircleArc2D> transformRing(Ring2D ring) {    
+    public BoundaryPolyCurve2D<CircleArc2D> transformRing(LinearRing2D ring) {    
         // get all edges of the ring
         Collection<LineSegment2D> edges = ring.getEdges();
 

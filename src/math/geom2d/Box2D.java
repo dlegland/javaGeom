@@ -41,7 +41,7 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.HRectangle2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 
 /**
  * This class defines bounds of a shape. It stores limits in each direction:
@@ -264,7 +264,7 @@ public class Box2D implements Cloneable {
             pts[1] = new Point2D(xmax, ymin);
             pts[2] = new Point2D(xmax, ymax);
             pts[3] = new Point2D(xmin, ymax);
-            return new Ring2D(pts);
+            return new LinearRing2D(pts);
         }
 
         // extract boolean info on "boundedness" in each direction

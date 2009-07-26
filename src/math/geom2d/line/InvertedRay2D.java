@@ -70,9 +70,9 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * direction of <code>point2<\code>.
      */
     public InvertedRay2D(Point2D point1, Point2D point2) {
-        this(point1.getX(), point1.getY(), point2.getX()-point1.getX(), point2
-                .getY()
-                -point1.getY());
+        this(point1.getX(), point1.getY(), 
+        		point2.getX()-point1.getX(), 
+        		point2.getY()-point1.getY());
     }
 
     /**
@@ -159,6 +159,17 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
         this.dx = vect.getX();
         this.dy = vect.getY();
     }
+
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 */
+	public InvertedRay2D getParallel(double d) {
+        double dd = Math.sqrt(dx*dx+dy*dy);
+        return new InvertedRay2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+	}
 
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
@@ -248,4 +259,5 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     public InvertedRay2D clone() {
         return new InvertedRay2D(x0, y0, dx, dy);
     }
+
 }

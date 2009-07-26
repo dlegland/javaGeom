@@ -405,6 +405,12 @@ implements SmoothOrientedCurve2D, Cloneable {
                 +angleExtent), -angleExtent);
     }
 
+    public Collection<? extends EllipseArc2D> getContinuousCurves() {
+        ArrayList<EllipseArc2D> list = new ArrayList<EllipseArc2D>(1);
+        list.add(this);
+        return list;
+    }
+
     /**
      * Returns a new EllipseArc2D.
      */

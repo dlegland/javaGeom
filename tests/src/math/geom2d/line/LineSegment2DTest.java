@@ -48,13 +48,6 @@ public class LineSegment2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LineSegment2DTest.class);
 	}
 
-	public void testGetLength() {
-        Point2D p1 = new Point2D(10, 10);
-        Point2D p2 = new Point2D(40, 50);
-        LineSegment2D edge = new LineSegment2D(p1, p2);
-        assertEquals(50, edge.getLength(), 1e-14);    
-	}
-	
 	public void testGetOtherPoint() {
         Point2D p1 = new Point2D(10, 10);
         Point2D p2 = new Point2D(40, 50);
@@ -127,6 +120,25 @@ public class LineSegment2DTest extends TestCase {
         assertTrue(lineB1.isParallel(lineB2));
         assertTrue(lineB2.isParallel(lineB1));
         assertTrue(lineB1.isParallel(lineB3));
+    }
+    
+	public void testGetLength() {
+        Point2D p1 = new Point2D(10, 10);
+        Point2D p2 = new Point2D(40, 50);
+        LineSegment2D edge = new LineSegment2D(p1, p2);
+        assertEquals(50, edge.getLength(), 1e-14);    
+	}
+	
+    public void testGetParallelDouble() {
+    	Point2D p1 = new Point2D(1, 1);
+    	Point2D p2 = new Point2D(1, 3);
+    	LineSegment2D line1 = new LineSegment2D(p1, p2);
+    	
+    	Point2D p1p = new Point2D(2, 1);
+    	Point2D p2p = new Point2D(2, 3);
+    	LineSegment2D line1p = new LineSegment2D(p1p, p2p);
+    	
+    	assertTrue(line1.getParallel(1).equals(line1p));
     }
 
 	/*

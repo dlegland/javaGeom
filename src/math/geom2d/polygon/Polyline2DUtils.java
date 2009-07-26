@@ -190,8 +190,7 @@ public abstract class Polyline2DUtils {
      * @return the curve parallel to the original curve at a distance d
      */
     public final static BoundaryPolyCurve2D<SmoothOrientedCurve2D>
-    createClosedParallel(
-            Ring2D polyline, double d) {
+    createClosedParallel(LinearRing2D polyline, double d) {
 
         // Collection of parallel curves
         BoundaryPolyCurve2D<SmoothOrientedCurve2D> result = 

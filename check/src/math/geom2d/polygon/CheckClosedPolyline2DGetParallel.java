@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.polygon.Ring2D;
+import math.geom2d.polygon.LinearRing2D;
 
 /**
  * @author dlegland
@@ -21,12 +21,12 @@ import math.geom2d.polygon.Ring2D;
 public class CheckClosedPolyline2DGetParallel extends JPanel{
 	private static final long serialVersionUID = 1L;
 
-	Ring2D ring;
+	LinearRing2D ring;
 	Curve2D parallel;
 	
 	public CheckClosedPolyline2DGetParallel(){
 		
-	    ring = new Ring2D(new Point2D[]{
+	    ring = new LinearRing2D(new Point2D[]{
 				new Point2D(50, 50),
 				new Point2D(100, 50),
 				new Point2D(100, 100),
@@ -42,10 +42,10 @@ public class CheckClosedPolyline2DGetParallel extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 
-		parallel = Polyline2DUtils.createClosedParallel(ring, 20);
+		parallel = ring.getParallel(30);
 		parallel.draw(g2);
 		
-		parallel = Polyline2DUtils.createClosedParallel(ring, -10);
+		parallel = ring.getParallel(-10);
 		parallel.draw(g2);
 	}
 	

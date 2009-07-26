@@ -59,7 +59,7 @@ public interface Polygon2D extends Domain2D {
     public abstract int getVertexNumber();
 
     /** Return the edges as line segments of the polygon */
-    public abstract Collection<LineSegment2D> getEdges();
+    public abstract Collection<? extends LineSegment2D> getEdges();
 
     /** Returns the number of edges of the polygon */
     public abstract int getEdgeNumber();
@@ -68,13 +68,13 @@ public interface Polygon2D extends Domain2D {
      * Returns the set of rings comprising the boundary of this polygon.
      * @return the set of boundary rings.
      */
-    public abstract Collection<Ring2D> getRings();
+    public abstract Collection<? extends LinearRing2D> getRings();
 
     
     // ===================================================================
     // general methods
 
-    public abstract BoundarySet2D<Ring2D> getBoundary();
+    public abstract BoundarySet2D<? extends LinearRing2D> getBoundary();
 
     /**
      * Returns the new Polygon created by an affine transform of this polygon.

@@ -39,10 +39,14 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CircleLine2D;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.domain.SmoothBoundary2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * Representation of straight lines. Such lines can be constructed using two
@@ -50,7 +54,7 @@ import math.geom2d.polygon.Polyline2D;
  * of the Cartesian equation.
  */
 public class StraightLine2D extends AbstractLine2D implements
-        ContinuousBoundary2D, Cloneable {
+        SmoothBoundary2D, Cloneable, CircleLine2D {
 
     // ===================================================================
     // constants
@@ -394,7 +398,10 @@ public class StraightLine2D extends AbstractLine2D implements
         return new StraightLine2D(point, dx, dy);
     }
 
-    /**
+    // ===================================================================
+    // methods implementing the CirculinearCurve2D interface
+
+   /**
      * Return the parallel line located at a distance d. Distance is positive in
      * the 'right' side of the line (outside of the limiting half-plane), and
      * negative in the 'left' of the line.
@@ -412,6 +419,38 @@ public class StraightLine2D extends AbstractLine2D implements
     public StraightLine2D getPerpendicular(Point2D point) {
         return new StraightLine2D(point, -dy, dx);
     }
+    
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CircleLine2D transform(CircleInversion2D inv) {
+		// Extract inversion parameters
+        Point2D center 	= inv.getCenter();
+        double r 		= inv.getRadius();
+        
+        Point2D po 	= this.getProjectedPoint(center);
+        double d 	= this.getDistance(po);
+
+        // Degenerate case of a point belonging to the line:
+        // the transform is the line itself.
+        if (Math.abs(d)<Shape2D.ACCURACY){
+        	return new StraightLine2D(this);
+        }
+        
+        // angle from center to line
+        double angle = Angle2D.getHorizontalAngle(center, po);
+
+        // center of transformed circle
+        double r2 	= r*r/d/2;
+        Point2D c2 	= Point2D.createPolar(center, r2, angle);
+
+        // choose direction of circle arc
+        boolean direct = !this.isInside(center);
+        
+        // return the created circle
+        return new Circle2D(c2, r2, direct);
+    }
+	
 
     // ===================================================================
     // methods specific to Boundary2D interface
