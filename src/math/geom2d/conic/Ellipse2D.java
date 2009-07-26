@@ -1131,8 +1131,8 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     
     @Override
     public String toString() {
-        return String.format("Ellipse2D(%f %f %f %f %f°)", 
-                xc, yc, r1, r2, Math.toDegrees(theta));
+        return String.format("Ellipse2D(%f,%f,%f,%f,%f,%s)", 
+                xc, yc, r1, r2, theta, direct?"true":"false");
     }
 
     // /**

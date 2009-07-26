@@ -542,6 +542,11 @@ public class Box2D implements Cloneable {
     // ===================================================================
     // methods from Object interface
 
+    @Override
+    public String toString() {
+        return new String("Box2D("+xmin+","+xmax+","+ymin+","+ymax+")");
+    }
+
     /**
      * Test if boxes are the same. two boxes are the same if the have the same
      * bounds.

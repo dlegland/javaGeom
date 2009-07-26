@@ -574,6 +574,19 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         return dst;
     }
 
+    // ===================================================================
+    // Override the Object methods
+
+    /**
+     * Displays the coefficients of the transform, row by row.
+     */
+    @Override
+    public String toString() {
+        return new String("AffineTransform2D(" +
+        		m00 + "," + m01 + "," + m02 + "," + 
+        		m10 + "," + m11 + "," + m12 + "," );
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof AffineTransform2D))

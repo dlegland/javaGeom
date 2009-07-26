@@ -47,26 +47,30 @@ public class Vector2D implements Cloneable {
     // ===================================================================
     // constructors
 
-    /** construct a new Vectors initialized with x=1 and y=0. */
+    /** 
+     * Constructs a new Vectors initialized with x=1 and y=0. 
+     */
     public Vector2D() {
         this(1, 0);
     }
 
     /**
-     * construct a new vector between origin and the point.
+     * Constructs a new vector between the origin and the given point.
      */
     public Vector2D(java.awt.geom.Point2D point) {
         this(point.getX(), point.getY());
     }
 
     /**
-     * construct a new vector between two points
+     * Constructs a new vector between two points
      */
     public Vector2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
         this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
     }
 
-    /** constructor with given position. */
+    /** 
+     * Constructs a new vector with the given coordinates. 
+     */
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
@@ -75,6 +79,10 @@ public class Vector2D implements Cloneable {
     // ===================================================================
     // static functions
 
+    /**
+     * Creates a new vector by specifying the distance to the origin, and the
+     * angle with the horizontal.
+     */
     public final static Vector2D createPolar(double rho, double theta) {
         return new Vector2D(rho*Math.cos(theta), rho*Math.sin(theta));
     }

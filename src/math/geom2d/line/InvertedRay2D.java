@@ -240,6 +240,12 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // methods implementing the Object interface
 
     @Override
+    public String toString() {
+        return new String("InvertedRay2D(" + x0 + "," + y0 + "," + 
+        		dx + "," + dy + ")");
+    }
+    
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof InvertedRay2D))
             return false;

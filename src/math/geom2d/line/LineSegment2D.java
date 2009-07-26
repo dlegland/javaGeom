@@ -35,7 +35,9 @@ import math.geom2d.circulinear.CirculinearElement2D;
 
 
 /**
- * Straight Edge defined by two points.
+ * Line segment, defined as the set of points located between the two end
+ * points.
+ * {@See Line2D}
  */
 public class LineSegment2D extends AbstractLine2D
 implements Cloneable, CirculinearElement2D {
@@ -392,8 +394,8 @@ implements Cloneable, CirculinearElement2D {
 
     @Override
     public String toString() {
-        return new String("LineSegment2D[(" + x0 + ", " + y0 + ")-(" 
-                + (x0+dx) + ", " + (y0+dy) + ")]");
+        return new String("LineSegment2D[(" + x0 + "," + y0 + ")-(" 
+                + (x0+dx) + "," + (y0+dy) + ")]");
     }
     
     @Override

@@ -553,6 +553,12 @@ implements ContinuousBoundary2D, Conic2D, Cloneable {
     // Methods inherited from the object class
 
     @Override
+    public String toString() {
+        return String.format("Parabola2D(%f,%f,%f,%f)", 
+                xv, yv, a, theta);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Parabola2D))
             return false;
