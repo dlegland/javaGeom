@@ -1,7 +1,7 @@
 /**
  * 
  */
-package math.geom2d.circulinear;
+package math.geom2d.point;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,42 +11,49 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.conic.Circle2D;
+import math.geom2d.domain.Domain2D;
 
 /**
  * @author dlegland
  *
  */
-public class CheckGetBufferCircles extends JPanel{
+public class CheckGetBufferPoint extends JPanel{
 	private static final long serialVersionUID = 1L;
 
-	CirculinearCurve2D curve;
-	CirculinearDomain2D domain;
+	Point2D point;
+	Domain2D domain1;
+	Domain2D domain2;
 	
-	public CheckGetBufferCircles(){
-		Circle2D circle1 = new Circle2D(new Point2D(100, 100), 50);
-		Circle2D circle2 = new Circle2D(new Point2D(200, 100), 40);
-		curve = new CirculinearCurveSet2D<Circle2D>(
-				new Circle2D[]{circle1, circle2});
-		
-		domain = curve.getBuffer(30);
+	public CheckGetBufferPoint(){
+		point = new Point2D(150, 150);
+		domain1 = point.getBuffer(20);
+		domain2 = point.getBuffer(-50);
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
+		// draw buffer with posiive distance
 		g2.setColor(Color.CYAN);
-		domain.fill(g2);
+		domain1.fill(g2);
 		g2.setColor(Color.BLUE);
-		domain.draw(g2);
+		domain1.draw(g2);
+		
+		// draw buffer with negative distance
+		Box2D box = new Box2D(50, 250, 50, 250);
+		g2.setColor(Color.CYAN);
+		domain2.clip(box).fill(g2);
+		g2.setColor(Color.BLUE);
+		domain2.draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		curve.draw(g2);
+		point.draw(g2, 5);
 	}
 	
 	public final static void main(String[] args){
-		JPanel panel = new CheckGetBufferCircles();
+		JPanel panel = new CheckGetBufferPoint();
 		panel.setPreferredSize(new Dimension(500, 400));
 		JFrame frame = new JFrame("Compute buffer of circles");
 		frame.setContentPane(panel);

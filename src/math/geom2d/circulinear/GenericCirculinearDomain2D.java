@@ -24,12 +24,22 @@ implements CirculinearDomain2D {
     // ===================================================================
     // constructors
 
-	GenericCirculinearDomain2D(CirculinearBoundary2D boundary) {
+	public GenericCirculinearDomain2D(CirculinearBoundary2D boundary) {
 		super(boundary);
 	}
 	
 	public CirculinearBoundary2D getBoundary() {
 		return (CirculinearBoundary2D) boundary;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return new GenericCirculinearDomain2D(
+				CirculinearBoundarySet2D.create(
+						CirculinearCurve2DUtils.splitIntersectingContours(
+								this.getBoundary().getContinuousCurves())));
 	}
 
 	/* (non-Javadoc)

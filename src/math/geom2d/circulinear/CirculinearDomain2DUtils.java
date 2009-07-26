@@ -94,7 +94,8 @@ public class CirculinearDomain2DUtils {
 				// compute distance to original curve
 				// (assuming it is sufficient to compute distance to vertices
 				// of the reference curve).
-				double dist = CirculinearCurve2DUtils.getDistanceToVertices(split, curve);
+				double dist = CirculinearCurve2DUtils.getDistanceCurvePoints(
+						curve, split.getSingularPoints());
 				
 				// check if distance condition is verified
 				if(dist-d<-Shape2D.ACCURACY)

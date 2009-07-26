@@ -93,7 +93,13 @@ implements CirculinearContour2D {
 		return new GenericCirculinearDomain2D(this);
 	}
 
-	public CirculinearRing2D getReverseCurve(){
+    public Collection<? extends CirculinearRing2D> getContinuousCurves() {
+        ArrayList<CirculinearRing2D> list = new ArrayList<CirculinearRing2D>(1);
+        list.add(this);
+        return list;
+    }
+
+    public CirculinearRing2D getReverseCurve(){
     	int n = curves.size();
         // create array of reversed curves
     	CirculinearElement2D[] curves2 = new CirculinearElement2D[n];

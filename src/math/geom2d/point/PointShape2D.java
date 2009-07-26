@@ -13,7 +13,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearShape2D;
 
 
 /**
@@ -23,7 +23,7 @@ import math.geom2d.Shape2D;
  * @author dlegland
  *
  */
-public interface PointShape2D extends Shape2D, Iterable<Point2D> {
+public interface PointShape2D extends CirculinearShape2D, Iterable<Point2D> {
 
     /**
      * Returns the points in the shape as a collection.

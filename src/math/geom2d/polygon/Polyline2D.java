@@ -36,6 +36,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.curve.AbstractContinuousCurve2D;
@@ -254,6 +255,13 @@ implements ContinuousCirculinearCurve2D, Cloneable {
 		
 		// return the result
 		return pos;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)

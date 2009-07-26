@@ -36,6 +36,8 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearShape2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -156,7 +158,14 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     // ===================================================================
     // Methods implementing CirculinearShape2D interface
 
-    public PointArray2D transform(CircleInversion2D inv) {
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+	}
+
+	public PointArray2D transform(CircleInversion2D inv) {
     	
     	PointArray2D array = new PointArray2D(points.size());
     	

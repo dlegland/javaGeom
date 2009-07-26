@@ -8,6 +8,8 @@
  */
 package math.geom2d.circulinear;
 
+import java.util.Collection;
+
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.Boundary2D;
@@ -24,6 +26,7 @@ public interface CirculinearBoundary2D extends CirculinearCurve2D, Boundary2D {
     // ===================================================================
     // redefines declaration of some interfaces
 
+    public Collection<? extends CirculinearContour2D> getContinuousCurves();
 	public CurveSet2D<? extends ContinuousCirculinearCurve2D> clip(Box2D box);
     public CirculinearBoundary2D transform(CircleInversion2D inv);
 	public CirculinearBoundary2D getReverseCurve();

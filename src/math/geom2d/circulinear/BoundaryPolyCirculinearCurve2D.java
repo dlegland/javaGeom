@@ -35,6 +35,17 @@ public class BoundaryPolyCirculinearCurve2D<T extends ContinuousCirculinearCurve
 extends PolyCirculinearCurve2D<T> 
 implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 
+	
+    // ===================================================================
+    // static constructor
+	
+	public final static BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>
+	create(Collection<? extends ContinuousCirculinearCurve2D> curves) {
+		return new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
+				curves);
+	}
+
+	
     // ===================================================================
     // constructors
 
