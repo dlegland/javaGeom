@@ -26,10 +26,15 @@
  */
 package math.geom2d.line;
 
+import java.util.Collection;
+
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import junit.framework.TestCase;
+import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 
 /**
  * @author Legland
@@ -48,6 +53,22 @@ public class LineSegment2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LineSegment2DTest.class);
 	}
 
+	public void testGetBuffer() {
+		// create a line segment, and computes its buffer
+	    LineSegment2D line = new LineSegment2D(50, 100, 150, 100);
+	    Domain2D buffer = line.getBuffer(20);
+	    
+	    // The buffer should be defined by a single boundary curve
+	    Boundary2D boundary = buffer.getBoundary();
+	    assertTrue(boundary.getContinuousCurves().size()==1);
+	    
+	    // The contour is composed of 4 smooth pieces (2 line segments, and
+	    // two circle arcs)
+	    Collection<? extends SmoothCurve2D> smoothCurves =
+	    	boundary.getContinuousCurves().iterator().next().getSmoothPieces();
+	    assertTrue(smoothCurves.size()==4);
+	}
+	
 	public void testGetOtherPoint() {
         Point2D p1 = new Point2D(10, 10);
         Point2D p2 = new Point2D(40, 50);

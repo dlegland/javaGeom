@@ -22,7 +22,6 @@ import math.geom2d.line.LineSegment2D;
  */
 public class SquareGrid2D implements Grid2D {
 
-    // TODO: mutable or not ?
     double x0 = 0;
     double y0 = 0;
 
@@ -64,6 +63,10 @@ public class SquareGrid2D implements Grid2D {
         this.sy = sy;
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setOrigin(Point2D point) {
         this.x0 = point.getX();
         this.y0 = point.getY();
@@ -81,11 +84,19 @@ public class SquareGrid2D implements Grid2D {
         return sy;
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setSize(double s) {
         sx = s;
         sy = s;
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setSize(double sx, double sy) {
         this.sx = sx;
         this.sy = sy;

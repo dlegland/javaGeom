@@ -20,9 +20,11 @@ import math.geom2d.line.LineSegment2D;
  */
 public interface Grid2D {
 
-    public abstract PointSet2D getVertices(Box2D box);
+	public Point2D getOrigin();
+	
+    public PointSet2D getVertices(Box2D box);
 
-    public abstract Collection<LineSegment2D> getEdges(Box2D box);
+    public Collection<LineSegment2D> getEdges(Box2D box);
 
-    public abstract Point2D getClosestVertex(java.awt.geom.Point2D point);
+    public Point2D getClosestVertex(java.awt.geom.Point2D point);
 }

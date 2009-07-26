@@ -678,10 +678,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
     }
 
     public Collection<? extends AbstractLine2D> getContinuousCurves() {
-        ArrayList<AbstractLine2D> list = 
-        	new ArrayList<AbstractLine2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     // ===================================================================

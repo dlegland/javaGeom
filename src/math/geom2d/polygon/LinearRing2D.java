@@ -342,9 +342,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
     }
 
     public Collection<? extends LinearRing2D> getContinuousCurves() {
-        ArrayList<LinearRing2D> list = new ArrayList<LinearRing2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**

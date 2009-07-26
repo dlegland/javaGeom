@@ -95,4 +95,23 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			CirculinearCurve2DUtils.splitIntersectingContours(rings);
 		assertTrue(result.size()==3);
 	}
+	
+	public void testFindSelfIntersections () {
+		// create polyline
+		LinearRing2D line = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 0), 
+				new Point2D(0, 0),
+				new Point2D(0, 100),
+				new Point2D(200, 100),
+				new Point2D(200, 200),
+				new Point2D(100, 200) });
+		
+		// detection of intersections
+		Collection<Point2D> points = 
+			CirculinearCurve2DUtils.findSelfIntersections(line);
+
+		assertEquals(points.size(), 1);
+		
+		assertTrue(points.contains(new Point2D(100, 100)));
+	}
 }

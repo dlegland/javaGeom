@@ -50,7 +50,6 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class Point2D extends java.awt.geom.Point2D.Double
 implements PointShape2D, Cloneable, CirculinearShape2D {
-//TODO: make PointShape2D implements CirculinearShape2D
 	
     // ===================================================================
     // constants

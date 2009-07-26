@@ -35,6 +35,7 @@ import math.geom2d.circulinear.CirculinearCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -64,13 +65,21 @@ public class Circle2DTest extends TestCase {
 		assertTrue(Circle2D.create(p3, p2, p1).equals(circle));
 	}
 	
+	public void testGetBuffer() {
+	    Circle2D circle = new Circle2D(50, 60, 50);
+	    Domain2D buffer = circle.getBuffer(20);	    
+	    assertTrue(buffer.getBoundary().getContinuousCurves().size()==2);
+	    
+	    buffer = circle.getBuffer(60);	    
+	    assertTrue(buffer.getBoundary().getContinuousCurves().size()==1);	    
+	}
+	
 	public void testGetParallel() {
 	    Circle2D circle = new Circle2D(10, 20, 30);
 	    Circle2D parallel = circle.getParallel(10);
 	    assertEquals(parallel, new Circle2D(10, 20, 40));
 	    parallel = circle.getParallel(-10);
-	    assertEquals(parallel, new Circle2D(10, 20, 20));
-	    
+	    assertEquals(parallel, new Circle2D(10, 20, 20));	    
 	}
 	
 	public void testGetParallelInverse() {
