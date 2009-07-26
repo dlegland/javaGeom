@@ -551,6 +551,17 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
+     * Need to override to cast the type.
+     */
+    @Override
+    public Collection<? extends StraightLine2D> getContinuousCurves() {
+        ArrayList<StraightLine2D> list = 
+        	new ArrayList<StraightLine2D>(1);
+        list.add(this);
+        return list;
+    }
+
+    /**
      * Returns the straight line with same origin but with opposite direction
      * vector.
      */

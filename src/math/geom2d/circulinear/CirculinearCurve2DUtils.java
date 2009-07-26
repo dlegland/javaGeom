@@ -23,6 +23,7 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.conic.CircularShape2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.point.PointSet2D;
 
 
 /**
@@ -426,6 +427,11 @@ public class CirculinearCurve2DUtils {
         ArrayList<ContinuousCirculinearCurve2D> result =
         	new ArrayList<ContinuousCirculinearCurve2D>();
 
+		if (curve instanceof CirculinearElement2D){
+			result.add(curve);
+			return result;
+		}
+		
 		// convert the curve to a poly-circulinear curve, to be able to call
 		// the "locateSelfIntersections" method.
 		PolyCirculinearCurve2D<CirculinearElement2D> polyCurve = 
@@ -642,7 +648,7 @@ public class CirculinearCurve2DUtils {
 	}
 	
 	public final static Collection<CirculinearContour2D>
-	splitIntersectingContours(Collection<CirculinearContour2D> curves) {
+	splitIntersectingContours(Collection<? extends CirculinearContour2D> curves) {
 		
 		double pos0=0, pos1, pos2;
 		
@@ -831,7 +837,8 @@ public class CirculinearCurve2DUtils {
 			
 			// check that vertices of contour are not too close from original
 			// curve
-			double distCurves = getDistanceToVertices(curve, contour);
+			double distCurves = getDistanceCurvePoints(curve, 
+					contour.getSingularPoints());
 			if(distCurves<dist-Shape2D.ACCURACY)
 				continue;
 			
@@ -846,6 +853,38 @@ public class CirculinearCurve2DUtils {
 						contours2));
 	}
 	
+	/**
+	 * Compute buffer of a point set.
+	 */
+	public final static CirculinearDomain2D computeBuffer(PointSet2D set, 
+			double dist) {
+		Collection<CirculinearContour2D> rings = 
+			new ArrayList<CirculinearContour2D>(set.getPointNumber());
+		for(Point2D point : set) {
+			rings.add(new Circle2D(point, Math.abs(dist), dist>0));
+		}
+		
+		rings = CirculinearCurve2DUtils.splitIntersectingContours(rings);
+		
+		// Remove contours that cross or that are too close from base curve
+		ArrayList<CirculinearContour2D> rings2 = 
+			new ArrayList<CirculinearContour2D>(rings.size());
+		for(CirculinearContour2D ring : rings) {
+			
+			// check that vertices of contour are not too close from original
+			// curve
+			double minDist = getDistanceCurvePoints(ring, set.getPoints());
+			if(minDist<dist-Shape2D.ACCURACY)
+				continue;
+			
+			// keep the contours that meet the above conditions
+			rings2.add(ring);
+		}
+
+		return new GenericCirculinearDomain2D(
+				CirculinearBoundarySet2D.create(rings2));
+	}
+
 	/**
 	 * Computes the rings that form the domain of a circulinear curve that
 	 * does not self-intersect.
@@ -952,7 +991,8 @@ public class CirculinearCurve2DUtils {
 				// compute distance to original curve
 				// (assuming it is sufficient to compute distance to vertices
 				// of the reference curve).
-				double dist = getDistanceToVertices(split, curve);
+				double dist = getDistanceCurvePoints(curve, 
+						split.getSingularPoints());
 				
 				// check if distance condition is verified
 				if(dist-d<-Shape2D.ACCURACY)
@@ -975,11 +1015,11 @@ public class CirculinearCurve2DUtils {
 		return  new CircleArc2D(center, r, angle1, angle2, true);
 	}
 	
-	public final static double getDistanceToVertices(
-			CirculinearCurve2D testCurve, CirculinearCurve2D ref){		
+	public final static double getDistanceCurvePoints(
+			CirculinearCurve2D curve, Collection<? extends Point2D> points){
 		double minDist = Double.MAX_VALUE;
-		for(Point2D vertex : ref.getSingularPoints()){
-			minDist = Math.min(minDist, testCurve.getDistance(vertex));
+		for(Point2D point : points){
+			minDist = Math.min(minDist, curve.getDistance(point));
 		}
 		return minDist;
 	}

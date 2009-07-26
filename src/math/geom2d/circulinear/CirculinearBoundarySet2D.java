@@ -29,6 +29,15 @@ public class CirculinearBoundarySet2D<T extends CirculinearContour2D>
 extends BoundarySet2D<T> implements	CirculinearBoundary2D {
 
     // ===================================================================
+    // static constructors
+
+	public final static CirculinearBoundarySet2D<CirculinearContour2D>
+	create(Collection<? extends CirculinearContour2D> curves) {
+		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
+	}
+	
+
+    // ===================================================================
     // constructors
 
 	/**
@@ -93,6 +102,13 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
 	 */
 	public double getPosition(double length) {
 		return CirculinearCurve2DUtils.getPosition(this, length);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)

@@ -341,6 +341,12 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
         return points.get(0);
     }
 
+    public Collection<? extends LinearRing2D> getContinuousCurves() {
+        ArrayList<LinearRing2D> list = new ArrayList<LinearRing2D>(1);
+        list.add(this);
+        return list;
+    }
+
     /**
      * Returns the closed polyline with same points taken in reverse order. The
      * first points is still the same. Points of reverse curve are the same as

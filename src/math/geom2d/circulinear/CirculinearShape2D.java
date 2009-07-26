@@ -22,15 +22,14 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public interface CirculinearShape2D extends Shape2D {
 
-//	//TODO: add method 'getBuffer' to CirculinearShape2D
-//	/**
-//	 * Computes the buffer of the shape, formed by the set of points located
-//	 * at a distance from the shape that is lower or equal to d.
-//	 * @param d the maximal distance between a point of the buffer and the
-//	 * 		shape
-//	 * @return the buffer of the shape
-//	 */
-//	public CirculinearDomain2D getBuffer(double dist);
+	/**
+	 * Computes the buffer of the shape, formed by the set of points located
+	 * at a distance from the shape that is lower or equal to d.
+	 * @param d the maximal distance between a point of the buffer and the
+	 * 		shape
+	 * @return the buffer of the shape
+	 */
+	public CirculinearDomain2D getBuffer(double dist);
 	
 	/**
 	 * Transforms the shape by a circle inversion. The result is still an

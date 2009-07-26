@@ -39,6 +39,8 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.circulinear.CirculinearBoundary2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -304,7 +306,14 @@ CircularShape2D, CircleLine2D {
     // ===================================================================
     // Methods implementing the CirculinearCurve2D interface
 
-    /**
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+	}
+
+	/**
      * Returns the parallel circle located at a distance d from this circle.
      * For direct circle, distance is positive outside of the circle,
      * and negative inside. This is the contrary for indirect circles.
@@ -650,4 +659,5 @@ CircularShape2D, CircleLine2D {
         return String.format(Locale.US, 
                 "Circle2D (%7.2f, %7.2f, %7.2f)", xc, yc, r);
     }
+
 }

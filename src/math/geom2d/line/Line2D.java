@@ -35,6 +35,8 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
@@ -202,6 +204,13 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
 
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)

@@ -3,16 +3,27 @@ Changes in javaGeom library
 javaGeom-0.?.? (2009.??.??, rev. ??)
 
 New features
-- Circulinear branch
+- added Circulinear branch, which manages curves composed of portion of lines
+	and/or of circles. This makes possible computation of curve length, curve
+	parallels, and shape buffers.
+- added getLeftTangent() and getRightTangent() methods in ContinuousCurve2D
+	
+Bug fixes
+- fixed drawing of polycurves
+- fixed bug in intersecting circle arc and line
 
 Regressions
 - Ring2D renamed to LinearRing2D
 
+Code
+- introduced AbstractContinuousCurve and AbstractSmothCurve to reduce code
+	copies
+	
+	
+javaGeom-0.7.1 (2009-04-24, rev. 198)
+
 bug fixes
 - fixed bug in intersecting circle arc and line
-
-
-
 - added static builders for PolyBezierCurve2D
 - update class names in spline package
 - added accessors in Ellipse2D and EllipseArc2D

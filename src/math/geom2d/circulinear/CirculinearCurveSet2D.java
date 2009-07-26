@@ -95,6 +95,13 @@ extends CurveSet2D<T> implements CirculinearCurve2D {
 	}
 
 	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+	}
+
+	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.ContinuousCirculinearCurve2D#getParallel(double)
 	 */
 	public CirculinearCurve2D getParallel(double d) {

@@ -30,8 +30,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearShape2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointShape2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -48,7 +50,7 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class Point2D extends java.awt.geom.Point2D.Double
 implements PointShape2D, Cloneable, CirculinearShape2D {
-//TODO: make PointShape2D implements CirculinearShaope2D
+//TODO: make PointShape2D implements CirculinearShape2D
 	
     // ===================================================================
     // constants
@@ -378,6 +380,14 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
 
     // ===================================================================
     // Methods implementing CirculinearShape2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return new GenericCirculinearDomain2D(
+				new Circle2D(this, Math.abs(dist), dist>0));
+	}
 
     public Point2D transform(CircleInversion2D inv) {
     	// get inversion parameters
