@@ -564,9 +564,7 @@ implements ContinuousCirculinearCurve2D, Cloneable {
     }
 
     public Collection<? extends Polyline2D> getContinuousCurves() {
-        ArrayList<Polyline2D> list = new ArrayList<Polyline2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
 

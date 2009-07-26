@@ -38,21 +38,23 @@ import math.geom2d.curve.PolyCurve2D;
 /**
  * A set of Bezier curves, making a continuous curve.
  * 
+ * @deprecated use PolyCubicBezierCurve2D instead
  * @author dlegland
  */
+@Deprecated
 public class PolyBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
-	//TODO: rename
-	//TODO: add static methods for building curve
-	
+	@Deprecated
     public PolyBezierCurve2D() {
         super();
     }
 
+    @Deprecated
     public PolyBezierCurve2D(CubicBezierCurve2D[] curves) {
         super(curves);
     }
 
+    @Deprecated
     public PolyBezierCurve2D(Collection<CubicBezierCurve2D> curves) {
         super(curves);
     }

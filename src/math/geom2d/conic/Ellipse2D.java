@@ -902,9 +902,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     public Collection<? extends Ellipse2D> getContinuousCurves() {
-        ArrayList<Ellipse2D> list = new ArrayList<Ellipse2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**

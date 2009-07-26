@@ -29,12 +29,15 @@ package math.geom2d.polygon;
 import java.util.Collection;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
-
-import junit.framework.TestCase;
 
 
 /**
@@ -43,7 +46,7 @@ import junit.framework.TestCase;
 public class LinearRing2DTest extends TestCase {
 
 	/**
-	 * Constructor for ClosedClosedPolyline2DTest.
+	 * Constructor for LinearRing2DTest.
 	 * @param arg0
 	 */
 	public LinearRing2DTest(String arg0) {
@@ -54,7 +57,59 @@ public class LinearRing2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LinearRing2DTest.class);
 	}
 
-	public void testAddLine(){
+	public void testGetBuffer() {
+		// create polyline
+		LinearRing2D line = new LinearRing2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10),
+				new Point2D(0, 10) });
+		
+		// one loop makes two boundaries
+		Domain2D buffer = line.getBuffer(3);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(boundary.getContinuousCurves().size(), 2);
+		
+		// one loop makes two boundaries
+		buffer = line.getBuffer(6);
+		boundary = buffer.getBoundary();
+		assertEquals(boundary.getContinuousCurves().size(), 1);
+		
+		// 8 parts: 4 circle arcs, and 4 line segments
+		Collection<? extends SmoothCurve2D> smoothCurves =
+			boundary.getContinuousCurves().iterator().next().getSmoothPieces();
+		assertEquals(smoothCurves.size(), 8);
+	}
+	
+	public void testGetBuffer_SelfIntersect() {
+		// create polyline
+		LinearRing2D line = new LinearRing2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(0, 100),
+				new Point2D(200, 100),
+				new Point2D(200, 200),
+				new Point2D(100, 200),
+				new Point2D(100, 0) });
+		
+		// should be 3 parts for boundary
+		Domain2D buffer = line.getBuffer(30);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(boundary.getContinuousCurves().size(), 3);
+	}
+	
+	public void testGetLength() {
+		// create polyline
+		LinearRing2D line = new LinearRing2D(new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10),
+				new Point2D(0, 10) });
+		
+		// length is 4*10=40
+		assertEquals(line.getLength(), 40, Shape2D.ACCURACY);
+	}
+
+	public void testAddLine() {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
@@ -306,12 +361,12 @@ public class LinearRing2DTest extends TestCase {
 		// classic cases
 		assertTrue(poly.isInside(15, 15));
 		assertTrue(poly.isInside(25, 40));
-		assertTrue(!poly.isInside(15, 37));
+		assertFalse(poly.isInside(15, 37));
 		
 		// problematic cases
 		assertTrue(poly.isInside(30, 35));
-		assertTrue(!poly.isInside(10, 35));
-		assertTrue(!poly.isInside(5, 35));		
+		assertFalse(poly.isInside(10, 35));
+		assertFalse(poly.isInside(5, 35));		
 	}
 
     public void testClone() {

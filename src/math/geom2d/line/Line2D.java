@@ -551,9 +551,7 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
     }
 
     public Collection<? extends Line2D> getContinuousCurves() {
-        ArrayList<Line2D> list = new ArrayList<Line2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**

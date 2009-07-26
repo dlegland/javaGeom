@@ -278,9 +278,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public Collection<? extends LineArc2D> getContinuousCurves() {
-        ArrayList<LineArc2D> list = new ArrayList<LineArc2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**

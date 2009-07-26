@@ -522,9 +522,7 @@ CircularShape2D, CircleLine2D {
 
     @Override
     public Collection<? extends Circle2D> getContinuousCurves() {
-        ArrayList<Circle2D> list = new ArrayList<Circle2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     // ===================================================================

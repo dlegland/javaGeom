@@ -26,6 +26,12 @@ import math.geom2d.polygon.Polyline2D;
 public abstract class AbstractContinuousCurve2D 
 implements ContinuousCurve2D, Cloneable {
 
+	protected final static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
+		ArrayList<T> list = new ArrayList<T> (1);
+		list.add(curve);
+		return list;
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
 	 */
@@ -54,10 +60,7 @@ implements ContinuousCurve2D, Cloneable {
 	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
 	 */
 	public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
-		ArrayList<ContinuousCurve2D> array =
-			new ArrayList<ContinuousCurve2D>(1);
-		array.add(this);
-		return array;
+		return wrapCurve(this);
 	}
 
 	/* (non-Javadoc)

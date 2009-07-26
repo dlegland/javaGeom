@@ -591,9 +591,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public Collection<? extends CircleArc2D> getContinuousCurves() {
-        ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**

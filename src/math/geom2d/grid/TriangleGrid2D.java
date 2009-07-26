@@ -24,9 +24,7 @@ import math.geom2d.line.LinearShape2D;
 public class TriangleGrid2D implements Grid2D {
 
     double x0    = 0;
-
     double y0    = 0;
-
     double s     = 1;
 
     double theta = 0;
@@ -108,6 +106,10 @@ public class TriangleGrid2D implements Grid2D {
         this(point.getX(), point.getY(), s, theta);
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setOrigin(Point2D point) {
         this.x0 = point.getX();
         this.y0 = point.getY();
@@ -121,10 +123,18 @@ public class TriangleGrid2D implements Grid2D {
         return s;
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setSize(double s) {
         this.s = s;
     }
 
+    /**
+     * @deprecated grids are supposed to be immutable (0.8.0)
+     */
+    @Deprecated
     public void setAngle(double theta) {
         this.theta = theta;
     }

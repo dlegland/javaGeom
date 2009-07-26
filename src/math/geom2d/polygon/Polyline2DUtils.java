@@ -41,7 +41,7 @@ public abstract class Polyline2DUtils {
         // Collection of parallel curves
         PolyOrientedCurve2D<SmoothOrientedCurve2D> result = 
             new PolyOrientedCurve2D<SmoothOrientedCurve2D>();
-        result.setClosed(polyline instanceof Ring2D);
+        result.setClosed(polyline instanceof LinearRing2D);
 
         // evacuate degenerate case.
         if (polyline.getVertices().size()<2)
@@ -66,7 +66,7 @@ public abstract class Polyline2DUtils {
 
         // ----- Initializations -----
 
-        if (polyline instanceof Ring2D) {
+        if (polyline instanceof LinearRing2D) {
             // Add eventually a circle arc, and the first line segment.
 
             // Extract parallel to last edge
@@ -144,7 +144,7 @@ public abstract class Polyline2DUtils {
 
         // ----- Post processing -----
 
-        if (polyline instanceof Ring2D) {
+        if (polyline instanceof LinearRing2D) {
             // current line segment join the last point to the first point
             iterator = polyline.getVertices().iterator();
             v1 = v2;

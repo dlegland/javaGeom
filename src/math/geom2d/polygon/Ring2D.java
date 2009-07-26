@@ -40,13 +40,13 @@ import math.geom2d.Point2D;
  * The name 'Ring2D' was used for 2 reasons:
  * <ul><li>it is short</li> <li>it is consistent with the JTS name</li></ul>
  * </p>
+ * @deprecated replaced by LinearRing2D (0.8.0)
  * @author dlegland
  */
+@Deprecated
 public class Ring2D extends LinearRing2D {
-//TODO: rename as LinearRing2D, and create Ring2D as sub-interface of Boundary2D
 	/**
-	 * @deprecated Ring2D will be changed to an interface in a future release.
-	 * 		Use LinearRing2D instead  (0.8.0)
+	 * @deprecated Use LinearRing2D instead  (0.8.0)
 	 */
 	@Deprecated
     public Ring2D() {
