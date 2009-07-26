@@ -49,7 +49,7 @@ import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
- * Representation of straight lines. Such lines can be constructed using two
+ * Implementation of a straight line. Such a line can be constructed using two
  * points, a point and a parallel line or straight object, or with coefficient
  * of the Cartesian equation.
  */
@@ -648,6 +648,12 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods implementing the Object interface
 
+    @Override
+    public String toString() {
+        return new String("StraightLine2D(" + x0 + "," + y0 + "," + 
+        		dx + "," + dy + ")");
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof StraightLine2D))

@@ -26,8 +26,8 @@ public abstract class Polygon2DUtils {
      * Computes the winding number of the polygon. Algorithm adapted from
      * http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm
      * 
-     * @param x the x-coordinate of the point
-     * @param y the y-coordinate of the point
+     * @param vertices the vertices of the polygon
+     * @param point the reference point
      * @return the number of windings of the curve around the point
      */
     public final static int windingNumber(Collection<Point2D> vertices,

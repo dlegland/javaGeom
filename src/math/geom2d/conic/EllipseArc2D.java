@@ -29,6 +29,7 @@ package math.geom2d.conic;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
@@ -599,6 +600,16 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     // ====================================================================
     // methods from interface Object
+
+    @Override
+    public String toString() {
+    	Point2D center = ellipse.getCenter();
+        return String.format(Locale.US, 
+                "EllipseArc2D(%7.2f,%7.2f,%7.2f,%7.2f,%7.5f,%7.5f,%7.5f)", 
+                center.getX(), center.getY(), 
+                ellipse.r1, ellipse.r2, ellipse.theta,
+                startAngle, angleExtent);
+    }
 
     @Override
     public boolean equals(Object obj) {

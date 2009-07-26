@@ -28,6 +28,7 @@ package math.geom2d.conic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
@@ -787,6 +788,15 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     //		
     // return path;
     // }
+
+    @Override
+    public String toString() {
+    	Point2D center = circle.getCenter();
+        return String.format(Locale.US, 
+                "CircleArc2D(%7.2f,%7.2f,%7.2f,%7.5f,%7.5f)", 
+                center.getX(), center.getY(), circle.getRadius(),
+                getStartAngle(), getAngleExtent());
+    }
 
     /**
      * Two circle arc are equal if the have same center, same radius, same

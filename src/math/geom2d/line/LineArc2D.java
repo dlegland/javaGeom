@@ -393,11 +393,9 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public String toString() {
-        return Double.toString(x0).concat(new String(" ")).concat(
-                Double.toString(y0)).concat(new String(" ")).concat(
-                Double.toString(dx)).concat(new String(" ")).concat(
-                Double.toString(dy));
-    }
+        return new String("LineArc2D(" + x0 + "," + y0 + "," + 
+            		dx + "," + dy + "," + t0 + "," + t1 +")");
+   }
 
     // ===================================================================
     // methods of Object interface

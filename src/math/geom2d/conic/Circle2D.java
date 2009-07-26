@@ -627,6 +627,13 @@ CircularShape2D, CircleLine2D {
     // methods of Object interface
 
     @Override
+    public String toString() {
+        return String.format(Locale.US, 
+                "Circle2D(%7.2f,%7.2f,%7.2f,%s)",
+                xc, yc, r, direct?"true":"false");
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Ellipse2D))
             return false;
@@ -652,10 +659,4 @@ CircularShape2D, CircleLine2D {
         return new Circle2D(xc, yc, r, direct);
     }
     
-    @Override
-    public String toString() {
-        return String.format(Locale.US, 
-                "Circle2D (%7.2f, %7.2f, %7.2f)", xc, yc, r);
-    }
-
 }

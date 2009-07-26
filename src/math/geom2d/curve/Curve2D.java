@@ -37,13 +37,18 @@ import math.geom2d.Shape2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
- * Interface for piecewise smooth curves: polylines, conics, lines... 
- * A Curve2D object can be a continuous object (line, spiral, conic...),
- * or the boundary of a Region. It can also be the union of several continuous
- * curves.
+ * <p>Interface for piecewise smooth curves, like polylines, conics, straight
+ * lines, line segments...</p>
+ * <p>Several interfaces exist to use more explicit type of curves:
+ * {@link ContinuousCurve2D ContinuousCurve2D} for finite or infinite
+ * continuous curves, {@link SmoothCurve2D SmoothCurve2D} for curves that
+ * admit a derivative (and hence a tangent, a curvature...) at each point, 
+ * {@link math.geom2d.domain.OrientedCurve2D OrientedCurve2D} that are used to
+ * define the {@link math.geom2d.domain.Boundary2D boundary} of a
+ * {@link math.geom2d.domain.Domain2D domain}...</p>
  * <p>
- * Paramaterized curves are actually considered. Parameterization is left to the
- * implementation.
+ * Points on curves are identified using curve parameterization. 
+ * This parameterization is left to the implementation.
  */
 public interface Curve2D extends Shape2D, Cloneable {
 

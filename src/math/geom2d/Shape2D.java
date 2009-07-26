@@ -25,17 +25,30 @@
 
 package math.geom2d;
 
+import java.awt.Graphics2D;
+
 import math.geom2d.AffineTransform2D;
 
 // Imports
 
 /**
- * Main interface for all geometric objects, including points, lines, curves, or
- * planar regions...
+ * <p> 
+ * Main interface for all geometric objects, including points, lines, curves,
+ * or planar regions... Instances of Shape2D can be either bounded
+ * (a point, a line segment, a square...) or unbounded (a parabola,
+ * a half-plane...).</p>
  * <p>
- * Depending direct interfaces extending Shape2D are Curve2D and Domain2D. Some
- * direct implementations of Shape2D are Point2D, PointSet2D, or
- * Shape2D.EmptySet2D.
+ * Shape2D implementations implements a more specialized interface depending 
+ * on the shape inner dimension:
+ * {@link math.geom2d.curve.Curve2D Curve2D}, 
+ * {@link math.geom2d.domain.Domain2D Domain2D} or
+ * {@link math.geom2d.point.PointShape2D PointShape2D}.</p>
+ * <p>
+ * Shape2D interface provide convenient method to check if the shape
+ * {@link #isEmpty() is empty}, to {@link #transform(AffineTransform2D) 
+ * transform} or to {@link #clip(Box2D) clip} the shape, get its
+ * {@link #getBoundingBox() bounding box}, or its
+ * {@link #getDistance(Point2D) distance} to a given point.</p>
  */
 public interface Shape2D {
 
@@ -53,8 +66,14 @@ public interface Shape2D {
     @Deprecated
     public final static Shape2D EMPTY_SET = new EmptySet2D();
 
+    /**
+     * Checks if the shape contains the planar point defined by (x,y).
+     */
     public abstract boolean contains(double x, double y);
 
+    /**
+     * Checks if the shape contains the given point.
+     */
     public abstract boolean contains(java.awt.geom.Point2D p);
 
     /**
@@ -110,6 +129,13 @@ public interface Shape2D {
      */
     public abstract Shape2D transform(AffineTransform2D trans);
 
+    /**
+     * Draw the shape on the given graphics. 
+     * If the shape is empty, nothing is drawn.
+     * If the shape is unbounded, an exception is thrown.
+     */
+    public abstract void draw(Graphics2D g2);
+    
     /**
      * An empty set is a shape which does not contain any point.
      * 
@@ -174,7 +200,10 @@ public interface Shape2D {
         public Shape2D transform(AffineTransform2D trans) {
             return this;
         }
-
+        
+        public void draw(Graphics2D g2) {
+        }
+        
         @Override
         public boolean equals(Object obj) {
             return (obj instanceof EmptySet2D);

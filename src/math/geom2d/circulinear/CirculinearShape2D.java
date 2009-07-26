@@ -25,7 +25,7 @@ public interface CirculinearShape2D extends Shape2D {
 	/**
 	 * Computes the buffer of the shape, formed by the set of points located
 	 * at a distance from the shape that is lower or equal to d.
-	 * @param d the maximal distance between a point of the buffer and the
+	 * @param dist the maximal distance between a point of the buffer and the
 	 * 		shape
 	 * @return the buffer of the shape
 	 */

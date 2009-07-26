@@ -359,6 +359,12 @@ implements SmoothOrientedCurve2D, Cloneable {
     // Methods inherited from object interface
 
     @Override
+    public String toString() {
+    	return String.format("ParabolaArc2D(%f,%f,%f,%f,%f,%f)", 
+    			parabola.xv, parabola.yv, parabola.a, parabola.theta, t0, t1);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ParabolaArc2D))
             return false;

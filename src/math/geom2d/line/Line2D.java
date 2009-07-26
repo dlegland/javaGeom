@@ -68,6 +68,7 @@ import math.geom2d.transform.CircleInversion2D;
  * are updated each time a computation is made, causing lot of additional
  * processing. Moreover, as inner point fields are public, it is not as safe
  * as LineSegment2D.
+ * {@See LineSegment2D}
  */
 public class Line2D extends AbstractSmoothCurve2D
 implements LinearShape2D, CirculinearElement2D, Cloneable {
@@ -93,12 +94,13 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
     // constructors
 
     /**
-     * Checks if two line intersect. Uses the Point2D.ccw() method,
-     * which is based on Sedgewick algorithm.
+     * Checks if two line intersect. Uses the
+     * {@link math.geom2d.Point2D#ccw(Point2D, Point2D, Point2D) Point2D.ccw}
+     * method, which is based on Sedgewick algorithm.
      * 
-     * @param edge1 a line object
-     * @param edge2 a line object
-     * @return true if the 2 line intersect
+     * @param line1 a Line2D object
+     * @param line2 a Line2D object
+     * @return true if the 2 lines intersect
      */
     public final static boolean intersects(Line2D line1, Line2D line2) {
         Point2D e1p1 = line1.getFirstPoint();
