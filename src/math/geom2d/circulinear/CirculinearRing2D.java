@@ -19,7 +19,8 @@ import math.geom2d.transform.CircleInversion2D;
 
 
 /**
- * A basic implementation of a CirculinearContour2D.
+ * A basic implementation of a CirculinearContour2D, which is supposed to be
+ * always bounded and closed.
  * @author dlegland
  *
  */
@@ -58,6 +59,12 @@ implements CirculinearContour2D {
         super(curves, closed);
     }
 
+    public CirculinearRing2D getParallel(double dist) {
+    	return new CirculinearRing2D(
+    			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
+    			.getSmoothPieces());
+    }
+    
 	public CirculinearRing2D transform(CircleInversion2D inv) {
     	// Allocate array for result
 		CirculinearRing2D result =

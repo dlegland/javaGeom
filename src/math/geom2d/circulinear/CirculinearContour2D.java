@@ -20,6 +20,7 @@ import math.geom2d.transform.CircleInversion2D;
 public interface CirculinearContour2D extends ContinuousBoundary2D,
 		ContinuousCirculinearCurve2D, CirculinearBoundary2D {
 
+	public CirculinearContour2D getParallel(double d);
 	public CirculinearContour2D transform(CircleInversion2D inv);
 	public CirculinearContour2D getReverseCurve();
 }

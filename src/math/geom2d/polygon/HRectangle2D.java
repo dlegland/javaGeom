@@ -33,9 +33,13 @@ import java.util.Iterator;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.transform.CircleInversion2D;
 
 // Imports
 
@@ -88,7 +92,8 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     }
 
     // ===================================================================
-    // accessors
+    // methods inherited from interface Polygon2D
+
 
     public Collection<Point2D> getVertices() {
         ArrayList<Point2D> points = new ArrayList<Point2D>(4);
@@ -141,15 +146,6 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return 4;
     }
 
-    public BoundarySet2D<LinearRing2D> getBoundary() {
-        Point2D pts[] = new Point2D[4];
-        pts[0] = new Point2D(x, y);
-        pts[1] = new Point2D(width+x, y);
-        pts[2] = new Point2D(width+x, y+height);
-        pts[3] = new Point2D(x, y+height);
-        return new BoundarySet2D<LinearRing2D>(new LinearRing2D(pts));
-    }
-
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
@@ -157,6 +153,39 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
         rings.add(new LinearRing2D(this.getVertices()));
         return rings;
+    }
+
+	
+	// ===================================================================
+    // methods inherited from Domain2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearDomain2D transform(CircleInversion2D inv) {
+		return new GenericCirculinearDomain2D(
+				this.getBoundary().transform(inv));
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(
+				this.getBoundary(), dist);
+	}
+
+    // ===================================================================
+    // methods inherited from interface Domain2D
+
+    public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
+        Point2D pts[] = new Point2D[4];
+        pts[0] = new Point2D(x, y);
+        pts[1] = new Point2D(width+x, y);
+        pts[2] = new Point2D(width+x, y+height);
+        pts[3] = new Point2D(x, y+height);
+        return new CirculinearBoundarySet2D<LinearRing2D>(
+        		new LinearRing2D(pts));
     }
 
     public Polygon2D complement() {

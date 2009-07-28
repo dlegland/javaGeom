@@ -51,7 +51,7 @@ public class CheckDrawClosedPolyCurve2D extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		g2.setStroke(new BasicStroke(1.0f));
+		g2.setStroke(new BasicStroke(5.0f));
 	
 		g2.setColor(Color.BLUE);
 		polycurve.draw(g2);

@@ -34,12 +34,16 @@ import java.util.Iterator;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
@@ -253,10 +257,30 @@ public class Rectangle2D implements Polygon2D {
         return rings;
     }
 
-    // ===================================================================
-    // methods implementing the Domain2D interface
+	// ===================================================================
+    // methods inherited from Domain2D interface
 
-    public BoundarySet2D<LinearRing2D> getBoundary() {
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearDomain2D transform(CircleInversion2D inv) {
+		return new GenericCirculinearDomain2D(
+				this.getBoundary().transform(inv));
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(
+				this.getBoundary(), dist);
+	}
+
+	
+    // ===================================================================
+    // methods inherited from interface Domain2D
+
+   public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
@@ -265,7 +289,8 @@ public class Rectangle2D implements Polygon2D {
         pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
         pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
 
-        return new BoundarySet2D<LinearRing2D>(new LinearRing2D(pts));
+        return new CirculinearBoundarySet2D<LinearRing2D>(
+        		new LinearRing2D(pts));
     }
 
     public Polygon2D complement() {

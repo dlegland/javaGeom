@@ -558,13 +558,14 @@ CircularShape2D, CircleLine2D {
      * which contains 0 curves.
      */
     @Override
-    public CurveSet2D<? extends CirculinearElement2D> clip(Box2D box) {
+    public CurveSet2D<? extends CircularShape2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
+        CurveSet2D<SmoothCurve2D> set = 
+        	Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<CirculinearElement2D> result = 
-        	new CurveSet2D<CirculinearElement2D>();
+        CurveSet2D<CircularShape2D> result = 
+        	new CurveSet2D<CircularShape2D>();
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
