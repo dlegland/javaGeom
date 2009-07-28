@@ -103,9 +103,12 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.ContinuousCirculinearCurve2D#getParallel(double)
 	 */
-	public ContinuousCirculinearCurve2D getParallel(double d) {
-		return CirculinearCurve2DUtils.createContinuousParallel(this, d);
-	}
+    public CirculinearRing2D getParallel(double dist) {
+    	return new CirculinearRing2D(
+    			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
+    			.getSmoothPieces());
+    }
+    
 	
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)

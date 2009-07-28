@@ -20,17 +20,15 @@ import math.geom2d.Shape2D;
  *
  */
 public class CirculinearDomain2DUtils {
-    
-	
 	
 	public final static CirculinearDomain2D computeBuffer(
-			CirculinearDomain2D domain, double d) {
+			CirculinearDomain2D domain, double dist) {
 		
 		ArrayList<CirculinearContour2D> rings =
 			new ArrayList<CirculinearContour2D>();
 		
 		// iterate on all continuous curves
-		for(ContinuousCirculinearCurve2D cont : 
+		for(CirculinearContour2D cont : 
 			domain.getBoundary().getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
 			for(ContinuousCirculinearCurve2D simpleCurve : 
@@ -39,7 +37,7 @@ public class CirculinearDomain2DUtils {
 					new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
 							simpleCurve.getSmoothPieces());
 				// compute the rings composing the simple curve buffer
-				rings.addAll(computeBufferSimpleRing(boundary, d));
+				rings.addAll(computeBufferSimpleRing(boundary, dist));
 			}
 		}
 		

@@ -30,8 +30,8 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
-import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
 
 /**
@@ -39,7 +39,7 @@ import math.geom2d.line.LineSegment2D;
  * include simple polygons, multiple polygons, or more specialized shapes like
  * rectangles, squares...
  */
-public interface Polygon2D extends Domain2D {
+public interface Polygon2D extends CirculinearDomain2D {
 
     /** Returns the vertices (singular points) of the polygon */
     public abstract Collection<Point2D> getVertices();
@@ -74,7 +74,8 @@ public interface Polygon2D extends Domain2D {
     // ===================================================================
     // general methods
 
-    public abstract BoundarySet2D<? extends LinearRing2D> getBoundary();
+    public abstract CirculinearBoundarySet2D<? extends LinearRing2D> 
+    getBoundary();
 
     /**
      * Returns the new Polygon created by an affine transform of this polygon.

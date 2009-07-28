@@ -886,7 +886,7 @@ public class CirculinearCurve2DUtils {
 	}
 
 	/**
-	 * Computes the rings that form the domain of a circulinear curve that
+	 * Computes the rings that form the buffer of a circulinear curve that
 	 * does not self-intersect.
 	 */
 	public final static Collection<? extends CirculinearContour2D> 

@@ -9,12 +9,17 @@ import java.util.Collections;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * A polygonal domain whose boundary is composed of several disjoint continuous
@@ -94,11 +99,31 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return Collections.unmodifiableList(rings);
     }
 
-    // ===================================================================
-    // methods inherited from interface AbstractDomain2D
+	// ===================================================================
+    // methods inherited from Domain2D interface
 
-    public BoundarySet2D<LinearRing2D> getBoundary() {
-        return new BoundarySet2D<LinearRing2D>(rings);
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
+	 */
+	public CirculinearDomain2D transform(CircleInversion2D inv) {
+		return new GenericCirculinearDomain2D(
+				this.getBoundary().transform(inv));
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 */
+	public CirculinearDomain2D getBuffer(double dist) {
+		return CirculinearCurve2DUtils.computeBuffer(
+				this.getBoundary(), dist);
+	}
+
+	
+    // ===================================================================
+    // methods inherited from interface Domain2D
+
+    public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
+        return new CirculinearBoundarySet2D<LinearRing2D>(rings);
     }
 
     public Polygon2D complement() {

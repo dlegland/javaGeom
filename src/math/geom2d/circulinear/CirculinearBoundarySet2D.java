@@ -72,6 +72,17 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
      * 
      * @param curves the collection of curves to add to the set
      */
+    public CirculinearBoundarySet2D(T curve) {
+    	this.curves = new ArrayList<T>();
+        this.curves.add(curve);
+    }
+
+    /**
+     * Constructor from a collection of curves. The curves are added to the
+     * inner collection of curves.
+     * 
+     * @param curves the collection of curves to add to the set
+     */
     public CirculinearBoundarySet2D(Collection<? extends T> curves) {
     	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
