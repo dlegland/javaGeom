@@ -765,21 +765,22 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     /**
-     * returns the curvature of the ellipse.
+     * Returns the curvature of the ellipse.
      */
     public double getCurvature(double t) {
         if (!direct)
             t = -t;
         double cot = Math.cos(t);
         double sit = Math.sin(t);
-        return r1*r2/Math.pow(r2*r2*cot*cot+r1*r1*sit*sit, 1.5);
+        double k = r1*r2/Math.pow(r2*r2*cot*cot+r1*r1*sit*sit, 1.5);
+        return direct ? k : -k;
     }
 
     // ===================================================================
     // methods of ContinuousCurve2D interface
 
     /**
-     * return true, as an ellipse is always closed.
+     * Returns true, as an ellipse is always closed.
      */
     public boolean isClosed() {
         return true;

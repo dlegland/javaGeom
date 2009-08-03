@@ -86,6 +86,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @param extent the angle extent (signed angle)
      */
     public EllipseArc2D(Ellipse2D ell, double start, double extent) {
+    	//TODO: check indirect arc of indirect ellipse
         this(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, extent);
     }
 
@@ -140,6 +141,10 @@ implements SmoothOrientedCurve2D, Cloneable {
     	return angleExtent;
     }
     
+    /**
+     * Returns true if the ellipse arc is direct, i.e. if the angle extent is
+     * positive.
+     */
     public boolean isDirect() {
     	return angleExtent>0;
     }
@@ -287,7 +292,8 @@ implements SmoothOrientedCurve2D, Cloneable {
             t = startAngle-t;
         else
             t = startAngle+t;
-        return ellipse.getCurvature(t);
+        double kappa = ellipse.getCurvature(t);
+        return this.isDirect() ? kappa : -kappa;
     }
 
     // ====================================================================
