@@ -1,4 +1,4 @@
-/* File CurveSet2D.java 
+/* File CurveArray2D.java 
  *
  * Project : geometry
  *
@@ -38,104 +38,38 @@ import math.geom2d.line.LinearShape2D;
 /**
  * <p>
  * A parameterized set of curves. A curve cannot be included twice in a
- * CurveSet2D.
+ * CurveArray2D.
  * </p>
  * <p>
- * Note: this class will be transformed to an interface in a future version.
- * Use the class {@link CurveArray2D} for implementations.
+ * The k-th curve contains points with positions between 2*k and 2*k+1. This
+ * allows to differentiate extremities of contiguous curves. The points with
+ * positions t between 2*k+1 and 2*k+2 belong to the curve k if t<2*k+1.5, or
+ * to the curve k+1 if t>2*k+1.5
  * </p>
  * 
  * @author Legland
  */
-public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>,
-Cloneable {
+public class CurveArray2D<T extends Curve2D> extends CurveSet2D<T> 
+implements Iterable<T>, Cloneable {
 
     /** The inner array of curves */
     protected ArrayList<T> curves;
-
-    // ===================================================================
-    // static methods
-
-    /**
-     * Mapping of the parameter t, relative to the local curve, into the
-     * interval [0 1], [0 1[, ]0 1], or ]0 1[, depending on the values of t0 and
-     * t1.
-     * 
-     * @param t a value between t0 and t1
-     * @param t0 the lower bound of parameterization domain
-     * @param t1 the upper bound of parameterization domain
-     * @return a value between 0 and 1
-     * @deprecated use Curve2DUtils.toUnitSegment() instead
-     */
-    @Deprecated
-    protected final static double toUnitSegment(double t, double t0, double t1) {
-        if (t<=t0)
-            return 0;
-        if (t>=t1)
-            return 1;
-
-        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY)
-            return Math.atan(t)/Math.PI+.5;
-
-        if (t0==Double.NEGATIVE_INFINITY)
-            return Math.atan(t-t1)*2/Math.PI+1;
-
-        if (t1==Double.POSITIVE_INFINITY)
-            return Math.atan(t-t0)*2/Math.PI;
-
-        // t0 and t1 are both finite
-        return (t-t0)/(t1-t0);
-    }
-
-    /**
-     * Transforms the value t between 0 and 1 in a value comprised between t0
-     * and t1.
-     * 
-     * @param t a value between 0 and 1
-     * @param t0 the lower bound of parameterization domain
-     * @param t1 the upper bound of parameterization domain
-     * @return a value between t0 and t1
-     * @deprecated use Curve2DUtils.fromUnitSegment() instead
-     */
-    @Deprecated
-    protected final static double fromUnitSegment(double t, double t0, double t1) {
-        if (t<=0)
-            return t0;
-        if (t>=1)
-            return t1;
-
-        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY)
-            return Math.tan((t-.5)*Math.PI);
-
-        if (t0==Double.NEGATIVE_INFINITY)
-            return Math.tan((t-1)*Math.PI/2)+t1;
-
-        if (t1==Double.POSITIVE_INFINITY)
-            return Math.tan(t*Math.PI/2)+t0;
-
-        // t0 and t1 are both finite
-        return t*(t1-t0)+t0;
-    }
 
     // ===================================================================
     // Constructors
 
     /**
      * Empty constructor. Initializes an empty array of curves.
-     * @deprecated use CurveArray2D instead
      */
-    @Deprecated
-    public CurveSet2D() {
+    public CurveArray2D() {
     	this.curves = new ArrayList<T>();
     }
 
     /**
      * Empty constructor. Initializes an empty array of curves, 
      * with a given size for allocating memory.
-     * @deprecated use CurveArray2D instead
      */
-    @Deprecated
-    public CurveSet2D(int n) {
+    public CurveArray2D(int n) {
     	this.curves = new ArrayList<T>(n);
     }
 
@@ -143,10 +77,8 @@ Cloneable {
      * Constructor from an array of curves.
      * 
      * @param curves the array of curves in the set
-     * @deprecated use CurveArray2D instead
      */
-    @Deprecated
-    public CurveSet2D(T[] curves) {
+    public CurveArray2D(T[] curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
             this.addCurve(element);
@@ -157,16 +89,14 @@ Cloneable {
      * inner collection of curves.
      * 
      * @param curves the collection of curves to add to the set
-     * @deprecated use CurveArray2D instead
      */
-    @Deprecated
-    public CurveSet2D(Collection<? extends T> curves) {
+    public CurveArray2D(Collection<? extends T> curves) {
     	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
     }
 
     // ===================================================================
-    // methods specific to CurveSet2D
+    // methods specific to CurveArray2D
 
     /**
      * Converts the position on the curve set, which is comprised between 0 and
@@ -499,7 +429,7 @@ Cloneable {
     }
 
     /**
-     * Return an instance of CurveSet2D.
+     * Return an instance of CurveArray2D.
      */
     public CurveSet2D<? extends Curve2D> getSubCurve(double t0, double t1) {
         // number of curves in the set
@@ -599,9 +529,9 @@ Cloneable {
     }
 
     /**
-     * Clips a curve, and return a CurveSet2D. If the curve is totally outside
-     * the box, return a CurveSet2D with 0 curves inside. If the curve is
-     * totally inside the box, return a CurveSet2D with only one curve, which is
+     * Clips a curve, and return a CurveArray2D. If the curve is totally outside
+     * the box, return a CurveArray2D with 0 curves inside. If the curve is
+     * totally inside the box, return a CurveArray2D with only one curve, which is
      * the original curve.
      */
     public CurveSet2D<? extends Curve2D> clip(Box2D box) {
@@ -610,7 +540,7 @@ Cloneable {
     }
 
     /**
-     * Returns bounding box for the CurveSet2D.
+     * Returns bounding box for the CurveArray2D.
      */
     public Box2D getBoundingBox() {
         double xmin = Double.MAX_VALUE;
@@ -631,13 +561,12 @@ Cloneable {
     }
 
     /**
-     * Transforms each curve, and build a new CurveSet2D with the set of
+     * Transforms each curve, and build a new CurveArray2D with the set of
      * transformed curves.
      */
-    public CurveSet2D<? extends Curve2D> transform(AffineTransform2D trans) {
+    public CurveArray2D<? extends Curve2D> transform(AffineTransform2D trans) {
     	// Allocate array for result
-    	CurveArray2D<Curve2D> result = 
-    		new CurveArray2D<Curve2D>(curves.size());
+        CurveArray2D<Curve2D> result = new CurveArray2D<Curve2D>(curves.size());
         
         // add each transformed curve
         for (Curve2D curve : curves)
@@ -716,15 +645,15 @@ Cloneable {
     // methods inherited from interface Object
 
     /**
-     * Returns true if obj is a CurveSet2D with the same number of curves, and
+     * Returns true if obj is a CurveArray2D with the same number of curves, and
      * such that each curve belongs to both objects.
      */
     @Override
     public boolean equals(Object obj) {
         // check class, and cast type
-        if (!(obj instanceof CurveSet2D))
+        if (!(obj instanceof CurveArray2D))
             return false;
-        CurveSet2D<?> curveSet = (CurveSet2D<?>) obj;
+        CurveArray2D<?> curveSet = (CurveArray2D<?>) obj;
 
         // check the number of curves in each set
         if (this.getCurveNumber()!=curveSet.getCurveNumber())
@@ -740,7 +669,7 @@ Cloneable {
     }
 
     @Override
-    public CurveSet2D<? extends Curve2D> clone() {
+    public CurveArray2D<? extends Curve2D> clone() {
         ArrayList<Curve2D> array = new ArrayList<Curve2D>(curves.size());
         for(T curve : curves)
             array.add(curve);

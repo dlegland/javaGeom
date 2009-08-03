@@ -41,6 +41,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LineSegment2D;
@@ -606,7 +607,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
 
         // create a new structure for storing result
-        CurveSet2D<CircleArc2D> result = new CurveSet2D<CircleArc2D>();
+        CurveArray2D<CircleArc2D> result = 
+        	new CurveArray2D<CircleArc2D>(set.getCurveNumber());
 
         // convert result
         for (Curve2D curve : set.getCurves()) {

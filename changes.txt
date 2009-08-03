@@ -1,11 +1,18 @@
 Changes in javaGeom library
 
-javaGeom-0.?.? (2009.??.??, rev. ??)
+javaGeom-0.8.0 (2009.??.??, rev. ??)
 
 New features
 - added Circulinear branch, which manages curves composed of portion of lines
 	and/or of circles. This makes possible computation of curve length, curve
-	parallels, and shape buffers.
+	parallels, and shape buffers. Main implemented features:
+	+ CirculinearCurve2D.getParallel(double): computes the parallel curve
+	+ CirculinearShape2D.getBuffer(double): computes buffer of the shape
+	+ CirculinearShape2D.transform(CircleInversion2D): computes the result of
+		transform by a circle inversion.
+	+ CirculinearCurve2D.getLength(): computes total length of the curve
+	+ CirculinearCurve2D.getLength(double): converts position to length
+	+ CirculinearCurve2D.getPosition(double): converts length to position
 - added getLeftTangent() and getRightTangent() methods in ContinuousCurve2D
 	
 Bug fixes
@@ -16,8 +23,11 @@ Regressions
 - Ring2D renamed to LinearRing2D
 
 Code
+- splitted CurveSet2D (for future interface) and CurveArray2D (default
+	implementation of CurveSet2D)
 - introduced AbstractContinuousCurve and AbstractSmothCurve to reduce code
 	copies
+- normalized toString() methods of simple curves	
 	
 	
 javaGeom-0.7.1 (2009-04-24, rev. 198)

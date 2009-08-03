@@ -34,6 +34,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 
 /**
@@ -43,8 +44,8 @@ import math.geom2d.curve.CurveSet2D;
  * 
  * @author dlegland
  */
-public class BoundarySet2D<T extends ContinuousBoundary2D> extends
-        CurveSet2D<T> implements Boundary2D {
+public class BoundarySet2D<T extends ContinuousBoundary2D> 
+extends CurveArray2D<T> implements Boundary2D {
 
     // ===================================================================
     // Constructors
@@ -148,7 +149,7 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
             curves.add((ContinuousOrientedCurve2D) curve);
 
         // Create CurveSet for the result
-        return new CurveSet2D<ContinuousOrientedCurve2D>(curves);
+        return new CurveArray2D<ContinuousOrientedCurve2D>(curves);
     }
 
     // ===================================================================
@@ -164,11 +165,11 @@ public class BoundarySet2D<T extends ContinuousBoundary2D> extends
     @Override
     public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<ContinuousOrientedCurve2D> result = 
-        	new CurveSet2D<ContinuousOrientedCurve2D>(set.getCurveNumber());
+        CurveArray2D<ContinuousOrientedCurve2D> result = 
+        	new CurveArray2D<ContinuousOrientedCurve2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

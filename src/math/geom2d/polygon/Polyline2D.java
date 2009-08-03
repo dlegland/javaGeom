@@ -42,6 +42,7 @@ import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
@@ -637,10 +638,11 @@ implements ContinuousCirculinearCurve2D, Cloneable {
      */
     public CurveSet2D<? extends Polyline2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<Polyline2D> result = new CurveSet2D<Polyline2D>();
+        CurveArray2D<Polyline2D> result =
+        	new CurveArray2D<Polyline2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

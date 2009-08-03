@@ -1,5 +1,6 @@
 package math.geom2d.conic;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,6 +27,10 @@ public class CheckClipCircle2D  extends JPanel{
 		Box2D box = new Box2D(100, 300, 100, 300);
 		box.getBoundary().draw(g2);
 		
+		
+		Circle2D circle0 = new Circle2D(200, 200, 80);
+		circle0.clip(box).draw(g2);
+		
 		double x0 = 260;
 		double y0 = 200;
 		double r = 124;
@@ -33,16 +38,19 @@ public class CheckClipCircle2D  extends JPanel{
 		
 		circle.draw(g2);
 		
+		g2.setColor(Color.RED);
+		
 		Curve2D clipped = circle.clip(box);
 		clipped.draw(g2);
 		
 		double x1 = 200;
 		double y1 = 200;
 		StraightLine2D line = new StraightLine2D(new Point2D(x1, y1),
-				new Vector2D(1, 0));
+				new Vector2D(0, 1));
 		AffineTransform2D sym = AffineTransform2D.createLineReflection(line);
 		
-		clipped.transform(sym).draw(g2);
+		Curve2D transformed = clipped.transform(sym);
+		transformed.draw(g2);
 	}
 
 	public final static void main(String[] args){

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveArray2D;
 
 /**
  * @author dlegland
@@ -28,7 +28,8 @@ public class DrawClippedLinesDemo extends JPanel {
 	Box2D outerBox = new Box2D(50, 550, 50, 450);
 	Box2D innerBox = new Box2D(100, 500, 100, 400);
 	
-	CurveSet2D<StraightLine2D> lines = new CurveSet2D<StraightLine2D>();
+	CurveArray2D<StraightLine2D> lines = 
+		new CurveArray2D<StraightLine2D>();
 	
 	public DrawClippedLinesDemo(){
 		Point2D point;

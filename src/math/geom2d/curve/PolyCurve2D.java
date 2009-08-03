@@ -45,7 +45,7 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
+public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         implements ContinuousCurve2D {
 
     /** flag for indicating if the curve is closed or not (default is open) */
@@ -228,10 +228,11 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveSet2D<T>
     @Override
     public CurveSet2D<? extends ContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<ContinuousCurve2D> result = new CurveSet2D<ContinuousCurve2D>();
+        CurveArray2D<ContinuousCurve2D> result = 
+        	new CurveArray2D<ContinuousCurve2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

@@ -228,7 +228,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
     public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> 
 	clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.getCurveNumber();

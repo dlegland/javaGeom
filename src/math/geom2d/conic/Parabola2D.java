@@ -40,6 +40,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousBoundary2D;
@@ -492,7 +493,8 @@ implements ContinuousBoundary2D, Conic2D, Cloneable {
         CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<ParabolaArc2D> result = new CurveSet2D<ParabolaArc2D>();
+        CurveArray2D<ParabolaArc2D> result = 
+        	new CurveArray2D<ParabolaArc2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

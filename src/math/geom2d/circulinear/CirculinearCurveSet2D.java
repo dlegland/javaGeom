@@ -14,6 +14,7 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -25,7 +26,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class CirculinearCurveSet2D<T extends CirculinearCurve2D>
-extends CurveSet2D<T> implements CirculinearCurve2D {
+extends CurveArray2D<T> implements CirculinearCurve2D {
 
     // ===================================================================
     // constructors
@@ -142,7 +143,7 @@ extends CurveSet2D<T> implements CirculinearCurve2D {
 
 	public CirculinearCurveSet2D<? extends CirculinearCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.getCurveNumber();

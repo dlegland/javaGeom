@@ -23,17 +23,78 @@ import math.geom2d.line.LinearShape2D;
  */
 public abstract class Curve2DUtils {
 
+    // ===================================================================
+    // static methods
+
+    /**
+     * Mapping of the parameter t, relative to the local curve, into the
+     * interval [0 1], [0 1[, ]0 1], or ]0 1[, depending on the values of t0 and
+     * t1.
+     * 
+     * @param t a value between t0 and t1
+     * @param t0 the lower bound of parameterization domain
+     * @param t1 the upper bound of parameterization domain
+     * @return a value between 0 and 1
+     */
+    public final static double toUnitSegment(double t, double t0, double t1) {
+        if (t<=t0)
+            return 0;
+        if (t>=t1)
+            return 1;
+
+        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY)
+            return Math.atan(t)/Math.PI+.5;
+
+        if (t0==Double.NEGATIVE_INFINITY)
+            return Math.atan(t-t1)*2/Math.PI+1;
+
+        if (t1==Double.POSITIVE_INFINITY)
+            return Math.atan(t-t0)*2/Math.PI;
+
+        // t0 and t1 are both finite
+        return (t-t0)/(t1-t0);
+    }
+
+    /**
+     * Transforms the value t between 0 and 1 in a value comprised between t0
+     * and t1.
+     * 
+     * @param t a value between 0 and 1
+     * @param t0 the lower bound of parameterization domain
+     * @param t1 the upper bound of parameterization domain
+     * @return a value between t0 and t1
+     */
+    public final static double fromUnitSegment(double t, double t0, double t1) {
+        if (t<=0)
+            return t0;
+        if (t>=1)
+            return t1;
+
+        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY)
+            return Math.tan((t-.5)*Math.PI);
+
+        if (t0==Double.NEGATIVE_INFINITY)
+            return Math.tan((t-1)*Math.PI/2)+t1;
+
+        if (t1==Double.POSITIVE_INFINITY)
+            return Math.tan(t*Math.PI/2)+t0;
+
+        // t0 and t1 are both finite
+        return t*(t1-t0)+t0;
+    }
+
     /**
      * Clip a curve, and return a CurveSet2D. If the curve is totally outside
      * the box, return a CurveSet2D with 0 curves inside. If the curve is
      * totally inside the box, return a CurveSet2D with only one curve, which is
      * the original curve.
      */
-    public final static CurveSet2D<Curve2D> clipCurve(Curve2D curve, Box2D box) {
+    public final static CurveSet2D<? extends Curve2D>
+    clipCurve(Curve2D curve, Box2D box) {
         // Case of continuous curve:
         // convert the result of ClipContinuousCurve to CurveSet of Curve2D
         if (curve instanceof ContinuousCurve2D)
-            return new CurveSet2D<Curve2D>(Curve2DUtils.clipContinuousCurve(
+            return new CurveArray2D<Curve2D>(Curve2DUtils.clipContinuousCurve(
                     (ContinuousCurve2D) curve, box).getCurves());
 
         // case of a CurveSet2D
@@ -42,16 +103,16 @@ public abstract class Curve2DUtils {
 
         // Unknown case
         System.err.println("Unknown curve class in Box2D.clipCurve()");
-        return new CurveSet2D<Curve2D>();
+        return new CurveArray2D<Curve2D>();
     }
 
     /**
      * clip a CurveSet2D.
      */
-    public final static CurveSet2D<Curve2D> clipCurveSet(
+    public final static CurveSet2D<? extends Curve2D> clipCurveSet(
             CurveSet2D<?> curveSet, Box2D box) {
         // Clip the current curve
-        CurveSet2D<Curve2D> result = new CurveSet2D<Curve2D>();
+    	CurveArray2D<Curve2D> result = new CurveArray2D<Curve2D>();
         CurveSet2D<?> clipped;
 
         // a clipped parts of current curve to the result
@@ -91,7 +152,8 @@ public abstract class Curve2DUtils {
             ContinuousCurve2D curve, Box2D box) {
 
         // Create CurveSet2D for storing the result
-        CurveSet2D<ContinuousCurve2D> res = new CurveSet2D<ContinuousCurve2D>();
+    	CurveArray2D<ContinuousCurve2D> res = 
+    		new CurveArray2D<ContinuousCurve2D>();
 
         // ------ Compute ordered list of intersections
 
@@ -244,7 +306,7 @@ public abstract class Curve2DUtils {
      */
     public final static CurveSet2D<SmoothCurve2D> clipSmoothCurve(
             SmoothCurve2D curve, Box2D box) {
-        CurveSet2D<SmoothCurve2D> result = new CurveSet2D<SmoothCurve2D>();
+    	CurveArray2D<SmoothCurve2D> result = new CurveArray2D<SmoothCurve2D>();
         for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve,
                 box))
             if (cont instanceof SmoothCurve2D)
@@ -287,7 +349,7 @@ public abstract class Curve2DUtils {
         }
 
         // Create CurveSet2D for storing the result
-        CurveSet2D<SmoothCurve2D> res = new CurveSet2D<SmoothCurve2D>();
+        CurveArray2D<SmoothCurve2D> res = new CurveArray2D<SmoothCurve2D>();
 
         // extract first point of the curve, or a point arbitrarily far
         Point2D point1;

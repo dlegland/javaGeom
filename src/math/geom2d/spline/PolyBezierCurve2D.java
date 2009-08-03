@@ -65,7 +65,7 @@ public class PolyBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     @Override
     public PolyBezierCurve2D clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         PolyBezierCurve2D result = new PolyBezierCurve2D();

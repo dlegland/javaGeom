@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveArray2D;
 
 /**
  * @author dlegland
@@ -27,7 +27,7 @@ public class DrawClippedCirclesDemo extends JPanel {
 
 	Box2D clippingBox = new Box2D(100, 500, 100, 400);
 	
-	CurveSet2D<Circle2D> circles = new CurveSet2D<Circle2D>();
+	CurveArray2D<Circle2D> circles = new CurveArray2D<Circle2D>();
 	
 	public DrawClippedCirclesDemo(){
 		Point2D point;
