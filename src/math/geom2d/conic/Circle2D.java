@@ -44,6 +44,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.AbstractLine2D;
@@ -564,8 +565,8 @@ CircularShape2D, CircleLine2D {
         	Curve2DUtils.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<CircularShape2D> result = 
-        	new CurveSet2D<CircularShape2D>();
+        CurveArray2D<CircularShape2D> result = 
+        	new CurveArray2D<CircularShape2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

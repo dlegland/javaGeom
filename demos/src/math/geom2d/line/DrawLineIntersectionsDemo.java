@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointSet2D;
 
@@ -30,7 +30,8 @@ public class DrawLineIntersectionsDemo extends JPanel {
 	Box2D outerBox = new Box2D(50, 550, 50, 450);
 	Box2D innerBox = new Box2D(100, 500, 100, 400);
 	
-	CurveSet2D<StraightLine2D> lines = new CurveSet2D<StraightLine2D>();
+	CurveArray2D<StraightLine2D> lines = 
+		new CurveArray2D<StraightLine2D>();
 	PointSet2D points = new PointArray2D();
 	
 	public DrawLineIntersectionsDemo(){

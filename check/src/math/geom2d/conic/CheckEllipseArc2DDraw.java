@@ -26,12 +26,16 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
-import math.geom2d.conic.Ellipse2D;
-import math.geom2d.curve.CurveSet2D;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import math.geom2d.Box2D;
+import math.geom2d.Point2D;
+import math.geom2d.curve.CurveArray2D;
 
 /**
  * Check the transformation of Ellipses by affine transforms.
@@ -83,7 +87,7 @@ public class CheckEllipseArc2DDraw extends JPanel{
 		//g2.draw(arc2);
 		
 
-		CurveSet2D<EllipseArc2D> set = new CurveSet2D<EllipseArc2D>();
+		CurveArray2D<EllipseArc2D> set = new CurveArray2D<EllipseArc2D>();
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		

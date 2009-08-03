@@ -25,16 +25,14 @@
  */
 package math.geom2d.curve;
 
-import junit.framework.TestCase;
-import java.util.*;
+import java.util.Iterator;
 
+import junit.framework.TestCase;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.polygon.Polyline2D;
 
@@ -48,7 +46,8 @@ public class Curve2DUtilsTest extends TestCase {
 		LineSegment2D line1 = new LineSegment2D(2, -2, 12, 8);
 		LineSegment2D clip1 = new LineSegment2D(4, 0, 10, 6);
 		
-		CurveSet2D<Curve2D> curveSet = Curve2DUtils.clipCurve(line1, box);
+		CurveSet2D<? extends Curve2D> curveSet = 
+			Curve2DUtils.clipCurve(line1, box);
 		Curve2D curve = curveSet.getFirstCurve();
 		assertTrue(clip1.equals(curve));
 	}
@@ -58,7 +57,8 @@ public class Curve2DUtilsTest extends TestCase {
 		Circle2D 	line1 = new Circle2D(0, 0, 5, true);
 		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, Math.PI/2);
 		
-		CurveSet2D<Curve2D> curveSet = Curve2DUtils.clipCurve(line1, box);
+		CurveSet2D<? extends Curve2D> curveSet = 
+			Curve2DUtils.clipCurve(line1, box);
 		Curve2D curve = curveSet.getFirstCurve();
 		assertTrue(clip1.equals(curve));
 	}
@@ -71,10 +71,12 @@ public class Curve2DUtilsTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 
-		CurveSet2D<Curve2D> clipped1 = Curve2DUtils.clipCurve(arc1, box);
+		CurveSet2D<? extends Curve2D> clipped1 = 
+			Curve2DUtils.clipCurve(arc1, box);
 		Curve2D curve1 = clipped1.getFirstCurve();
 		
-		CurveSet2D<Curve2D> clipped2 = Curve2DUtils.clipCurve(arc2, box);
+		CurveSet2D<? extends Curve2D> clipped2 = 
+			Curve2DUtils.clipCurve(arc2, box);
 		Curve2D curve2 = clipped2.getFirstCurve();
 
 		double alpha = Math.asin(l/2/r);
@@ -96,12 +98,13 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		CircleArc2D arc1 	= new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 	= new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
-		CurveSet2D<CircleArc2D> set = new CurveSet2D<CircleArc2D>();
+		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		
-		CurveSet2D<Curve2D> clippedSet = Curve2DUtils.clipCurve(set, box);
-		Iterator<Curve2D> iter 	= clippedSet.getCurves().iterator();
+		CurveSet2D<? extends Curve2D> clippedSet = 
+			Curve2DUtils.clipCurve(set, box);
+		Iterator<? extends Curve2D> iter = clippedSet.getCurves().iterator();
 		Curve2D curve1 	= iter.next();
 		Curve2D curve2 	= iter.next();
 		
@@ -126,12 +129,17 @@ public class Curve2DUtilsTest extends TestCase {
 		});
 		Box2D box = new Box2D(0, 20, 0, 20);
 		
-		CurveSet2D<Curve2D> clip1 = Curve2DUtils.clipCurve(poly1, box);
-		Polyline2D sub1 = new Polyline2D(new Point2D[]{new Point2D(15, 0), new Point2D(20, 5)});
-		Polyline2D sub2 = new Polyline2D(new Point2D[]{new Point2D(20, 15), new Point2D(15, 20)});
-		Polyline2D sub3 = new Polyline2D(new Point2D[]{new Point2D(5, 20), new Point2D(0, 15)});
-		Polyline2D sub4 = new Polyline2D(new Point2D[]{new Point2D(0, 5), new Point2D(5, 0)});
-		CurveSet2D<Curve2D> set1 = new CurveSet2D<Curve2D>();
+		CurveSet2D<? extends Curve2D> clip1 = 
+			Curve2DUtils.clipCurve(poly1, box);
+		Polyline2D sub1 = new Polyline2D(
+				new Point2D[]{new Point2D(15, 0), new Point2D(20, 5)});
+		Polyline2D sub2 = new Polyline2D(
+				new Point2D[]{new Point2D(20, 15), new Point2D(15, 20)});
+		Polyline2D sub3 = new Polyline2D(
+				new Point2D[]{new Point2D(5, 20), new Point2D(0, 15)});
+		Polyline2D sub4 = new Polyline2D(
+				new Point2D[]{new Point2D(0, 5), new Point2D(5, 0)});
+		CurveArray2D<Curve2D> set1 = new CurveArray2D<Curve2D>(4);
 		set1.addCurve(sub1);
 		set1.addCurve(sub2);
 		set1.addCurve(sub3);

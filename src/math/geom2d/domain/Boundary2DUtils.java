@@ -14,6 +14,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShapeException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.polygon.Polyline2D;
@@ -34,8 +35,8 @@ public abstract class Boundary2DUtils {
     public final static CurveSet2D<ContinuousOrientedCurve2D> clipContinuousOrientedCurve(
             ContinuousOrientedCurve2D curve, Box2D box) {
 
-        CurveSet2D<ContinuousOrientedCurve2D> result = 
-        	new CurveSet2D<ContinuousOrientedCurve2D>();
+    	CurveArray2D<ContinuousOrientedCurve2D> result = 
+        	new CurveArray2D<ContinuousOrientedCurve2D>();
         for (ContinuousCurve2D cont : 
         	Curve2DUtils.clipContinuousCurve(curve, box))
             if (cont instanceof ContinuousOrientedCurve2D)
@@ -121,8 +122,8 @@ public abstract class Boundary2DUtils {
         CurveSet2D<ContinuousOrientedCurve2D> clipped;
 
         // to store set of all clipped curves
-        CurveSet2D<ContinuousOrientedCurve2D> curveSet = 
-        	new CurveSet2D<ContinuousOrientedCurve2D>();
+        CurveArray2D<ContinuousOrientedCurve2D> curveSet = 
+        	new CurveArray2D<ContinuousOrientedCurve2D>();
 
         // extract the oriented curves which constitutes the boundary
         Collection<? extends ContinuousBoundary2D> boundaryCurves = 

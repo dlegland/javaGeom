@@ -37,6 +37,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
@@ -207,10 +208,12 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     @Override
     public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<ContinuousOrientedCurve2D> result = new CurveSet2D<ContinuousOrientedCurve2D>();
+        int n = set.getCurveNumber();
+        CurveArray2D<ContinuousOrientedCurve2D> result = 
+        	new CurveArray2D<ContinuousOrientedCurve2D>(n);
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {

@@ -41,6 +41,7 @@ import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -434,10 +435,11 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
      */
     public CurveSet2D<? extends Line2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<Line2D> result = new CurveSet2D<Line2D>();
+        CurveArray2D<Line2D> result = 
+        	new CurveArray2D<Line2D>(set.getCurveNumber());
 
         // convert the result
         for (Curve2D curve : set.getCurves()) {
