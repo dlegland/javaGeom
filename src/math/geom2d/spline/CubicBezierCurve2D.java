@@ -23,9 +23,7 @@
 
 package math.geom2d.spline;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.util.ArrayList;
+import java.awt.geom.CubicCurve2D;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -33,7 +31,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
@@ -41,19 +39,24 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.polygon.Polyline2D;
 
 /**
- * An extension of the Bezier curve provided in java.awt.geom, with support for
- * SmoothCurve2D and OrientedCurve2D.
+ * A cubic bezier curve, defined by 4 points.
+ * 
+ * From javaGeom 0.8.0, this shape does not extends.
+ * java.awt.geom.CubicCurve2D.Double anymore
  * 
  * @author Legland
  */
-public class CubicBezierCurve2D extends java.awt.geom.CubicCurve2D.Double
+public class CubicBezierCurve2D extends AbstractSmoothCurve2D
 implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
-    private static final long serialVersionUID = 1L;
-
+	protected double x1, y1;
+	protected double ctrlx1, ctrly1;
+	protected double ctrlx2, ctrly2;
+	protected double x2, y2;
+	
+	
     // ===================================================================
     // constructors
 
@@ -117,8 +120,15 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public CubicBezierCurve2D(double x1, double y1, double xctrl1, double yctrl1,
             double xctrl2, double yctrl2, double x2, double y2) {
-        super(x1, y1, xctrl1, yctrl1, xctrl2, yctrl2, x2, y2);
-    }
+        this.x1 = x1;
+        this.y1 = y1;
+        this.ctrlx1 = xctrl1;
+        this.ctrly1 = yctrl1;
+        this.ctrlx2 = xctrl2;
+        this.ctrly2 = yctrl2;
+        this.x2 = x2;
+        this.y2 = y2;
+       }
     
 
     // ===================================================================
@@ -146,7 +156,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return new Point2D(ctrlx2, ctrly2);
     }
 
-    /**
+    public Point2D getP1() {
+    	return this.getFirstPoint();
+    }
+    
+    public Point2D getP2() {
+    	return this.getLastPoint();
+    }
+    
+    public Point2D getCtrlP1() {
+    	return this.getControl1();
+    }
+    
+    public Point2D getCtrlP2() {
+    	return this.getControl2();
+    }
+    
+   /**
      * Returns the matrix of parametric representation of the line. Result has
      * the form :
      * <p>
@@ -262,40 +288,6 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods from ContinousCurve2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
-	 */
-	public Vector2D getLeftTangent(double t) {
-		return this.getTangent(t);
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
-	 */
-	public Vector2D getRightTangent(double t) {
-		return this.getTangent(t);
-	}
-
-    /**
-     * Creates a polyline with <code>n</code> line segments approximating the
-     * Bezier curve.
-     * 
-     * @param n number of line segments of polyline
-     * @return a polyline with <code>n</code> line segments.
-     */
-    public Polyline2D getAsPolyline(int n) {
-        Point2D[] points = new Point2D[n+1];
-        for (int i = 0; i<n+1; i++)
-            points[i] = this.getPoint((double) i/(double) n);
-        return new Polyline2D(points);
-    }
-
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<CubicBezierCurve2D> list = new ArrayList<CubicBezierCurve2D>(1);
-        list.add(this);
-        return list;
-    }
-
     /**
      * The cubic curve is never closed.
      */
@@ -359,28 +351,6 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Singular points of a Bezier curve are the first point and the last
-     * point.
-     */
-    public Collection<Point2D> getSingularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        list.add(this.getFirstPoint());
-        list.add(this.getLastPoint());
-        return list;
-    }
-
-    /**
-     * Returns true if pos is either 0 or 1.
-     */
-    public boolean isSingular(double pos) {
-        if (Math.abs(pos)<Shape2D.ACCURACY)
-            return true;
-        if (Math.abs(pos-1)<Shape2D.ACCURACY)
-            return true;
-        return false;
-    }
-
-    /**
      * Computes position by approximating cubic spline with a polyline.
      */
     public double getPosition(java.awt.geom.Point2D point) {
@@ -402,8 +372,8 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public CubicBezierCurve2D getReverseCurve() {
         return new CubicBezierCurve2D(
-                this.getP2(), this.getCtrlP2(),
-                this.getCtrlP1(), this.getP1());
+                this.getLastPoint(), this.getControl1(),
+                this.getControl2(), this.getFirstPoint());
     }
 
     /**
@@ -424,7 +394,22 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods from Shape2D interface
 
-    /**
+	/* (non-Javadoc)
+	 * @see math.geom2d.Shape2D#contains(double, double)
+	 */
+	public boolean contains(double x, double y) {
+		return new CubicCurve2D.Double(
+				x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2).contains(x, y);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.Shape2D#contains(java.awt.geom.Point2D)
+	 */
+	public boolean contains(java.awt.geom.Point2D p) {
+		return this.contains(p.getX(), p.getY());
+	}
+
+	/**
      * @see math.geom2d.Shape2D#getDistance(java.awt.geom.Point2D)
      */
     public double getDistance(java.awt.geom.Point2D p) {
@@ -437,17 +422,11 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
     public double getDistance(double x, double y) {
-        // int N=100;
-        // Point2D[] points = new Point2D[N];
-        // for(int i=0; i<N; i++)
-        // points[i] = this.getPoint((double)i/(N-1.0));
-        // Polyline2D polyline = new Polyline2D(points);
-
-        return this.getAsPolyline(100).getDistance(x, y);
+    	return this.getAsPolyline(100).getDistance(x, y);
     }
 
     /**
-     * return true, a cubic Bezier Curve is always bounded.
+     * Returns true, a cubic Bezier Curve is always bounded.
      */
     public boolean isBounded() {
         return true;
@@ -458,7 +437,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Clip the Bezier curve by a box. REturn a set of CubicBezierCurve2D.
+     * Clip the Bezier curve by a box. Return a set of CubicBezierCurve2D.
      */
     public CurveSet2D<? extends CubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
@@ -478,10 +457,19 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     public Box2D getBoundingBox() {
-        java.awt.geom.Rectangle2D rect = this.getBounds2D();
-        return new Box2D(
-                rect.getMinX(), rect.getMaxX(),
-                rect.getMinY(), rect.getMaxY());
+    	Point2D p1 = this.getFirstPoint();
+        Point2D p2 = this.getControl1();
+        Point2D p3 = this.getControl2();
+        Point2D p4 = this.getLastPoint();
+        double xmin = Math.min(Math.min(p1.getX(), p2.getX()), 
+        		Math.min(p3.getX(), p4.getX()));
+        double xmax = Math.max(Math.max(p1.getX(), p2.getX()), 
+        		Math.max(p3.getX(), p4.getX()));
+        double ymin = Math.min(Math.min(p1.getY(), p2.getY()), 
+        		Math.min(p3.getY(), p4.getY()));
+        double ymax = Math.max(Math.max(p1.getY(), p2.getY()), 
+        		Math.max(p3.getY(), p4.getY()));
+        return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     /**
@@ -490,14 +478,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public CubicBezierCurve2D transform(AffineTransform2D trans) {
         return new CubicBezierCurve2D(
-                trans.transform(this.getP1()), 
-                trans.transform(this.getCtrlP1()),
-                trans.transform(this.getCtrlP2()),
-                trans.transform(this.getP2()));
-    }
-
-    public void draw(Graphics2D g) {
-        g.draw(this);
+                trans.transform(this.getFirstPoint()), 
+                trans.transform(this.getControl1()),
+                trans.transform(this.getControl2()),
+                trans.transform(this.getLastPoint()));
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
@@ -525,26 +509,15 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return path;
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-     */
-    public Shape getAsAWTShape() {
-        return this.getGeneralPath();
-    }
-
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
-    }
-
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof java.awt.geom.CubicCurve2D.Double))
+        if(!(obj instanceof CubicBezierCurve2D))
             return false;
         
-        java.awt.geom.CubicCurve2D.Double bezier = 
-            (java.awt.geom.CubicCurve2D.Double) obj;
+        // class cast
+        CubicBezierCurve2D bezier = (CubicBezierCurve2D) obj;
+        
+        // compare each field
         if(Math.abs(this.x1-bezier.x1)>Shape2D.ACCURACY) return false;
         if(Math.abs(this.y1-bezier.y1)>Shape2D.ACCURACY) return false;
         if(Math.abs(this.ctrlx1-bezier.ctrlx1)>Shape2D.ACCURACY) return false;

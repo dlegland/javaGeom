@@ -23,15 +23,11 @@
 
 package math.geom2d.spline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -99,26 +95,6 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public QuadBezier2D(double x1, double y1, double xctrl, double yctrl,
             double x2, double y2) {
         super(x1, y1, xctrl, yctrl, x2, y2);
-    }
-
-    // ===================================================================
-    // methods specific to QuadBezier2D
-
-    @Override
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-        ArrayList<QuadBezier2D> list = new ArrayList<QuadBezier2D>(1);
-        list.add(this);
-        return list;
-    }
-
-    // ===================================================================
-    // methods from Curve2D interface
-
-    @Override
-    public Collection<ContinuousCurve2D> getContinuousCurves() {
-        ArrayList<ContinuousCurve2D> list = new ArrayList<ContinuousCurve2D>(1);
-        list.add(this);
-        return list;
     }
 
 
