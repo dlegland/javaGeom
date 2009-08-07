@@ -133,8 +133,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         super(xc, yc, r, r, 0, start, extent);
         this.circle = new Circle2D(xc, yc, r);
         this.ellipse = this.circle;
-        // this.startAngle = start;
-        // this.angleExtent = extent;
     }
 
     // ====================================================================
