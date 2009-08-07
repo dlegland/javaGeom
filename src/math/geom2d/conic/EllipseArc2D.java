@@ -87,8 +87,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @param extent the angle extent (signed angle)
      */
     public EllipseArc2D(Ellipse2D ell, double start, double extent) {
-    	//TODO: check indirect arc of indirect ellipse
-        this(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, extent);
+    	this(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, extent);
     }
 
     /**
@@ -151,8 +150,8 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
     
     public boolean containsAngle(double angle) {
-        return Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle,
-                angleExtent>0);
+        return Angle2D.containsAngle(
+        		startAngle, startAngle+angleExtent, angle, angleExtent>0);
     }
 
     /** Returns the angle associated with the given position */
@@ -276,12 +275,16 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods from interface SmoothCurve2D
 
     public Vector2D getTangent(double t) {
-        // convert position to angle
-        if (angleExtent<0)
-            t = startAngle-t;
-        else
-            t = startAngle+t;
-        return ellipse.getTangent(t);
+    	// format between min and max admissible values
+    	t = Math.min(Math.max(0, t), Math.abs(angleExtent));
+    	
+    	// compute tangent vector depending on position
+        if (angleExtent<0) {
+        	// need to invert vector for indirect arcs
+            return ellipse.getTangent(startAngle-t).times(-1);
+        } else {
+            return ellipse.getTangent(startAngle+t);
+        }
     }
 
     /**
@@ -345,49 +348,33 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
     public double getPosition(java.awt.geom.Point2D point) {
         double angle = Angle2D.getHorizontalAngle(ellipse.getCenter(), point);
-        if (containsAngle(angle))
+        if (this.containsAngle(angle))
             if (angleExtent>0)
                 return Angle2D.formatAngle(angle-startAngle);
             else
                 return Angle2D.formatAngle(startAngle-angle);
 
-        // return either 0 or 1, depending on which extremity is closer.
-        return getFirstPoint().distance(point)<getLastPoint().distance(point) ? 0
-                : Math.abs(angleExtent);
+        // If the point is not contained in the arc, return NaN.
+        return Double.NaN;
     }
 
     public double project(java.awt.geom.Point2D point) {
         double angle = ellipse.project(point);
 
         // Case of an angle contained in the ellipse arc
-        if (Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle,
-                angleExtent>0)) {
+        if (this.containsAngle(angle)) {
             if (angleExtent>0)
                 return Angle2D.formatAngle(angle-startAngle);
             else
                 return Angle2D.formatAngle(startAngle-angle);
         }
 
-        Point2D p1 = this.getFirstPoint();
-        Point2D p2 = this.getLastPoint();
-        if (p1.getDistance(point)<p2.getDistance(point))
-            return 0;
-        else
-            return Math.abs(angleExtent);
-
-        // // convert to arc parameterization
-        // if(angleExtent>0)
-        // angle = Angle2D.formatAngle(angle-startAngle);
-        // else
-        // angle = Angle2D.formatAngle(startAngle-angle);
-        //		
-        // // ensure projection lies on the arc
-        // if(angle<0) return 0;
-        // if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
-        //		
-        // return angle;
+        // return either 0 or T1, depending on which extremity is closer.
+        double d1 = this.getFirstPoint().distance(point);
+        double d2 = this.getLastPoint().distance(point);
+        return d1<d2 ? 0 : Math.abs(angleExtent);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -570,21 +557,36 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        // TODO: should be better to replace be cubic arcs
-
-        int N = 60;
-        Point2D point;
-
-        double dt = Math.abs(angleExtent)/N;
-        for (int i = 1; i<N; i++) {
-            point = this.getPoint(i*dt);
-            path.lineTo((float) point.getX(), (float) point.getY());
-        }
-
-        point = this.getLastPoint();
-        path.lineTo((float) point.getX(), (float) point.getY());
-
-        return path;
+    	// number of curves to approximate the arc
+    	int nSeg = (int) Math.ceil(Math.abs(angleExtent)/(Math.PI/2));
+    	nSeg = Math.min(nSeg, 4);
+    	
+    	// angular extent of each curve
+    	double ext = angleExtent/nSeg;
+    	
+    	// compute coefficient 
+    	double k = btan(Math.abs(ext));
+    	
+    	for(int i=0; i<nSeg; i++) {
+    		// position of the two extremities
+    		double ti0 = Math.abs(i*ext);
+    		double ti1 = Math.abs((i+1)*ext);
+    		
+    		// extremity points
+    		Point2D p1 = this.getPoint(ti0);
+    		Point2D p2 = this.getPoint(ti1);
+    		
+    		// tangent vectors, multiplied by appropriate coefficient
+    		Vector2D v1 = this.getTangent(ti0).times(k);
+    		Vector2D v2 = this.getTangent(ti1).times(k);
+    		
+    		// append a cubic curve to the path
+    		path.curveTo(
+    				p1.getX()+v1.getX(), p1.getY()+v1.getY(), 
+    				p2.getX()-v2.getX(), p2.getY()-v2.getY(), 
+    				p2.getX(), p2.getY());
+    	}
+		return path;    		
     }
 
     public java.awt.geom.GeneralPath getGeneralPath() {
@@ -604,6 +606,90 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public void draw(Graphics2D g2) {
         g2.draw(this.getGeneralPath());
+    }
+
+    /**
+     * 
+     * btan computes the length (k) of the control segments at
+     * the beginning and end of a cubic Bezier that approximates
+     * a segment of an arc with extent less than or equal to
+     * 90 degrees.  This length (k) will be used to generate the
+     * 2 Bezier control points for such a segment.
+     *
+     *   Assumptions:
+     *     a) arc is centered on 0,0 with radius of 1.0
+     *     b) arc extent is less than 90 degrees
+     *     c) control points should preserve tangent
+     *     d) control segments should have equal length
+     *
+     *   Initial data:
+     *     start angle: ang1
+     *     end angle:   ang2 = ang1 + extent
+     *     start point: P1 = (x1, y1) = (cos(ang1), sin(ang1))
+     *     end point:   P4 = (x4, y4) = (cos(ang2), sin(ang2))
+     *
+     *   Control points:
+     *     P2 = (x2, y2)
+     *     | x2 = x1 - k * sin(ang1) = cos(ang1) - k * sin(ang1)
+     *     | y2 = y1 + k * cos(ang1) = sin(ang1) + k * cos(ang1)
+     *
+     *     P3 = (x3, y3)
+     *     | x3 = x4 + k * sin(ang2) = cos(ang2) + k * sin(ang2)
+     *     | y3 = y4 - k * cos(ang2) = sin(ang2) - k * cos(ang2)
+     *
+     * The formula for this length (k) can be found using the
+     * following derivations:
+     *
+     *   Midpoints:
+     *     a) Bezier (t = 1/2)
+     *        bPm = P1 * (1-t)^3 +
+     *              3 * P2 * t * (1-t)^2 +
+     *              3 * P3 * t^2 * (1-t) +
+     *              P4 * t^3 =
+     *            = (P1 + 3P2 + 3P3 + P4)/8
+     *
+     *     b) arc
+     *        aPm = (cos((ang1 + ang2)/2), sin((ang1 + ang2)/2))
+     *
+     *   Let angb = (ang2 - ang1)/2; angb is half of the angle
+     *   between ang1 and ang2.
+     *
+     *   Solve the equation bPm == aPm
+     *
+     *     a) For xm coord:
+     *        x1 + 3*x2 + 3*x3 + x4 = 8*cos((ang1 + ang2)/2)
+     *
+     *        cos(ang1) + 3*cos(ang1) - 3*k*sin(ang1) +
+     *        3*cos(ang2) + 3*k*sin(ang2) + cos(ang2) =
+     *        = 8*cos((ang1 + ang2)/2)
+     *
+     *        4*cos(ang1) + 4*cos(ang2) + 3*k*(sin(ang2) - sin(ang1)) =
+     *        = 8*cos((ang1 + ang2)/2)
+     *
+     *        8*cos((ang1 + ang2)/2)*cos((ang2 - ang1)/2) +
+     *        6*k*sin((ang2 - ang1)/2)*cos((ang1 + ang2)/2) =
+     *        = 8*cos((ang1 + ang2)/2)
+     *
+     *        4*cos(angb) + 3*k*sin(angb) = 4
+     *
+     *        k = 4 / 3 * (1 - cos(angb)) / sin(angb)
+     *
+     *     b) For ym coord we derive the same formula.
+     *
+     * Since this formula can generate "NaN" values for small
+     * angles, we will derive a safer form that does not involve
+     * dividing by very small values:
+     *     (1 - cos(angb)) / sin(angb) =
+     *     = (1 - cos(angb))*(1 + cos(angb)) / sin(angb)*(1 + cos(angb)) =
+     *     = (1 - cos(angb)^2) / sin(angb)*(1 + cos(angb)) =
+     *     = sin(angb)^2 / sin(angb)*(1 + cos(angb)) =
+     *     = sin(angb) / (1 + cos(angb))
+     *
+     * Function taken from java.awt.geom.ArcIterator.
+     */
+    private static double btan(double increment) {
+        increment /= 2.0;
+        return 4.0 / 3.0 * Math.sin(increment) / (1.0 + Math.cos(increment));
     }
 
     // ====================================================================

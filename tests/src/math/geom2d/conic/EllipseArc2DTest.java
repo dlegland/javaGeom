@@ -27,6 +27,7 @@ package math.geom2d.conic;
 
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
+import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
 
 public class EllipseArc2DTest extends TestCase {
@@ -122,6 +123,21 @@ public class EllipseArc2DTest extends TestCase {
 		arc = new EllipseArc2D(ell, 0, Math.PI/2);
 		transformed = arc.transform(refOy);
 		assertTrue(transformed.equals(new EllipseArc2D(ell2, 0, -Math.PI/2)));
+	}
+	
+	public void testGetTangent() {
+        Ellipse2D ellipse = new Ellipse2D(0, 0, 50, 20, 0);
+        
+        // Direct arc
+        EllipseArc2D arc1 = new EllipseArc2D(ellipse, 0, Math.PI/2);        
+        assertTrue(new Vector2D(0, 20).equals(arc1.getTangent(0)));
+        assertTrue(new Vector2D(-50, 0).equals(arc1.getTangent(Math.PI/2)));
+		
+        // Inverse arc
+        EllipseArc2D arc2 = new EllipseArc2D(ellipse, 0, -Math.PI/2);        
+        assertTrue(new Vector2D(0, -20).equals(arc2.getTangent(0)));
+        assertTrue(new Vector2D(-50, 0).equals(arc2.getTangent(Math.PI/2)));
+		
 	}
 	
     public void testClone() {
