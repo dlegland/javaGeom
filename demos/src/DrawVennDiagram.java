@@ -88,10 +88,14 @@ public class DrawVennDiagram extends JPanel{
 		Circle2D cd3 = new Circle2D(pcd3, pcd3.getDistance(pc3));
 		
 		// circle arcs
-		CircleArc2D cad0 = new CircleArc2D(cd0, cd0.getPosition(pc3), cd0.getPosition(pc0), true);
-		CircleArc2D cad1 = new CircleArc2D(cd1, cd1.getPosition(pc0), cd1.getPosition(pc1), false);
-		CircleArc2D cad2 = new CircleArc2D(cd2, cd2.getPosition(pc1), cd2.getPosition(pc2), true);
-		CircleArc2D cad3 = new CircleArc2D(cd3, cd3.getPosition(pc2), cd3.getPosition(pc3), false);
+		CircleArc2D cad0 = new CircleArc2D(cd0, 
+				cd0.getPosition(pc3), cd0.getPosition(pc0), true);
+		CircleArc2D cad1 = new CircleArc2D(cd1, 
+				cd1.getPosition(pc0), cd1.getPosition(pc1), false);
+		CircleArc2D cad2 = new CircleArc2D(cd2, 
+				cd2.getPosition(pc1), cd2.getPosition(pc2), true);
+		CircleArc2D cad3 = new CircleArc2D(cd3, 
+				cd3.getPosition(pc2), cd3.getPosition(pc3), false);
 		
 		// Create curve d
 		PolyCurve2D<CircleArc2D> cd = new PolyCurve2D<CircleArc2D>(
@@ -102,7 +106,8 @@ public class DrawVennDiagram extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 		g2.setStroke(new BasicStroke(1.0f));
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		g2.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING, 
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		lineX.clip(box).draw(g2);
@@ -141,7 +146,8 @@ public class DrawVennDiagram extends JPanel{
 		for(int i=0; i<n; i++){
 			positions[i] = i*2*Math.PI/n + Math.PI/n;
 			points[i] 	= c0.getPoint(positions[i]);
-			tangents[i] = new StraightLine2D(points[i], c0.getTangent(positions[i]));
+			tangents[i] = new StraightLine2D(points[i], 
+					c0.getTangent(positions[i]));
 		}
 		
 		// circle centers
@@ -151,8 +157,11 @@ public class DrawVennDiagram extends JPanel{
 		for(int i=0; i<n; i++){
 			int j = (i-1+n) % n;
 			centers[i] 	= tangents[i].getIntersection(tangents[j]);
-			circles[i] 	= new Circle2D(centers[i], centers[i].getDistance(points[i]));
-			arcs[i] 	= new CircleArc2D(circles[i], 
+			circles[i] 	= new Circle2D(
+					centers[i], 
+					centers[i].getDistance(points[i]));
+			arcs[i] 	= new CircleArc2D(
+					circles[i], 
 					circles[i].getPosition(points[j]), 
 					circles[i].getPosition(points[i]), 
 					i%2 == 0);
@@ -166,10 +175,12 @@ public class DrawVennDiagram extends JPanel{
 	
 	public final static void main(String[] args){
 		JPanel panel = new DrawVennDiagram();
+		panel.setPreferredSize(new Dimension(600, 500));
+		
 		JFrame frame = new JFrame("Draw Venn Diagram demo");
 		frame.setContentPane(panel);
-		frame.setSize(600, 500);
-		frame.setVisible(true);
 		
+		frame.pack();
+		frame.setVisible(true);		
 	}
 }

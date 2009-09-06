@@ -49,18 +49,18 @@ public class DrawClippedLinesDemo extends JPanel {
 		// Draw lines in outer box
 		g2.setColor(Color.BLUE);
 		for(StraightLine2D line : lines){
-			 clipped = line.clip(outerBox);
-			 if(!clipped.isEmpty())
-				 clipped.draw(g2);
+			clipped = line.clip(outerBox);
+			if(!clipped.isEmpty())
+				clipped.draw(g2);
 		}
 		
 		// Draw lines in inner box
 		g2.setStroke(new BasicStroke(3.0f));
 		g2.setColor(Color.BLACK);
 		for(StraightLine2D line : lines){
-			 clipped = line.clip(innerBox);
-			 if(!clipped.isEmpty())
-				 clipped.draw(g2);
+			clipped = line.clip(innerBox);
+			if(!clipped.isEmpty())
+				clipped.draw(g2);
 		}
 	}
 	

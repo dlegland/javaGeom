@@ -1,6 +1,12 @@
 Changes in javaGeom library
 
-javaGeom-0.8.0 (2009.??.??, rev. ??)
+
+
+javaGeom-0.?.? (2009.??.??, rev. ???)
+
+
+
+javaGeom-0.8.0 (2009.06.09, rev. 226)
 
 New features
 - added Circulinear branch, which manages curves composed of portion of lines
