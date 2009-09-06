@@ -407,14 +407,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      */
     @Deprecated
     public AffineTransform2D compose(AffineTransform2D that) {
-        double[][] m2 = that.getAffineMatrix();
-        double n00 = this.m00*m2[0][0]+this.m01*m2[1][0];
-        double n01 = this.m00*m2[0][1]+this.m01*m2[1][1];
-        double n02 = this.m00*m2[0][2]+this.m01*m2[1][2]+this.m02;
-        double n10 = this.m10*m2[0][0]+this.m11*m2[1][0];
-        double n11 = this.m10*m2[0][1]+this.m11*m2[1][1];
-        double n12 = this.m10*m2[0][2]+this.m11*m2[1][2]+this.m12;
-        return new AffineTransform2D(n00, n01, n02, n10, n11, n12);
+        return this.concatenate(that);
     }
 
     /**

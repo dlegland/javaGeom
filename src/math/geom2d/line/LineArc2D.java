@@ -111,7 +111,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods specific to LineArc2D
 
     /**
-     * Returns the length of the edge.
+     * Returns the length of the line arc.
      */
     public double getLength() {
         if (t0!=Double.NEGATIVE_INFINITY&&t1!=Double.POSITIVE_INFINITY)
@@ -121,7 +121,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Return the first point of the edge. In the case of a line, or a ray
+     * Return the first point of the line arc. In the case of a line arc
      * starting from -infinity, throws an UnboundedShapeException.
      * 
      * @return the first point of the arc
@@ -134,7 +134,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Return the last point of the edge. In the case of a line, or a ray ending
+     * Return the last point of the line arc. In the case of a line arc ending
      * at infinity, throws an UnboundedShapeException.
      * 
      * @return the last point of the arc.
@@ -186,23 +186,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 	}
 
 
-    // ===================================================================
-    // methods of ContinuousCurve2D interface
-
-    public math.geom2d.polygon.Polyline2D getAsPolyline(int n) {
-        if (!this.isBounded())
-            throw new UnboundedShapeException();
-
-        Point2D[] points = new Point2D[n+1];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        for (int i = 0; i<n; i++)
-            points[i] = this.getPoint(i*dt+t0);
-        return new math.geom2d.polygon.Polyline2D(points);
-    }
-
-    // ===================================================================
+	// ===================================================================
     // methods of Curve2D interface
 
     /**
@@ -283,7 +267,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     /**
      * Returns the line arc which have the same trace, but has the inverse
-     * parametrization.
+     * parameterization.
      */
     public LineArc2D getReverseCurve() {
         return new LineArc2D(x0, y0, -dx, -dy, -t1, -t0);
@@ -310,22 +294,6 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t0==Double.NEGATIVE_INFINITY)
             return false;
         return true;
-    }
-
-    /**
-     * Get the distance of the point (x, y) to this object.
-     */
-    @Override
-    public double getDistance(double x, double y) {
-    	//TODO: what about infinite arcs ?
-        Point2D proj = super.getProjectedPoint(x, y);
-        if (contains(proj))
-            return proj.distance(x, y);
-        double d1 = Math.sqrt((x0+t0*dx-x)*(x0+t0*dx-x)+(y0+t0*dy-y)
-                *(y0+t0*dy-y));
-        double d2 = Math.sqrt((x0+t1*dx-x)*(x0+t1*dx-x)+(y0+t1*dy-y)
-                *(y0+t1*dy-y));
-        return Math.min(d1, d2);
     }
 
     public Box2D getBoundingBox() {

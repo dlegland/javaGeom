@@ -41,9 +41,7 @@ implements SmoothCurve2D, Cloneable {
 	 * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
 	 */
 	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
-		ArrayList<SmoothCurve2D> array = new ArrayList<SmoothCurve2D>(1);
-		array.add(this);
-		return array;
+		return wrapCurve(this);
 	}
 
 	/** 
