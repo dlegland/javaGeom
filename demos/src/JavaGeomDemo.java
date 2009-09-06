@@ -86,8 +86,8 @@ public class JavaGeomDemo extends JPanel{
 		intLine.draw(g2, 2);
 		
 		// Compute intersections between a circle and lines
-		Collection<Point2D> intCircle = circle1.getIntersections(line2);
-		for(Point2D point : intCircle)
+		Collection<Point2D> intersects = circle1.getIntersections(line2);
+		for(Point2D point : intersects)
 			point.draw(g2, 2);
 		
 		// Create some affine transforms
