@@ -704,7 +704,20 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
      * @return distance between this object and the point (x,y)
      */
     public double getDistance(double x, double y) {
-        return Math.abs((y-y0)*dx-(x-x0)*dy)/Math.hypot(dx, dy);
+    	// first project on the line
+        Point2D proj = getProjectedPoint(x, y);
+        
+        // if the line contains the projection, returns the distance
+        if (contains(proj))
+            return proj.distance(x, y);
+        
+        // otherwise, returns the distance to the closest singular point
+        double dist = Double.POSITIVE_INFINITY;
+        if(!Double.isInfinite(getT0()))
+        	dist = getFirstPoint().getDistance(x, y);
+        if(!Double.isInfinite(getT1()))
+        	dist = Math.min(dist, getLastPoint().getDistance(x, y));
+       	return dist;
     }
 
     public boolean contains(java.awt.geom.Point2D p) {

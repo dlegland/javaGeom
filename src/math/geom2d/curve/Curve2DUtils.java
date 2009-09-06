@@ -238,7 +238,7 @@ public abstract class Curve2DUtils {
 
         // different behavior if curve is bounded or not
         double t0 = curve.getT0();
-        if (Double.isInfinite(t0)) {
+        if (isLeftInfinite(curve)) {
             // choose point between -infinite and first intersection
             double pos = choosePosition(t0, set.iterator().next());
             inside = box.contains(curve.getPoint(pos));
@@ -455,4 +455,30 @@ public abstract class Curve2DUtils {
 
         return (t0+t1)/2;
     }
+    
+	public final static boolean isLeftInfinite(Curve2D curve) {
+		// basic check
+		if(curve.isBounded()) return false;
+		
+		// extract the first smooth curve
+		ContinuousCurve2D cont = curve.getContinuousCurves().iterator().next();
+		SmoothCurve2D smooth = cont.getSmoothPieces().iterator().next();
+		
+		// check first position of first curve
+		return Double.isInfinite(smooth.getT0());
+	}
+	
+	public final static boolean isRightInfinite(Curve2D curve) {
+		// basic check
+		if(curve.isBounded()) return false;
+		
+		// extract the first smooth curve
+		SmoothCurve2D lastCurve = null;
+		for(ContinuousCurve2D cont : curve.getContinuousCurves())
+			for(SmoothCurve2D smooth : cont.getSmoothPieces())
+				lastCurve = smooth;
+		
+		// check last position of last curve
+		return Double.isInfinite(lastCurve.getT1());
+	}    
 }

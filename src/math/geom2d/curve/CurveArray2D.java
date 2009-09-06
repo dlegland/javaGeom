@@ -52,8 +52,8 @@ import math.geom2d.line.LinearShape2D;
 public class CurveArray2D<T extends Curve2D> extends CurveSet2D<T> 
 implements Iterable<T>, Cloneable {
 
-    /** The inner array of curves */
-    protected ArrayList<T> curves;
+//    /** The inner array of curves */
+//    protected ArrayList<T> curves;
 
     // ===================================================================
     // Constructors
@@ -344,16 +344,31 @@ implements Iterable<T>, Cloneable {
      * Each point is referenced only once.
      */
     public Collection<Point2D> getSingularPoints() {
+    	// create array for result
     	ArrayList<Point2D> points = new ArrayList<Point2D>();
+    	
+    	// iterate on curves composing the array
         for (Curve2D curve : curves){
+        	// Add singular points inside curve
             for (Point2D point : curve.getSingularPoints())
                 if (!points.contains(point))
                 	points.add(point);
-            if(!Double.isInfinite(curve.getT0()))
-            	points.add(curve.getFirstPoint());
-            if(!Double.isInfinite(curve.getT1()))
-            	points.add(curve.getLastPoint());
+            
+            // add first point
+            if(!Curve2DUtils.isLeftInfinite(curve)){
+            	Point2D point = curve.getFirstPoint();
+            	if (!points.contains(point))
+                	points.add(point);
+            }
+            
+            // add last point
+            if(!Curve2DUtils.isRightInfinite(curve)){
+            	Point2D point = curve.getLastPoint();
+            	if (!points.contains(point))
+                	points.add(point);
+            }
         }
+        // return the set of singular points
         return points;
     }
 

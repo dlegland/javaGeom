@@ -582,7 +582,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Get the distance of the point (x, y) to this object.
+     * Returns the distance of the point (x, y) to this straight line.
      */
     @Override
     public double getDistance(double x, double y) {

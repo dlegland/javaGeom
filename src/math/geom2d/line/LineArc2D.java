@@ -317,6 +317,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
     @Override
     public double getDistance(double x, double y) {
+    	//TODO: what about infinite arcs ?
         Point2D proj = super.getProjectedPoint(x, y);
         if (contains(proj))
             return proj.distance(x, y);
