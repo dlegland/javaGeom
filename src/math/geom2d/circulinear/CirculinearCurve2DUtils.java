@@ -21,6 +21,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.conic.CircularShape2D;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.point.PointSet2D;
@@ -258,15 +259,19 @@ public class CirculinearCurve2DUtils {
 				// iterate on intersection between consecutive elements
 				for(Point2D inter : findIntersections(elem1, elem2)) {
 					// do not keep extremities
-					if(inter.equals(elem1.getLastPoint()) &&
-							inter.equals(elem2.getFirstPoint())) continue;
-					if(inter.equals(elem1.getFirstPoint()) &&
+					if(!Double.isInfinite(elem1.getT1())&&!Double.isInfinite(elem2.getT0()))
+						if(inter.equals(elem1.getLastPoint()) &&
+								inter.equals(elem2.getFirstPoint())) continue;
+					if(!Double.isInfinite(elem1.getT0())&&!Double.isInfinite(elem2.getT1()))
+						if(inter.equals(elem1.getFirstPoint()) &&
 							inter.equals(elem2.getLastPoint())) continue;
 					
 					// add the intersection if we keep it
-					list1.add(2*i + formatPosition(elem1.getPosition(inter), 
+					list1.add(2*i + Curve2DUtils.toUnitSegment(
+							elem1.getPosition(inter),
 							elem1.getT0(), elem1.getT1()));
-					list2.add(2*j + formatPosition(elem2.getPosition(inter), 
+					list2.add(2*j + Curve2DUtils.toUnitSegment(
+							elem2.getPosition(inter), 
 							elem2.getT0(), elem2.getT1()));
 				}
 			}
@@ -374,10 +379,6 @@ public class CirculinearCurve2DUtils {
 		return result;
 	}
 	
-	private final static double formatPosition(double pos, double t0, double t1) {
-		return (pos-t0)/(t1-t0);
-	}
-	
 	/**
 	 * Compute the intersections, if they exist, of two circulinear elements.
 	 */
@@ -427,6 +428,7 @@ public class CirculinearCurve2DUtils {
         ArrayList<ContinuousCirculinearCurve2D> result =
         	new ArrayList<ContinuousCirculinearCurve2D>();
 
+        // Instances of CirculinearElement2D can not self-intersect
 		if (curve instanceof CirculinearElement2D){
 			result.add(curve);
 			return result;
@@ -815,10 +817,10 @@ public class CirculinearCurve2DUtils {
 		// iterate on all continuous curves
 		for(ContinuousCirculinearCurve2D cont : curve.getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
-			for(ContinuousCirculinearCurve2D simpleCurve : 
+			for(ContinuousCirculinearCurve2D contour : 
 				splitContinuousCurve(cont)) {
 				// compute the rings composing the simple curve buffer
-				contours.addAll(computeBufferRingsSimple(simpleCurve, dist));
+				contours.addAll(computeBufferSimpleContour(contour, dist));
 			}
 		}
 		
@@ -886,11 +888,11 @@ public class CirculinearCurve2DUtils {
 	}
 
 	/**
-	 * Computes the rings that form the buffer of a circulinear curve that
-	 * does not self-intersect.
+	 * Computes the rings that form the buffer of a continuous circulinear
+	 * curve that does not self-intersect.
 	 */
 	public final static Collection<? extends CirculinearContour2D> 
-	computeBufferRingsSimple(ContinuousCirculinearCurve2D curve, double d) {
+	computeBufferSimpleContour(ContinuousCirculinearCurve2D curve, double d) {
 		
 		// prepare an array to store the set of rings
 		ArrayList<CirculinearContour2D> rings =
@@ -938,43 +940,93 @@ public class CirculinearCurve2DUtils {
 					} else if (curve2==null) {
 						curve2 = split;
 					} else {
+						//TODO: throw exception instead of this ugly error management
 						System.err.println("more than 2 free curves....");
-						return null;
+						return rings;
 					}
 				}
 			}
 			
 			// create new ring using two open curves and two circle arcs
 			if(curve1!=null && curve2!=null){
-				// extremity points
-				Point2D p11 = curve1.getFirstPoint();
-				Point2D p12 = curve1.getLastPoint();
-				Point2D p21 = curve2.getFirstPoint();
-				Point2D p22 = curve2.getLastPoint();
-				
 				// array of elements for creating new ring.
 				ArrayList<CirculinearElement2D> elements = 
 					new ArrayList<CirculinearElement2D>();
 				
-				// Check how to associate open curves and circle arcs
-				if(p12.equals(parallel1.getLastPoint())){
-					elements.addAll(curve1.getSmoothPieces());					
-					elements.add(createArc(
-							curve.getLastPoint(), d, p12, p21, true));					
+				// some shortcuts for computing infinity of curve
+				boolean b0 = Curve2DUtils.isLeftInfinite(curve);
+				boolean b1 = Curve2DUtils.isRightInfinite(curve);
+				
+				if (b0 && b1) {
+					// case of an infinite curve at both extremities
+					// In this case, the two parallel curves do not join,
+					// and are added as contours individually					
+					rings.add(new BoundaryPolyCirculinearCurve2D<CirculinearElement2D>(
+							curve1.getSmoothPieces()));
+					rings.add(new BoundaryPolyCirculinearCurve2D<CirculinearElement2D>(
+							curve2.getSmoothPieces()));
+				} else if (b0 && !b1) {
+					// case of a curve starting from infinity, and finishing
+					// on a given point
+					
+					// extremity points
+					Point2D p11 = curve1.getFirstPoint();
+					Point2D p22 = curve2.getLastPoint();
+
+					// add elements of the new contour
 					elements.addAll(curve2.getSmoothPieces());
 					elements.add(createArc(
 							curve.getFirstPoint(), d, p22, p11, true));
-				} else {
-					elements.addAll(curve2.getSmoothPieces());
-					elements.add(createArc(
-							curve.getLastPoint(), d, p22, p11, true));					
-					elements.addAll(curve1.getSmoothPieces());					
+					elements.addAll(curve1.getSmoothPieces());
+					
+					// create the last ring
+					rings.add(new GenericCirculinearRing2D(elements, true));
+					
+				} else if (b1 && !b0) {
+					// case of a curve starting at a point and finishing at
+					// the infinity
+					
+					// extremity points
+					Point2D p12 = curve1.getLastPoint();
+					Point2D p21 = curve2.getFirstPoint();
+					
+					// add elements of the new contour
+					elements.addAll(curve1.getSmoothPieces());
 					elements.add(createArc(
 							curve.getFirstPoint(), d, p12, p21, true));
-				}
+					elements.addAll(curve2.getSmoothPieces());
+					
+					// create the last contour
+					rings.add(new GenericCirculinearRing2D(elements, true));
+					
+				} else {
+					// case of a curve finite at each extremity
 				
-				// create the last ring
-				rings.add(new GenericCirculinearRing2D(elements, true));
+					// extremity points
+					Point2D p11 = curve1.getFirstPoint();
+					Point2D p12 = curve1.getLastPoint();
+					Point2D p21 = curve2.getFirstPoint();
+					Point2D p22 = curve2.getLastPoint();
+
+					// Check how to associate open curves and circle arcs
+					if(p12.equals(parallel1.getLastPoint())){
+						elements.addAll(curve1.getSmoothPieces());					
+						elements.add(createArc(
+								curve.getLastPoint(), d, p12, p21, true));
+						elements.addAll(curve2.getSmoothPieces());
+						elements.add(createArc(
+								curve.getFirstPoint(), d, p22, p11, true));
+					} else {
+						elements.addAll(curve2.getSmoothPieces());
+						elements.add(createArc(
+								curve.getLastPoint(), d, p22, p11, true));
+						elements.addAll(curve1.getSmoothPieces());					
+						elements.add(createArc(
+								curve.getFirstPoint(), d, p12, p21, true));
+					}
+					// create the last ring
+					rings.add(new GenericCirculinearRing2D(elements, true));
+				}
 			}
 		}
 		
@@ -1000,7 +1052,7 @@ public class CirculinearCurve2DUtils {
 				
 				// convert the set of elements to a Circulinear ring
 				rings2.add(new GenericCirculinearRing2D(
-						split.getSmoothPieces(), true));
+						split.getSmoothPieces(), split.isClosed()));
 		}
 		
 		// return the set of created rings

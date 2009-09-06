@@ -60,7 +60,7 @@ public class LineSegment2DTest extends TestCase {
 	    
 	    // The buffer should be defined by a single boundary curve
 	    Boundary2D boundary = buffer.getBoundary();
-	    assertTrue(boundary.getContinuousCurves().size()==1);
+	    assertEquals(1, boundary.getContinuousCurves().size());
 	    
 	    // The contour is composed of 4 smooth pieces (2 line segments, and
 	    // two circle arcs)

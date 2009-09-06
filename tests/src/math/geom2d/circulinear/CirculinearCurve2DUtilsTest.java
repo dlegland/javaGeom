@@ -30,9 +30,14 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Ray2D;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
 
 public class CirculinearCurve2DUtilsTest extends TestCase {
@@ -113,5 +118,141 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(points.size(), 1);
 		
 		assertTrue(points.contains(new Point2D(100, 100)));
+	}
+	
+	public void testGetParallelInfiniteCurve () {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(10, 20);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+		
+		// computes its parallel
+		ContinuousCirculinearCurve2D parallel =
+			CirculinearCurve2DUtils.createContinuousParallel(line, 10);
+		
+		// check some assertions
+		assertFalse(parallel==null);
+		assertTrue(parallel.getContinuousCurves().size()==1);
+		assertFalse(parallel.isEmpty());
+		assertEquals(1, parallel.getSmoothPieces().size());
+	}
+	
+	public void testGetParallelBiRay () {
+		// first defines some constants
+		Point2D origin = new Point2D(10, 20);
+		Vector2D v1 = new Vector2D(2, 3);
+		Vector2D v2 = new Vector2D(3, 2);
+		
+		// create elements of the curve
+		InvertedRay2D ray1 = new InvertedRay2D(origin, v1);
+		Ray2D ray2 = new Ray2D(origin, v2);
+		
+		// create the curve
+		PolyCirculinearCurve2D<CirculinearElement2D> curve =
+			new PolyCirculinearCurve2D<CirculinearElement2D>();
+		curve.addCurve(ray1);
+		curve.addCurve(ray2);
+		
+		// computes the parallel
+		ContinuousCirculinearCurve2D parallel =
+			CirculinearCurve2DUtils.createContinuousParallel(curve, 10);
+		assertFalse(parallel==null);
+		assertFalse(parallel.isEmpty());
+		assertEquals(3, parallel.getSmoothPieces().size());
+
+		// the same in opposite direction
+		ContinuousCirculinearCurve2D parallel2 =
+			CirculinearCurve2DUtils.createContinuousParallel(curve, 10);
+		assertFalse(parallel2==null);
+		assertFalse(parallel2.isEmpty());
+		assertEquals(3, parallel2.getSmoothPieces().size());
+		
+		Collection<ContinuousCirculinearCurve2D> splittedCurves =
+			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
+		assertEquals(2, splittedCurves.size());
+	}
+
+	public void testGetBufferInfiniteCurve () {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(10, 20);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+		
+		// compute parallel
+		ContinuousCirculinearCurve2D parallel =
+			CirculinearCurve2DUtils.createContinuousParallel(line, 10);
+		assertFalse(parallel==null);
+		assertTrue(parallel.getContinuousCurves().size()==1);
+		assertFalse(parallel.isEmpty());
+		assertEquals(1, parallel.getSmoothPieces().size());
+		
+		// same in other direction
+		ContinuousCirculinearCurve2D parallel2 =
+			CirculinearCurve2DUtils.createContinuousParallel(line, -10);
+		assertFalse(parallel2==null);
+		assertTrue(parallel2.getContinuousCurves().size()==1);
+		assertFalse(parallel2.isEmpty());
+		assertEquals(1, parallel2.getSmoothPieces().size());		
+	}
+
+	public void testSplitContinuousCurveParallelBiRay () {
+		// first defines some constants
+		Point2D origin = new Point2D(10, 10);
+		Vector2D v1 = new Vector2D(3, 4);
+		Vector2D v2 = new Vector2D(4, 3);
+		
+		// create elements of the curve
+		InvertedRay2D ray1 = new InvertedRay2D(origin, v1);
+		Ray2D ray2 = new Ray2D(origin, v2);
+		
+		// create the curve
+		PolyCirculinearCurve2D<CirculinearElement2D> curve =
+			new PolyCirculinearCurve2D<CirculinearElement2D>();
+		curve.addCurve(ray1);
+		curve.addCurve(ray2);
+		assertEquals(2, curve.getSmoothPieces().size());
+
+		// computes the parallel
+		ContinuousCirculinearCurve2D parallel = curve.getParallel(10);
+		Collection<ContinuousCirculinearCurve2D> splittedCurves =
+			CirculinearCurve2DUtils.splitContinuousCurve(parallel);
+		
+		assertFalse(splittedCurves.isEmpty());
+		assertEquals(2, splittedCurves.size());
+		
+		// computes the other parallel
+		ContinuousCirculinearCurve2D parallel2 = curve.getParallel(-10);
+		Collection<Point2D> points = parallel2.getSingularPoints();
+		assertEquals(2, points.size());
+		assertTrue(points.contains(new Point2D(2, 16)));
+		assertTrue(points.contains(new Point2D(4, 18)));
+	}
+	
+	public void testGetBufferBiRay () {
+		// first defines some constants
+		Point2D origin = new Point2D(10, 20);
+		Vector2D v1 = new Vector2D(3, 4);
+		Vector2D v2 = new Vector2D(4, 3);
+		
+		// create elements of the curve
+		InvertedRay2D ray1 = new InvertedRay2D(origin, v1);
+		Ray2D ray2 = new Ray2D(origin, v2);
+		
+		// create the curve
+		PolyCirculinearCurve2D<CirculinearElement2D> curve =
+			new PolyCirculinearCurve2D<CirculinearElement2D>();
+		curve.addCurve(ray1);
+		curve.addCurve(ray2);
+		assertEquals(2, curve.getSmoothPieces().size());
+
+		// computes the buffer
+		CirculinearDomain2D buffer =
+			CirculinearCurve2DUtils.computeBuffer(curve, 10);
+		assertFalse(buffer==null);
+		assertFalse(buffer.isEmpty());
+		
+		// Extract boundary of buffer
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 }

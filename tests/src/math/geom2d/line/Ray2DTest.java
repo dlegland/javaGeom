@@ -138,6 +138,31 @@ public class Ray2DTest extends TestCase {
 		assertEquals(ray1.getWindingAngle(p4), Math.PI/4, 1e-14);
 	}
 	
+	public void testGetDistancePoint2D() {
+		Ray2D ray = new Ray2D(1, 2, 3, 4);
+		Point2D pt;
+		
+		// test origin point
+		pt = new Point2D(1, 2);
+		assertEquals(0, ray.getDistance(pt), 1e-14);
+		
+		// point on the line (positive extent)
+		pt = new Point2D(1+2*3, 2+2*4);
+		assertEquals(0, ray.getDistance(pt), 1e-14);
+		
+		// point on the line (negative extent)
+		pt = new Point2D(1-2*3, 2-2*4);
+		assertEquals(10, ray.getDistance(pt), 1e-14);
+		
+		// point outside the line
+		pt = new Point2D(5, -1);
+		assertEquals(5, ray.getDistance(pt), 1e-14);	
+		
+		// point outside the line, in the other side
+		pt = new Point2D(-3, 5);
+		assertEquals(5, ray.getDistance(pt), 1e-14);	
+	}
+
 	public void testClone(){
 	    Ray2D ray = new Ray2D(10, 20, 30, 40);
 	    assertTrue(ray.equals(ray.clone()));

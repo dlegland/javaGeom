@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
 
 /**
  * @author Legland
@@ -49,7 +50,21 @@ public class StraightLine2DTest extends TestCase {
 		junit.awtui.TestRunner.run(StraightLine2DTest.class);
 	}
 
-
+	public void testGetBuffer() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(10, 20);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+	
+		// computes buffer
+		CirculinearDomain2D buffer = line.getBuffer(10);
+		
+		// check assertions
+		assertFalse(buffer==null);
+		assertFalse(buffer.isEmpty());
+		assertFalse(buffer.isBounded());
+	}
+	
 	public void testIsBounded() {
 		StraightLine2D line;
 		
@@ -158,6 +173,34 @@ public class StraightLine2DTest extends TestCase {
 		assertTrue(!line.contains(2, 2));		
 	}
 
+	/*
+	 * Test for boolean contains(double, double)
+	 */
+	public void testGetDistancePoint2D() {
+		StraightLine2D line = new StraightLine2D(1, 2, 3, 4);
+		Point2D pt;
+		
+		// test origin point
+		pt = new Point2D(1, 2);
+		assertEquals(0, line.getDistance(pt), 1e-14);
+		
+		// point on the line (positive extent)
+		pt = new Point2D(1+1.5*3, 2+1.5*4);
+		assertEquals(0, line.getDistance(pt), 1e-14);
+		
+		// point on the line (negative extent)
+		pt = new Point2D(1-1.5*3, 2-1.5*4);
+		assertEquals(0, line.getDistance(pt), 1e-14);
+		
+		// point outside the line
+		pt = new Point2D(5, -1);
+		assertEquals(5, line.getDistance(pt), 1e-14);	
+		
+		// point outside the line, in the other side
+		pt = new Point2D(-3, 5);
+		assertEquals(5, line.getDistance(pt), 1e-14);	
+	}
+	
 	/*
 	 * Test for boolean contains(double, double)
 	 */
