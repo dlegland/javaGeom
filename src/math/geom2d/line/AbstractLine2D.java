@@ -603,9 +603,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
      * length of the result array is the number of intersection points.
      */
     public Collection<? extends AbstractLine2D> getSmoothPieces() {
-        ArrayList<AbstractLine2D> list = new ArrayList<AbstractLine2D>(1);
-        list.add(this);
-        return list;
+        return wrapCurve(this);
     }
 
 

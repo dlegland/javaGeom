@@ -27,7 +27,6 @@ package math.geom2d;
 
 import junit.framework.TestCase;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
 
 public class Box2DTest extends TestCase {
@@ -85,24 +84,60 @@ public class Box2DTest extends TestCase {
 		Point2D p22 = new Point2D(x2, y2);
 		
 		// case of totally bounded box
-		Box2D box0000 = new Box2D(x1, x2, y1, y2);
-		Boundary2D bnd0000 = box0000.getBoundary();
-		assertTrue(bnd0000.equals(new LinearRing2D(
+		Box2D box1111 = new Box2D(x1, x2, y1, y2);
+		Boundary2D bnd1111 = box1111.getBoundary();
+		assertTrue(bnd1111.equals(new LinearRing2D(
 				new Point2D[]{p11, p21, p22, p12})));
 		
 		// case of totally unbounded box
-		Box2D box1111 = new Box2D(
+		Box2D box0000 = new Box2D(
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-		Boundary2D bnd1111 = box1111.getBoundary();
-		assertTrue(bnd1111.isEmpty());
+		Boundary2D bnd0000 = box0000.getBoundary();
+		assertTrue(bnd0000.isEmpty());
 		
-		// both y bounded		
+		
+		// bounded by two y-limits
+		Box2D box0011 = new Box2D(
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y1, y2);
+		Boundary2D bnd0011 = box0011.getBoundary();
+		assertEquals(2, bnd0011.getContinuousCurves().size());
+		
+		// bounded by y lower limit	
+		Box2D box0010 = new Box2D(
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+				y1, Double.POSITIVE_INFINITY);
+		Boundary2D bnd0010 = box0010.getBoundary();
+		assertEquals(1, bnd0010.getContinuousCurves().size());
+		
+		// bounded by y upper limit	
+		Box2D box0001 = new Box2D(
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+				Double.NEGATIVE_INFINITY, y2);
+		Boundary2D bnd0001 = box0001.getBoundary();
+		assertEquals(1, bnd0001.getContinuousCurves().size());
+
+
+		// bounded by two x-limits
 		Box2D box1100 = new Box2D(
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y1, y2);
 		Boundary2D bnd1100 = box1100.getBoundary();
-		assertTrue(bnd1100.equals(new StraightLine2D(x1, y1, 1, 0)));
-	}
+		assertEquals(2, bnd1100.getContinuousCurves().size());
+		
+		// bounded by x lower limit	
+		Box2D box1000 = new Box2D(
+				x1, Double.POSITIVE_INFINITY,
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+		Boundary2D bnd1000 = box1000.getBoundary();
+		assertEquals(1, bnd1000.getContinuousCurves().size());
+		
+		// bounded by x upper limit	
+		Box2D box0111 = new Box2D(
+				Double.NEGATIVE_INFINITY, x2,
+				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+		Boundary2D bnd0111 = box0111.getBoundary();
+		assertEquals(1, bnd0111.getContinuousCurves().size());
+    }
     
     public void testClone() {
         Box2D box = new Box2D(-10, 10, -20, 20);

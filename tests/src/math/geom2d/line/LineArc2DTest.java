@@ -229,6 +229,12 @@ public class LineArc2DTest extends TestCase {
 		assertTrue(arc2.equals(sub));
 	}
 	
+	public void testGetReverseCurve() {
+		LineArc2D arc = new LineArc2D(1, 2, 3, 4, 0, 1);
+		LineArc2D rev = new LineArc2D(1, 2, -3, -4, -1, 0);
+		assertEquals(rev, arc.getReverseCurve());
+	}
+	
     public void testEqualsLineArc2D(){
         LineArc2D edge1 = new LineArc2D(1, 2, 2, 2, 0, 1);
         assertTrue(edge1.equals(edge1));

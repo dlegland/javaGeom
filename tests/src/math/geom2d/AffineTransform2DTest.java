@@ -58,6 +58,13 @@ public class AffineTransform2DTest extends TestCase {
 		assertTrue(expect.distance(point2)<1e-14);
 	}
 	
+	public void testCreateQuadrantRotationInt(){
+		AffineTransform2D rot1 = AffineTransform2D.createRotation(Math.PI/2);
+		AffineTransform2D qrot1 = AffineTransform2D.createQuadrantRotation(1);
+		assertTrue(rot1.equals(qrot1));
+		
+	}
+	
 	public void testCreateScalingDoubleDouble(){
 		double s1 = 2;
 		double s2 = 3;
@@ -162,6 +169,23 @@ public class AffineTransform2DTest extends TestCase {
 		
 		AffineTransform2D trans = new AffineTransform2D(1, 2, 3, 4, 5, 6);
 		assertTrue(trans.equals(trans.invert().invert()));
+	}
+	
+	public void testConcatenateAffineTransform2D(){
+		double xc = 20;
+		double yc = 30;
+		double theta = Math.PI/3;
+		
+		// the reference transform
+		AffineTransform2D ref = 
+			AffineTransform2D.createRotation(xc, yc, theta);
+		
+		// Create the same transform using chain() method		
+		AffineTransform2D tra = AffineTransform2D.createTranslation(xc, yc);
+		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
+		AffineTransform2D trans = tra.concatenate(rot).concatenate(tra.invert());
+		
+		assertTrue(ref.equals(trans));		
 	}
 	
 	public void testChainAffineTransform2D(){

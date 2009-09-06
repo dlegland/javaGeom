@@ -18,9 +18,11 @@ New features
 Bug fixes
 - fixed drawing of polycurves
 - fixed bug in intersecting circle arc and line
+- fixed bug in computing distance to some linear shapes
+- fixed bug in computation of box boundary
 
 Regressions
-- Ring2D renamed to LinearRing2D
+- Ring2D renamed to LinearRing2D, reserving 'Ring2D' for an interface definition
 
 Code
 - splitted CurveSet2D (for future interface) and CurveArray2D (default

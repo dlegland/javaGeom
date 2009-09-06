@@ -26,6 +26,11 @@
  */
 
 package math.geom2d;
+import java.util.ArrayList;
+
+import math.geom2d.conic.Circle2D;
+import math.geom2d.domain.Domain2D;
+
 import junit.framework.TestCase;
 
 
@@ -76,6 +81,55 @@ public class Point2DTest extends TestCase {
 		assertEquals(p1.getDistance(0, 0), Math.sqrt(13), Shape2D.ACCURACY);
 	}
 
+	public void testCentroid_Collection() {
+		Point2D p1 = new Point2D(50, 60);
+		Point2D p2 = new Point2D(110, 60);
+		Point2D p3 = new Point2D(150, 140);
+		Point2D p4 = new Point2D(90, 140);
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		points.add(p1);
+		points.add(p2);
+		points.add(p3);
+		points.add(p4);
+		Point2D centroid = Point2D.centroid(points);
+		assertEquals(new Point2D(100, 100), centroid);
+	}
+	
+	public void testCentroid_Array() {
+		Point2D[] points = new Point2D[] {
+				new Point2D(50, 60),
+				new Point2D(110, 60),
+				new Point2D(150, 140),
+				new Point2D(90, 140)};
+		Point2D centroid = Point2D.centroid(points);
+		assertEquals(new Point2D(100, 100), centroid);
+	}
+
+	public void testCentroid_Point2DPoint2DPoint2D() {
+		Point2D p1 = new Point2D(10, 10);
+		Point2D p2 = new Point2D(70, 10);
+		Point2D p3 = new Point2D(10, 70);
+		
+		Point2D centroid = Point2D.centroid(p1, p2, p3);
+		assertEquals(new Point2D(30, 30), centroid);
+	}
+	
+	public void testCreatePolar() {
+		assertEquals(new Point2D(0, 20), Point2D.createPolar(20, Math.PI/2));
+	}
+	
+	public void testCreatePolar_Point2D() {
+		Point2D base = new Point2D(10, 20);
+		assertEquals(new Point2D(10, 40), Point2D.createPolar(base, 20, Math.PI/2));
+	}
+	
+	public void testGetBuffer() {
+		Point2D pt = new Point2D(10, 20);
+		Domain2D buffer = pt.getBuffer(30);
+		Circle2D circle = new Circle2D(10, 20, 30);
+		assertTrue(circle.equals(buffer.getBoundary()));
+	}
+	
 	public void testTranslate() {
 	    // base point
 	    Point2D p1 = new Point2D(10, 20);
@@ -193,11 +247,21 @@ public class Point2DTest extends TestCase {
 		
 		assertTrue(p1.equals(p1));
 		assertTrue(p1.equals(p2));
-		assertTrue(!p1.equals(p3));
-		assertTrue(!p1.equals(p4));
-		assertTrue(!p1.equals(p5));
+		assertFalse(p1.equals(p3));
+		assertFalse(p1.equals(p4));
+		assertFalse(p1.equals(p5));
 	}
 
+	public void testContains() {
+		Point2D p1 = new Point2D(2, 3);
+		Point2D p2 = new Point2D(2, 3);
+		Point2D p3 = new Point2D(1, 3);
+		
+		assertTrue(p1.contains(p2));
+		assertTrue(p2.contains(p1));
+		assertFalse(p1.contains(p3));
+		assertFalse(p3.contains(p1));
+	}
 	public void testClone() {
 	    Point2D point = new Point2D(10, 20);
 	    assertTrue(point.equals(point.clone()));

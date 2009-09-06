@@ -203,6 +203,10 @@ public class Box2D implements Cloneable {
         return lines;
     }
 
+    /**
+     * Returns the set of linear shapes that constitutes the boundary of this
+     * box.
+     */
     public Collection<LinearShape2D> getEdges() {
         ArrayList<LinearShape2D> edges = new ArrayList<LinearShape2D>(4);
 
@@ -255,6 +259,13 @@ public class Box2D implements Cloneable {
         return edges;
     }
 
+    /**
+     * Returns the boundary of this box. The boundary can be bounded, in the
+     * case of a bounded box. It is unbounded if at least one bound of the box
+     * is infinite. If both x bounds or both y-bounds are infinite, the
+     * boundary is constituted from 2 straight lines.
+     * @return the box boundary
+     */
     public Boundary2D getBoundary() {
 
         // First case of totally bounded box
@@ -268,18 +279,18 @@ public class Box2D implements Cloneable {
         }
 
         // extract boolean info on "boundedness" in each direction
-        boolean bx0 = !(Double.isInfinite(xmin));
-        boolean bx1 = !(Double.isInfinite(xmax));
-        boolean by0 = !(Double.isInfinite(ymin));
-        boolean by1 = !(Double.isInfinite(ymax));
+        boolean bx0 = !Double.isInfinite(xmin);
+        boolean bx1 = !Double.isInfinite(xmax);
+        boolean by0 = !Double.isInfinite(ymin);
+        boolean by1 = !Double.isInfinite(ymax);
 
         // case of boxes unbounded in both x directions
         if (!bx0&&!bx1) {
             if (!by0&&!by1)
                 return new BoundarySet2D<StraightLine2D>();
-            if (by0)
+            if (by0&&!by1)
                 return new StraightLine2D(0, ymin, 1, 0);
-            if (by1)
+            if (!by0&&by1)
                 return new StraightLine2D(0, ymax, -1, 0);
             return new BoundarySet2D<StraightLine2D>(new StraightLine2D[] {
                     new StraightLine2D(0, ymin, 1, 0),
@@ -290,9 +301,9 @@ public class Box2D implements Cloneable {
         if (!by0&&!by1) {
             if (!bx0&&!bx1)
                 return new BoundarySet2D<StraightLine2D>();
-            if (bx0)
+            if (bx0&&!bx1)
                 return new StraightLine2D(xmin, 0, 0, -1);
-            if (bx1)
+            if (!bx0&&bx1)
                 return new StraightLine2D(xmax, 0, 0, 1);
             return new BoundarySet2D<StraightLine2D>(new StraightLine2D[] {
                     new StraightLine2D(xmin, 0, 0, -1),
