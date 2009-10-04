@@ -75,25 +75,26 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     // ===================================================================
     // constructors
 
-    /** construct a new Point2D at position (0,0). */
+    /** Constructs a new Point2D at position (0,0). */
     public Point2D() {
         super(0, 0);
     }
 
-    /** constructor with given position. */
+    /** Constructs a new Point2D at the given given position. */
     public Point2D(double x, double y) {
         super(x, y);
     }
 
     /**
-     * Constructor from a java awt.geom Point2D, included for compatibility.
+     * Construct a new Point2D by copying coordinates of given java point.
      */
     public Point2D(java.awt.geom.Point2D point) {
         super(point.getX(), point.getY());
     }
 
     /**
-     * Constructor from two java awt.geom Point2D, summing their coordinates.
+     * Constructs a new Point2D from two java awt.geom Point2D, 
+     * summing their coordinates.
      * @deprecated since 0.7.0
      */
     @Deprecated
@@ -111,6 +112,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         super(point1.getX()+x, point1.getY()+y);
     }
 
+    
     // ===================================================================
     // static methods
 
@@ -142,17 +144,23 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return new Point2D(x0+rho*Math.cos(theta), y0+rho*Math.sin(theta));
     }
 
+    /**
+     * Computes the Euclidean distance between two points, given by their
+     * coordinates.
+     * Uses robust computation (via Math.hypot() method).
+     * @return the Euclidean distance between p1 and p2.
+     */
     public final static double getDistance(double x1, double y1, double x2,
             double y2) {
         return Math.hypot(x2-x1, y2-y1);
     }
 
     /**
-     * Computes the euclidean distance between two points.
+     * Computes the Euclidean distance between two points.
      * Uses robust computation (via Math.hypot() method).
      * @param p1 the first point
      * @param p2 the second point
-     * @return the euclidean distance between p1 and p2.
+     * @return the Euclidean distance between p1 and p2.
      */
     public final static double getDistance(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
@@ -225,6 +233,39 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
             sy += points[i].getY();
         }
         return new Point2D(sx/n, sy/n);
+    }
+
+    /**
+     * Computes the weighted centroid, or center of mass, of an array of
+     * points.
+     * 
+     * @param points an array of points
+     * @param weights an array of weights the same size as points
+     * @return the centroid of the points
+     */
+    public final static Point2D centroid(
+    		java.awt.geom.Point2D[] points,
+    		double[] weights) {
+    	// number of points
+        int n = points.length;
+        
+        // check size of second array
+        if(n!=weights.length) {
+        	throw new RuntimeException("Arrays must have the same size");
+        }
+        
+        // sum up weighted coordinates
+        double sx = 0, sy = 0, sw=0;
+        double w;
+        for (int i = 0; i<n; i++) {
+        	w = weights[i];
+            sx += points[i].getX()*w;
+            sy += points[i].getY()*w;
+            sw += w;
+        }
+        
+        // compute weighted average of each coordinate
+        return new Point2D(sx/sw, sy/sw);
     }
 
     /**
@@ -330,7 +371,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     // Methods specific to Point2D
 
     /**
-     * Convert point to an integer version. Coordinates are rounded to the
+     * Converts point to an integer version. Coordinates are rounded to the
      * nearest integer.
      * 
      * @return an instance of java.awt.Point
@@ -340,14 +381,14 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     }
 
     /**
-     * Convert point to an double version.
+     * Converts point to a double version.
      */
     public java.awt.geom.Point2D.Double getAsDouble() {
         return new java.awt.geom.Point2D.Double(x, y);
     }
 
     /**
-     * Convert point to a float version. Coordinates are rounded to the nearest
+     * Converts point to a float version. Coordinates are rounded to the nearest
      * float.
      */
     public java.awt.geom.Point2D.Float getAsFloat() {
@@ -355,7 +396,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     }
 
     /**
-     * Set location specified as polar coordinate : distance from origin + angle
+     * Sets location specified as polar coordinate : distance from origin + angle
      * with horizontal.
      * @deprecated use Point2D.createPolar() instead (0.7.0)
      */
@@ -366,7 +407,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     }
 
     /**
-     * Set location at distance 'rho' from given point, and making an angle
+     * Sets location at distance 'rho' from given point, and making an angle
      * 'theta' with horizontal.
      * @deprecated use Point2D.createPolar() instead (0.7.0)
      */
@@ -377,6 +418,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         y = point.getY()+rho*Math.sin(theta);
     }
 
+    
     // ===================================================================
     // Methods implementing CirculinearShape2D interface
 
@@ -388,6 +430,9 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
 				new Circle2D(this, Math.abs(dist), dist>0));
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#transform(CircleInversion2D)
+	 */
     public Point2D transform(CircleInversion2D inv) {
     	// get inversion parameters
         Point2D center = inv.getCenter();
@@ -401,6 +446,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return Point2D.createPolar(center, d, theta);
     }
    
+    
     // ===================================================================
     // Methods implementing Shape2D interface
 
@@ -546,6 +592,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return this.getPoints().iterator();
     }
 
+ 
     // ===================================================================
     // Override of Object methods
 
@@ -555,8 +602,8 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     }
     
     /**
-     * Two points are considered equal if their Euclidean distance is less than
-     * Shape2D.ACCURACY.
+     * Two points are considered equal if their Euclidean distance is less
+	 * than Shape2D.ACCURACY.
      */
     @Override
     public boolean equals(Object obj) {
@@ -566,6 +613,9 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return this.distance(p.getX(), p.getY())<Shape2D.ACCURACY;
     }
     
+    /**
+     * Creates a new Point2D object with same coordinates.
+     */
     @Override
     public Point2D clone() {
         return new Point2D(x, y);
