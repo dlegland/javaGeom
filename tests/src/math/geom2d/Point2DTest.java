@@ -105,6 +105,24 @@ public class Point2DTest extends TestCase {
 		assertEquals(new Point2D(100, 100), centroid);
 	}
 
+	public void testCentroid_ArrayArray() {
+		Point2D[] points = new Point2D[] {
+				new Point2D(10, 10),
+				new Point2D(20, 10),
+				new Point2D(10, 20)};
+		double[] weights = new double[]{2, 3, 5};
+		Point2D centroid = Point2D.centroid(points, weights);
+		assertEquals(new Point2D(13, 15), centroid);
+		
+		try {
+			centroid = Point2D.centroid(points, new double[4]);
+			fail("Should throw an exception");
+		} catch(Exception ex) {
+			// expected exception here
+		}
+
+	}
+
 	public void testCentroid_Point2DPoint2DPoint2D() {
 		Point2D p1 = new Point2D(10, 10);
 		Point2D p2 = new Point2D(70, 10);
