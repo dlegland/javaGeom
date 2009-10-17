@@ -28,6 +28,8 @@ package math.geom2d.polygon;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.domain.Boundary2D;
 import junit.framework.TestCase;
 
 /**
@@ -178,5 +180,18 @@ public class SimplePolygon2DTest extends TestCase {
         });
         
         assertTrue(polygon.equals(polygon.clone()));
+    }
+    
+    public void testGetBuffer() {
+    	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
+                new Point2D(100, 100),
+                new Point2D(150, 100),
+                new Point2D(150, 150),
+                new Point2D(100, 150)
+        });
+    	
+    	CirculinearDomain2D buffer = polygon.getBuffer(10);
+    	Boundary2D boundary = buffer.getBoundary();
+    	assertEquals(1, boundary.getBoundaryCurves().size());
     }
 }
