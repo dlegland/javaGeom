@@ -34,8 +34,8 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.CirculinearDomain2DUtils;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
@@ -103,14 +103,14 @@ public class SimplePolygon2D implements Polygon2D {
     // methods specific to SimplePolygon2D
 
     /**
-     * Add a point as the last vertex.
+     * Adds a point as the last vertex.
      */
     public void addVertex(Point2D point) {
         this.points.add(point);
     }
 
     /**
-     * Remove a vertex of the polygon.
+     * Removes a vertex of the polygon.
      * 
      * @param point the vertex to be removed.
      */
@@ -119,7 +119,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Add a point as the last vertex.
+     * Adds a point as the last vertex.
      * @deprecated replaced by addVertex() (0.7.1)
      */
     @Deprecated
@@ -128,7 +128,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Remove a vertex of the polygon.
+     * Removes a vertex of the polygon.
      * 
      * @deprecated replaced by removeVertex() (0.7.1)
      * @param point the vertex to be removed.
@@ -230,7 +230,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
     
     /**
-     * remove all the vertices of the polygon.
+     * Removes all the vertices of the polygon.
      * @deprecated use clearVertices instead
      */
     @Deprecated
@@ -245,10 +245,14 @@ public class SimplePolygon2D implements Polygon2D {
         this.points.clear();
     }
     
+    /**
+     * Changes the position of the i-th vertex.
+     */
     public void setVertex(int index, Point2D position) {
         this.points.set(index, position);
     }
 
+    
     // ===================================================================
     // methods inherited from Polygon2D interface
 
@@ -330,8 +334,7 @@ public class SimplePolygon2D implements Polygon2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(
-				this.getBoundary(), dist);
+		return CirculinearDomain2DUtils.computeBuffer(this, dist);
 	}
 
 	// ===================================================================
@@ -366,6 +369,7 @@ public class SimplePolygon2D implements Polygon2D {
         return new SimplePolygon2D(res);
     }
 
+    
     // ===================================================================
     // methods inherited from Shape2D interface
 
@@ -485,110 +489,8 @@ public class SimplePolygon2D implements Polygon2D {
                 ||this.getBoundary().contains(x, y);
     }
 
-    // The following is a old algorithm, based on the principle:
-    // find closest edge, and check if point is located on the left side of edge.
-    // If point is close to a vertex, check if point is located on the left side
-    // of each neighbor edges.
-    // Not used because to complicated, but seems to work....
-    //
-    // /**
-    // * Return true if the point (x, y) lies inside the polygon, with precision
-    // given
-    // * by Shape2D.ACCURACY.
-    // */
-    // public boolean contains(double x, double y){
-    // //return false;
-    //		
-    // // Old version of algorithm, does not work properly
-    // // for self crossing polygons.
-    //		
-    //		
-    // double dist=1, minDist;
-    // Collection<LineSegment2D> edges = getEdges();
-    // Vector<LineSegment2D> closeEdges = new Vector<LineSegment2D>(4);
-    //		
-    // // first, compute min distance and store all edges sharing
-    // // this minimal distance to test point
-    // minDist = Double.POSITIVE_INFINITY;
-    // for(LineSegment2D edge : edges){
-    // dist = edge.getDistance(x, y);
-    // if(Math.abs(dist-minDist)<Shape2D.ACCURACY)
-    // closeEdges.add(edge);
-    // else if(dist<minDist){
-    // closeEdges.clear();
-    // closeEdges.add(edge);
-    // minDist = dist;
-    // }
-    // }
-    //		
-    // // test if the point belongs to boundary
-    // if(minDist<Shape2D.ACCURACY) return true;
-    //		
-    //		
-    // // only one edge -> just convert unique element of the vector,
-    // // and test the signedDistance
-    // if(closeEdges.size()==1)
-    // return ((LineSegment2D) closeEdges.firstElement()).getSignedDistance(x, y)<0;
-    //		
-    // // Several edges share the same minimal distance to the point (x, y).
-    // // We look at the selected edges to :
-    // // - first find an edge vertex whose distance to (x,y) is equal to minDist
-    // // - then find all edges sharing this vertex (2, or 4, or more ...)
-    // // Special attention should be taken when point is closest both from
-    // // an edge (by orthogonal projection) and from a vertex, not belonging
-    // // to the first edge.
-    // // The special case, when point lies on the bisector of
-    // // two edges not following each others is easily solved.
-    //				
-    // // 1 - find a point shared by at least two edges = one of the points
-    // // closest to the edge.
-    // Point2D point=null;
-    // LineSegment2D edge = null;
-    // for(int i=0; i<closeEdges.size(); i++){
-    // // consider all previoulsy selected edges
-    // edge = (LineSegment2D) closeEdges.elementAt(i);
-    //			
-    // // break the loop when either point1 or point2 of one of the edges has
-    // // the correct distance
-    // point = edge.getPoint1();
-    // if(Math.abs(point.getDistance(x, y)-minDist)<Shape2D.ACCURACY) break;
-    // point = edge.getPoint2();
-    // if(Math.abs(point.getDistance(x, y)-minDist)<Shape2D.ACCURACY) break;
-    // }
-    //		
-    // // If there was no point with specified distance was found, we are in the
-    // // special case the point lies on the bisector of two edges. Then, we can
-    // // make the test with any edge, for example the last one selected.
-    // if(Math.abs(point.getDistance(x, y)-minDist)<Shape2D.ACCURACY){
-    // return edge.getSignedDistance(x, y)<0;
-    // }
-    //		
-    // // 2 - find all edges sharing this point
-    // //edges = new LineSegment2D[closeEdges.size()];
-    // edges = new ArrayList<LineSegment2D>();
-    // for(LineSegment2D closeEdge : closeEdges)
-    // if(closeEdge.contains(point))
-    // edges.add(closeEdge);
-    //		
-    // // select the edge with minimal angle between selected point, edges common
-    // // point, and opposite vertex of the edge.
-    // double minAngle = 10;
-    // double angle;
-    // Point2D p = new Point2D(x, y);
-    // for(LineSegment2D closeEdge : edges){
-    // angle = Angle2D.getAbsoluteAngle(p, point, closeEdge.getOtherPoint(point));
-    // if(angle<minAngle){
-    // edge = closeEdge;
-    // minAngle = angle;
-    // }
-    // }
-    //		
-    // // We finally have the good edge to test signed distance :
-    // return edge.getSignedDistance(x, y)<=0;
-    // }
-
     /**
-     * Return a general path iterator.
+     * Returns a general path iterator.
      */
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
