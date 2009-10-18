@@ -26,6 +26,8 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.point.PointSet2D;
 
+import static java.lang.Math.PI;
+
 
 /**
  * Some utilities for working with circulinear curves.
@@ -159,7 +161,8 @@ public class CirculinearCurve2DUtils {
 			current = iterator.next();
 
 			// add circle arc between the two curve elements
-			parallel.addCurve(createArc(previous, current, dist));
+			//parallel.addCurve(createArc(previous, current, dist));
+			addCircularJunction(parallel, previous, current, dist);
 			
 			// add parallel to current curve
 			parallel.addCurve(current.getParallel(dist));
@@ -199,6 +202,45 @@ public class CirculinearCurve2DUtils {
 		// Compute circle arc
 		return new CircleArc2D(
 				center, Math.abs(dist), startAngle, endAngle, dist>0);
+	}
+	
+	private final static void addCircularJunction(
+			PolyCirculinearCurve2D<ContinuousCirculinearCurve2D> parallel,
+			CirculinearElement2D previous, 
+			CirculinearElement2D current, double dist) {		
+		// center of circle arc
+		Point2D center = current.getFirstPoint();
+
+		// compute tangents to each portion
+		Vector2D vp = previous.getTangent(previous.getT1());
+		Vector2D vc = current.getTangent(current.getT0());
+
+		// compute angles
+		double startAngle, endAngle;
+		if(dist>0) {
+			startAngle = vp.getAngle() - PI/2;
+			endAngle = vc.getAngle() - PI/2;
+		} else {
+			startAngle = vp.getAngle() + PI/2;
+			endAngle = vc.getAngle() + PI/2;
+		}
+		
+		// format angles to stay between 0 and 2*PI
+		startAngle = Angle2D.formatAngle(startAngle);
+		endAngle = Angle2D.formatAngle(endAngle);
+		
+		// compute angle difference, in absolute value
+		double diffAngle = endAngle-startAngle;
+		diffAngle = Math.min(diffAngle, 2*PI-diffAngle);
+		
+		// If the angle difference is too small, we consider the two curves
+		// touch at their extremities
+		if(Math.abs(diffAngle)<1e-10)
+			return;
+		
+		// otherwise add a circle arc to the polycurve
+		parallel.addCurve(new CircleArc2D(
+				center, Math.abs(dist), startAngle, endAngle, dist>0));
 	}
 	
 	/**
@@ -1009,6 +1051,7 @@ public class CirculinearCurve2DUtils {
 					Point2D p22 = curve2.getLastPoint();
 
 					// Check how to associate open curves and circle arcs
+					//TODO: maybe replace by a dedicated method that could manage several types of junctions ?
 					if(p12.equals(parallel1.getLastPoint())){
 						elements.addAll(curve1.getSmoothPieces());					
 						elements.add(createArc(

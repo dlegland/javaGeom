@@ -39,6 +39,7 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.Polyline2D;
 
 public class CirculinearCurve2DUtilsTest extends TestCase {
 
@@ -172,6 +173,28 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(2, splittedCurves.size());
 	}
 
+	public void testGetParallelColinearPolyline () {
+		// polyline with two edges, that are colinear
+		Polyline2D curve = new Polyline2D(new Point2D[]{
+				new Point2D(100, 100), 
+				new Point2D(150, 100), 
+				new Point2D(200, 100) });
+		
+		ContinuousCirculinearCurve2D parallel = 
+			CirculinearCurve2DUtils.createContinuousParallel(curve, 20);
+		
+		assertFalse(parallel==null);
+		assertFalse(parallel.isEmpty());
+		assertEquals(2, parallel.getSmoothPieces().size());
+		
+		ContinuousCirculinearCurve2D parallel2 = 
+			CirculinearCurve2DUtils.createContinuousParallel(curve, -20);
+		
+		assertFalse(parallel2==null);
+		assertFalse(parallel2.isEmpty());
+		assertEquals(2, parallel2.getSmoothPieces().size());
+		}
+
 	public void testGetBufferInfiniteCurve () {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
@@ -254,5 +277,19 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// Extract boundary of buffer
 		Boundary2D boundary = buffer.getBoundary();
 		assertEquals(2, boundary.getContinuousCurves().size());
+	}
+	
+	public void testGetBufferColinearPolyline () {
+		// polyline with two edges, that are colinear
+		Polyline2D curve = new Polyline2D(new Point2D[]{
+				new Point2D(100, 100), 
+				new Point2D(150, 100), 
+				new Point2D(200, 100) });
+		
+		CirculinearDomain2D buffer = 
+			CirculinearCurve2DUtils.computeBuffer(curve, 20);
+		
+		assertFalse(buffer==null);
+		assertFalse(buffer.isEmpty());
 	}
 }
