@@ -23,7 +23,7 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public interface ContinuousCirculinearCurve2D extends CirculinearCurve2D,
 		ContinuousOrientedCurve2D {
-	
+//TODO: rename as "CirculinearContinuousCurve2D"
     // ===================================================================
     // redefines declaration of CirculinearCurve2D interfaces
 

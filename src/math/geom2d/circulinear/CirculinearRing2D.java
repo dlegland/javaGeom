@@ -27,21 +27,25 @@ import math.geom2d.transform.CircleInversion2D;
 public class CirculinearRing2D 
 extends PolyCirculinearCurve2D<CirculinearElement2D> 
 implements CirculinearContour2D {
-
+//TODO: transform to an interface
+//TODO: parameterize with ContinuousCirculinearCurve
     // ===================================================================
     // constructors
 
     public CirculinearRing2D() {
         super();
+        this.closed = true;
     }
 
     public CirculinearRing2D(int size) {
         super(size);
+        this.closed = true;
     }
 
     public CirculinearRing2D(CirculinearElement2D[] curves) {
-        super(curves);
-    }
+        super(curves, true);
+        this.closed = true;
+        }
 
     public CirculinearRing2D(CirculinearElement2D[] curves, 
     		boolean closed) {
@@ -51,7 +55,8 @@ implements CirculinearContour2D {
     public CirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves) {
         super(curves);
-    }
+        this.closed = true;
+       }
 
     public CirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves, 
