@@ -44,14 +44,21 @@ implements ContinuousCurve2D, Cloneable {
         double t0 = this.getT0();
         double dt = (this.getT1()-t0)/n;
 
-		// allocate array of points, and compute each value
-        Point2D[] points = new Point2D[n+1];
-		for(int i=0; i<n+1;i++)
-			points[i] = this.getPoint(t0 + i*dt);
-
 		if(this.isClosed()) {
+			// compute position of points, without the last one, 
+			// which is included by default with linear rings
+	        Point2D[] points = new Point2D[n];
+			for(int i=0; i<n;i++)
+				points[i] = this.getPoint(t0 + i*dt);
+
 			return new LinearRing2D(points);
 		} else {
+			// allocate array of points, and compute each value.
+			// Computes also value for last point.
+	        Point2D[] points = new Point2D[n+1];
+			for(int i=0; i<n+1;i++)
+				points[i] = this.getPoint(t0 + i*dt);
+
 			return new Polyline2D(points);
 		}
 	}

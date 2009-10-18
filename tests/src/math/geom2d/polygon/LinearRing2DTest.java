@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
@@ -57,6 +58,34 @@ public class LinearRing2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LinearRing2DTest.class);
 	}
 
+	public void testGetParallelPositiveDoubled() {
+		// create polyline
+		LinearRing2D ring = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 100),
+				new Point2D(200, 100),
+				new Point2D(200, 200),
+				new Point2D(100, 200),
+				new Point2D(100, 100) });
+		
+		ContinuousCirculinearCurve2D parallel =	ring.getParallel(20);
+		assertEquals(8, parallel.getSmoothPieces().size());
+		assertTrue(parallel.isClosed());
+	}
+	
+	public void testGetParallelNegativeDoubled() {
+		// create polyline
+		LinearRing2D ring = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 100),
+				new Point2D(200, 100),
+				new Point2D(200, 200),
+				new Point2D(100, 200),
+				new Point2D(100, 100) });
+		
+		ContinuousCirculinearCurve2D parallel =	ring.getParallel(-20);
+		assertEquals(8, parallel.getSmoothPieces().size());
+		assertTrue(parallel.isClosed());
+	}
+	
 	public void testGetBuffer() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{

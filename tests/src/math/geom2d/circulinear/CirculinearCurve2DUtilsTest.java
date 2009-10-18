@@ -292,4 +292,24 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());
 	}
+	
+	/**
+	 * Test buffer for a polyline with first and last point equal.
+	 */
+	public void testGetBufferClosedPolylineDoubled () {
+		// polyline with 4 vertices, 
+		LinearRing2D curve = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 100), 
+				new Point2D(200, 100), 
+				new Point2D(200, 200),
+				new Point2D(100, 200),
+				new Point2D(100, 100) });
+		//TODO: add stability for polyline with multiple vertices
+		CirculinearDomain2D buffer = 
+			CirculinearCurve2DUtils.computeBuffer(curve, 20);
+		
+		assertFalse(buffer==null);
+		assertFalse(buffer.isEmpty());
+		assertEquals(2, buffer.getBoundary().getBoundaryCurves().size());
+	}
 }

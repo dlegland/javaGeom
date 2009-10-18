@@ -161,7 +161,6 @@ public class CirculinearCurve2DUtils {
 			current = iterator.next();
 
 			// add circle arc between the two curve elements
-			//parallel.addCurve(createArc(previous, current, dist));
 			addCircularJunction(parallel, previous, current, dist);
 			
 			// add parallel to current curve
@@ -174,34 +173,10 @@ public class CirculinearCurve2DUtils {
 		// Add circle arc to close the parallel curve
 		if(curve.isClosed()) {
 			current = elements.iterator().next();
-			parallel.addCurve(createArc(previous, current, dist));
+			addCircularJunction(parallel, previous, current, dist);
 		}
 
 		return parallel;
-	}
-	
-	private final static CircleArc2D createArc(CirculinearElement2D previous, 
-			CirculinearElement2D current, double dist) {		
-		// center of circle arc
-		Point2D center = current.getFirstPoint();
-
-		// compute tangents to each portion
-		Vector2D vp = previous.getTangent(previous.getT1());
-		Vector2D vc = current.getTangent(current.getT0());
-
-		// compute angles
-		double startAngle, endAngle;
-		if(dist>0) {
-			startAngle = vp.getAngle() - Math.PI/2;
-			endAngle = vc.getAngle() - Math.PI/2;
-		} else {
-			startAngle = vp.getAngle() + Math.PI/2;
-			endAngle = vc.getAngle() + Math.PI/2;
-		}
-
-		// Compute circle arc
-		return new CircleArc2D(
-				center, Math.abs(dist), startAngle, endAngle, dist>0);
 	}
 	
 	private final static void addCircularJunction(
