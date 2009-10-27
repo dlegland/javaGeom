@@ -125,7 +125,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             this.addPoint(element);
     }
 
-    public void addPoints(Collection<Point2D> points) {
+    public void addPoints(Collection<? extends Point2D> points) {
         this.points.addAll(points);
     }
 

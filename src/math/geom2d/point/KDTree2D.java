@@ -30,7 +30,7 @@ import math.geom2d.line.StraightLine2D;
  *
  */
 public class KDTree2D {
-    
+    //TODO: make KDTree2D implements PointSet2D
     public class Node{
         private Point2D point;
         private Node left;
