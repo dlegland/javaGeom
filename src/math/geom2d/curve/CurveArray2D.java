@@ -184,6 +184,13 @@ implements Iterable<T>, Cloneable {
     }
 
     /**
+     * Checks if the curve set contains the given curve.
+     */
+    public boolean containsCurve(Curve2D curve) {
+    	return curves.contains(curve);
+    }
+    
+    /**
      * Clears the inner curve collection.
      */
     public void clearCurves() {

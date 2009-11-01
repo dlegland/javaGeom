@@ -34,6 +34,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
@@ -184,6 +185,18 @@ public class CircleArc2DTest extends TestCase {
 		assertEquals(arc.getDistance(10, 10), (10*(Math.sqrt(2)-1)), Shape2D.ACCURACY);		
 	}
 
+	public void testGetTangent() {
+		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI);
+		double t0 = PI/2;
+		Vector2D tangent = arc.getTangent(t0);
+		assertEquals(new Vector2D(-10, 0), tangent);
+		
+		arc = new CircleArc2D(new Point2D(0, 0), 10, PI, -PI);
+		t0 = PI/2;
+		tangent = arc.getTangent(t0);
+		assertEquals(new Vector2D(10, 0), tangent);
+	}
+	
 	public void testGetWindingAngle() {
 		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
 		Point2D p = new Point2D(0, 0);
