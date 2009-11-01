@@ -8,6 +8,8 @@
  */
 package math.geom2d.circulinear;
 
+import static java.lang.Math.PI;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,12 +23,13 @@ import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.conic.CircularShape2D;
+import math.geom2d.curve.ContinuousCurve2D;
+import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.point.PointSet2D;
-
-import static java.lang.Math.PI;
 
 
 /**
@@ -36,6 +39,67 @@ import static java.lang.Math.PI;
  */
 public class CirculinearCurve2DUtils {
     
+	/**
+	 * Converts a curve to a circulinear curve, by concatenating all elements
+	 * of the curve to the appropriate circulinear curve type. If the curve
+	 * contains onr or more non-circulinear smooth curve, a 
+	 * NonCirculinearClassException is thrown.
+	 */
+	public final static CirculinearCurve2D convert(Curve2D curve) {
+		// first check type, to avoid unnecessary computations
+		if (curve instanceof CirculinearCurve2D)
+			return (CirculinearCurve2D) curve;
+		
+		// If the curve is continuous, creates a CirculinearContinuousCurve2D
+		if (curve instanceof ContinuousCurve2D) {
+			// extract smooth pieces
+			ContinuousCurve2D continuous = (ContinuousCurve2D) curve;
+			Collection<? extends SmoothCurve2D> smoothPieces = 
+				continuous.getSmoothPieces();
+			
+			// prepare array of elements
+			ArrayList<CirculinearElement2D> elements = 
+				new ArrayList<CirculinearElement2D>(smoothPieces.size());
+			
+			// class cast for each element, or throw an exception
+			for (SmoothCurve2D smooth : smoothPieces) {
+				if (smooth instanceof CirculinearElement2D)
+					elements.add((CirculinearElement2D) smooth);
+				else
+					throw new NonCirculinearClassException(smooth);
+			}
+			
+			// create the resulting CirculinearContinuousCurve2D
+			return new PolyCirculinearCurve2D<CirculinearElement2D>(elements);
+		}
+		
+		// If the curve is continuous, creates a CirculinearContinuousCurve2D
+		if (curve instanceof CurveSet2D) {
+			// extract smooth pieces
+			CurveSet2D<?> set = (CurveSet2D<?>) curve;
+			Collection<? extends ContinuousCurve2D> continuousCurves = 
+				set.getContinuousCurves();
+			
+			// prepare array of elements
+			ArrayList<ContinuousCirculinearCurve2D> curves = 
+				new ArrayList<ContinuousCirculinearCurve2D>(
+						continuousCurves.size());
+			
+			// class cast for each element, or throw an exception
+			for (ContinuousCurve2D continuous : continuousCurves) {
+				if (continuous instanceof ContinuousCirculinearCurve2D)
+					curves.add((ContinuousCirculinearCurve2D) continuous);
+				else
+					curves.add((ContinuousCirculinearCurve2D) convert(continuous));
+			}
+			
+			// create the resulting CirculinearContinuousCurve2D
+			return new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>(curves);
+		}
+		
+		return null;
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */

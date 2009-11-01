@@ -33,6 +33,9 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
@@ -40,9 +43,102 @@ import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.spline.CubicBezierCurve2D;
 
 public class CirculinearCurve2DUtilsTest extends TestCase {
 
+	public void testConvert_Element() {
+		CirculinearCurve2D conv;
+		LineSegment2D seg = new LineSegment2D(new Point2D(0, 10), new Point2D(10, 20));
+		conv = CirculinearCurve2DUtils.convert(seg);
+		assertTrue(seg.equals(conv));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testConvert_PolyCurve() {
+		CirculinearCurve2D conv;
+		Point2D p1 = new Point2D(0, 10);
+		Point2D p2 = new Point2D(10, 20);
+		Point2D p3 = new Point2D(0, 30);
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		PolyCurve2D<LineSegment2D> curve = 
+			new PolyCurve2D<LineSegment2D>(new LineSegment2D[]{seg1, seg2});
+		
+		conv = CirculinearCurve2DUtils.convert(curve);
+		assertTrue(conv instanceof PolyCirculinearCurve2D);
+		// unchecked class cast
+		PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D> poly = 
+			(PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D>) conv;
+		assertEquals(2, poly.getCurveNumber());
+		assertTrue(poly.containsCurve(seg1));
+		assertTrue(poly.containsCurve(seg2));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testConvert_PolyCurveWithSpline() {
+		Point2D p1 = new Point2D(0, 10);
+		Point2D p2 = new Point2D(10, 20);
+		Point2D p3 = new Point2D(0, 30);
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		CubicBezierCurve2D bezier = new CubicBezierCurve2D(
+				p3, new Point2D(0, 10), new Point2D(10, 50), new Point2D(20, 50));
+		PolyCurve2D<SmoothCurve2D> curve = 
+			new PolyCurve2D<SmoothCurve2D>(new SmoothCurve2D[]{seg1, seg2, bezier});
+		
+		try {
+			CirculinearCurve2DUtils.convert(curve);
+			TestCase.fail("should have thrown an exception");
+		} catch (NonCirculinearClassException ex) {
+			// should go here
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testConvert_CurveSet() {
+		CirculinearCurve2D conv;
+		Point2D p1 = new Point2D(0, 10);
+		Point2D p2 = new Point2D(10, 20);
+		Point2D p3 = new Point2D(0, 30);
+		
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		
+		CurveArray2D<LineSegment2D> curve = 
+			new CurveArray2D<LineSegment2D>(new LineSegment2D[]{seg1, seg2});
+		
+		conv = CirculinearCurve2DUtils.convert(curve);
+		assertTrue(conv instanceof CirculinearCurveSet2D);
+		// unchecked class cast
+		CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> set = 
+			(CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D>) conv;
+		assertEquals(2, set.getCurveNumber());
+		assertTrue(set.containsCurve(seg1));
+		assertTrue(set.containsCurve(seg2));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testConvert_CurveSetWithSpline() {
+		Point2D p1 = new Point2D(0, 10);
+		Point2D p2 = new Point2D(10, 20);
+		Point2D p3 = new Point2D(0, 30);
+		
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		CubicBezierCurve2D bezier = new CubicBezierCurve2D(
+				p3, new Point2D(0, 10), new Point2D(10, 50), new Point2D(20, 50));
+		
+		CurveArray2D<SmoothCurve2D> curve = 
+			new CurveArray2D<SmoothCurve2D>(new SmoothCurve2D[]{seg1, seg2, bezier});
+		
+		try {
+			CirculinearCurve2DUtils.convert(curve);
+			TestCase.fail("should have thrown an exception");
+		} catch (NonCirculinearClassException ex) {
+			// should go here
+		}
+	}
 
 	public void testSplitContinuousCurve() {
 		// elements
@@ -62,7 +158,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			CirculinearCurve2DUtils.splitContinuousCurve(curve);
 		
 		// should be two parts
-		assertTrue(set.size()==2);
+		assertEquals(2, set.size());
 	}
 	
 	public void testSplitIntersectingContours_Circles() {
@@ -311,5 +407,17 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());
 		assertEquals(2, buffer.getBoundary().getBoundaryCurves().size());
+	}
+	
+	public void testGetBufferTwoLines() {
+		StraightLine2D line1 = new StraightLine2D(new Point2D(0, 0), new Vector2D(10, 0));
+		StraightLine2D line2 = new StraightLine2D(new Point2D(0, 0), new Vector2D(0, 10));
+		CirculinearCurveSet2D<StraightLine2D> set = 
+			new CirculinearCurveSet2D<StraightLine2D>();
+		set.addCurve(line1);
+		set.addCurve(line2);
+		
+		CirculinearDomain2D buffer = set.getBuffer(10);
+		assertEquals(4, buffer.getBoundary().getBoundaryCurves().size());
 	}
 }

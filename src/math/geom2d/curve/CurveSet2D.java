@@ -254,6 +254,13 @@ Cloneable {
     }
 
     /**
+     * Checks if the curve set contains the given curve.
+     */
+    public boolean containsCurve(T curve) {
+    	return curves.contains(curve);
+    }
+
+    /**
      * Clears the inner curve collection.
      */
     public void clearCurves() {
