@@ -64,12 +64,14 @@ implements CirculinearContour2D {
         super(curves, closed);
     }
 
+	@Override
     public CirculinearRing2D getParallel(double dist) {
     	return new CirculinearRing2D(
     			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
     			.getSmoothPieces());
     }
     
+	@Override
 	public CirculinearRing2D transform(CircleInversion2D inv) {
     	// Allocate array for result
 		CirculinearRing2D result =
@@ -105,12 +107,14 @@ implements CirculinearContour2D {
 		return new GenericCirculinearDomain2D(this);
 	}
 
+	@Override
     public Collection<? extends CirculinearRing2D> getContinuousCurves() {
         ArrayList<CirculinearRing2D> list = new ArrayList<CirculinearRing2D>(1);
         list.add(this);
         return list;
     }
 
+	@Override
     public CirculinearRing2D getReverseCurve(){
     	int n = curves.size();
         // create array of reversed curves
@@ -124,6 +128,7 @@ implements CirculinearContour2D {
         return new CirculinearRing2D(curves2);
 	}
 	
+	@Override
 	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> 
 	transform(AffineTransform2D trans) {
 		// number of curves

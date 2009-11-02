@@ -296,10 +296,12 @@ public interface Curve2D extends Shape2D, Cloneable {
             return null;
         }
 
-        public void draw(Graphics2D g) {
+    	@Override
+    	public void draw(Graphics2D g) {
         }
         
-        public EmptyCurve2D clone() {
+    	@Override
+       public EmptyCurve2D clone() {
             return new EmptyCurve2D();
         }
     }

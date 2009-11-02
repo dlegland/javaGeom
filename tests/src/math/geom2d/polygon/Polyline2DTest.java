@@ -227,7 +227,7 @@ public class Polyline2DTest extends TestCase {
 		
 		// create polyline, and subcurve
 		Polyline2D line1 = new Polyline2D(points);
-		Polyline2D sub = (Polyline2D) line1.getSubCurve(.5, 2.5);
+		Polyline2D sub = line1.getSubCurve(.5, 2.5);
 		
 		// to check result
 		Polyline2D line2 = new Polyline2D(new Point2D[]{

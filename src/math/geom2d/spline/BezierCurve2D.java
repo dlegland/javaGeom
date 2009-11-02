@@ -121,7 +121,8 @@ public class BezierCurve2D extends CubicBezierCurve2D implements Cloneable {
      * Returns the Bezier curve given by control points taken in reverse
      * order.
      */
-    public BezierCurve2D getReverseCurve() {
+    @Override
+	public BezierCurve2D getReverseCurve() {
         return new BezierCurve2D(
                 this.getP2(), this.getCtrlP2(),
                 this.getCtrlP1(), this.getP1());
@@ -130,7 +131,8 @@ public class BezierCurve2D extends CubicBezierCurve2D implements Cloneable {
     /**
      * Computes portion of BezierCurve. If t1<t0, returns null.
      */
-    public BezierCurve2D getSubCurve(double t0, double t1) {
+    @Override
+	public BezierCurve2D getSubCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
         if (t0>t1)
@@ -145,7 +147,8 @@ public class BezierCurve2D extends CubicBezierCurve2D implements Cloneable {
     /**
      * Clip the Bezier curve by a box. REturn a set of BezierCurve2D.
      */
-    public CurveSet2D<? extends BezierCurve2D> clip(Box2D box) {
+    @Override
+	public CurveSet2D<? extends BezierCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = 
             Curve2DUtils.clipSmoothCurve(this, box);
@@ -165,7 +168,8 @@ public class BezierCurve2D extends CubicBezierCurve2D implements Cloneable {
      * Returns the Bezier Curve transformed by the given AffineTransform2D. This
      * is simply done by transforming control points of the curve.
      */
-    public BezierCurve2D transform(AffineTransform2D trans) {
+    @Override
+	public BezierCurve2D transform(AffineTransform2D trans) {
         return new BezierCurve2D(
                 trans.transform(this.getP1()), 
                 trans.transform(this.getCtrlP1()),

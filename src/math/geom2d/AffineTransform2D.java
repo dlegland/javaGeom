@@ -51,22 +51,78 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     // ===================================================================
     // static methods
 
+    /**
+     * @since 0.8.1
+     */
+    public final static AffineTransform2D createIdentity() {
+        return new AffineTransform2D(1, 0, 0, 0, 1, 0);
+    }
+
+    /** 
+     * Creates a new affine transform by copying coefficients.
+     * @since 0.8.1
+     */
+    public final static AffineTransform2D create(AffineTransform2D trans) {
+        double[][] mat = trans.getAffineMatrix();
+        return new AffineTransform2D(
+        		mat[0][0], mat[0][1], mat[0][2], 
+        		mat[1][0], mat[1][1], mat[1][2]);
+    }
+
+    /**
+     * @since 0.8.1
+     */
+    public final static AffineTransform2D create(double[] coefs) {
+        if (coefs.length==4) {
+            return new AffineTransform2D(
+            		coefs[0], coefs[1], 0, 
+            		coefs[2], coefs[3], 0);
+        } else if (coefs.length==6) {
+            return new AffineTransform2D(
+            		coefs[0], coefs[1], coefs[2], 
+            		coefs[3], coefs[4], coefs[5]);
+        } else {
+        	throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * @since 0.8.1
+     */
+    public final static AffineTransform2D create(
+    		double xx, double yx, double tx,
+    		double xy, double yy, double ty) {
+    	return new AffineTransform2D(xx, yx, tx, xy, yy, ty);
+    }
+
     public final static AffineTransform2D createGlideReflection(
             LinearShape2D line, double distance) {
+    	// get origin and vector of line
         Vector2D vector = line.getVector().getNormalizedVector();
         Point2D origin = line.getOrigin();
+        
+        // extract origin and vector coordinates
         double dx = vector.getX();
         double dy = vector.getY();
         double x0 = origin.getX();
         double y0 = origin.getY();
+
+        // compute translation parameters
+        double tx = dx*distance;
+        double ty = dy*distance;
+
+        // some computation shortcuts
         double delta = dx*dx+dy*dy;
-
-        double tx = vector.getX()*distance;
-        double ty = vector.getY()*distance;
-
-        return new AffineTransform2D((dx*dx-dy*dy)/delta, 2*dx*dy/delta, 2*dy
-                *(dy*x0-dx*y0)/delta+tx, 2*dx*dy/delta, (dy*dy-dx*dx)/delta, 2
-                *dx*(dx*y0-dy*x0)/delta+ty);
+        double dx2 = dx*dx;
+        double dy2 = dy*dy;
+        double dxy = dx*dy;
+        double dxy0 = dx*y0;
+        double dyx0 = dy*x0;
+        
+        // create the affine transform with parameters of glide reflection
+        return new AffineTransform2D(
+        		(dx2-dy2)/delta, 2*dxy/delta, 2*dy*(dyx0-dxy0)/delta+tx,
+        		2*dxy/delta, (dy2-dx2)/delta, 2*dx*(dxy0-dyx0)/delta+ty);
     }
 
     public final static AffineTransform2D createHomothecy(Point2D center,
@@ -392,8 +448,10 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * @return the 3x3 affine transform representing the matrix
      */
     public double[][] getAffineMatrix() {
-        double[][] tab = new double[][] { new double[] { m00, m01, m02 },
-                new double[] { m10, m11, m12 }, new double[] { 0, 0, 1 } };
+        double[][] tab = new double[][] { 
+        		new double[] { m00, m01, m02 },
+                new double[] { m10, m11, m12 }, 
+                new double[] { 0, 0, 1 } };
         return tab;
     }
 
@@ -554,7 +612,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     }
 
     /**
-     * deprecated use transform() instead. (0.7.0)
+     * @deprecated use point.transform() instead. (0.7.0)
      */
     @Deprecated
     public Point2D transform(java.awt.geom.Point2D src, Point2D dst) {

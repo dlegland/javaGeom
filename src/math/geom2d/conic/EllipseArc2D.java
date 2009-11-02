@@ -400,6 +400,7 @@ implements SmoothOrientedCurve2D, Cloneable {
                 +angleExtent), -angleExtent);
     }
 
+	@Override
     public Collection<? extends EllipseArc2D> getContinuousCurves() {
     	return wrapCurve(this);
     }
@@ -604,6 +605,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return path;
     }
 
+	@Override
     public void draw(Graphics2D g2) {
         g2.draw(this.getGeneralPath());
     }

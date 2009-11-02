@@ -823,6 +823,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      * 
      * @return the first point of the curve
      */
+	@Override
     public Point2D getFirstPoint() {
         return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
     }
@@ -832,6 +833,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      * 
      * @return the last point of the curve.
      */
+	@Override
     public Point2D getLastPoint() {
         return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
     }
@@ -903,6 +905,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         return new Ellipse2D(xc, yc, r1, r2, theta, !direct);
     }
 
+	@Override
     public Collection<? extends Ellipse2D> getContinuousCurves() {
     	return wrapCurve(this);
     }
@@ -1096,6 +1099,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         return path;
     }
 
+	@Override
     public void draw(Graphics2D g2) {
         java.awt.geom.Ellipse2D.Double ellipse = 
             new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);

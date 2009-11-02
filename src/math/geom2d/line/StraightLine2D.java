@@ -423,6 +423,7 @@ public class StraightLine2D extends AbstractLine2D implements
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
+	@Override
 	public CircleLine2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
         Point2D center 	= inv.getCenter();
@@ -499,6 +500,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Throws an exception when called.
      */
+	@Override
     public Polyline2D getAsPolyline(int n) {
         throw new UnboundedShapeException();
     }
@@ -508,21 +510,25 @@ public class StraightLine2D extends AbstractLine2D implements
     // methods implementing the Curve2D interface
 
     /** Throws an infiniteShapeException */
+	@Override
     public Point2D getFirstPoint() {
         throw new UnboundedShapeException();
     }
 
-    /** Throws an infiniteShapeException */
-    public Point2D getLastPoint() {
-        throw new UnboundedShapeException();
-    }
+	/** Throws an infiniteShapeException */
+	@Override
+	public Point2D getLastPoint() {
+		throw new UnboundedShapeException();
+	}
 
     /** Returns an empty list of points. */
+	@Override
     public Collection<Point2D> getSingularPoints() {
         return new ArrayList<Point2D>(0);
     }
 
     /** Returns false, whatever the position. */
+	@Override
     public boolean isSingular(double pos) {
         return false;
     }

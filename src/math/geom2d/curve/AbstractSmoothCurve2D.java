@@ -62,5 +62,6 @@ implements SmoothCurve2D, Cloneable {
 		return false;
 	}
 	
-    public abstract SmoothCurve2D clone();
+    @Override
+	public abstract SmoothCurve2D clone();
 }

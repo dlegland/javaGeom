@@ -525,6 +525,7 @@ implements ContinuousCirculinearCurve2D, Cloneable {
         return points.size()-1;
     }
 
+	@Override
     public Point2D getFirstPoint() {
         if (points.size()==0)
             return null;
@@ -534,6 +535,7 @@ implements ContinuousCirculinearCurve2D, Cloneable {
     /**
      * if polyline is closed, return the first point.
      */
+	@Override
     public Point2D getLastPoint() {
         if (points.size()==0)
             return null;
@@ -564,6 +566,7 @@ implements ContinuousCirculinearCurve2D, Cloneable {
         return new Polyline2D(points2);
     }
 
+	@Override
     public Collection<? extends Polyline2D> getContinuousCurves() {
     	return wrapCurve(this);
     }

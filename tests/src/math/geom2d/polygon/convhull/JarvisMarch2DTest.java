@@ -17,7 +17,6 @@ public class JarvisMarch2DTest extends TestCase {
 		Polygon2D hull = new JarvisMarch2D().convexHull(pointSet.getPoints());
 		
 		assertTrue(hull!=null);
-		assertTrue(hull instanceof Polygon2D);
 		assertTrue(hull.getVertices().size()==4);
 	}
 
@@ -36,7 +35,6 @@ public class JarvisMarch2DTest extends TestCase {
 		Polygon2D hull = new JarvisMarch2D().convexHull(pointSet.getPoints());
 		
 		assertTrue(hull!=null);
-		assertTrue(hull instanceof Polygon2D);
 		assertTrue(hull.getVertices().size()==4);		
 	}	
 }

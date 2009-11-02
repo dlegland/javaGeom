@@ -69,6 +69,7 @@ public class Box2D implements Cloneable {
     /**
      * Main constructor, given bounds for x coord, then bounds for y coord. A
      * check is performed to ensure first bound is lower than second bound.
+     * Consider creating a new box using static factory instead (0.8.1)
      */
     public Box2D(double x0, double x1, double y0, double y1) {
         xmin = Math.min(x0, x1);
@@ -83,7 +84,10 @@ public class Box2D implements Cloneable {
                 +rect.getHeight());
     }
 
-    /** Constructor from 2 points, giving extreme coordinates of the box. */
+    /**
+     * Constructor from 2 points, giving extreme coordinates of the box.
+     * Consider creating a new box using static factory instead (0.8.1)
+     */
     public Box2D(Point2D p1, Point2D p2) {
         this(p1.getX(), p2.getX(), p1.getY(), p2.getY());
     }
@@ -91,6 +95,24 @@ public class Box2D implements Cloneable {
     /** Constructor from a point, a width and an height */
     public Box2D(Point2D point, double w, double h) {
         this(point.getX(), point.getX()+w, point.getY(), point.getY()+h);
+    }
+
+    // ===================================================================
+    // Static factory
+    
+    
+    /**
+     * @since 0.8.1
+     */
+    public final static Box2D create(double xmin, double xmax, double ymin, double ymax) {
+    	return new Box2D(xmin, xmax, ymin, ymax);
+    }
+
+    /**
+     * @since 0.8.1
+     */
+    public final static Box2D create(Point2D p1, Point2D p2) {
+    	return new Box2D(p1, p2);
     }
 
     // ===================================================================

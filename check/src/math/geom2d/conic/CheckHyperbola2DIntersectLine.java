@@ -78,11 +78,11 @@ public class CheckHyperbola2DIntersectLine extends JPanel{
 		
 		// isolate first branch and an arc
 		double tmax = 1.5;
-		HyperbolaBranch2D branch1 = (HyperbolaBranch2D) hyperbola.getFirstCurve();
+		HyperbolaBranch2D branch1 = hyperbola.getFirstCurve();
 		HyperbolaBranchArc2D arc1 = new HyperbolaBranchArc2D(branch1, -tmax, tmax);
 	
 		// isolate second branch and an arc
-		HyperbolaBranch2D branch2 = (HyperbolaBranch2D) hyperbola.getLastCurve();
+		HyperbolaBranch2D branch2 = hyperbola.getLastCurve();
 		//HyperbolaBranchArc2D arc2 = new HyperbolaBranchArc2D(branch2, -tmax, tmax);
 
 		g2.setColor(Color.BLUE);

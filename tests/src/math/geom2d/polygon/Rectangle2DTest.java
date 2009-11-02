@@ -27,9 +27,7 @@
 package math.geom2d.polygon;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.Domain2D;
 
 /**
  * @author Legland
@@ -68,14 +66,5 @@ public class Rectangle2DTest extends TestCase {
 		Rectangle2D rect1 = new Rectangle2D(10, 20, 30, 40);
 		Rectangle2D rect2 = new Rectangle2D(40, 20, 40, 30, Math.PI/2);
 		assertTrue(rect1.equals(rect2));
-	}
-
-	public void testTransform(){
-		// just to test if Rectangle2D is still a FillShape2D after transform
-		Rectangle2D rect = new Rectangle2D(10, 20, 40, 50);
-		AffineTransform2D aff = new AffineTransform2D(2, 1, 0, 3, 2, 0);
-		AffineTransform2D aff2 = new AffineTransform2D(1, 3, .5, 2, .3, 1);
-		assertTrue((rect.transform(aff) instanceof math.geom2d.domain.Domain2D));
-		assertTrue((rect.transform(aff).transform(aff2) instanceof Domain2D));
 	}
 }

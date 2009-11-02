@@ -353,6 +353,7 @@ public class Conic2DUtils {
         double[] coefs;
 
         public EmptyConic2D(double[] coefs) {
+        	this.coefs = coefs;
         }
 
         public EmptyConic2D() {

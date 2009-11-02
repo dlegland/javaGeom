@@ -143,6 +143,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
 	// ===================================================================
     // Methods inherited from CirculinearCurve2D
 
+	@Override
     public CirculinearRing2D getParallel(double dist) {
     	return new CirculinearRing2D(
     			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
@@ -152,6 +153,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
+	@Override
 	public CirculinearContour2D transform(CircleInversion2D inv) {
 		
 		// Create array for storing transformed arcs
@@ -349,6 +351,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
         return points.get(0);
     }
 
+	@Override
     public Collection<? extends LinearRing2D> getContinuousCurves() {
     	return wrapCurve(this);
     }

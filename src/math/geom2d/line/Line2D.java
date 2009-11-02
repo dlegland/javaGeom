@@ -103,7 +103,7 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
      * @param line2 a Line2D object
      * @return true if the 2 lines intersect
      */
-    public final static boolean intersects(Line2D line1, Line2D line2) {
+    public static boolean intersects(Line2D line1, Line2D line2) {
         Point2D e1p1 = line1.getFirstPoint();
         Point2D e1p2 = line1.getLastPoint();
         Point2D e2p1 = line2.getFirstPoint();
@@ -134,6 +134,13 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
     // ===================================================================
     // Methods specific to Line2D
 
+    /**
+     * @since 0.8.1
+     */
+    public static Line2D create(Point2D p1, Point2D p2) {
+    	return new Line2D(p1, p2);
+    }
+    
     /**
      * Return the first point of the edge. It corresponds to getPoint(0).
      * 
@@ -367,7 +374,8 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
     /* (non-Javadoc)
      * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
      */
-    public Collection<? extends Line2D> getSmoothPieces() {
+    @Override
+	public Collection<? extends Line2D> getSmoothPieces() {
         ArrayList<Line2D> array = new ArrayList<Line2D>(1);
         array.add(this);
         return array;
@@ -554,7 +562,8 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
         return new Line2D(p2, p1);
     }
 
-    public Collection<? extends Line2D> getContinuousCurves() {
+    @Override
+	public Collection<? extends Line2D> getContinuousCurves() {
     	return wrapCurve(this);
     }
 

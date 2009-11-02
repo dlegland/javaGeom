@@ -295,6 +295,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         g.fill(this.getBoundary().getGeneralPath());
     }
     
+	@Override
     public boolean equals(Object obj) {
         if(!(obj instanceof MultiPolygon2D))
             return false;
@@ -312,6 +313,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return true;
     }
    
+	@Override
     public MultiPolygon2D clone() {
         // allocate memory for new ring array
         ArrayList<LinearRing2D> array = new ArrayList<LinearRing2D>(rings.size());

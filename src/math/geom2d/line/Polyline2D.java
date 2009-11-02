@@ -73,6 +73,7 @@ public class Polyline2D extends math.geom2d.polygon.Polyline2D {
      * Returns the polyline with same points considered in reverse order.
      * Reversed polyline keep same references as original polyline.
      */
+	@Override
     public Polyline2D getReverseCurve() {
         Point2D[] points2 = new Point2D[points.size()];
         int n = points.size();

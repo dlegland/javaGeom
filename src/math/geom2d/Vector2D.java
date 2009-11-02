@@ -70,6 +70,7 @@ public class Vector2D implements Cloneable {
 
     /** 
      * Constructs a new vector with the given coordinates. 
+     * Consider creating a new Vector using static factory.
      */
     public Vector2D(double x, double y) {
         this.x = x;
@@ -79,6 +80,23 @@ public class Vector2D implements Cloneable {
     // ===================================================================
     // static functions
 
+    /**
+     * Static factory for creating a new vector from the coordinate of a point.
+     * @since 0.8.1
+     */
+    public static Vector2D create(Point2D point) {
+        return new Vector2D(point.getX(), point.getY());
+    }
+
+    /**
+     * Static factory for creating a new point in cartesian coordinates.
+     * @since 0.8.1
+     */
+    public static Vector2D create(double x, double y) {
+        return new Vector2D(x, y);
+    }
+    
+    
     /**
      * Creates a new vector by specifying the distance to the origin, and the
      * angle with the horizontal.
@@ -139,11 +157,11 @@ public class Vector2D implements Cloneable {
     // accessors
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     // ===================================================================
@@ -181,8 +199,8 @@ public class Vector2D implements Cloneable {
      */
     @Deprecated
     public void setAsPolar(double rho, double theta) {
-        x = rho*Math.cos(theta);
-        y = rho*Math.sin(theta);
+        this.x = rho*Math.cos(theta);
+        this.y = rho*Math.sin(theta);
     }
 
     /**
@@ -192,7 +210,7 @@ public class Vector2D implements Cloneable {
      * @return the vector opposite to <code>this</code>.
      */
     public Vector2D getOpposite() {
-        return new Vector2D(-x, -y);
+        return new Vector2D(-this.x, -this.y);
     }
 
     /**

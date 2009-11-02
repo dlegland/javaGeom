@@ -185,6 +185,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return true;
     }
     
+	@Override
     public QuadBezier2D clone() {
         return new QuadBezier2D(x1, y1, ctrlx, ctrly, x2, y2);
     }

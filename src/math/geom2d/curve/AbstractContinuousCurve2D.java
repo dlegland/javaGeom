@@ -114,5 +114,6 @@ implements ContinuousCurve2D, Cloneable {
         return path;
 	}
 	
+	@Override
     public abstract ContinuousCurve2D clone();
 }

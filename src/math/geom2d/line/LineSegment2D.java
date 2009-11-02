@@ -51,6 +51,13 @@ implements Cloneable, CirculinearElement2D {
     // ===================================================================
     // static methods
 
+    /**
+     * @since 0.8.1
+     */
+    public final static LineSegment2D create(Point2D p1, Point2D p2) {
+    	return new LineSegment2D(p1, p2);
+    }
+
     public final static StraightLine2D getMedian(LineSegment2D edge) {
         return new StraightLine2D(
         		edge.x0+edge.dx*.5, edge.y0+edge.dy*.5,
@@ -195,6 +202,7 @@ implements Cloneable, CirculinearElement2D {
     /**
      * Returns the length of the line segment.
      */
+	@Override
     public double getLength() {
         return Math.hypot(dx, dy);
     }
@@ -273,6 +281,7 @@ implements Cloneable, CirculinearElement2D {
      * 
      * @return the first point of the edge
      */
+	@Override
     public Point2D getFirstPoint() {
         return new Point2D(x0, y0);
     }
@@ -282,6 +291,7 @@ implements Cloneable, CirculinearElement2D {
      * 
      * @return the last point of the edge
      */
+	@Override
     public Point2D getLastPoint() {
         return new Point2D(x0+dx, y0+dy);
     }

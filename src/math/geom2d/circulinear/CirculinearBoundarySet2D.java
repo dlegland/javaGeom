@@ -31,8 +31,8 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
     // ===================================================================
     // static constructors
 
-	public final static CirculinearBoundarySet2D<CirculinearContour2D>
-	create(Collection<? extends CirculinearContour2D> curves) {
+	public static <T extends CirculinearContour2D> CirculinearBoundarySet2D<CirculinearContour2D>
+	create(Collection<T> curves) {
 		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
 	}
 	
@@ -158,6 +158,7 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
     	return result;
     }
 
+	@Override
 	public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
@@ -177,6 +178,7 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
         return result;
 	}
     
+	@Override
 	public CirculinearBoundarySet2D<? extends CirculinearContour2D>
 	getReverseCurve(){
     	int n = curves.size();

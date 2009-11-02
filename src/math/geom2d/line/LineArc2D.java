@@ -113,6 +113,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     /**
      * Returns the length of the line arc.
      */
+	@Override
     public double getLength() {
         if (t0!=Double.NEGATIVE_INFINITY&&t1!=Double.POSITIVE_INFINITY)
             return getPoint1().getDistance(getPoint2());
@@ -223,6 +224,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @return the last point of the arc
      */
+	@Override
     public Point2D getFirstPoint() {
         if (!Double.isInfinite(t0))
             return new Point2D(x0+t0*dx, y0+t0*dy);
@@ -236,6 +238,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @return the last point of the arc
      */
+	@Override
     public Point2D getLastPoint() {
         if (!Double.isInfinite(t1))
             return new Point2D(x0+t1*dx, y0+t1*dy);
@@ -243,6 +246,7 @@ implements SmoothOrientedCurve2D, Cloneable {
             throw new UnboundedShapeException();
     }
 
+	@Override
     public Collection<Point2D> getSingularPoints() {
         ArrayList<Point2D> list = new ArrayList<Point2D>(2);
         if (t0!=Double.NEGATIVE_INFINITY)
@@ -252,6 +256,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return list;
     }
 
+	@Override
     public boolean isSingular(double pos) {
         if (Math.abs(pos-t0)<Shape2D.ACCURACY)
             return true;

@@ -20,6 +20,7 @@ public class CheckBezierCurve2D_getParallel  extends JPanel{
 	Point2D c2 = new Point2D(200, 100);
 	Point2D p2 = new Point2D(300, 200);
 	
+	@Override
 	public void paintComponent(Graphics g){
 		
 		CubicBezierCurve2D bezier1 = new CubicBezierCurve2D(p1, c1, c2, p2);
