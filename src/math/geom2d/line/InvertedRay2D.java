@@ -128,6 +128,15 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // methods specific to InvertedRay2D
 
     /**
+     * Static factory for creating a new inverted ray with given direction
+     * to target.
+     * @since 0.8.1
+     */
+    public final static InvertedRay2D create(Point2D target, Vector2D direction) {
+    	return new InvertedRay2D(target, direction);
+    }
+    
+    /**
      * @deprecated lines will become imutable in a future release
      */
     @Deprecated

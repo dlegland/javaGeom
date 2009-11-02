@@ -141,6 +141,7 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
         return result;
     }
 
+	@Override
 	public CirculinearCurveSet2D<? extends CirculinearCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
@@ -160,6 +161,7 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
         return result;
 	}
     
+	@Override
 	public CirculinearCurveSet2D<? extends CirculinearCurve2D> 
 	getSubCurve(double t0, double t1) {
 		// Call the superclass method
@@ -181,6 +183,7 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
 		return result;
 	}
 	
+	@Override
 	public CirculinearCurveSet2D<? extends CirculinearCurve2D> 
 	getReverseCurve(){
     	int n = curves.size();

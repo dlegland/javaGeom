@@ -28,6 +28,7 @@ implements CirculinearDomain2D {
 		super(boundary);
 	}
 	
+	@Override
 	public CirculinearBoundary2D getBoundary() {
 		return (CirculinearBoundary2D) boundary;
 	}

@@ -277,13 +277,13 @@ public class Ellipse2DTest extends TestCase {
 		// try with a direct ellipse 
 		ellipse = new Ellipse2D(0, 0, 20, 10, 0, true);
 		arc1 = new EllipseArc2D(ellipse, Math.PI/2, Math.PI/2);		
-		arc2 = (EllipseArc2D) ellipse.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = ellipse.getSubCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 		
 		// try again with an indirect ellipse
 		ellipse = new Ellipse2D(0, 0, 20, 10, 0, false);
 		arc1 = new EllipseArc2D(ellipse, 3*Math.PI/2, -Math.PI/2);
-		arc2 = (EllipseArc2D) ellipse.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = ellipse.getSubCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 	}
 
@@ -308,21 +308,18 @@ public class Ellipse2DTest extends TestCase {
 		// Identity
 		AffineTransform2D aff = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell1 = ellipse.transform(aff);
-		assertTrue(ell1 instanceof Ellipse2D);
 		assertTrue(ell1.equals(ellipse));
 		
 		// Non uniform scaling
 		AffineTransform2D aff2 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
 		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
-		assertTrue(ell2 instanceof Ellipse2D);
 		assertTrue(ell2.equals(ell2th));
 		
 		// Try with a rotated base ellipse
 		ellipse = new Ellipse2D(100, 100, 50, 30, Math.PI/3);
 		AffineTransform2D aff3 = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell3 = ellipse.transform(aff3);
-		assertTrue(ell3 instanceof Ellipse2D);
 		assertTrue(ell3.equals(ellipse));
 		
 		// At the moment, I do not how to compute parameters of transformed ellipse,

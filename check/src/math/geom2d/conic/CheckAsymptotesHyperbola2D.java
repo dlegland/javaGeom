@@ -66,6 +66,7 @@ public class CheckAsymptotesHyperbola2D extends JPanel{
 		box = new Box2D(50, 350, 50, 350);
 	}
 	
+	@Override
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		

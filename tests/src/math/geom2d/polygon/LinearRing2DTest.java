@@ -222,7 +222,7 @@ public class LinearRing2DTest extends TestCase {
 		LinearRing2D line1 = new LinearRing2D(points);
 		
 		// Check with a polyline whith t1<t2
-		Polyline2D sub = (Polyline2D) line1.getSubCurve(.5, 2.5);
+		Polyline2D sub = line1.getSubCurve(.5, 2.5);
 		Polyline2D line2 = new Polyline2D(new Point2D[]{
 				new Point2D(5, 0), 		new Point2D(10, 0), 
 				new Point2D(10, 10),	new Point2D(5, 10)	});
@@ -230,7 +230,7 @@ public class LinearRing2DTest extends TestCase {
 		
 		
 		// Check with a polyline whith t1>t2
-		sub = (Polyline2D) line1.getSubCurve(3.5, .5);
+		sub = line1.getSubCurve(3.5, .5);
 		line2 = new Polyline2D(new Point2D[]{
 				new Point2D(0, 5), new Point2D(0, 0), new Point2D(5, 0)});
 		assertTrue(line2.equals(sub));

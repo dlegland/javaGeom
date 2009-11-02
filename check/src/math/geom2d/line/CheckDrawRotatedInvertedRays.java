@@ -33,7 +33,7 @@ public class CheckDrawRotatedInvertedRays extends JPanel{
 		InvertedRay2D ray0 = new InvertedRay2D(x0+20, y0, 1, 0);
 		int N = 11;
 		for(int i=0; i<N; i++){
-			double theta = 2*Math.PI*(double)i/(double)N;
+			double theta = 2*Math.PI*i/N;
 			AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 			rays.addCurve(ray0.transform(rot));
 		}

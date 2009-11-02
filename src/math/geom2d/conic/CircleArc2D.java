@@ -198,10 +198,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         angleExtent = extent;
     }
 
-    public boolean isDirect() {
-        return angleExtent>0;
-    }
-
     // ===================================================================
     // methods implementing CircularShape2D interface
 

@@ -165,7 +165,7 @@ public class Angle2D {
     public final static double getAngle(double x1, double y1, double x2,
             double y2, double x3, double y3) {
         double angle1 = getHorizontalAngle(x2, y2, x1, y1);
-        double angle2 = getHorizontalAngle(x2, y2, x1, y1);
+        double angle2 = getHorizontalAngle(x3, y3, x1, y1);
         return (angle2-angle1+M_2PI)%(M_2PI);
     }
 

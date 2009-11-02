@@ -49,23 +49,29 @@ import math.geom2d.transform.CircleInversion2D;
 public class PointArray2D 
 implements PointSet2D, CirculinearShape2D, Cloneable {
 
-    /**
+    // ===================================================================
+    // inner variables
+
+	/**
      * The inner collection of points composing the set.
      */
     protected ArrayList<Point2D> points = null;
 
+    // ===================================================================
+    // constructors
+    
     /**
-     * Creates a new PointSet2D without any points.
+     * Creates a new PointArray2D without any points.
      */
     public PointArray2D() {
         this(0);
     }
 
     /**
-     * Creates a new empty PointSet2D, but preallocates the memory for storing a
+     * Creates a new empty PointArray2D, but preallocates the memory for storing a
      * given amount of points.
      * 
-     * @param n the expected number of points in the PointSet2D.
+     * @param n the expected number of points in the PointArray2D.
      */
     public PointArray2D(int n) {
         points = new ArrayList<Point2D>();
@@ -102,6 +108,24 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         }
     }
 
+    // ===================================================================
+    // static factory methods
+    
+    public final static PointSet2D create(Collection<? extends java.awt.geom.Point2D> points) {
+    	return new PointArray2D(points);
+    }
+    
+    public final static PointSet2D create(Point2D[] points) {
+    	return new PointArray2D(points);
+    }
+    
+    public final static PointSet2D create(int size) {
+    	return new PointArray2D(size);
+    }
+    
+    // ===================================================================
+    // methods implementing the PointSet2D interface
+    
     /**
      * Add a new point to the set of point. If point is not an instance of
      * Point2D, a Point2D with same location is added instead of point.

@@ -58,6 +58,7 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 		this.setBackground(Color.WHITE);
 	}
 	
+	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponents(g);
 		Graphics2D g2 = (Graphics2D) g;

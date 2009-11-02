@@ -269,6 +269,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * 
      * @return the first point of the curve
      */
+	@Override
     public Point2D getFirstPoint() {
         return new Point2D(this.x1, this.y1);
     }
@@ -278,6 +279,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * 
      * @return the last point of the curve.
      */
+	@Override
     public Point2D getLastPoint() {
         return new Point2D(this.x2, this.y2);
     }
@@ -458,6 +460,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return true;
     }
     
+	@Override
     public QuadBezierCurve2D clone() {
         return new QuadBezierCurve2D(x1, y1, ctrlx, ctrly, x2, y2);
     }

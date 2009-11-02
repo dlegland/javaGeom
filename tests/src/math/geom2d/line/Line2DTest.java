@@ -67,7 +67,6 @@ public class Line2DTest extends TestCase {
 		Point2D p1 = new Point2D(2, 3);
 		Point2D p2 = new Point2D(4, 7);
 		Line2D line = new Line2D(p1, p2);
-		assertTrue(line instanceof LinearShape2D);
 		assertTrue(LinearShape2D.class.isInstance(line));
 	}
 	

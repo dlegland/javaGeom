@@ -415,6 +415,7 @@ CircularShape2D, CircleLine2D {
     /**
      * Returns a set of smooth curves, which contains only the circle.
      */
+	@Override
     public Collection<? extends Circle2D> getSmoothPieces() {
         ArrayList<Circle2D> list = new ArrayList<Circle2D>(1);
         list.add(this);

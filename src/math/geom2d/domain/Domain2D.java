@@ -111,6 +111,7 @@ public interface Domain2D extends Shape2D {
             return this;
         }
 
+    	@Override
         public void draw(Graphics2D g2) {
         }
 

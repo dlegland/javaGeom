@@ -602,6 +602,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
      * Return the intersection points of the curve with the specified line. The
      * length of the result array is the number of intersection points.
      */
+	@Override
     public Collection<? extends AbstractLine2D> getSmoothPieces() {
         return wrapCurve(this);
     }
@@ -676,7 +677,8 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
 
     }
 
-    public Collection<? extends AbstractLine2D> getContinuousCurves() {
+	@Override
+	public Collection<? extends AbstractLine2D> getContinuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -751,5 +753,6 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
     /**
      * Ensures public declaration of clone(), and ensures valid return type.
      */
+	@Override
     public abstract AbstractLine2D clone();
 }

@@ -57,6 +57,7 @@ extends CirculinearRing2D {
         super(curves, closed);
     }
 
+	@Override
 	public GenericCirculinearRing2D transform(CircleInversion2D inv) {
     	// Allocate array for result
 		GenericCirculinearRing2D result =
@@ -71,6 +72,7 @@ extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#fill(java.awt.Graphics2D)
 	 */
+	@Override
 	public void fill(Graphics2D g2) {
 		g2.fill(this.getGeneralPath());
 	}
@@ -78,6 +80,7 @@ extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
 	 */
+	@Override
 	public Collection<CirculinearContour2D> getBoundaryCurves() {
         ArrayList<CirculinearContour2D> list = 
             new ArrayList<CirculinearContour2D>(1);
@@ -88,10 +91,12 @@ extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getDomain()
 	 */
+	@Override
 	public CirculinearDomain2D getDomain() {
 		return new GenericCirculinearDomain2D(this);
 	}
 
+	@Override
 	public GenericCirculinearRing2D getReverseCurve(){
     	int n = curves.size();
         // create array of reversed curves
@@ -105,6 +110,7 @@ extends CirculinearRing2D {
         return new GenericCirculinearRing2D(curves2);
 	}
 	
+	@Override
 	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> 
 	transform(AffineTransform2D trans) {
 		// number of curves

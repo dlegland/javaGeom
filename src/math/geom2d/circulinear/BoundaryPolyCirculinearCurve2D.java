@@ -79,6 +79,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
 	 */
+	@Override
 	public double getLength() {
 		double sum = 0;
 		for(CirculinearCurve2D curve : this.getCurves())
@@ -89,6 +90,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
+	@Override
 	public double getLength(double pos) {
 		return CirculinearCurve2DUtils.getLength(this, pos);
 	}
@@ -96,6 +98,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
+	@Override
 	public double getPosition(double length) {
 		return CirculinearCurve2DUtils.getPosition(this, length);
 	}
@@ -103,7 +106,8 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.ContinuousCirculinearCurve2D#getParallel(double)
 	 */
-    public CirculinearRing2D getParallel(double dist) {
+    @Override
+	public CirculinearRing2D getParallel(double dist) {
     	return new CirculinearRing2D(
     			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
     			.getSmoothPieces());
@@ -113,6 +117,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
+	@Override
 	public BoundaryPolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D>
 	transform(CircleInversion2D inv) {
     	// Allocate array for result
@@ -161,7 +166,8 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
      * 
      * @see math.geom2d.ContinuousCirculinearCurve2D#getSmoothPieces()
      */
-    public Collection<? extends CirculinearElement2D> getSmoothPieces() {
+    @Override
+	public Collection<? extends CirculinearElement2D> getSmoothPieces() {
     	// create array for storing result
     	ArrayList<CirculinearElement2D> result = 
     		new ArrayList<CirculinearElement2D>();
@@ -186,6 +192,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
         return list;
     }
 
+	@Override
 	public BoundaryPolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D> 
 	getReverseCurve() {
     	int n = curves.size();
@@ -201,6 +208,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
         return new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(curves2);
 	}
 	
+	@Override
 	public PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D>
 	getSubCurve(double t0, double t1) {
 		// Call the superclass method
@@ -225,7 +233,8 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
     // ===================================================================
     // methods implementing the Shape2D interface
 
-    public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> 
+    @Override
+	public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> 
 	clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);

@@ -64,7 +64,7 @@ public class PolyCurve2DTest extends TestCase {
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		
-		CurveSet2D<?> clipped = (CurveSet2D<?>) set.clip(box1);
+		CurveSet2D<?> clipped = set.clip(box1);
 		Curve2D curve1 = clipped.getFirstCurve();
 		assertTrue(curve1 instanceof ContinuousCurve2D);
 	}

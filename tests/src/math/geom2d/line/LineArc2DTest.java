@@ -225,7 +225,7 @@ public class LineArc2DTest extends TestCase {
 	public void testGetSubCurve(){
 		LineArc2D arc1 = new LineArc2D(3, 4, 1, 2, 0, 10);
 		LineArc2D arc2 = new LineArc2D(3, 4, 1, 2, 1, 2);
-		LineArc2D sub  = (LineArc2D) arc1.getSubCurve(1, 2);
+		LineArc2D sub  = arc1.getSubCurve(1, 2);
 		assertTrue(arc2.equals(sub));
 	}
 	

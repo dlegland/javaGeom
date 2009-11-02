@@ -127,6 +127,14 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     // methods specific to Ray2D
 
     /**
+     * Static factory for creating a new ray.
+     * @since 0.8.1
+     */
+    public final static Ray2D create(Point2D target, Vector2D direction) {
+    	return new Ray2D(target, direction);
+    }
+    
+    /**
      * @deprecated lines will become imutable in a future release
      */
     @Deprecated
@@ -187,6 +195,7 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the Curve2D interface
 
+	@Override
     public Point2D getFirstPoint() {
         return new Point2D(x0, y0);
     }

@@ -80,13 +80,17 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         super(0, 0);
     }
 
-    /** Constructs a new Point2D at the given given position. */
+    /** 
+     * Constructs a new Point2D at the given given position. 
+     * Please consider using the static factory method instead (0.8.1).
+     */
     public Point2D(double x, double y) {
         super(x, y);
     }
 
     /**
-     * Construct a new Point2D by copying coordinates of given java point.
+     * Constructs a new Point2D by copying coordinates of given java point.
+     * Please consider using the static factory method instead (0.8.1)
      */
     public Point2D(java.awt.geom.Point2D point) {
         super(point.getX(), point.getY());
@@ -116,6 +120,23 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
     // ===================================================================
     // static methods
 
+    /**
+     * Static factory for creating a new point in cartesian coordinates.
+     * @since 0.8.1
+     */
+    public final static Point2D create(double x, double y) {
+        return new Point2D(x, y);
+    }
+    
+    /**
+     * Static factory for creating a new point from an existing instance of
+     * java point.
+     * @since 0.8.1
+     */
+    public final static Point2D create(java.awt.geom.Point2D point) {
+        return new Point2D(point.getX(), point.getY());
+    }
+    
     /**
      * Creates a new point from polar coordinates <code>rho</code> and
      * <code>theta</code>.

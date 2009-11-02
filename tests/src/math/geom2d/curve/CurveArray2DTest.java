@@ -37,6 +37,22 @@ import math.geom2d.line.LineSegment2D;
 
 public class CurveArray2DTest extends TestCase {
 
+	public void testCreateArray() {
+		Point2D p1 = Point2D.create(0, 0);
+		Point2D p2 = Point2D.create(10, 0);
+		Point2D p3 = Point2D.create(10, 10);
+		Point2D p4 = Point2D.create(0, 10);
+		LineSegment2D seg1 = LineSegment2D.create(p1, p2);
+		LineSegment2D seg2 = LineSegment2D.create(p2, p3);
+		LineSegment2D seg3 = LineSegment2D.create(p3, p4);
+		CurveSet2D<LineSegment2D> set = 
+			CurveArray2D.create(new LineSegment2D[]{seg1, seg2, seg3});
+		assertEquals(3, set.getCurveNumber());
+		assertTrue(set.containsCurve(seg1));
+		assertTrue(set.containsCurve(seg2));
+		assertTrue(set.containsCurve(seg3));
+	}
+	
 	public void testGetPosition() {
 		double r = 10;
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);

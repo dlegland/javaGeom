@@ -75,7 +75,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// isolate first branch 
 		// isolate second branch and an arc
-		HyperbolaBranch2D branch2 = (HyperbolaBranch2D) hyperbola.getLastCurve();
+		HyperbolaBranch2D branch2 = hyperbola.getLastCurve();
 
 		g2.setColor(Color.BLUE);
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));

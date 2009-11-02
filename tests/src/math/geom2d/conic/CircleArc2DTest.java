@@ -346,7 +346,7 @@ public class CircleArc2DTest extends TestCase {
 		clip1 = arc1.clip(new Box2D(-20, 20, -20, 20));
 		assertTrue(clip1 instanceof CurveSet2D);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 1);
-		Curve2D clip1c1 = (Curve2D) ((CurveSet2D<?>) clip1).getFirstCurve();
+		Curve2D clip1c1 = ((CurveSet2D<?>) clip1).getFirstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
 
 		// a circle arc clipped with both extremities outside the rectangle
@@ -402,7 +402,7 @@ public class CircleArc2DTest extends TestCase {
 		clipped = arc1.clip(boxFull);
 		assertTrue(clipped instanceof CurveSet2D);
 		assertEquals(((CurveSet2D<?>) clipped).getCurveNumber(), 1);
-		Curve2D clip1c1 = (Curve2D) ((CurveSet2D<?>) clipped).getFirstCurve();
+		Curve2D clip1c1 = ((CurveSet2D<?>) clipped).getFirstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
 		assertTrue(arc1.equals(clip1c1));
 

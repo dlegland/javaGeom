@@ -121,7 +121,8 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
      * 
      * @see math.geom2d.ContinuousCirculinearCurve2D#getSmoothPieces()
      */
-    public Collection<? extends CirculinearElement2D> getSmoothPieces() {
+    @Override
+	public Collection<? extends CirculinearElement2D> getSmoothPieces() {
     	// create array for storing result
     	ArrayList<CirculinearElement2D> result = 
     		new ArrayList<CirculinearElement2D>();
@@ -146,7 +147,8 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
         return list;
     }
 
-    public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> 
+    @Override
+	public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> 
 	clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
@@ -166,6 +168,7 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
         return result;
 	}
 	
+	@Override
 	public PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D> 
 	getReverseCurve() {
     	int n = curves.size();
@@ -181,6 +184,7 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
         return new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(curves2);
 	}
 	
+	@Override
 	public PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D>
 	getSubCurve(double t0, double t1) {
 		// Call the superclass method
