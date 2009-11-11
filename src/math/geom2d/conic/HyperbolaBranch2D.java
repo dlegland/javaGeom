@@ -126,7 +126,7 @@ implements SmoothBoundary2D, Cloneable {
 
     /** Throws an UnboundedShapeException */
     public void fill(Graphics2D g2) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     // ===================================================================
@@ -170,7 +170,7 @@ implements SmoothBoundary2D, Cloneable {
 
     public java.awt.geom.GeneralPath appendPath(
     		java.awt.geom.GeneralPath path) {
-    	throw new UnboundedShapeException();
+    	throw new UnboundedShapeException(this);
     }
 
     
@@ -179,7 +179,7 @@ implements SmoothBoundary2D, Cloneable {
 
     public Point2D getPoint(double t) {
         if (Double.isInfinite(t))
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
 
         double x, y;
         if (positive) {

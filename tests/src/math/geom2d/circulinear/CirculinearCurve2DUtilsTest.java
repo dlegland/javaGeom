@@ -270,6 +270,32 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(2, splittedCurves.size());
 	}
 
+	
+	
+	public void testGetParallel_LinearRing () {
+		// polyline with two edges, that are colinear
+		LinearRing2D curve = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 100), 
+				new Point2D(200, 100), 
+				new Point2D(200, 200) });
+		
+		ContinuousCirculinearCurve2D parallel = 
+			CirculinearCurve2DUtils.createContinuousParallel(curve, 20);
+		
+		assertFalse(parallel==null);
+		assertFalse(parallel.isEmpty());
+		assertEquals(6, parallel.getSmoothPieces().size());
+		assertTrue(parallel.isClosed());
+		
+		ContinuousCirculinearCurve2D parallel2 = 
+			CirculinearCurve2DUtils.createContinuousParallel(curve, -20);
+		
+		assertFalse(parallel2==null);
+		assertFalse(parallel2.isEmpty());
+		assertEquals(6, parallel2.getSmoothPieces().size());
+		assertTrue(parallel.isClosed());
+	}
+
 	public void testGetParallelColinearPolyline () {
 		// polyline with two edges, that are colinear
 		Polyline2D curve = new Polyline2D(new Point2D[]{
@@ -290,7 +316,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertFalse(parallel2==null);
 		assertFalse(parallel2.isEmpty());
 		assertEquals(2, parallel2.getSmoothPieces().size());
-		}
+	}
 
 	public void testGetBufferInfiniteCurve () {
 		// create an infinite curve, here a straight line
@@ -390,27 +416,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());
 	}
-	
-	/**
-	 * Test buffer for a polyline with first and last point equal.
-	 */
-	public void testGetBufferClosedPolylineDoubled () {
-		// polyline with 4 vertices, 
-		LinearRing2D curve = new LinearRing2D(new Point2D[]{
-				new Point2D(100, 100), 
-				new Point2D(200, 100), 
-				new Point2D(200, 200),
-				new Point2D(100, 200),
-				new Point2D(100, 100) });
-		//TODO: add stability for polyline with multiple vertices
-		CirculinearDomain2D buffer = 
-			CirculinearCurve2DUtils.computeBuffer(curve, 20);
 		
-		assertFalse(buffer==null);
-		assertFalse(buffer.isEmpty());
-		assertEquals(2, buffer.getBoundary().getBoundaryCurves().size());
-	}
-	
 	public void testGetBufferTwoLines() {
 		StraightLine2D line1 = new StraightLine2D(new Point2D(0, 0), new Vector2D(10, 0));
 		StraightLine2D line2 = new StraightLine2D(new Point2D(0, 0), new Vector2D(0, 10));

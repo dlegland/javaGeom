@@ -32,11 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.circulinear.CirculinearBoundary2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
@@ -66,10 +62,72 @@ CircularShape2D, CircleLine2D {
     /** the radius of the circle. */
     protected double r = 0;
 
+
+    // ===================================================================
+    // Constructors
+
+    /** Empty constructor: center 0,0 and radius 0. */
+    public Circle2D() {
+        this(0, 0, 0, true);
+    }
+
+    /** Create a new circle with specified point center and radius */
+    public Circle2D(Point2D center, double radius) {
+        this(center.getX(), center.getY(), radius, true);
+    }
+
+    /** Create a new circle with specified center, radius and orientation */
+    public Circle2D(Point2D center, double radius, boolean direct) {
+        this(center.getX(), center.getY(), radius, direct);
+    }
+
+    /** Create a new circle with specified center and radius */
+    public Circle2D(double xcenter, double ycenter, double radius) {
+        this(xcenter, ycenter, radius, true);
+    }
+
+    /** Create a new circle with specified center, radius and orientation. */
+    public Circle2D(double xcenter, double ycenter, double radius,
+            boolean direct) {
+        super(xcenter, ycenter, radius, radius, 0, direct);
+        this.r = radius;
+    }
+
+    
     // ===================================================================
     // Static methods
 
-    public final static Collection<Point2D> getIntersections(Circle2D circle1,
+    /**
+     * Creates a circle from a center and a radius.
+     */
+    public static Circle2D create(Point2D center, double radius) {
+    	return new Circle2D(center, radius);    	
+    }
+    
+    /**
+     * Creates a circle containing 3 points.
+     */
+    public static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
+    	if(Point2D.isColinear(p1, p2, p3))
+    		throw new ColinearPointsException(p1, p2, p3);
+    	
+    	// create two median lines
+        StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);
+        StraightLine2D line23 = StraightLine2D.createMedian(p2, p3);
+
+        // check medians are not parallel
+        assert !AbstractLine2D.isParallel(line12, line23) : 
+        	"If points are not colinear, medians should not be parallel";
+
+        // Compute intersection of the medians, and circle radius
+        Point2D center = AbstractLine2D.getIntersection(line12, line23);
+        double radius = Point2D.getDistance(center, p2);
+
+        // return the created circle
+        return new Circle2D(center, radius);
+    }
+
+    public static Collection<Point2D> getIntersections(Circle2D circle1,
             Circle2D circle2) {
         ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
 
@@ -106,7 +164,7 @@ CircularShape2D, CircleLine2D {
      * line. If there are 2 intersections points, the first one in the array is
      * the first one on the line.
      */
-    public final static Collection<Point2D> getIntersections(
+    public static Collection<Point2D> getIntersections(
     		CircularShape2D circle,
     		LinearShape2D line) {
     	// initialize array of points (maximum 2 intersections)
@@ -123,6 +181,7 @@ CircularShape2D, CircleLine2D {
 
     	// Compute distance between line and circle center
     	Point2D inter 	= perp.getIntersection(new StraightLine2D(line));
+    	assert(inter!=null);
     	double dist 	= inter.getDistance(center);
 
     	// if the distance is the radius of the circle, return the
@@ -152,55 +211,6 @@ CircularShape2D, CircleLine2D {
     	return intersections;
     }
     
-    /**
-     * Creates a circle containing 3 points.
-     */
-    public final static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
-    	// create two median lines
-        StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);
-        StraightLine2D line23 = StraightLine2D.createMedian(p2, p3);
-
-        // check medians are not parallel
-        if (AbstractLine2D.isParallel(line12, line23))
-            return null;
-
-        // Compute intersection of the medians, and circle radius
-        Point2D center = AbstractLine2D.getIntersection(line12, line23);
-        double radius = Point2D.getDistance(center, p2);
-
-        // return the created circle
-        return new Circle2D(center, radius);
-    }
-
-    // ===================================================================
-    // Constructors
-
-    /** Empty constructor: center 0,0 and radius 0. */
-    public Circle2D() {
-        this(0, 0, 0, true);
-    }
-
-    /** Create a new circle with specified point center and radius */
-    public Circle2D(Point2D center, double radius) {
-        this(center.getX(), center.getY(), radius, true);
-    }
-
-    /** Create a new circle with specified center, radius and orientation */
-    public Circle2D(Point2D center, double radius, boolean direct) {
-        this(center.getX(), center.getY(), radius, direct);
-    }
-
-    /** Create a new circle with specified center and radius */
-    public Circle2D(double xcenter, double ycenter, double radius) {
-        this(xcenter, ycenter, radius, true);
-    }
-
-    /** Create a new circle with specified center, radius and orientation. */
-    public Circle2D(double xcenter, double ycenter, double radius,
-            boolean direct) {
-        super(xcenter, ycenter, radius, radius, 0, direct);
-        this.r = radius;
-    }
 
     // ===================================================================
     // methods specific to class Circle2D
@@ -254,7 +264,7 @@ CircularShape2D, CircleLine2D {
 
     
     // ===================================================================
-    // methods of Conic2D
+    // methods implementing the Conic2D interface
 
     @Override
     public Type getConicType() {

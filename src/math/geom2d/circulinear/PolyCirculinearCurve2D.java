@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -56,6 +54,30 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
         super(curves, closed);
     }
 
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from a
+     * collection of curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCirculinearCurve2D> 
+    PolyCirculinearCurve2D<T> create(Collection<T> curves) {
+    	return new PolyCirculinearCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from an array
+     * of curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCirculinearCurve2D> 
+    PolyCirculinearCurve2D<T> create(T[] curves) {
+    	return new PolyCirculinearCurve2D<T>(curves);
+    }
+
+    
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
@@ -141,10 +163,7 @@ extends PolyOrientedCurve2D<T> implements ContinuousCirculinearCurve2D {
     @Override
     public Collection<? extends PolyCirculinearCurve2D<?>> 
     getContinuousCurves() {
-        ArrayList<PolyCirculinearCurve2D<T>> list = 
-        	new ArrayList<PolyCirculinearCurve2D<T>>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     @Override

@@ -125,7 +125,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
 
     // ===================================================================
-    // methods specific to InvertedRay2D
+    // Static factory
 
     /**
      * Static factory for creating a new inverted ray with given direction
@@ -136,8 +136,12 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     	return new InvertedRay2D(target, direction);
     }
     
+    
+    // ===================================================================
+    // methods specific to InvertedRay2D
+
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(double x0, double y0, double dx, double dy) {
@@ -148,7 +152,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(Point2D p1, Point2D p2) {
@@ -159,7 +163,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(Point2D point, Vector2D vect) {
@@ -185,12 +189,12 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     /** Throws an infiniteShapeException */
     public GeneralPath appendPath(GeneralPath path) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     // ===================================================================

@@ -26,6 +26,7 @@
  */
 
 package math.geom2d.polygon;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -33,6 +34,8 @@ import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
@@ -126,6 +129,26 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(boundary.getContinuousCurves().size(), 3);
 	}
 	
+	/**
+	 * Test buffer for a polyline with first and last point equal.
+	 */
+	public void testGetBuffer_LastPointDoubled () {
+		// polyline with 4 vertices, 
+		LinearRing2D curve = new LinearRing2D(new Point2D[]{
+				new Point2D(100, 100), 
+				new Point2D(200, 100), 
+				new Point2D(200, 200),
+				new Point2D(100, 200),
+				new Point2D(100, 100) });
+		//TODO: add stability for polyline with multiple vertices
+		CirculinearDomain2D buffer = 
+			CirculinearCurve2DUtils.computeBuffer(curve, 20);
+		
+		assertFalse(buffer==null);
+		assertFalse(buffer.isEmpty());
+		assertEquals(2, buffer.getBoundary().getBoundaryCurves().size());
+	}
+
 	public void testGetLength() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
@@ -398,6 +421,26 @@ public class LinearRing2DTest extends TestCase {
 		assertFalse(poly.isInside(5, 35));		
 	}
 
+	public void testCreate_Collection() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+		array.add(new Point2D(10, 10));
+		array.add(new Point2D(20, 10));
+		array.add(new Point2D(20, 20));
+		array.add(new Point2D(10, 20));
+		LinearRing2D ring = LinearRing2D.create(array);
+		assertNotNull(ring);
+	}
+	
+	public void testCreate_Array() {
+		Point2D[] array = new Point2D[4];
+		array[0] = new Point2D(10, 10);
+		array[1] = new Point2D(20, 10);
+		array[2] = new Point2D(20, 20);
+		array[3] = new Point2D(10, 20);
+		LinearRing2D ring = LinearRing2D.create(array);
+		assertNotNull(ring);
+	}
+	
     public void testClone() {
         LinearRing2D ring = new LinearRing2D(new Point2D[]{
                 new Point2D(150, 50),

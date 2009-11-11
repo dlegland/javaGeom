@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.BoundarySet2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -31,10 +29,6 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
     // ===================================================================
     // static constructors
 
-	public static <T extends CirculinearContour2D> CirculinearBoundarySet2D<CirculinearContour2D>
-	create(Collection<T> curves) {
-		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
-	}
 	
 
     // ===================================================================
@@ -88,6 +82,32 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
         this.curves.addAll(curves);
     }
 
+    
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new CirculinearBoundarySet2D from a
+     * collection of curves.
+     * @since 0.8.1
+     */
+	public static <T extends CirculinearContour2D> 
+	CirculinearBoundarySet2D<CirculinearContour2D>
+	create(Collection<T> curves) {
+		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
+	}
+
+    /**
+     * Static factory for creating a new CirculinearBoundarySet2D from an 
+     * array of curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearContour2D> 
+    CirculinearBoundarySet2D<T> create(T[] curves) {
+    	return new CirculinearBoundarySet2D<T>(curves);
+    }
+
+    
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 

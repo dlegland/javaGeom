@@ -77,6 +77,29 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
         super(points);
     }
 
+    
+    // ===================================================================
+    // Static methods
+    
+    /**
+     * Static factory for creating a new LinearRing2D from a collection of
+     * points.
+     * @since 0.8.1
+     */
+    public static LinearRing2D create(Collection<? extends Point2D> points) {
+    	return new LinearRing2D(points);
+    }
+    
+    /**
+     * Static factory for creating a new LinearRing2D from an array of
+     * points.
+     * @since 0.8.1
+     */
+    public static LinearRing2D create(Point2D[] points) {
+    	return new LinearRing2D(points);
+    }
+    
+
     // ===================================================================
     // Methods specific to ClosedPolyline2D
 
@@ -240,25 +263,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
         if (this.contains(point))
             return true;
         return false;
-
-        // Point2D p1 = this.getPoint(points.size()-1);
-        // Point2D p2;
-        // double alpha;
-        // double angle = 0;
-        //		
-        // for (int i=0; i<this.points.size(); i++) {
-        // p2 = (Point2D) this.points.get(i);
-        // alpha = Angle2D.getAngle(p1, point, p2);
-        // if(alpha>Math.PI) alpha -=Math.PI*2;
-        // angle += alpha;
-        // // p1.h = polygon[i].h - p.h;
-        // // p1.v = polygon[i].v - p.v;
-        // // p2.h = polygon[(i+1)%n].h - p.h;
-        // // p2.v = polygon[(i+1)%n].v - p.v;
-        // // angle += Angle2D(p1.h,p1.v,p2.h,p2.v);
-        // p1 = p2;
-        // }
-        // return angle > 0;
     }
 
     // ===================================================================

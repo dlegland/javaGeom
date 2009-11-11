@@ -54,6 +54,9 @@ import math.geom2d.line.StraightLine2D;
 public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         PolyCurve2D<T> implements ContinuousOrientedCurve2D {
 
+    // ===================================================================
+    // Constructors
+
     public PolyOrientedCurve2D() {
         super();
     }
@@ -77,6 +80,34 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     public PolyOrientedCurve2D(Collection<? extends T> curves, boolean closed) {
         super(curves, closed);
     }
+
+    
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new PolyOrientedCurve2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
+    create(Collection<T> curves) {
+    	return new PolyOrientedCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyOrientedCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> 
+    PolyOrientedCurve2D<T> create(T[] curves) {
+    	return new PolyOrientedCurve2D<T>(curves);
+    }
+
+    
+    // ===================================================================
+    // Methods specific to PolyOrientedCurve2D
 
     public double getWindingAngle(java.awt.geom.Point2D point) {
         double angle = 0;
