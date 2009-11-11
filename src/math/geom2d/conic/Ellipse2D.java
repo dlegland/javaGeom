@@ -26,6 +26,7 @@
 package math.geom2d.conic;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,7 +42,6 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothBoundary2D;
@@ -246,8 +246,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         if (coefs2.length>5)
             f = Math.abs(coefs[5]);
 
-        assert Math.abs(coefs2[0]/f)<Shape2D.ACCURACY : "Second conic coefficient should be zero";
-
+        assert Math.abs(coefs2[1]/f)<Shape2D.ACCURACY : 
+        	"Second conic coefficient should be zero";
+        
         // extract major and minor axis lengths, ensuring r1 is greater
         double r1, r2;
         if (coefs2[0]<coefs2[2]) {
@@ -260,11 +261,12 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
             theta = Math.min(theta, Angle2D.formatAngle(theta+Math.PI));
         }
 
-        // Return either an ellipse or a circle
+        // If both semi-axes are equal, return a circle
         if (Math.abs(r1-r2)<Shape2D.ACCURACY)
             return new Circle2D(0, 0, r1);
-        else
-            return new Ellipse2D(0, 0, r1, r2, theta);
+        
+        // return the reduced ellipse
+        return new Ellipse2D(0, 0, r1, r2, theta);
     }
 
     /**
@@ -290,7 +292,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         double cotSq = cot*cot;
         double sitSq = sit*sit;
 
-        // compute coefficients of the centered conis
+        // compute coefficients of the centered conic
         double A = cotSq/r1Sq+sitSq/r2Sq;
         double B = 2*cot*sit*(1/r1Sq-1/r2Sq);
         double C = cotSq/r2Sq+sitSq/r1Sq;
@@ -603,7 +605,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      */
     public double[] getConicCoefficients() {
 
-        /* common coefficients */
+        // common coefficients
         double r1Sq = this.r1*this.r1;
         double r2Sq = this.r2*this.r2;
 
@@ -630,9 +632,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         double c = costSq/r2Sq+sintSq/r1Sq;
         double d = -yc*b-2*xc*a;
         double e = -xc*b-2*yc*c;
-        double f = -1.0+(xcSq+ycSq)*(r1SqInv+r2SqInv)/2.0+(costSq-sintSq)
-                *(xcSq-ycSq)*(r1SqInv-r2SqInv)/2.0+xc*yc*(r1SqInv-r2SqInv)
-                *sin2t;
+        double f = -1.0
+        	+(xcSq+ycSq)*(r1SqInv+r2SqInv)/2.0
+        	+(costSq-sintSq)*(xcSq-ycSq)*(r1SqInv-r2SqInv)/2.0
+        	+xc*yc*(r1SqInv-r2SqInv)*sin2t;
 
         // Return array of results
         return new double[] { a, b, c, d, e, f };
@@ -728,11 +731,8 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     // ===================================================================
     // methods of Boundary2D interface
 
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
-                1);
-        list.add(this);
-        return list;
+    public Collection<? extends Ellipse2D> getBoundaryCurves() {
+    	return wrapCurve(this);
     }
 
     public Domain2D getDomain() {
@@ -740,15 +740,21 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     public void fill(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(
-                xc-r1, yc-r2, 2*r1, 2*r2);
+    	// convert ellipse to awt shape
+        java.awt.geom.Ellipse2D.Double ellipse = 
+        	new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+        
+        // need to rotate by angle theta
         java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform
                 .getRotateInstance(theta, xc, yc);
-        g2.fill(trans.createTransformedShape(ellipse));
+        Shape shape = trans.createTransformedShape(ellipse);
+        
+        // draw the awt ellipse
+        g2.fill(shape);
     }
 
     // ===================================================================
-    // methods of OrientedCurve2D interface
+    // methods implementing OrientedCurve2D interface
 
     /**
      * Return either 0, 2*PI or -2*PI, depending whether the point is located

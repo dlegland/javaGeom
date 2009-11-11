@@ -35,7 +35,7 @@ import junit.framework.TestSuite;
 public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d.conic");
+		TestSuite suite = new TestSuite("Test for math.geom2d.conic...");
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(Circle2DTest.class));
 		suite.addTest(new TestSuite(CircleArc2DTest.class));
