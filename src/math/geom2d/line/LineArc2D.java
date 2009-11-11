@@ -107,6 +107,19 @@ implements SmoothOrientedCurve2D, Cloneable {
         this.t1 = t1;
     }
 
+    
+    // ===================================================================
+    // Static methods
+    
+    /**
+     * Static factory for creating a new LineArc2D
+     * @since 0.8.1
+     */
+    public LineArc2D create(Point2D p1, Point2D p2, double t0, double t1) {
+    	return new LineArc2D(p1, p2, t0, t1);
+    }
+
+    
     // ===================================================================
     // methods specific to LineArc2D
 
@@ -131,7 +144,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t0!=Double.NEGATIVE_INFINITY)
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
     }
 
     /**
@@ -144,7 +157,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t1!=Double.POSITIVE_INFINITY)
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
     }
 
     public double getX1() {
@@ -213,7 +226,7 @@ implements SmoothOrientedCurve2D, Cloneable {
             t = t1;
 
         if (Double.isInfinite(t))
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
         else
             return new Point2D(x0+dx*t, y0+dy*t);
     }
@@ -229,7 +242,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!Double.isInfinite(t0))
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
     }
 
     /**
@@ -243,7 +256,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!Double.isInfinite(t1))
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
     }
 
 	@Override
@@ -330,7 +343,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         path.moveTo((float) (x0+t0*dx), (float) (y0+t0*dy));
         path.lineTo((float) (x0+t1*dx), (float) (y0+t1*dy));
@@ -346,7 +359,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
         if (t0==Double.NEGATIVE_INFINITY)
             return path;
         if (t1==Double.POSITIVE_INFINITY)

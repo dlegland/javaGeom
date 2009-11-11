@@ -238,6 +238,7 @@ public class CirculinearCurve2DUtils {
 		if(curve.isClosed()) {
 			current = elements.iterator().next();
 			addCircularJunction(parallel, previous, current, dist);
+			parallel.setClosed(true);
 		}
 
 		return parallel;
@@ -1146,7 +1147,7 @@ public class CirculinearCurve2DUtils {
 			Point2D p1, Point2D p2, boolean direct){
 		double angle1 = Angle2D.getHorizontalAngle(center, p1);
 		double angle2 = Angle2D.getHorizontalAngle(center, p2);
-		return  new CircleArc2D(center, r, angle1, angle2, true);
+		return  new CircleArc2D(center, r, angle1, angle2, direct);
 	}
 	
 	public final static double getDistanceCurvePoints(

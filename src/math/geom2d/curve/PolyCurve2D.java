@@ -79,6 +79,37 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         this.closed = closed;
     }
 
+    
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new PolyCurve2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		Collection<T> curves) {
+    	return new PolyCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		T[] curves) {
+    	return new PolyCurve2D<T>(curves);
+    }
+
+	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
+		ArrayList<T> list = new ArrayList<T> (1);
+		list.add(curve);
+		return list;
+	}
+	
+   
     // ===================================================================
     // Methods specific to PolyCurve2D
 
@@ -171,9 +202,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     @Override
     public Collection<? extends PolyCurve2D<?>> getContinuousCurves() {
-        ArrayList<PolyCurve2D<T>> list = new ArrayList<PolyCurve2D<T>>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
    @Override

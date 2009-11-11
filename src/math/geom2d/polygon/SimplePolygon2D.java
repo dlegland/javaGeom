@@ -99,6 +99,29 @@ public class SimplePolygon2D implements Polygon2D {
         this.points.addAll(points);
     }
 
+    
+    // ===================================================================
+    // Static methods
+    
+    /**
+     * Static factory for creating a new SimplePolygon2D from a collection of
+     * points.
+     * @since 0.8.1
+     */
+    public static SimplePolygon2D create(Collection<? extends Point2D> points) {
+    	return new SimplePolygon2D(points);
+    }
+    
+    /**
+     * Static factory for creating a new SimplePolygon2D from an array of
+     * points.
+     * @since 0.8.1
+     */
+    public static SimplePolygon2D create(Point2D[] points) {
+    	return new SimplePolygon2D(points);
+    }
+    
+
     // ===================================================================
     // methods specific to SimplePolygon2D
 
@@ -198,35 +221,6 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public int getWindingNumber(double x, double y) {
         return Polygon2DUtils.windingNumber(points, new Point2D(x, y));
-        // int wn = 0; // the winding number counter
-        //
-        // Point2D point = new Point2D(x, y);
-        // Point2D previous = points.get(points.size()-1);
-        // double x1 = previous.getX();
-        // double y1 = previous.getY();
-        // double x2, y2;
-        //	   
-        // for(Point2D p : points){
-        // // second vertex of current edge
-        // x2 = p.getX();
-        // y2 = p.getY();
-        //		   
-        // if(y1<=y){
-        // if(y2>y) // an upward crossing
-        // if (new LineSegment2D(x1, y1, x2, y2).isInside(point))
-        // wn++;
-        // }else{
-        // if(y2<=y) // a downward crossing
-        // if (!(new LineSegment2D(x1, y1, x2, y2).isInside(point)))
-        // wn--;
-        // }
-        //
-        // // for next iteration
-        // x1 = x2;
-        // y1 = y2;
-        // }
-        //
-        // return wn;
     }
     
     /**

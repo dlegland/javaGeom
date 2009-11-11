@@ -258,6 +258,26 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(!polyline.isInside(new Point2D(0, 50)));
 	}
 	
+	public void testCreate_Collection() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+		array.add(new Point2D(10, 10));
+		array.add(new Point2D(20, 10));
+		array.add(new Point2D(20, 20));
+		array.add(new Point2D(10, 20));
+		Polyline2D ring = Polyline2D.create(array);
+		assertNotNull(ring);
+	}
+	
+	public void testCreate_Array() {
+		Point2D[] array = new Point2D[4];
+		array[0] = new Point2D(10, 10);
+		array[1] = new Point2D(20, 10);
+		array[2] = new Point2D(20, 20);
+		array[3] = new Point2D(10, 20);
+		Polyline2D ring = Polyline2D.create(array);
+		assertNotNull(ring);
+	}
+	
 	public void testClone() {
         Polyline2D polyline = new Polyline2D(new Point2D[]{
                 new Point2D(150, 50),

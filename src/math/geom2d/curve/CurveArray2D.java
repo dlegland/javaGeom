@@ -99,19 +99,34 @@ implements Iterable<T>, Cloneable {
         this.curves.addAll(curves);
     }
 
+    
     // ===================================================================
-    // methods specific to CurveArray2D
+    // static methods
 
+    /**
+     * Static factory for creating a new CurveArray2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
     public static <T extends Curve2D> CurveArray2D<T> create(
     		Collection<T> curves) {
     	return new CurveArray2D<T>(curves);
     }
     
+    /**
+     * Static factory for creating a new CurveArray2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
     public static <T extends Curve2D> CurveArray2D<T> create(
     		T[] curves) {
     	return new CurveArray2D<T>(curves);
     }
     
+    
+    // ===================================================================
+    // methods specific to CurveArray2D
+
     /**
      * Converts the position on the curve set, which is comprised between 0 and
      * 2*Nc-1 with Nc being the number of curves, to the position on the curve

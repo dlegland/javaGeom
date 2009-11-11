@@ -129,6 +129,39 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods specific to EllipseArc2D
 
+    /**
+     * Specify supporting ellipse, start angle and end angle, and a flag
+     * indicating whether the arc is directed or not.
+     * 
+     * @param ell the supporting ellipse
+     * @param start the starting angle
+     * @param end the ending angle
+     * @param direct flag indicating if the arc is direct
+     */
+    public static EllipseArc2D create(Ellipse2D ell, double start, 
+    		double extent) {
+        return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
+        		start, extent);
+    }
+
+    /**
+     * Specify supporting ellipse, start angle and end angle, and a flag
+     * indicating whether the arc is directed or not.
+     * 
+     * @param ell the supporting ellipse
+     * @param start the starting angle
+     * @param end the ending angle
+     * @param direct flag indicating if the arc is direct
+     */
+    public static EllipseArc2D create(Ellipse2D ell, double start, double end,
+    		boolean direct) {
+    	return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
+    			start, end, direct);
+    }
+
+    // ====================================================================
+    // methods specific to EllipseArc2D
+
     public Ellipse2D getSupportingEllipse() {
     	return ellipse;
     }

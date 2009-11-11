@@ -26,6 +26,8 @@
  */
 package math.geom2d.polygon;
 
+import java.util.ArrayList;
+
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
@@ -169,18 +171,6 @@ public class SimplePolygon2DTest extends TestCase {
 		Box2D bounds = poly.getBoundingBox();
 		assertTrue(box.equals(bounds));
 	}
-	
-    public void testClone() {
-        SimplePolygon2D polygon = new SimplePolygon2D(new Point2D[]{
-                new Point2D(150, 50),
-                new Point2D(150, 150),
-                new Point2D(100, 100),
-                new Point2D(50, 150),
-                new Point2D(50, 50)
-        });
-        
-        assertTrue(polygon.equals(polygon.clone()));
-    }
     
     public void testGetBuffer() {
     	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
@@ -193,5 +183,37 @@ public class SimplePolygon2DTest extends TestCase {
     	CirculinearDomain2D buffer = polygon.getBuffer(10);
     	Boundary2D boundary = buffer.getBoundary();
     	assertEquals(1, boundary.getBoundaryCurves().size());
+    }
+	
+	public void testCreate_Collection() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+		array.add(new Point2D(10, 10));
+		array.add(new Point2D(20, 10));
+		array.add(new Point2D(20, 20));
+		array.add(new Point2D(10, 20));
+		SimplePolygon2D ring = SimplePolygon2D.create(array);
+		assertNotNull(ring);
+	}
+	
+	public void testCreate_Array() {
+		Point2D[] array = new Point2D[4];
+		array[0] = new Point2D(10, 10);
+		array[1] = new Point2D(20, 10);
+		array[2] = new Point2D(20, 20);
+		array[3] = new Point2D(10, 20);
+		SimplePolygon2D ring = SimplePolygon2D.create(array);
+		assertNotNull(ring);
+	}
+	
+    public void testClone() {
+        SimplePolygon2D polygon = new SimplePolygon2D(new Point2D[]{
+                new Point2D(150, 50),
+                new Point2D(150, 150),
+                new Point2D(100, 100),
+                new Point2D(50, 150),
+                new Point2D(50, 50)
+        });
+        
+        assertTrue(polygon.equals(polygon.clone()));
     }
 }

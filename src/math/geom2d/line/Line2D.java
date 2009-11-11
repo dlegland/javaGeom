@@ -132,15 +132,21 @@ implements LinearShape2D, CirculinearElement2D, Cloneable {
     }
 
     // ===================================================================
-    // Methods specific to Line2D
+    // Static factory
 
     /**
+     * Static factory for creating a new Line2D, starting from p1
+     * and finishing at p2.
      * @since 0.8.1
      */
     public static Line2D create(Point2D p1, Point2D p2) {
     	return new Line2D(p1, p2);
     }
     
+    
+    // ===================================================================
+    // Methods specific to Line2D
+
     /**
      * Return the first point of the edge. It corresponds to getPoint(0).
      * 

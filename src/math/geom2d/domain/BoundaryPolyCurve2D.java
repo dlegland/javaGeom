@@ -27,7 +27,6 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -58,20 +57,35 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(curves);
     }
 
-    // public BoundaryPolyCurve2D(T[] curves, boolean closed) {
-    // super(curves);
-    // this.closed = closed;
-    // }
-
     public BoundaryPolyCurve2D(Collection<? extends T> curves) {
         super(curves);
     }
 
-    // public BoundaryPolyCurve2D(Collection<? extends T> curves, boolean closed) {
-    // super(curves);
-    // this.closed = closed;
-    // }
+    
+    // ===================================================================
+    // Static methods
 
+    /**
+     * Static factory for creating a new BoundaryPolyCurve2D from a collection
+     * of curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
+    		Collection<T> curves) {
+    	return new BoundaryPolyCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new BoundaryPolyCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
+    		T[] curves) {
+    	return new BoundaryPolyCurve2D<T>(curves);
+    }
+
+    
     // ===================================================================
     // Methods overriding CurveSet2D methods
 
@@ -92,14 +106,11 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods implementing Boundary2D interface
 
     /**
-     * return a ArrayList<ContinuousBoundary2D> containing only
+     * Returns a ArrayList<ContinuousBoundary2D> containing only
      * <code>this</code>.
      */
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
-                1);
-        list.add(this);
-        return list;
+    public Collection<? extends ContinuousBoundary2D> getBoundaryCurves() {
+    	return wrapCurve(this);
     }
 
     public Domain2D getDomain() {

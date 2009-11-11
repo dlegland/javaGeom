@@ -111,6 +111,18 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     // ===================================================================
+    // static methods
+   
+    /**
+     * Static factory for creating a new Quadratic Bezier curve from 3 points.
+     * @since 0.8.1
+     */
+    public static QuadBezierCurve2D create(Point2D p1, Point2D p2, Point2D p3) {
+    	return new QuadBezierCurve2D(p1, p2, p3);
+    }
+    
+
+    // ===================================================================
     // methods specific to QuadBezierCurve2D
 
     public Point2D getControl() {

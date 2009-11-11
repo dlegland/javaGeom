@@ -35,17 +35,6 @@ public class BoundaryPolyCirculinearCurve2D<T extends ContinuousCirculinearCurve
 extends PolyCirculinearCurve2D<T> 
 implements ContinuousCirculinearCurve2D, CirculinearContour2D {
 
-	
-    // ===================================================================
-    // static constructor
-	
-	public final static BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>
-	create(Collection<? extends ContinuousCirculinearCurve2D> curves) {
-		return new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
-				curves);
-	}
-
-	
     // ===================================================================
     // constructors
 
@@ -73,6 +62,32 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
         super(curves, closed);
     }
 
+    
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a
+     * collection of curves.
+     * @since 0.8.1
+     */
+	public static <T extends CirculinearContour2D> 
+	BoundaryPolyCirculinearCurve2D<CirculinearContour2D>
+	create(Collection<T> curves) {
+		return new BoundaryPolyCirculinearCurve2D<CirculinearContour2D>(curves);
+	}
+
+    /**
+     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from an
+     * array of curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearContour2D> 
+    BoundaryPolyCirculinearCurve2D<T> create(T[] curves) {
+    	return new BoundaryPolyCirculinearCurve2D<T>(curves);
+    }
+
+    
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
@@ -186,10 +201,7 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
     @Override
     public Collection<? extends BoundaryPolyCirculinearCurve2D<?>> 
     getContinuousCurves() {
-        ArrayList<BoundaryPolyCirculinearCurve2D<T>> list = 
-        	new ArrayList<BoundaryPolyCirculinearCurve2D<T>>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
 	@Override

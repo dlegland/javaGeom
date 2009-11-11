@@ -458,13 +458,14 @@ implements ContinuousBoundary2D, Conic2D, Cloneable {
     // Drawing methods (curve interface)
 
     /** Throws an infiniteShapeException */
-    public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        throw new UnboundedShapeException();
+    public java.awt.geom.GeneralPath appendPath(
+    		java.awt.geom.GeneralPath path) {
+        throw new UnboundedShapeException(this);
     }
 
     /** Throws an infiniteShapeException */
     public void fill(Graphics2D g2) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     // ===============================================

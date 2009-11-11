@@ -130,12 +130,22 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * Static factory for creating a new ray.
      * @since 0.8.1
      */
-    public final static Ray2D create(Point2D target, Vector2D direction) {
-    	return new Ray2D(target, direction);
+    public final static Ray2D create(Point2D origin, Vector2D direction) {
+    	return new Ray2D(origin, direction);
     }
     
     /**
-     * @deprecated lines will become imutable in a future release
+     * Static factory for creating a new ray, originating from
+     * <code>origin<\code>, and going in the
+     * direction of <code>target<\code>.
+     * @since 0.8.1
+     */
+    public final static Ray2D create(Point2D origin, Point2D target) {
+    	return new Ray2D(origin, target);
+    }
+    
+    /**
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(double x0, double y0, double dx, double dy) {
@@ -146,7 +156,7 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(Point2D p1, Point2D p2) {
@@ -157,7 +167,7 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setRay(Point2D point, Vector2D vect) {
@@ -184,12 +194,12 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
 
     /** Throws an infiniteShapeException */
     public GeneralPath appendPath(GeneralPath path) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     // ===================================================================

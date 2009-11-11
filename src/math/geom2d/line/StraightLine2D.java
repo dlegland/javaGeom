@@ -112,7 +112,7 @@ public class StraightLine2D extends AbstractLine2D implements
             java.awt.geom.Point2D p2) {
         Point2D mid = Point2D.midPoint(p1, p2);
         StraightLine2D line = StraightLine2D.create(p1, p2);
-        return StraightLine2D.createOrthogonalLine2D(line, mid);
+        return StraightLine2D.createPerpendicular(line, mid);
     }
 
     /**
@@ -128,7 +128,7 @@ public class StraightLine2D extends AbstractLine2D implements
             java.awt.geom.Point2D p2) {
         Point2D mid = Point2D.midPoint(p1, p2);
         StraightLine2D line = StraightLine2D.create(p1, p2);
-        return StraightLine2D.createOrthogonalLine2D(line, mid);
+        return StraightLine2D.createPerpendicular(line, mid);
     }
 
     /**
@@ -502,7 +502,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
 	@Override
     public Polyline2D getAsPolyline(int n) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     
@@ -512,13 +512,13 @@ public class StraightLine2D extends AbstractLine2D implements
     /** Throws an infiniteShapeException */
 	@Override
     public Point2D getFirstPoint() {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
 	/** Throws an infiniteShapeException */
 	@Override
 	public Point2D getLastPoint() {
-		throw new UnboundedShapeException();
+		throw new UnboundedShapeException(this);
 	}
 
     /** Returns an empty list of points. */
@@ -576,7 +576,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     public GeneralPath appendPath(GeneralPath path) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     // ===================================================================
@@ -647,7 +647,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
    

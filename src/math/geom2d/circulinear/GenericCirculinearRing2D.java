@@ -9,7 +9,6 @@
 package math.geom2d.circulinear;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -23,8 +22,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public class GenericCirculinearRing2D 
-extends CirculinearRing2D {
+public class GenericCirculinearRing2D extends CirculinearRing2D {
 
     // ===================================================================
     // constructors
@@ -57,6 +55,33 @@ extends CirculinearRing2D {
         super(curves, closed);
     }
 
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new GenericCirculinearRing2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static GenericCirculinearRing2D create(
+    		Collection<CirculinearElement2D> curves) {
+    	return new GenericCirculinearRing2D(curves);
+    }
+    
+    /**
+     * Static factory for creating a new GenericCirculinearRing2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static GenericCirculinearRing2D create(
+    		CirculinearElement2D[] curves) {
+    	return new GenericCirculinearRing2D(curves);
+    }
+
+    
+    // ===================================================================
+    // methods specific to GenericCirculinearRing2D
+
 	@Override
 	public GenericCirculinearRing2D transform(CircleInversion2D inv) {
     	// Allocate array for result
@@ -81,11 +106,8 @@ extends CirculinearRing2D {
 	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
 	 */
 	@Override
-	public Collection<CirculinearContour2D> getBoundaryCurves() {
-        ArrayList<CirculinearContour2D> list = 
-            new ArrayList<CirculinearContour2D>(1);
-        list.add(this);
-        return list;
+	public Collection<? extends CirculinearContour2D> getBoundaryCurves() {
+        return wrapCurve(this);
 	}
 
 	/* (non-Javadoc)

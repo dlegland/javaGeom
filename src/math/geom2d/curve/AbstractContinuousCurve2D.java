@@ -26,7 +26,7 @@ import math.geom2d.polygon.Polyline2D;
 public abstract class AbstractContinuousCurve2D 
 implements ContinuousCurve2D, Cloneable {
 
-	protected final static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
+	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
 		ArrayList<T> list = new ArrayList<T> (1);
 		list.add(curve);
 		return list;
@@ -38,7 +38,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Polyline2D getAsPolyline(int n) {
 		// Check that the curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
 
         // compute start and increment values
         double t0 = this.getT0();
@@ -76,7 +76,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Point2D getFirstPoint() {
 		double t0 = this.getT0();
 		if(Double.isInfinite(t0))
-			throw new UnboundedShapeException();
+			throw new UnboundedShapeException(this);
 		return this.getPoint(t0);
 	}
 
@@ -87,7 +87,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Point2D getLastPoint() {
 		double t1 = this.getT1();
 		if(Double.isInfinite(t1))
-			throw new UnboundedShapeException();
+			throw new UnboundedShapeException(this);
 		return this.getPoint(t1);
 	}
 
@@ -104,7 +104,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Shape getAsAWTShape() {
 		// Check that the curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
 
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         

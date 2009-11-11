@@ -331,7 +331,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
     	// Check curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
 
         // Compute position and tangent at extremities
         Point2D p1 = this.getFirstPoint();
@@ -353,7 +353,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShapeException(this);
         return this.getAsPolyline(32).getGeneralPath();
     }
 

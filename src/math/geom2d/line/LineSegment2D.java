@@ -49,9 +49,24 @@ implements Cloneable, CirculinearElement2D {
     // class variables
 
     // ===================================================================
+    // constructors
+
+    /** Define a new Edge with two extremities. */
+    public LineSegment2D(java.awt.geom.Point2D point1,
+            java.awt.geom.Point2D point2) {
+        this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
+    }
+
+    /** Define a new Edge with two extremities. */
+    public LineSegment2D(double x1, double y1, double x2, double y2) {
+        super(x1, y1, x2-x1, y2-y1);
+    }
+
+    // ===================================================================
     // static methods
 
     /**
+     * Static factory for creating a new line segment between two points.
      * @since 0.8.1
      */
     public final static LineSegment2D create(Point2D p1, Point2D p2) {
@@ -133,20 +148,7 @@ implements Cloneable, CirculinearElement2D {
         return b1&&b2;
     }
 
-    // ===================================================================
-    // constructors
-
-    /** Define a new Edge with two extremities. */
-    public LineSegment2D(java.awt.geom.Point2D point1,
-            java.awt.geom.Point2D point2) {
-        this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
-    }
-
-    /** Define a new Edge with two extremities. */
-    public LineSegment2D(double x1, double y1, double x2, double y2) {
-        super(x1, y1, x2-x1, y2-y1);
-    }
-
+    
     // ===================================================================
     // Methods specific to LineSegment2D
 
@@ -175,7 +177,7 @@ implements Cloneable, CirculinearElement2D {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setLineSegment(Point2D p1, Point2D p2) {
@@ -186,7 +188,7 @@ implements Cloneable, CirculinearElement2D {
     }
 
     /**
-     * @deprecated lines will become imutable in a future release
+     * @deprecated lines will become immutable in a future release
      */
     @Deprecated
     public void setLineSegment(double x1, double y1, double x2, double y2) {

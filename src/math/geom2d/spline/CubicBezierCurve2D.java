@@ -43,7 +43,7 @@ import math.geom2d.line.LinearShape2D;
 /**
  * A cubic bezier curve, defined by 4 points.
  * 
- * From javaGeom 0.8.0, this shape does not extends.
+ * From javaGeom 0.8.0, this shape does not extends
  * java.awt.geom.CubicCurve2D.Double anymore
  * 
  * @author Legland

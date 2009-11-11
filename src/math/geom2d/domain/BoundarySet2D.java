@@ -32,10 +32,7 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
 
 /**
  * A BoundarySet2D is a set of continuous oriented curves. Each curve of the set
@@ -70,12 +67,36 @@ extends CurveArray2D<T> implements Boundary2D {
         this.addCurve(curve);
     }
 
+    
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new PolyCurve2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousBoundary2D> BoundarySet2D<T> create(
+    		Collection<T> curves) {
+    	return new BoundarySet2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousBoundary2D> BoundarySet2D<T> create(
+    		T[] curves) {
+    	return new BoundarySet2D<T>(curves);
+    }
+
     // ===================================================================
     // Methods implementing Boundary2D interface
 
     public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
-                1);
+        ArrayList<ContinuousBoundary2D> list = 
+        	new ArrayList<ContinuousBoundary2D>(curves.size());
         for (Curve2D curve : this.curves)
             list.add((ContinuousBoundary2D) curve);
         return list;

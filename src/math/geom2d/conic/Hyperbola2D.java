@@ -528,7 +528,7 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     /** Throws an UnboundedShapeException */
     @Override
     public void draw(Graphics2D g) {
-        throw new UnboundedShapeException();
+        throw new UnboundedShapeException(this);
     }
 
     /**
