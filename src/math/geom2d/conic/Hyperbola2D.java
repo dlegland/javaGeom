@@ -45,8 +45,8 @@ import math.geom2d.line.StraightLine2D;
  * An Hyperbola, which is represented as a curve set of two boundary curves
  * which are instances of HyperbolaBranch2D.
  */
-public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
-        Conic2D, Cloneable {
+public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> 
+implements Conic2D, Cloneable {
 
     // ===================================================================
     // constants
@@ -55,26 +55,84 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     // class variables
 
     /** Center of the hyperbola */
-    double            xc      = 0;
-    double            yc      = 0;
+    protected double            xc      = 0;
+    protected double            yc      = 0;
 
     /** first focal parameter */
-    double            a       = 1;
+    protected double            a       = 1;
 
     /** second focal parameter */
-    double            b       = 1;
+    protected double            b       = 1;
 
     /** angle of rotation of the hyperbola */
-    double            theta   = 0;
+    protected double            theta   = 0;
 
     /** a flag indicating whether the hyperbola is direct or not */
-    boolean           direct  = true;
+    protected boolean           direct  = true;
 
     /** The negative branch of the hyperbola */
-    HyperbolaBranch2D branch1 = null;
+    protected HyperbolaBranch2D branch1 = null;
     
     /** The positive branch of the hyperbola */
-    HyperbolaBranch2D branch2 = null;
+    protected HyperbolaBranch2D branch2 = null;
+
+    // ===================================================================
+    // constructors
+
+    /**
+     * Assume centered hyperbola, with a = b = 1 (orthogonal hyperbola), theta=0
+     * (hyperbola is oriented East-West), and direct orientation.
+     */
+    public Hyperbola2D() {
+        this(0, 0, 1, 1, 0, true);
+    }
+
+    public Hyperbola2D(Point2D center, double a, double b, double theta) {
+        this(center.getX(), center.getY(), a, b, theta, true);
+    }
+
+    public Hyperbola2D(Point2D center, double a, double b, double theta,
+            boolean d) {
+        this(center.getX(), center.getY(), a, b, theta, d);
+    }
+
+    public Hyperbola2D(double xc, double yc, double a, double b, double theta) {
+        this(xc, yc, a, b, theta, true);
+    }
+
+    /** Main constructor */
+    public Hyperbola2D(double xc, double yc, double a, double b, double theta,
+            boolean d) {
+        this.xc = xc;
+        this.yc = yc;
+        this.a = a;
+        this.b = b;
+        this.theta = theta;
+        this.direct = d;
+
+        branch1 = new HyperbolaBranch2D(this, false);
+        branch2 = new HyperbolaBranch2D(this, true);
+        this.addCurve(branch1);
+        this.addCurve(branch2);
+    }
+
+    
+    // ===================================================================
+    // Static factories
+    
+    public static Hyperbola2D create(Point2D center, double a, double b,
+    		double theta) {
+        return new Hyperbola2D(center.getX(), center.getY(), a, b, theta, true);
+    }
+
+    public static Hyperbola2D create(Point2D center, double a, double b,
+    		double theta, boolean d) {
+    	return new Hyperbola2D(center.getX(), center.getY(), a, b, theta, d);
+    }
+
+    
+    // ===================================================================
+    // static methods
 
     /**
      * Creates a new Hyperbola by reducing the conic coefficients, assuming
@@ -85,12 +143,12 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
      *            longer, remaining coefficients are ignored.
      * @return the Hyperbola2D corresponding to given coefficients
      */
-    public final static Hyperbola2D reduceCentered(double[] coefs) {
+    public static Hyperbola2D reduceCentered(double[] coefs) {
         double A = coefs[0];
         double B = coefs[1];
         double C = coefs[2];
 
-        // Compute orientation angle of the ellipse
+        // Compute orientation angle of the hyperbola
         double theta;
         if (Math.abs(A-C)<Shape2D.ACCURACY) {
             theta = Math.PI/4;
@@ -110,11 +168,12 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         if (coefs2.length>5)
             f = Math.abs(coefs[5]);
 
-        assert Math.abs(coefs2[0]/f)<Shape2D.ACCURACY : "Second conic coefficient should be zero";
+        assert Math.abs(coefs2[1]/f)<Shape2D.ACCURACY :
+        	"Second conic coefficient should be zero";
 
-        if (coefs2[0]*coefs2[2]>0) {
-            System.err.println("Transformed conic is not an Hyperbola");
-        }
+        assert coefs2[0]*coefs2[2]<0:
+            "Transformed conic is not an Hyperbola";
+        
 
         // extract major and minor axis lengths, ensuring r1 is greater
         double r1, r2;
@@ -135,14 +194,14 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
     }
 
     /**
-     * Transform an hyperbola, by supposing both the hyperbola is centered and
-     * the transform has no translation part.
+     * Transforms an hyperbola, by supposing both the hyperbola is centered
+     * and the transform has no translation part.
      * 
      * @param hyper an hyperbola
      * @param trans an affine transform
      * @return the transformed hyperbola, centered around origin
      */
-    public final static Hyperbola2D transformCentered(Hyperbola2D hyper,
+    public static Hyperbola2D transformCentered(Hyperbola2D hyper,
             AffineTransform2D trans) {
         // Extract inner parameter of hyperbola
         double a = hyper.a;
@@ -170,45 +229,6 @@ public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> implements
         return Hyperbola2D.reduceCentered(coefs2);
     }
 
-    // ===================================================================
-    // constructors
-
-    /**
-     * Assume centered hyperbola, with a = b = 1 (orthogonal hyperbola), theta=0
-     * (hyperbola is oriented East-West), and direct orientation.
-     */
-    public Hyperbola2D() {
-        this(0, 0, 1, 1, 0, true);
-    }
-
-    public Hyperbola2D(Point2D center, double a, double b, double theta,
-            boolean d) {
-        this(center.getX(), center.getY(), a, b, theta, d);
-    }
-
-    public Hyperbola2D(Point2D center, double a, double b, double theta) {
-        this(center.getX(), center.getY(), a, b, theta, true);
-    }
-
-    public Hyperbola2D(double xc, double yc, double a, double b, double theta) {
-        this(xc, yc, a, b, theta, true);
-    }
-
-    /** Main constructor */
-    public Hyperbola2D(double xc, double yc, double a, double b, double theta,
-            boolean d) {
-        this.xc = xc;
-        this.yc = yc;
-        this.a = a;
-        this.b = b;
-        this.theta = theta;
-        this.direct = d;
-
-        branch1 = new HyperbolaBranch2D(this, false);
-        branch2 = new HyperbolaBranch2D(this, true);
-        this.addCurve(branch1);
-        this.addCurve(branch2);
-    }
 
     // ===================================================================
     // methods specific to Hyperbola2D
