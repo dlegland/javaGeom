@@ -18,7 +18,8 @@ import math.geom2d.transform.CircleInversion2D;
 
 
 /**
- * A basic implementation of a CirculinearRing2D.
+ * A basic implementation of a CirculinearRing2D, which is supposed to be
+ * always bounded and closed.
  * @author dlegland
  *
  */
@@ -39,6 +40,10 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
         super(curves);
     }
 
+    /**
+     * @deprecated, as a ring is closed by definition (0.8.1)
+     */
+    @Deprecated
     public GenericCirculinearRing2D(CirculinearElement2D[] curves, 
     		boolean closed) {
         super(curves, closed);
@@ -49,6 +54,10 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
         super(curves);
     }
 
+    /**
+     * @deprecated, as a ring is closed by definition (0.8.1)
+     */
+    @Deprecated
     public GenericCirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves, 
     		boolean closed) {
@@ -63,8 +72,8 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
      * curves.
      * @since 0.8.1
      */
-    public static GenericCirculinearRing2D create(
-    		Collection<CirculinearElement2D> curves) {
+    public static <T extends CirculinearElement2D> GenericCirculinearRing2D
+    create(Collection<T> curves) {
     	return new GenericCirculinearRing2D(curves);
     }
     

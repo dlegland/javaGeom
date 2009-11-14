@@ -31,8 +31,7 @@ public class CheckBufferLozenge extends JPanel{
 				new Point2D(300, 100), 
 				new Point2D(500, 200), 
 				new Point2D(300, 300),
-				new Point2D(100, 200),
-				new Point2D(300, 100)	});
+				new Point2D(100, 200)	});
 		
 		domain = CirculinearCurve2DUtils.computeBuffer(curve, 30);
 	}

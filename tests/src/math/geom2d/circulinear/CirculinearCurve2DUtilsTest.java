@@ -199,6 +199,34 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertTrue(result.size()==3);
 	}
 	
+	public void testSplitIntersectingContours_4Lines() {
+		// shortcuts for reference elements
+		Point2D p1 = new Point2D(10, 0);
+		Point2D p2 = new Point2D(-10, 0);
+		Point2D p3 = new Point2D(0, 10);
+		Point2D p4 = new Point2D(0, -10);
+		Vector2D v1 = new Vector2D(0, 10);
+		Vector2D v2 = new Vector2D(0, -10);
+		Vector2D v3 = new Vector2D(-10, 0);
+		Vector2D v4 = new Vector2D(10, 0);
+		
+		// create two orthogonal lines
+		StraightLine2D line1 = StraightLine2D.create(p1, v1);
+		StraightLine2D line2 = StraightLine2D.create(p2, v2);
+		StraightLine2D line3 = StraightLine2D.create(p3, v3);
+		StraightLine2D line4 = StraightLine2D.create(p4, v4);
+		
+		// put lines in a set
+		CirculinearCurveSet2D<StraightLine2D> set = 
+			CirculinearCurveSet2D.create(new StraightLine2D[]{
+					line1, line2, line3, line4});
+		
+		Collection<StraightLine2D> curves = set.getCurves();
+		Collection<CirculinearContour2D> contours = 
+			CirculinearCurve2DUtils.splitIntersectingContours(curves);
+		assertEquals(4, contours.size());
+	}
+
 	public void testFindSelfIntersections () {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
@@ -222,7 +250,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
 		Vector2D v0 = new Vector2D(10, 20);
-		StraightLine2D line = new StraightLine2D(p0, v0);
+		StraightLine2D line = StraightLine2D.create(p0, v0);
 		
 		// computes its parallel
 		ContinuousCirculinearCurve2D parallel =
@@ -322,7 +350,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
 		Vector2D v0 = new Vector2D(10, 20);
-		StraightLine2D line = new StraightLine2D(p0, v0);
+		StraightLine2D line = StraightLine2D.create(p0, v0);
 		
 		// compute parallel
 		ContinuousCirculinearCurve2D parallel =
@@ -394,9 +422,9 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// computes the buffer
 		CirculinearDomain2D buffer =
 			CirculinearCurve2DUtils.computeBuffer(curve, 10);
-		assertFalse(buffer==null);
-		assert buffer!=null;
+		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
+		
 		
 		// Extract boundary of buffer
 		Boundary2D boundary = buffer.getBoundary();
@@ -405,7 +433,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 	
 	public void testGetBufferColinearPolyline () {
 		// polyline with two edges, that are colinear
-		Polyline2D curve = new Polyline2D(new Point2D[]{
+		Polyline2D curve = Polyline2D.create(new Point2D[]{
 				new Point2D(100, 100), 
 				new Point2D(150, 100), 
 				new Point2D(200, 100) });
@@ -418,14 +446,23 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 	}
 		
 	public void testGetBufferTwoLines() {
-		StraightLine2D line1 = new StraightLine2D(new Point2D(0, 0), new Vector2D(10, 0));
-		StraightLine2D line2 = new StraightLine2D(new Point2D(0, 0), new Vector2D(0, 10));
-		CirculinearCurveSet2D<StraightLine2D> set = 
-			new CirculinearCurveSet2D<StraightLine2D>();
-		set.addCurve(line1);
-		set.addCurve(line2);
+		// shortcuts for reference elements
+		Point2D origin = new Point2D(0, 0);
+		Vector2D v1 = new Vector2D(10, 0);
+		Vector2D v2 = new Vector2D(0, 10);
 		
-		CirculinearDomain2D buffer = set.getBuffer(10);
-		assertEquals(4, buffer.getBoundary().getBoundaryCurves().size());
+		// create two orthogonal lines
+		StraightLine2D line1 = StraightLine2D.create(origin, v1);
+		StraightLine2D line2 = StraightLine2D.create(origin, v2);
+		
+		// put lines in a set
+		CirculinearCurveSet2D<StraightLine2D> set = 
+			CirculinearCurveSet2D.create(new StraightLine2D[]{line1, line2});
+		
+		// compute set buffer and buffer boundary
+		CirculinearDomain2D buffer = 
+			CirculinearCurve2DUtils.computeBuffer(set, 10);
+		CirculinearBoundary2D boundary = buffer.getBoundary();
+		assertEquals(4, boundary.getBoundaryCurves().size());
 	}
 }

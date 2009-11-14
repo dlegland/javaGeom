@@ -68,10 +68,10 @@ public class Circle2DTest extends TestCase {
 	public void testGetBuffer() {
 	    Circle2D circle = new Circle2D(50, 60, 50);
 	    Domain2D buffer = circle.getBuffer(20);	    
-	    assertTrue(buffer.getBoundary().getContinuousCurves().size()==2);
+	    assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
 	    
 	    buffer = circle.getBuffer(60);	    
-	    assertTrue(buffer.getBoundary().getContinuousCurves().size()==1);	    
+	    assertEquals(1, buffer.getBoundary().getContinuousCurves().size());	    
 	}
 	
 	public void testGetParallel() {

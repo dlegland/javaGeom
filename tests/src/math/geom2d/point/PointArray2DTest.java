@@ -1,11 +1,49 @@
 package math.geom2d.point;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import junit.framework.TestCase;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 
 public class PointArray2DTest extends TestCase {
 
+	public void testGetBuffer_Disjoint() {
+		Point2D p1 = new Point2D(10, 20);
+		Point2D p2 = new Point2D(20, 10);
+		Point2D p3 = new Point2D(30, 20);
+		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
+		
+		Domain2D buffer = set.getBuffer(5);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(3, boundary.getBoundaryCurves().size());
+	}
+	
+	public void testGetBuffer_Merge() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(10, 0);
+		Point2D p3 = new Point2D(20, 0);
+		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
+		
+		Domain2D buffer = set.getBuffer(10);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
+	}
+	
+	/**
+	 * Test for critical case: 3 contours touching at the same point.
+	 */
+	public void testGetBuffer_Touch() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(20, 0);
+		Point2D p3 = new Point2D(10, 20);
+		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
+		
+		Domain2D buffer = set.getBuffer(10);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
+	}
+	
 	public void testGetDistancePoint2D() {
 		PointArray2D set = new PointArray2D(new Point2D[]{
 				new Point2D(0, 0),

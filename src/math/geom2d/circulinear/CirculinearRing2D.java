@@ -18,8 +18,8 @@ import math.geom2d.transform.CircleInversion2D;
 
 
 /**
- * A basic implementation of a CirculinearContour2D, which is supposed to be
- * always bounded and closed.
+ * Future interface for circulinear boundary curves which are both bounded
+ * and closed.
  * @author dlegland
  *
  */
@@ -46,6 +46,10 @@ implements CirculinearContour2D {
         this.closed = true;
         }
 
+    /**
+     * @deprecated, as a ring is closed by definition (0.8.1)
+     */
+    @Deprecated
     public CirculinearRing2D(CirculinearElement2D[] curves, 
     		boolean closed) {
         super(curves, closed);
@@ -57,6 +61,10 @@ implements CirculinearContour2D {
         this.closed = true;
        }
 
+    /**
+     * @deprecated, as a ring is closed by definition (0.8.1)
+     */
+    @Deprecated
     public CirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves, 
     		boolean closed) {

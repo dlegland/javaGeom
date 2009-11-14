@@ -71,10 +71,21 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
      * collection of curves.
      * @since 0.8.1
      */
-	public static <T extends CirculinearContour2D> 
-	BoundaryPolyCirculinearCurve2D<CirculinearContour2D>
+	public static <T extends ContinuousCirculinearCurve2D> 
+	BoundaryPolyCirculinearCurve2D<T>
 	create(Collection<T> curves) {
-		return new BoundaryPolyCirculinearCurve2D<CirculinearContour2D>(curves);
+		return new BoundaryPolyCirculinearCurve2D<T>(curves);
+	}
+
+    /**
+     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a
+     * collection of curves.
+     * @since 0.8.1
+     */
+	public static <T extends ContinuousCirculinearCurve2D> 
+	BoundaryPolyCirculinearCurve2D<T>
+	create(Collection<T> curves, boolean closed) {
+		return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
 	}
 
     /**
@@ -85,6 +96,16 @@ implements ContinuousCirculinearCurve2D, CirculinearContour2D {
     public static <T extends CirculinearContour2D> 
     BoundaryPolyCirculinearCurve2D<T> create(T[] curves) {
     	return new BoundaryPolyCirculinearCurve2D<T>(curves);
+    }
+
+    /**
+     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from an
+     * array of curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearContour2D> 
+    BoundaryPolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
+    	return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
     }
 
     
