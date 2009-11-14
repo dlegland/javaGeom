@@ -443,7 +443,7 @@ public abstract class Curve2DUtils {
      * @param t1 the second bound of a curve parameterization
      * @return a position located between t0 and t1
      */
-    private final static double choosePosition(double t0, double t1) {
+    public final static double choosePosition(double t0, double t1) {
         if (Double.isInfinite(t0)) {
             if (Double.isInfinite(t1))
                 return 0;
