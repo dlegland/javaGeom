@@ -224,7 +224,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		Collection<StraightLine2D> curves = set.getCurves();
 		Collection<CirculinearContour2D> contours = 
 			CirculinearCurve2DUtils.splitIntersectingContours(curves);
-		assertEquals(4, contours.size());
+		assertEquals(5, contours.size());
 	}
 
 	public void testFindSelfIntersections () {

@@ -718,8 +718,6 @@ public class CirculinearCurve2DUtils {
 	 * Split a collection of contours which possibly intersect each other to a
 	 * set of contours which do not intersect each others. Each contour is
 	 * assumed not to self-intersect.
-	 * 
-	 * TODO: at the moment, process only closed (i.e. bounded) contours,
 	 */
 	public static Collection<CirculinearContour2D>
 	splitIntersectingContours(Collection<? extends CirculinearContour2D> curves) {
@@ -792,19 +790,79 @@ public class CirculinearCurve2DUtils {
         ArrayList<CirculinearContour2D> contours =
         	new ArrayList<CirculinearContour2D>();
 		
-		// add all curves which do not intersect other curves
+		// process curves without intersections
         for(int i=0; i<nCurves; i++) {
-        	if (twinPositions.get(i).isEmpty())
+        	// If the curve has no intersection, use it as contour
+        	if (twinPositions.get(i).isEmpty()) {
         		contours.add(curveArray[i]);
+        	}
         }
        
-        // an array for the portions of curves
-        ArrayList<CirculinearElement2D> elements;
+		// process infinite curves
+        for(int i=0; i<nCurves; i++) {
+        	// filter bounded curves
+        	if (curveArray[i].isBounded())
+        		continue;
+        	
+        	// If the curve has no intersection, it was already processed
+        	if (twinPositions.get(i).isEmpty()) {
+        		continue;
+        	}
+        	
+        	// find first unprocessed intersection
+        	pos0 = twinPositions.get(i).firstEntry().getKey();
+        	int ind0 = twinIndices.get(i).firstEntry().getValue();
+        	
+            // create new empty array of elements for current contour
+        	ArrayList<CirculinearElement2D> elements =
+        		new ArrayList<CirculinearElement2D>();
+
+        	// add portion of curve until intersection
+        	CirculinearContour2D curve0 = curveArray[i];
+        	addElements(elements, curve0.getSubCurve(curve0.getT0(), pos0));
+        	
+        	// init
+            pos1 = twinPositions.get(i).firstEntry().getValue();
+            int ind  = ind0;
+            
+            do {
+            	// the current contour
+            	CirculinearContour2D curve = curveArray[ind];
+            	
+            	// extract next position
+                pos2 = nextValue(positions.get(ind), pos1);
                 
+                if((pos2<pos1) && !curve.isBounded()) {
+                	// We got the last point of an infinite curve.
+                	// That means we just finished the current free contour
+                	// and we just need to add elements
+                	addElements(elements, curve.getSubCurve(pos1, curve.getT1()));              	
+                } else {
+                	// simple case:
+                	// add a portion of the current curve to the element list
+                	addElements(elements, curve.getSubCurve(pos1, pos2));
+                    
+                    // get the position of end intersection on second curve
+                    pos1 = twinPositions.get(ind).remove(pos2);
+                    ind  = twinIndices.get(ind).remove(pos2);            	
+                }
+            } while (ind!=ind0);
+            
+            twinPositions.get(i).remove(pos0);
+        	twinIndices.get(i).remove(pos0);
+        	
+            // create continuous curve formed only by circulinear elements
+            // and add it to the set of curves
+            contours.add(
+            		BoundaryPolyCirculinearCurve2D.create(elements, true));
+        }
+        
+               
         // Process other curves, while there are intersections left
         while(!isAllEmpty(twinPositions)) {
             // create new empty array of elements for current contour
-            elements = new ArrayList<CirculinearElement2D>();
+        	ArrayList<CirculinearElement2D> elements =
+        		new ArrayList<CirculinearElement2D>();
             
             // indices of the two considered curves.
             int ind0=0, ind;
@@ -920,8 +978,8 @@ public class CirculinearCurve2DUtils {
 			
 			// check that vertices of contour are not too close from original
 			// curve
-			double distCurves = getDistanceCurvePoints(curve, 
-					contour.getSingularPoints());
+			double distCurves = 
+				getDistanceCurveSingularPoints(curve, contour);
 			if(distCurves<dist-Shape2D.ACCURACY)
 				continue;
 			
@@ -1235,6 +1293,26 @@ public class CirculinearCurve2DUtils {
 		double minDist = Double.MAX_VALUE;
 		for(Point2D point : points){
 			minDist = Math.min(minDist, curve.getDistance(point));
+		}
+		return minDist;
+	}
+	
+	private static double getDistanceCurveSingularPoints(
+			CirculinearCurve2D ref, CirculinearCurve2D curve){
+		// extract singular points
+		Collection<Point2D> points = curve.getSingularPoints();
+		
+		// If no singular point, choose an arbitrary point on the curve
+		if(points.isEmpty()) {
+			points = new ArrayList<Point2D>();
+			double t = Curve2DUtils.choosePosition(curve.getT0(), curve.getT1());
+			points.add(curve.getPoint(t));
+		}
+		
+		// Iterate on points to get minimal distance
+		double minDist = Double.MAX_VALUE;
+		for(Point2D point : points){
+			minDist = Math.min(minDist, ref.getDistance(point));
 		}
 		return minDist;
 	}
