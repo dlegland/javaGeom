@@ -57,7 +57,7 @@ public class CirculinearCurveSet2DTest extends TestCase {
 		// 12 parts: 4 circle arcs, and 4*2 line segments
 		Collection<? extends SmoothCurve2D> smoothCurves =
 			boundary.getContinuousCurves().iterator().next().getSmoothPieces();
-		assertEquals(smoothCurves.size(), 12);
+		assertEquals(12, smoothCurves.size());
 	}
 
 }
