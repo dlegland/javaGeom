@@ -33,11 +33,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.circulinear.BoundaryPolyCirculinearCurve2D;
-import math.geom2d.circulinear.CirculinearContour2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
-import math.geom2d.circulinear.CirculinearElement2D;
-import math.geom2d.circulinear.CirculinearRing2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.domain.ContinuousBoundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
@@ -168,7 +164,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
 
 	@Override
     public CirculinearRing2D getParallel(double dist) {
-    	return new CirculinearRing2D(
+    	return GenericCirculinearRing2D.create(
     			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
     			.getSmoothPieces());
     }

@@ -152,14 +152,14 @@ public class CircleArc2DTest extends TestCase {
 		Point2D p0 = new Point2D(y0, x0);
 		double r = 10;
 		
-		CircleArc2D arc = new CircleArc2D(p0, 10, 0, PI/2);
+		CircleArc2D arc = CircleArc2D.create(p0, 10, 0, PI/2);
 		Point2D p1 = new Point2D(10, 0);
 		assertTrue(p1.getDistance(arc.getPoint(arc.getT0()))<Shape2D.ACCURACY);
 		Point2D p2 = new Point2D(0, 10);
 		assertTrue(p2.getDistance(arc.getPoint(arc.getT1()))<Shape2D.ACCURACY);
 		
 		// Check inverted arc
-		arc = new CircleArc2D(p0, 10, 3*PI/2, -3*PI/2);
+		arc = CircleArc2D.create(p0, 10, 3*PI/2, -3*PI/2);
 		assertTrue(arc.getPoint(PI/2).equals(new Point2D(x0-r, y0)));
 		assertTrue(arc.getPoint(PI).equals(new Point2D(x0, y0+r)));
 	}
@@ -167,8 +167,15 @@ public class CircleArc2DTest extends TestCase {
 	public void testGetPositionPoint2D(){
 		Point2D origin = new Point2D(0, 0);
 		CircleArc2D arc = new CircleArc2D(origin, 10, 3*PI/2, 3*PI/2);
-		double t = arc.getPosition(new Point2D(10, 0));
-		assertEquals(t, PI/2, 1e-12);
+		double pos = arc.getPosition(new Point2D(10, 0));
+		assertEquals(PI/2, pos, 1e-12);
+	}
+	
+	public void testGetPositionPoint2D_indirect(){
+		Point2D origin = new Point2D(0, 0);
+		CircleArc2D arc = new CircleArc2D(origin, 10, 3*PI/2, -3*PI/2);
+		double pos = arc.getPosition(new Point2D(0, 10));
+		assertEquals(PI, pos, 1e-12);
 	}
 	
 	/*

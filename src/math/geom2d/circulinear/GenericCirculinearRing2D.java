@@ -23,21 +23,27 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public class GenericCirculinearRing2D extends CirculinearRing2D {
-
+public class GenericCirculinearRing2D 
+extends PolyCirculinearCurve2D<CirculinearElement2D>
+implements CirculinearRing2D {
+//TODO: parametrize with curve type ?
+	
     // ===================================================================
     // constructors
 
     public GenericCirculinearRing2D() {
         super();
+        this.closed = true;
     }
 
     public GenericCirculinearRing2D(int size) {
         super(size);
+        this.closed = true;
     }
 
     public GenericCirculinearRing2D(CirculinearElement2D[] curves) {
         super(curves);
+        this.closed = true;
     }
 
     /**
@@ -52,6 +58,7 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
     public GenericCirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves) {
         super(curves);
+        this.closed = true;
     }
 
     /**
@@ -91,6 +98,20 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
     // ===================================================================
     // methods specific to GenericCirculinearRing2D
 
+    // ===================================================================
+    // static methods
+
+	@Override
+    public CirculinearRing2D getParallel(double dist) {
+    	return new GenericCirculinearRing2D(
+    			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
+    			.getSmoothPieces());
+    }
+    
+	public Collection<? extends GenericCirculinearRing2D> getContinuousCurves() {
+    	return wrapCurve(this);
+    }
+	
 	@Override
 	public GenericCirculinearRing2D transform(CircleInversion2D inv) {
     	// Allocate array for result
@@ -106,7 +127,6 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#fill(java.awt.Graphics2D)
 	 */
-	@Override
 	public void fill(Graphics2D g2) {
 		g2.fill(this.getGeneralPath());
 	}
@@ -114,7 +134,6 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
 	 */
-	@Override
 	public Collection<? extends CirculinearContour2D> getBoundaryCurves() {
         return wrapCurve(this);
 	}
@@ -122,7 +141,6 @@ public class GenericCirculinearRing2D extends CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getDomain()
 	 */
-	@Override
 	public CirculinearDomain2D getDomain() {
 		return new GenericCirculinearDomain2D(this);
 	}

@@ -4,6 +4,25 @@ Changes in javaGeom library
 
 javaGeom-0.?.? (2009.??.??, rev. ???)
 
+New features
+- better support for buffer of infinite curves
+- added static factories in most implementation classes
+- added CirculinearCurve2DUtils.convert() method
+- added NonCirculinearClassException
+- added Point2D.centroid() by using weights
+
+Bug fixes
+- improve buffer of smooth curves by removing some curves that were too close
+	from original curve
+- fixed assertion bug in Conics
+- fix buffer computation of some shapes
+
+Regressions
+- changed ContinuousCirculinearCurve2D to CirculinearContinuousCurve2D
+
+Code
+- code rewriting in CirculinearCurve2D
+- added missing @override annotations
 
 
 javaGeom-0.8.0 (2009.06.09, rev. 226)

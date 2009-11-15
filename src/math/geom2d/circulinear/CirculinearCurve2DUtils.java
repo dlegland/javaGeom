@@ -956,10 +956,10 @@ public class CirculinearCurve2DUtils {
 		// iterate on all continuous curves
 		for(CirculinearContinuousCurve2D cont : curve.getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
-			for(CirculinearContinuousCurve2D contour : 
+			for(CirculinearContinuousCurve2D splitted : 
 				splitContinuousCurve(cont)) {
 				// compute the rings composing the simple curve buffer
-				contours.addAll(computeBufferSimpleContour(contour, dist));
+				contours.addAll(computeBufferSimpleContour(splitted, dist));
 			}
 		}
 		

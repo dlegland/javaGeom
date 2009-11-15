@@ -144,7 +144,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	 */
     @Override
 	public CirculinearRing2D getParallel(double dist) {
-    	return new CirculinearRing2D(
+    	return GenericCirculinearRing2D.create(
     			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
     			.getSmoothPieces());
     }
