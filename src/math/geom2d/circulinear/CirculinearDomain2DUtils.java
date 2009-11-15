@@ -31,10 +31,10 @@ public class CirculinearDomain2DUtils {
 		for(CirculinearContour2D cont : 
 			domain.getBoundary().getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
-			for(ContinuousCirculinearCurve2D simpleCurve : 
+			for(CirculinearContinuousCurve2D simpleCurve : 
 				CirculinearCurve2DUtils.splitContinuousCurve(cont)) {
 				CirculinearContour2D boundary = 
-					new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
+					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 							simpleCurve.getSmoothPieces());
 				// compute the rings composing the simple curve buffer
 				rings.addAll(computeBufferSimpleRing(boundary, dist));
@@ -59,23 +59,23 @@ public class CirculinearDomain2DUtils {
 			new ArrayList<CirculinearContour2D>();
 		
 		// the parallel in the positive side
-		ContinuousCirculinearCurve2D parallel1 = curve.getParallel(d);
+		CirculinearContinuousCurve2D parallel1 = curve.getParallel(d);
 		
 		// split each parallel into continuous curves
-		CirculinearCurveSet2D<ContinuousCirculinearCurve2D> curves =
-			new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>();
+		CirculinearCurveSet2D<CirculinearContinuousCurve2D> curves =
+			new CirculinearCurveSet2D<CirculinearContinuousCurve2D>();
 		
 		// select only curve parts which do not cross original curve
-		for(ContinuousCirculinearCurve2D split : 
+		for(CirculinearContinuousCurve2D split : 
 				CirculinearCurve2DUtils.splitContinuousCurve(parallel1)) {
 			if(CirculinearCurve2DUtils.findIntersections(curve, split).size()==0)
 				curves.addCurve(split);
 		}
 		
 		// create a new boundary for each parallel curve
-		for(ContinuousCirculinearCurve2D split : curves) {
+		for(CirculinearContinuousCurve2D split : curves) {
 			rings.add(
-					new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
+					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 							split.getSmoothPieces(), split.isClosed()));
 		}
 		
@@ -86,7 +86,7 @@ public class CirculinearDomain2DUtils {
 		// iterate on the set of rings
 		for(CirculinearContour2D ring : rings)
 			// split rings into curves which do not self-intersect
-			for(ContinuousCirculinearCurve2D split : 
+			for(CirculinearContinuousCurve2D split : 
 				CirculinearCurve2DUtils.splitContinuousCurve(ring)) {
 				
 				// compute distance to original curve
@@ -101,7 +101,7 @@ public class CirculinearDomain2DUtils {
 				
 				// convert the set of elements to a Circulinear ring
 				rings2.add(
-						new BoundaryPolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
+						new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 								split.getSmoothPieces(), split.isClosed()));
 		}
 		

@@ -37,7 +37,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
+import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -56,7 +56,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  */
 public class Polyline2D extends AbstractContinuousCurve2D
-implements ContinuousCirculinearCurve2D, Cloneable {
+implements CirculinearContinuousCurve2D, Cloneable {
 
 
     protected ArrayList<Point2D> points = new ArrayList<Point2D>();
@@ -290,19 +290,19 @@ implements ContinuousCirculinearCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
-	public ContinuousCirculinearCurve2D getParallel(double d) {
+	public CirculinearContinuousCurve2D getParallel(double d) {
 		return CirculinearCurve2DUtils.createContinuousParallel(this, d);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
-	public ContinuousCirculinearCurve2D transform(CircleInversion2D inv) {
+	public CirculinearContinuousCurve2D transform(CircleInversion2D inv) {
 		
 		// Create array for storing transformed arcs
 		Collection<LineSegment2D> edges = this.getEdges();
-		ArrayList<ContinuousCirculinearCurve2D> arcs = 
-			new ArrayList<ContinuousCirculinearCurve2D>(edges.size());
+		ArrayList<CirculinearContinuousCurve2D> arcs = 
+			new ArrayList<CirculinearContinuousCurve2D>(edges.size());
 		
 		// Transform each arc
 		for(LineSegment2D edge : edges) {
@@ -310,7 +310,7 @@ implements ContinuousCirculinearCurve2D, Cloneable {
 		}
 		
 		// create the transformed shape
-		return new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(arcs);
+		return new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(arcs);
 	}
 
     // ===================================================================

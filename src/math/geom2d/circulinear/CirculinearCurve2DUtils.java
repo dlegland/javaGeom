@@ -81,20 +81,20 @@ public class CirculinearCurve2DUtils {
 				set.getContinuousCurves();
 			
 			// prepare array of elements
-			ArrayList<ContinuousCirculinearCurve2D> curves = 
-				new ArrayList<ContinuousCirculinearCurve2D>(
+			ArrayList<CirculinearContinuousCurve2D> curves = 
+				new ArrayList<CirculinearContinuousCurve2D>(
 						continuousCurves.size());
 			
 			// class cast for each element, or throw an exception
 			for (ContinuousCurve2D continuous : continuousCurves) {
-				if (continuous instanceof ContinuousCirculinearCurve2D)
-					curves.add((ContinuousCirculinearCurve2D) continuous);
+				if (continuous instanceof CirculinearContinuousCurve2D)
+					curves.add((CirculinearContinuousCurve2D) continuous);
 				else
-					curves.add((ContinuousCirculinearCurve2D) convert(continuous));
+					curves.add((CirculinearContinuousCurve2D) convert(continuous));
 			}
 			
 			// create the resulting CirculinearContinuousCurve2D
-			return new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>(curves);
+			return new CirculinearCurveSet2D<CirculinearContinuousCurve2D>(curves);
 		}
 		
 		return null;
@@ -165,19 +165,19 @@ public class CirculinearCurve2DUtils {
 			CirculinearCurve2D curve, double dist) {
 		
 		// case of a continuous curve -> call specialized method
-		if (curve instanceof ContinuousCirculinearCurve2D) {
+		if (curve instanceof CirculinearContinuousCurve2D) {
 			return createContinuousParallel(
-					(ContinuousCirculinearCurve2D)curve, dist);
+					(CirculinearContinuousCurve2D)curve, dist);
 		} 
 		
 		// Create array for storing result
-		CirculinearCurveSet2D<ContinuousCirculinearCurve2D> parallel =
-			new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>();
+		CirculinearCurveSet2D<CirculinearContinuousCurve2D> parallel =
+			new CirculinearCurveSet2D<CirculinearContinuousCurve2D>();
 		
 		// compute parallel of each continuous part, and add it to the result
-		for(ContinuousCirculinearCurve2D continuous : 
+		for(CirculinearContinuousCurve2D continuous : 
 			curve.getContinuousCurves()){
-			ContinuousCirculinearCurve2D contParallel = 
+			CirculinearContinuousCurve2D contParallel = 
 				createContinuousParallel(continuous, dist);
 			if(contParallel!=null)
 				parallel.addCurve(contParallel);
@@ -188,8 +188,8 @@ public class CirculinearCurve2DUtils {
 	}
     
 	
-	public static ContinuousCirculinearCurve2D createContinuousParallel(
-			ContinuousCirculinearCurve2D curve, double dist) {
+	public static CirculinearContinuousCurve2D createContinuousParallel(
+			CirculinearContinuousCurve2D curve, double dist) {
 		
 		// For circulinear elements, getParallel() is already implemented
 		if (curve instanceof CirculinearElement2D) {
@@ -207,8 +207,8 @@ public class CirculinearCurve2DUtils {
 		CirculinearElement2D current = null;
 
 		// create array for storing result
-		PolyCirculinearCurve2D<ContinuousCirculinearCurve2D> parallel = 
-			new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D> ();
+		PolyCirculinearCurve2D<CirculinearContinuousCurve2D> parallel = 
+			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D> ();
 
 		// check if curve is empty
 		if(!iterator.hasNext())
@@ -245,7 +245,7 @@ public class CirculinearCurve2DUtils {
 	}
 	
 	private static void addCircularJunction(
-			PolyCirculinearCurve2D<ContinuousCirculinearCurve2D> parallel,
+			PolyCirculinearCurve2D<CirculinearContinuousCurve2D> parallel,
 			CirculinearElement2D previous, 
 			CirculinearElement2D current, double dist) {		
 		// center of circle arc
@@ -296,7 +296,7 @@ public class CirculinearCurve2DUtils {
 			new ArrayList<CirculinearElement2D>();
 		
 		// extract all circulinear elements of the curve
-		for(ContinuousCirculinearCurve2D cont : curve.getContinuousCurves())
+		for(CirculinearContinuousCurve2D cont : curve.getContinuousCurves())
 			elements.addAll(cont.getSmoothPieces());
 		
 		// create array for storing result
@@ -381,9 +381,9 @@ public class CirculinearCurve2DUtils {
 			new ArrayList<CirculinearElement2D>();
 		
 		// extract all circulinear elements of the curve
-		for(ContinuousCirculinearCurve2D cont : curve1.getContinuousCurves())
+		for(CirculinearContinuousCurve2D cont : curve1.getContinuousCurves())
 			elements1.addAll(cont.getSmoothPieces());
-		for(ContinuousCirculinearCurve2D cont : curve2.getContinuousCurves())
+		for(CirculinearContinuousCurve2D cont : curve2.getContinuousCurves())
 			elements2.addAll(cont.getSmoothPieces());
 		
 		// create array for storing result
@@ -428,9 +428,9 @@ public class CirculinearCurve2DUtils {
 			new ArrayList<CirculinearElement2D>();
 		
 		// extract all circulinear elements of the curve
-		for(ContinuousCirculinearCurve2D cont : curve1.getContinuousCurves())
+		for(CirculinearContinuousCurve2D cont : curve1.getContinuousCurves())
 			elements1.addAll(cont.getSmoothPieces());
-		for(ContinuousCirculinearCurve2D cont : curve2.getContinuousCurves())
+		for(CirculinearContinuousCurve2D cont : curve2.getContinuousCurves())
 			elements2.addAll(cont.getSmoothPieces());
 		
 		// iterate on each couple of elements
@@ -501,14 +501,14 @@ public class CirculinearCurve2DUtils {
 	 * @param curve the curve to split
 	 * @return a set of non-self-intersecting continuous curves
 	 */
-	public static Collection<ContinuousCirculinearCurve2D> 
-	splitContinuousCurve(ContinuousCirculinearCurve2D curve) {
+	public static Collection<CirculinearContinuousCurve2D> 
+	splitContinuousCurve(CirculinearContinuousCurve2D curve) {
 		
 		double pos0, pos1, pos2;
 		
 		// create the array of resulting curves
-        ArrayList<ContinuousCirculinearCurve2D> result =
-        	new ArrayList<ContinuousCirculinearCurve2D>();
+        ArrayList<CirculinearContinuousCurve2D> result =
+        	new ArrayList<CirculinearContinuousCurve2D>();
 
         // Instances of CirculinearElement2D can not self-intersect
 		if (curve instanceof CirculinearElement2D){
@@ -912,7 +912,7 @@ public class CirculinearCurve2DUtils {
 	 */
 	private static void addElements(
 			Collection<CirculinearElement2D> elements,
-			ContinuousCirculinearCurve2D curve) {
+			CirculinearContinuousCurve2D curve) {
 		elements.addAll(curve.getSmoothPieces());
 	}
 	
@@ -954,9 +954,9 @@ public class CirculinearCurve2DUtils {
 			new ArrayList<CirculinearContour2D>();
 		
 		// iterate on all continuous curves
-		for(ContinuousCirculinearCurve2D cont : curve.getContinuousCurves()) {
+		for(CirculinearContinuousCurve2D cont : curve.getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
-			for(ContinuousCirculinearCurve2D contour : 
+			for(CirculinearContinuousCurve2D contour : 
 				splitContinuousCurve(cont)) {
 				// compute the rings composing the simple curve buffer
 				contours.addAll(computeBufferSimpleContour(contour, dist));
@@ -1035,9 +1035,9 @@ public class CirculinearCurve2DUtils {
 	 * curve that does not self-intersect.
 	 */
 	public static Collection<? extends CirculinearContour2D> 
-	computeBufferSimpleContour(ContinuousCirculinearCurve2D curve, double d) {
+	computeBufferSimpleContour(CirculinearContinuousCurve2D curve, double d) {
 		
-		Collection<ContinuousCirculinearCurve2D> parallels = 
+		Collection<CirculinearContinuousCurve2D> parallels = 
 			createFreeParallels(curve, d);
 		
 		Collection<CirculinearContour2D> contours = 
@@ -1056,24 +1056,24 @@ public class CirculinearCurve2DUtils {
 	 * self-intersections, and remove parallel pieces that cross the original
 	 * curve.
 	 */
-	private static Collection<ContinuousCirculinearCurve2D> createFreeParallels(
-			ContinuousCirculinearCurve2D curve, double d) {
+	private static Collection<CirculinearContinuousCurve2D> createFreeParallels(
+			CirculinearContinuousCurve2D curve, double d) {
 		
 		// the parallel in each side
-		ContinuousCirculinearCurve2D parallel1, parallel2;
+		CirculinearContinuousCurve2D parallel1, parallel2;
 		parallel1 = curve.getParallel(d);
 		parallel2 = curve.getParallel(-d).getReverseCurve();
 		
 		// split each parallel into continuous curves
-		ArrayList<ContinuousCirculinearCurve2D> curves =
-			new ArrayList<ContinuousCirculinearCurve2D>();
+		ArrayList<CirculinearContinuousCurve2D> curves =
+			new ArrayList<CirculinearContinuousCurve2D>();
 		
 		// select only curve parts which do not cross original curve
-		for(ContinuousCirculinearCurve2D split : splitContinuousCurve(parallel1)) {
+		for(CirculinearContinuousCurve2D split : splitContinuousCurve(parallel1)) {
 			if(findIntersections(curve, split).size()==0)
 				curves.add(split);
 		}
-		for(ContinuousCirculinearCurve2D split : splitContinuousCurve(parallel2)) {
+		for(CirculinearContinuousCurve2D split : splitContinuousCurve(parallel2)) {
 			if(findIntersections(curve, split).size()==0)
 				curves.add(split);
 		}
@@ -1087,8 +1087,8 @@ public class CirculinearCurve2DUtils {
 	 * can possibly self-intersect.
 	 */
 	private static Collection<CirculinearContour2D> createContoursFromParallels(
-			ContinuousCirculinearCurve2D curve, 
-			Collection<ContinuousCirculinearCurve2D> parallels) {
+			CirculinearContinuousCurve2D curve, 
+			Collection<CirculinearContinuousCurve2D> parallels) {
 		// create array for storing result
 		ArrayList<CirculinearContour2D> contours = 
 			new ArrayList<CirculinearContour2D>();
@@ -1096,7 +1096,7 @@ public class CirculinearCurve2DUtils {
 		// If the original curve is closed, create a new contour from each
 		// parallel curve
 		if(curve.isClosed()){
-			for(ContinuousCirculinearCurve2D continuous : parallels) {
+			for(CirculinearContinuousCurve2D continuous : parallels) {
 				contours.add(convertCurveToBoundary(continuous));
 			}
 			return contours;
@@ -1111,7 +1111,7 @@ public class CirculinearCurve2DUtils {
 	 */
 	private static Collection<CirculinearContour2D> 
 	createContoursFromParallels(
-			Collection<ContinuousCirculinearCurve2D> parallels) {
+			Collection<CirculinearContinuousCurve2D> parallels) {
 		
 		// create array for storing result
 		ArrayList<CirculinearContour2D> contours = 
@@ -1119,10 +1119,10 @@ public class CirculinearCurve2DUtils {
 		
 		// There should be only 2 curves in the list 'curves' that are
 		// not rings
-		ContinuousCirculinearCurve2D curve1=null;
-		ContinuousCirculinearCurve2D curve2=null;
+		CirculinearContinuousCurve2D curve1=null;
+		CirculinearContinuousCurve2D curve2=null;
 
-		for(ContinuousCirculinearCurve2D continuous : parallels) {
+		for(CirculinearContinuousCurve2D continuous : parallels) {
 			if(continuous.isClosed()){
 				// simply adds a new ring by using same elements
 				contours.add(convertCurveToBoundary(continuous));
@@ -1152,8 +1152,8 @@ public class CirculinearCurve2DUtils {
 	 */
 	private static Collection<CirculinearContour2D> 
 	createSingleContourFromTwoParallels(
-			ContinuousCirculinearCurve2D curve1,
-			ContinuousCirculinearCurve2D curve2) {
+			CirculinearContinuousCurve2D curve1,
+			CirculinearContinuousCurve2D curve2) {
 		
 		// create array for storing result
 		ArrayList<CirculinearContour2D> contours = 
@@ -1240,7 +1240,7 @@ public class CirculinearCurve2DUtils {
 		// iterate on the set of rings
 		for(CirculinearContour2D contour : contours)
 			// split rings into curves which do not self-intersect
-			for(ContinuousCirculinearCurve2D splitted : 
+			for(CirculinearContinuousCurve2D splitted : 
 				splitContinuousCurve(contour)) {
 				
 				// compute distance to original curve
@@ -1268,7 +1268,7 @@ public class CirculinearCurve2DUtils {
 	 * BoundaryPolyCirculinearCurve2D if the curve is unbounded.
 	 */
 	private static CirculinearContour2D convertCurveToBoundary (
-			ContinuousCirculinearCurve2D curve) {
+			CirculinearContinuousCurve2D curve) {
 		// basic case: curve is already a contour
 		if (curve instanceof CirculinearContour2D)
 			return (CirculinearContour2D) curve;

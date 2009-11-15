@@ -69,8 +69,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		conv = CirculinearCurve2DUtils.convert(curve);
 		assertTrue(conv instanceof PolyCirculinearCurve2D);
 		// unchecked class cast
-		PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D> poly = 
-			(PolyCirculinearCurve2D<? extends ContinuousCirculinearCurve2D>) conv;
+		PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D> poly = 
+			(PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D>) conv;
 		assertEquals(2, poly.getCurveNumber());
 		assertTrue(poly.containsCurve(seg1));
 		assertTrue(poly.containsCurve(seg2));
@@ -112,8 +112,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		conv = CirculinearCurve2DUtils.convert(curve);
 		assertTrue(conv instanceof CirculinearCurveSet2D);
 		// unchecked class cast
-		CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> set = 
-			(CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D>) conv;
+		CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> set = 
+			(CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D>) conv;
 		assertEquals(2, set.getCurveNumber());
 		assertTrue(set.containsCurve(seg1));
 		assertTrue(set.containsCurve(seg2));
@@ -155,7 +155,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 					new CirculinearElement2D[]{edge1, arc1, edge2} );
 		
 		// split the curve
-		Collection<ContinuousCirculinearCurve2D> set = 
+		Collection<CirculinearContinuousCurve2D> set = 
 			CirculinearCurve2DUtils.splitContinuousCurve(curve);
 		
 		// should be two parts
@@ -253,7 +253,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		StraightLine2D line = StraightLine2D.create(p0, v0);
 		
 		// computes its parallel
-		ContinuousCirculinearCurve2D parallel =
+		CirculinearContinuousCurve2D parallel =
 			CirculinearCurve2DUtils.createContinuousParallel(line, 10);
 		
 		// check some assertions
@@ -280,20 +280,20 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		curve.addCurve(ray2);
 		
 		// computes the parallel
-		ContinuousCirculinearCurve2D parallel =
+		CirculinearContinuousCurve2D parallel =
 			CirculinearCurve2DUtils.createContinuousParallel(curve, 10);
 		assertFalse(parallel==null);
 		assertFalse(parallel.isEmpty());
 		assertEquals(3, parallel.getSmoothPieces().size());
 
 		// the same in opposite direction
-		ContinuousCirculinearCurve2D parallel2 =
+		CirculinearContinuousCurve2D parallel2 =
 			CirculinearCurve2DUtils.createContinuousParallel(curve, 10);
 		assertFalse(parallel2==null);
 		assertFalse(parallel2.isEmpty());
 		assertEquals(3, parallel2.getSmoothPieces().size());
 		
-		Collection<ContinuousCirculinearCurve2D> splittedCurves =
+		Collection<CirculinearContinuousCurve2D> splittedCurves =
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
 		assertEquals(2, splittedCurves.size());
 	}
@@ -307,7 +307,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 				new Point2D(200, 100), 
 				new Point2D(200, 200) });
 		
-		ContinuousCirculinearCurve2D parallel = 
+		CirculinearContinuousCurve2D parallel = 
 			CirculinearCurve2DUtils.createContinuousParallel(curve, 20);
 		
 		assertFalse(parallel==null);
@@ -315,7 +315,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(6, parallel.getSmoothPieces().size());
 		assertTrue(parallel.isClosed());
 		
-		ContinuousCirculinearCurve2D parallel2 = 
+		CirculinearContinuousCurve2D parallel2 = 
 			CirculinearCurve2DUtils.createContinuousParallel(curve, -20);
 		
 		assertFalse(parallel2==null);
@@ -331,14 +331,14 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 				new Point2D(150, 100), 
 				new Point2D(200, 100) });
 		
-		ContinuousCirculinearCurve2D parallel = 
+		CirculinearContinuousCurve2D parallel = 
 			CirculinearCurve2DUtils.createContinuousParallel(curve, 20);
 		
 		assertFalse(parallel==null);
 		assertFalse(parallel.isEmpty());
 		assertEquals(2, parallel.getSmoothPieces().size());
 		
-		ContinuousCirculinearCurve2D parallel2 = 
+		CirculinearContinuousCurve2D parallel2 = 
 			CirculinearCurve2DUtils.createContinuousParallel(curve, -20);
 		
 		assertFalse(parallel2==null);
@@ -353,7 +353,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		StraightLine2D line = StraightLine2D.create(p0, v0);
 		
 		// compute parallel
-		ContinuousCirculinearCurve2D parallel =
+		CirculinearContinuousCurve2D parallel =
 			CirculinearCurve2DUtils.createContinuousParallel(line, 10);
 		assertFalse(parallel==null);
 		assertTrue(parallel.getContinuousCurves().size()==1);
@@ -361,7 +361,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(1, parallel.getSmoothPieces().size());
 		
 		// same in other direction
-		ContinuousCirculinearCurve2D parallel2 =
+		CirculinearContinuousCurve2D parallel2 =
 			CirculinearCurve2DUtils.createContinuousParallel(line, -10);
 		assertFalse(parallel2==null);
 		assertTrue(parallel2.getContinuousCurves().size()==1);
@@ -387,15 +387,15 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(2, curve.getSmoothPieces().size());
 
 		// computes the parallel
-		ContinuousCirculinearCurve2D parallel = curve.getParallel(10);
-		Collection<ContinuousCirculinearCurve2D> splittedCurves =
+		CirculinearContinuousCurve2D parallel = curve.getParallel(10);
+		Collection<CirculinearContinuousCurve2D> splittedCurves =
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel);
 		
 		assertFalse(splittedCurves.isEmpty());
 		assertEquals(2, splittedCurves.size());
 		
 		// computes the other parallel
-		ContinuousCirculinearCurve2D parallel2 = curve.getParallel(-10);
+		CirculinearContinuousCurve2D parallel2 = curve.getParallel(-10);
 		Collection<Point2D> points = parallel2.getSingularPoints();
 		assertEquals(2, points.size());
 		assertTrue(points.contains(new Point2D(2, 16)));

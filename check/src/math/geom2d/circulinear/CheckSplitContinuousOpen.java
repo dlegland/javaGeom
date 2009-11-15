@@ -51,14 +51,14 @@ public class CheckSplitContinuousOpen extends JPanel{
 		//curve.draw(g2);
 		
 		g2.setColor(Color.BLUE);
-		Iterator<? extends ContinuousCirculinearCurve2D> iterator = 
+		Iterator<? extends CirculinearContinuousCurve2D> iterator = 
 			CirculinearCurve2DUtils.splitContinuousCurve(curve).iterator();
 		
 		
-		ContinuousCirculinearCurve2D curve1 = iterator.next();
+		CirculinearContinuousCurve2D curve1 = iterator.next();
 		curve1.draw(g2);
 		g2.setColor(Color.RED);
-		ContinuousCirculinearCurve2D curve2 = iterator.next();
+		CirculinearContinuousCurve2D curve2 = iterator.next();
 		curve2.draw(g2);
 	}
 	
