@@ -31,8 +31,8 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), 
 				new Point2D(20, 10));
 		PolyCirculinearCurve2D<?> curve = 
-			new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
-				new ContinuousCirculinearCurve2D[]{line1, line2, line3});
+			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
+				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
 		assertEquals(curve.getLength(), 30, 1e-14);
 	}
@@ -47,8 +47,8 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), 
 				new Point2D(20, 10));
 		PolyCirculinearCurve2D<?> curve = 
-			new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
-				new ContinuousCirculinearCurve2D[]{line1, line2, line3});
+			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
+				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
 		assertEquals(curve.getLength(1), 10, 1e-14);
 		assertEquals(curve.getLength(2), 10, 1e-14);
@@ -68,8 +68,8 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), 
 				new Point2D(20, 10));
 		PolyCirculinearCurve2D<?> curve = 
-			new PolyCirculinearCurve2D<ContinuousCirculinearCurve2D>(
-				new ContinuousCirculinearCurve2D[]{line1, line2, line3});
+			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
+				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
 		assertEquals(curve.getPosition(0), 0, 1e-14);
 		assertEquals(curve.getPosition(5), .5, 1e-14);

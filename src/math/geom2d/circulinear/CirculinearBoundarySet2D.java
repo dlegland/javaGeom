@@ -143,7 +143,7 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.ContinuousCirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
 	public CirculinearCurve2D getParallel(double d) {
 		return CirculinearCurve2DUtils.createParallel(this, d);
@@ -179,19 +179,19 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
     }
 
 	@Override
-	public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> clip(Box2D box) {
+	public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.getCurveNumber();
-        CirculinearCurveSet2D<ContinuousCirculinearCurve2D> result = 
-        	new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>(n);
+        CirculinearCurveSet2D<CirculinearContinuousCurve2D> result = 
+        	new CirculinearCurveSet2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
         for (Curve2D curve : set.getCurves()) {
-            if (curve instanceof ContinuousCirculinearCurve2D)
-                result.addCurve((ContinuousCirculinearCurve2D) curve);
+            if (curve instanceof CirculinearContinuousCurve2D)
+                result.addCurve((CirculinearContinuousCurve2D) curve);
         }
         
         // return the new set of curves
@@ -214,22 +214,22 @@ extends BoundarySet2D<T> implements	CirculinearBoundary2D {
 	}
 	
     @Override
-    public CirculinearCurveSet2D<? extends ContinuousCirculinearCurve2D> getSubCurve(
+    public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> getSubCurve(
             double t0, double t1) {
         // get the subcurve
     	CurveSet2D<? extends ContinuousOrientedCurve2D> curveSet =
     		super.getSubCurve(t0, t1);
 
         // create subcurve array
-        ArrayList<ContinuousCirculinearCurve2D> curves = 
-        	new ArrayList<ContinuousCirculinearCurve2D>(
+        ArrayList<CirculinearContinuousCurve2D> curves = 
+        	new ArrayList<CirculinearContinuousCurve2D>(
         			curveSet.getCurveNumber());
         
         // class cast each curve
         for (Curve2D curve : curveSet.getCurves())
-            curves.add((ContinuousCirculinearCurve2D) curve);
+            curves.add((CirculinearContinuousCurve2D) curve);
 
         // Create CurveSet for the result
-        return new CirculinearCurveSet2D<ContinuousCirculinearCurve2D>(curves);
+        return new CirculinearCurveSet2D<CirculinearContinuousCurve2D>(curves);
     }
 }

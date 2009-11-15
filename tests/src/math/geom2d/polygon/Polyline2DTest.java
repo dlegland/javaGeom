@@ -32,7 +32,7 @@ import java.util.*;
 
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
+import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 
 import math.geom2d.line.StraightLine2D;
 
@@ -103,7 +103,7 @@ public class Polyline2DTest extends TestCase {
 				new Point2D(100, 100),
 				new Point2D(150, 100) });
 		
-		ContinuousCirculinearCurve2D parallel = polyline.getParallel(30);
+		CirculinearContinuousCurve2D parallel = polyline.getParallel(30);
 		assertTrue(parallel!=null);
 	}
 	

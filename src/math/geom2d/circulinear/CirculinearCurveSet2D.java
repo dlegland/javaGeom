@@ -125,7 +125,7 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.ContinuousCirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
 	public CirculinearCurve2D getParallel(double d) {
 		return CirculinearCurve2DUtils.createParallel(this, d);
@@ -149,11 +149,11 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
     // methods implementing the Curve2D interface
 
     @Override
-    public Collection<? extends ContinuousCirculinearCurve2D>
+    public Collection<? extends CirculinearContinuousCurve2D>
     getContinuousCurves() {
     	// create array for storing result
-        ArrayList<ContinuousCirculinearCurve2D> result = 
-        	new ArrayList<ContinuousCirculinearCurve2D>();
+        ArrayList<CirculinearContinuousCurve2D> result = 
+        	new ArrayList<CirculinearContinuousCurve2D>();
         
         // iterate on curves, and extract each set of continuous curves
         for(CirculinearCurve2D curve : curves)

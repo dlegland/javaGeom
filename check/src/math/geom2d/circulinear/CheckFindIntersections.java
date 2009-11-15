@@ -23,8 +23,8 @@ public class CheckFindIntersections extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	PolyCirculinearCurve2D<?> curve;
-	ContinuousCirculinearCurve2D parallel1;
-	ContinuousCirculinearCurve2D parallel2;
+	CirculinearContinuousCurve2D parallel1;
+	CirculinearContinuousCurve2D parallel2;
 	
 	public CheckFindIntersections(){
 		double d90 = Math.PI/2;
@@ -58,7 +58,7 @@ public class CheckFindIntersections extends JPanel{
 		
 		Collection<Point2D> points;
 		
-		for(ContinuousCirculinearCurve2D cont : 
+		for(CirculinearContinuousCurve2D cont : 
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel2)) {
 			points = CirculinearCurve2DUtils.findIntersections(curve, cont);
 			if(points.size()==0) {

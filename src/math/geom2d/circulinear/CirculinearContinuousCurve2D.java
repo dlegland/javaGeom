@@ -1,5 +1,5 @@
 /**
- * File: 	ContinuousCirculinearCurve2D.java
+ * File: 	CirculinearContinuousCurve2D.java
  * Project: javaGeom
  * 
  * Distributed under the LGPL License.
@@ -12,23 +12,23 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
 
 /**
  * A tagging interface defining a circulinear curve which is continuous.
  * @author dlegland
- * @deprecated replaced by CirculinearContinuousCurve2D
+ *
  */
-@Deprecated
-public interface ContinuousCirculinearCurve2D extends CirculinearCurve2D,
-		ContinuousOrientedCurve2D {
+@SuppressWarnings("deprecation")
+public interface CirculinearContinuousCurve2D 
+extends ContinuousCirculinearCurve2D {
+	//TODO: remove inheritance to deprecated interface
     // ===================================================================
     // redefines declaration of CirculinearCurve2D interfaces
 
-	public ContinuousCirculinearCurve2D getParallel(double d);
-	public ContinuousCirculinearCurve2D transform(CircleInversion2D inv);
+	public CirculinearContinuousCurve2D getParallel(double d);
+	public CirculinearContinuousCurve2D transform(CircleInversion2D inv);
 	
 	// ===================================================================
     // redefines declaration of some parent interfaces
@@ -39,7 +39,7 @@ public interface ContinuousCirculinearCurve2D extends CirculinearCurve2D,
      */
     public abstract Collection<? extends CirculinearElement2D> getSmoothPieces();
 
-    public CurveSet2D<? extends ContinuousCirculinearCurve2D> clip(Box2D box);
-	public ContinuousCirculinearCurve2D getSubCurve(double t0, double t1);
-	public ContinuousCirculinearCurve2D getReverseCurve();
+    public CurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box);
+	public CirculinearContinuousCurve2D getSubCurve(double t0, double t1);
+	public CirculinearContinuousCurve2D getReverseCurve();
 }

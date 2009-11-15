@@ -25,7 +25,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public interface CirculinearElement2D extends ContinuousCirculinearCurve2D,
+public interface CirculinearElement2D extends CirculinearContinuousCurve2D,
 		SmoothOrientedCurve2D {
 
 	public CirculinearElement2D getParallel(double d);

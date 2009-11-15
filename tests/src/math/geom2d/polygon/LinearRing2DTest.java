@@ -36,7 +36,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.ContinuousCirculinearCurve2D;
+import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
@@ -70,7 +70,7 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
 		
-		ContinuousCirculinearCurve2D parallel =	ring.getParallel(20);
+		CirculinearContinuousCurve2D parallel =	ring.getParallel(20);
 		assertEquals(8, parallel.getSmoothPieces().size());
 		assertTrue(parallel.isClosed());
 	}
@@ -84,7 +84,7 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
 		
-		ContinuousCirculinearCurve2D parallel =	ring.getParallel(-20);
+		CirculinearContinuousCurve2D parallel =	ring.getParallel(-20);
 		assertEquals(8, parallel.getSmoothPieces().size());
 		assertTrue(parallel.isClosed());
 	}
