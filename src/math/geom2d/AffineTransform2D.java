@@ -558,7 +558,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
 
     /**
      * Return the inverse transform. If the transform is not invertible, throws
-     * a new NonInvertibleTransformException.
+     * a new NonInvertibleTransform2DException.
      * 
      * @since 0.6.3
      */
@@ -566,7 +566,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         double det = m00*m11-m10*m01;
 
         if (Math.abs(det)<Shape2D.ACCURACY)
-            throw new NonInvertibleTransformException();
+            throw new NonInvertibleTransform2DException(this);
 
         return new AffineTransform2D(
                 m11/det, -m01/det, (m01*m12-m02*m11)/det,
@@ -575,7 +575,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
 
     /**
      * Return the inverse transform. If the transform is not invertible, throws
-     * a new NonInvertibleTransformException.
+     * a new NonInvertibleTransform2DException.
      * 
      * @deprecated use invert() method instead (0.6.3)
      */

@@ -11,12 +11,12 @@ import java.util.Iterator;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
+import math.geom2d.UnboundedShape2DException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -107,7 +107,7 @@ public abstract class Boundary2DUtils {
             Boundary2D boundary, Box2D box) {
 
         if (!box.isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShape2DException();
 
         // iteration variable
         ContinuousOrientedCurve2D curve;

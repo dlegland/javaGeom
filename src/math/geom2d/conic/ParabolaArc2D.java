@@ -29,13 +29,7 @@ package math.geom2d.conic;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -331,7 +325,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
     	// Check curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
 
         // Compute position and tangent at extremities
         Point2D p1 = this.getFirstPoint();
@@ -353,7 +347,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         return this.getAsPolyline(32).getGeneralPath();
     }
 

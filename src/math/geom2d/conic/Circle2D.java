@@ -105,7 +105,7 @@ CircularShape2D, CircleLine2D {
      */
     public static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
     	if(Point2D.isColinear(p1, p2, p3))
-    		throw new ColinearPointsException(p1, p2, p3);
+    		throw new ColinearPoints2DException(p1, p2, p3);
     	
     	// create two median lines
         StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);

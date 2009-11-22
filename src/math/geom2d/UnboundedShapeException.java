@@ -5,11 +5,11 @@
 package math.geom2d;
 
 /**
+ * @deprecated replaced by UnboundedShape2DException (0.9.0)
  * @author dlegland
  */
-public class UnboundedShapeException extends RuntimeException {
-
-	private Shape2D shape;
+@Deprecated
+public class UnboundedShapeException extends UnboundedShape2DException {
 	
     /**
      * 
@@ -21,14 +21,10 @@ public class UnboundedShapeException extends RuntimeException {
      */
     @Deprecated
     public UnboundedShapeException() {
-    	this.shape = null;
     }
     
     public UnboundedShapeException(Shape2D shape) {
-    	this.shape = shape;
+    	super(shape);
     }
 
-    public Shape2D getShape() {
-    	return shape;
-    }
 }

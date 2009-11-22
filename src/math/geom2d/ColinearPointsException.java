@@ -10,35 +10,18 @@ package math.geom2d;
 
 
 /**
+ * @deprecated replaced by ColinearPoints2DException (0.9.0)
  * @author dlegland
- *
  */
-public class ColinearPointsException extends RuntimeException {
+@Deprecated
+public class ColinearPointsException extends ColinearPoints2DException {
 
-	protected Point2D p1;
-	protected Point2D p2;
-	protected Point2D p3;
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public ColinearPointsException(Point2D p1, Point2D p2, Point2D p3) {
-		this.p1 = p1;
-		this.p2 = p2;
-		this.p3 = p3;
-	}
-	
-	public Point2D getP1() {
-		return p1;
-	}
-	
-	public Point2D getP2() {
-		return p2;
-	}
-	
-	public Point2D getP3() {
-		return p3;
+		super(p1, p2, p3);
 	}
 }

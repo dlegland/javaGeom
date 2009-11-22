@@ -33,7 +33,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
+import math.geom2d.UnboundedShape2DException;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 
 /**
@@ -136,7 +136,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     /**
      * Return the first point of the line arc. In the case of a line arc
-     * starting from -infinity, throws an UnboundedShapeException.
+     * starting from -infinity, throws an UnboundedShape2DException.
      * 
      * @return the first point of the arc
      */
@@ -144,12 +144,12 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t0!=Double.NEGATIVE_INFINITY)
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
     }
 
     /**
      * Return the last point of the line arc. In the case of a line arc ending
-     * at infinity, throws an UnboundedShapeException.
+     * at infinity, throws an UnboundedShape2DException.
      * 
      * @return the last point of the arc.
      */
@@ -157,7 +157,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t1!=Double.POSITIVE_INFINITY)
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
     }
 
     public double getX1() {
@@ -226,7 +226,7 @@ implements SmoothOrientedCurve2D, Cloneable {
             t = t1;
 
         if (Double.isInfinite(t))
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         else
             return new Point2D(x0+dx*t, y0+dy*t);
     }
@@ -242,7 +242,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!Double.isInfinite(t0))
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
     }
 
     /**
@@ -256,7 +256,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!Double.isInfinite(t1))
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
     }
 
 	@Override
@@ -343,7 +343,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         path.moveTo((float) (x0+t0*dx), (float) (y0+t0*dy));
         path.lineTo((float) (x0+t1*dx), (float) (y0+t1*dy));
@@ -352,14 +352,14 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     /**
      * Appends a line to the current path. If t0 or t1 is infinite, throws a new
-     * UnboundedShapeException.
+     * UnboundedShape2DException.
      * 
      * @param path the path to modify
      * @return the modified path
      */
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         if (t0==Double.NEGATIVE_INFINITY)
             return path;
         if (t1==Double.POSITIVE_INFINITY)

@@ -557,13 +557,13 @@ public class Box2D implements Cloneable {
 
     public void draw(Graphics2D g2) {
         if (!isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShape2DException();
         this.getBoundary().draw(g2);
     }
 
     public void fill(Graphics2D g2) {
         if (!isBounded())
-            throw new UnboundedShapeException();
+            throw new UnboundedShape2DException();
         this.getBoundary().fill(g2);
     }
 
