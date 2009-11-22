@@ -142,14 +142,6 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract Collection<Point2D> getIntersections(LinearShape2D line);
 
     /**
-     * Return the path for tracing the curve, when cursor is already located at
-     * the beginning of the curve. Using this method allows to concatenate
-     * curves and to draw polycurves.
-     * 
-     * @return the path for tracing the curve.
-     */
-    // public abstract java.awt.geom.GeneralPath getInnerPath();
-    /**
      * Returns the curve with same trace on the plane with parametrization in
      * reverse order.
      */
@@ -176,8 +168,6 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Transforms the curve by an affine transform. The result is an instance of
      * Curve2D.
      */
-    //TODO: specifies orientation of transformed curve. Should we invert curve
-    // when transform is not direct ?
     public abstract Curve2D transform(AffineTransform2D trans);
 
     /**

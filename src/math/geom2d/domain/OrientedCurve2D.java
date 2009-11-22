@@ -87,5 +87,7 @@ public interface OrientedCurve2D extends Curve2D {
 
     public abstract CurveSet2D<? extends OrientedCurve2D> clip(Box2D box);
 
+    //TODO: specifies orientation of transformed curve. Should we invert curve
+    // when transform is not direct ?
     public abstract OrientedCurve2D transform(AffineTransform2D trans);
 }

@@ -51,7 +51,7 @@ import math.geom2d.transform.CircleInversion2D;
  * </p>
  * @author dlegland
  */
-public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
+public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 
 	public LinearRing2D() {
         super();
@@ -173,7 +173,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
 	@Override
-	public CirculinearContour2D transform(CircleInversion2D inv) {
+	public CirculinearRing2D transform(CircleInversion2D inv) {
 		
 		// Create array for storing transformed arcs
 		Collection<LineSegment2D> edges = this.getEdges();
@@ -186,7 +186,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearContour2D {
 		}
 		
 		// create the transformed shape
-		return new BoundaryPolyCirculinearCurve2D<CirculinearElement2D>(arcs);
+		return new GenericCirculinearRing2D(arcs);
 	}
 
 	// ===================================================================
