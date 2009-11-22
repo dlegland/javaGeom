@@ -29,24 +29,13 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-
-import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -70,7 +59,7 @@ import math.geom2d.transform.CircleInversion2D;
  * <p>
  */
 public abstract class AbstractLine2D extends AbstractSmoothCurve2D
-implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
+implements SmoothOrientedCurve2D, LinearElement2D {
 
     // ===================================================================
     // constants

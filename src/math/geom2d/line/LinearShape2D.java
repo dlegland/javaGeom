@@ -11,7 +11,8 @@ import math.geom2d.circulinear.CirculinearCurve2D;
 
 /**
  * A curve that can be inscribed in a straight line, line a ray, a straight
- * line, or a line segment.
+ * line, or a line segment. Classes implementing this interface can be
+ * discontinuous, contrary to the interface LinearElement2D.
  * 
  * @author dlegland
  */
