@@ -1,6 +1,6 @@
-/* file : DrawClippedPolygonDemo.java
+/* file : CheckSortPointsByAngle.java
  * 
- * Project : Euclide
+ * Project : javaGeom
  *
  * ===========================================
  * 
@@ -59,7 +59,6 @@ public class CheckSortPointsByAngle extends JPanel{
             
             if(angle1<angle2) return -1;
             if(angle1>angle2) return +1;
-            //TODO: and what about colinear points ?
             return 0;
         }
 	}
