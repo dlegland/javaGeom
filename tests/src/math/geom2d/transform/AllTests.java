@@ -37,6 +37,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.transform");
 		//$JUnit-BEGIN$
+		suite.addTest(new TestSuite(CircleInversion2DTest.class));
 		//$JUnit-END$
 		return suite;
 	}

@@ -53,5 +53,5 @@ public interface Bijection2D extends Transform2D {
     // ===================================================================
     // general methods
 
-    public abstract Bijection2D getInverseTransform();
+    public abstract Bijection2D invert();
 }
