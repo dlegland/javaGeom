@@ -68,7 +68,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Creates a straight line going through a point and with a given angle.
      */
-    public final static StraightLine2D create(java.awt.geom.Point2D point,
+    public static StraightLine2D create(java.awt.geom.Point2D point,
             double angle) {
         return new StraightLine2D(point.getX(), point.getY(), Math.cos(angle),
                 Math.sin(angle));
@@ -77,7 +77,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Creates a straight line through 2 points.
      */
-    public final static StraightLine2D create(java.awt.geom.Point2D p1,
+    public static StraightLine2D create(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
         return new StraightLine2D(p1, p2);
     }
@@ -86,21 +86,12 @@ public class StraightLine2D extends AbstractLine2D implements
      * Creates a straight line through a point and with a given direction
      * vector.
      */
-    public final static StraightLine2D create(java.awt.geom.Point2D origin,
+    public static StraightLine2D create(java.awt.geom.Point2D origin,
             Vector2D direction) {
         return new StraightLine2D(origin, direction);
     }
 
     /**
-     * @deprecated use create(Point2D, Point2D) instead
-     */
-    @Deprecated
-    public final static StraightLine2D createStraightLine2D(
-            java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) {
-        return new StraightLine2D(p1, p2);
-    }
-
-    /**
      * Creates a median between 2 points.
      * 
      * @param p1 one point
@@ -108,40 +99,13 @@ public class StraightLine2D extends AbstractLine2D implements
      * @return the median of points p1 and p2
      * @since 0.6.3
      */
-    public final static StraightLine2D createMedian(java.awt.geom.Point2D p1,
+    public static StraightLine2D createMedian(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
         Point2D mid = Point2D.midPoint(p1, p2);
         StraightLine2D line = StraightLine2D.create(p1, p2);
         return StraightLine2D.createPerpendicular(line, mid);
     }
 
-    /**
-     * Creates a median between 2 points.
-     * 
-     * @param p1 one point
-     * @param p2 another point
-     * @return the median of points p1 and p2
-     * @deprecated since 0.6.3, use createMedian instead
-     */
-    @Deprecated
-    public final static StraightLine2D createMedian2D(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2) {
-        Point2D mid = Point2D.midPoint(p1, p2);
-        StraightLine2D line = StraightLine2D.create(p1, p2);
-        return StraightLine2D.createPerpendicular(line, mid);
-    }
-
-    /**
-     * Return a new Straight line going through the given point, and with the
-     * specified direction vector.
-     * 
-     * @deprecated since 0.6.3, use create() instead
-     */
-    @Deprecated
-    public final static StraightLine2D createStraightLine2D(
-            java.awt.geom.Point2D point, double dx, double dy) {
-        return new StraightLine2D(point, dx, dy);
-    }
 
     /**
      * Return a new Straight line, parallel to another straight object (ray,
@@ -149,22 +113,11 @@ public class StraightLine2D extends AbstractLine2D implements
      * 
      * @since 0.6.3
      */
-    public final static StraightLine2D createParallel(LinearShape2D line,
+    public static StraightLine2D createParallel(LinearShape2D line,
             java.awt.geom.Point2D point) {
         return new StraightLine2D(line, point);
     }
 
-    /**
-     * Return a new Straight line, parallel to another straight object (ray,
-     * straight line or edge), and going through the given point.
-     * 
-     * @deprecated since 0.6.3, use createParallel() instead
-     */
-    @Deprecated
-    public final static StraightLine2D createParallelLine2D(LinearShape2D line,
-            java.awt.geom.Point2D point) {
-        return new StraightLine2D(line, point);
-    }
 
     /**
      * Return a new Straight line, parallel to another straight object (ray,
@@ -172,23 +125,8 @@ public class StraightLine2D extends AbstractLine2D implements
      * 
      * @since 0.6.3
      */
-    public final static StraightLine2D createParallel(LinearShape2D linear,
+    public static StraightLine2D createParallel(LinearShape2D linear,
             double d) {
-        StraightLine2D line = linear.getSupportingLine();
-        double dd = Math.hypot(line.dx, line.dy);
-        return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd,
-                line.dx, line.dy);
-    }
-
-    /**
-     * Return a new Straight line, parallel to another straight object (ray,
-     * straight line or edge), and going through the given point.
-     * 
-     * @deprecated since 0.6.3, use createParallel() instead
-     */
-    @Deprecated
-    public final static StraightLine2D createParallelLine2D(
-            LinearShape2D linear, double d) {
         StraightLine2D line = linear.getSupportingLine();
         double dd = Math.hypot(line.dx, line.dy);
         return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd,
@@ -201,43 +139,19 @@ public class StraightLine2D extends AbstractLine2D implements
      * 
      * @since 0.6.3
      */
-    public final static StraightLine2D createPerpendicular(
+    public static StraightLine2D createPerpendicular(
             LinearShape2D linear, Point2D point) {
         StraightLine2D line = linear.getSupportingLine();
         return new StraightLine2D(point, -line.dy, line.dx);
     }
 
-    /**
-     * Return a new Straight line, parallel to another straight object (ray,
-     * straight line or edge), and going through the given point.
-     * 
-     * @deprecated since 0.6.3, use createPerpendicular instead
-     */
-    @Deprecated
-    public final static StraightLine2D createOrthogonalLine2D(
-            LinearShape2D linear, Point2D point) {
-        StraightLine2D line = linear.getSupportingLine();
-        return new StraightLine2D(point, -line.dy, line.dx);
-    }
 
     /**
      * Return a new Straight line, with the given coefficient of the cartesian
      * equation (a*x + b*y + c = 0).
      */
-    public final static StraightLine2D createCartesian(double a, double b,
+    public static StraightLine2D createCartesian(double a, double b,
             double c) {
-        return new StraightLine2D(a, b, c);
-    }
-
-    /**
-     * Return a new Straight line, with the given coefficient of the cartesian
-     * equation (a*x + b*y + c = 0).
-     * 
-     * @deprecated since 0.6.3, use createCartesian instead
-     */
-    @Deprecated
-    public final static StraightLine2D createCartesianLine2D(double a,
-            double b, double c) {
         return new StraightLine2D(a, b, c);
     }
 
@@ -246,7 +160,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * p1 and p2 for the first one, and p3 and p4 for the second one. Returns
      * null if two lines are parallel.
      */
-    public final static Point2D getIntersection(java.awt.geom.Point2D p1,
+    public static Point2D getIntersection(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2, java.awt.geom.Point2D p3,
             java.awt.geom.Point2D p4) {
         StraightLine2D line1 = new StraightLine2D(p1, p2);
@@ -333,62 +247,6 @@ public class StraightLine2D extends AbstractLine2D implements
 
     // ===================================================================
     // methods specific to StraightLine2D
-
-    /**
-     * @deprecated lines will become imutable in a future release
-     */
-    @Deprecated
-    public void setLine(double x0, double y0, double dx, double dy) {
-        this.x0 = x0;
-        this.y0 = y0;
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-    /**
-     * @deprecated lines will become imutable in a future release
-     */
-    @Deprecated
-    public void setPoints(double x1, double y1, double x2, double y2) {
-        this.x0 = x1;
-        this.y0 = y1;
-        this.dx = x2-x1;
-        this.dy = y2-y1;
-    }
-
-    /**
-     * @deprecated lines will become imutable in a future release
-     */
-    @Deprecated
-    public void setLine(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) {
-        this.x0 = p1.getX();
-        this.y0 = p1.getY();
-        this.dx = p2.getX()-x0;
-        this.dy = p2.getY()-y0;
-    }
-
-    /**
-     * @deprecated lines will become imutable in a future release
-     */
-    @Deprecated
-    public void setLine(LinearShape2D linear) {
-        StraightLine2D line = linear.getSupportingLine();
-        this.x0 = line.x0;
-        this.y0 = line.y0;
-        this.dx = line.dx;
-        this.dy = line.dy;
-    }
-
-    /**
-     * @deprecated lines will become imutable in a future release
-     */
-    @Deprecated
-    public void setCartesianEquation(double a, double b, double c) {
-        dx = -b;
-        dy = a;
-        x0 = -a*c/(a*a+b*b);
-        y0 = -b*c/(a*a+b*b);
-    }
 
     /**
      * Returns a new Straight line, parallel to another straight object (ray,

@@ -61,12 +61,6 @@ public interface Shape2D {
     public final static double  ACCURACY  = 1e-12;
 
     /**
-     * @deprecated methods returning empty result should return null (0.7.0)
-     */
-    @Deprecated
-    public final static Shape2D EMPTY_SET = new EmptySet2D();
-
-    /**
      * Checks if the shape contains the planar point defined by (x,y).
      */
     public abstract boolean contains(double x, double y);
@@ -135,78 +129,4 @@ public interface Shape2D {
      * If the shape is unbounded, an exception is thrown.
      */
     public abstract void draw(Graphics2D g2);
-    
-    /**
-     * An empty set is a shape which does not contain any point.
-     * 
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes (0.7.0)
-     * @author Legland
-     */
-    @Deprecated
-    public class EmptySet2D implements Shape2D {
-
-        protected EmptySet2D() {
-        }
-
-        /** returns false. */
-        public boolean contains(double arg0, double arg1) {
-            return false;
-        }
-
-        /** returns false. */
-        public boolean contains(java.awt.geom.Point2D arg0) {
-            return false;
-        }
-
-        /**
-         * Not defined for empty set, but returns POSITIVE_INFINITY.
-         */
-        public double getDistance(java.awt.geom.Point2D p) {
-            return Double.POSITIVE_INFINITY;
-        }
-
-        /**
-         * Not defined for empty set, but returns POSITIVE_INFINITY.
-         */
-        public double getDistance(double x, double y) {
-            return Double.POSITIVE_INFINITY;
-        }
-
-        /**
-         * Not defined for empty set, but returns FALSE.
-         */
-        public boolean isBounded() {
-            return false;
-        }
-
-        /**
-         * Returns true by definition.
-         */
-        public boolean isEmpty() {
-            return true;
-        }
-
-        public Box2D getBoundingBox() {
-            return new Box2D(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
-        }
-
-        /** returns EmptySet2D. */
-        public Shape2D clip(Box2D box) {
-            return this;
-        }
-
-        /** returns EmptySet2D. */
-        public Shape2D transform(AffineTransform2D trans) {
-            return this;
-        }
-        
-        public void draw(Graphics2D g2) {
-        }
-        
-        @Override
-        public boolean equals(Object obj) {
-            return (obj instanceof EmptySet2D);
-        }
-    }
 }

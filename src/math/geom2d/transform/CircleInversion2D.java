@@ -205,16 +205,6 @@ public class CircleInversion2D implements Transform2D {
 
         return null;
     }
-
-    
-     /**
-      * @deprecated use transformShape() instead (0.7.0)
-      */
-    @Deprecated
-    public Shape2D transform(Shape2D shape) {
-        return this.transformShape(shape);
-    }
-
     
     public Point2D transformPoint(java.awt.geom.Point2D pt) {
         Point2D center = circle.getCenter();

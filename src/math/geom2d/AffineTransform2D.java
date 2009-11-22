@@ -54,7 +54,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * @since 0.8.1
      */
-    public final static AffineTransform2D createIdentity() {
+    public static AffineTransform2D createIdentity() {
         return new AffineTransform2D(1, 0, 0, 0, 1, 0);
     }
 
@@ -62,7 +62,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * Creates a new affine transform by copying coefficients.
      * @since 0.8.1
      */
-    public final static AffineTransform2D create(AffineTransform2D trans) {
+    public static AffineTransform2D create(AffineTransform2D trans) {
         double[][] mat = trans.getAffineMatrix();
         return new AffineTransform2D(
         		mat[0][0], mat[0][1], mat[0][2], 
@@ -72,7 +72,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * @since 0.8.1
      */
-    public final static AffineTransform2D create(double[] coefs) {
+    public static AffineTransform2D create(double[] coefs) {
         if (coefs.length==4) {
             return new AffineTransform2D(
             		coefs[0], coefs[1], 0, 
@@ -89,13 +89,13 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * @since 0.8.1
      */
-    public final static AffineTransform2D create(
+    public static AffineTransform2D create(
     		double xx, double yx, double tx,
     		double xy, double yy, double ty) {
     	return new AffineTransform2D(xx, yx, tx, xy, yy, ty);
     }
 
-    public final static AffineTransform2D createGlideReflection(
+    public static AffineTransform2D createGlideReflection(
             LinearShape2D line, double distance) {
     	// get origin and vector of line
         Vector2D vector = line.getVector().getNormalizedVector();
@@ -125,12 +125,12 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         		2*dxy/delta, (dy2-dx2)/delta, 2*dx*(dxy0-dyx0)/delta+ty);
     }
 
-    public final static AffineTransform2D createHomothecy(Point2D center,
+    public static AffineTransform2D createHomothecy(Point2D center,
             double k) {
         return createScaling(center, k, k);
     }
 
-    public final static AffineTransform2D createLineReflection(
+    public static AffineTransform2D createLineReflection(
             LinearShape2D line) {
         Vector2D vector = line.getVector();
         Point2D origin = line.getOrigin();
@@ -151,11 +151,11 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * @param center the center of the reflection
      * @return an instance of AffineTransform2D representing a point reflection
      */
-    public final static AffineTransform2D createPointReflection(Point2D center) {
+    public static AffineTransform2D createPointReflection(Point2D center) {
         return AffineTransform2D.createScaling(center, -1, -1);
     }
 
-    public final static AffineTransform2D createQuadrantRotation(int numQuadrant) {
+    public static AffineTransform2D createQuadrantRotation(int numQuadrant) {
         int n = ((numQuadrant%4)+4)%4;
         switch (n) {
         case 0:
@@ -174,14 +174,14 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * Return a rotation around the origin, with angle in radians.
      */
-    public final static AffineTransform2D createRotation(double angle) {
+    public static AffineTransform2D createRotation(double angle) {
         return AffineTransform2D.createRotation(0, 0, angle);
     }
 
     /**
      * Return a rotation around the specified point, with angle in radians.
      */
-    public final static AffineTransform2D createRotation(Point2D center,
+    public static AffineTransform2D createRotation(Point2D center,
             double angle) {
         return AffineTransform2D.createRotation(center.getX(), center.getY(),
                 angle);
@@ -192,7 +192,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * the angular distance of the angle with a multiple of PI/2 is lower than
      * the threshold Shape2D.ACCURACY, the method assumes equality.
      */
-    public final static AffineTransform2D createRotation(double cx, double cy,
+    public static AffineTransform2D createRotation(double cx, double cy,
             double angle) {
         angle = Angle2D.formatAngle(angle);
 
@@ -240,14 +240,14 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * Return a scaling by the given coefficients, centered on the origin.
      */
-    public final static AffineTransform2D createScaling(double sx, double sy) {
+    public static AffineTransform2D createScaling(double sx, double sy) {
         return AffineTransform2D.createScaling(new Point2D(0, 0), sx, sy);
     }
 
     /**
      * Return a scaling by the given coefficients, centered on the given point.
      */
-    public final static AffineTransform2D createScaling(Point2D center,
+    public static AffineTransform2D createScaling(Point2D center,
             double sx, double sy) {
         return new AffineTransform2D(sx, 0, (1-sx)*center.getX(), 0, sy, (1-sy)
                 *center.getY());
@@ -260,21 +260,21 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * @param shy shear in y-axis
      * @return a shear transform
      */
-    public final static AffineTransform2D createShear(double shx, double shy) {
+    public static AffineTransform2D createShear(double shx, double shy) {
         return new AffineTransform2D(1, shx, 0, shy, 1, 0);
     }
 
     /**
      * Return a translation by the given vector.
      */
-    public final static AffineTransform2D createTranslation(Vector2D vect) {
+    public static AffineTransform2D createTranslation(Vector2D vect) {
         return new AffineTransform2D(1, 0, vect.getX(), 0, 1, vect.getY());
     }
 
     /**
      * Return a translation by the given vector.
      */
-    public final static AffineTransform2D createTranslation(double dx, double dy) {
+    public static AffineTransform2D createTranslation(double dx, double dy) {
         return new AffineTransform2D(1, 0, dx, 0, 1, dy);
     }
 
@@ -284,7 +284,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     /**
      * Checks if the given transform is the identity transform.
      */
-    public final static boolean isIdentity(AffineTransform2D trans) {
+    public static boolean isIdentity(AffineTransform2D trans) {
         double[] coefs = trans.getCoefficients();
         if (Math.abs(coefs[0]-1)>Shape2D.ACCURACY)
             return false;
@@ -307,7 +307,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * 
      * @return true if transform is direct.
      */
-    public final static boolean isDirect(AffineTransform2D trans) {
+    public static boolean isDirect(AffineTransform2D trans) {
         double[][] mat = trans.getAffineMatrix();
         return mat[0][0]*mat[1][1]-mat[0][1]*mat[1][0]>0;
     }
@@ -319,7 +319,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * 
      * @return true in case of isometry.
      */
-    public final static boolean isIsometry(AffineTransform2D trans) {
+    public static boolean isIsometry(AffineTransform2D trans) {
         // extract matrix coefficients
         double[][] mat = trans.getAffineMatrix();
         double a = mat[0][0];
@@ -346,7 +346,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * 
      * @return true in case of motion.
      */
-    public final static boolean isMotion(AffineTransform2D trans) {
+    public static boolean isMotion(AffineTransform2D trans) {
         double[][] mat = trans.getAffineMatrix();
         double det = mat[0][0]*mat[1][1]-mat[0][1]*mat[1][0];
         return Math.abs(det-1)<Shape2D.ACCURACY;
@@ -358,7 +358,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
      * 
      * @return true in case of similarity.
      */
-    public final static boolean isSimilarity(AffineTransform2D trans) {
+    public static boolean isSimilarity(AffineTransform2D trans) {
         double[][] mat = trans.getAffineMatrix();
         // isolate linear part of the transform
         double a = mat[0][0];
@@ -606,20 +606,6 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     public Point2D transform(java.awt.geom.Point2D src) {
         double coef[] = this.getCoefficients();
         Point2D dst = new Point2D(
-                src.getX()*coef[0]+src.getY()*coef[1]+coef[2], 
-                src.getX()*coef[3]+src.getY()*coef[4]+coef[5]);
-        return dst;
-    }
-
-    /**
-     * @deprecated use point.transform() instead. (0.7.0)
-     */
-    @Deprecated
-    public Point2D transform(java.awt.geom.Point2D src, Point2D dst) {
-        double coef[] = getCoefficients();
-        if (dst==null)
-            dst = new Point2D();
-        dst.setLocation(
                 src.getX()*coef[0]+src.getY()*coef[1]+coef[2], 
                 src.getX()*coef[3]+src.getY()*coef[4]+coef[5]);
         return dst;

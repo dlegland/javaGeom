@@ -175,51 +175,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         return t;
     }
 
-    /**
-     * Returns the circle which contains the circle arc.
-     * @deprecated use getSupportingCircle instead
-     */
-    @Deprecated
-    public Circle2D getSupportCircle() {
-        return circle;
-    }
-
-    
-    /**
-     * Change the center of the support circle.
-     * 
-     * @param point the new center of the arc.
-     * @deprecated conics will become imutable in a future release
-     */
-    @Deprecated
-    public void setCenter(Point2D point) {
-        circle.xc = point.getX();
-        circle.yc = point.getY();
-    }
-
-    /**
-     * Change the radius of the support circle
-     * 
-     * @param r the new radius
-     * @deprecated conics will become imutable in a future release
-     */
-    @Deprecated
-    public void setRadius(double r) {
-        circle.r = r;
-    }
-
-    /**
-     * @deprecated conics will become imutable in a future release
-     */
-    @Deprecated
-    public void setArc(Point2D center, double radius, double start,
-            double extent) {
-        circle.xc = center.getX();
-        circle.yc = center.getY();
-        circle.r = radius;
-        startAngle = start;
-        angleExtent = extent;
-    }
 
     // ===================================================================
     // methods implementing CircularShape2D interface

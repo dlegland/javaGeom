@@ -56,17 +56,6 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
 
     private static final long   serialVersionUID = 1L;
 
-    /**
-     * The point located at the infinity. This point is virtual, it is contained
-     * in every infinite shape, such as straight lines, hyperbolas and
-     * parabolas.
-     * @deprecated it is recommended to use exceptions instead (0.7.0)
-     */
-    @Deprecated
-    public final static Point2D INFINITY_POINT   = new Point2D(
-                                                         java.lang.Double.POSITIVE_INFINITY,
-                                                         java.lang.Double.POSITIVE_INFINITY);
-
     // ===================================================================
     // class variables
 
@@ -96,26 +85,6 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         super(point.getX(), point.getY());
     }
 
-    /**
-     * Constructs a new Point2D from two java awt.geom Point2D, 
-     * summing their coordinates.
-     * @deprecated since 0.7.0
-     */
-    @Deprecated
-    public Point2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
-        super(point1.getX()+point2.getX(), point1.getY()+point2.getY());
-    }
-
-    /**
-     * Constructor from a java awt.geom Point2D, and two double. The (x,y)
-     * coordinates are added to the coordinates of given point.
-     * @deprecated use Point2D.createPolar() instead (0.7.0)
-     */
-    @Deprecated
-    public Point2D(java.awt.geom.Point2D point1, double x, double y) {
-        super(point1.getX()+x, point1.getY()+y);
-    }
-
     
     // ===================================================================
     // static methods
@@ -124,7 +93,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * Static factory for creating a new point in cartesian coordinates.
      * @since 0.8.1
      */
-    public final static Point2D create(double x, double y) {
+    public static Point2D create(double x, double y) {
         return new Point2D(x, y);
     }
     
@@ -133,7 +102,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * java point.
      * @since 0.8.1
      */
-    public final static Point2D create(java.awt.geom.Point2D point) {
+    public static Point2D create(java.awt.geom.Point2D point) {
         return new Point2D(point.getX(), point.getY());
     }
     
@@ -141,7 +110,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * Creates a new point from polar coordinates <code>rho</code> and
      * <code>theta</code>.
      */
-    public final static Point2D createPolar(double rho, double theta) {
+    public static Point2D createPolar(double rho, double theta) {
         return new Point2D(rho*Math.cos(theta), rho*Math.sin(theta));
     }
 
@@ -149,7 +118,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * Creates a new point from polar coordinates <code>rho</code> and
      * <code>theta</code>, from the given point.
      */
-    public final static Point2D createPolar(Point2D point, double rho,
+    public static Point2D createPolar(Point2D point, double rho,
             double theta) {
         return new Point2D(
                 point.getX()+rho*Math.cos(theta),
@@ -160,7 +129,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * Creates a new point from polar coordinates <code>rho</code> and
      * <code>theta</code>, from the position (x0,y0).
      */
-    public final static Point2D createPolar(double x0, double y0, double rho,
+    public static Point2D createPolar(double x0, double y0, double rho,
             double theta) {
         return new Point2D(x0+rho*Math.cos(theta), y0+rho*Math.sin(theta));
     }
@@ -171,7 +140,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * Uses robust computation (via Math.hypot() method).
      * @return the Euclidean distance between p1 and p2.
      */
-    public final static double getDistance(double x1, double y1, double x2,
+    public static double getDistance(double x1, double y1, double x2,
             double y2) {
         return Math.hypot(x2-x1, y2-y1);
     }
@@ -183,7 +152,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param p2 the second point
      * @return the Euclidean distance between p1 and p2.
      */
-    public final static double getDistance(java.awt.geom.Point2D p1,
+    public static double getDistance(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
         return Math.hypot(p1.getX()-p2.getX(), p1.getY()-p2.getY());
     }
@@ -193,7 +162,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * 
      * @return true if three points lie on the same line.
      */
-    public final static boolean isColinear(java.awt.geom.Point2D p1,
+    public static boolean isColinear(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
         double dx1, dx2, dy1, dy2;
         dx1 = p2.getX()-p1.getX();
@@ -216,7 +185,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param p2 the last point
      * @return +1, 0 or -1, depending on the relative position of the points
      */
-    public final static int ccw(Point2D p0, Point2D p1, Point2D p2) {
+    public static int ccw(Point2D p0, Point2D p1, Point2D p2) {
         double x0 = p0.getX();
         double y0 = p0.getY();
         double dx1 = p1.getX()-x0;
@@ -235,7 +204,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return 0;
     }
 
-    public final static Point2D midPoint(java.awt.geom.Point2D p1,
+    public static Point2D midPoint(java.awt.geom.Point2D p1,
             java.awt.geom.Point2D p2) {
         return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2);
     }
@@ -246,7 +215,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param points an array of points
      * @return the centroid of the points
      */
-    public final static Point2D centroid(java.awt.geom.Point2D[] points) {
+    public static Point2D centroid(java.awt.geom.Point2D[] points) {
         int n = points.length;
         double sx = 0, sy = 0;
         for (int i = 0; i<n; i++) {
@@ -264,7 +233,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param weights an array of weights the same size as points
      * @return the centroid of the points
      */
-    public final static Point2D centroid(
+    public static Point2D centroid(
     		java.awt.geom.Point2D[] points,
     		double[] weights) {
     	// number of points
@@ -295,7 +264,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param points a collection of points
      * @return the centroid of the points
      */
-    public final static Point2D centroid(Collection<? extends Point2D> points) {
+    public static Point2D centroid(Collection<? extends Point2D> points) {
         int n = points.size();
         double sx = 0, sy = 0;
         for (Point2D point : points) {
@@ -313,7 +282,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
      * @param pt3 the third point
      * @return the centroid of the 3 points
      */
-    public final static Point2D centroid(java.awt.geom.Point2D pt1,
+    public static Point2D centroid(java.awt.geom.Point2D pt1,
             java.awt.geom.Point2D pt2, java.awt.geom.Point2D pt3) {
         return new Point2D(
                 (pt1.getX()+pt2.getX()+pt3.getX())/3, 
@@ -416,30 +385,7 @@ implements PointShape2D, Cloneable, CirculinearShape2D {
         return new java.awt.geom.Point2D.Float((float) x, (float) y);
     }
 
-    /**
-     * Sets location specified as polar coordinate : distance from origin + angle
-     * with horizontal.
-     * @deprecated use Point2D.createPolar() instead (0.7.0)
-     */
-    @Deprecated
-    public void setPolarLocation(double rho, double theta) {
-        x = rho*Math.cos(theta);
-        y = rho*Math.sin(theta);
-    }
-
-    /**
-     * Sets location at distance 'rho' from given point, and making an angle
-     * 'theta' with horizontal.
-     * @deprecated use Point2D.createPolar() instead (0.7.0)
-     */
-    @Deprecated
-    public void setPolarLocation(java.awt.geom.Point2D point, double rho,
-            double theta) {
-        x = point.getX()+rho*Math.cos(theta);
-        y = point.getY()+rho*Math.sin(theta);
-    }
-
-    
+   
     // ===================================================================
     // Methods implementing CirculinearShape2D interface
 

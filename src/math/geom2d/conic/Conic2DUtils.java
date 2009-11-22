@@ -4,21 +4,11 @@
 
 package math.geom2d.conic;
 
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.domain.ContinuousBoundary2D;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
 
 /**
@@ -107,7 +97,7 @@ public class Conic2DUtils {
             if (Math.abs(d)>eps||Math.abs(e)>eps)
                 return new ConicStraightLine2D(d, e, f);
             else
-                return new EmptyConic2D(coefs);
+                return null; //TODO: throw exception ?
         }
 
         // Case of a parabola
@@ -127,7 +117,7 @@ public class Conic2DUtils {
                             AffineTransform2D.createRotation(theta0));
                     return new ConicTwoLines2D(center, dist, theta0);
                 } else
-                    return new EmptyConic2D(coefs);
+                    return null; //TODO: throw exception ?
             }
 
             // compute reduced coefficients
@@ -158,7 +148,7 @@ public class Conic2DUtils {
                     		AffineTransform2D.createRotation(theta0));
                     return new ConicTwoLines2D(center, dist, theta0);
                 } else
-                    return new EmptyConic2D(coefs);
+                    return null; //TODO: throw exception ?
             }
 
             // compute reduced coefficients
@@ -343,81 +333,6 @@ public class Conic2DUtils {
         }
     }
 
-    /**
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes
-     */
-    @Deprecated
-    static class EmptyConic2D extends Curve2D.EmptyCurve2D implements Conic2D {
-
-        double[] coefs;
-
-        public EmptyConic2D(double[] coefs) {
-        	this.coefs = coefs;
-        }
-
-        public EmptyConic2D() {
-            this(new double[] { 0, 0, 0, 0, 0, 1 });
-        }
-
-        public double[] getCartesianEquation() {
-            return getConicCoefficients();
-        }
-
-        public double[] getConicCoefficients() {
-            return coefs;
-        }
-
-        public Type getConicType() {
-            return Conic2D.Type.NOT_A_CONIC;
-        }
-
-        public double getEccentricity() {
-            return Double.NaN;
-        }
-
-        public double getSignedDistance(java.awt.geom.Point2D point) {
-            return Double.NaN;
-        }
-
-        public double getSignedDistance(double x, double y) {
-            return Double.NaN;
-        }
-
-        public double getWindingAngle(java.awt.geom.Point2D point) {
-            return Double.NaN;
-        }
-
-        public boolean isInside(java.awt.geom.Point2D pt) {
-            return false;
-        }
-
-        @Override
-        public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
-            return null;
-        }
-
-        @Override
-        public Conic2D getReverseCurve() {
-            return this;
-        }
-
-        @Override
-        public Conic2D transform(AffineTransform2D trans) {
-            return this;
-        }
-
-        public void fill(Graphics2D g2) {
-        }
-
-        public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-            return new ArrayList<ContinuousBoundary2D>(0);
-        }
-
-        public Domain2D getDomain() {
-            return null;
-        }
-    }
 
     static class ConicTwoLines2D extends BoundarySet2D<StraightLine2D>
             implements Conic2D {

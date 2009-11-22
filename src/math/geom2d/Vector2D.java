@@ -101,7 +101,7 @@ public class Vector2D implements Cloneable {
      * Creates a new vector by specifying the distance to the origin, and the
      * angle with the horizontal.
      */
-    public final static Vector2D createPolar(double rho, double theta) {
+    public static Vector2D createPolar(double rho, double theta) {
         return new Vector2D(rho*Math.cos(theta), rho*Math.sin(theta));
     }
 
@@ -114,7 +114,7 @@ public class Vector2D implements Cloneable {
      * orthogonal. It is positive if vectors are in the same direction, and
      * negative if they are in opposite direction.
      */
-    public final static double dot(Vector2D v1, Vector2D v2) {
+    public static double dot(Vector2D v1, Vector2D v2) {
         return v1.getX()*v2.getX()+v1.getY()*v2.getY();
     }
 
@@ -127,7 +127,7 @@ public class Vector2D implements Cloneable {
      * between vector 1 and vector 2 is comprised between 0 and PI, and negative
      * otherwise.
      */
-    public final static double cross(Vector2D v1, Vector2D v2) {
+    public static double cross(Vector2D v1, Vector2D v2) {
         return v1.getX()*v2.getY()-v2.getX()*v1.getY();
     }
 
@@ -136,7 +136,7 @@ public class Vector2D implements Cloneable {
      * 
      * @return true if the vectors are colinear
      */
-    public final static boolean isColinear(Vector2D v1, Vector2D v2) {
+    public static boolean isColinear(Vector2D v1, Vector2D v2) {
         v1 = v1.getNormalizedVector();
         v2 = v2.getNormalizedVector();
         return Math.abs(v1.getX()*v2.getY()-v1.getY()*v2.getX())<Shape2D.ACCURACY;
@@ -147,7 +147,7 @@ public class Vector2D implements Cloneable {
      * 
      * @return true if the vectors are orthogonal
      */
-    public final static boolean isOrthogonal(Vector2D v1, Vector2D v2) {
+    public static boolean isOrthogonal(Vector2D v1, Vector2D v2) {
         v1 = v1.getNormalizedVector();
         v2 = v2.getNormalizedVector();
         return Math.abs(v1.getX()*v2.getX()+v1.getY()*v2.getY())<Shape2D.ACCURACY;
@@ -162,45 +162,6 @@ public class Vector2D implements Cloneable {
 
     public double getY() {
         return this.y;
-    }
-
-    // ===================================================================
-    // modifiers
-
-    /**
-     * @deprecated vectors will become imutable in a future release
-     */
-    @Deprecated
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    /**
-     * @deprecated vectors will become imutable in a future release
-     */
-    @Deprecated
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    /**
-     * @deprecated vectors will become imutable in a future release
-     */
-    @Deprecated
-    public void setVector(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
-     * Set location specified as polar coordinate : distance from origin + angle
-     * with horizontal.
-     * @deprecated vectors will become imutable in a future release
-     */
-    @Deprecated
-    public void setAsPolar(double rho, double theta) {
-        this.x = rho*Math.cos(theta);
-        this.y = rho*Math.sin(theta);
     }
 
     /**

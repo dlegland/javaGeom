@@ -111,15 +111,15 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     // ===================================================================
     // static factory methods
     
-    public final static PointSet2D create(Collection<? extends java.awt.geom.Point2D> points) {
+    public static PointSet2D create(Collection<? extends java.awt.geom.Point2D> points) {
     	return new PointArray2D(points);
     }
     
-    public final static PointSet2D create(Point2D[] points) {
+    public static PointSet2D create(Point2D[] points) {
     	return new PointArray2D(points);
     }
     
-    public final static PointSet2D create(int size) {
+    public static PointSet2D create(int size) {
     	return new PointArray2D(size);
     }
     

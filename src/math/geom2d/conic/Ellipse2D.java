@@ -221,7 +221,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      *            coefficients for x^2, xy, and y^2 factors.
      * @return the Ellipse2D corresponding to given coefficients
      */
-    public final static Ellipse2D reduceCentered(double[] coefs) {
+    public static Ellipse2D reduceCentered(double[] coefs) {
         double A = coefs[0];
         double B = coefs[1];
         double C = coefs[2];
@@ -277,7 +277,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      * @param trans an affine transform
      * @return the transformed ellipse, centered around origin
      */
-    public final static Ellipse2D transformCentered(Ellipse2D ellipse,
+    public static Ellipse2D transformCentered(Ellipse2D ellipse,
             AffineTransform2D trans) {
         // Extract inner parameter of ellipse
         double r1 = ellipse.r1;
@@ -308,63 +308,6 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
 
     // ===================================================================
     // Methods specific to Ellipse2D
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setEllipse(double xc, double yc, double r1, double r2,
-            double theta) {
-        this.setEllipse(xc, yc, r1, r2, theta, true);
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setEllipse(double xc, double yc, double r1, double r2,
-            double theta, boolean direct) {
-        this.xc = xc;
-        this.yc = yc;
-        this.r1 = r1;
-        this.r2 = r2;
-        this.theta = theta;
-        this.direct = direct;
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setEllipse(Point2D center, double r1, double r2, double theta) {
-        this.setEllipse(center.getX(), center.getY(), r1, r2, theta, true);
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setEllipse(Point2D center, double r1, double r2, double theta,
-            boolean direct) {
-        this.setEllipse(center.getX(), center.getY(), r1, r2, theta, direct);
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setCenter(Point2D center) {
-        this.setCenter(center.getX(), center.getY());
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setCenter(double x, double y) {
-        this.xc = x;
-        this.yc = y;
-    }
 
     /**
      * Return the RHO parameter, in a polar representation of the ellipse,
@@ -1081,7 +1024,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      */
     public Ellipse2D transform(AffineTransform2D trans) {
         Ellipse2D result = Ellipse2D.transformCentered(this, trans);
-        result.setCenter(this.getCenter().transform(trans));
+        Point2D center = this.getCenter().transform(trans);
+        result.xc = center.getX();
+        result.yc = center.getY();
         result.direct = !(this.direct^trans.isDirect());
         return result;
     }
