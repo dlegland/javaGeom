@@ -72,7 +72,7 @@ import math.geom2d.transform.CircleInversion2D;
  * {@See LineSegment2D}
  */
 public class Line2D extends AbstractSmoothCurve2D
-implements LinearShape2D, CirculinearElement2D, Cloneable {
+implements LinearElement2D, Cloneable {
 
     // ===================================================================
     // constants

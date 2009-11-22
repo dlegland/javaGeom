@@ -171,7 +171,7 @@ public class CirculinearCurve2DUtils {
 		} 
 		
 		// Create array for storing result
-		CirculinearCurveSet2D<CirculinearContinuousCurve2D> parallel =
+		CirculinearCurveSet2D<CirculinearContinuousCurve2D> parallels =
 			new CirculinearCurveSet2D<CirculinearContinuousCurve2D>();
 		
 		// compute parallel of each continuous part, and add it to the result
@@ -180,11 +180,11 @@ public class CirculinearCurve2DUtils {
 			CirculinearContinuousCurve2D contParallel = 
 				createContinuousParallel(continuous, dist);
 			if(contParallel!=null)
-				parallel.addCurve(contParallel);
+				parallels.addCurve(contParallel);
 		}
 		
 		// return the set of parallel curves
-		return parallel;
+		return parallels;
 	}
     
 	
