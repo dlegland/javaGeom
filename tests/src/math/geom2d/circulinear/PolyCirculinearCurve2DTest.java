@@ -10,8 +10,12 @@ package math.geom2d.circulinear;
 
 
 import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.line.AbstractLine2D;
+import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.Line2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Ray2D;
 import junit.framework.TestCase;
 
 
@@ -21,6 +25,28 @@ import junit.framework.TestCase;
  */
 public class PolyCirculinearCurve2DTest extends TestCase {
 
+	/*
+	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getParallel(double)}
+	 */
+	public void testGetParallel_Wedge() {
+		Point2D point = Point2D.create(20, 10);
+		Vector2D v1 = Vector2D.create(-2, 0);
+		Vector2D v2 = Vector2D.create(0, 3);
+		AbstractLine2D[] array = new AbstractLine2D[]{
+				InvertedRay2D.create(point, v1),
+				Ray2D.create(point, v2)
+		};
+		PolyCirculinearCurve2D<AbstractLine2D> curve = 
+			new PolyCirculinearCurve2D<AbstractLine2D>(array);
+		
+		double dist = 5;
+		
+		CirculinearContinuousCurve2D parallel1 = curve.getParallel(dist);
+		assertEquals(3, parallel1.getSmoothPieces().size());
+		CirculinearContinuousCurve2D parallel2 = curve.getParallel(-dist);
+		assertEquals(3, parallel2.getSmoothPieces().size());
+	}
+	
 	/**
 	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getLength()}.
 	 */

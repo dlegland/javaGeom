@@ -8,16 +8,48 @@
  */
 package math.geom2d.domain;
 
-import math.geom2d.Point2D;
-import math.geom2d.conic.CircleArc2D;
-import math.geom2d.line.LineSegment2D;
 import junit.framework.TestCase;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.conic.CircleArc2D;
+import math.geom2d.line.AbstractLine2D;
+import math.geom2d.line.InvertedRay2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.line.Ray2D;
 
 /**
  * @author dlegland
  *
  */
 public class BoundaryPolyCurve2DTest extends TestCase {
+
+	/*
+	 * Test method for 'math.geom2d.PolyCurve2D.getSubCurve(double, double)'
+	 */
+	public void testIsInside_Wedge() {
+		Point2D point = Point2D.create(20, 10);
+		Vector2D v1 = Vector2D.create(-2, 0);
+		Vector2D v2 = Vector2D.create(0, 3);
+		BoundaryPolyCurve2D<AbstractLine2D> curve = 
+			BoundaryPolyCurve2D.create(new AbstractLine2D[]{
+					InvertedRay2D.create(point, v1),
+					Ray2D.create(point, v2)
+		});
+		
+		Point2D po1 = Point2D.create(30, 15);
+		assertFalse(curve.isInside(po1));
+		Point2D po2 = Point2D.create(25, 20);
+		assertFalse(curve.isInside(po2));
+		
+		Point2D pi1 = Point2D.create(30, 5);
+		assertTrue(curve.isInside(pi1));
+		Point2D pi2 = Point2D.create(20, 5);
+		assertTrue(curve.isInside(pi2));
+		Point2D pi3 = Point2D.create(15, 10);
+		assertTrue(curve.isInside(pi3));
+		Point2D pi4 = Point2D.create(15, 20);
+		assertTrue(curve.isInside(pi4));
+	}
 
 	/**
 	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#getSignedDistance(double, double)}.

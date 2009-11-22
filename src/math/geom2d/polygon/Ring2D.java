@@ -1,4 +1,4 @@
-/* file : ClosedPolyline2D.java
+/* file : Ring2D.java
  * 
  * Project : geometry
  *
@@ -33,12 +33,8 @@ import math.geom2d.Point2D;
 
 /**
  * <p>
- * A Ring2D is a Polyline2D whose last point is connected to the first one.
- * This is typically the boundary of a SimplePolygon2D.
- * </p>
- * <p>
- * The name 'Ring2D' was used for 2 reasons:
- * <ul><li>it is short</li> <li>it is consistent with the JTS name</li></ul>
+ * This class is replaced by LinearRing2D class. It will become an interface 
+ * in a future release.
  * </p>
  * @deprecated replaced by LinearRing2D (0.8.0)
  * @author dlegland

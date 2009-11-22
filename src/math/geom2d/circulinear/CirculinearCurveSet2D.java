@@ -24,6 +24,7 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class CirculinearCurveSet2D<T extends CirculinearCurve2D>
 extends CurveArray2D<T> implements CirculinearCurve2D {
+	//TODO: split into an interface and a curve array
 
     // ===================================================================
     // constructors

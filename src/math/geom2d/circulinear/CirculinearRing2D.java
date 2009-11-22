@@ -9,15 +9,14 @@
 package math.geom2d.circulinear;
 
 
-
 /**
- * Future interface for circulinear boundary curves which are both bounded
+ * Interface for circulinear boundary curves which are both bounded
  * and closed.
  * @author dlegland
  *
  */
-public interface CirculinearRing2D
-extends CirculinearContour2D {
+public interface CirculinearRing2D extends CirculinearContour2D {
 
-	
+	public CirculinearRing2D getParallel(double d);
+	public CirculinearRing2D getReverseCurve();
 }

@@ -33,11 +33,7 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import math.geom2d.*;
-import math.geom2d.circulinear.CircleLine2D;
-import math.geom2d.circulinear.CirculinearBoundary2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
-import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
@@ -56,7 +52,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  */
 public class Circle2D extends Ellipse2D
-implements Cloneable, CirculinearElement2D, CirculinearBoundary2D,
+implements Cloneable, CirculinearElement2D, CirculinearRing2D,
 CircularShape2D, CircleLine2D {
 
     /** the radius of the circle. */
@@ -395,9 +391,7 @@ CircularShape2D, CircleLine2D {
      */
 	@Override
     public Collection<? extends Circle2D> getSmoothPieces() {
-        ArrayList<Circle2D> list = new ArrayList<Circle2D>(1);
-        list.add(this);
-        return list;
+		return wrapCurve(this);
     }
 
     // ===================================================================

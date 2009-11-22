@@ -25,9 +25,9 @@
  */
 package math.geom2d.curve;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.conic.CircleArc2D;
-import junit.framework.TestCase;
 
 public class PolyCurve2DTest extends TestCase {
 
