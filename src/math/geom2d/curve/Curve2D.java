@@ -27,7 +27,6 @@ package math.geom2d.curve;
 
 // Imports
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
@@ -54,12 +53,6 @@ public interface Curve2D extends Shape2D, Cloneable {
 
     // ===================================================================
     // constants
-
-    /**
-     * @deprecated (0.7.0)
-     */
-    @Deprecated
-    public final static Curve2D EMPTY_CURVE = new EmptyCurve2D();
 
     // ===================================================================
     // class variables
@@ -212,97 +205,4 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @return the cloned curve
      */
     public abstract Curve2D clone();
-    
-    /**
-     * Utilitary class for representing empty curves. Should preferably be
-     * accessed through the EMPTY_CURVE static variable.
-     * 
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes  (0.7.0)
-     * @author dlegland
-     */
-    @Deprecated
-    static class EmptyCurve2D extends Shape2D.EmptySet2D implements Curve2D {
-
-        protected EmptyCurve2D() {
-        }
-
-        public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
-            return null;
-        }
-
-        public Point2D getFirstPoint() {
-            return null;
-        }
-
-        public Collection<Point2D> getIntersections(LinearShape2D line) {
-            return null;
-        }
-
-        public Point2D getLastPoint() {
-            return null;
-        }
-
-        public Point2D getPoint(double t) {
-            return null;
-        }
-
-        public double getPosition(java.awt.geom.Point2D point) {
-            return Double.NaN;
-        }
-
-        public Curve2D getReverseCurve() {
-            return this;
-        }
-
-        public Collection<Point2D> getSingularPoints() {
-            return null;
-        }
-
-        public Curve2D getSubCurve(double t0, double t1) {
-            return null;
-        }
-
-        public double getT0() {
-            return Double.NaN;
-        }
-
-        public double getT1() {
-            return Double.NaN;
-        }
-
-        public boolean isSingular(double pos) {
-            return false;
-        }
-
-        public double project(java.awt.geom.Point2D point) {
-            return Double.NaN;
-        }
-
-        @Override
-        public Curve2D transform(AffineTransform2D trans) {
-            return this;
-        }
-
-        @Override
-        public CurveSet2D<? extends Curve2D> clip(Box2D box) {
-            return null;
-        }
-
-        /* (non-Javadoc)
-         * @see math.geom2d.curve.Curve2D#getAsAWTShape()
-         */
-        public Shape getAsAWTShape() {
-            return null;
-        }
-
-    	@Override
-    	public void draw(Graphics2D g) {
-        }
-        
-    	@Override
-       public EmptyCurve2D clone() {
-            return new EmptyCurve2D();
-        }
-    }
 }

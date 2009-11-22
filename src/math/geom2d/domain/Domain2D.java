@@ -45,13 +45,6 @@ import math.geom2d.Shape2D;
 public interface Domain2D extends Shape2D {
 
     /**
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes
-     */
-    @Deprecated
-    public final static Domain2D EMPTY_DOMAIN2D = new EmptyDomain2D();
-
-    /**
      * Returns the boundary of the set. This boundary is either a continuous non
      * intersecting curve (connected domain), or a set of non intersecting
      * continuous curve (one continuous non-intersection for each connected part
@@ -90,46 +83,4 @@ public interface Domain2D extends Shape2D {
      * @since 0.6.3
      */
     public abstract void fill(Graphics2D g2);
-
-    /**
-     * Definition of an empty domain. Should preferably be accessed through the
-     * EMPTY_DOMAIN static variable.
-     * 
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes
-     * @author dlegland
-     */
-    @Deprecated
-    public static class EmptyDomain2D extends Shape2D.EmptySet2D implements
-            Domain2D {
-
-        public EmptyDomain2D() {
-        }
-
-        public Domain2D complement() {
-            // TODO: return full domain
-            return this;
-        }
-
-    	@Override
-        public void draw(Graphics2D g2) {
-        }
-
-        public void fill(Graphics2D g2) {
-        }
-
-        public Boundary2D getBoundary() {
-            return null;
-        }
-
-        @Override
-        public Domain2D transform(AffineTransform2D trans) {
-            return this;
-        }
-
-        @Override
-        public Domain2D clip(Box2D box) {
-            return this;
-        }
-    }
 }

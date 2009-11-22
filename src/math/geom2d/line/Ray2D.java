@@ -130,7 +130,7 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * Static factory for creating a new ray.
      * @since 0.8.1
      */
-    public final static Ray2D create(Point2D origin, Vector2D direction) {
+    public static Ray2D create(Point2D origin, Vector2D direction) {
     	return new Ray2D(origin, direction);
     }
     
@@ -140,43 +140,10 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * direction of <code>target<\code>.
      * @since 0.8.1
      */
-    public final static Ray2D create(Point2D origin, Point2D target) {
+    public static Ray2D create(Point2D origin, Point2D target) {
     	return new Ray2D(origin, target);
     }
     
-    /**
-     * @deprecated lines will become immutable in a future release
-     */
-    @Deprecated
-    public void setRay(double x0, double y0, double dx, double dy) {
-        this.x0 = x0;
-        this.y0 = y0;
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-    /**
-     * @deprecated lines will become immutable in a future release
-     */
-    @Deprecated
-    public void setRay(Point2D p1, Point2D p2) {
-        this.x0 = p1.getX();
-        this.y0 = p1.getY();
-        this.dx = p2.getX()-this.x0;
-        this.dy = p2.getY()-this.y0;
-    }
-
-    /**
-     * @deprecated lines will become immutable in a future release
-     */
-    @Deprecated
-    public void setRay(Point2D point, Vector2D vect) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-        this.dx = vect.getX();
-        this.dy = vect.getY();
-    }
-
 
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface

@@ -27,15 +27,9 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.CurveSet2D;
 
 /**
  * A Boundary2D is the curve which defines the contour of a domain in the plane.
@@ -44,12 +38,6 @@ import math.geom2d.curve.CurveSet2D;
  * @author dlegland
  */
 public interface Boundary2D extends OrientedCurve2D {
-
-    /**
-     * @deprecated  (0.7.0)
-     */
-    @Deprecated
-    public final static Boundary2D EMPTY_BOUNDARY = new EmptyBoundary2D();
 
     /**
      * Returns true if the point is 'inside' the domain bounded by the curve.
@@ -82,65 +70,4 @@ public interface Boundary2D extends OrientedCurve2D {
     public Boundary2D transform(AffineTransform2D trans);
 
     public void fill(Graphics2D g2);
-
-    /**
-     * @deprecated empty shapes are represented by null value, reducing the
-     *      total number of classes  (0.7.0)
-     * @author dlegland
-     */
-    @Deprecated
-    public static class EmptyBoundary2D extends Curve2D.EmptyCurve2D implements
-            Boundary2D {
-
-        public void fill(Graphics2D g2) {
-        }
-
-        public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-            return new ArrayList<ContinuousBoundary2D>();
-        }
-
-        public Domain2D getDomain() {
-            return null;
-        }
-
-        /**
-         * Always return false, as a point can not be contained in an empty
-         * boundary.
-         */
-        public boolean isInside(Point2D pt) {
-            return false;
-        }
-
-        public double getSignedDistance(Point2D point) {
-            return Double.NaN;
-        }
-
-        public double getSignedDistance(double x, double y) {
-            return Double.NaN;
-        }
-
-        public double getWindingAngle(Point2D point) {
-            return Double.NaN;
-        }
-
-        @Override
-        public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
-            return new ArrayList<ContinuousCurve2D>(0);
-        }
-
-        @Override
-        public Boundary2D getReverseCurve() {
-            return this;
-        }
-
-        @Override
-        public Boundary2D transform(AffineTransform2D trans) {
-            return this;
-        }
-
-        @Override
-        public CurveSet2D<? extends OrientedCurve2D> clip(Box2D box) {
-            return new CurveSet2D<OrientedCurve2D>();
-        }
-    }
 }

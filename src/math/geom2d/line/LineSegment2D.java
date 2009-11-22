@@ -69,11 +69,11 @@ implements Cloneable, CirculinearElement2D {
      * Static factory for creating a new line segment between two points.
      * @since 0.8.1
      */
-    public final static LineSegment2D create(Point2D p1, Point2D p2) {
+    public static LineSegment2D create(Point2D p1, Point2D p2) {
     	return new LineSegment2D(p1, p2);
     }
 
-    public final static StraightLine2D getMedian(LineSegment2D edge) {
+    public static StraightLine2D getMedian(LineSegment2D edge) {
         return new StraightLine2D(
         		edge.x0+edge.dx*.5, edge.y0+edge.dy*.5,
                 -edge.dy, edge.dx);
@@ -82,7 +82,7 @@ implements Cloneable, CirculinearElement2D {
     /**
      * Returns angle between two edges sharing one vertex.
      */
-    public final static double getEdgeAngle(LineSegment2D edge1,
+    public static double getEdgeAngle(LineSegment2D edge1,
             LineSegment2D edge2) {
         double x0, y0, x1, y1, x2, y2;
 
@@ -134,7 +134,7 @@ implements Cloneable, CirculinearElement2D {
      * @param edge2 a line segment
      * @return true if the 2 line segments intersect
      */
-    public final static boolean intersects(LineSegment2D edge1,
+    public static boolean intersects(LineSegment2D edge1,
             LineSegment2D edge2) {
         Point2D e1p1 = edge1.getFirstPoint();
         Point2D e1p2 = edge1.getLastPoint();
@@ -176,27 +176,6 @@ implements Cloneable, CirculinearElement2D {
         return new StraightLine2D(x0+dx*.5, y0+dy*.5, -dy, dx);
     }
 
-    /**
-     * @deprecated lines will become immutable in a future release
-     */
-    @Deprecated
-    public void setLineSegment(Point2D p1, Point2D p2) {
-        this.x0 = p1.getX();
-        this.y0 = p1.getY();
-        this.dx = p2.getX()-this.x0;
-        this.dy = p2.getY()-this.y0;
-    }
-
-    /**
-     * @deprecated lines will become immutable in a future release
-     */
-    @Deprecated
-    public void setLineSegment(double x1, double y1, double x2, double y2) {
-        this.x0 = x1;
-        this.y0 = y1;
-        this.dx = x2-x1;
-        this.dy = y2-y1;
-    }
 
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface

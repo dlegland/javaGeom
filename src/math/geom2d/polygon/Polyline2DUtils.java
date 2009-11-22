@@ -35,7 +35,7 @@ public abstract class Polyline2DUtils {
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
      */
-    public final static PolyOrientedCurve2D<SmoothOrientedCurve2D> 
+    public static PolyOrientedCurve2D<SmoothOrientedCurve2D> 
     createParallel(Polyline2D polyline, double d) {
 
         // Collection of parallel curves
@@ -189,7 +189,7 @@ public abstract class Polyline2DUtils {
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
      */
-    public final static BoundaryPolyCurve2D<SmoothOrientedCurve2D>
+    public static BoundaryPolyCurve2D<SmoothOrientedCurve2D>
     createClosedParallel(LinearRing2D polyline, double d) {
 
         // Collection of parallel curves
@@ -323,7 +323,7 @@ public abstract class Polyline2DUtils {
      * @param poly2 a polyline
      * @return the set of intersection points
      */
-    public final static Collection<Point2D> intersect(
+    public static Collection<Point2D> intersect(
             Polyline2D poly1, Polyline2D poly2) {
         ArrayList<Point2D> points = new ArrayList<Point2D>();
         

@@ -142,26 +142,6 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Adds a point as the last vertex.
-     * @deprecated replaced by addVertex() (0.7.1)
-     */
-    @Deprecated
-    public void addPoint(Point2D point) {
-        this.points.add(point);
-    }
-
-    /**
-     * Removes a vertex of the polygon.
-     * 
-     * @deprecated replaced by removeVertex() (0.7.1)
-     * @param point the vertex to be removed.
-     */
-    @Deprecated
-    public void removePoint(Point2D point) {
-        this.points.remove(point);
-    }
-    
-    /**
      * Computes area of the polygon, by returning the absolute value of the
      * signed area.
      */
@@ -223,15 +203,6 @@ public class SimplePolygon2D implements Polygon2D {
         return Polygon2DUtils.windingNumber(points, new Point2D(x, y));
     }
     
-    /**
-     * Removes all the vertices of the polygon.
-     * @deprecated use clearVertices instead
-     */
-    @Deprecated
-    public void clearPoints() {
-        this.points.clear();
-    }
-
     /**
      * Removes all the vertices of the polygon.
      */

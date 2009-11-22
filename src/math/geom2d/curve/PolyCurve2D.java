@@ -172,7 +172,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * @param curve the curve to decompose
      * @return a collection of SmoothCurve2D
      */
-    private final static Collection<SmoothCurve2D> getSmoothCurves(Curve2D curve) {
+    private static Collection<SmoothCurve2D> getSmoothCurves(Curve2D curve) {
     	// create array for result
         ArrayList<SmoothCurve2D> array = new ArrayList<SmoothCurve2D>();
 

@@ -36,7 +36,7 @@ public abstract class Curve2DUtils {
      * @param t1 the upper bound of parameterization domain
      * @return a value between 0 and 1
      */
-    public final static double toUnitSegment(double t, double t0, double t1) {
+    public static double toUnitSegment(double t, double t0, double t1) {
         if (t<=t0)
             return 0;
         if (t>=t1)
@@ -64,7 +64,7 @@ public abstract class Curve2DUtils {
      * @param t1 the upper bound of parameterization domain
      * @return a value between t0 and t1
      */
-    public final static double fromUnitSegment(double t, double t0, double t1) {
+    public static double fromUnitSegment(double t, double t0, double t1) {
         if (t<=0)
             return t0;
         if (t>=1)
@@ -89,7 +89,7 @@ public abstract class Curve2DUtils {
      * totally inside the box, return a CurveSet2D with only one curve, which is
      * the original curve.
      */
-    public final static CurveSet2D<? extends Curve2D>
+    public static CurveSet2D<? extends Curve2D>
     clipCurve(Curve2D curve, Box2D box) {
         // Case of continuous curve:
         // convert the result of ClipContinuousCurve to CurveSet of Curve2D
@@ -109,7 +109,7 @@ public abstract class Curve2DUtils {
     /**
      * clip a CurveSet2D.
      */
-    public final static CurveSet2D<? extends Curve2D> clipCurveSet(
+    public static CurveSet2D<? extends Curve2D> clipCurveSet(
             CurveSet2D<?> curveSet, Box2D box) {
         // Clip the current curve
     	CurveArray2D<Curve2D> result = new CurveArray2D<Curve2D>();
@@ -148,7 +148,7 @@ public abstract class Curve2DUtils {
      * between the last intersection and the first intersection).
      * </p>
      */
-    public final static CurveSet2D<ContinuousCurve2D> clipContinuousCurve(
+    public static CurveSet2D<ContinuousCurve2D> clipContinuousCurve(
             ContinuousCurve2D curve, Box2D box) {
 
         // Create CurveSet2D for storing the result
@@ -304,7 +304,7 @@ public abstract class Curve2DUtils {
      * Clip a continuous smooth curve. Currently just call the static method
      * clipContinuousCurve, and cast clipped curves.
      */
-    public final static CurveSet2D<SmoothCurve2D> clipSmoothCurve(
+    public static CurveSet2D<SmoothCurve2D> clipSmoothCurve(
             SmoothCurve2D curve, Box2D box) {
     	CurveArray2D<SmoothCurve2D> result = new CurveArray2D<SmoothCurve2D>();
         for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve,
@@ -319,7 +319,7 @@ public abstract class Curve2DUtils {
      * Clip a continuous smooth curve by the half-plane defined by a line. This
      * method is mainly used to help debugging when implementing curves.
      */
-    public final static CurveSet2D<SmoothCurve2D> clipSmoothCurve(
+    public static CurveSet2D<SmoothCurve2D> clipSmoothCurve(
             SmoothCurve2D curve, StraightLine2D line) {
 
         // get the list of intersections with the line
@@ -401,7 +401,7 @@ public abstract class Curve2DUtils {
         return res;
     }
 
-    public final static int findNextCurveIndex(double[] positions, double pos) {
+    public static int findNextCurveIndex(double[] positions, double pos) {
         int ind = -1;
         double posMin = java.lang.Double.MAX_VALUE;
         for (int i = 0; i<positions.length; i++) {
@@ -443,7 +443,7 @@ public abstract class Curve2DUtils {
      * @param t1 the second bound of a curve parameterization
      * @return a position located between t0 and t1
      */
-    public final static double choosePosition(double t0, double t1) {
+    public static double choosePosition(double t0, double t1) {
         if (Double.isInfinite(t0)) {
             if (Double.isInfinite(t1))
                 return 0;
@@ -456,7 +456,7 @@ public abstract class Curve2DUtils {
         return (t0+t1)/2;
     }
     
-	public final static boolean isLeftInfinite(Curve2D curve) {
+	public static boolean isLeftInfinite(Curve2D curve) {
 		// basic check
 		if(curve.isBounded()) return false;
 		
@@ -468,7 +468,7 @@ public abstract class Curve2DUtils {
 		return Double.isInfinite(smooth.getT0());
 	}
 	
-	public final static boolean isRightInfinite(Curve2D curve) {
+	public static boolean isRightInfinite(Curve2D curve) {
 		// basic check
 		if(curve.isBounded()) return false;
 		

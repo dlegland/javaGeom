@@ -95,7 +95,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
      * Returns the unique intersection of two straight objects. If intersection
      * doesn't exist (parallel lines), return null.
      */
-    public final static Point2D getIntersection(AbstractLine2D l1,
+    public static Point2D getIntersection(AbstractLine2D l1,
             AbstractLine2D l2) {
         double t = ((l1.y0-l2.y0)*l2.dx-(l1.x0-l2.x0)*l2.dy)
                 /(l1.dx*l2.dy-l1.dy*l2.dx);
@@ -105,7 +105,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
     /**
      * Test if the two linear objects are located on the same straight line.
      */
-    public final static boolean isColinear(AbstractLine2D line1,
+    public static boolean isColinear(AbstractLine2D line1,
             AbstractLine2D line2) {
         // test if the two lines are parallel
         if (Math.abs(line1.dx*line2.dy-line1.dy*line2.dx)>ACCURACY)
@@ -121,7 +121,7 @@ implements SmoothOrientedCurve2D, LinearShape2D, CirculinearElement2D {
     /**
      * Test if the two linear objects are parallel.
      */
-    public final static boolean isParallel(AbstractLine2D line1,
+    public static boolean isParallel(AbstractLine2D line1,
             AbstractLine2D line2) {
         return (Math.abs(line1.dx*line2.dy-line1.dy*line2.dx)<ACCURACY);
     }

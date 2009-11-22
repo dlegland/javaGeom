@@ -219,38 +219,6 @@ CircularShape2D, CircleLine2D {
         return r;
     }
 
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setRadius(double radius) {
-        this.r = radius;
-        this.r1 = this.r2 = radius;
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setCircle(double xc, double yc, double r) {
-        this.xc = xc;
-        this.yc = yc;
-        this.r = r;
-        this.r1 = r;
-        this.r2 = r;
-    }
-
-    /**
-     * @deprecated conics will become immutable in a future release
-     */
-    @Deprecated
-    public void setCircle(Point2D center, double r) {
-        this.xc = center.getX();
-        this.yc = center.getY();
-        this.r = r;
-        this.r1 = r;
-        this.r2 = r;
-    }
 
     // ===================================================================
     // methods implementing CircularShape2D interface
