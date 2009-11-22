@@ -32,13 +32,7 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.ContinuousBoundary2D;
@@ -360,7 +354,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
 	@Override
     public Polyline2D getAsPolyline(int n) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     
@@ -370,13 +364,13 @@ public class StraightLine2D extends AbstractLine2D implements
     /** Throws an infiniteShapeException */
 	@Override
     public Point2D getFirstPoint() {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
 	/** Throws an infiniteShapeException */
 	@Override
 	public Point2D getLastPoint() {
-		throw new UnboundedShapeException(this);
+		throw new UnboundedShape2DException(this);
 	}
 
     /** Returns an empty list of points. */
@@ -434,7 +428,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     public GeneralPath appendPath(GeneralPath path) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     // ===================================================================
@@ -505,7 +499,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
    

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Point2D;
-import math.geom2d.UnboundedShapeException;
+import math.geom2d.UnboundedShape2DException;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 
@@ -38,7 +38,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Polyline2D getAsPolyline(int n) {
 		// Check that the curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
 
         // compute start and increment values
         double t0 = this.getT0();
@@ -76,7 +76,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Point2D getFirstPoint() {
 		double t0 = this.getT0();
 		if(Double.isInfinite(t0))
-			throw new UnboundedShapeException(this);
+			throw new UnboundedShape2DException(this);
 		return this.getPoint(t0);
 	}
 
@@ -87,7 +87,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Point2D getLastPoint() {
 		double t1 = this.getT1();
 		if(Double.isInfinite(t1))
-			throw new UnboundedShapeException(this);
+			throw new UnboundedShape2DException(this);
 		return this.getPoint(t1);
 	}
 
@@ -104,7 +104,7 @@ implements ContinuousCurve2D, Cloneable {
 	public Shape getAsAWTShape() {
 		// Check that the curve is bounded
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
 
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         

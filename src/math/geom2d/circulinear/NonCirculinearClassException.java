@@ -13,20 +13,14 @@ package math.geom2d.circulinear;
  * @author dlegland
  *
  */
-public class NonCirculinearClassException extends RuntimeException {
+public class NonCirculinearClassException extends NonCirculinearShape2DException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	Object object;
 	
 	public NonCirculinearClassException(Object obj) {
-		this.object = obj;
-	}
-	
-	public Object getObject() {
-		return object;
+		super(obj);
 	}
 }

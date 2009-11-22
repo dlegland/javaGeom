@@ -4,12 +4,7 @@ package math.geom2d.conic;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -112,7 +107,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
    public Point2D getPoint(double t) {
        if(Double.isInfinite(t))
-           throw new UnboundedShapeException(this);
+           throw new UnboundedShape2DException(this);
         t = Math.min(Math.max(t, t0), t1);
         return branch.getPoint(t);
     }
@@ -167,7 +162,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public Box2D getBoundingBox() {
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         return this.getAsPolyline(100).getBoundingBox();
     }
 
@@ -251,7 +246,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
         return this.getAsPolyline(100).getGeneralPath();
     }
 

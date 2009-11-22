@@ -5,11 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.UnboundedShapeException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -126,7 +122,7 @@ implements SmoothBoundary2D, Cloneable {
 
     /** Throws an UnboundedShapeException */
     public void fill(Graphics2D g2) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     // ===================================================================
@@ -170,7 +166,7 @@ implements SmoothBoundary2D, Cloneable {
 
     public java.awt.geom.GeneralPath appendPath(
     		java.awt.geom.GeneralPath path) {
-    	throw new UnboundedShapeException(this);
+    	throw new UnboundedShape2DException(this);
     }
 
     
@@ -179,7 +175,7 @@ implements SmoothBoundary2D, Cloneable {
 
     public Point2D getPoint(double t) {
         if (Double.isInfinite(t))
-            throw new UnboundedShapeException(this);
+            throw new UnboundedShape2DException(this);
 
         double x, y;
         if (positive) {

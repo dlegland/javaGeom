@@ -6,8 +6,10 @@ package math.geom2d;
 
 /**
  * @author dlegland
+ * @deprecated replaced by NonInvertibleTransform2DException (0.9.0)
  */
-public class NonInvertibleTransformException extends RuntimeException {
+@Deprecated
+public class NonInvertibleTransformException extends NonInvertibleTransform2DException {
 
     /**
      * 

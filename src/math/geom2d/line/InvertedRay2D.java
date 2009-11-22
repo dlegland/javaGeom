@@ -31,7 +31,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
+import math.geom2d.UnboundedShape2DException;
 import math.geom2d.Vector2D;
 
 // Imports
@@ -157,12 +157,12 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     /** Throws an infiniteShapeException */
     public GeneralPath appendPath(GeneralPath path) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     // ===================================================================

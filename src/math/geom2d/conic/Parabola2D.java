@@ -30,13 +30,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShapeException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -460,12 +454,12 @@ implements ContinuousBoundary2D, Conic2D, Cloneable {
     /** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath appendPath(
     		java.awt.geom.GeneralPath path) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     /** Throws an infiniteShapeException */
     public void fill(Graphics2D g2) {
-        throw new UnboundedShapeException(this);
+        throw new UnboundedShape2DException(this);
     }
 
     // ===============================================
