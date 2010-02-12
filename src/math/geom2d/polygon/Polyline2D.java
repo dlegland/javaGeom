@@ -26,6 +26,7 @@
 
 package math.geom2d.polygon;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -766,9 +767,17 @@ implements CirculinearContinuousCurve2D, Cloneable {
         if (points.size()<2)
             return path;
 
-        // line to each point
-        for (Point2D point : points)
+        // get point iterator
+        Iterator<Point2D> iter = points.iterator();
+
+        // avoid first point
+        Point2D point = iter.next();
+       
+        // line to each other point
+        while (iter.hasNext()) {
+            point = iter.next();
             path.lineTo((float) (point.getX()), (float) (point.getY()));
+        }
 
         return path;
     }
@@ -795,6 +804,11 @@ implements CirculinearContinuousCurve2D, Cloneable {
         }
 
         return path;
+    }
+
+    @Override
+    public void draw(Graphics2D g2) {
+    	g2.draw(this.getGeneralPath());
     }
 
     // ===================================================================

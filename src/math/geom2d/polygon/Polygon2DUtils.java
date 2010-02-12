@@ -78,7 +78,10 @@ public abstract class Polygon2DUtils {
         return new GenericDomain2D(result);
     }
     
-    public final static Polygon2D union(Polygon2D polygon1, 
+    /**
+     * to be implemented later.
+     */
+    private final static Polygon2D union(Polygon2D polygon1, 
             Polygon2D polygon2) {
         
         // The resulting boundary
