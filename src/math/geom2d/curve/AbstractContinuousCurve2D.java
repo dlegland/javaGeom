@@ -102,6 +102,7 @@ implements ContinuousCurve2D, Cloneable {
 	 * @see math.geom2d.curve.Curve2D#getAsAWTShape()
 	 */
 	public Shape getAsAWTShape() {
+		//TODO: use getGeneralPath() ?
 		// Check that the curve is bounded
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
