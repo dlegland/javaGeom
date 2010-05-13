@@ -521,6 +521,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
                 direct);
     }
 
+    
+    // ===================================================================
+    // accessors to basic characteristics of Ellipse
+
     /**
      * return true if ellipse has a direct orientation.
      */
@@ -530,58 +534,6 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
 
     public boolean isCircle() {
         return Math.abs(r1-r2)<Shape2D.ACCURACY;
-    }
-
-    // ===================================================================
-    // methods of Conic2D
-
-    public Conic2D.Type getConicType() {
-        if (Math.abs(r1-r2)<Shape2D.ACCURACY)
-            return Conic2D.Type.CIRCLE;
-        else
-            return Conic2D.Type.ELLIPSE;
-    }
-
-    /**
-     * Returns the conic coefficients of the ellipse. Algorithm taken from
-     * http://tog.acm.org/GraphicsGems/gemsv/ch2-6/conmat.c
-     */
-    public double[] getConicCoefficients() {
-
-        // common coefficients
-        double r1Sq = this.r1*this.r1;
-        double r2Sq = this.r2*this.r2;
-
-        // angle of ellipse, and trigonometric formulas
-        double sint = Math.sin(this.theta);
-        double cost = Math.cos(this.theta);
-        double sin2t = 2.0*sint*cost;
-        double sintSq = sint*sint;
-        double costSq = cost*cost;
-
-        // coefs from ellipse center
-        double xcSq = xc*xc;
-        double ycSq = yc*yc;
-        double r1SqInv = 1.0/r1Sq;
-        double r2SqInv = 1.0/r2Sq;
-
-        /*
-         * Compute the coefficients. These formulae are the transformations on
-         * the unit circle written out long hand
-         */
-
-        double a = costSq/r1Sq+sintSq/r2Sq;
-        double b = (r2Sq-r1Sq)*sin2t/(r1Sq*r2Sq);
-        double c = costSq/r2Sq+sintSq/r1Sq;
-        double d = -yc*b-2*xc*a;
-        double e = -xc*b-2*yc*c;
-        double f = -1.0
-        	+(xcSq+ycSq)*(r1SqInv+r2SqInv)/2.0
-        	+(costSq-sintSq)*(xcSq-ycSq)*(r1SqInv-r2SqInv)/2.0
-        	+xc*yc*(r1SqInv-r2SqInv)*sin2t;
-
-        // Return array of results
-        return new double[] { a, b, c, d, e, f };
     }
 
     /**
@@ -596,18 +548,6 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      */
     public double getSemiMinorAxisLength() {
         return r2;
-    }
-
-    /**
-     * Computes eccentricity of ellipse, depending on the lengths of the
-     * semi-axes. Eccentricity is 0 for a circle (r1==r2), and tends to 1 when
-     * ellipse elongates.
-     */
-    public double getEccentricity() {
-        double a = Math.max(r1, r2);
-        double b = Math.min(r1, r2);
-        double r = b/a;
-        return Math.sqrt(1-r*r);
     }
 
     /**
@@ -672,7 +612,72 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     // ===================================================================
-    // methods of Boundary2D interface
+    // methods implementing Conic2D interface
+
+    public Conic2D.Type getConicType() {
+        if (Math.abs(r1-r2)<Shape2D.ACCURACY)
+            return Conic2D.Type.CIRCLE;
+        else
+            return Conic2D.Type.ELLIPSE;
+    }
+
+    /**
+     * Returns the conic coefficients of the ellipse. Algorithm taken from
+     * http://tog.acm.org/GraphicsGems/gemsv/ch2-6/conmat.c
+     */
+    public double[] getConicCoefficients() {
+
+        // common coefficients
+        double r1Sq = this.r1*this.r1;
+        double r2Sq = this.r2*this.r2;
+
+        // angle of ellipse, and trigonometric formulas
+        double sint = Math.sin(this.theta);
+        double cost = Math.cos(this.theta);
+        double sin2t = 2.0*sint*cost;
+        double sintSq = sint*sint;
+        double costSq = cost*cost;
+
+        // coefs from ellipse center
+        double xcSq = xc*xc;
+        double ycSq = yc*yc;
+        double r1SqInv = 1.0/r1Sq;
+        double r2SqInv = 1.0/r2Sq;
+
+        /*
+         * Compute the coefficients. These formulae are the transformations on
+         * the unit circle written out long hand
+         */
+
+        double a = costSq/r1Sq+sintSq/r2Sq;
+        double b = (r2Sq-r1Sq)*sin2t/(r1Sq*r2Sq);
+        double c = costSq/r2Sq+sintSq/r1Sq;
+        double d = -yc*b-2*xc*a;
+        double e = -xc*b-2*yc*c;
+        double f = -1.0
+        	+(xcSq+ycSq)*(r1SqInv+r2SqInv)/2.0
+        	+(costSq-sintSq)*(xcSq-ycSq)*(r1SqInv-r2SqInv)/2.0
+        	+xc*yc*(r1SqInv-r2SqInv)*sin2t;
+
+        // Return array of results
+        return new double[] { a, b, c, d, e, f };
+    }
+
+    /**
+     * Computes eccentricity of ellipse, depending on the lengths of the
+     * semi-axes. Eccentricity is 0 for a circle (r1==r2), and tends to 1 when
+     * ellipse elongates.
+     */
+    public double getEccentricity() {
+        double a = Math.max(r1, r2);
+        double b = Math.min(r1, r2);
+        double r = b/a;
+        return Math.sqrt(1-r*r);
+    }
+
+
+    // ===================================================================
+    // methods implementing the Boundary2D interface
 
     public Collection<? extends Ellipse2D> getBoundaryCurves() {
     	return wrapCurve(this);
@@ -809,9 +814,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     /**
-     * Get the first point of the ellipse, which is the same as the last point.
+     * Returns the first point of the ellipse, which is the same as the last
+     * point.
      * 
-     * @return the first point of the curve
+     * @return the first point of the ellipse
      */
 	@Override
     public Point2D getFirstPoint() {
@@ -819,9 +825,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     /**
-     * Get the last point of the ellipse, which is the same as the first point.
+     * Returns the last point of the ellipse, which is the same as the first
+     * point.
      * 
-     * @return the last point of the curve.
+     * @return the last point of the ellipse.
      */
 	@Override
     public Point2D getLastPoint() {
@@ -829,6 +836,7 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
     }
 
     public double getPosition(java.awt.geom.Point2D point) {
+    	//TODO: lot of common code with project() method -> factorize
         double xp = point.getX();
         double yp = point.getY();
 
@@ -846,8 +854,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         xp = xp/this.r1;
         yp = yp/this.r2;
 
+        // manage orientation
         if (!direct)
-            yp = -yp;
+        	yp = -yp;
 
         // compute angle
         double angle = Angle2D.getHorizontalAngle(xp, yp);
@@ -880,6 +889,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         // scale
         xp = xp/this.r1;
         yp = yp/this.r2;
+
+        // manage orientation
+        if (!direct)
+            yp = -yp;
 
         // compute angle
         double angle = Angle2D.getHorizontalAngle(xp, yp);
@@ -927,6 +940,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         return false;
     }
 
+    /**
+     * Computes distance using a polyline approximation.
+     */
     public double getDistance(java.awt.geom.Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
         // return Math.abs(vector.getRho());
@@ -1078,11 +1094,13 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         // draw each line of the boundary
         if (direct)
             for (double t = .1; t<=2*Math.PI; t += .1)
-                path.lineTo((float) (xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit),
+                path.lineTo(
+                		(float) (xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit),
                         (float) (yc+r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
         else
             for (double t = .1; t<=2*Math.PI; t += .1)
-                path.lineTo((float) (xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit),
+                path.lineTo(
+                		(float) (xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit),
                         (float) (yc-r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
 
         // loop to the first/last point

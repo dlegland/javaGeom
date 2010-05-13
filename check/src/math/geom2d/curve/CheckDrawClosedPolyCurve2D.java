@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
 
@@ -51,10 +52,17 @@ public class CheckDrawClosedPolyCurve2D extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		g2.setStroke(new BasicStroke(5.0f));
+		g2.setStroke(new BasicStroke(20.0f));
 	
 		g2.setColor(Color.BLUE);
 		polycurve.draw(g2);
+		
+		Point2D center = new Point2D(200, 200);
+		AffineTransform2D trans = 
+			AffineTransform2D.createRotation(center, Math.PI/7);
+		Curve2D curve2 = polycurve.transform(trans);
+		g2.setColor(Color.DARK_GRAY);
+		curve2.draw(g2);
 	}
 	
 	public final static void main(String[] args){

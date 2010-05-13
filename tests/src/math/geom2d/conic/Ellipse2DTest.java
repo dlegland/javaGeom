@@ -244,16 +244,80 @@ public class Ellipse2DTest extends TestCase {
 	 * then computing position of the point, gives the initial position.
 	 */
 	public void testGetPosition(){
+		double eps = Shape2D.ACCURACY;
+		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.getPosition(el1.getPoint(.4)), .4, Shape2D.ACCURACY);
-		//assertEquals(el1.getPosition(new Point2D(30, 0)), 0, Shape2D.ACCURACY);
-
+		assertEquals(el1.getPosition(el1.getPoint(.4)), .4, eps);
+		
 		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
-		assertEquals(el2.getPosition(el2.getPoint(.4)), .4, Shape2D.ACCURACY);
+		assertEquals(el2.getPosition(el2.getPoint(.4)), .4, eps);
 		
 		Ellipse2D el3 = new Ellipse2D(10, 5, 20, 10, Math.PI/3);
-		assertEquals(el3.getPosition(el3.getPoint(.4)), .4, Shape2D.ACCURACY);
+		assertEquals(el3.getPosition(el3.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
+		assertEquals(el1i.getPosition(el1i.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
+		assertEquals(el2i.getPosition(el2i.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el3i = new Ellipse2D(10, 5, 20, 10, Math.PI/3, false);
+		assertEquals(el3i.getPosition(el3i.getPoint(.4)), .4, eps);
 	}
+	
+	/**
+	 * check that for a given point, projecting the point on the curve, 
+	 * then computing the location of the point, gives the initial position.
+	 */
+	public void testProject(){
+		double eps = Shape2D.ACCURACY;
+		
+		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
+		assertEquals(el1.project(el1.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
+		assertEquals(el2.project(el2.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el3 = new Ellipse2D(10, 5, 20, 10, Math.PI/3);
+		assertEquals(el3.project(el3.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
+		assertEquals(el1i.project(el1i.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
+		assertEquals(el2i.project(el2i.getPoint(.4)), .4, eps);
+		
+		Ellipse2D el3i = new Ellipse2D(10, 5, 20, 10, Math.PI/3, false);
+		assertEquals(el3i.project(el3i.getPoint(.4)), .4, eps);
+	}
+	
+	/**
+	 * check that for a given position, computing the point on the curve, 
+	 * then computing position of the point, gives the initial position.
+	 */
+	public void testGetPoint(){
+		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
+		Point2D point = el1.getPoint(Math.PI/2);
+		Point2D expected = new Point2D(0, 10);
+		assertTrue(expected.equals(point));
+		
+		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
+		point = el2.getPoint(Math.PI/2);
+		expected = new Point2D(10, 15);
+		assertTrue(expected.equals(point));
+		
+		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
+		point = el1i.getPoint(Math.PI/2);
+		expected = new Point2D(0, -10);
+		assertTrue(expected.equals(point));
+		
+		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
+		point = el2i.getPoint(Math.PI/2);
+		expected = new Point2D(10, -5);
+		assertTrue(expected.equals(point));
+	}
+	
+
 	
 	/** 
 	 * Test intersection of 'horizontal' ellipse with a vertical straight
