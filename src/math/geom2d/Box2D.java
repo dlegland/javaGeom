@@ -568,8 +568,7 @@ public class Box2D implements Cloneable {
     }
 
     public Box2D getBoundingBox() {
-        return new Box2D(this.getMinX(), this.getMaxX(), this.getMinY(), this
-                .getMaxY());
+        return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     // ===================================================================

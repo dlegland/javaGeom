@@ -45,7 +45,7 @@ public class CurveArray2DTest extends TestCase {
 		LineSegment2D seg1 = LineSegment2D.create(p1, p2);
 		LineSegment2D seg2 = LineSegment2D.create(p2, p3);
 		LineSegment2D seg3 = LineSegment2D.create(p3, p4);
-		CurveSet2D<LineSegment2D> set = 
+		CurveArray2D<LineSegment2D> set = 
 			CurveArray2D.create(new LineSegment2D[]{seg1, seg2, seg3});
 		assertEquals(3, set.getCurveNumber());
 		assertTrue(set.containsCurve(seg1));
