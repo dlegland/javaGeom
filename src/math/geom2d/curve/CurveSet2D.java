@@ -47,8 +47,8 @@ import math.geom2d.line.LinearShape2D;
  * 
  * @author Legland
  */
-public class CurveSet2D<T extends Curve2D> implements Curve2D, Iterable<T>,
-Cloneable {
+public class CurveSet2D<T extends Curve2D> 
+implements Curve2D, Iterable<T>, Cloneable {
 
     /** The inner array of curves */
     protected ArrayList<T> curves;
@@ -757,7 +757,7 @@ Cloneable {
     // ===================================================================
     // methods implementing the Iterable interface
 
-   /*
+    /*
      * (non-Javadoc)
      * 
      * @see java.lang.Iterable#iterator()

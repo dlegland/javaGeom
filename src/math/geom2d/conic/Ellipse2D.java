@@ -835,9 +835,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
     }
 
-    public double getPosition(java.awt.geom.Point2D point) {
-    	//TODO: lot of common code with project() method -> factorize
-        double xp = point.getX();
+	private Point2D toUnitCircle(java.awt.geom.Point2D point) {
+		// extract coordinates
+    	double xp = point.getX();
         double yp = point.getY();
 
         // translate
@@ -845,8 +845,10 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         yp = yp-this.yc;
 
         // rotate
-        double xp1 = xp*Math.cos(theta)+yp*Math.sin(theta);
-        double yp1 = -xp*Math.sin(theta)+yp*Math.cos(theta);
+        double cot = Math.cos(theta);
+        double sit = Math.sin(theta);
+        double xp1 =  xp*cot + yp*sit;
+        double yp1 = -xp*sit + yp*cot;
         xp = xp1;
         yp = yp1;
 
@@ -857,6 +859,14 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
         // manage orientation
         if (!direct)
         	yp = -yp;
+        
+        return new Point2D(xp, yp);
+	}
+	
+    public double getPosition(java.awt.geom.Point2D point) {
+        Point2D p2 = toUnitCircle(point);
+        double xp = p2.getX();
+        double yp = p2.getY();
 
         // compute angle
         double angle = Angle2D.getHorizontalAngle(xp, yp);
@@ -873,26 +883,9 @@ implements SmoothBoundary2D, Conic2D, Cloneable {
      * position of the point is computed in the transformed basis.
      */
     public double project(java.awt.geom.Point2D point) {
-        double xp = point.getX();
-        double yp = point.getY();
-
-        // translate
-        xp = xp-this.xc;
-        yp = yp-this.yc;
-
-        // rotate
-        double xp1 = xp*Math.cos(theta)+yp*Math.sin(theta);
-        double yp1 = -xp*Math.sin(theta)+yp*Math.cos(theta);
-        xp = xp1;
-        yp = yp1;
-
-        // scale
-        xp = xp/this.r1;
-        yp = yp/this.r2;
-
-        // manage orientation
-        if (!direct)
-            yp = -yp;
+        Point2D p2 = toUnitCircle(point);
+        double xp = p2.getX();
+        double yp = p2.getY();
 
         // compute angle
         double angle = Angle2D.getHorizontalAngle(xp, yp);
