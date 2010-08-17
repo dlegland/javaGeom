@@ -16,7 +16,7 @@ import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -221,7 +221,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         // convert boundary to list of rings
         ArrayList<LinearRing2D> boundaries = new ArrayList<LinearRing2D>(
                 boundary.getCurveNumber());
-        for (ContinuousBoundary2D curve : boundary.getBoundaryCurves())
+        for (Contour2D curve : boundary.getBoundaryCurves())
             boundaries.add((LinearRing2D) curve);
         
         // create new MultiPolygon with the set of rings

@@ -37,7 +37,7 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LinearShape2D;
@@ -60,7 +60,7 @@ import math.geom2d.line.StraightLine2D;
  * @author dlegland
  */
 public class Parabola2D extends AbstractSmoothCurve2D 
-implements ContinuousBoundary2D, Conic2D, Cloneable {
+implements Contour2D, Conic2D, Cloneable {
 
     /** Coordinate of the vertex */
     protected double xv    = 0, yv = 0;
@@ -242,8 +242,8 @@ implements ContinuousBoundary2D, Conic2D, Cloneable {
     // ==========================================================
     // methods implementing the Boundary2D interface
 
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
+    public Collection<Contour2D> getBoundaryCurves() {
+        ArrayList<Contour2D> list = new ArrayList<Contour2D>(
                 1);
         list.add(this);
         return list;

@@ -50,7 +50,7 @@ public interface Boundary2D extends OrientedCurve2D {
     /**
      * Returns the different continuous curves composing the boundary
      */
-    public Collection<? extends ContinuousBoundary2D> getBoundaryCurves();
+    public Collection<? extends Contour2D> getBoundaryCurves();
 
     /**
      * Returns the domain delimited by this boundary.

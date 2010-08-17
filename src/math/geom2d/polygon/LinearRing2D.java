@@ -34,7 +34,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.circulinear.*;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
@@ -192,9 +192,9 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 	// ===================================================================
     // Methods inherited from Boundary2D
 
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = 
-            new ArrayList<ContinuousBoundary2D>(1);
+    public Collection<Contour2D> getBoundaryCurves() {
+        ArrayList<Contour2D> list = 
+            new ArrayList<Contour2D>(1);
         list.add(this);
         return list;
     }

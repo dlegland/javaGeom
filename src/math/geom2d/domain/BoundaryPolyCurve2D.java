@@ -40,7 +40,7 @@ import math.geom2d.AffineTransform2D;
  * @author dlegland
  */
 public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
-        PolyOrientedCurve2D<T> implements ContinuousBoundary2D {
+        PolyOrientedCurve2D<T> implements Contour2D {
 
     // ===================================================================
     // Constructors
@@ -109,7 +109,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
      * Returns a ArrayList<ContinuousBoundary2D> containing only
      * <code>this</code>.
      */
-    public Collection<? extends ContinuousBoundary2D> getBoundaryCurves() {
+    public Collection<? extends Contour2D> getBoundaryCurves() {
     	return wrapCurve(this);
     }
 

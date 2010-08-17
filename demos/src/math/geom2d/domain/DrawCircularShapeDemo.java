@@ -76,22 +76,22 @@ public class DrawCircularShapeDemo extends JPanel{
 		CircleArc2D arclc = new CircleArc2D(xl, yc, r, Math.PI/2, ext2);
 		
 		// Build the main boundary curve
-		ContinuousBoundary2D boundary0 = new BoundaryPolyCurve2D<CircleArc2D>(
+		Contour2D boundary0 = new BoundaryPolyCurve2D<CircleArc2D>(
 				new CircleArc2D[]{
 						arcll, arccl, arcul, arcuc,
 						arcuu, arccu, arclu, arclc});
 		
 		// Build the inner boundaries
-		ContinuousBoundary2D boundaryll = new Circle2D(xu, yu, r2, false);
-		ContinuousBoundary2D boundarylu = new Circle2D(xl, yu, r2, false);
-		ContinuousBoundary2D boundaryuu = new Circle2D(xl, yl, r2, false);
-		ContinuousBoundary2D boundaryul = new Circle2D(xu, yl, r2, false);
-		ContinuousBoundary2D boundarycc = new Circle2D(xc, yc, r2, false);
+		Contour2D boundaryll = new Circle2D(xu, yu, r2, false);
+		Contour2D boundarylu = new Circle2D(xl, yu, r2, false);
+		Contour2D boundaryuu = new Circle2D(xl, yl, r2, false);
+		Contour2D boundaryul = new Circle2D(xu, yl, r2, false);
+		Contour2D boundarycc = new Circle2D(xc, yc, r2, false);
 		
 		
 		// Gather the different boundaries
-		Boundary2D boundary = new BoundarySet2D<ContinuousBoundary2D>(
-			new ContinuousBoundary2D[]{
+		Boundary2D boundary = new BoundarySet2D<Contour2D>(
+			new Contour2D[]{
 					boundary0, 
 					boundarycc,
 					boundaryll, boundarylu, boundaryuu, boundaryul}

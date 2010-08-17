@@ -12,7 +12,7 @@ import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothBoundary2D;
@@ -107,11 +107,11 @@ implements SmoothBoundary2D, Cloneable {
     // methods inherited from Boundary2D interface
 
     /**
-     * Returns an instance of ArrayList<ContinuousBoundary2D> containing only
+     * Returns an instance of ArrayList<Contour2D> containing only
      * <code>this</code>.
      */
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>();
+    public Collection<Contour2D> getBoundaryCurves() {
+        ArrayList<Contour2D> list = new ArrayList<Contour2D>();
         list.add(this);
         return list;
     }

@@ -18,7 +18,7 @@ import math.geom2d.AffineTransform2D;
  *
  */
 public interface SmoothBoundary2D
-extends SmoothOrientedCurve2D, ContinuousBoundary2D {
+extends SmoothOrientedCurve2D, Contour2D {
 
     // ===================================================================
     // redefines declaration of some interfaces

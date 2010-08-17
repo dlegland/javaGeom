@@ -39,7 +39,7 @@ import math.geom2d.circulinear.CirculinearDomain2DUtils;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
@@ -386,7 +386,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns the shape formed by the polygon clipped by the given box.
      */
     public Domain2D clip(Box2D box) {
-        BoundarySet2D<ContinuousBoundary2D> boundarySet = 
+        BoundarySet2D<Contour2D> boundarySet = 
             Boundary2DUtils.clipBoundary(this.getBoundary(), box);
 
         // TODO: should return an instance of MultiPolygon2D.

@@ -56,7 +56,7 @@ public interface ContinuousCurve2D extends Curve2D {
     // general methods
 
     /**
-     * Return true if the curve makes a loop, that is come back to starting
+     * Returns true if the curve makes a loop, that is come back to starting
      * point after covering the path.
      */
     public abstract boolean isClosed();
@@ -88,9 +88,15 @@ public interface ContinuousCurve2D extends Curve2D {
     public abstract java.awt.geom.GeneralPath appendPath(
             java.awt.geom.GeneralPath path);
 
+    // ===================================================================
+    // Curvr2D methods
+
     public abstract ContinuousCurve2D getReverseCurve();
 
     public abstract ContinuousCurve2D getSubCurve(double t0, double t1);
+
+    // ===================================================================
+    // Shape2D methods
 
     public abstract CurveSet2D<? extends ContinuousCurve2D> clip(Box2D box);
 
