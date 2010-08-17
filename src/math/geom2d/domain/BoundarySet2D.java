@@ -43,7 +43,7 @@ import math.geom2d.curve.*;
  */
 public class BoundarySet2D<T extends ContinuousBoundary2D> 
 extends CurveArray2D<T> implements Boundary2D {
-//TODO: split into an interface and a boundary array
+
     // ===================================================================
     // Constructors
 

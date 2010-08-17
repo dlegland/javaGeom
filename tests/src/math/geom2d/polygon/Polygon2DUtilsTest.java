@@ -8,7 +8,6 @@
  */
 package math.geom2d.polygon;
 
-import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
 

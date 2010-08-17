@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
-import math.geom2d.curve.Curve2D;
 
 /**
  * @author dlegland
