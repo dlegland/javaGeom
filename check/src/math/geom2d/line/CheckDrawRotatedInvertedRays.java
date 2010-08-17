@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
 
 /**
  * @author dlegland
@@ -25,7 +24,7 @@ public class CheckDrawRotatedInvertedRays extends JPanel{
 	double x0=150, y0=150;
 	Box2D box = new Box2D(50, 250, 50, 250);
 	
-	CurveSet2D<InvertedRay2D> rays;
+	CurveArray2D<InvertedRay2D> rays;
 	
 	public CheckDrawRotatedInvertedRays(){
 		rays = new CurveArray2D<InvertedRay2D>();

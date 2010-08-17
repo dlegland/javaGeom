@@ -41,7 +41,7 @@ import math.geom2d.curve.*;
  * 
  * @author dlegland
  */
-public class BoundarySet2D<T extends ContinuousBoundary2D> 
+public class BoundarySet2D<T extends Contour2D> 
 extends CurveArray2D<T> implements Boundary2D {
 
     // ===================================================================
@@ -76,7 +76,7 @@ extends CurveArray2D<T> implements Boundary2D {
      * curves.
      * @since 0.8.1
      */
-    public static <T extends ContinuousBoundary2D> BoundarySet2D<T> create(
+    public static <T extends Contour2D> BoundarySet2D<T> create(
     		Collection<T> curves) {
     	return new BoundarySet2D<T>(curves);
     }
@@ -86,7 +86,7 @@ extends CurveArray2D<T> implements Boundary2D {
      * curves.
      * @since 0.8.1
      */
-    public static <T extends ContinuousBoundary2D> BoundarySet2D<T> create(
+    public static <T extends Contour2D> BoundarySet2D<T> create(
     		T[] curves) {
     	return new BoundarySet2D<T>(curves);
     }
@@ -94,11 +94,11 @@ extends CurveArray2D<T> implements Boundary2D {
     // ===================================================================
     // Methods implementing Boundary2D interface
 
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = 
-        	new ArrayList<ContinuousBoundary2D>(curves.size());
+    public Collection<Contour2D> getBoundaryCurves() {
+        ArrayList<Contour2D> list = 
+        	new ArrayList<Contour2D>(curves.size());
         for (Curve2D curve : this.curves)
-            list.add((ContinuousBoundary2D) curve);
+            list.add((Contour2D) curve);
         return list;
     }
 
@@ -149,12 +149,12 @@ extends CurveArray2D<T> implements Boundary2D {
     // Methods implementing Curve2D interface
 
     @Override
-    public BoundarySet2D<? extends ContinuousBoundary2D> getReverseCurve() {
-        ContinuousBoundary2D[] curves2 = new ContinuousBoundary2D[curves.size()];
+    public BoundarySet2D<? extends Contour2D> getReverseCurve() {
+        Contour2D[] curves2 = new Contour2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i<n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
-        return new BoundarySet2D<ContinuousBoundary2D>(curves2);
+        return new BoundarySet2D<Contour2D>(curves2);
     }
 
     @Override
@@ -201,12 +201,12 @@ extends CurveArray2D<T> implements Boundary2D {
     }
 
     @Override
-    public BoundarySet2D<? extends ContinuousBoundary2D> transform(
+    public BoundarySet2D<? extends Contour2D> transform(
             AffineTransform2D trans) {
-        BoundarySet2D<ContinuousBoundary2D> result = 
-        	new BoundarySet2D<ContinuousBoundary2D>(curves.size());
+        BoundarySet2D<Contour2D> result = 
+        	new BoundarySet2D<Contour2D>(curves.size());
         for (Curve2D curve : curves)
-            result.addCurve((ContinuousBoundary2D) curve.transform(trans));
+            result.addCurve((Contour2D) curve.transform(trans));
         return result;
     }
 }

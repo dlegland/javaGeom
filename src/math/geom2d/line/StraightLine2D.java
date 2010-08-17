@@ -35,7 +35,7 @@ import java.util.Collection;
 import math.geom2d.*;
 import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothBoundary2D;
@@ -308,9 +308,8 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods specific to Boundary2D interface
 
-    public Collection<ContinuousBoundary2D> getBoundaryCurves() {
-        ArrayList<ContinuousBoundary2D> list = new ArrayList<ContinuousBoundary2D>(
-                1);
+    public Collection<Contour2D> getBoundaryCurves() {
+        ArrayList<Contour2D> list = new ArrayList<Contour2D>(1);
         list.add(this);
         return list;
     }

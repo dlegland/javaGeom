@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.GenericDomain2D;
 
 /**
@@ -32,7 +32,7 @@ public class DrawAstroidDemo extends JPanel {
 	double y0 = 200;
 	double r = 150;
 	
-	ContinuousBoundary2D astroid;
+	Contour2D astroid;
 	
 	Box2D box = new Box2D(10, 410, 10, 410);
 	

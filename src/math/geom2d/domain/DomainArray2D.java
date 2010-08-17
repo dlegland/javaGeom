@@ -83,11 +83,11 @@ implements DomainSet2D<T> {
 	 */
 	public Boundary2D getBoundary() {
 		int n = this.shapes.size();
-		ArrayList<ContinuousBoundary2D> boundaries = 
-			new ArrayList<ContinuousBoundary2D> (n);
+		ArrayList<Contour2D> boundaries = 
+			new ArrayList<Contour2D> (n);
 		for(Domain2D domain : this)
 			boundaries.addAll(domain.getBoundary().getBoundaryCurves());
-		return new BoundarySet2D<ContinuousBoundary2D>(boundaries);
+		return new BoundarySet2D<Contour2D>(boundaries);
 	}
 
 	

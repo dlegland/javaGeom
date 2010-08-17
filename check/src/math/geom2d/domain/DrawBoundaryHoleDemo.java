@@ -33,7 +33,7 @@ import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.BoundarySet2D;
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.polygon.LinearRing2D;
 
 
@@ -59,9 +59,9 @@ public class DrawBoundaryHoleDemo extends JPanel{
 				new Point2D(50, 250) });
 
 		// build the boundary set
-		BoundarySet2D<ContinuousBoundary2D> boundary = 
-			new BoundarySet2D<ContinuousBoundary2D>(
-				new ContinuousBoundary2D[]{square, circle});
+		BoundarySet2D<Contour2D> boundary = 
+			new BoundarySet2D<Contour2D>(
+				new Contour2D[]{square, circle});
 		
 		// fill the domain
 		g2.setColor(Color.CYAN);

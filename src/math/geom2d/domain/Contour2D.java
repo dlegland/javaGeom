@@ -1,4 +1,4 @@
-/* file : ContinuousBoundary2D.java
+/* file : Contour2D.java
  * 
  * Project : geometry
  *
@@ -29,15 +29,14 @@ package math.geom2d.domain;
 import math.geom2d.AffineTransform2D;
 
 /**
- * A continuous oriented curve which delimits a
- * connected planar domain.
- * @deprecated replaced by Contour2D
+ * A continuous oriented curve which delimits a connected planar domain.
+ * 
  * @author dlegland
  */
-@Deprecated
-public interface ContinuousBoundary2D extends Contour2D {
+public interface Contour2D extends Boundary2D,
+        ContinuousOrientedCurve2D {
 
-    public abstract ContinuousBoundary2D getReverseCurve();
+    public abstract Contour2D getReverseCurve();
 
-    public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
+    public abstract Contour2D transform(AffineTransform2D trans);
 }

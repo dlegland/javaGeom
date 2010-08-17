@@ -8,7 +8,7 @@
  */
 package math.geom2d.circulinear;
 
-import math.geom2d.domain.ContinuousBoundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.transform.CircleInversion2D;
 
 
@@ -17,7 +17,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public interface CirculinearContour2D extends ContinuousBoundary2D,
+public interface CirculinearContour2D extends Contour2D,
 CirculinearContinuousCurve2D, CirculinearBoundary2D {
 
 	public CirculinearContour2D getParallel(double d);
