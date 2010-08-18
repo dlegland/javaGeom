@@ -38,7 +38,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothBoundary2D;
+import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -48,7 +48,7 @@ import math.geom2d.transform.CircleInversion2D;
  * of the Cartesian equation.
  */
 public class StraightLine2D extends AbstractLine2D implements
-        SmoothBoundary2D, Cloneable, CircleLine2D {
+        SmoothContour2D, Cloneable, CircleLine2D {
 
     // ===================================================================
     // constants

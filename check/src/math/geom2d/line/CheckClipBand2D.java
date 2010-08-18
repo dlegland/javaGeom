@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 
 /**
  * @author dlegland
@@ -27,11 +27,11 @@ public class CheckClipBand2D extends JPanel{
 	StraightLine2D line1 = new StraightLine2D(x0-d, y0-d, -1, 1);
 	StraightLine2D line2 = new StraightLine2D(x0+d, y0+d, 1, -1);
 
-	BoundarySet2D<StraightLine2D> band; 
+	ContourArray2D<StraightLine2D> band; 
 	
 	
 	public CheckClipBand2D(){
-		band = new BoundarySet2D<StraightLine2D>(
+		band = new ContourArray2D<StraightLine2D>(
 				new StraightLine2D[]{line1, line2});
 	}
 	

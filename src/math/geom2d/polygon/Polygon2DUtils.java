@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 import math.geom2d.Point2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
@@ -69,8 +69,8 @@ public abstract class Polygon2DUtils {
     }
 
     public final static Domain2D createBuffer(Polygon2D polygon, double d) {
-        BoundarySet2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
-            new BoundarySet2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
+        ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
+            new ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
 
         for (LinearRing2D ring : polygon.getBoundary())
             result.addCurve(Polyline2DUtils.createClosedParallel(ring, d));
@@ -88,8 +88,8 @@ public abstract class Polygon2DUtils {
         ArrayList<LinearRing2D> boundary = new ArrayList<LinearRing2D>();
         
         // Extract polygon boundaries
-        BoundarySet2D<? extends LinearRing2D> boundary1 = polygon1.getBoundary();
-        BoundarySet2D<? extends LinearRing2D> boundary2 = polygon2.getBoundary();
+        ContourArray2D<? extends LinearRing2D> boundary1 = polygon1.getBoundary();
+        ContourArray2D<? extends LinearRing2D> boundary2 = polygon2.getBoundary();
         
         // compute intersections
         ArrayList<Point2D> intersections = new ArrayList<Point2D>();
@@ -140,7 +140,7 @@ public abstract class Polygon2DUtils {
         Point2D middlePoint = boundary1.getPoint(middlePos);
         //TODO: not sure about non continuous curves
         
-        BoundarySet2D<? extends LinearRing2D> currentBoundary = 
+        ContourArray2D<? extends LinearRing2D> currentBoundary = 
             polygon2.contains(middlePoint) ? boundary2 : boundary1;
         boolean isOnFirstBoundary = !polygon2.contains(middlePoint);
         

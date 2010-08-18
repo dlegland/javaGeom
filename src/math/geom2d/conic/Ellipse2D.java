@@ -44,7 +44,7 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothBoundary2D;
+import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 
@@ -56,7 +56,7 @@ import math.geom2d.line.LinearShape2D;
  * semiaxis : the second semi axis can be greater than the first one.
  */
 public class Ellipse2D extends AbstractSmoothCurve2D
-implements SmoothBoundary2D, Conic2D, Cloneable {
+implements SmoothContour2D, Conic2D, Cloneable {
 
 
     // ===================================================================

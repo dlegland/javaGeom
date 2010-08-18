@@ -30,7 +30,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
@@ -214,7 +214,7 @@ public class CircleInversion2D implements Bijection2D {
                 curves.add(this.transformRing(ring));
 
             // create new shape by putting all boundaries together
-            return new BoundarySet2D<BoundaryPolyCurve2D<CircleArc2D>>(curves);
+            return new ContourArray2D<BoundaryPolyCurve2D<CircleArc2D>>(curves);
         }
 
         return null;

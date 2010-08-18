@@ -34,7 +34,7 @@ import java.util.Collection;
 
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
@@ -309,12 +309,12 @@ public class Box2D implements Cloneable {
         // case of boxes unbounded in both x directions
         if (!bx0&&!bx1) {
             if (!by0&&!by1)
-                return new BoundarySet2D<StraightLine2D>();
+                return new ContourArray2D<StraightLine2D>();
             if (by0&&!by1)
                 return new StraightLine2D(0, ymin, 1, 0);
             if (!by0&&by1)
                 return new StraightLine2D(0, ymax, -1, 0);
-            return new BoundarySet2D<StraightLine2D>(new StraightLine2D[] {
+            return new ContourArray2D<StraightLine2D>(new StraightLine2D[] {
                     new StraightLine2D(0, ymin, 1, 0),
                     new StraightLine2D(0, ymax, -1, 0) });
         }
@@ -322,12 +322,12 @@ public class Box2D implements Cloneable {
         // case of boxes unbounded in both y directions
         if (!by0&&!by1) {
             if (!bx0&&!bx1)
-                return new BoundarySet2D<StraightLine2D>();
+                return new ContourArray2D<StraightLine2D>();
             if (bx0&&!bx1)
                 return new StraightLine2D(xmin, 0, 0, -1);
             if (!bx0&&bx1)
                 return new StraightLine2D(xmax, 0, 0, 1);
-            return new BoundarySet2D<StraightLine2D>(new StraightLine2D[] {
+            return new ContourArray2D<StraightLine2D>(new StraightLine2D[] {
                     new StraightLine2D(xmin, 0, 0, -1),
                     new StraightLine2D(xmax, 0, 0, 1) });
         }

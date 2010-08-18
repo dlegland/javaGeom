@@ -103,7 +103,7 @@ public abstract class Boundary2DUtils {
      * Clips a boundary and closes the result curve. Return an instance of
      * BoundarySet2D.
      */
-    public final static BoundarySet2D<Contour2D> clipBoundary(
+    public final static ContourArray2D<Contour2D> clipBoundary(
             Boundary2D boundary, Box2D box) {
 
         if (!box.isBounded())
@@ -115,8 +115,8 @@ public abstract class Boundary2DUtils {
         // The set of boundary curves. Each curve of this set is either a
         // curve of the original boundary, or a composition of a portion of
         // original boundary with a portion of the box.
-        BoundarySet2D<Contour2D> res = 
-        	new BoundarySet2D<Contour2D>();
+        ContourArray2D<Contour2D> res = 
+        	new ContourArray2D<Contour2D>();
 
         // to store result of curve clipping
         CurveSet2D<ContinuousOrientedCurve2D> clipped;

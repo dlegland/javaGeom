@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 
@@ -35,7 +35,7 @@ public class CheckDrawWedges2D extends JPanel{
 	
 	BoundaryPolyCurve2D<AbstractLine2D> wedge1; 
 	BoundaryPolyCurve2D<AbstractLine2D> wedge2; 
-	BoundarySet2D<BoundaryPolyCurve2D<AbstractLine2D>> boundary;
+	ContourArray2D<BoundaryPolyCurve2D<AbstractLine2D>> boundary;
 	
 	@SuppressWarnings("unchecked")
 	public CheckDrawWedges2D(){
@@ -44,7 +44,7 @@ public class CheckDrawWedges2D extends JPanel{
 		wedge2 = new BoundaryPolyCurve2D<AbstractLine2D>(
 				new AbstractLine2D[]{inv2, ray2});
 		// Unchecked type cast
-		boundary = new BoundarySet2D<BoundaryPolyCurve2D<AbstractLine2D>>(
+		boundary = new ContourArray2D<BoundaryPolyCurve2D<AbstractLine2D>>(
 			new BoundaryPolyCurve2D[]{wedge1, wedge2});
 	}
 	

@@ -90,7 +90,7 @@ public class DrawCircularShapeDemo extends JPanel{
 		
 		
 		// Gather the different boundaries
-		Boundary2D boundary = new BoundarySet2D<Contour2D>(
+		Boundary2D boundary = new ContourArray2D<Contour2D>(
 			new Contour2D[]{
 					boundary0, 
 					boundarycc,

@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.curve.*;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -24,7 +24,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class CirculinearBoundarySet2D<T extends CirculinearContour2D> 
-extends BoundarySet2D<T> implements	CirculinearBoundary2D {
+extends ContourArray2D<T> implements	CirculinearBoundary2D {
 
     // ===================================================================
     // static constructors

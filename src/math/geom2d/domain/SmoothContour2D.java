@@ -17,12 +17,12 @@ import math.geom2d.AffineTransform2D;
  * @author dlegland
  *
  */
-public interface SmoothBoundary2D
+public interface SmoothContour2D
 extends SmoothOrientedCurve2D, Contour2D {
 
     // ===================================================================
     // redefines declaration of some interfaces
 
-	SmoothBoundary2D transform(AffineTransform2D trans);
-	SmoothBoundary2D getReverseCurve();
+	SmoothContour2D transform(AffineTransform2D trans);
+	SmoothContour2D getReverseCurve();
 }

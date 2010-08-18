@@ -32,7 +32,7 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 
 
 public class CheckClipInvertedCircles2D extends JPanel{
@@ -70,7 +70,7 @@ public class CheckClipInvertedCircles2D extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		BoundarySet2D<Circle2D> boundary = new BoundarySet2D<Circle2D>(
+		ContourArray2D<Circle2D> boundary = new ContourArray2D<Circle2D>(
 				new Circle2D[]{circle1, circle2, circle3, circle4});		
 		
 		g2.setColor(Color.CYAN);
