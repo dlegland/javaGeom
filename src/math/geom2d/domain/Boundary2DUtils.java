@@ -11,7 +11,7 @@ import java.util.Iterator;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShape2DException;
+import math.geom2d.UnboundedBox2DException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -107,7 +107,7 @@ public abstract class Boundary2DUtils {
             Boundary2D boundary, Box2D box) {
 
         if (!box.isBounded())
-            throw new UnboundedShape2DException();
+            throw new UnboundedBox2DException(box);
 
         // iteration variable
         ContinuousOrientedCurve2D curve;

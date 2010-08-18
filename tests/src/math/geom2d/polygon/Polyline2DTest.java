@@ -33,6 +33,8 @@ import java.util.*;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 
 import math.geom2d.line.StraightLine2D;
 
@@ -94,6 +96,31 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(polyline.getPosition(20), 2, 1e-14);
 		assertEquals(polyline.getPosition(25), 2.5, 1e-14);
 		assertEquals(polyline.getPosition(30), 3, 1e-14);
+	}
+	
+	public void testGetBufferDouble() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(50, 50),
+				new Point2D(100, 50),
+				new Point2D(100, 100),
+				new Point2D(150, 100) });
+		double dist = 30;
+		
+		Domain2D buffer = polyline.getBuffer(dist);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
+	}
+	
+	public void testGetBufferDouble_SmallAnglePolyline() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(200, 100),
+				new Point2D(100, 100),
+				new Point2D(180, 140) });
+		double dist = 30;
+		
+		Domain2D buffer = polyline.getBuffer(dist);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
 	}
 	
 	public void testGetParallelDouble() {

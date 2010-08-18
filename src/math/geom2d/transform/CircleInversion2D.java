@@ -50,8 +50,16 @@ import math.geom2d.Shape2D;
 public class CircleInversion2D implements Bijection2D {
 
     // ===================================================================
-    // constants
+    // static constructors
 
+	public static CircleInversion2D create(Point2D center, double radius) {
+		return new CircleInversion2D(center, radius);
+	}
+	
+	public static CircleInversion2D create(Circle2D circle) {
+		return new CircleInversion2D(circle);
+	}
+	
     // ===================================================================
     // class variables
 	
@@ -240,6 +248,9 @@ public class CircleInversion2D implements Bijection2D {
     // ===================================================================
     // methods implementing the Bijection2D interface
     
+   /**
+    * Returns this circle inversion.
+    */
     public CircleInversion2D invert() {
     	return this;
     }

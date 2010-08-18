@@ -408,10 +408,10 @@ public class Box2D implements Cloneable {
 
     public Collection<Point2D> getVertices() {
         ArrayList<Point2D> points = new ArrayList<Point2D>(4);
-        boolean bx0 = !(Double.isInfinite(xmin)||Double.isNaN(xmin));
-        boolean bx1 = !(Double.isInfinite(xmax)||Double.isNaN(xmax));
-        boolean by0 = !(Double.isInfinite(ymin)||Double.isNaN(ymin));
-        boolean by1 = !(Double.isInfinite(ymax)||Double.isNaN(ymax));
+        boolean bx0 = isFinite(xmin);
+        boolean bx1 = isFinite(xmax);
+        boolean by0 = isFinite(ymin);
+        boolean by1 = isFinite(ymax);
         if (bx0&&by0)
             points.add(new Point2D(xmin, ymin));
         if (bx1&&by0)
@@ -423,6 +423,14 @@ public class Box2D implements Cloneable {
         return points;
     }
 
+    private final static boolean isFinite(double value) {
+    	if (Double.isInfinite(value))
+    		return false;
+    	if (Double.isNaN(value))
+    		return false;
+    	return true;
+    }
+    
     /** Returns the number of vertices of the box. */
     public int getVertexNumber() {
         return this.getVertices().size();
@@ -557,13 +565,13 @@ public class Box2D implements Cloneable {
 
     public void draw(Graphics2D g2) {
         if (!isBounded())
-            throw new UnboundedShape2DException();
+            throw new UnboundedBox2DException(this);
         this.getBoundary().draw(g2);
     }
 
     public void fill(Graphics2D g2) {
         if (!isBounded())
-            throw new UnboundedShape2DException();
+            throw new UnboundedBox2DException(this);
         this.getBoundary().fill(g2);
     }
 
