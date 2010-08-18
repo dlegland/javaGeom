@@ -4,10 +4,7 @@
 
 package math.geom2d.polygon;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import math.geom2d.Point2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
@@ -16,6 +13,10 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
+
+import com.seisw.util.geom.Poly;
+import com.seisw.util.geom.PolyDefault;
+import com.seisw.util.geom.PolySimple;
 
 /**
  * @author dlegland
@@ -49,7 +50,7 @@ public abstract class Polygon2DUtils {
             x2 = p.getX();
             y2 = p.getY();
 
-            // TODO: should avoid create new objects, and use a dedicated method
+            // TODO: should avoid create new objects, and use a dedicated method (CCW ?)
             if (y1<=y) {
                 if (y2>y) // an upward crossing
                     if (new LineSegment2D(x1, y1, x2, y2).isInside(point))
@@ -79,94 +80,82 @@ public abstract class Polygon2DUtils {
     }
     
     /**
-     * to be implemented later.
+     * Compute union of the two polygons. Uses the GPCJ library, developed by
+     * Solution Engineering, Inc.
      */
-    private final static Polygon2D union(Polygon2D polygon1, 
+    public final static Polygon2D union(Polygon2D polygon1, 
             Polygon2D polygon2) {
-        
-        // The resulting boundary
-        ArrayList<LinearRing2D> boundary = new ArrayList<LinearRing2D>();
-        
-        // Extract polygon boundaries
-        ContourArray2D<? extends LinearRing2D> boundary1 = polygon1.getBoundary();
-        ContourArray2D<? extends LinearRing2D> boundary2 = polygon2.getBoundary();
-        
-        // compute intersections
-        ArrayList<Point2D> intersections = new ArrayList<Point2D>();
-        for(LinearRing2D ring1 : boundary1.getCurves()){
-            for(LinearRing2D ring2 : boundary2.getCurves()){
-                intersections.addAll(Polyline2DUtils.intersect(ring1, ring2));
-            }
-        }
-        
-        // Check the case of no intersection
-        if(intersections.size()==0) {
-            if(!polygon1.contains(boundary2.getFirstPoint())){
-                boundary.addAll(boundary2.getCurves());
-            }
-            if(!polygon2.contains(boundary1.getFirstPoint())){
-                boundary.addAll(boundary1.getCurves());
-            }
-            return new MultiPolygon2D(boundary);
-        }
-        
-        // locate intersection on each boundary
-        SortedSet<Double> positions1 = new TreeSet<Double>();
-        SortedSet<Double> positions2 = new TreeSet<Double>();
-        for (Point2D p : intersections) {
-            positions1.add(new Double(boundary1.getPosition(p)));
-            positions2.add(new Double(boundary2.getPosition(p)));
-        }
-        
-        //TODO: manage several boundaries
-        
-        // ---
-        // Manage next LinearRing2D
-        
-        // prepare the point list for the new ring
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
-
-        // get an unprocessed intersection point
-        Point2D refPoint = intersections.iterator().next();
-        points.add(refPoint);
-        
-        // check if the point is going inside or outside from poly1 when
-        // following boundary of poly2
-        double pos = boundary1.getPosition(refPoint);
-        
-        // find the position of the next intersection point on boundary1
-        double nextPos = findNext(positions1, pos);
-        double middlePos = chooseBetween(pos, nextPos);
-        Point2D middlePoint = boundary1.getPoint(middlePos);
-        //TODO: not sure about non continuous curves
-        
-        ContourArray2D<? extends LinearRing2D> currentBoundary = 
-            polygon2.contains(middlePoint) ? boundary2 : boundary1;
-        boolean isOnFirstBoundary = !polygon2.contains(middlePoint);
-        
-        // iterate on each boundary until we come back to ref point
-        Point2D point = refPoint;
-        do{
-            if(isOnFirstBoundary){
-                nextPos = findNext(positions1, pos);
-                
-            }
-        }while(point!=refPoint);
-        
-        
-        return null;
+    	// convert to GPCJ data structures
+    	Poly poly1 = convertToGpcjPolygon(polygon1);
+    	Poly poly2 = convertToGpcjPolygon(polygon2);
+    	
+    	// compute union
+    	Poly result = poly1.union(poly2);
+    	
+    	// convert result to javaGeom structure
+    	return convertFromGpcjPolygon(result);
     }
     
-    private final static <T> T findNext(SortedSet<T> set, T element){
-        SortedSet<T> tail = set.tailSet(element);
-        return tail.isEmpty() ? set.first() : tail.first();
+    /**
+     * Compute union of the two polygons. Uses the GPCJ library, developed by
+     * Solution Engineering, Inc.
+     */
+    public final static Polygon2D intersection(Polygon2D polygon1, 
+            Polygon2D polygon2) {
+    	// convert to GPCJ data structures
+    	Poly poly1 = convertToGpcjPolygon(polygon1);
+    	Poly poly2 = convertToGpcjPolygon(polygon2);
+    	
+    	// compute union
+    	Poly result = poly1.intersection(poly2);
+    	
+    	// convert result to javaGeom structure
+    	return convertFromGpcjPolygon(result);
     }
     
-    private final static double chooseBetween(double pos1, double pos2) {
-        if(pos2>pos1) {
-            return pos1 + (pos2-pos1)/2;
-        } else {
-            return pos2/2;
-        }
+    private final static Poly convertToGpcjPolygon(Polygon2D polygon) {
+    	PolyDefault result = new PolyDefault();
+    	for (LinearRing2D ring : polygon.getRings())
+    		result.add(convertToGpcjSimplePolygon(ring));
+    	return result;
+    }
+    
+    private final static PolySimple convertToGpcjSimplePolygon(
+    		LinearRing2D ring) {
+    	PolySimple poly = new PolySimple();
+    	for (Point2D point : ring.getVertices())
+    		poly.add(point);
+    	return poly;
+    }
+    
+    private final static Polygon2D convertFromGpcjPolygon(Poly poly) {
+    	int n = poly.getNumInnerPoly();
+    	
+    	// if the result is single, create a SimplePolygon
+    	if (n==1) {
+    		Point2D[] points = extractPolyVertices(poly.getInnerPoly(0));
+    		return SimplePolygon2D.create(points);
+    	}
+    	
+    	// extract the different rings of the resulting polygon
+    	LinearRing2D[] rings = new LinearRing2D[n];
+    	for (int i=0; i<n; i++) 
+    		rings[i] = convertFromGpcjSimplePolygon(poly.getInnerPoly(i));
+    	
+    	// create a multiple polygon
+    	return MultiPolygon2D.create(rings);
+    }
+    
+    private final static LinearRing2D convertFromGpcjSimplePolygon(
+    		Poly poly) {
+    	return LinearRing2D.create(extractPolyVertices(poly));
+    }
+    
+    private final static Point2D[] extractPolyVertices(Poly poly) {
+    	int n = poly.getNumPoints();
+    	Point2D[] points = new Point2D[n];
+    	for (int i=0; i<n; i++)
+    		points[i] = Point2D.create(poly.getX(i), poly.getY(i));
+    	return points;
     }
 }

@@ -8,5 +8,6 @@
 	<classpathentry excluding=".svn/|math/.svn/|math/geom2d/.svn/|math/geom2d/algos/.svn/|math/geom2d/conic/.svn/|math/geom2d/curve/.svn/|math/geom2d/domain/.svn/|math/geom2d/line/.svn/|math/geom2d/polygon/.svn/|math/geom2d/spline/.svn/|math/geom2d/transform/.svn/|math/geom3d/.svn/|math/geom3d/line/.svn/|math/geom3d/plane/.svn/|math/geom3d/transform/.svn/" kind="src" output="tests/bin" path="tests/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="D:/java/recup/junit3.8.1/junit.jar"/>
+	<classpathentry kind="lib" path="lib/gpcj.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

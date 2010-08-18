@@ -29,8 +29,24 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class MultiPolygon2D implements Domain2D, Polygon2D {
 
+    // ===================================================================
+    // Static constructors
+	
+	public static MultiPolygon2D create(Collection<LinearRing2D> rings) {
+		return new MultiPolygon2D(rings);
+	}
+
+	public static MultiPolygon2D create(LinearRing2D[] rings) {
+		return new MultiPolygon2D(rings);
+	}
+
+	
+    // ===================================================================
+    // class members
+
     ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>();
 
+    
     // ===================================================================
     // Constructors
 
@@ -221,7 +237,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         // convert boundary to list of rings
         ArrayList<LinearRing2D> boundaries = new ArrayList<LinearRing2D>(
                 boundary.getCurveNumber());
-        for (Contour2D curve : boundary.getBoundaryCurves())
+        for (Contour2D curve : boundary.getBoundaryCurves()) //TODO: cast problems
             boundaries.add((LinearRing2D) curve);
         
         // create new MultiPolygon with the set of rings
