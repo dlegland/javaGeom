@@ -53,27 +53,6 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 
-	public LinearRing2D() {
-        super();
-    }
-
-    public LinearRing2D(Point2D initialPoint) {
-        super(initialPoint);
-    }
-
-    public LinearRing2D(Point2D[] points) {
-        super(points);
-    }
-
-    public LinearRing2D(double[] xcoords, double[] ycoords) {
-        super(xcoords, ycoords);
-    }
-
-    public LinearRing2D(Collection<? extends Point2D> points) {
-        super(points);
-    }
-
-    
     // ===================================================================
     // Static methods
     
@@ -96,6 +75,30 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     }
     
 
+    // ===================================================================
+    // Constructors
+    
+	public LinearRing2D() {
+        super();
+    }
+
+    public LinearRing2D(Point2D initialPoint) {
+        super(initialPoint);
+    }
+
+    public LinearRing2D(Point2D[] points) {
+        super(points);
+    }
+
+    public LinearRing2D(double[] xcoords, double[] ycoords) {
+        super(xcoords, ycoords);
+    }
+
+    public LinearRing2D(Collection<? extends Point2D> points) {
+        super(points);
+    }
+
+    
     // ===================================================================
     // Methods specific to ClosedPolyline2D
 

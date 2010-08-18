@@ -29,6 +29,7 @@ package math.geom2d.polygon;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
@@ -42,50 +43,56 @@ import math.geom2d.line.LineSegment2D;
 public interface Polygon2D extends CirculinearDomain2D {
 
     /** Returns the vertices (singular points) of the polygon */
-    public abstract Collection<Point2D> getVertices();
+    public Collection<Point2D> getVertices();
 
     /**
      * Returns the i-th vertex of the polygon.
      * 
      * @param i index of the vertex, between 0 and the number of vertices
      */
-    public abstract Point2D getVertex(int i);
+    public Point2D getVertex(int i);
 
     /**
      * Returns the number of vertices of the polygon
      * 
      * @since 0.6.3
      */
-    public abstract int getVertexNumber();
+    public int getVertexNumber();
 
     /** Return the edges as line segments of the polygon */
-    public abstract Collection<? extends LineSegment2D> getEdges();
+    public Collection<? extends LineSegment2D> getEdges();
 
     /** Returns the number of edges of the polygon */
-    public abstract int getEdgeNumber();
+    public int getEdgeNumber();
     
     /**
      * Returns the set of rings comprising the boundary of this polygon.
      * @return the set of boundary rings.
      */
-    public abstract Collection<? extends LinearRing2D> getRings();
+    public Collection<? extends LinearRing2D> getRings();
 
     
     // ===================================================================
-    // general methods
+    // methods inherited from the Domain2D interface
 
-    public abstract CirculinearBoundarySet2D<? extends LinearRing2D> 
+    public CirculinearBoundarySet2D<? extends LinearRing2D> 
     getBoundary();
 
-    /**
-     * Returns the new Polygon created by an affine transform of this polygon.
-     */
-    public abstract Polygon2D transform(AffineTransform2D trans);
-
+    
     /**
      * Returns the complementary polygon.
      * 
      * @return the polygon complementary to this
      */
     public Polygon2D complement();
+    
+    // ===================================================================
+    // methods inherited from the Shape2D interface
+
+    /**
+     * Returns the new Polygon created by an affine transform of this polygon.
+     */
+    public Polygon2D transform(AffineTransform2D trans);
+
+    public Polygon2D clip(Box2D box);
 }

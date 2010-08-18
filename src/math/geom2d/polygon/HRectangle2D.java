@@ -37,7 +37,6 @@ import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
-import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -234,7 +233,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * rectangle is outside clipping box, returns an instance of HRectangle with
      * 0 width and height.
      */
-    public Domain2D clip(Box2D box) {
+    public HRectangle2D clip(Box2D box) {
         double xmin = Math.max(this.getMinX(), box.getMinX());
         double xmax = Math.min(this.getMaxX(), box.getMaxX());
         double ymin = Math.max(this.getMinY(), box.getMinY());

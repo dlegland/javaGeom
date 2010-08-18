@@ -37,11 +37,6 @@ import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearDomain2DUtils;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
-import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.domain.Contour2D;
-import math.geom2d.domain.Domain2D;
-import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -51,7 +46,26 @@ import math.geom2d.transform.CircleInversion2D;
 public class SimplePolygon2D implements Polygon2D {
 
     // ===================================================================
-    // constants
+    // Static constructors
+    
+    /**
+     * Static factory for creating a new SimplePolygon2D from a collection of
+     * points.
+     * @since 0.8.1
+     */
+    public static SimplePolygon2D create(Collection<? extends Point2D> points) {
+    	return new SimplePolygon2D(points);
+    }
+    
+    /**
+     * Static factory for creating a new SimplePolygon2D from an array of
+     * points.
+     * @since 0.8.1
+     */
+    public static SimplePolygon2D create(Point2D[] points) {
+    	return new SimplePolygon2D(points);
+    }
+    
 
     // ===================================================================
     // class variables
@@ -60,7 +74,7 @@ public class SimplePolygon2D implements Polygon2D {
      * The inner ordered list of vertices. The last point is connected to the
      * first one.
      */
-    protected ArrayList<Point2D> points = new ArrayList<Point2D>();
+    protected ArrayList<Point2D> points;
 
     // ===================================================================
     // constructors
@@ -69,6 +83,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Empty constructor: no vertex.
      */
     public SimplePolygon2D() {
+    	points = new ArrayList<Point2D>();
     }
 
     /**
@@ -100,28 +115,6 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     
-    // ===================================================================
-    // Static methods
-    
-    /**
-     * Static factory for creating a new SimplePolygon2D from a collection of
-     * points.
-     * @since 0.8.1
-     */
-    public static SimplePolygon2D create(Collection<? extends Point2D> points) {
-    	return new SimplePolygon2D(points);
-    }
-    
-    /**
-     * Static factory for creating a new SimplePolygon2D from an array of
-     * points.
-     * @since 0.8.1
-     */
-    public static SimplePolygon2D create(Point2D[] points) {
-    	return new SimplePolygon2D(points);
-    }
-    
-
     // ===================================================================
     // methods specific to SimplePolygon2D
 
@@ -385,12 +378,8 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Returns the shape formed by the polygon clipped by the given box.
      */
-    public Domain2D clip(Box2D box) {
-        ContourArray2D<Contour2D> boundarySet = 
-            Boundary2DUtils.clipBoundary(this.getBoundary(), box);
-
-        // TODO: should return an instance of MultiPolygon2D.
-        return new GenericDomain2D(boundarySet);
+    public Polygon2D clip(Box2D box) {
+        return Polygon2DUtils.clipPolygon(this, box);
     }
 
     /**

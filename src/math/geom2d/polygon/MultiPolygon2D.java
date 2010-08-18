@@ -14,9 +14,6 @@ import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -90,14 +87,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         for (LinearRing2D ring : rings)
             polygons.add(new SimplePolygon2D(ring.getVertices()));
         return polygons;
-    }
-
-    /**
-     * Deprecated use addRing instead (0.8.0)
-     */
-    @Deprecated 
-    public void addPolyline(LinearRing2D ring) {
-        rings.add(ring);
     }
 
     public void addRing(LinearRing2D ring) {
@@ -227,21 +216,10 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     /**
-     * Returns a new instance of MultiPolygon2D.
+     * Clips the polygon with the specified box.
      */
-    public MultiPolygon2D clip(Box2D box) {
-        // call generic method for computing clipped boundary
-        ContourArray2D<?> boundary = 
-            Boundary2DUtils.clipBoundary(this.getBoundary(), box);
-        
-        // convert boundary to list of rings
-        ArrayList<LinearRing2D> boundaries = new ArrayList<LinearRing2D>(
-                boundary.getCurveNumber());
-        for (Contour2D curve : boundary.getBoundaryCurves()) //TODO: cast problems
-            boundaries.add((LinearRing2D) curve);
-        
-        // create new MultiPolygon with the set of rings
-        return new MultiPolygon2D(boundaries);
+    public Polygon2D clip(Box2D box) {
+    	return Polygon2DUtils.clipPolygon(this, box);
     }
 
     public double getDistance(java.awt.geom.Point2D p) {

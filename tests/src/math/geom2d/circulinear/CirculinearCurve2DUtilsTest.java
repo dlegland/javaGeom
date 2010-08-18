@@ -76,7 +76,6 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertTrue(poly.containsCurve(seg2));
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void testConvert_PolyCurveWithSpline() {
 		Point2D p1 = new Point2D(0, 10);
 		Point2D p2 = new Point2D(10, 20);
@@ -119,7 +118,6 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertTrue(set.containsCurve(seg2));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testConvert_CurveSetWithSpline() {
 		Point2D p1 = new Point2D(0, 10);
 		Point2D p2 = new Point2D(10, 20);

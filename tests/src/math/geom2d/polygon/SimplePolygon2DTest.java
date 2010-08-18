@@ -185,6 +185,48 @@ public class SimplePolygon2DTest extends TestCase {
     	assertEquals(1, boundary.getBoundaryCurves().size());
     }
 	
+    public void testClipBox2D_inside() {
+    	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
+                new Point2D(100, 100),
+                new Point2D(150, 100),
+                new Point2D(150, 150),
+                new Point2D(100, 150)
+        });
+    	Box2D box = new Box2D(0, 500, 0, 500);
+    	Polygon2D clipped = polygon.clip(box);
+    	assertEquals(1, clipped.getRings().size());
+    }
+    
+    public void testClipBox2D_intersect() {
+    	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
+                new Point2D(100, 100),
+                new Point2D(300, 100),
+                new Point2D(300, 300),
+                new Point2D(100, 300)
+        });
+    	Box2D box = new Box2D(0, 200, 0, 200);
+    	Polygon2D clipped = polygon.clip(box);
+    	assertEquals(1, clipped.getRings().size());
+    }
+    
+    public void testClipBox2D_intersectMulti() {
+    	SimplePolygon2D polygon = SimplePolygon2D.create(new Point2D[]{
+                new Point2D(40, 120),
+                new Point2D(120, 120),
+                new Point2D(120, 160),
+                new Point2D(80, 160),
+                new Point2D(80, 220),
+                new Point2D(140, 220),
+                new Point2D(140, 180),
+                new Point2D(180, 180),
+                new Point2D(180, 260),
+                new Point2D(40, 260)  });
+    	Box2D box = new Box2D(100, 200, 100, 200);
+    	
+    	Polygon2D clipped = polygon.clip(box);
+    	assertEquals(2, clipped.getRings().size());
+    }
+    
 	public void testCreate_Collection() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		array.add(new Point2D(10, 10));
