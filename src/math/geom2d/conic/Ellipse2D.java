@@ -483,10 +483,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
             double sPhi = Math.sin(phi);
             double coeff = Math.sqrt(1.0-e2*sPhi*sPhi);
 
-            // Eventually display result of iterations
-            if (false)
-                System.out.println(iterations+": phi = "+Math.toDegrees(phi)
-                        +" +/- "+Math.toDegrees(dPhi)+", k = "+k);
+//            // Eventually display result of iterations
+//            System.out.println(iterations+": phi = "+Math.toDegrees(phi)
+//            		+" +/- "+Math.toDegrees(dPhi)+", k = "+k);
 
             b = ae/coeff;
             double dR = r-cPhi*b;

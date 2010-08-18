@@ -4,15 +4,12 @@
 
 package math.geom2d.polygon;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.domain.Domain2D;
-import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothOrientedCurve2D;
-import math.geom2d.line.LineSegment2D;
+import math.geom2d.domain.*;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
@@ -21,13 +18,13 @@ import com.seisw.util.geom.PolySimple;
 /**
  * @author dlegland
  */
-public abstract class Polygon2DUtils {
+public final class Polygon2DUtils {
 
     /**
      * Computes the winding number of the polygon. Algorithm adapted from
      * http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm
-     * 
-     * @param vertices the vertices of the polygon
+     * http://softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm
+     * @param vertices the vertices of a polygon
      * @param point the reference point
      * @return the number of windings of the curve around the point
      */
@@ -39,36 +36,52 @@ public abstract class Polygon2DUtils {
         Point2D previous = null;
         for (Point2D vertex : vertices)
             previous = vertex;
-        double x1 = previous.getX();
         double y1 = previous.getY();
-        double x2, y2;
+        double y2;
+
+        // keep y-coordinate of test point
+        double y = point.getY();
 
         // Iterate on couple of vertices, starting from couple (last,first)
-        double y = point.getY();
-        for (Point2D p : vertices) {
+        for (Point2D current : vertices) {
             // second vertex of current edge
-            x2 = p.getX();
-            y2 = p.getY();
-
-            // TODO: should avoid create new objects, and use a dedicated method (CCW ?)
+            y2 = current.getY();
+            
             if (y1<=y) {
                 if (y2>y) // an upward crossing
-                    if (new LineSegment2D(x1, y1, x2, y2).isInside(point))
+                    if (isLeft(previous, current, point)>0)
                         wn++;
             } else {
                 if (y2<=y) // a downward crossing
-                    if (!(new LineSegment2D(x1, y1, x2, y2).isInside(point)))
+                    if (isLeft(previous, current, point)<0)
                         wn--;
             }
 
             // for next iteration
-            x1 = x2;
             y1 = y2;
+            previous = current;
         }
 
         return wn;
     }
 
+    /**
+     * Tests if a point is Left|On|Right of an infinite line.
+     * Input:  three points P0, P1, and P2
+     * Return: >0 for P2 left of the line through P0 and P1
+     *         =0 for P2 on the line
+     *         <0 for P2 right of the line
+     * See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
+     */
+    private final static int isLeft(java.awt.geom.Point2D p1, 
+    		java.awt.geom.Point2D p2, java.awt.geom.Point2D pt) {
+    	double x = p1.getX();
+    	double y = p1.getY();
+    	return (int) Math.signum(
+    			(p2.getX() - x) * (pt.getY() - y) - 
+    			(pt.getX() - x) * (p2.getY() - y));
+    }
+    
     public final static Domain2D createBuffer(Polygon2D polygon, double d) {
         ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
             new ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
@@ -77,6 +90,39 @@ public abstract class Polygon2DUtils {
             result.addCurve(Polyline2DUtils.createClosedParallel(ring, d));
 
         return new GenericDomain2D(result);
+    }
+    
+    public final static Polygon2D clipPolygon(Polygon2D polygon, Box2D box) {
+    	// Clip the boundary using generic method
+    	Boundary2D boundary = polygon.getBoundary();
+        ContourArray2D<Contour2D> contours = 
+            Boundary2DUtils.clipBoundary(boundary, box);
+
+        // convert boundaries to linear rings
+        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>();
+        for(Contour2D contour : contours)
+        	rings.add(convertContourToLinearRing(contour));
+        
+        // Create a polygon, either simple or multiple, depending on the ring
+        // number
+        if (rings.size()==1)
+        	return SimplePolygon2D.create(rings.get(0).getVertices());
+        else
+        	return MultiPolygon2D.create(rings);
+    }
+    
+    private final static LinearRing2D convertContourToLinearRing(
+    		Contour2D contour) {
+    	// process the basic case of simple class cast
+    	if (contour instanceof LinearRing2D)
+    		return (LinearRing2D) contour;
+    	
+    	// extract all vertices of the contour
+    	// TODO: check that vertices are not multiple
+    	ArrayList<Point2D> vertices = new ArrayList<Point2D>();
+    	for(Point2D v : contour.getSingularPoints())
+    		vertices.add(v);
+    	return LinearRing2D.create(vertices);
     }
     
     /**

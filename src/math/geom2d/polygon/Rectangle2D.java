@@ -38,9 +38,6 @@ import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
-import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.domain.Domain2D;
-import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -352,9 +349,8 @@ public class Rectangle2D implements Polygon2D {
     /**
      * Return the clipped polygon.
      */
-    public Domain2D clip(Box2D box) {
-        return new GenericDomain2D(Boundary2DUtils.clipBoundary(this
-                .getBoundary(), box));
+    public Polygon2D clip(Box2D box) {
+    	return Polygon2DUtils.clipPolygon(this, box);
     }
 
     /**
