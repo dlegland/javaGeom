@@ -87,7 +87,7 @@ implements DomainSet2D<T> {
 			new ArrayList<Contour2D> (n);
 		for(Domain2D domain : this)
 			boundaries.addAll(domain.getBoundary().getBoundaryCurves());
-		return new BoundarySet2D<Contour2D>(boundaries);
+		return new ContourArray2D<Contour2D>(boundaries);
 	}
 
 	

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Domain2D;
 
 /**
@@ -24,7 +24,7 @@ import math.geom2d.domain.Domain2D;
 public class CheckDrawCurveSet2D extends JPanel{
 	private static final long serialVersionUID = 1L;
 
-	BoundarySet2D<Circle2D> circleSet = new BoundarySet2D<Circle2D>();
+	ContourArray2D<Circle2D> circleSet = new ContourArray2D<Circle2D>();
 	
 	public CheckDrawCurveSet2D(){
 		circleSet.addCurve(new Circle2D(50, 50, 40));

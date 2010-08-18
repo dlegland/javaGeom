@@ -8,7 +8,7 @@
  */
 package math.geom2d.circulinear;
 
-import math.geom2d.domain.SmoothBoundary2D;
+import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.transform.CircleInversion2D;
 
 
@@ -18,7 +18,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public interface CircleLine2D extends CirculinearContour2D,
-		CirculinearElement2D, SmoothBoundary2D {
+		CirculinearElement2D, SmoothContour2D {
 	
     // ===================================================================
     // redefines declaration of some interfaces

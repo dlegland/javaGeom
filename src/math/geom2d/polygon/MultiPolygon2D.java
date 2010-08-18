@@ -15,7 +15,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
@@ -215,7 +215,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      */
     public MultiPolygon2D clip(Box2D box) {
         // call generic method for computing clipped boundary
-        BoundarySet2D<?> boundary = 
+        ContourArray2D<?> boundary = 
             Boundary2DUtils.clipBoundary(this.getBoundary(), box);
         
         // convert boundary to list of rings

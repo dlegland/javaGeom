@@ -1,4 +1,4 @@
-/* file : BoundarySet2D.java
+/* file : ContourArray2D.java
  * 
  * Project : geometry
  *
@@ -35,62 +35,62 @@ import math.geom2d.Box2D;
 import math.geom2d.curve.*;
 
 /**
- * A BoundarySet2D is a set of continuous oriented curves. Each curve of the set
- * defines its own domain.
+ * A ContourArray2D is a set of contours. Each contour in the set defines its
+ * own domain.
  * <p>
  * 
  * @author dlegland
  */
-public class BoundarySet2D<T extends Contour2D> 
+public class ContourArray2D<T extends Contour2D> 
 extends CurveArray2D<T> implements Boundary2D {
+
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new ContourArray2D from a collection of
+     * contours.
+     * @since 0.8.1
+     */
+    public static <T extends Contour2D> ContourArray2D<T> create(
+    		Collection<T> curves) {
+    	return new ContourArray2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new ContourArray2D from an array of
+     * contours.
+     * @since 0.8.1
+     */
+    public static <T extends Contour2D> ContourArray2D<T> create(
+    		T[] curves) {
+    	return new ContourArray2D<T>(curves);
+    }
 
     // ===================================================================
     // Constructors
 
-    public BoundarySet2D() {
+    public ContourArray2D() {
     }
 
-    public BoundarySet2D(int size) {
+    public ContourArray2D(int size) {
     	super(size);
     }
 
-    public BoundarySet2D(T[] curves) {
+    public ContourArray2D(T[] curves) {
         super(curves);
     }
 
-    public BoundarySet2D(Collection<? extends T> curves) {
+    public ContourArray2D(Collection<? extends T> curves) {
         super(curves);
     }
 
-    public BoundarySet2D(T curve) {
+    public ContourArray2D(T curve) {
         super();
         this.addCurve(curve);
     }
 
     
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new PolyCurve2D from a collection of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends Contour2D> BoundarySet2D<T> create(
-    		Collection<T> curves) {
-    	return new BoundarySet2D<T>(curves);
-    }
-    
-    /**
-     * Static factory for creating a new PolyCurve2D from an array of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends Contour2D> BoundarySet2D<T> create(
-    		T[] curves) {
-    	return new BoundarySet2D<T>(curves);
-    }
-
     // ===================================================================
     // Methods implementing Boundary2D interface
 
@@ -149,12 +149,12 @@ extends CurveArray2D<T> implements Boundary2D {
     // Methods implementing Curve2D interface
 
     @Override
-    public BoundarySet2D<? extends Contour2D> getReverseCurve() {
+    public ContourArray2D<? extends Contour2D> getReverseCurve() {
         Contour2D[] curves2 = new Contour2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i<n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
-        return new BoundarySet2D<Contour2D>(curves2);
+        return new ContourArray2D<Contour2D>(curves2);
     }
 
     @Override
@@ -201,10 +201,10 @@ extends CurveArray2D<T> implements Boundary2D {
     }
 
     @Override
-    public BoundarySet2D<? extends Contour2D> transform(
+    public ContourArray2D<? extends Contour2D> transform(
             AffineTransform2D trans) {
-        BoundarySet2D<Contour2D> result = 
-        	new BoundarySet2D<Contour2D>(curves.size());
+        ContourArray2D<Contour2D> result = 
+        	new ContourArray2D<Contour2D>(curves.size());
         for (Curve2D curve : curves)
             result.addCurve((Contour2D) curve.transform(trans));
         return result;

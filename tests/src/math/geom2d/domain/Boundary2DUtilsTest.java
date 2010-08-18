@@ -32,7 +32,7 @@ import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
@@ -44,9 +44,9 @@ public class Boundary2DUtilsTest extends TestCase {
 		Box2D box = new Box2D(0, 10, 0, 10);
 
 		Circle2D circle1 = new Circle2D(5, 7, 2);
-		BoundarySet2D<Contour2D> boundary = 
-			new BoundarySet2D<Contour2D>(circle1);		
-		BoundarySet2D<Contour2D> clipped =
+		ContourArray2D<Contour2D> boundary = 
+			new ContourArray2D<Contour2D>(circle1);		
+		ContourArray2D<Contour2D> clipped =
 			Boundary2DUtils.clipBoundary(boundary, box);
 		 
 		Collection<Contour2D> curves = clipped.getBoundaryCurves();
@@ -58,7 +58,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		Circle2D circle2 = new Circle2D(5, 0, 2);
 		CircleArc2D circlearc2 = new CircleArc2D(5, 0, 2, 0, Math.PI);
 		//BoundarySet2D boundary2 = new BoundarySet2D(circle2);		
-		BoundarySet2D<Contour2D> clipped2 =
+		ContourArray2D<Contour2D> clipped2 =
 			Boundary2DUtils.clipBoundary(circle2, box);
 		 
 		Collection<Contour2D> curves2 = clipped2.getBoundaryCurves();
@@ -78,7 +78,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
 		set.addCurve(arc1);
 		set.addCurve(arc2);
-		boundary = new BoundarySet2D<Contour2D>();
+		boundary = new ContourArray2D<Contour2D>();
 		boundary.addCurve(set);
 		double L = 40;
 		double l = 10;

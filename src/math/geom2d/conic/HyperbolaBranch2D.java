@@ -15,14 +15,14 @@ import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothBoundary2D;
+import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
  * Branch of an Hyperbola2D.
  */
 public class HyperbolaBranch2D extends AbstractSmoothCurve2D
-implements SmoothBoundary2D, Cloneable {
+implements SmoothContour2D, Cloneable {
 
     // ===================================================================
     // inner fields

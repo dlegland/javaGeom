@@ -8,7 +8,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.StraightLine2D;
 
 /**
@@ -334,7 +334,7 @@ public class Conic2DUtils {
     }
 
 
-    static class ConicTwoLines2D extends BoundarySet2D<StraightLine2D>
+    static class ConicTwoLines2D extends ContourArray2D<StraightLine2D>
             implements Conic2D {
 
         double xc = 0, yc = 0, d = 1, theta = 0;

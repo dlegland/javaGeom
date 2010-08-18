@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.domain.BoundarySet2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 
@@ -40,7 +40,7 @@ import math.geom2d.line.StraightLine2D;
  * An Hyperbola, which is represented as a curve set of two boundary curves
  * which are instances of HyperbolaBranch2D.
  */
-public class Hyperbola2D extends BoundarySet2D<HyperbolaBranch2D> 
+public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> 
 implements Conic2D, Cloneable {
 
     // ===================================================================
