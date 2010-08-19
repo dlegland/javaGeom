@@ -22,7 +22,7 @@ public class CircleInversion2DTest extends TestCase {
 	 * Test method for {@link math.geom2d.transform.CircleInversion2D#getCenter()}.
 	 */
 	public void testGetCenter() {
-		CircleInversion2D inv = new CircleInversion2D(10, 20, 30);
+		CircleInversion2D inv = CircleInversion2D.create(new Point2D(10, 20), 30);
 		Point2D center = Point2D.create(10, 20);
 		assertEquals(center, inv.getCenter());
 	}
@@ -55,7 +55,5 @@ public class CircleInversion2DTest extends TestCase {
 		Point2D p1 = Point2D.create(xc+9, yc);
 		Point2D r1 = Point2D.create(xc+16, yc);
 		assertEquals(r1, inv.transform(p1));
-		
 	}
-
 }

@@ -143,8 +143,8 @@ public final class Polygon2DUtils {
     }
     
     /**
-     * Compute union of the two polygons. Uses the GPCJ library, developed by
-     * Solution Engineering, Inc.
+     * Compute intersection of the two polygons. Uses the GPCJ library, 
+     * developed by Solution Engineering, Inc.
      */
     public final static Polygon2D intersection(Polygon2D polygon1, 
             Polygon2D polygon2) {
@@ -154,6 +154,23 @@ public final class Polygon2DUtils {
     	
     	// compute union
     	Poly result = poly1.intersection(poly2);
+    	
+    	// convert result to javaGeom structure
+    	return convertFromGpcjPolygon(result);
+    }
+    
+    /**
+     * Compute exclusive XOR of the two polygons. Uses the GPCJ library, 
+     * developed by Solution Engineering, Inc.
+     */
+    public final static Polygon2D exclusiveOr(Polygon2D polygon1, 
+    		Polygon2D polygon2) {
+    	// convert to GPCJ data structures
+    	Poly poly1 = convertToGpcjPolygon(polygon1);
+    	Poly poly2 = convertToGpcjPolygon(polygon2);
+    	
+    	// compute union
+    	Poly result = poly1.xor(poly2);
     	
     	// convert result to javaGeom structure
     	return convertFromGpcjPolygon(result);
