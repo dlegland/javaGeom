@@ -50,6 +50,26 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
     	return new PolyCirculinearCurve2D<T>(curves);
     }
 
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from a
+     * collection of curves and a flag indicating if the curve is closed.
+     * @since 0.9.0
+     */
+    public static <T extends CirculinearContinuousCurve2D> 
+    PolyCirculinearCurve2D<T> create(Collection<T> curves, boolean closed) {
+    	return new PolyCirculinearCurve2D<T>(curves, closed);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from an array
+     * of curves and a flag indicating if the curve is closed.
+     * @since 0.9.0
+     */
+    public static <T extends CirculinearContinuousCurve2D> 
+    PolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
+    	return new PolyCirculinearCurve2D<T>(curves, closed);
+    }
+
     
     // ===================================================================
     // constructors
@@ -200,7 +220,8 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
             curves2[i] = curves.get(n-1-i).getReverseCurve();
         
         // create the reversed final curve
-        return new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(curves2);
+        return PolyCirculinearCurve2D.create(curves2, this.closed);
+        //return PolyCirculinearCurve2D.create(curves2);
 	}
 	
 	@Override

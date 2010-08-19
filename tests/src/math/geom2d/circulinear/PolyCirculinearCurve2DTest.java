@@ -9,6 +9,7 @@
 package math.geom2d.circulinear;
 
 
+import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.AbstractLine2D;
@@ -16,7 +17,6 @@ import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.Line2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
-import junit.framework.TestCase;
 
 
 /**
@@ -104,6 +104,29 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		assertEquals(curve.getPosition(20), 3, 1e-14);
 		assertEquals(curve.getPosition(25), 4.5, 1e-14);
 		assertEquals(curve.getPosition(30), 5, 1e-14);
+	}
+	
+	public void testGetReverseCurve() {
+		Point2D p1 = Point2D.create(10, 10);
+		Point2D p2 = Point2D.create(20, 10);
+		Point2D p3 = Point2D.create(20, 20);
+		Point2D p4 = Point2D.create(10, 20);
+		
+		LineSegment2D[] edges = new LineSegment2D[]{
+				new LineSegment2D(p1, p2),
+				new LineSegment2D(p2, p3),
+				new LineSegment2D(p3, p4),
+				new LineSegment2D(p4, p1),
+		};
+		
+		PolyCirculinearCurve2D<LineSegment2D> curve = 
+			PolyCirculinearCurve2D.create(edges, true);
+		
+		assertTrue(curve.isClosed());
+		
+		CirculinearContinuousCurve2D reversed = curve.getReverseCurve();
+		assertTrue(reversed.isClosed());
+		
 	}
 
 }

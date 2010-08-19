@@ -55,7 +55,7 @@ public class CheckPolyline2DDrawStroked extends JPanel{
 	}
 	
 	public final static void main(String[] args){
-		System.out.println("draw polyline with tyle");
+		System.out.println("draw polyline with style");
 		
 		JPanel panel = new CheckPolyline2DDrawStroked();
 		panel.setPreferredSize(new Dimension(500, 500));

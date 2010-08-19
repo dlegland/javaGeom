@@ -49,7 +49,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         implements ContinuousCurve2D {
 
     // ===================================================================
-    // static methods
+    // static factories
 
     /**
      * Static factory for creating a new PolyCurve2D from a collection of
@@ -69,6 +69,26 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
     		T[] curves) {
     	return new PolyCurve2D<T>(curves);
+    }
+
+    /**
+     * Static factory for creating a new PolyCurve2D from a collection of
+     * curves and a flag indicating if the curve is closed or not.
+     * @since 0.9.0
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		Collection<T> curves, boolean closed) {
+    	return new PolyCurve2D<T>(curves, closed);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCurve2D from an array of
+     * curves and a flag indicating if the curve is closed or not.
+     * @since 0.9.0
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		T[] curves, boolean closed) {
+    	return new PolyCurve2D<T>(curves, closed);
     }
 
 	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {

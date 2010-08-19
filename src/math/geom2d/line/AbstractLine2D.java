@@ -62,22 +62,6 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D
 implements SmoothOrientedCurve2D, LinearElement2D {
 
     // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    /**
-     * Coordinates of starting point of the line
-     */
-    protected double x0, y0;
-
-    /**
-     * Direction vector of the line. dx and dy should not be both zero.
-     */
-    protected double dx, dy;
-
-    // ===================================================================
     // static methods
 
     /**
@@ -86,6 +70,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      */
     public static Point2D getIntersection(AbstractLine2D l1,
             AbstractLine2D l2) {
+    	//TODO: no check of zero denominator
         double t = ((l1.y0-l2.y0)*l2.dx-(l1.x0-l2.x0)*l2.dy)
                 /(l1.dx*l2.dy-l1.dy*l2.dx);
         return new Point2D(l1.x0+t*l1.dx, l1.y0+t*l1.dy);
@@ -112,8 +97,23 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      */
     public static boolean isParallel(AbstractLine2D line1,
             AbstractLine2D line2) {
-        return (Math.abs(line1.dx*line2.dy-line1.dy*line2.dx)<ACCURACY);
+        return (Math.abs(line1.dx*line2.dy-line1.dy*line2.dx)<Shape2D.ACCURACY);
     }
+
+
+    // ===================================================================
+    // class variables
+
+    /**
+     * Coordinates of starting point of the line
+     */
+    protected double x0, y0;
+
+    /**
+     * Direction vector of the line. dx and dy should not be both zero.
+     */
+    protected double dx, dy;
+
 
     // ===================================================================
     // Protected constructors
@@ -172,7 +172,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * with precision given by Shape2D.ACCURACY.
      */
     protected boolean supportContains(double x, double y) {
-        return (Math.abs((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy)<Shape2D.ACCURACY);
+    	double denom = Math.hypot(dx, dy);
+    	if (denom<Shape2D.ACCURACY)
+    		throw new DegeneratedLine2DException(this);
+        return (Math.abs((x-x0)*dy-(y-y0)*dx)/denom < Shape2D.ACCURACY);
     }
 
     /**
@@ -252,7 +255,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * of its projection on the line.
      */
     public double getPositionOnLine(double x, double y) {
-        return ((y-y0)*dy+(x-x0)*dx)/(dx*dx+dy*dy);
+    	double denom = dx*dx + dy*dy;
+    	if (Math.abs(denom)<Shape2D.ACCURACY)
+    		throw new DegeneratedLine2DException(this);
+        return ((y-y0)*dy+(x-x0)*dx)/denom;
     }
 
     /**
@@ -417,8 +423,11 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
-		return length/Math.hypot(dx, dy);
+	public double getPosition(double distance) {
+		double delta = Math.hypot(dx, dy);
+		if (delta<Shape2D.ACCURACY)
+			throw new DegeneratedLine2DException(this);
+		return distance/delta;
 	}
 
 	/* (non-Javadoc)
@@ -545,7 +554,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * class, but it can be used by subclasses to help computations.
      */
     public double getSignedDistance(double x, double y) {
-        return ((x-x0)*dy-(y-y0)*dx)/Math.hypot(dx, dy);
+		double delta = Math.hypot(dx, dy);
+		if (delta<Shape2D.ACCURACY)
+			throw new DegeneratedLine2DException(this);
+        return ((x-x0)*dy-(y-y0)*dx)/delta;
     }
 
     /**
@@ -615,15 +627,18 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * <p>
      * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
      * <code> t = (yp - y0)/dy <\code>.<p>
-     * If point does not belong to edge, returns Double.NaN.
+     * If point does not belong to line, returns Double.NaN.
      */
     public double getPosition(java.awt.geom.Point2D point) {
         double pos = this.getPositionOnLine(point);
 
+        // compute a threshold depending on line slope
+        double eps = Math.hypot(dx, dy)*Shape2D.ACCURACY;
+        
         // return either pos or NaN
-        if (pos<this.getT0())
+        if (pos<this.getT0()-eps)
             return Double.NaN;
-        if (pos>this.getT1())
+        if (pos>this.getT1()+eps)
             return Double.NaN;
         return pos;
     }
@@ -634,7 +649,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * <p>
      * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
      * <code> t = (yp - y0)/dy <\code>.<p>
-     * If point does not belong to edge, returns t0, or t1, depending on which
+     * If point does not belong to line, returns t0, or t1, depending on which
      * one is the closest.
      */
     public double project(java.awt.geom.Point2D point) {

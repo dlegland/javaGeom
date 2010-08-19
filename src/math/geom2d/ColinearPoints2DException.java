@@ -15,15 +15,15 @@ package math.geom2d;
  */
 public class ColinearPoints2DException extends RuntimeException {
 
-	protected Point2D p1;
-	protected Point2D p2;
-	protected Point2D p3;
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	protected Point2D p1;
+	protected Point2D p2;
+	protected Point2D p3;
+	
 	public ColinearPoints2DException(Point2D p1, Point2D p2, Point2D p3) {
 		this.p1 = p1;
 		this.p2 = p2;
