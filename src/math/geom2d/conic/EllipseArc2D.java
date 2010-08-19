@@ -58,6 +58,43 @@ import math.geom2d.line.StraightLine2D;
 public class EllipseArc2D extends AbstractSmoothCurve2D
 implements SmoothOrientedCurve2D, Cloneable {
 
+    // ====================================================================
+    // methods specific to EllipseArc2D
+
+    /**
+     * Specify supporting ellipse, start angle and end angle, and a flag
+     * indicating whether the arc is directed or not.
+     * 
+     * @param ell the supporting ellipse
+     * @param start the starting angle
+     * @param end the ending angle
+     * @param direct flag indicating if the arc is direct
+     */
+    public static EllipseArc2D create(Ellipse2D ell, double start, 
+    		double extent) {
+        return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
+        		start, extent);
+    }
+
+    /**
+     * Specify supporting ellipse, start angle and end angle, and a flag
+     * indicating whether the arc is directed or not.
+     * 
+     * @param ell the supporting ellipse
+     * @param start the starting angle
+     * @param end the ending angle
+     * @param direct flag indicating if the arc is direct
+     */
+    public static EllipseArc2D create(Ellipse2D ell, double start, double end,
+    		boolean direct) {
+    	return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
+    			start, end, direct);
+    }
+
+
+    // ====================================================================
+    // Class variables
+
     /** The supporting ellipse */
     protected Ellipse2D ellipse;
 
@@ -67,6 +104,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     /** The signed angle extent, in radians between -2PI and +2PI. */
     protected double    angleExtent = Math.PI;
 
+    
     // ====================================================================
     // Constructors
 
@@ -124,39 +162,6 @@ implements SmoothOrientedCurve2D, Cloneable {
         this.angleExtent = Angle2D.formatAngle(end-start);
         if (!direct)
             this.angleExtent = this.angleExtent-Math.PI*2;
-    }
-
-    // ====================================================================
-    // methods specific to EllipseArc2D
-
-    /**
-     * Specify supporting ellipse, start angle and end angle, and a flag
-     * indicating whether the arc is directed or not.
-     * 
-     * @param ell the supporting ellipse
-     * @param start the starting angle
-     * @param end the ending angle
-     * @param direct flag indicating if the arc is direct
-     */
-    public static EllipseArc2D create(Ellipse2D ell, double start, 
-    		double extent) {
-        return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
-        		start, extent);
-    }
-
-    /**
-     * Specify supporting ellipse, start angle and end angle, and a flag
-     * indicating whether the arc is directed or not.
-     * 
-     * @param ell the supporting ellipse
-     * @param start the starting angle
-     * @param end the ending angle
-     * @param direct flag indicating if the arc is direct
-     */
-    public static EllipseArc2D create(Ellipse2D ell, double start, double end,
-    		boolean direct) {
-    	return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
-    			start, end, direct);
     }
 
     // ====================================================================

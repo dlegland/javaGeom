@@ -44,75 +44,6 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D>
 implements Conic2D, Cloneable {
 
     // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    /** Center of the hyperbola */
-    protected double            xc      = 0;
-    protected double            yc      = 0;
-
-    /** first focal parameter */
-    protected double            a       = 1;
-
-    /** second focal parameter */
-    protected double            b       = 1;
-
-    /** angle of rotation of the hyperbola */
-    protected double            theta   = 0;
-
-    /** a flag indicating whether the hyperbola is direct or not */
-    protected boolean           direct  = true;
-
-    /** The negative branch of the hyperbola */
-    protected HyperbolaBranch2D branch1 = null;
-    
-    /** The positive branch of the hyperbola */
-    protected HyperbolaBranch2D branch2 = null;
-
-    // ===================================================================
-    // constructors
-
-    /**
-     * Assume centered hyperbola, with a = b = 1 (orthogonal hyperbola), theta=0
-     * (hyperbola is oriented East-West), and direct orientation.
-     */
-    public Hyperbola2D() {
-        this(0, 0, 1, 1, 0, true);
-    }
-
-    public Hyperbola2D(Point2D center, double a, double b, double theta) {
-        this(center.getX(), center.getY(), a, b, theta, true);
-    }
-
-    public Hyperbola2D(Point2D center, double a, double b, double theta,
-            boolean d) {
-        this(center.getX(), center.getY(), a, b, theta, d);
-    }
-
-    public Hyperbola2D(double xc, double yc, double a, double b, double theta) {
-        this(xc, yc, a, b, theta, true);
-    }
-
-    /** Main constructor */
-    public Hyperbola2D(double xc, double yc, double a, double b, double theta,
-            boolean d) {
-        this.xc = xc;
-        this.yc = yc;
-        this.a = a;
-        this.b = b;
-        this.theta = theta;
-        this.direct = d;
-
-        branch1 = new HyperbolaBranch2D(this, false);
-        branch2 = new HyperbolaBranch2D(this, true);
-        this.addCurve(branch1);
-        this.addCurve(branch2);
-    }
-
-    
-    // ===================================================================
     // Static factories
     
     public static Hyperbola2D create(Point2D center, double a, double b,
@@ -225,6 +156,72 @@ implements Conic2D, Cloneable {
     }
 
 
+    // ===================================================================
+    // class variables
+
+    /** Center of the hyperbola */
+    protected double            xc      = 0;
+    protected double            yc      = 0;
+
+    /** first focal parameter */
+    protected double            a       = 1;
+
+    /** second focal parameter */
+    protected double            b       = 1;
+
+    /** angle of rotation of the hyperbola */
+    protected double            theta   = 0;
+
+    /** a flag indicating whether the hyperbola is direct or not */
+    protected boolean           direct  = true;
+
+    /** The negative branch of the hyperbola */
+    protected HyperbolaBranch2D branch1 = null;
+    
+    /** The positive branch of the hyperbola */
+    protected HyperbolaBranch2D branch2 = null;
+
+    // ===================================================================
+    // constructors
+
+    /**
+     * Assume centered hyperbola, with a = b = 1 (orthogonal hyperbola), theta=0
+     * (hyperbola is oriented East-West), and direct orientation.
+     */
+    public Hyperbola2D() {
+        this(0, 0, 1, 1, 0, true);
+    }
+
+    public Hyperbola2D(Point2D center, double a, double b, double theta) {
+        this(center.getX(), center.getY(), a, b, theta, true);
+    }
+
+    public Hyperbola2D(Point2D center, double a, double b, double theta,
+            boolean d) {
+        this(center.getX(), center.getY(), a, b, theta, d);
+    }
+
+    public Hyperbola2D(double xc, double yc, double a, double b, double theta) {
+        this(xc, yc, a, b, theta, true);
+    }
+
+    /** Main constructor */
+    public Hyperbola2D(double xc, double yc, double a, double b, double theta,
+            boolean d) {
+        this.xc = xc;
+        this.yc = yc;
+        this.a = a;
+        this.b = b;
+        this.theta = theta;
+        this.direct = d;
+
+        branch1 = new HyperbolaBranch2D(this, false);
+        branch2 = new HyperbolaBranch2D(this, true);
+        this.addCurve(branch1);
+        this.addCurve(branch2);
+    }
+
+    
     // ===================================================================
     // methods specific to Hyperbola2D
 

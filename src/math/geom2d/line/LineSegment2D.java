@@ -43,27 +43,7 @@ public class LineSegment2D extends AbstractLine2D
 implements Cloneable, CirculinearElement2D {
 
     // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    // ===================================================================
-    // constructors
-
-    /** Define a new Edge with two extremities. */
-    public LineSegment2D(java.awt.geom.Point2D point1,
-            java.awt.geom.Point2D point2) {
-        this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
-    }
-
-    /** Define a new Edge with two extremities. */
-    public LineSegment2D(double x1, double y1, double x2, double y2) {
-        super(x1, y1, x2-x1, y2-y1);
-    }
-
-    // ===================================================================
-    // static methods
+    // static constructors
 
     /**
      * Static factory for creating a new line segment between two points.
@@ -79,6 +59,7 @@ implements Cloneable, CirculinearElement2D {
                 -edge.dy, edge.dx);
     }
 
+    
     /**
      * Returns angle between two edges sharing one vertex.
      */
@@ -150,6 +131,21 @@ implements Cloneable, CirculinearElement2D {
 
     
     // ===================================================================
+    // constructors
+
+    /** Define a new Edge with two extremities. */
+    public LineSegment2D(java.awt.geom.Point2D point1,
+            java.awt.geom.Point2D point2) {
+        this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
+    }
+
+    /** Define a new Edge with two extremities. */
+    public LineSegment2D(double x1, double y1, double x2, double y2) {
+        super(x1, y1, x2-x1, y2-y1);
+    }
+
+    
+    // ===================================================================
     // Methods specific to LineSegment2D
 
     /**
@@ -198,6 +194,7 @@ implements Cloneable, CirculinearElement2D {
         		x0+dx+dy*d/dd, y0+dy-dx*d/dd);
 	}
 
+	
     // ===================================================================
     // Methods implementing the OrientedCurve2D interface
 
@@ -210,6 +207,7 @@ implements Cloneable, CirculinearElement2D {
         double d = this.getDistance(x, y);
         return super.getSignedDistance(x, y)>0 ? d : -d;
     }
+    
     
 //    // ===================================================================
 //    // Methods implementing the CirculinearCurve2D interface

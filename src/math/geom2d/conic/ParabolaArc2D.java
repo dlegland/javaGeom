@@ -49,10 +49,24 @@ import math.geom2d.line.StraightLine2D;
 public class ParabolaArc2D extends AbstractSmoothCurve2D
 implements SmoothOrientedCurve2D, Cloneable {
 
+    // ==========================================================
+    // static constructor
+
+    public static ParabolaArc2D create(Parabola2D parabola, double t0, double t1) {
+        return new ParabolaArc2D(parabola, t0, t1);
+    }
+
+
+    // ==========================================================
+    // class variables
+
     protected Parabola2D parabola = new Parabola2D();
 
     protected double     t0       = -10;
     protected double     t1       = 10;
+
+    // ==========================================================
+    // constructor
 
     public ParabolaArc2D(Parabola2D parabola, double t0, double t1) {
         this.parabola = parabola;

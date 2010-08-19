@@ -28,6 +28,30 @@ public class PolyCirculinearCurve2D<T extends CirculinearContinuousCurve2D>
 extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 
     // ===================================================================
+    // static constructors
+
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from a
+     * collection of curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearContinuousCurve2D> 
+    PolyCirculinearCurve2D<T> create(Collection<T> curves) {
+    	return new PolyCirculinearCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCirculinearCurve2D from an array
+     * of curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearContinuousCurve2D> 
+    PolyCirculinearCurve2D<T> create(T[] curves) {
+    	return new PolyCirculinearCurve2D<T>(curves);
+    }
+
+    
+    // ===================================================================
     // constructors
 
     public PolyCirculinearCurve2D() {
@@ -54,30 +78,6 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
         super(curves, closed);
     }
 
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new PolyCirculinearCurve2D from a
-     * collection of curves.
-     * @since 0.8.1
-     */
-    public static <T extends CirculinearContinuousCurve2D> 
-    PolyCirculinearCurve2D<T> create(Collection<T> curves) {
-    	return new PolyCirculinearCurve2D<T>(curves);
-    }
-    
-    /**
-     * Static factory for creating a new PolyCirculinearCurve2D from an array
-     * of curves.
-     * @since 0.8.1
-     */
-    public static <T extends CirculinearContinuousCurve2D> 
-    PolyCirculinearCurve2D<T> create(T[] curves) {
-    	return new PolyCirculinearCurve2D<T>(curves);
-    }
-
-    
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 

@@ -17,7 +17,7 @@ import math.geom2d.transform.CircleInversion2D;
 
 
 /**
- * An specialisation of CurveSet2D that accepts only instances of
+ * An specialization of CurveSet2D that accepts only instances of
  * CirculinearCurve2D.
  * @author dlegland
  *
@@ -26,6 +26,30 @@ public class CirculinearCurveSet2D<T extends CirculinearCurve2D>
 extends CurveArray2D<T> implements CirculinearCurve2D {
 	//TODO: split into an interface and a curve array
 
+    // ===================================================================
+    // static constructors
+
+    /**
+     * Static factory for creating a new CirculinearCurveSet2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearCurve2D> CirculinearCurveSet2D<T> create(
+    		Collection<T> curves) {
+    	return new CirculinearCurveSet2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new CirculinearCurveSet2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearCurve2D> CirculinearCurveSet2D<T> create(
+    		T[] curves) {
+    	return new CirculinearCurveSet2D<T>(curves);
+    }
+
+    
     // ===================================================================
     // constructors
 
@@ -64,30 +88,6 @@ extends CurveArray2D<T> implements CirculinearCurve2D {
     public CirculinearCurveSet2D(Collection<? extends T> curves) {
     	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
-    }
-
-    
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new CirculinearCurveSet2D from a collection of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends CirculinearCurve2D> CirculinearCurveSet2D<T> create(
-    		Collection<T> curves) {
-    	return new CirculinearCurveSet2D<T>(curves);
-    }
-    
-    /**
-     * Static factory for creating a new CirculinearCurveSet2D from an array of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends CirculinearCurve2D> CirculinearCurveSet2D<T> create(
-    		T[] curves) {
-    	return new CirculinearCurveSet2D<T>(curves);
     }
 
     

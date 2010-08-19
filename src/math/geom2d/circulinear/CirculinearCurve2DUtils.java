@@ -42,7 +42,7 @@ public class CirculinearCurve2DUtils {
 	/**
 	 * Converts a curve to a circulinear curve, by concatenating all elements
 	 * of the curve to the appropriate circulinear curve type. If the curve
-	 * contains onr or more non-circulinear smooth curve, a 
+	 * contains one or more non-circulinear smooth curve, a 
 	 * NonCirculinearClassException is thrown.
 	 */
 	public static CirculinearCurve2D convert(Curve2D curve) {

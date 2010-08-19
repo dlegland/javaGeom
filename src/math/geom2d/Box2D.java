@@ -51,6 +51,24 @@ import math.geom2d.polygon.LinearRing2D;
 public class Box2D implements Cloneable {
 
     // ===================================================================
+    // Static factory
+        
+    /**
+     * @since 0.8.1
+     */
+    public static Box2D create(double xmin, double xmax, double ymin, double ymax) {
+    	return new Box2D(xmin, xmax, ymin, ymax);
+    }
+
+    /**
+     * @since 0.8.1
+     */
+    public static Box2D create(Point2D p1, Point2D p2) {
+    	return new Box2D(p1, p2);
+    }
+
+    
+    // ===================================================================
     // class variables
 
     private double xmin = 0;
@@ -95,24 +113,6 @@ public class Box2D implements Cloneable {
     /** Constructor from a point, a width and an height */
     public Box2D(Point2D point, double w, double h) {
         this(point.getX(), point.getX()+w, point.getY(), point.getY()+h);
-    }
-
-    // ===================================================================
-    // Static factory
-    
-    
-    /**
-     * @since 0.8.1
-     */
-    public static Box2D create(double xmin, double xmax, double ymin, double ymax) {
-    	return new Box2D(xmin, xmax, ymin, ymax);
-    }
-
-    /**
-     * @since 0.8.1
-     */
-    public static Box2D create(Point2D p1, Point2D p2) {
-    	return new Box2D(p1, p2);
     }
 
     // ===================================================================

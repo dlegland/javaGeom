@@ -25,6 +25,20 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D
 implements SmoothContour2D, Cloneable {
 
     // ===================================================================
+    // Static constructor
+
+    /**
+     * Generic constructor, using a parent Hyperbola, and a boolean to
+     * specifies if the branch is the right one (crossing the Ox axis on
+     * positive side, b true), or the left one (crossing the Oy axis on the
+     * negative side, b false).
+     */
+    public static HyperbolaBranch2D create(Hyperbola2D hyperbola, boolean b) {
+        return new HyperbolaBranch2D(hyperbola, b);
+    }
+
+    
+    // ===================================================================
     // inner fields
 
 	/** The parent hyperbola */

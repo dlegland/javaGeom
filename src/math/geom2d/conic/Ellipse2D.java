@@ -58,91 +58,6 @@ import math.geom2d.line.LinearShape2D;
 public class Ellipse2D extends AbstractSmoothCurve2D
 implements SmoothContour2D, Conic2D, Cloneable {
 
-
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    /** coordinate of center. */
-    protected double  xc;
-    protected double  yc;
-
-    /** length of major semi-axis */
-    protected double  r1;
-    
-    /** length of minor semi-axis */
-    protected double  r2;
-
-    /** orientation of major semi-axis */
-    protected double  theta  = 0;
-
-    /** directed ellipse or not */
-    protected boolean direct = true;
-
-    // ===================================================================
-    // constructors
-
-    /**
-     * Empty constructor, define ellipse centered at origin with both major and
-     * minor semi-axis with length equal to 1.
-     */
-    public Ellipse2D() {
-        this(0, 0, 1, 1, 0, true);
-    }
-
-    /** Main constructor: define center by a point plus major and minor semi axis */
-    public Ellipse2D(Point2D center, double l1, double l2) {
-        this(center.getX(), center.getY(), l1, l2, 0, true);
-    }
-
-    /** Define center by coordinate, plus major and minor semi axis */
-    public Ellipse2D(double xc, double yc, double l1, double l2) {
-        this(xc, yc, l1, l2, 0, true);
-    }
-
-    /**
-     * Define center by point, major and minor semi axis lengths, and
-     * orientation angle.
-     */
-    public Ellipse2D(Point2D center, double l1, double l2, double theta) {
-        this(center.getX(), center.getY(), l1, l2, theta, true);
-    }
-
-    /**
-     * Define center by coordinate, major and minor semi axis lengths, and
-     * orientation angle.
-     */
-    public Ellipse2D(double xc, double yc, double l1, double l2, double theta) {
-        this(xc, yc, l1, l2, theta, true);
-    }
-
-    /**
-     * Define center by coordinate, major and minor semi axis lengths,
-     * orientation angle, and boolean flag for directed ellipse.
-     */
-    public Ellipse2D(double xc, double yc, double l1, double l2, double theta,
-            boolean direct) {
-        this.xc = xc;
-        this.yc = yc;
-
-        r1 = l1;
-        r2 = l2;
-
-        this.theta = theta;
-        this.direct = direct;
-    }
-
-    /**
-     * construct an ellipse from the java.awt.geom class for ellipse.
-     */
-    public Ellipse2D(java.awt.geom.Ellipse2D ellipse) {
-        this(new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 
-        		ellipse.getWidth()/2, ellipse.getHeight()/2);
-    }
-
-    
     // ===================================================================
     // Static factories
 
@@ -306,6 +221,87 @@ implements SmoothContour2D, Conic2D, Cloneable {
     }
 
 
+    // ===================================================================
+    // class variables
+
+    /** coordinate of center. */
+    protected double  xc;
+    protected double  yc;
+
+    /** length of major semi-axis */
+    protected double  r1;
+    
+    /** length of minor semi-axis */
+    protected double  r2;
+
+    /** orientation of major semi-axis */
+    protected double  theta  = 0;
+
+    /** directed ellipse or not */
+    protected boolean direct = true;
+
+    // ===================================================================
+    // constructors
+
+    /**
+     * Empty constructor, define ellipse centered at origin with both major and
+     * minor semi-axis with length equal to 1.
+     */
+    public Ellipse2D() {
+        this(0, 0, 1, 1, 0, true);
+    }
+
+    /** Main constructor: define center by a point plus major and minor semi axis */
+    public Ellipse2D(Point2D center, double l1, double l2) {
+        this(center.getX(), center.getY(), l1, l2, 0, true);
+    }
+
+    /** Define center by coordinate, plus major and minor semi axis */
+    public Ellipse2D(double xc, double yc, double l1, double l2) {
+        this(xc, yc, l1, l2, 0, true);
+    }
+
+    /**
+     * Define center by point, major and minor semi axis lengths, and
+     * orientation angle.
+     */
+    public Ellipse2D(Point2D center, double l1, double l2, double theta) {
+        this(center.getX(), center.getY(), l1, l2, theta, true);
+    }
+
+    /**
+     * Define center by coordinate, major and minor semi axis lengths, and
+     * orientation angle.
+     */
+    public Ellipse2D(double xc, double yc, double l1, double l2, double theta) {
+        this(xc, yc, l1, l2, theta, true);
+    }
+
+    /**
+     * Define center by coordinate, major and minor semi axis lengths,
+     * orientation angle, and boolean flag for directed ellipse.
+     */
+    public Ellipse2D(double xc, double yc, double l1, double l2, double theta,
+            boolean direct) {
+        this.xc = xc;
+        this.yc = yc;
+
+        r1 = l1;
+        r2 = l2;
+
+        this.theta = theta;
+        this.direct = direct;
+    }
+
+    /**
+     * construct an ellipse from the java.awt.geom class for ellipse.
+     */
+    public Ellipse2D(java.awt.geom.Ellipse2D ellipse) {
+        this(new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 
+        		ellipse.getWidth()/2, ellipse.getHeight()/2);
+    }
+
+    
     // ===================================================================
     // Methods specific to Ellipse2D
 

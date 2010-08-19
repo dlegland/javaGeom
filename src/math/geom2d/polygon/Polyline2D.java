@@ -59,9 +59,34 @@ import math.geom2d.transform.CircleInversion2D;
 public class Polyline2D extends AbstractContinuousCurve2D
 implements CirculinearContinuousCurve2D, Cloneable {
 
+    // ===================================================================
+    // Static methods
+    
+    /**
+     * Static factory for creating a new Polyline2D from a collection of
+     * points.
+     * @since 0.8.1
+     */
+    public static Polyline2D create(Collection<? extends Point2D> points) {
+    	return new Polyline2D(points);
+    }
+    
+    /**
+     * Static factory for creating a new Polyline2D from an array of
+     * points.
+     * @since 0.8.1
+     */
+    public static Polyline2D create(Point2D[] points) {
+    	return new Polyline2D(points);
+    }
+    
 
+    // ===================================================================
+    // class variables
+    
     protected ArrayList<Point2D> points = new ArrayList<Point2D>();
 
+    
     // ===================================================================
     // Contructors
 
@@ -86,27 +111,6 @@ implements CirculinearContinuousCurve2D, Cloneable {
             points.add(new Point2D(xcoords[i], ycoords[i]));
     }
 
-    // ===================================================================
-    // Static methods
-    
-    /**
-     * Static factory for creating a new Polyline2D from a collection of
-     * points.
-     * @since 0.8.1
-     */
-    public static Polyline2D create(Collection<? extends Point2D> points) {
-    	return new Polyline2D(points);
-    }
-    
-    /**
-     * Static factory for creating a new Polyline2D from an array of
-     * points.
-     * @since 0.8.1
-     */
-    public static Polyline2D create(Point2D[] points) {
-    	return new Polyline2D(points);
-    }
-    
 
     // ===================================================================
     // Methods specific to Polyline2D

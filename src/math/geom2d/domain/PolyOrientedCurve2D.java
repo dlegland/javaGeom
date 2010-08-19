@@ -55,6 +55,30 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         PolyCurve2D<T> implements ContinuousOrientedCurve2D {
 
     // ===================================================================
+    // static constructors
+
+    /**
+     * Static factory for creating a new PolyOrientedCurve2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
+    create(Collection<T> curves) {
+    	return new PolyOrientedCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyOrientedCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> 
+    PolyOrientedCurve2D<T> create(T[] curves) {
+    	return new PolyOrientedCurve2D<T>(curves);
+    }
+
+    
+    // ===================================================================
     // Constructors
 
     public PolyOrientedCurve2D() {
@@ -79,30 +103,6 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
 
     public PolyOrientedCurve2D(Collection<? extends T> curves, boolean closed) {
         super(curves, closed);
-    }
-
-    
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new PolyOrientedCurve2D from a collection of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
-    create(Collection<T> curves) {
-    	return new PolyOrientedCurve2D<T>(curves);
-    }
-    
-    /**
-     * Static factory for creating a new PolyOrientedCurve2D from an array of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends ContinuousOrientedCurve2D> 
-    PolyOrientedCurve2D<T> create(T[] curves) {
-    	return new PolyOrientedCurve2D<T>(curves);
     }
 
     

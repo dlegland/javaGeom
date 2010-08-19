@@ -66,6 +66,33 @@ import math.geom2d.transform.CircleInversion2D;
 public class CircleArc2D extends EllipseArc2D
 implements Cloneable, CircularShape2D, CirculinearElement2D {
 
+    // ====================================================================
+    // static factories
+
+    public static CircleArc2D create(Circle2D support, double startAngle,
+    		double angleExtent) {
+    	return new CircleArc2D(support, startAngle, angleExtent);
+    }
+    
+    public static CircleArc2D create(Circle2D support, double startAngle,
+    		double endAngle, boolean direct) {
+    	return new CircleArc2D(support, startAngle, endAngle, direct);
+    }
+    
+    public static CircleArc2D create(Point2D center, double radius,
+    		double startAngle, double angleExtent) {
+    	return new CircleArc2D(center, radius, startAngle, angleExtent);
+    }
+    
+    public static CircleArc2D create(Point2D center, double radius,
+    		double startAngle, double endAngle, boolean direct) {
+    	return new CircleArc2D(center, radius, startAngle, endAngle, direct);
+    }
+    
+    
+    // ====================================================================
+    // class variables
+
     protected Circle2D circle;
 
     // ====================================================================
@@ -135,29 +162,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         this.ellipse = this.circle;
     }
 
-    // ====================================================================
-    // static factories
-
-    public static CircleArc2D create(Circle2D support, double startAngle,
-    		double angleExtent) {
-    	return new CircleArc2D(support, startAngle, angleExtent);
-    }
-    
-    public static CircleArc2D create(Circle2D support, double startAngle,
-    		double endAngle, boolean direct) {
-    	return new CircleArc2D(support, startAngle, endAngle, direct);
-    }
-    
-    public static CircleArc2D create(Point2D center, double radius,
-    		double startAngle, double angleExtent) {
-    	return new CircleArc2D(center, radius, startAngle, angleExtent);
-    }
-    
-    public static CircleArc2D create(Point2D center, double radius,
-    		double startAngle, double endAngle, boolean direct) {
-    	return new CircleArc2D(center, radius, startAngle, endAngle, direct);
-    }
-    
     // ====================================================================
     // methods specific to CircleArc2D
 

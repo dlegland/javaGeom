@@ -18,7 +18,7 @@ import math.geom2d.transform.CircleInversion2D;
 
 
 /**
- * A basic implementation of a CirculinearRing2D, which is supposed to be
+ * A basic implementation of a CirculinearRing2D, which is assumed to be
  * always bounded and closed.
  * @author dlegland
  *
@@ -28,6 +28,30 @@ extends PolyCirculinearCurve2D<CirculinearElement2D>
 implements CirculinearRing2D {
 //TODO: parametrize with curve type ?
 	
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new GenericCirculinearRing2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends CirculinearElement2D> GenericCirculinearRing2D
+    create(Collection<T> curves) {
+    	return new GenericCirculinearRing2D(curves);
+    }
+    
+    /**
+     * Static factory for creating a new GenericCirculinearRing2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static GenericCirculinearRing2D create(
+    		CirculinearElement2D[] curves) {
+    	return new GenericCirculinearRing2D(curves);
+    }
+
+    
     // ===================================================================
     // constructors
 
@@ -71,30 +95,6 @@ implements CirculinearRing2D {
         super(curves, closed);
     }
 
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new GenericCirculinearRing2D from a collection of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends CirculinearElement2D> GenericCirculinearRing2D
-    create(Collection<T> curves) {
-    	return new GenericCirculinearRing2D(curves);
-    }
-    
-    /**
-     * Static factory for creating a new GenericCirculinearRing2D from an array of
-     * curves.
-     * @since 0.8.1
-     */
-    public static GenericCirculinearRing2D create(
-    		CirculinearElement2D[] curves) {
-    	return new GenericCirculinearRing2D(curves);
-    }
-
-    
     // ===================================================================
     // methods specific to GenericCirculinearRing2D
 

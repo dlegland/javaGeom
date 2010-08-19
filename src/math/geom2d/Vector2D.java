@@ -36,48 +36,6 @@ import math.geom2d.AffineTransform2D;
 public class Vector2D implements Cloneable {
 
     // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    protected double x = 1;
-    protected double y = 0;
-
-    // ===================================================================
-    // constructors
-
-    /** 
-     * Constructs a new Vectors initialized with x=1 and y=0. 
-     */
-    public Vector2D() {
-        this(1, 0);
-    }
-
-    /**
-     * Constructs a new vector between the origin and the given point.
-     */
-    public Vector2D(java.awt.geom.Point2D point) {
-        this(point.getX(), point.getY());
-    }
-
-    /**
-     * Constructs a new vector between two points
-     */
-    public Vector2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
-        this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
-    }
-
-    /** 
-     * Constructs a new vector with the given coordinates. 
-     * Consider creating a new Vector using static factory.
-     */
-    public Vector2D(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    // ===================================================================
     // static functions
 
     /**
@@ -151,6 +109,46 @@ public class Vector2D implements Cloneable {
         v1 = v1.getNormalizedVector();
         v2 = v2.getNormalizedVector();
         return Math.abs(v1.getX()*v2.getX()+v1.getY()*v2.getY())<Shape2D.ACCURACY;
+    }
+
+
+    // ===================================================================
+    // class variables
+
+    protected double x = 1;
+    protected double y = 0;
+
+    // ===================================================================
+    // constructors
+
+    /** 
+     * Constructs a new Vectors initialized with x=1 and y=0. 
+     */
+    public Vector2D() {
+        this(1, 0);
+    }
+
+    /**
+     * Constructs a new vector between the origin and the given point.
+     */
+    public Vector2D(java.awt.geom.Point2D point) {
+        this(point.getX(), point.getY());
+    }
+
+    /**
+     * Constructs a new vector between two points
+     */
+    public Vector2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
+        this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
+    }
+
+    /** 
+     * Constructs a new vector with the given coordinates. 
+     * Consider creating a new Vector using static factory.
+     */
+    public Vector2D(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     // ===================================================================

@@ -23,11 +23,26 @@ import math.geom2d.line.LinearShape2D;
 public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D
 implements SmoothOrientedCurve2D, Cloneable {
 
+    // ===================================================================
+    // constructor
+
+    public static HyperbolaBranchArc2D create(HyperbolaBranch2D branch, 
+    		double t0, double t1) {
+       return new HyperbolaBranchArc2D(branch, t0, t1);
+    }
+
+    
+    // ===================================================================
+    // class variables
+
     /** The supporting hyperbola branch */
     HyperbolaBranch2D branch = null;
 
     double            t0     = 0;
     double            t1     = 1;
+
+    // ===================================================================
+    // constructor
 
     public HyperbolaBranchArc2D(HyperbolaBranch2D branch, double t0, double t1) {
         this.branch = branch;
