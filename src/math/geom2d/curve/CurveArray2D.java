@@ -52,9 +52,6 @@ import math.geom2d.line.LinearShape2D;
 public class CurveArray2D<T extends Curve2D> 
 implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
-    /** The inner array of curves */
-    protected ArrayList<T> curves;
-
     // ===================================================================
     // Static Constructors
     
@@ -79,6 +76,13 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     }
     
 
+    // ===================================================================
+    // Class variables
+
+    /** The inner array of curves */
+    protected ArrayList<T> curves;
+
+    
     // ===================================================================
     // Constructors
 

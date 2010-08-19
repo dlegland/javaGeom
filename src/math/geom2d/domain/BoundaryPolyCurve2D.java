@@ -43,26 +43,6 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         PolyOrientedCurve2D<T> implements Contour2D {
 
     // ===================================================================
-    // Constructors
-
-    public BoundaryPolyCurve2D() {
-        super();
-    }
-
-    public BoundaryPolyCurve2D(int n) {
-        super(n);
-    }
-
-    public BoundaryPolyCurve2D(T[] curves) {
-        super(curves);
-    }
-
-    public BoundaryPolyCurve2D(Collection<? extends T> curves) {
-        super(curves);
-    }
-
-    
-    // ===================================================================
     // Static methods
 
     /**
@@ -83,6 +63,26 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
     		T[] curves) {
     	return new BoundaryPolyCurve2D<T>(curves);
+    }
+
+    
+    // ===================================================================
+    // Constructors
+
+    public BoundaryPolyCurve2D() {
+        super();
+    }
+
+    public BoundaryPolyCurve2D(int n) {
+        super(n);
+    }
+
+    public BoundaryPolyCurve2D(T[] curves) {
+        super(curves);
+    }
+
+    public BoundaryPolyCurve2D(Collection<? extends T> curves) {
+        super(curves);
     }
 
     

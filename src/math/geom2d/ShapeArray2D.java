@@ -22,9 +22,25 @@ import java.util.Iterator;
 public class ShapeArray2D<T extends Shape2D> 
 implements ShapeSet2D<T>, Cloneable {
 
+    // ===================================================================
+    // Static constructors
+
+	public static <T extends Shape2D> ShapeSet2D<T> create(Collection<T> shapes) {
+		return new ShapeArray2D<T>(shapes);
+	}
+	
+	public static <T extends Shape2D> ShapeSet2D<T> create(T[] shapes) {
+		return new ShapeArray2D<T>(shapes);
+	}
+	
+	
+    // ===================================================================
+    // Class variables
+
     /** The inner array of curves */
     protected ArrayList<T> shapes;
 
+    
     // ===================================================================
     // Constructors
 

@@ -51,6 +51,23 @@ import math.geom2d.line.LinearShape2D;
 public class CubicBezierCurve2D extends AbstractSmoothCurve2D
 implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
+    // ===================================================================
+    // static methods
+
+    public final static CubicBezierCurve2D create (
+    		Point2D p1, Point2D c1, Point2D c2, Point2D p2) {
+    	return new CubicBezierCurve2D(p1, c1, c2, p2);
+    }
+    
+    public final static CubicBezierCurve2D create (
+    		Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
+    	return new CubicBezierCurve2D(p1, v1, p2, v2);
+    }
+    
+     
+    // ===================================================================
+    // class variables
+
 	protected double x1, y1;
 	protected double ctrlx1, ctrly1;
 	protected double ctrlx2, ctrly2;
@@ -131,20 +148,6 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
        }
     
 
-    // ===================================================================
-    // static methods
-
-    public final static CubicBezierCurve2D create (
-    		Point2D p1, Point2D c1, Point2D c2, Point2D p2) {
-    	return new CubicBezierCurve2D(p1, c1, c2, p2);
-    }
-    
-    public final static CubicBezierCurve2D create (
-    		Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
-    	return new CubicBezierCurve2D(p1, v1, p2, v2);
-    }
-    
-     
     // ===================================================================
     // methods specific to CubicBezierCurve2D
 

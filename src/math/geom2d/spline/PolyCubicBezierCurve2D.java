@@ -44,25 +44,6 @@ import math.geom2d.curve.PolyCurve2D;
  */
 public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
-	// ===================================================================
-    // Constructors
-
-    public PolyCubicBezierCurve2D() {
-        super();
-    }
-
-    public PolyCubicBezierCurve2D(int n) {
-        super(n);
-    }
-
-    public PolyCubicBezierCurve2D(CubicBezierCurve2D[] curves) {
-        super(curves);
-    }
-
-    public PolyCubicBezierCurve2D(Collection<CubicBezierCurve2D> curves) {
-        super(curves);
-    }
-    
     // ===================================================================
     // Static methods
 
@@ -117,6 +98,26 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     }
 
     
+	// ===================================================================
+    // Constructors
+
+    public PolyCubicBezierCurve2D() {
+        super();
+    }
+
+    public PolyCubicBezierCurve2D(int n) {
+        super(n);
+    }
+
+    public PolyCubicBezierCurve2D(CubicBezierCurve2D[] curves) {
+        super(curves);
+    }
+
+    public PolyCubicBezierCurve2D(Collection<CubicBezierCurve2D> curves) {
+        super(curves);
+    }
+    
+
     // ===================================================================
     // Methods specific to PolyCubicBezierCurve2D
 

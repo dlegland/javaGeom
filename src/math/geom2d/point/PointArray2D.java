@@ -50,6 +50,26 @@ public class PointArray2D
 implements PointSet2D, CirculinearShape2D, Cloneable {
 
     // ===================================================================
+    // static constructors
+    
+    public static<T extends java.awt.geom.Point2D> PointArray2D create(
+    		Collection<T> points) {
+    	return new PointArray2D(points);
+    }
+    
+    public static<T extends java.awt.geom.Point2D> PointArray2D create(
+    		T[] points) {
+    	return new PointArray2D(points);
+    }
+    
+    /**
+     * Allocate memory for the specified number of points.
+     */
+    public static PointArray2D create(int size) {
+    	return new PointArray2D(size);
+    }
+    
+    // ===================================================================
     // inner variables
 
 	/**
@@ -108,21 +128,6 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         }
     }
 
-    // ===================================================================
-    // static factory methods
-    
-    public static PointSet2D create(Collection<? extends java.awt.geom.Point2D> points) {
-    	return new PointArray2D(points);
-    }
-    
-    public static PointSet2D create(Point2D[] points) {
-    	return new PointArray2D(points);
-    }
-    
-    public static PointSet2D create(int size) {
-    	return new PointArray2D(size);
-    }
-    
     // ===================================================================
     // methods implementing the PointSet2D interface
     

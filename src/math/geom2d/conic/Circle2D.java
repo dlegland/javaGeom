@@ -55,41 +55,6 @@ public class Circle2D extends Ellipse2D
 implements Cloneable, CirculinearElement2D, CirculinearRing2D,
 CircularShape2D, CircleLine2D {
 
-    /** the radius of the circle. */
-    protected double r = 0;
-
-
-    // ===================================================================
-    // Constructors
-
-    /** Empty constructor: center 0,0 and radius 0. */
-    public Circle2D() {
-        this(0, 0, 0, true);
-    }
-
-    /** Create a new circle with specified point center and radius */
-    public Circle2D(Point2D center, double radius) {
-        this(center.getX(), center.getY(), radius, true);
-    }
-
-    /** Create a new circle with specified center, radius and orientation */
-    public Circle2D(Point2D center, double radius, boolean direct) {
-        this(center.getX(), center.getY(), radius, direct);
-    }
-
-    /** Create a new circle with specified center and radius */
-    public Circle2D(double xcenter, double ycenter, double radius) {
-        this(xcenter, ycenter, radius, true);
-    }
-
-    /** Create a new circle with specified center, radius and orientation. */
-    public Circle2D(double xcenter, double ycenter, double radius,
-            boolean direct) {
-        super(xcenter, ycenter, radius, radius, 0, direct);
-        this.r = radius;
-    }
-
-    
     // ===================================================================
     // Static methods
 
@@ -208,6 +173,44 @@ CircularShape2D, CircleLine2D {
     }
     
 
+    // ===================================================================
+    // Clas variables
+
+    /** the radius of the circle. */
+    protected double r = 0;
+
+
+    // ===================================================================
+    // Constructors
+
+    /** Empty constructor: center 0,0 and radius 0. */
+    public Circle2D() {
+        this(0, 0, 0, true);
+    }
+
+    /** Create a new circle with specified point center and radius */
+    public Circle2D(Point2D center, double radius) {
+        this(center.getX(), center.getY(), radius, true);
+    }
+
+    /** Create a new circle with specified center, radius and orientation */
+    public Circle2D(Point2D center, double radius, boolean direct) {
+        this(center.getX(), center.getY(), radius, direct);
+    }
+
+    /** Create a new circle with specified center and radius */
+    public Circle2D(double xcenter, double ycenter, double radius) {
+        this(xcenter, ycenter, radius, true);
+    }
+
+    /** Create a new circle with specified center, radius and orientation. */
+    public Circle2D(double xcenter, double ycenter, double radius,
+            boolean direct) {
+        super(xcenter, ycenter, radius, radius, 0, direct);
+        this.r = radius;
+    }
+
+    
     // ===================================================================
     // methods specific to class Circle2D
 

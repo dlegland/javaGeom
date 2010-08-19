@@ -47,10 +47,26 @@ import math.geom2d.Vector2D;
 public class Ray2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
-    // constants
+    // Static constructors
 
-    // ===================================================================
-    // class variables
+    /**
+     * Static factory for creating a new ray.
+     * @since 0.8.1
+     */
+    public static Ray2D create(Point2D origin, Vector2D direction) {
+    	return new Ray2D(origin, direction);
+    }
+    
+    /**
+     * Static factory for creating a new ray, originating from
+     * <code>origin<\code>, and going in the
+     * direction of <code>target<\code>.
+     * @since 0.8.1
+     */
+    public static Ray2D create(Point2D origin, Point2D target) {
+    	return new Ray2D(origin, target);
+    }
+    
 
     // ===================================================================
     // constructors
@@ -122,28 +138,6 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     public Ray2D(LinearShape2D line) {
         super(line);
     }
-
-    // ===================================================================
-    // methods specific to Ray2D
-
-    /**
-     * Static factory for creating a new ray.
-     * @since 0.8.1
-     */
-    public static Ray2D create(Point2D origin, Vector2D direction) {
-    	return new Ray2D(origin, direction);
-    }
-    
-    /**
-     * Static factory for creating a new ray, originating from
-     * <code>origin<\code>, and going in the
-     * direction of <code>target<\code>.
-     * @since 0.8.1
-     */
-    public static Ray2D create(Point2D origin, Point2D target) {
-    	return new Ray2D(origin, target);
-    }
-    
 
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface

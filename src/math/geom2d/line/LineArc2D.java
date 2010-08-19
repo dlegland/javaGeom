@@ -48,6 +48,21 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 public class LineArc2D extends AbstractLine2D 
 implements SmoothOrientedCurve2D, Cloneable {
 
+    // ===================================================================
+    // Static constructor
+    
+    /**
+     * Static factory for creating a new LineArc2D
+     * @since 0.8.1
+     */
+    public static LineArc2D create(Point2D p1, Point2D p2, double t0, double t1) {
+    	return new LineArc2D(p1, p2, t0, t1);
+    }
+
+    
+    // ===================================================================
+    // class variables
+    
     protected double t0 = 0;
     protected double t1 = 1;
 
@@ -105,18 +120,6 @@ implements SmoothOrientedCurve2D, Cloneable {
         super(x1, y1, dx, dy);
         this.t0 = t0;
         this.t1 = t1;
-    }
-
-    
-    // ===================================================================
-    // Static methods
-    
-    /**
-     * Static factory for creating a new LineArc2D
-     * @since 0.8.1
-     */
-    public LineArc2D create(Point2D p1, Point2D p2, double t0, double t1) {
-    	return new LineArc2D(p1, p2, t0, t1);
     }
 
     

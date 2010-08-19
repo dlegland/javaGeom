@@ -48,11 +48,18 @@ import math.geom2d.Vector2D;
 public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     // ===================================================================
-    // constants
+    // Static factory
 
-    // ===================================================================
-    // class variables
-
+    /**
+     * Static factory for creating a new inverted ray with given direction
+     * to target.
+     * @since 0.8.1
+     */
+    public static InvertedRay2D create(Point2D target, Vector2D direction) {
+    	return new InvertedRay2D(target, direction);
+    }
+    
+    
     // ===================================================================
     // constructors
 
@@ -123,23 +130,6 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     public InvertedRay2D(LinearShape2D line) {
         super(line);
     }
-
-    // ===================================================================
-    // Static factory
-
-    /**
-     * Static factory for creating a new inverted ray with given direction
-     * to target.
-     * @since 0.8.1
-     */
-    public static InvertedRay2D create(Point2D target, Vector2D direction) {
-    	return new InvertedRay2D(target, direction);
-    }
-    
-    
-    // ===================================================================
-    // methods specific to InvertedRay2D
-
 
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface

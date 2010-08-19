@@ -52,6 +52,21 @@ import math.geom2d.line.StraightLine2D;
 public class QuadBezierCurve2D extends AbstractSmoothCurve2D
 implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
+    // ===================================================================
+    // static methods
+   
+    /**
+     * Static factory for creating a new Quadratic Bezier curve from 3 points.
+     * @since 0.8.1
+     */
+    public static QuadBezierCurve2D create(Point2D p1, Point2D p2, Point2D p3) {
+    	return new QuadBezierCurve2D(p1, p2, p3);
+    }
+    
+
+    // ===================================================================
+    // class variables
+   
 	protected double x1, y1;
 	protected double ctrlx, ctrly;
 	protected double x2, y2;
@@ -109,18 +124,6 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         this.x2 = x2;
         this.y2 = y2;
     }
-
-    // ===================================================================
-    // static methods
-   
-    /**
-     * Static factory for creating a new Quadratic Bezier curve from 3 points.
-     * @since 0.8.1
-     */
-    public static QuadBezierCurve2D create(Point2D p1, Point2D p2, Point2D p3) {
-    	return new QuadBezierCurve2D(p1, p2, p3);
-    }
-    
 
     // ===================================================================
     // methods specific to QuadBezierCurve2D

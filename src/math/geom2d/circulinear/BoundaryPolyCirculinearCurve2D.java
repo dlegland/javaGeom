@@ -36,34 +36,6 @@ extends PolyCirculinearCurve2D<T>
 implements CirculinearContinuousCurve2D, CirculinearContour2D {
 
     // ===================================================================
-    // constructors
-
-    public BoundaryPolyCirculinearCurve2D() {
-        super();
-    }
-
-    public BoundaryPolyCirculinearCurve2D(int size) {
-        super(size);
-    }
-
-    public BoundaryPolyCirculinearCurve2D(T[] curves) {
-        super(curves);
-    }
-
-    public BoundaryPolyCirculinearCurve2D(T[] curves, boolean closed) {
-        super(curves, closed);
-    }
-
-    public BoundaryPolyCirculinearCurve2D(Collection<? extends T> curves) {
-        super(curves);
-    }
-
-    public BoundaryPolyCirculinearCurve2D(Collection<? extends T> curves, boolean closed) {
-        super(curves, closed);
-    }
-
-    
-    // ===================================================================
     // static methods
 
     /**
@@ -106,6 +78,34 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
     public static <T extends CirculinearContour2D> 
     BoundaryPolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
     	return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
+    }
+
+    
+    // ===================================================================
+    // constructors
+
+    public BoundaryPolyCirculinearCurve2D() {
+        super();
+    }
+
+    public BoundaryPolyCirculinearCurve2D(int size) {
+        super(size);
+    }
+
+    public BoundaryPolyCirculinearCurve2D(T[] curves) {
+        super(curves);
+    }
+
+    public BoundaryPolyCirculinearCurve2D(T[] curves, boolean closed) {
+        super(curves, closed);
+    }
+
+    public BoundaryPolyCirculinearCurve2D(Collection<? extends T> curves) {
+        super(curves);
+    }
+
+    public BoundaryPolyCirculinearCurve2D(Collection<? extends T> curves, boolean closed) {
+        super(curves, closed);
     }
 
     

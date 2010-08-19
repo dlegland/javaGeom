@@ -62,16 +62,8 @@ import math.geom2d.line.StraightLine2D;
 public class Parabola2D extends AbstractSmoothCurve2D 
 implements Contour2D, Conic2D, Cloneable {
 
-    /** Coordinate of the vertex */
-    protected double xv    = 0, yv = 0;
-
-    /** orientation of the parabola */
-    protected double theta = 0;
-
-    /** The parameter of the parabola. If positive, the parabola is direct. */
-    protected double a     = 1;
-
-    private boolean  debug = false;
+    // ==========================================================
+    // static constructors
 
     /**
      * Creates a parabola by supplying the vertex and the focus.
@@ -85,6 +77,25 @@ implements Contour2D, Conic2D, Cloneable {
         double theta = Angle2D.getHorizontalAngle(vertex, focus)-Math.PI/2;
         return new Parabola2D(vertex, 1/(4*p), theta);
     }
+
+    
+    // ==========================================================
+    // class variables
+
+    /** Coordinate of the vertex */
+    protected double xv    = 0, yv = 0;
+
+    /** orientation of the parabola */
+    protected double theta = 0;
+
+    /** The parameter of the parabola. If positive, the parabola is direct. */
+    protected double a     = 1;
+
+    private boolean  debug = false;
+
+    
+    // ==========================================================
+    // constructors
 
     public Parabola2D() {
         super();

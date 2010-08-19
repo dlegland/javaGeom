@@ -48,6 +48,39 @@ import math.geom2d.polygon.Polyline2D;
 public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         implements ContinuousCurve2D {
 
+    // ===================================================================
+    // static methods
+
+    /**
+     * Static factory for creating a new PolyCurve2D from a collection of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		Collection<T> curves) {
+    	return new PolyCurve2D<T>(curves);
+    }
+    
+    /**
+     * Static factory for creating a new PolyCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    		T[] curves) {
+    	return new PolyCurve2D<T>(curves);
+    }
+
+	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
+		ArrayList<T> list = new ArrayList<T> (1);
+		list.add(curve);
+		return list;
+	}
+	
+   
+    // ===================================================================
+    // class variables
+
     /** flag for indicating if the curve is closed or not (default is open) */
     protected boolean closed = false;
 
@@ -81,36 +114,6 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     
     // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new PolyCurve2D from a collection of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
-    		Collection<T> curves) {
-    	return new PolyCurve2D<T>(curves);
-    }
-    
-    /**
-     * Static factory for creating a new PolyCurve2D from an array of
-     * curves.
-     * @since 0.8.1
-     */
-    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
-    		T[] curves) {
-    	return new PolyCurve2D<T>(curves);
-    }
-
-	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
-		ArrayList<T> list = new ArrayList<T> (1);
-		list.add(curve);
-		return list;
-	}
-	
-   
-    // ===================================================================
     // Methods specific to PolyCurve2D
 
     /**
@@ -120,6 +123,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         closed = b;
     }
 
+    
     // ===================================================================
     // Methods implementing the ContinuousCurve2D interface
 
