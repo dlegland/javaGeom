@@ -25,21 +25,21 @@
 
 package math.geom2d.transform;
 
-import java.util.*;
-import math.geom2d.conic.Circle2D;
-import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.PolyCurve2D;
-import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.LinearShape2D;
-import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polygon2D;
-import math.geom2d.polygon.Polyline2D;
-import math.geom2d.polygon.LinearRing2D;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
+import math.geom2d.circulinear.CirculinearRing2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
+import math.geom2d.domain.BoundaryPolyCurve2D;
+import math.geom2d.domain.ContourArray2D;
+import math.geom2d.line.LineSegment2D;
+import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.Polygon2D;
 
 // Imports
 
@@ -140,89 +140,24 @@ public class CircleInversion2D implements Bijection2D {
     @Deprecated
     public Shape2D transformShape(Shape2D shape) {
 
-    	double r = radius;
-        if (shape instanceof Point2D) {
+    	if (shape instanceof Point2D) {
         	return transform((Point2D) shape);
-        } else if (shape instanceof LinearShape2D) {
-            LinearShape2D line = (LinearShape2D) shape;
+        } else if (shape instanceof CirculinearCurve2D) {
+        	CirculinearCurve2D curve = (CirculinearCurve2D) shape;
+        	return curve.transform(this);
 
-            Point2D po = line.getSupportingLine().getProjectedPoint(center);
-            double d = center.getDistance(po);
-
-            // Degenerate case of a point belonging to the line :
-            // the transform is the line itself.
-            if (Math.abs(d)<Shape2D.ACCURACY)
-                return new StraightLine2D(line);
-
-            // angle from center to line
-            double angle = Angle2D.getHorizontalAngle(center, po);
-
-            // center of transformed circle
-            double r2 = r*r/d/2;
-            Point2D c2 = Point2D.createPolar(center, r2, angle);
-
-            // case of straight line -> create a full circle
-            if (line instanceof StraightLine2D)
-                return new Circle2D(c2, r2);
-
-            // case of line segment -> create a circle arc
-            if (line instanceof LineSegment2D) {
-                LineSegment2D segment = (LineSegment2D) line;
-
-                // transform limits of edges, to obtain limits of arc
-                Point2D p1 = segment.getFirstPoint();
-                Point2D p2 = segment.getLastPoint();
-                p1 = this.transform(p1);
-                p2 = this.transform(p2);
-
-                // compute start and end angles of arc
-                double theta1 = Angle2D.getHorizontalAngle(c2, p1);
-                double theta2 = Angle2D.getHorizontalAngle(c2, p2);
-
-                boolean direct = new StraightLine2D(segment).isInside(center);
-
-                return new CircleArc2D(c2, r2, theta1, theta2, direct);
-            }
-        } else if (shape instanceof Circle2D) {
-            Circle2D circle = (Circle2D) shape;
-
-            Point2D c1 = circle.getCenter();
-            StraightLine2D line = new StraightLine2D(center, c1);
-
-            // transform the two extreme points of the circle
-            Collection<Point2D> points = circle.getIntersections(line);
-            Iterator<Point2D> iter = points.iterator();
-            Point2D p1 = this.transform(iter.next());
-            Point2D p2 = this.transform(iter.next());
-
-            // get center and diameter of transformed circle
-            double d = p1.getDistance(p2);
-            c1 = Point2D.midPoint(p1, p2);
-
-            return new Circle2D(c1, d/2);
-        } else if (shape instanceof Polyline2D) {
-            // get all edges of polyline
-            Collection<LineSegment2D> edges = ((Polyline2D) shape).getEdges();
-
-            // transform each edge into a circle arc
-            ArrayList<CircleArc2D> arcs = new ArrayList<CircleArc2D>();
-            for (LineSegment2D edge : edges)
-                arcs.add((CircleArc2D) this.transformShape(edge));
-
-            // create new shape by putting all arcs together
-            return new PolyCurve2D<CircleArc2D>(arcs);
         } else if (shape instanceof Polygon2D) {
             // get all rings of polygon
             Collection<? extends LinearRing2D> rings = ((Polygon2D) shape).getRings();
 
             // for each ring, create a curve formed by several circle arcs
-            ArrayList<BoundaryPolyCurve2D<CircleArc2D>> curves = 
-                new ArrayList<BoundaryPolyCurve2D<CircleArc2D>>(rings.size());    
+            ArrayList<CirculinearRing2D> curves = 
+                new ArrayList<CirculinearRing2D>(rings.size());    
             for (LinearRing2D ring : rings)
-                curves.add(this.transformRing(ring));
+                curves.add(ring.transform(this));
 
             // create new shape by putting all boundaries together
-            return new ContourArray2D<BoundaryPolyCurve2D<CircleArc2D>>(curves);
+            return new ContourArray2D<CirculinearRing2D>(curves);
         }
 
         return null;
@@ -231,7 +166,7 @@ public class CircleInversion2D implements Bijection2D {
    /**
     * @deprecated replaced by CirculinearShape2D interface (0.9.0)
     */
-   @Deprecated
+    @Deprecated
     public BoundaryPolyCurve2D<CircleArc2D> transformRing(LinearRing2D ring) {    
         // get all edges of the ring
         Collection<LineSegment2D> edges = ring.getEdges();
@@ -283,7 +218,7 @@ public class CircleInversion2D implements Bijection2D {
 
         xc = center.getX();
         yc = center.getY();
-        r = radius;
+        r  = radius;
 
         // transform each point
         for (int i = 0; i<src.length; i++) {

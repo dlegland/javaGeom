@@ -26,6 +26,7 @@ package math.geom2d.curve;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.ShapeSet2D;
 
 
 /**
@@ -41,7 +42,7 @@ import math.geom2d.AffineTransform2D;
  * @author Legland
  */
 public interface CurveSet2D<T extends Curve2D> 
-extends Curve2D, Iterable<T> {
+extends Curve2D, ShapeSet2D<T> {
 
     /**
      * Checks if the curve set contains the given curve.

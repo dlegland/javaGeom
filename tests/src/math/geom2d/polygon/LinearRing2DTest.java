@@ -297,7 +297,20 @@ public class LinearRing2DTest extends TestCase {
 		assertTrue(clipped.getCurveNumber()==1);
 		assertTrue(clipped.getFirstCurve().equals(line1));
 	}
-	
+
+	public void testClipBox2D_TouchesAtCorners(){
+		LinearRing2D polyline = LinearRing2D.create(new Point2D[]{
+				new Point2D(0, 5),
+				new Point2D(5, 0),
+				new Point2D(10, 5),
+				new Point2D(5, 10)	});
+		
+		Box2D box = new Box2D(0, 10, 0, 10);
+		
+		CurveSet2D<?> clipped = polyline.clip(box);
+		assertEquals(1, clipped.getCurveNumber());
+	}
+
 	public void testGetSignedArea(){
 		LinearRing2D polyline = new LinearRing2D(new Point2D[]{
 				new Point2D(20, 10),

@@ -13,6 +13,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.ShapeSet2D;
 
 
 /**
@@ -21,7 +22,7 @@ import math.geom2d.Point2D;
  * @author dlegland
  *
  */
-public interface PointSet2D extends PointShape2D, Iterable<Point2D> {
+public interface PointSet2D extends PointShape2D, ShapeSet2D<Point2D> {
 
     /**
      * Adds a new point to the point set. If point is not an instance of
