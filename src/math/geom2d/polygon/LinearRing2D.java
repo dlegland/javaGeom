@@ -142,15 +142,25 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public Collection<LineSegment2D> getEdges() {
+    	// create resulting array
         int n = points.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>();
+        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
 
+        // do not process empty polylines
         if (n<2)
             return edges;
 
+        // create one edge for each couple of vertices
         for (int i = 0; i<n-1; i++)
             edges.add(new LineSegment2D(points.get(i), points.get(i+1)));
-        edges.add(new LineSegment2D(points.get(n-1), points.get(0)));
+        
+        // add a supplementary edge at the end, but only if vertices differ
+        Point2D p0 = points.get(0);
+        Point2D pn = points.get(n-1);
+        if (pn.getDistance(p0)>Shape2D.ACCURACY)
+        	edges.add(new LineSegment2D(pn, p0));
+        
+        // return resulting array
         return edges;
     }
 

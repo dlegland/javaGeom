@@ -41,9 +41,10 @@ public interface CirculinearCurve2D extends CirculinearShape2D, Curve2D {
 	public double getLength(double pos);
 	
 	/**
-	 * @return the position located at distance 'length' from the origin
+	 * @return the position located at a given geodesic distance from the
+	 * origin
 	 */
-	public double getPosition(double length);
+	public double getPosition(double distance);
 	
 	
 	/**

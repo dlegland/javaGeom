@@ -442,9 +442,13 @@ public class CirculinearCurve2DUtils {
 				CirculinearElement2D elem2 = elements2.get(j);
 				// iterate on intersection between consecutive elements
 				for(Point2D inter : findIntersections(elem1, elem2)) {
+					double pos1 = curve1.getPosition(inter);
+					double pos2 = curve2.getPosition(inter);
+					if (curve1.isSingular(pos1) && curve2.isSingular(pos2))
+						continue;
 					// add the intersection if we keep it
-					list1.add(curve1.getPosition(inter));
-					list2.add(curve2.getPosition(inter));
+					list1.add(pos1);
+					list2.add(pos2);
 				}
 			}
 		}

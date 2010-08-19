@@ -113,6 +113,22 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(smoothCurves.size(), 8);
 	}
 	
+	public void testGetBuffer_MShape() {
+		LinearRing2D ring = LinearRing2D.create(new Point2D[]{
+				new Point2D(100, 100),
+				new Point2D(300, 100),
+				new Point2D(300, 300),
+				new Point2D(200, 200),
+				new Point2D(100, 300) });
+		double dist = 51;
+		
+		Domain2D buffer = ring.getBuffer(dist);
+		Boundary2D boundary = buffer.getBoundary();
+		
+		// should have 1 outer and 2 inner boundaries
+		assertEquals(3, boundary.getBoundaryCurves().size());
+	}
+	
 	public void testGetBuffer_SelfIntersect() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
