@@ -41,8 +41,8 @@ import math.geom2d.curve.*;
  * 
  * @author dlegland
  */
-public class ContourArray2D<T extends Contour2D> 
-extends CurveArray2D<T> implements Boundary2D {
+public class ContourArray2D<T extends Contour2D> extends CurveArray2D<T>
+implements Boundary2D {
 
     // ===================================================================
     // static methods
