@@ -32,8 +32,10 @@ import math.geom2d.AffineTransform2D;
  * A continuous oriented curve which delimits a connected planar domain.
  * 
  * @author dlegland
+ * @since 0.9.0
  */
-public interface Contour2D extends Boundary2D,
+@SuppressWarnings("deprecation")
+public interface Contour2D extends ContinuousBoundary2D,
         ContinuousOrientedCurve2D {
 
     public abstract Contour2D getReverseCurve();

@@ -711,8 +711,11 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public double getDistance(double x, double y) {
         double dist = Double.MAX_VALUE;
-        for (LineSegment2D edge : this.getEdges())
+        for (LineSegment2D edge : this.getEdges()) {
+        	if (edge.getLength()==0)
+        		continue;
             dist = Math.min(dist, edge.getDistance(x, y));
+        }
         return dist;
     }
 
@@ -746,9 +749,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @see java.awt.Shape#contains(double, double)
      */
     public boolean contains(double x, double y) {
-        for (LineSegment2D edge : this.getEdges())
+        for (LineSegment2D edge : this.getEdges()) {
+        	if (edge.getLength()==0)
+        		continue;
             if (edge.contains(x, y))
                 return true;
+        }
         return false;
     }
 

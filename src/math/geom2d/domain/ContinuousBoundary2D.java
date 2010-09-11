@@ -35,7 +35,8 @@ import math.geom2d.AffineTransform2D;
  * @author dlegland
  */
 @Deprecated
-public interface ContinuousBoundary2D extends Contour2D {
+public interface ContinuousBoundary2D extends Boundary2D,
+ContinuousOrientedCurve2D{
 
     public abstract ContinuousBoundary2D getReverseCurve();
 
