@@ -355,14 +355,13 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        for(Point2D point : this){
-            if(set.getDistance(point)>eps)
-                return false;
-        }
-        
-        for(Point2D point : set){
-            if(this.getDistance(point)>eps)
-                return false;
+        if(this.points.size()!=set.getPointNumber())
+        	return false;
+
+        Iterator<Point2D> iter = set.iterator();
+        for (Point2D point : points) {
+        	if (!point.almostEquals(iter.next(), eps))
+        		return false;
         }
         
         return true;
@@ -372,20 +371,27 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     // methods overriding Object methods
 
 
+    /**
+     * Returns true if the given object is an instance of PointSet2D that
+     * contains the same number of points, such that iteration on each set
+     * returns equal points.
+     */
     @Override
     public boolean equals(Object obj) {
+    	if(this==obj)
+    		return true;
+    	
         if(!(obj instanceof PointSet2D))
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        for(Point2D point : this){
-            if(!set.contains(point))
-                return false;
-        }
+        if(this.points.size()!=set.getPointNumber())
+        	return false;
         
-        for(Point2D point : set){
-            if(!this.contains(point))
-                return false;
+        Iterator<Point2D> iter = set.iterator();
+        for (Point2D point : points) {
+        	if (!point.equals(iter.next()))
+        		return false;
         }
         
         return true;
