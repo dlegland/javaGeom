@@ -10,6 +10,7 @@ package math.geom2d;
 
 
 /**
+ * A shape that is composed of several other shapes.
  * @author dlegland
  *
  */

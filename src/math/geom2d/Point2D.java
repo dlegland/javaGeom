@@ -611,27 +611,12 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		Point2D p = (Point2D) obj;
 		
         // Code that should be used:
-//        if (java.lang.Double.doubleToLongBits(this.x) != 
-//        	java.lang.Double.doubleToLongBits(p.x))
-//        	return false;
-//        if (java.lang.Double.doubleToLongBits(this.y) != 
-//        	java.lang.Double.doubleToLongBits(p.y))
-//        	return false;
-		
-//		// Code temporarily used
-//		//TODO: remove temporary code
-//		double eps = Shape2D.ACCURACY;
-//        if (Math.abs(this.x - p.x) > eps)
-//        	return false;
-//        if (Math.abs(this.y - p.y) > eps)
-//        	return false;
-        
-		//TODO: remove temporary code
-		if (this.x != p.x)
+        if (java.lang.Double.doubleToLongBits(this.x) != 
+        	java.lang.Double.doubleToLongBits(p.x))
         	return false;
-        if (this.y != p.y)
+        if (java.lang.Double.doubleToLongBits(this.y) != 
+        	java.lang.Double.doubleToLongBits(p.y))
         	return false;
-        
 
         return true;
 	}

@@ -121,6 +121,22 @@ public class PointArray2DTest extends TestCase {
 		assertTrue(!set.contains(new Point2D(20, 20)));
 	}
 
+	public void testEquals() {
+		Point2D p1 = Point2D.create(1, 2);
+		Point2D p1b = Point2D.create(1, 2);
+		Point2D p2 = Point2D.create(1, 3);
+		Point2D p3 = Point2D.create(2, 3);
+		
+	    PointArray2D set1 = PointArray2D.create(new Point2D[]{p1, p2});
+	    PointArray2D set2 = PointArray2D.create(new Point2D[]{p1b, p2});
+	    assertTrue(set1.equals(set2));
+	    assertTrue(set2.equals(set1));
+	    
+	    PointArray2D set3 = new PointArray2D(new Point2D[]{p1, p3});
+	    assertFalse(set1.equals(set3));
+	    assertFalse(set3.equals(set1));
+	}
+
 	public void testClone() {
 	    PointArray2D set = new PointArray2D(new Point2D[]{
 	            new Point2D(0, 0), new Point2D(10, 20), new Point2D(30, 40)

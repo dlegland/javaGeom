@@ -16,6 +16,7 @@ import java.util.Iterator;
 
 
 /**
+ * Default Implementation of ShapeSet2D.
  * @author dlegland
  *
  */
@@ -249,9 +250,11 @@ implements ShapeSet2D<T>, Cloneable {
             return false;
 
         // return false if at least one couple of curves does not match
-        for(int i=0; i<shapes.size(); i++)
-            if(!shapes.get(i).almostEquals(shapeSet.shapes.get(i), eps))
-                return false;
+        Iterator<?> iter2 = shapeSet.shapes.iterator();
+        for(T shape : shapes) {
+        	if(!shape.almostEquals((GeometricObject2D) iter2.next(), eps))
+        		return false;
+        }
         
         // otherwise return true
         return true;
@@ -289,9 +292,11 @@ implements ShapeSet2D<T>, Cloneable {
             return false;
 
         // return false if at least one couple of curves does not match
-        for(int i=0; i<shapes.size(); i++)
-            if(!shapes.get(i).equals(shapeSet.shapes.get(i)))
-                return false;
+        Iterator<?> iter2 = shapeSet.shapes.iterator();
+        for(T shape : shapes) {
+        	if(!shape.equals(iter2.next()))
+        		return false;
+        }
         
         // otherwise return true
         return true;
