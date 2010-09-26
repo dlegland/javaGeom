@@ -49,7 +49,7 @@ import math.geom2d.transform.CircleInversion2D;
  * </p>
  */
 public class Point2D extends java.awt.geom.Point2D.Double implements
-		PointShape2D, Cloneable, CirculinearShape2D {
+GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	// ===================================================================
 	// constants
@@ -415,6 +415,29 @@ public class Point2D extends java.awt.geom.Point2D.Double implements
 		return Point2D.createPolar(center, d, theta);
 	}
 
+	
+	// ===================================================================
+	// Methods implementing the PointShape2D interface
+
+	/*
+	 * (non-Javadoc)
+	 * @see math.geom2d.point.PointShape2D#getPointNumber()
+	 */
+	public int getPointNumber() {
+		return 1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see math.geom2d.point.PointShape2D#getPoints()
+	 */
+	public Collection<Point2D> getPoints() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(1);
+		array.add(this);
+		return array;
+	}
+
+
 	// ===================================================================
 	// Methods implementing Shape2D interface
 
@@ -533,27 +556,32 @@ public class Point2D extends java.awt.geom.Point2D.Double implements
 	}
 
 	// ===================================================================
-	// Methods implementing the PointShape2D interface
+	// methods implementing the GeometricObject2D interface
 
-	/*
-	 * (non-Javadoc)
-	 * @see math.geom2d.point.PointShape2D#getPointNumber()
-	 */
-	public int getPointNumber() {
-		return 1;
-	}
+    /**
+     * Test whether this object is the same as another point, with respect
+     * to a given threshold along each coordinate.
+     */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Point2D))
+            return false;
+        Point2D p = (Point2D) obj;
+        
+        if (Math.abs(this.x - p.x) > eps)
+        	return false;
+        if (Math.abs(this.y - p.y) > eps)
+        	return false;
+        
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see math.geom2d.point.PointShape2D#getPoints()
-	 */
-	public Collection<Point2D> getPoints() {
-		ArrayList<Point2D> array = new ArrayList<Point2D>(1);
-		array.add(this);
-		return array;
-	}
+	// ===================================================================
+	// methods implementing the Iterable interface
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */
@@ -575,10 +603,37 @@ public class Point2D extends java.awt.geom.Point2D.Double implements
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof java.awt.geom.Point2D))
+    	if (this==obj)
+    		return true;
+    	
+		if (!(obj instanceof Point2D))
 			return false;
-		java.awt.geom.Point2D p = (java.awt.geom.Point2D) obj;
-		return this.distance(p.getX(), p.getY())<Shape2D.ACCURACY;
+		Point2D p = (Point2D) obj;
+		
+        // Code that should be used:
+//        if (java.lang.Double.doubleToLongBits(this.x) != 
+//        	java.lang.Double.doubleToLongBits(p.x))
+//        	return false;
+//        if (java.lang.Double.doubleToLongBits(this.y) != 
+//        	java.lang.Double.doubleToLongBits(p.y))
+//        	return false;
+		
+//		// Code temporarily used
+//		//TODO: remove temporary code
+//		double eps = Shape2D.ACCURACY;
+//        if (Math.abs(this.x - p.x) > eps)
+//        	return false;
+//        if (Math.abs(this.y - p.y) > eps)
+//        	return false;
+        
+		//TODO: remove temporary code
+		if (this.x != p.x)
+        	return false;
+        if (this.y != p.y)
+        	return false;
+        
+
+        return true;
 	}
 
 	/**

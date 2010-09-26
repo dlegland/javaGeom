@@ -205,6 +205,25 @@ public class Angle2D {
      * 
      * @param angle1 first angle to compare
      * @param angle2 second angle to compare
+     * @param the threshold value for comparison
+     * @return true if the two angle are equal modulo 2*PI
+     */
+    public static boolean almostEquals(double angle1, double angle2, double eps) {
+        angle1 = Angle2D.formatAngle(angle1);
+        angle2 = Angle2D.formatAngle(angle2);
+        double diff = Angle2D.formatAngle(angle1-angle2);
+        if (diff<eps)
+            return true;
+        if (Math.abs(diff-Math.PI*2)<eps)
+            return true;
+        return false;
+    }
+
+    /**
+     * Checks whether two angles are equal.
+     * 
+     * @param angle1 first angle to compare
+     * @param angle2 second angle to compare
      * @return true if the two angle are equal modulo 2*PI
      */
     public static boolean equals(double angle1, double angle2) {

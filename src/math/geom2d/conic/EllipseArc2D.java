@@ -31,12 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -732,6 +727,41 @@ implements SmoothOrientedCurve2D, Cloneable {
         return 4.0 / 3.0 * Math.sin(increment) / (1.0 + Math.cos(increment));
     }
 
+    // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof EllipseArc2D))
+            return false;
+        EllipseArc2D arc = (EllipseArc2D) obj;
+
+        // test whether supporting ellipses have same support
+        if (Math.abs(ellipse.xc-arc.ellipse.xc)>eps)
+            return false;
+        if (Math.abs(ellipse.yc-arc.ellipse.yc)>eps)
+            return false;
+        if (Math.abs(ellipse.r1-arc.ellipse.r1)>eps)
+            return false;
+        if (Math.abs(ellipse.r2-arc.ellipse.r2)>eps)
+            return false;
+        if (Math.abs(ellipse.theta-arc.ellipse.theta)>eps)
+            return false;
+
+        // test if angles are the same
+        if (!Angle2D.equals(startAngle, arc.startAngle))
+            return false;
+        if (!Angle2D.equals(angleExtent, arc.angleExtent))
+            return false;
+
+        return true;
+	}
+	
     // ====================================================================
     // methods from interface Object
 
@@ -747,6 +777,9 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
         if (!(obj instanceof EllipseArc2D))
             return false;
         EllipseArc2D arc = (EllipseArc2D) obj;

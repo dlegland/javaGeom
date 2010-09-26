@@ -30,12 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
@@ -766,6 +761,52 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     //		
     // return path;
     // }
+
+    // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof EllipseArc2D))
+            return false;
+
+        if (!(obj instanceof CircleArc2D))
+            return super.equals(obj);
+
+        CircleArc2D arc = (CircleArc2D) obj;
+        // test whether supporting ellipses have same support
+        if (Math.abs(circle.xc-arc.circle.xc)>eps)
+            return false;
+        if (Math.abs(circle.yc-arc.circle.yc)>eps)
+            return false;
+        if (Math.abs(circle.r-arc.circle.r)>eps)
+            return false;
+        if (Math.abs(circle.r1-arc.circle.r1)>eps)
+            return false;
+        if (Math.abs(circle.r2-arc.circle.r2)>eps)
+            return false;
+        if (Math.abs(circle.theta-arc.circle.theta)>eps)
+            return false;
+
+        // test is angles are the same
+        if (Math.abs(Angle2D.formatAngle(startAngle)
+                -Angle2D.formatAngle(arc.startAngle))>eps)
+            return false;
+        if (Math.abs(Angle2D.formatAngle(angleExtent)
+                -Angle2D.formatAngle(arc.angleExtent))>eps)
+            return false;
+
+        // if no difference, this is the same
+        return true;
+	}
+
+    // ===================================================================
+    // methods implementing Object interface
 
     @Override
     public String toString() {

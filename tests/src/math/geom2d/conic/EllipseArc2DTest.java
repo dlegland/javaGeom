@@ -27,10 +27,15 @@ package math.geom2d.conic;
 
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
 
 public class EllipseArc2DTest extends TestCase {
+
+	private void assertVectorAlmostEquals(Vector2D v1, Vector2D v2, double eps) {
+		assertTrue(v1.almostEquals(v2, eps));
+	}
 
 	/**
 	 * Create ellipse arcs with various constructors, and test if they are
@@ -127,16 +132,17 @@ public class EllipseArc2DTest extends TestCase {
 	
 	public void testGetTangent() {
         Ellipse2D ellipse = new Ellipse2D(0, 0, 50, 20, 0);
+        double eps = Shape2D.ACCURACY;
         
         // Direct arc
         EllipseArc2D arc1 = new EllipseArc2D(ellipse, 0, Math.PI/2);        
-        assertTrue(new Vector2D(0, 20).equals(arc1.getTangent(0)));
-        assertTrue(new Vector2D(-50, 0).equals(arc1.getTangent(Math.PI/2)));
+        assertVectorAlmostEquals(new Vector2D(0, 20), arc1.getTangent(0), eps);
+        assertVectorAlmostEquals(new Vector2D(-50, 0), arc1.getTangent(Math.PI/2), eps);
 		
         // Inverse arc
         EllipseArc2D arc2 = new EllipseArc2D(ellipse, 0, -Math.PI/2);        
-        assertTrue(new Vector2D(0, -20).equals(arc2.getTangent(0)));
-        assertTrue(new Vector2D(-50, 0).equals(arc2.getTangent(Math.PI/2)));
+        assertVectorAlmostEquals(new Vector2D(0, -20), arc2.getTangent(0), eps);
+        assertVectorAlmostEquals(new Vector2D(-50, 0), arc2.getTangent(Math.PI/2), eps);
 		
 	}
 	

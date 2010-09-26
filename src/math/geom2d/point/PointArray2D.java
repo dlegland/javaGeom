@@ -32,10 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearShape2D;
@@ -344,6 +341,37 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return points.iterator();
     }
     
+    // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+		if (this==obj)
+			return true;
+		
+        if(!(obj instanceof PointSet2D))
+            return false;
+        
+        PointSet2D set = (PointSet2D) obj;
+        for(Point2D point : this){
+            if(set.getDistance(point)>eps)
+                return false;
+        }
+        
+        for(Point2D point : set){
+            if(this.getDistance(point)>eps)
+                return false;
+        }
+        
+        return true;
+	}
+	
+    // ===================================================================
+    // methods overriding Object methods
+
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof PointSet2D))

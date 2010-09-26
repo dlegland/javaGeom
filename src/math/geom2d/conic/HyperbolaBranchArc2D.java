@@ -266,6 +266,26 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof HyperbolaBranchArc2D))
+            return false;
+        HyperbolaBranchArc2D arc = (HyperbolaBranchArc2D) obj;
+        
+        if(!branch.almostEquals(arc.branch, eps)) return false;
+        if(Math.abs(t0-arc.t0)>eps) return false;
+        if(Math.abs(t1-arc.t1)>eps) return false;
+        return true;
+    }
+
     // ===================================================================
     // methods overriding object
   

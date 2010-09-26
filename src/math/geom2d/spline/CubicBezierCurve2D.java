@@ -26,17 +26,8 @@ package math.geom2d.spline;
 import java.awt.geom.CubicCurve2D;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.*;
+import math.geom2d.curve.*;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 
@@ -514,8 +505,43 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return path;
     }
 
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if(!(obj instanceof CubicBezierCurve2D))
+            return false;
+        
+        // class cast
+        CubicBezierCurve2D bezier = (CubicBezierCurve2D) obj;
+        
+        // compare each field
+        if(Math.abs(this.x1-bezier.x1)>eps) return false;
+        if(Math.abs(this.y1-bezier.y1)>eps) return false;
+        if(Math.abs(this.ctrlx1-bezier.ctrlx1)>eps) return false;
+        if(Math.abs(this.ctrly1-bezier.ctrly1)>eps) return false;
+        if(Math.abs(this.ctrlx2-bezier.ctrlx2)>eps) return false;
+        if(Math.abs(this.ctrly2-bezier.ctrly2)>eps) return false;
+        if(Math.abs(this.x2-bezier.x2)>eps) return false;
+        if(Math.abs(this.y2-bezier.y2)>eps) return false;
+        
+        return true;
+    }
+
+	// ===================================================================
+	// methods overriding the class Object
+
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
         if(!(obj instanceof CubicBezierCurve2D))
             return false;
         

@@ -365,6 +365,31 @@ implements SmoothOrientedCurve2D, Cloneable {
         return this.getAsPolyline(32).getGeneralPath();
     }
 
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof ParabolaArc2D))
+            return false;
+        ParabolaArc2D arc = (ParabolaArc2D) obj;
+
+        if (!this.parabola.almostEquals(arc.parabola, eps))
+            return false;
+        if (Math.abs(this.t0-arc.t0)>eps)
+            return false;
+        if (Math.abs(this.t1-arc.t1)>eps)
+            return false;
+
+        return true;
+    }
+
     // ====================================================================
     // Methods inherited from object interface
 

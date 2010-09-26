@@ -25,12 +25,7 @@
 
 package math.geom2d.line;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearElement2D;
 
 
@@ -376,6 +371,33 @@ implements Cloneable, CirculinearElement2D {
         path.moveTo((float) x0, (float) y0);
         path.lineTo((float) (x0+dx), (float) (y0+dy));
         return path;
+    }
+
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof LineSegment2D))
+            return false;
+        LineSegment2D edge = (LineSegment2D) obj;
+
+        if (Math.abs(x0-edge.x0)>eps)
+            return false;
+        if (Math.abs(y0-edge.y0)>eps)
+            return false;
+        if (Math.abs(dx-edge.dx)>eps)
+            return false;
+        if (Math.abs(dy-edge.dy)>eps)
+            return false;
+        
+        return true;
     }
 
     // ===================================================================

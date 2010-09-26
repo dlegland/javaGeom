@@ -40,7 +40,8 @@ import math.geom2d.transform.Bijection2D;
  * creating specialized instances, by using static methods.
  * <p>
  */
-public class AffineTransform2D implements Bijection2D, Cloneable {
+public class AffineTransform2D implements Bijection2D, GeometricObject2D, 
+Cloneable {
 
     // coefficients for x coordinate.
     protected double m00, m01, m02;
@@ -573,17 +574,7 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
                 -m10/det, m00/det, (m02*m10-m00*m12)/det);
     }
 
-    /**
-     * Return the inverse transform. If the transform is not invertible, throws
-     * a new NonInvertibleTransform2DException.
-     * 
-     * @deprecated use invert() method instead (0.6.3)
-     */
-    @Deprecated
-    public AffineTransform2D getInverseTransform() {
-        return this.invert();
-    }
-
+    
     // ===================================================================
     // implementations of Transform2D methods
 
@@ -598,8 +589,8 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
 
         for (int i = 0; i<src.length; i++)
             dst[i].setLocation(new Point2D(
-                    src[i].getX()*coef[0]+src[i].getY()*coef[1]+coef[2],
-                    src[i].getX()*coef[3]+src[i].getY()*coef[4]+coef[5]));
+                    src[i].getX()*coef[0] + src[i].getY()*coef[1] + coef[2],
+                    src[i].getX()*coef[3] + src[i].getY()*coef[4] + coef[5]));
         return dst;
     }
 
@@ -611,6 +602,23 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         return dst;
     }
 
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof AffineTransform2D))
+            return false;
+
+        double[] tab1 = this.getCoefficients();
+        double[] tab2 = ((AffineTransform2D) obj).getCoefficients();
+
+        for (int i = 0; i<6; i++)
+            if (Math.abs(tab1[i] - tab2[i]) > eps)
+                return false;
+
+        return true;
+    }
+    
     // ===================================================================
     // Override the Object methods
 
@@ -626,6 +634,9 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
     
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
         if (!(obj instanceof AffineTransform2D))
             return false;
 
@@ -633,7 +644,8 @@ public class AffineTransform2D implements Bijection2D, Cloneable {
         double[] tab2 = ((AffineTransform2D) obj).getCoefficients();
 
         for (int i = 0; i<6; i++)
-            if (Math.abs(tab1[i]-tab2[i])>Shape2D.ACCURACY)
+        	if (Double.doubleToLongBits(tab1[i]) != 
+        		Double.doubleToLongBits(tab2[i]))
                 return false;
 
         return true;

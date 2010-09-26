@@ -32,6 +32,7 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
@@ -477,6 +478,36 @@ public class SimplePolygon2D implements Polygon2D {
         g.fill(this.getGeneralPath());
     }
 
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof SimplePolygon2D))
+            return false;
+        SimplePolygon2D polygon = (SimplePolygon2D) obj;
+
+        if (polygon.getVertexNumber()!=this.getVertexNumber())
+            return false;
+
+        if (!polygon.getBoundingBox().almostEquals(this.getBoundingBox(), eps))
+            return false;
+
+        for (Point2D point : polygon.getVertices()) {
+        	//TODO: better check of contains
+            if (!this.points.contains(point))
+                return false;
+        }
+
+        return true;
+    }
+
     // ===================================================================
     // methods inherited from Object interface
 
@@ -487,6 +518,8 @@ public class SimplePolygon2D implements Polygon2D {
      */
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
         if (!(obj instanceof SimplePolygon2D))
             return false;
 

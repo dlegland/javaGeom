@@ -557,6 +557,32 @@ implements Contour2D, Conic2D, Cloneable {
         return contains(point.getX(), point.getY());
     }
 
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Parabola2D))
+            return false;
+        Parabola2D parabola = (Parabola2D) obj;
+
+        if ((this.xv-parabola.xv)>eps) 
+            return false;
+        if ((this.yv-parabola.yv)>eps) 
+            return false;
+        if ((this.a-parabola.a)>eps)
+            return false;
+        if (!Angle2D.almostEquals(this.theta, parabola.theta, eps))
+            return false;
+
+        return true;
+    }
+
     // ====================================================================
     // Methods inherited from the object class
 

@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
@@ -289,9 +290,42 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         g.fill(this.getBoundary().getGeneralPath());
     }
     
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if(!(obj instanceof MultiPolygon2D))
+            return false;
+        MultiPolygon2D polygon = (MultiPolygon2D) obj;
+
+        // check if the two objects have same number of rings
+        if(polygon.rings.size()!=this.rings.size()) 
+            return false;
+        
+        // check each couple of ring
+        for(int i=0; i<rings.size(); i++)
+            if(!this.rings.get(i).almostEquals(polygon.rings.get(i), eps))
+                return false;
+        
+        return true;
+    }
+
+	// ===================================================================
+	// methods overriding the Object class
+
 	@Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof MultiPolygon2D))
+    	if (this==obj)
+    		return true;
+
+    	if(!(obj instanceof MultiPolygon2D))
             return false;
         
         // check if the two objects have same number of rings

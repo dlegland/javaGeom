@@ -66,6 +66,14 @@ CircularShape2D, CircleLine2D {
     }
     
     /**
+     * Creates a circle from a center, a radius, and a flag indicating
+     * orientation.
+     */
+    public static Circle2D create(Point2D center, double radius, boolean direct) {
+    	return new Circle2D(center, radius, direct);    	
+    }
+    
+    /**
      * Creates a circle containing 3 points.
      */
     public static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
@@ -602,6 +610,33 @@ CircularShape2D, CircleLine2D {
     }
 
     // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+        if (!(obj instanceof Ellipse2D))
+            return false;
+
+        if (obj instanceof Circle2D) {
+            Circle2D circle = (Circle2D) obj;
+
+            if (Math.abs(circle.xc-xc)>eps)
+                return false;
+            if (Math.abs(circle.yc-yc)>eps)
+                return false;
+            if (Math.abs(circle.r-r)>eps)
+                return false;
+            if (circle.direct!=direct)
+                return false;
+            return true;
+        }
+        return super.almostEquals(obj, eps);
+	}
+	
+
+	// ===================================================================
     // methods of Object interface
 
     @Override

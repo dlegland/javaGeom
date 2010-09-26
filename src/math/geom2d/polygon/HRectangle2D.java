@@ -32,6 +32,7 @@ import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
@@ -80,14 +81,6 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     /** Main constructor */
     public HRectangle2D(Point2D point, double w, double h) {
         super(point.getX(), point.getY(), w, h);
-    }
-
-    // ===================================================================
-    // query states
-
-    /** Always returns true, because a rectangle is always bounded. */
-    public boolean isBounded() {
-        return true;
     }
 
     // ===================================================================
@@ -156,7 +149,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 
 	
 	// ===================================================================
-    // methods inherited from Domain2D interface
+    // methods implementing the CirculinearShape2D interface
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
@@ -196,8 +189,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return new SimplePolygon2D(pts);
     }
 
+    // ===================================================================
+    // methods overriding the Shape2D interface
+
     public double getDistance(java.awt.geom.Point2D p) {
-        return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
+    	return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
     }
 
     public double getDistance(double x, double y) {
@@ -210,17 +206,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
      */
-    public double getSignedDistance(java.awt.geom.Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
-    }
-
-    /**
-     * Get the signed distance of the shape to the given point : this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
-     */
-    public double getSignedDistance(double x, double y) {
+    private double getSignedDistance(double x, double y) {
         double dist = getBoundary().getDistance(x, y);
         if (contains(x, y))
             return -dist;
@@ -244,6 +230,33 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
             return new HRectangle2D(xmin, xmax, xmax-xmin, ymax-ymin);
     }
 
+    /** Always returns true, because a rectangle is always bounded. */
+    public boolean isBounded() {
+        return true;
+    }
+
+    public Box2D getBoundingBox() {
+        return new Box2D(this.getMinX(), this.getMaxX(), this.getMinY(), this
+                .getMaxY());
+    }
+
+    /**
+     * Return the new Polygon created by an affine transform of this polygon.
+     */
+    public SimplePolygon2D transform(AffineTransform2D trans) {
+        int nPoints = 4;
+        Point2D[] array = new Point2D[nPoints];
+        Point2D[] res = new Point2D[nPoints];
+        Iterator<Point2D> iter = this.getVertices().iterator();
+        for (int i = 0; i<nPoints; i++) {
+            array[i] = iter.next();
+            res[i] = new Point2D();
+        }
+
+        trans.transform(array, res);
+        return new SimplePolygon2D(res);
+    }
+
     public void draw(Graphics2D g2) {
         g2.draw(this.getBoundary().getGeneralPath());
     }
@@ -252,13 +265,43 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         g2.fill(this.getBoundary().getGeneralPath());
     }
 
-    public Box2D getBoundingBox() {
-        return new Box2D(this.getMinX(), this.getMaxX(), this.getMinY(), this
-                .getMaxY());
-    }
 
-    // ===================================================================
-    // mutators
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class, and cast type
+        if (!(obj instanceof HRectangle2D))
+            return false;
+        HRectangle2D rect = (HRectangle2D) obj;
+
+        // check all 4 corners of the first rectangle
+        boolean ok;
+        for (Point2D point : this.getVertices()) {
+            ok = false;
+
+            // compare with all 4 corners of second rectangle
+            for (Point2D point2 : rect.getVertices())
+                if (point.almostEquals(point2, eps))
+                    ok = true;
+
+            // if the point does not belong to the corners of the other
+            // rectangle,
+            // then the two rectangles are different
+            if (!ok)
+                return false;
+        }
+
+        // test ok for 4 corners, then the two rectangles are the same.
+        return true;
+    }
 
     // ===================================================================
     // general methods
@@ -295,26 +338,6 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 
         // test ok for 4 corners, then the two rectangles are the same.
         return true;
-    }
-
-    // ===================================================================
-    // general methods
-
-    /**
-     * Return the new Polygon created by an affine transform of this polygon.
-     */
-    public SimplePolygon2D transform(AffineTransform2D trans) {
-        int nPoints = 4;
-        Point2D[] array = new Point2D[nPoints];
-        Point2D[] res = new Point2D[nPoints];
-        Iterator<Point2D> iter = this.getVertices().iterator();
-        for (int i = 0; i<nPoints; i++) {
-            array[i] = iter.next();
-            res[i] = new Point2D();
-        }
-
-        trans.transform(array, res);
-        return new SimplePolygon2D(res);
     }
 
 }

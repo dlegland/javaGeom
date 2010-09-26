@@ -501,9 +501,35 @@ public class StraightLine2D extends AbstractLine2D implements
         throw new UnboundedShape2DException(this);
     }
 
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof StraightLine2D))
+            return false;
+        StraightLine2D line = (StraightLine2D) obj;
+
+        if (Math.abs(x0-line.x0)>eps)
+            return false;
+        if (Math.abs(y0-line.y0)>eps)
+            return false;
+        if (Math.abs(dx-line.dx)>eps)
+            return false;
+        if (Math.abs(dy-line.dy)>eps)
+            return false;
+        
+        return true;
+    }
+
    
     // ===================================================================
-    // methods implementing the Object interface
+    // methods overriding the Object class
 
     @Override
     public String toString() {

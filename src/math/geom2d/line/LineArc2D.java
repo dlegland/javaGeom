@@ -29,11 +29,7 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShape2DException;
+import math.geom2d.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 
 /**
@@ -386,6 +382,71 @@ implements SmoothOrientedCurve2D, Cloneable {
         return new String("LineArc2D(" + x0 + "," + y0 + "," + 
             		dx + "," + dy + "," + t0 + "," + t1 +")");
    }
+
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof LineArc2D))
+            return false;
+        LineArc2D arc = (LineArc2D) obj;
+
+        // First check if two arcs lie on the same line
+        if (!this.isColinear(arc))
+            return false;
+
+        // Check limits for straight lines
+        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY) {
+            // Check limits
+            if (arc.t0!=Double.NEGATIVE_INFINITY)
+                return false;
+            if (arc.t1!=Double.POSITIVE_INFINITY)
+                return false;
+            return true;
+        }
+
+        // Check limits for rays
+        if (t0==Double.NEGATIVE_INFINITY) {
+            // Check limits
+            if (arc.t0==Double.NEGATIVE_INFINITY)
+                return this.getPoint2().getDistance(arc.getPoint2())<eps;
+            if (arc.t1==Double.POSITIVE_INFINITY)
+                return this.getPoint2().getDistance(arc.getPoint1())<eps;
+            return false;
+        }
+        if (t1==Double.POSITIVE_INFINITY) {
+            // Check limits
+            if (arc.t0==Double.NEGATIVE_INFINITY)
+                return this.getPoint1().getDistance(arc.getPoint2())<eps;
+            if (arc.t1==Double.POSITIVE_INFINITY)
+                return this.getPoint1().getDistance(arc.getPoint1())<eps;
+            return false;
+        }
+
+        // current line arc is neither a line nor an arc, check that arc is an
+        // edge
+        if (arc.t0==Double.NEGATIVE_INFINITY||arc.t0==Double.POSITIVE_INFINITY)
+            return false;
+        if (arc.t1==Double.NEGATIVE_INFINITY||arc.t1==Double.POSITIVE_INFINITY)
+            return false;
+
+        // We still have to test the case of edges
+        if (getPoint1().getDistance(arc.getPoint1())<eps)
+            return getPoint2().getDistance(arc.getPoint2())<eps;
+
+        if (getPoint1().getDistance(arc.getPoint2())>eps)
+            return false;
+        if (getPoint2().getDistance(arc.getPoint1())>eps)
+            return false;
+        return true;
+    }
 
     // ===================================================================
     // methods of Object interface

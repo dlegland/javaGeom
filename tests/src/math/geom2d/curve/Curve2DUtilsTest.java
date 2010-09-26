@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.line.LineSegment2D;
@@ -144,7 +145,7 @@ public class Curve2DUtilsTest extends TestCase {
 		set1.addCurve(sub2);
 		set1.addCurve(sub3);
 		set1.addCurve(sub4);
-		assertTrue(set1.equals(clip1));
+		assertTrue(set1.almostEquals(clip1, Shape2D.ACCURACY));
 	}
 	
 	public void testFindNextCurveIndex() {

@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundarySet2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
@@ -463,6 +464,44 @@ public class Rectangle2D implements Polygon2D {
 
     public void fill(Graphics2D g) {
         g.fill(this.getBoundary().getGeneralPath());
+    }
+
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class, and cast type
+        if (!(obj instanceof Rectangle2D))
+            return false;
+        Rectangle2D rect = (Rectangle2D) obj;
+
+        // check all 4 corners of the first rectangle
+        boolean ok;
+        for (Point2D point : this.getVertices()) {
+            ok = false;
+
+            // compare with all 4 corners of second rectangle
+            for (Point2D point2 : rect.getVertices())
+                if (point.almostEquals(point2, eps)) {
+                    ok = true;
+                    break;
+                }
+
+            // if the point does not belong to the corners of the other
+            // rectangle, then the two rect are different
+            if (!ok)
+                return false;
+        }
+
+        // test ok for 4 corners, then the two rectangles are the same.
+        return true;
     }
 
     // ===================================================================

@@ -28,6 +28,7 @@
 package math.geom2d.line;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShape2DException;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
@@ -86,15 +87,18 @@ public class InvertedRay2DTest extends TestCase {
 	public void testGetBoundingBox(){
 		double plus = Double.POSITIVE_INFINITY;
 		double minus = Double.NEGATIVE_INFINITY;
+		double eps = Shape2D.ACCURACY;
 		
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 1);
 		assertTrue(ray1.getBoundingBox().equals(new Box2D(minus, 2, minus, 2)));
 		
 		InvertedRay2D ray2 = new InvertedRay2D(2, 2, 1, 0);
-		assertTrue(ray2.getBoundingBox().equals(new Box2D(minus, 2, 2, 2)));
+		Box2D ray2Box = new Box2D(minus, 2, 2, 2);
+		assertTrue(ray2.getBoundingBox().almostEquals(ray2Box, eps));
 		
 		InvertedRay2D ray3 = new InvertedRay2D(2, 2, -1, -1);
-		assertTrue(ray3.getBoundingBox().equals(new Box2D(2, plus, 2, plus)));
+		Box2D ray3Box = new Box2D(2, plus, 2, plus);
+		assertTrue(ray3.getBoundingBox().almostEquals(ray3Box, eps));
 	}
 	
 	public void testGetReverseCurve(){

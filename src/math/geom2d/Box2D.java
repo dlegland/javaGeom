@@ -48,7 +48,7 @@ import math.geom2d.polygon.LinearRing2D;
  * <code>x</code> and <code>y</code>. It also provides methods for clipping
  * others shapes, depending on their type.
  */
-public class Box2D implements Cloneable {
+public class Box2D implements GeometricObject2D, Cloneable {
 
     // ===================================================================
     // Static factory
@@ -578,6 +578,30 @@ public class Box2D implements Cloneable {
     public Box2D getBoundingBox() {
         return new Box2D(xmin, xmax, ymin, ymax);
     }
+    /**
+     * Test if boxes are the same. Two boxes are the same if they have the
+     * same bounds, up to the specified threshold value.
+     */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class, and cast type
+        if (!(obj instanceof Box2D))
+            return false;
+        Box2D box = (Box2D) obj;
+
+        if (Math.abs(this.xmin - box.xmin) > eps)
+        	return false;
+        if (Math.abs(this.xmax - box.xmax) > eps)
+        	return false;
+        if (Math.abs(this.ymin - box.ymin) > eps)
+        	return false;
+        if (Math.abs(this.ymax - box.ymax) > eps)
+        	return false;
+        
+        return true;
+    }
 
     // ===================================================================
     // methods from Object interface
@@ -588,25 +612,28 @@ public class Box2D implements Cloneable {
     }
 
     /**
-     * Test if boxes are the same. two boxes are the same if the have the same
-     * bounds.
+     * Test if boxes are the same. two boxes are the same if the have exactly 
+     * the same bounds.
      */
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
         // check class, and cast type
         if (!(obj instanceof Box2D))
             return false;
         Box2D box = (Box2D) obj;
 
-        if (Math.abs(box.xmin-this.xmin)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(box.ymin-this.ymin)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(box.xmax-this.xmax)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(box.ymax-this.ymax)>Shape2D.ACCURACY)
-            return false;
-
+        if (Double.doubleToLongBits(this.xmin) != Double.doubleToLongBits(box.xmin))
+        	return false;
+        if (Double.doubleToLongBits(this.xmax) != Double.doubleToLongBits(box.xmax))
+        	return false;
+        if (Double.doubleToLongBits(this.ymin) != Double.doubleToLongBits(box.ymin))
+        	return false;
+        if (Double.doubleToLongBits(this.ymax) != Double.doubleToLongBits(box.ymax))
+        	return false;
+        
         return true;
     }
     

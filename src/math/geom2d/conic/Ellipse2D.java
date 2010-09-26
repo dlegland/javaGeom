@@ -30,12 +30,7 @@ import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -1106,11 +1101,44 @@ implements SmoothContour2D, Conic2D, Cloneable {
         g2.draw(trans.createTransformedShape(ellipse));
     }
 
+	
+    // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+		if (this==obj)
+			return true;
+		
+        if (!(obj instanceof Ellipse2D))
+            return false;
+
+        Ellipse2D ell = (Ellipse2D) obj;
+
+        if (!ell.getCenter().almostEquals(this.getCenter(), eps))
+            return false;
+        if (Math.abs(ell.r1-this.r1)>eps)
+            return false;
+        if (Math.abs(ell.r2-this.r2)>eps)
+            return false;
+        if (!Angle2D.almostEquals(ell.getAngle(), this.getAngle(), eps))
+            return false;
+        if (ell.isDirect()!=this.isDirect())
+            return false;
+        return true;
+	}
+	
+
     // ===================================================================
     // methods of Object superclass
 
     @Override
     public boolean equals(Object obj) {
+		if (this==obj)
+			return true;
+		
         if (!(obj instanceof Ellipse2D))
             return false;
 

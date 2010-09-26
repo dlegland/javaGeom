@@ -28,17 +28,12 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
-import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
@@ -644,6 +639,26 @@ implements LinearElement2D, Cloneable {
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         path.lineTo((float) p2.getX(), (float) p2.getY());
         return path;
+    }
+
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class
+        if(!(obj instanceof Line2D))
+            return false;
+        
+        // cast class, and compare members
+        Line2D edge = (Line2D) obj;
+        return p1.almostEquals(edge.p1, eps) && p2.almostEquals(edge.p2, eps);
     }
 
     // ===================================================================

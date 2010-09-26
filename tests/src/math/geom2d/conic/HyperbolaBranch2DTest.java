@@ -1,6 +1,7 @@
 package math.geom2d.conic;
 
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
@@ -64,7 +65,8 @@ public class HyperbolaBranch2DTest extends TestCase {
 		double y0 	= 50;
 		double a  	= 10;
 		double b 	= 10;
-
+		double eps = Shape2D.ACCURACY;
+		
 		Hyperbola2D hyper = new Hyperbola2D(x0, y0, a, b, 0, true);
 		HyperbolaBranch2D branch = new HyperbolaBranch2D(hyper, true);
 		
@@ -76,10 +78,10 @@ public class HyperbolaBranch2DTest extends TestCase {
 		Curve2D curve = clipped.getFirstCurve();
 		
 		Point2D p1 = new Point2D(x0+2*a, y0-b*Math.sqrt(3));
-		assertTrue(curve.getFirstPoint().equals(p1));
+		assertTrue(curve.getFirstPoint().almostEquals(p1, eps));
 		
 		Point2D p2 = new Point2D(x0+2*a, y0+b*Math.sqrt(3));
-		assertTrue(curve.getLastPoint().equals(p2));
+		assertTrue(curve.getLastPoint().almostEquals(p2, eps));
 		
 		
 		// shifted and scaled hyperbola
@@ -94,10 +96,10 @@ public class HyperbolaBranch2DTest extends TestCase {
 		curve = clipped.getFirstCurve();
 		
 		p1 = new Point2D(x0+2*a, y0-b*Math.sqrt(3));
-		assertTrue(curve.getFirstPoint().equals(p1));
+		assertTrue(curve.getFirstPoint().almostEquals(p1, eps));
 		
 		p2 = new Point2D(x0+2*a, y0+b*Math.sqrt(3));
-		assertTrue(curve.getLastPoint().equals(p2));
+		assertTrue(curve.getLastPoint().almostEquals(p2, eps));
 
 	}
 

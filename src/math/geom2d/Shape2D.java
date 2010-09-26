@@ -50,7 +50,7 @@ import math.geom2d.AffineTransform2D;
  * {@link #getBoundingBox() bounding box}, or its
  * {@link #getDistance(Point2D) distance} to a given point.</p>
  */
-public interface Shape2D {
+public interface Shape2D extends GeometricObject2D {
 
     // ===================================================================
     // constants

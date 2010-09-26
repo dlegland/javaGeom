@@ -340,11 +340,32 @@ implements SmoothContour2D, Cloneable {
         return point.getX()>0;
     }
 
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if(!(obj instanceof HyperbolaBranch2D))
+            return false;
+        HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
+        
+        if(!hyperbola.almostEquals(branch.hyperbola, eps)) return false;
+        return positive==branch.positive;
+    }
+
     // ===================================================================
     // methods overriding Object class
 
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
         if(!(obj instanceof HyperbolaBranch2D))
             return false;
         HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
