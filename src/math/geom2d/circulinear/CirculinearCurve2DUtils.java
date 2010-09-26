@@ -308,14 +308,12 @@ public class CirculinearCurve2DUtils {
 			CirculinearElement2D elem1 = elements.get(i);
 			for(int j=i; j<n; j++) {
 				CirculinearElement2D elem2 = elements.get(j);
-				// iterate on intersection between consecutive elements
+				// iterate on intersections between consecutive elements
 				for(Point2D inter : findIntersections(elem1, elem2)) {
 					// do not keep extremities
-					if(inter.equals(elem1.getLastPoint()) &&
-							inter.equals(elem2.getFirstPoint())) continue;
-					if(inter.equals(elem1.getFirstPoint()) &&
-							inter.equals(elem2.getLastPoint())) continue;
-					// add the intersection if we keep it
+					if(isCommonVertex(inter, elem1, elem2))
+						continue;
+
 					result.add(inter);
 				}
 			}
@@ -341,12 +339,8 @@ public class CirculinearCurve2DUtils {
 				// iterate on intersection between consecutive elements
 				for(Point2D inter : findIntersections(elem1, elem2)) {
 					// do not keep extremities
-					if(!Double.isInfinite(elem1.getT1())&&!Double.isInfinite(elem2.getT0()))
-						if(inter.equals(elem1.getLastPoint()) &&
-								inter.equals(elem2.getFirstPoint())) continue;
-					if(!Double.isInfinite(elem1.getT0())&&!Double.isInfinite(elem2.getT1()))
-						if(inter.equals(elem1.getFirstPoint()) &&
-							inter.equals(elem2.getLastPoint())) continue;
+					if(isCommonVertex(inter, elem1, elem2))
+						continue;
 					
 					// add the intersection if we keep it
 					list1.add(2*i + Curve2DUtils.toUnitSegment(
@@ -369,6 +363,32 @@ public class CirculinearCurve2DUtils {
 		
 		// return the array of positions
 		return result;
+	}
+	
+	/**
+	 * Checks if the point is a common extremity between the two curve
+	 * elements.
+	 */
+	private static boolean isCommonVertex(Point2D inter, 
+			CirculinearCurve2D elem1, CirculinearCurve2D elem2) {
+		
+		double eps = Shape2D.ACCURACY;
+		
+		// Test end of elem1 and start of elem2
+		if(!Double.isInfinite(elem1.getT1()) && 
+				!Double.isInfinite(elem2.getT0()))
+			if(inter.almostEquals(elem1.getLastPoint(), eps) &&
+					inter.almostEquals(elem2.getFirstPoint(), eps)) 
+				return true;
+		
+		// Test end of elem2 and start of elem1
+		if(!Double.isInfinite(elem1.getT0()) &&
+				!Double.isInfinite(elem2.getT1()))
+			if(inter.almostEquals(elem1.getFirstPoint(), eps) &&
+					inter.almostEquals(elem2.getLastPoint(), eps)) 
+				return true;
+		
+		return false;
 	}
 	
 	public static Collection<Point2D> findIntersections(
@@ -440,7 +460,7 @@ public class CirculinearCurve2DUtils {
 			CirculinearElement2D elem1 = elements1.get(i);
 			for(int j=0; j<n2; j++) {
 				CirculinearElement2D elem2 = elements2.get(j);
-				// iterate on intersection between consecutive elements
+				// iterate on intersections between consecutive elements
 				for(Point2D inter : findIntersections(elem1, elem2)) {
 					double pos1 = curve1.getPosition(inter);
 					double pos2 = curve2.getPosition(inter);

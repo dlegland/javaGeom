@@ -543,6 +543,43 @@ implements Conic2D, Cloneable {
         throw new UnboundedShape2DException(this);
     }
 
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Hyperbola2D))
+            return false;
+
+        // Cast to hyperbola
+        Hyperbola2D that = (Hyperbola2D) obj;
+
+        // check if each parameter is the same
+        if (Math.abs(that.xc-this.xc)>eps)
+            return false;
+        if (Math.abs(that.yc-this.yc)>eps)
+            return false;
+        if (Math.abs(that.a-this.a)>eps)
+            return false;
+        if (Math.abs(that.b-this.b)>eps)
+            return false;
+        if (Math.abs(that.theta-this.theta)>eps)
+            return false;
+        if (this.direct!=that.direct)
+            return false;
+
+        // same parameters, then same parabola
+        return true;
+    }
+
+	// ===================================================================
+	// methods implementing the Object interface
+
     /**
      * Tests whether this hyperbola equals another object.
      */

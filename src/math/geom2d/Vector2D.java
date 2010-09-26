@@ -33,11 +33,19 @@ import math.geom2d.AffineTransform2D;
  * A vector in the 2D plane. Provides methods to compute cross product and dot
  * product, addition and subtraction of vectors.
  */
-public class Vector2D implements Cloneable {
+public class Vector2D implements GeometricObject2D, Cloneable {
 
     // ===================================================================
     // static functions
 
+    /**
+     * Static factory for creating a new vector in cartesian coordinates.
+     * @since 0.8.1
+     */
+    public static Vector2D create(double x, double y) {
+        return new Vector2D(x, y);
+    }
+    
     /**
      * Static factory for creating a new vector from the coordinate of a point.
      * @since 0.8.1
@@ -45,15 +53,6 @@ public class Vector2D implements Cloneable {
     public static Vector2D create(Point2D point) {
         return new Vector2D(point.getX(), point.getY());
     }
-
-    /**
-     * Static factory for creating a new point in cartesian coordinates.
-     * @since 0.8.1
-     */
-    public static Vector2D create(double x, double y) {
-        return new Vector2D(x, y);
-    }
-    
     
     /**
      * Creates a new vector by specifying the distance to the origin, and the
@@ -81,7 +80,7 @@ public class Vector2D implements Cloneable {
      * <p>
      * <code> dx1*dy2 - dx2*dy1</code>
      * <p>
-     * cross product is zero for colinear vectors. It is positive if angle
+     * Cross product is zero for colinear vectors. It is positive if angle
      * between vector 1 and vector 2 is comprised between 0 and PI, and negative
      * otherwise.
      */
@@ -115,8 +114,10 @@ public class Vector2D implements Cloneable {
     // ===================================================================
     // class variables
 
-    protected double x = 1;
-    protected double y = 0;
+    /** the x-coordinate of the vector */
+    protected double x;
+    /** the y-coordinate of the vector */
+    protected double y;
 
     // ===================================================================
     // constructors
@@ -126,6 +127,15 @@ public class Vector2D implements Cloneable {
      */
     public Vector2D() {
         this(1, 0);
+    }
+
+    /** 
+     * Constructs a new vector with the given coordinates. 
+     * Consider creating a new Vector using static factory.
+     */
+    public Vector2D(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -140,15 +150,6 @@ public class Vector2D implements Cloneable {
      */
     public Vector2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
         this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
-    }
-
-    /** 
-     * Constructs a new vector with the given coordinates. 
-     * Consider creating a new Vector using static factory.
-     */
-    public Vector2D(double x, double y) {
-        this.x = x;
-        this.y = y;
     }
 
     // ===================================================================
@@ -234,7 +235,7 @@ public class Vector2D implements Cloneable {
 
     /**
      * Get the dot product with point <code>p</code>. Dot product id defined
-     * by :
+     * by:
      * <p>
      * <code> x1*y2 + x2*y1</code>
      * <p>
@@ -295,23 +296,58 @@ public class Vector2D implements Cloneable {
      */
     public Vector2D transform(AffineTransform2D trans) {
         double[] tab = trans.getCoefficients();
-        return new Vector2D(x*tab[0]+y*tab[1], x*tab[3]+y*tab[4]);
+        return new Vector2D(x*tab[0] + y*tab[1], x*tab[3] + y*tab[4]);
     }
 
     /**
-     * Test whether this object is the same as another vector.
+     * Test whether this object is the same as another vector, with respect
+     * to a given threshold.
      */
-    @Override
-    public boolean equals(Object obj) {
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
         if (!(obj instanceof Vector2D))
             return false;
         Vector2D v = (Vector2D) obj;
-        return (Math.abs(v.getX()-x)<Shape2D.ACCURACY&&Math.abs(v.getY()-y)<Shape2D.ACCURACY);
+        
+        if (Math.abs(this.x - v.x) > eps)
+        	return false;
+        if (Math.abs(this.y - v.y) > eps)
+        	return false;
+        
+        return true;
     }
     
+    /**
+     * Test whether this object is exactly the same as another vector.
+     * @see almostEquals
+     */
+    @Override
+    public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Vector2D))
+            return false;
+        Vector2D v = (Vector2D) obj;
+
+        // Code that should be used:
+        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(v.x))
+        	return false;
+        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(v.y))
+        	return false;
+        
+        return true;
+    }
+    
+    /**
+     * Display the coordinates of the vector. Typical output is:
+     * <code>x=3 y=4</code>.
+     */
     @Override
     public String toString() {
-        return new String("Vector2D(" + x + ", "+y+")");
+        return new String("x=" + x + " y=" + y);
     }
     
     @Override

@@ -42,6 +42,14 @@ import math.geom2d.line.StraightLine2D;
  */
 public class Ellipse2DTest extends TestCase {
 
+	private void assertVectorAlmostEquals(Vector2D v1, Vector2D v2, double eps) {
+		assertTrue(v1.almostEquals(v2, eps));
+	}
+	
+	private void assertPointAlmostEquals(Point2D p1, Point2D p2, double eps) {
+		assertTrue(p1.almostEquals(p2, eps));
+	}
+	
 	/**
 	 * Constructor for Ellipse2DTest.
 	 * @param arg0
@@ -107,29 +115,34 @@ public class Ellipse2DTest extends TestCase {
 	
 	public void testGetProjectedPoint(){
 		Ellipse2D el1 = new Ellipse2D(0, 0, 10, 10);
-		assertEquals(el1.getProjectedPoint(new Point2D(20, 0)), new Point2D(10, 0));
-		assertEquals(el1.getProjectedPoint(new Point2D(0, 30)), new Point2D(0, 10));
-		assertEquals(el1.getProjectedPoint(new Point2D(30, 30)), 
-				Point2D.createPolar(10, Math.PI/4));
+		double eps = Shape2D.ACCURACY;
 		
+		assertPointAlmostEquals(new Point2D(10, 0), 
+				el1.getProjectedPoint(new Point2D(20, 0)), eps);
+		assertPointAlmostEquals(new Point2D(0, 10), 
+				el1.getProjectedPoint(new Point2D(0, 30)), eps);
+		assertPointAlmostEquals(Point2D.createPolar(10, Math.PI/4), 
+				el1.getProjectedPoint(new Point2D(30, 30)), eps);
 	}
 	
 	public void testGetTangent() {
+		double eps = Shape2D.ACCURACY;
+		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertTrue(el1.getTangent(0).equals(new Vector2D(0, 10)));
-		assertTrue(el1.getTangent(Math.PI/2).equals(new Vector2D(-20, 0)));
+		assertVectorAlmostEquals(new Vector2D(0, 10), el1.getTangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(-20, 0), el1.getTangent(Math.PI/2), eps);
 
 		Ellipse2D el2 = new Ellipse2D(0, 0, 20, 10, Math.PI/2);
-		assertTrue(el2.getTangent(0).equals(new Vector2D(-10, 0)));
-		assertTrue(el2.getTangent(Math.PI/2).equals(new Vector2D(0, -20)));
+		assertVectorAlmostEquals(new Vector2D(-10, 0), el2.getTangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(0, -20), el2.getTangent(Math.PI/2), eps);
 
 		Ellipse2D el3 = new Ellipse2D(0, 0, 20, 10, 0, false);
-		assertTrue(el3.getTangent(0).equals(new Vector2D(0, -10)));
-		assertTrue(el3.getTangent(Math.PI/2).equals(new Vector2D(-20, 0)));
+		assertVectorAlmostEquals(new Vector2D(0, -10), el3.getTangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(-20, 0), el3.getTangent(Math.PI/2), eps);
 
 		Ellipse2D el4 = new Ellipse2D(0, 0, 20, 10, Math.PI/2, false);
-		assertTrue(el4.getTangent(0).equals(new Vector2D(10, 0)));
-		assertTrue(el4.getTangent(Math.PI/2).equals(new Vector2D(0, -20)));
+		assertVectorAlmostEquals(new Vector2D(10, 0), el4.getTangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(0, -20), el4.getTangent(Math.PI/2), eps);
 	}
 	
 	public void testGetCurvature() {
@@ -296,25 +309,27 @@ public class Ellipse2DTest extends TestCase {
 	 * then computing position of the point, gives the initial position.
 	 */
 	public void testGetPoint(){
+		double eps = Shape2D.ACCURACY;
+		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
 		Point2D point = el1.getPoint(Math.PI/2);
 		Point2D expected = new Point2D(0, 10);
-		assertTrue(expected.equals(point));
+		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
 		point = el2.getPoint(Math.PI/2);
 		expected = new Point2D(10, 15);
-		assertTrue(expected.equals(point));
+		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
 		point = el1i.getPoint(Math.PI/2);
 		expected = new Point2D(0, -10);
-		assertTrue(expected.equals(point));
+		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
 		point = el2i.getPoint(Math.PI/2);
 		expected = new Point2D(10, -5);
-		assertTrue(expected.equals(point));
+		assertPointAlmostEquals(expected, point, eps);
 	}
 	
 
@@ -330,8 +345,10 @@ public class Ellipse2DTest extends TestCase {
 		Point2D point2 = new Point2D(10, Math.sqrt(3)*5);
 		Collection<Point2D> points = el1.getIntersections(line);
 		Iterator<Point2D> iter = points.iterator();
-		assertEquals(point1, iter.next());
-		assertEquals(point2, iter.next());		
+		
+		double eps = Shape2D.ACCURACY;
+		assertPointAlmostEquals(point1, iter.next(), eps);
+		assertPointAlmostEquals(point2, iter.next(), eps);		
 	}
 	
 	public void testGetSubCurve(){

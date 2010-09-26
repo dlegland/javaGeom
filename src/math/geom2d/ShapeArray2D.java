@@ -230,6 +230,34 @@ implements ShapeSet2D<T>, Cloneable {
 	}
 
     // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class, and cast type
+        if (!(obj instanceof ShapeSet2D))
+            return false;
+        ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
+
+        // check the number of curves in each set
+        if (this.shapes.size()!=shapeSet.shapes.size())
+            return false;
+
+        // return false if at least one couple of curves does not match
+        for(int i=0; i<shapes.size(); i++)
+            if(!shapes.get(i).almostEquals(shapeSet.shapes.get(i), eps))
+                return false;
+        
+        // otherwise return true
+        return true;
+	}
+	
+    // ===================================================================
     // methods implementing the Iterable interface
 
 	/* (non-Javadoc)
@@ -248,6 +276,9 @@ implements ShapeSet2D<T>, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
         // check class, and cast type
         if (!(obj instanceof ShapeSet2D))
             return false;

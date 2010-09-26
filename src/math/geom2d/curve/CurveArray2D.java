@@ -29,10 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
+import math.geom2d.*;
 import math.geom2d.line.LinearShape2D;
 
 /**
@@ -385,30 +382,40 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     public Collection<Point2D> getSingularPoints() {
     	// create array for result
     	ArrayList<Point2D> points = new ArrayList<Point2D>();
+    	double eps = Shape2D.ACCURACY;
     	
     	// iterate on curves composing the array
         for (Curve2D curve : curves){
         	// Add singular points inside curve
             for (Point2D point : curve.getSingularPoints())
-                if (!points.contains(point))
-                	points.add(point);
+            	addPointWithGuardDistance(points, point, eps);
             
-            // add first point
-            if(!Curve2DUtils.isLeftInfinite(curve)){
-            	Point2D point = curve.getFirstPoint();
-            	if (!points.contains(point))
-                	points.add(point);
-            }
+            // add first extremity
+            if(!Curve2DUtils.isLeftInfinite(curve))
+            	addPointWithGuardDistance(points, curve.getFirstPoint(), eps);
             
-            // add last point
-            if(!Curve2DUtils.isRightInfinite(curve)){
-            	Point2D point = curve.getLastPoint();
-            	if (!points.contains(point))
-                	points.add(point);
-            }
+            // add last extremity
+            if(!Curve2DUtils.isRightInfinite(curve))
+            	addPointWithGuardDistance(points, curve.getLastPoint(), eps);
         }
         // return the set of singular points
         return points;
+    }
+    
+    /**
+     * Add a point to the set only if the distance between the candidate and
+     * the closest point in the set is greater than the given threshold.
+     * @param set
+     * @param point
+     * @param eps
+     */
+    private void addPointWithGuardDistance(Collection<Point2D> pointSet, 
+    		Point2D point, double eps) {
+    	for (Point2D p0 : pointSet) {
+    		if (p0.almostEquals(point, eps))
+    			return;
+    	}
+    	pointSet.add(point);
     }
 
     public boolean isSingular(double pos) {
@@ -696,6 +703,35 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     }
 
     // ===================================================================
+    // methods implementing GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        // check class, and cast type
+        if (!(obj instanceof CurveArray2D))
+            return false;
+        CurveArray2D<?> shapeSet = (CurveArray2D<?>) obj;
+
+        // check the number of curves in each set
+        if (this.curves.size()!=shapeSet.curves.size())
+            return false;
+
+        // return false if at least one couple of curves does not match
+        for(int i=0; i<curves.size(); i++)
+            if(!curves.get(i).almostEquals(shapeSet.curves.get(i), eps))
+                return false;
+        
+        // otherwise return true
+        return true;
+	}
+	
+
+	// ===================================================================
     // methods inherited from interface Object
 
     /**

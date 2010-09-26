@@ -160,15 +160,17 @@ public class AffineTransform2DTest extends TestCase {
     }
     
 	public void testInvert(){
+		double eps = Shape2D.ACCURACY;
+		
 		AffineTransform2D trans1  = new AffineTransform2D(1, 0, 5, 0, 1, 10);	
 		AffineTransform2D trans1i = trans1.invert();
 		AffineTransform2D trans2  = new AffineTransform2D(1, 0, -5, 0, 1, -10);
 
-		assertTrue(trans2.equals(trans1i));
-		assertTrue(trans1.equals(trans1i.invert()));
+		assertTrue(trans2.almostEquals(trans1i, eps));
+		assertTrue(trans1.almostEquals(trans1i.invert(), eps));
 		
 		AffineTransform2D trans = new AffineTransform2D(1, 2, 3, 4, 5, 6);
-		assertTrue(trans.equals(trans.invert().invert()));
+		assertTrue(trans.almostEquals(trans.invert().invert(), eps));
 	}
 	
 	public void testConcatenateAffineTransform2D(){
@@ -185,7 +187,7 @@ public class AffineTransform2DTest extends TestCase {
 		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
 		AffineTransform2D trans = tra.concatenate(rot).concatenate(tra.invert());
 		
-		assertTrue(ref.equals(trans));		
+		assertTrue(ref.almostEquals(trans, Shape2D.ACCURACY));		
 	}
 	
 	public void testChainAffineTransform2D(){
@@ -202,7 +204,7 @@ public class AffineTransform2DTest extends TestCase {
 		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
 		AffineTransform2D trans = tra.invert().chain(rot).chain(tra);
 		
-		assertTrue(ref.equals(trans));		
+		assertTrue(ref.almostEquals(trans, Shape2D.ACCURACY));		
 	}
 	
 	public void testEquals(){

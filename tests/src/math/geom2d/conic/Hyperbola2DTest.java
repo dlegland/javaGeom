@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 
@@ -72,7 +73,9 @@ public class Hyperbola2DTest extends TestCase {
 
 		Hyperbola2D hyperbola, hyperbola2;
 		Conic2D conic;
-			
+		
+		double eps = Shape2D.ACCURACY;
+		
 		Point2D origin = new Point2D(0, 0);
 		Point2D center = new Point2D(xc, yc);
 		
@@ -89,7 +92,7 @@ public class Hyperbola2DTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
-		assertTrue(hyperbola2.equals(hyperbola));
+		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 		
 		// Hyperbola reduced but not located at origin
 		hyperbola = new Hyperbola2D(center, a1, b1, 0);
@@ -104,8 +107,8 @@ public class Hyperbola2DTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
-		assertTrue(hyperbola2.getCenter().equals(center));
-		assertTrue(hyperbola2.equals(hyperbola));
+		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
+		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 
 		
 		// hyperbola not reduced, not at origin, but oriented east-west
@@ -114,8 +117,8 @@ public class Hyperbola2DTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
-		assertTrue(hyperbola2.getCenter().equals(center));
-		assertTrue(hyperbola2.equals(hyperbola));
+		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
+		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 		
 		// hyperbola centered, scaled, rotated
 		hyperbola = new Hyperbola2D(center, a2, b2, theta);
@@ -123,8 +126,8 @@ public class Hyperbola2DTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
-		assertTrue(hyperbola2.getCenter().equals(center));
-		assertTrue(hyperbola2.equals(hyperbola));
+		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
+		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 	}
 
 	public void testClipBox(){

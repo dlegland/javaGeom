@@ -31,6 +31,7 @@ import java.util.Collection;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
@@ -42,6 +43,7 @@ import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.spline.CubicBezierCurve2D;
@@ -370,7 +372,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 	public void testSplitContinuousCurveParallelBiRay () {
 		// first defines some constants
 		Point2D origin = new Point2D(10, 10);
-		Vector2D v1 = new Vector2D(3, 4);
+		Vector2D v1 = new Vector2D(-3, -4);
 		Vector2D v2 = new Vector2D(4, 3);
 		
 		// create elements of the curve
@@ -384,20 +386,22 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		curve.addCurve(ray2);
 		assertEquals(2, curve.getSmoothPieces().size());
 
-		// computes the parallel
+		// computes the positive parallel
 		CirculinearContinuousCurve2D parallel = curve.getParallel(10);
 		Collection<CirculinearContinuousCurve2D> splittedCurves =
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel);
 		
 		assertFalse(splittedCurves.isEmpty());
-		assertEquals(2, splittedCurves.size());
+		assertEquals(1, splittedCurves.size());
 		
-		// computes the other parallel
+		// computes the negative parallel
 		CirculinearContinuousCurve2D parallel2 = curve.getParallel(-10);
 		Collection<Point2D> points = parallel2.getSingularPoints();
 		assertEquals(2, points.size());
-		assertTrue(points.contains(new Point2D(2, 16)));
-		assertTrue(points.contains(new Point2D(4, 18)));
+		
+		PointArray2D pointSet = PointArray2D.create(points);
+		assertTrue(pointSet.getDistance(new Point2D(18, 4))<Shape2D.ACCURACY);
+		assertTrue(pointSet.getDistance(new Point2D(4, 18))<Shape2D.ACCURACY);
 	}
 	
 	public void testGetBufferBiRay () {

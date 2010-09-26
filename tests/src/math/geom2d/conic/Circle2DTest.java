@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearCurve2D;
 import math.geom2d.curve.CurveSet2D;
@@ -46,6 +47,10 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public class Circle2DTest extends TestCase {
 
+	private void assertVectorEquals(Vector2D v1, Vector2D v2, double eps) {
+		assertTrue(v1.almostEquals(v2, eps));
+	}
+	
 	/**
 	 * Constructor for Circle2DTest.
 	 * @param arg0
@@ -139,18 +144,21 @@ public class Circle2DTest extends TestCase {
 	}
 	
 	public void testGetTangent() {
+		Point2D center = Point2D.create(10, 20);
 	    double r = 10;
-	    Circle2D circle = new Circle2D(10, 20, r);
-        assertEquals(circle.getTangent(0), new Vector2D(0, r));
-        assertEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0));
-        assertEquals(circle.getTangent(Math.PI), new Vector2D(0, -r));
-        assertEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0));
+	    double eps = Shape2D.ACCURACY;
 	    
-        circle = new Circle2D(10, 20, r, false);
-        assertEquals(circle.getTangent(0), new Vector2D(0, -r));
-        assertEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0));
-        assertEquals(circle.getTangent(Math.PI), new Vector2D(0, r));
-        assertEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0));
+	    Circle2D circle = Circle2D.create(center, r);
+	    assertVectorEquals(circle.getTangent(0), new Vector2D(0, r), eps);
+	    assertVectorEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0), eps);
+	    assertVectorEquals(circle.getTangent(Math.PI), new Vector2D(0, -r), eps);
+	    assertVectorEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0), eps);
+	    
+        circle = Circle2D.create(center, r, false);
+        assertVectorEquals(circle.getTangent(0), new Vector2D(0, -r), eps);
+        assertVectorEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0), eps);
+        assertVectorEquals(circle.getTangent(Math.PI), new Vector2D(0, r), eps);
+        assertVectorEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0), eps);
 	}
 	
 	public void testGetPositionPoint2D() {
@@ -179,16 +187,17 @@ public class Circle2DTest extends TestCase {
 		double x0 = 20;
 		double y0 = 30;
 		double r = 10;
+		double eps = Shape2D.ACCURACY;
 		
 		// Standard circle
 		circle = new Circle2D(x0, y0, 10);
 		point = circle.getPoint(Math.PI/2);
-		assertTrue(new Point2D(x0, y0+r).equals(point));
+		assertTrue(new Point2D(x0, y0+r).almostEquals(point, eps));
 		
 		// inverted circle
 		circle = new Circle2D(x0, y0, 10, false);
 		point = circle.getPoint(3*Math.PI/2);
-		assertTrue(new Point2D(x0, y0+r).equals(point));
+		assertTrue(new Point2D(x0, y0+r).almostEquals(point, eps));
 	}
 	
 	/*
@@ -246,6 +255,7 @@ public class Circle2DTest extends TestCase {
 	public void testGetIntersectionsStraightLine2D() {
 		Circle2D circle = new Circle2D(2, 3, 4);
 		Collection<Point2D> points;
+		double eps = Shape2D.ACCURACY;
 		
 		// horizontal line through touching circle on one point
 		StraightLine2D line0 = new StraightLine2D(6, 0, 0, 1);
@@ -258,9 +268,9 @@ public class Circle2DTest extends TestCase {
 		assertTrue(points.size() == 2);
 		Iterator<Point2D> iter = points.iterator();
 		Point2D point1 = iter.next();
-		assertTrue(point1.equals(new Point2D(2, -1)));
+		assertTrue(point1.almostEquals(new Point2D(2, -1), eps));
 		Point2D point2 = iter.next();
-		assertTrue(point2.equals(new Point2D(2, 7)));
+		assertTrue(point2.almostEquals(new Point2D(2, 7), eps));
 
 		// not touching
 		StraightLine2D line2 = new StraightLine2D(6.2, 0, 0, 1);
@@ -274,14 +284,16 @@ public class Circle2DTest extends TestCase {
 	public void testGetIntersectionsLineSegment2D() {
 		// Test with a centered circle and 4 edges in each main direction
 		Circle2D circle = new Circle2D(0, 0, 10);
+		double eps = Shape2D.ACCURACY;
+		
 		Collection<Point2D> points1 = circle.getIntersections(new LineSegment2D(0, 0, 20, 0));
 		Collection<Point2D> points2 = circle.getIntersections(new LineSegment2D(0, 0, 0, 20));
 		Collection<Point2D> points3 = circle.getIntersections(new LineSegment2D(0, 0, -20, 0));
 		Collection<Point2D> points4 = circle.getIntersections(new LineSegment2D(0, 0, 0, -20));
-		assertTrue(points1.iterator().next().equals(new Point2D(10, 0)));
-		assertTrue(points2.iterator().next().equals(new Point2D(0, 10)));
-		assertTrue(points3.iterator().next().equals(new Point2D(-10, 0)));
-		assertTrue(points4.iterator().next().equals(new Point2D(0, -10)));
+		assertTrue(points1.iterator().next().almostEquals(new Point2D(10, 0), eps));
+		assertTrue(points2.iterator().next().almostEquals(new Point2D(0, 10), eps));
+		assertTrue(points3.iterator().next().almostEquals(new Point2D(-10, 0), eps));
+		assertTrue(points4.iterator().next().almostEquals(new Point2D(0, -10), eps));
 		
 		circle = new Circle2D(50, 100, 50);
 		LineSegment2D line = new LineSegment2D(new Point2D(100, 0), new Point2D(100, 100));
@@ -292,6 +304,7 @@ public class Circle2DTest extends TestCase {
 		Circle2D circle1, circle2;
 		Collection<Point2D> inters;
 		Iterator<Point2D> iter;
+		double eps = Shape2D.ACCURACY;
 
 		// 2 circles one inside another
 		circle1 = new Circle2D(-1, 0, 5);
@@ -311,8 +324,8 @@ public class Circle2DTest extends TestCase {
 		inters = Circle2D.getIntersections(circle1, circle2);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
-		assertTrue(iter.next().equals(new Point2D(0, 3)));
-		assertTrue(iter.next().equals(new Point2D(0, -3)));
+		assertTrue(iter.next().almostEquals(new Point2D(0, 3), eps));
+		assertTrue(iter.next().almostEquals(new Point2D(0, -3), eps));
 		
 		// 2 circles with different radius
 		circle1 = new Circle2D(0, 0, 3);
@@ -320,8 +333,8 @@ public class Circle2DTest extends TestCase {
 		inters = Circle2D.getIntersections(circle1, circle2);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
-		assertTrue(iter.next().equals(new Point2D(0, 3)));
-		assertTrue(iter.next().equals(new Point2D(0, -3)));
+		assertTrue(iter.next().almostEquals(new Point2D(0, 3), eps));
+		assertTrue(iter.next().almostEquals(new Point2D(0, -3), eps));
 	}
 	
 	

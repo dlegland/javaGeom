@@ -31,14 +31,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
+import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
@@ -821,11 +817,36 @@ implements CirculinearContinuousCurve2D, Cloneable {
     	g2.draw(this.getGeneralPath());
     }
 
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Polyline2D))
+            return false;
+        Polyline2D polyline = (Polyline2D) obj;
+
+        if (points.size()!=polyline.points.size())
+            return false;
+        for (int i = 0; i<points.size(); i++)
+            if (!(points.get(i)).almostEquals(polyline.points.get(i), eps))
+                return false;
+        return true;
+    }
+
     // ===================================================================
     // Methods inherited from the Object Class
 
     @Override
     public boolean equals(Object object) {
+    	if (this==object)
+    		return true;
         if (!(object instanceof Polyline2D))
             return false;
         Polyline2D polyline = (Polyline2D) object;

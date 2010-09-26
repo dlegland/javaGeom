@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 
 /**
@@ -44,7 +45,21 @@ import math.geom2d.Point2D;
  */
 public class GenericDomain2D implements Domain2D {
 
-    protected Boundary2D boundary = null;
+    // ===================================================================
+    // Static factories
+	
+	public static GenericDomain2D create(Boundary2D boundary) {
+		return new GenericDomain2D(boundary);
+	}
+	
+	
+    // ===================================================================
+    // Class variables
+
+	protected Boundary2D boundary = null;
+
+    // ===================================================================
+    // Constructors
 
     public GenericDomain2D(Boundary2D boundary) {
         this.boundary = boundary;
@@ -138,5 +153,49 @@ public class GenericDomain2D implements Domain2D {
 
     public void fill(Graphics2D g2) {
         boundary.fill(g2);
+    }
+    
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if(!(obj instanceof GenericDomain2D))
+            return false;
+        GenericDomain2D domain = (GenericDomain2D) obj;
+        
+        if(!boundary.almostEquals(domain.boundary, eps)) return false;
+        return true;
+    }
+
+
+	// ===================================================================
+	// methods overriding the Object class
+
+    @Override
+    public String toString() {
+    	return "GenericDomain2D(boundary=" + boundary + ")";
+    }
+    
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    @Override
+    public boolean equals(Object obj) {
+    	if (this==obj)
+    		return true;
+    	
+        if(!(obj instanceof GenericDomain2D))
+            return false;
+        GenericDomain2D domain = (GenericDomain2D) obj;
+        
+        if(!boundary.equals(domain.boundary)) return false;
+        return true;
     }
 }

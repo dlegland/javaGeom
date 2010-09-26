@@ -27,12 +27,7 @@ package math.geom2d.line;
 
 import java.awt.geom.GeneralPath;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShape2DException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 
 // Imports
 
@@ -216,6 +211,32 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         return new Ray2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4]);
     }
 
+
+	// ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof Ray2D))
+            return false;
+        Ray2D ray = (Ray2D) obj;
+
+        if (Math.abs(x0-ray.x0)>eps)
+            return false;
+        if (Math.abs(y0-ray.y0)>eps)
+            return false;
+        if (Math.abs(dx-ray.dx)>eps)
+            return false;
+        if (Math.abs(dy-ray.dy)>eps)
+            return false;
+        
+        return true;
+    }
 
     // ===================================================================
     // methods implementing the Object interface
