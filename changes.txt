@@ -1,12 +1,40 @@
 Changes in javaGeom library
 
 
-javaGeom-0.9.0 (2009.??.??, rev. ???)
+javaGeom-0.9.0 (2010.11.06, rev. 264)
 
+main changes are removal of obsolete classes and methods, and a slight
+re-organisation of class hierarchy (mainly shape sets)
+
+New features
 - removed deprecated classes and methods
+- added ShapeSet2D, ShapeArray2D, DomainSet2D and DomainArray2D
+- added the GPCJ library, that can handle boolean operation on polygons
+	(union, intersection, difference, exclusive difference)
+	
+Bug fixes
+- fixed bugs in buffer computation
+- fixed bug in drawing polylines
+- correctly manages orientation of porjections on ellipse
+- fixed bugs in Polyline2D, LinearRing2D with last vertex equal to the first
+	one
+
+Regressions
+- removed many deprecated classes and methods, to cleanup the general design
+- CurveSet2D is now an interface, use CurveArray2D for implementation
+- renamed ContinuousBoundary2D as Contour2D
+- renamed ContinuousCirculinearCurve2D as CirculinearContinuousCurve2D
+- renamed BoundarySet2D as ContourArray2D
+- renamed exceptions classes
+
+Code
+- introduced LinearElement2D
+- introfuced the GeometricObject2D, superclass of shapes and transforms
+- removed 'final' from static methods
+- put declaration of static methods in the beginning of classes
 
 
-javaGeom-0.?.? (2009.11.15, rev. 242)
+javaGeom-0.8.1 (2009.11.15, rev. 242)
 
 New features
 - better support for buffer of infinite curves
