@@ -282,4 +282,14 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
             result.addCurve(curve.transform(trans));
         return result;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // check class
+        if (!(obj instanceof CurveSet2D))
+            return false;
+        // call superclass method
+        return super.equals(obj);
+    }
+
 }

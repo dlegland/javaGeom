@@ -39,7 +39,7 @@ public class PolyOrientedCurve2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(c1, r, Math.PI/3, extent);
 		CircleArc2D arc2 = new CircleArc2D(c2, r, 4*Math.PI/3, extent);
 		
-		PolyOrientedCurve2D<CircleArc2D> curve = new PolyOrientedCurve2D<CircleArc2D>(
+		PolyOrientedCurve2D<CircleArc2D> curve = PolyOrientedCurve2D.create(
 				new CircleArc2D[]{arc1, arc2});
 		
 		double eps = 1e-14;
@@ -59,6 +59,33 @@ public class PolyOrientedCurve2DTest extends TestCase {
 		assertEquals(0, reverse.getWindingAngle(new Point2D(0, 0)), eps);
 		assertEquals(0, reverse.getWindingAngle(new Point2D(150, 200)), eps);
 		assertEquals(0, reverse.getWindingAngle(new Point2D(250, 200)), eps);
+	}
+	
+	public void testEquals() {
+		double x1 = 100;
+		double x2 = 200;
+		double r = 100;
+		double y0 = 100;
+		
+		Point2D c1 = new Point2D(x1, y0);
+		Point2D c2 = new Point2D(x2, y0);
+		
+		double extent = 4*Math.PI/3;
+		CircleArc2D arc1 = new CircleArc2D(c1, r, Math.PI/3, extent);
+		CircleArc2D arc2 = new CircleArc2D(c2, r, 4*Math.PI/3, extent);
+		
+		PolyOrientedCurve2D<CircleArc2D> curve = PolyOrientedCurve2D.create(
+				new CircleArc2D[]{arc1, arc2});
+		
+		assertEquals(curve, curve);
+		
+		arc1 = new CircleArc2D(c1, r, Math.PI/3, extent);
+		arc2 = new CircleArc2D(c2, r, 4*Math.PI/3, extent);
+		
+		PolyOrientedCurve2D<CircleArc2D> curve2 = PolyOrientedCurve2D.create(
+				new CircleArc2D[]{arc1, arc2});
+		
+		assertEquals(curve, curve2);
 	}
 
 }

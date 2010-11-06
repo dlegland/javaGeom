@@ -370,7 +370,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         otherwise.
      */
     public boolean contains(java.awt.geom.Point2D p) {
-        return contains(p);
+        return path.contains(p);
     }
 
     /**
@@ -385,7 +385,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         specified rectangluar area; <code>false</code> otherwise.
      */
     public boolean contains(double x, double y, double w, double h) {
-        return contains(x, y, w, h);
+        return path.contains(x, y, w, h);
     }
 
     /**
@@ -414,7 +414,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         other; <code>false</code> otherwise.
      */
     public boolean intersects(double x, double y, double w, double h) {
-        return intersects(x, y, w, h);
+        return path.intersects(x, y, w, h);
     }
 
     /**
@@ -427,7 +427,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         <code>false</code> otherwise.
      */
     public boolean intersects(java.awt.geom.Rectangle2D r) {
-        return intersects(r);
+        return path.intersects(r);
     }
 
     /**
@@ -468,6 +468,16 @@ public final class GeneralPath2D implements Shape, Cloneable {
         return path.getPathIterator(at, flatness);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        // check class, and cast type
+        if (!(obj instanceof GeneralPath2D))
+            return false;
+        GeneralPath2D that = (GeneralPath2D) obj;
+
+        return this.path.equals(that.path);
+    }
+    
     /**
      * Creates a new object of the same class as this object.
      * 

@@ -209,4 +209,14 @@ implements Boundary2D {
             result.addCurve((Contour2D) curve.transform(trans));
         return result;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // check class
+        if (!(obj instanceof ContourArray2D))
+            return false;
+        // call superclass method
+        return super.equals(obj);
+    }
+
 }
