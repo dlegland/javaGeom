@@ -65,7 +65,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
      * array of curves.
      * @since 0.8.1
      */
-    public static <T extends CirculinearContour2D> 
+    public static <T extends CirculinearContinuousCurve2D> 
     BoundaryPolyCirculinearCurve2D<T> create(T[] curves) {
     	return new BoundaryPolyCirculinearCurve2D<T>(curves);
     }
@@ -75,7 +75,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
      * array of curves.
      * @since 0.8.1
      */
-    public static <T extends CirculinearContour2D> 
+    public static <T extends CirculinearContinuousCurve2D> 
     BoundaryPolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
     	return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
     }
