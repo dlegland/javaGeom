@@ -126,6 +126,7 @@ public class LinearRing2DTest extends TestCase {
 		Boundary2D boundary = buffer.getBoundary();
 		
 		// should have 1 outer and 2 inner boundaries
+		// Fails for the moment
 		assertEquals(3, boundary.getBoundaryCurves().size());
 	}
 	
@@ -156,7 +157,6 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(200, 200),
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
-		//TODO: add stability for polyline with multiple vertices
 		CirculinearDomain2D buffer = 
 			CirculinearCurve2DUtils.computeBuffer(curve, 20);
 		

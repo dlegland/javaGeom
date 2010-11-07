@@ -225,6 +225,7 @@ public class Conic2DUtilsTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
 		parabola = (Parabola2D) conic;
+		// Fails for the moment
 		assertTrue(parabola.getVertex().almostEquals(vertex, eps));
 		assertEquals(parabola.getAngle(), theta, eps);
 		assertEquals(parabola.getParameter(), 1, eps);			
@@ -243,6 +244,7 @@ public class Conic2DUtilsTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
 		parabola = (Parabola2D) conic;
+		// Fails for the moment
 		assertTrue(parabola.getVertex().almostEquals(vertex, eps));
 		assertEquals(parabola.getAngle(), theta, eps);
 		assertEquals(parabola.getParameter(), 1, eps);			

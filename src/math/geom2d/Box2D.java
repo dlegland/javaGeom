@@ -67,6 +67,21 @@ public class Box2D implements GeometricObject2D, Cloneable {
     	return new Box2D(p1, p2);
     }
 
+    /**
+     * The box corresponding to the unit square, with bounds [0 1] in each
+     * direction
+     * @since 0.9.1
+     */
+    public final static Box2D UNIT_SQUARE_BOX = Box2D.create(0, 1, 0, 1);
+    
+    /**
+     * The box corresponding to the the whole plane, with infinite bounds
+     * in each direction.
+     * @since 0.9.1
+     */
+    public final static Box2D INFINITE_BOX = Box2D.create(
+    		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
+    		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     
     // ===================================================================
     // class variables
