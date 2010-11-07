@@ -218,7 +218,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		
 		// put lines in a set
 		CirculinearCurveSet2D<StraightLine2D> set = 
-			CirculinearCurveSet2D.create(new StraightLine2D[]{
+			CirculinearCurveArray2D.create(new StraightLine2D[]{
 					line1, line2, line3, line4});
 		
 		Collection<StraightLine2D> curves = set.getCurves();
@@ -459,7 +459,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		
 		// put lines in a set
 		CirculinearCurveSet2D<StraightLine2D> set = 
-			CirculinearCurveSet2D.create(new StraightLine2D[]{line1, line2});
+			CirculinearCurveArray2D.create(new StraightLine2D[]{line1, line2});
 		
 		// compute set buffer and buffer boundary
 		CirculinearDomain2D buffer = 

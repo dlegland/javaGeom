@@ -94,7 +94,7 @@ public class CirculinearCurve2DUtils {
 			}
 			
 			// create the resulting CirculinearContinuousCurve2D
-			return new CirculinearCurveSet2D<CirculinearContinuousCurve2D>(curves);
+			return CirculinearCurveArray2D.create(curves);
 		}
 		
 		return null;
@@ -171,8 +171,8 @@ public class CirculinearCurve2DUtils {
 		} 
 		
 		// Create array for storing result
-		CirculinearCurveSet2D<CirculinearContinuousCurve2D> parallels =
-			new CirculinearCurveSet2D<CirculinearContinuousCurve2D>();
+		CirculinearCurveArray2D<CirculinearContinuousCurve2D> parallels =
+			new CirculinearCurveArray2D<CirculinearContinuousCurve2D>();
 		
 		// compute parallel of each continuous part, and add it to the result
 		for(CirculinearContinuousCurve2D continuous : 
@@ -207,7 +207,7 @@ public class CirculinearCurve2DUtils {
 			parallelContours.add(contour.getParallel(dist));
 		
 		// Create an agglomeration of the curves
-		return CirculinearBoundarySet2D.create(parallelContours);
+		return CirculinearContourArray2D.create(parallelContours);
 	}
 
 	public static CirculinearContour2D createParallelContour(
@@ -1148,7 +1148,7 @@ public class CirculinearCurve2DUtils {
 		// All the rings are created, we can now create a new domain with the
 		// set of rings
 		return new GenericCirculinearDomain2D(
-				new CirculinearBoundarySet2D<CirculinearContour2D>(
+				new CirculinearContourArray2D<CirculinearContour2D>(
 						contours2));
 	}
 	
@@ -1185,7 +1185,7 @@ public class CirculinearCurve2DUtils {
 		}
 
 		return new GenericCirculinearDomain2D(
-				CirculinearBoundarySet2D.create(contours2));
+				CirculinearContourArray2D.create(contours2));
 	}
 
 	/**

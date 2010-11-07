@@ -70,9 +70,14 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      */
     public static Point2D getIntersection(AbstractLine2D l1,
             AbstractLine2D l2) {
-    	//TODO: no check of zero denominator
-        double t = ((l1.y0-l2.y0)*l2.dx-(l1.x0-l2.x0)*l2.dy)
-                /(l1.dx*l2.dy-l1.dy*l2.dx);
+    	// Compute denominator, and tests its validity
+    	double denom = l1.dx*l2.dy - l1.dy*l2.dx;
+    	if (Math.abs(denom) < Shape2D.ACCURACY)
+    		throw new IllegalArgumentException(
+    				"Can not find the intersection of two parallel lines");
+    	
+    	// Compute position of intersection point
+        double t = ((l1.y0-l2.y0)*l2.dx - (l1.x0-l2.x0)*l2.dy) / denom;
         return new Point2D(l1.x0+t*l1.dx, l1.y0+t*l1.dy);
     }
 

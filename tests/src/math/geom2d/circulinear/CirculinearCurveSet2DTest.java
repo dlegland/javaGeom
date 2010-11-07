@@ -31,8 +31,7 @@ public class CirculinearCurveSet2DTest extends TestCase {
 		LineSegment2D line1 = new LineSegment2D(50, 100, 150, 100);
 		LineSegment2D line2 = new LineSegment2D(100, 50, 100, 150);
 		CirculinearCurveSet2D<LineSegment2D> set = 
-			new CirculinearCurveSet2D<LineSegment2D>(
-					new LineSegment2D[]{line1, line2});
+			CirculinearCurveArray2D.create(new LineSegment2D[]{line1, line2});
 		assertEquals(set.getLength(), 200, Shape2D.ACCURACY);
 	}
 
@@ -45,8 +44,8 @@ public class CirculinearCurveSet2DTest extends TestCase {
 		LineSegment2D line2 = new LineSegment2D(100, 50, 100, 150);
 		
 		// gather line segments into a curve set
-		CirculinearCurveSet2D<LineSegment2D> set = 
-			new CirculinearCurveSet2D<LineSegment2D>(
+		CirculinearCurveArray2D<LineSegment2D> set = 
+			new CirculinearCurveArray2D<LineSegment2D>(
 					new LineSegment2D[]{line1, line2});
 		
 		// only one continuous boundary

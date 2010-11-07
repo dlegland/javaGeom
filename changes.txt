@@ -1,6 +1,14 @@
 Changes in javaGeom library
 
 
+javaGeom-0.9.1 (2010.??.??, rev. ???)
+
+Regressions
+- removed ContinuousCirculinearCurve2D
+- renamed CirculinearBoundarySet2D to CirculinearContourArray2D
+- splitted CirculinearCurveSet2D into interface and array implementation
+
+
 javaGeom-0.9.0 (2010.11.06, rev. 264)
 
 main changes are removal of obsolete classes and methods, and a slight

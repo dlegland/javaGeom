@@ -10,7 +10,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
@@ -128,8 +128,8 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     // ===================================================================
     // methods inherited from interface Domain2D
 
-    public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
-        return new CirculinearBoundarySet2D<LinearRing2D>(rings);
+    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
+        return new CirculinearContourArray2D<LinearRing2D>(rings);
     }
 
     public Polygon2D complement() {

@@ -35,7 +35,7 @@ public class CheckGetBufferTwoLineSegments extends JPanel{
 		LineSegment2D line1 = LineSegment2D.create(p11, p12);
 		LineSegment2D line2 = LineSegment2D.create(p21, p22);
 		
-		curve = CirculinearCurveSet2D.create(
+		curve = CirculinearCurveArray2D.create(
 				new LineSegment2D[]{line1, line2});
 		domain = curve.getBuffer(30);
 	}
