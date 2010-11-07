@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
 
@@ -20,11 +21,10 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-@SuppressWarnings("deprecation")
 public interface CirculinearContinuousCurve2D 
-extends ContinuousCirculinearCurve2D {
-	//TODO: remove inheritance to deprecated interface
-    // ===================================================================
+extends CirculinearCurve2D, ContinuousOrientedCurve2D {
+	
+	// ===================================================================
     // redefines declaration of CirculinearCurve2D interfaces
 
 	public CirculinearContinuousCurve2D getParallel(double d);

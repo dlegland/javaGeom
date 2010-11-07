@@ -194,8 +194,8 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 
         // Stores the result in appropriate structure
         int n = set.getCurveNumber();
-        CirculinearCurveSet2D<CirculinearContinuousCurve2D> result = 
-        	new CirculinearCurveSet2D<CirculinearContinuousCurve2D>(n);
+        CirculinearCurveArray2D<CirculinearContinuousCurve2D> result = 
+        	new CirculinearCurveArray2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
         for (Curve2D curve : set.getCurves()) {

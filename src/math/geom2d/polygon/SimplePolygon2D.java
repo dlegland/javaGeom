@@ -34,7 +34,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearDomain2DUtils;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
@@ -302,12 +302,12 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Returns a set of one LinearRing2D, which encloses the polygon.
      */
-    public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
+    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
         Point2D[] array = new Point2D[this.points.size()];
         for (int i = 0; i<this.points.size(); i++)
             array[i] = this.points.get(i);
 
-        return new CirculinearBoundarySet2D<LinearRing2D>(
+        return new CirculinearContourArray2D<LinearRing2D>(
         		new LinearRing2D(array));
     }
 

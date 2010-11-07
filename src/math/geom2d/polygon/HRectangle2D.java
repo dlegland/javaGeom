@@ -34,7 +34,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
@@ -170,13 +170,13 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // ===================================================================
     // methods inherited from interface Domain2D
 
-    public CirculinearBoundarySet2D<LinearRing2D> getBoundary() {
+    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
         pts[1] = new Point2D(width+x, y);
         pts[2] = new Point2D(width+x, y+height);
         pts[3] = new Point2D(x, y+height);
-        return new CirculinearBoundarySet2D<LinearRing2D>(
+        return new CirculinearContourArray2D<LinearRing2D>(
         		new LinearRing2D(pts));
     }
 

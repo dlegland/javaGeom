@@ -44,7 +44,7 @@ public class CirculinearDomain2DUtils {
 		// All the rings are created, we can now create a new domain with the
 		// set of rings
 		return new GenericCirculinearDomain2D(
-				new CirculinearBoundarySet2D<CirculinearContour2D>(rings));
+				new CirculinearContourArray2D<CirculinearContour2D>(rings));
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public class CirculinearDomain2DUtils {
 		CirculinearContinuousCurve2D parallel1 = curve.getParallel(d);
 		
 		// split each parallel into continuous curves
-		CirculinearCurveSet2D<CirculinearContinuousCurve2D> curves =
-			new CirculinearCurveSet2D<CirculinearContinuousCurve2D>();
+		CirculinearCurveArray2D<CirculinearContinuousCurve2D> curves =
+			new CirculinearCurveArray2D<CirculinearContinuousCurve2D>();
 		
 		// select only curve parts which do not cross original curve
 		for(CirculinearContinuousCurve2D split : 

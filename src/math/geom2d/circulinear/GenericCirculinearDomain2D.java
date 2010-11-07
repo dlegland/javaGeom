@@ -54,7 +54,7 @@ implements CirculinearDomain2D {
 		CirculinearBoundary2D newBoundary = 
 			((CirculinearBoundary2D) this.boundary).getParallel(dist);
 		return new GenericCirculinearDomain2D(
-				CirculinearBoundarySet2D.create(
+				CirculinearContourArray2D.create(
 						CirculinearCurve2DUtils.splitIntersectingContours(
 								newBoundary.getContinuousCurves())));
 	}

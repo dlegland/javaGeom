@@ -31,7 +31,7 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearBoundarySet2D;
+import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
 
@@ -75,7 +75,7 @@ public interface Polygon2D extends CirculinearDomain2D {
     // ===================================================================
     // methods inherited from the Domain2D interface
 
-    public CirculinearBoundarySet2D<? extends LinearRing2D> 
+    public CirculinearContourArray2D<? extends LinearRing2D> 
     getBoundary();
 
     

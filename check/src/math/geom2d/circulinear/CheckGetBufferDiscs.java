@@ -28,7 +28,7 @@ public class CheckGetBufferDiscs extends JPanel{
 		Circle2D circle1 = new Circle2D(new Point2D(100, 100), 50);
 		Circle2D circle2 = new Circle2D(new Point2D(200, 100), 40);
 		domain = new GenericCirculinearDomain2D(
-				new CirculinearBoundarySet2D<Circle2D>(
+				new CirculinearContourArray2D<Circle2D>(
 						new Circle2D[]{circle1, circle2}));
 		
 		buffer = CirculinearDomain2DUtils.computeBuffer(domain, 30);

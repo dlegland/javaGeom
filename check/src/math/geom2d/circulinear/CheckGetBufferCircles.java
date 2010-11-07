@@ -27,7 +27,7 @@ public class CheckGetBufferCircles extends JPanel{
 	public CheckGetBufferCircles(){
 		Circle2D circle1 = new Circle2D(new Point2D(100, 100), 50);
 		Circle2D circle2 = new Circle2D(new Point2D(200, 100), 40);
-		curve = new CirculinearCurveSet2D<Circle2D>(
+		curve = CirculinearCurveArray2D.create(
 				new Circle2D[]{circle1, circle2});
 		
 		domain = curve.getBuffer(30);

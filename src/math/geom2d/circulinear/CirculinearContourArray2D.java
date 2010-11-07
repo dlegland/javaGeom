@@ -1,5 +1,5 @@
 /**
- * File: 	CirculinearBoundarySet2D.java
+ * File: 	CirculinearContourArray2D.java
  * Project: javaGeom
  * 
  * Distributed under the LGPL License.
@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -22,34 +21,33 @@ import math.geom2d.transform.CircleInversion2D;
 /**
  * A circulinear boundary which is composed of several CirculinearContour2D.
  * @author dlegland
- * @deprecated use CirculinearContourArray2D instead
+ *
  */
-@Deprecated
-public class CirculinearBoundarySet2D<T extends CirculinearContour2D> 
-extends CirculinearContourArray2D<T> {
+public class CirculinearContourArray2D<T extends CirculinearContour2D> 
+extends ContourArray2D<T> implements CirculinearBoundary2D {
 
     // ===================================================================
     // static constructors
 
     /**
-     * Static factory for creating a new CirculinearBoundarySet2D from a
+     * Static factory for creating a new CirculinearContourArray2D from a
      * collection of curves.
      * @since 0.8.1
      */
 	public static <T extends CirculinearContour2D> 
-	CirculinearBoundarySet2D<CirculinearContour2D>
+	CirculinearContourArray2D<CirculinearContour2D>
 	create(Collection<T> curves) {
-		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
+		return new CirculinearContourArray2D<CirculinearContour2D>(curves);
 	}
 
     /**
-     * Static factory for creating a new CirculinearBoundarySet2D from an 
+     * Static factory for creating a new CirculinearContourArray2D from an 
      * array of curves.
      * @since 0.8.1
      */
     public static <T extends CirculinearContour2D> 
-    CirculinearBoundarySet2D<T> create(T[] curves) {
-    	return new CirculinearBoundarySet2D<T>(curves);
+    CirculinearContourArray2D<T> create(T[] curves) {
+    	return new CirculinearContourArray2D<T>(curves);
     }
 
     
@@ -60,7 +58,7 @@ extends CirculinearContourArray2D<T> {
 	/**
      * Empty constructor. Initializes an empty array of curves.
      */
-    public CirculinearBoundarySet2D() {
+    public CirculinearContourArray2D() {
     	this.curves = new ArrayList<T>();
     }
 
@@ -68,7 +66,7 @@ extends CirculinearContourArray2D<T> {
      * Empty constructor. Initializes an empty array of curves, 
      * with a given size for allocating memory.
      */
-    public CirculinearBoundarySet2D(int n) {
+    public CirculinearContourArray2D(int n) {
     	this.curves = new ArrayList<T>(n);
     }
 
@@ -77,7 +75,7 @@ extends CirculinearContourArray2D<T> {
      * 
      * @param curves the array of curves in the set
      */
-    public CirculinearBoundarySet2D(T[] curves) {
+    public CirculinearContourArray2D(T[] curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
             this.addCurve(element);
@@ -89,7 +87,7 @@ extends CirculinearContourArray2D<T> {
      * 
      * @param curves the collection of curves to add to the set
      */
-    public CirculinearBoundarySet2D(T curve) {
+    public CirculinearContourArray2D(T curve) {
     	this.curves = new ArrayList<T>();
         this.curves.add(curve);
     }
@@ -100,7 +98,7 @@ extends CirculinearContourArray2D<T> {
      * 
      * @param curves the collection of curves to add to the set
      */
-    public CirculinearBoundarySet2D(Collection<? extends T> curves) {
+    public CirculinearContourArray2D(Collection<? extends T> curves) {
     	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
     }
@@ -150,11 +148,11 @@ extends CirculinearContourArray2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
-	public CirculinearBoundarySet2D<? extends CirculinearContour2D> 
+	public CirculinearContourArray2D<? extends CirculinearContour2D> 
 	transform(CircleInversion2D inv) {
     	// Allocate array for result
-		CirculinearBoundarySet2D<CirculinearContour2D> result = 
-			new CirculinearBoundarySet2D<CirculinearContour2D>(
+		CirculinearContourArray2D<CirculinearContour2D> result = 
+			new CirculinearContourArray2D<CirculinearContour2D>(
 					curves.size());
         
         // add each transformed curve
@@ -197,7 +195,7 @@ extends CirculinearContourArray2D<T> {
 	}
     
 	@Override
-	public CirculinearBoundarySet2D<? extends CirculinearContour2D>
+	public CirculinearContourArray2D<? extends CirculinearContour2D>
 	getReverseCurve(){
     	int n = curves.size();
         // create array of reversed curves
@@ -208,7 +206,7 @@ extends CirculinearContourArray2D<T> {
             curves2[i] = curves.get(n-1-i).getReverseCurve();
         
         // create the reversed final curve
-        return new CirculinearBoundarySet2D<CirculinearContour2D>(curves2);
+        return new CirculinearContourArray2D<CirculinearContour2D>(curves2);
 	}
 	
     @Override
