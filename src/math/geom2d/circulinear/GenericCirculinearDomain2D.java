@@ -22,6 +22,13 @@ public class GenericCirculinearDomain2D extends GenericDomain2D
 implements CirculinearDomain2D {
 
     // ===================================================================
+    // Static factories
+	
+	public static GenericCirculinearDomain2D create(CirculinearBoundary2D boundary) {
+		return new GenericCirculinearDomain2D(boundary);
+	}
+	
+    // ===================================================================
     // constructors
 
 	public GenericCirculinearDomain2D(CirculinearBoundary2D boundary) {
@@ -33,14 +40,23 @@ implements CirculinearDomain2D {
 		return (CirculinearBoundary2D) boundary;
 	}
 
+	@Override
+    public CirculinearDomain2D complement() {
+        return new GenericCirculinearDomain2D(
+        		(CirculinearBoundary2D) boundary.getReverseCurve());
+    }
+
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
+		
+		CirculinearBoundary2D newBoundary = 
+			((CirculinearBoundary2D) this.boundary).getParallel(dist);
 		return new GenericCirculinearDomain2D(
 				CirculinearBoundarySet2D.create(
 						CirculinearCurve2DUtils.splitIntersectingContours(
-								this.getBoundary().getContinuousCurves())));
+								newBoundary.getContinuousCurves())));
 	}
 
 	/* (non-Javadoc)
@@ -56,4 +72,13 @@ implements CirculinearDomain2D {
 		// create the result domain
 		return new GenericCirculinearDomain2D(boundary2);
 	}
+	
+	// ===================================================================
+	// methods overriding the Object class
+
+    @Override
+    public String toString() {
+    	return "GenericCirculinearDomain2D(boundary=" + boundary + ")";
+    }
+
 }

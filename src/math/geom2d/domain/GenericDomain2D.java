@@ -121,8 +121,7 @@ public class GenericDomain2D implements Domain2D {
     public Box2D getBoundingBox() {
         if (this.isBounded())
             return boundary.getBoundingBox();
-        return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        return Box2D.INFINITE_BOX;
     }
 
     /**

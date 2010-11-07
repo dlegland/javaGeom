@@ -186,11 +186,51 @@ public class CirculinearCurve2DUtils {
 		// return the set of parallel curves
 		return parallels;
 	}
-    
+
+	public static CirculinearBoundary2D createParallelBoundary(
+			CirculinearBoundary2D boundary, double dist) {
+		
+		// in the case of a single contour, return the parallel of the contour
+		if (boundary instanceof CirculinearContour2D)
+			return createParallelContour((CirculinearContour2D) boundary, dist);
+		
+		// get the set of individual contours
+		Collection<? extends CirculinearContour2D> contours = 
+			boundary.getContinuousCurves();
+		
+		// allocate the array of parallel contours
+		Collection<CirculinearContour2D> parallelContours = 
+			new ArrayList<CirculinearContour2D>(contours.size());
+		
+		// compute the parallel of each contour
+		for(CirculinearContour2D contour : contours)
+			parallelContours.add(contour.getParallel(dist));
+		
+		// Create an agglomeration of the curves
+		return CirculinearBoundarySet2D.create(parallelContours);
+	}
+
+	public static CirculinearContour2D createParallelContour(
+			CirculinearContour2D contour, double dist) {
+		
+		// The circle is already a circulinear contour
+		if (contour instanceof Circle2D) {
+			return ((Circle2D) contour).getParallel(dist);
+		} 
+
+		// extract collection of parallel curves, that connect each other
+		Collection<CirculinearContinuousCurve2D> parallelCurves = 
+			getParallelElements(contour, dist);
+		
+		// Create a new boundary with the set of parallel curves
+		return BoundaryPolyCirculinearCurve2D.create(parallelCurves, 
+				contour.isClosed());
+	}
+
 	
 	public static CirculinearContinuousCurve2D createContinuousParallel(
 			CirculinearContinuousCurve2D curve, double dist) {
-		
+		//TODO: rewrite by using getParallelElements()
 		// For circulinear elements, getParallel() is already implemented
 		if (curve instanceof CirculinearElement2D) {
 			return ((CirculinearElement2D)curve).getParallel(dist);
@@ -244,6 +284,62 @@ public class CirculinearCurve2DUtils {
 		return parallel;
 	}
 	
+	private static Collection<CirculinearContinuousCurve2D> getParallelElements(
+			CirculinearContinuousCurve2D curve, double dist) {
+		
+		// extract collection of circulinear elements
+		Collection<? extends CirculinearElement2D> elements = 
+			curve.getSmoothPieces();
+		
+		Iterator<? extends CirculinearElement2D> iterator = 
+			elements.iterator();
+
+		// previous curve
+		CirculinearElement2D previous = null;
+		CirculinearElement2D current = null;
+
+		// create array for storing result
+		ArrayList<CirculinearContinuousCurve2D> parallelCurves = 
+			new ArrayList<CirculinearContinuousCurve2D> ();
+
+		// check if curve is empty
+		if(!iterator.hasNext())
+			return parallelCurves;
+
+		// add parallel to the first curve
+		current = iterator.next();
+		CirculinearElement2D parallel = current.getParallel(dist);
+		parallelCurves.add(parallel);
+
+		// iterate on circu-linear element couples
+		CirculinearElement2D arc;
+		while(iterator.hasNext()){
+			// update the couple of circulinear elements
+			previous = current;
+			current = iterator.next();
+
+			// add circle arc between the two curve elements
+			arc = computeCircularJunction(previous, current, dist);
+			if (arc.getLength()>0)
+				parallelCurves.add(arc);
+			
+			// add parallel to set of parallels
+			parallelCurves.add(current.getParallel(dist));
+		}
+
+		// Add eventually a circle arc to close the parallel curve
+		if(curve.isClosed()) {
+			previous = current;
+			current = elements.iterator().next();
+			
+			arc = computeCircularJunction(previous, current, dist);
+			if (arc.getLength()>0)
+				parallelCurves.add(arc);
+		}
+
+		return parallelCurves;
+	}
+
 	private static void addCircularJunction(
 			PolyCirculinearCurve2D<CirculinearContinuousCurve2D> parallel,
 			CirculinearElement2D previous, 
@@ -281,6 +377,44 @@ public class CirculinearCurve2DUtils {
 		// otherwise add a circle arc to the polycurve
 		parallel.addCurve(new CircleArc2D(
 				center, Math.abs(dist), startAngle, endAngle, dist>0));
+	}
+	
+	private static CirculinearElement2D computeCircularJunction(
+			CirculinearElement2D previous, 
+			CirculinearElement2D current, double dist) {		
+		// center of circle arc
+		Point2D center = current.getFirstPoint();
+
+		// compute tangents to each portion
+		Vector2D vp = previous.getTangent(previous.getT1());
+		Vector2D vc = current.getTangent(current.getT0());
+
+		// compute angles
+		double startAngle, endAngle;
+		if(dist>0) {
+			startAngle = vp.getAngle() - PI/2;
+			endAngle = vc.getAngle() - PI/2;
+		} else {
+			startAngle = vp.getAngle() + PI/2;
+			endAngle = vc.getAngle() + PI/2;
+		}
+		
+		// format angles to stay between 0 and 2*PI
+		startAngle = Angle2D.formatAngle(startAngle);
+		endAngle = Angle2D.formatAngle(endAngle);
+		
+		// compute angle difference, in absolute value
+		double diffAngle = endAngle-startAngle;
+		diffAngle = Math.min(diffAngle, 2*PI-diffAngle);
+		
+		// If the angle difference is too small, we consider the two curves
+		// touch at their extremities
+		if(Math.abs(diffAngle)<1e-10)
+			return CircleArc2D.create(center, Math.abs(dist), startAngle, 0);
+		
+		// otherwise add a circle arc to the polycurve
+		return CircleArc2D.create(
+				center, Math.abs(dist), startAngle, endAngle, dist>0);
 	}
 	
 	/**

@@ -26,7 +26,7 @@ import math.geom2d.transform.CircleInversion2D;
 public class CirculinearBoundarySet2D<T extends CirculinearContour2D> 
 extends ContourArray2D<T> implements	CirculinearBoundary2D {
 
-	//TODO: rename as CirculinearBoundaryArray2D
+	//TODO: rename as CirculinearContourArray2D
 	
     // ===================================================================
     // static constructors
@@ -143,8 +143,8 @@ extends ContourArray2D<T> implements	CirculinearBoundary2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
-	public CirculinearCurve2D getParallel(double d) {
-		return CirculinearCurve2DUtils.createParallel(this, d);
+	public CirculinearBoundary2D getParallel(double d) {
+		return CirculinearCurve2DUtils.createParallelBoundary(this, d);
 	}
 	
 	/* (non-Javadoc)

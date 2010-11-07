@@ -120,6 +120,7 @@ public class Polyline2DTest extends TestCase {
 		
 		Domain2D buffer = polyline.getBuffer(dist);
 		Boundary2D boundary = buffer.getBoundary();
+		// Fails for the moment
 		assertEquals(1, boundary.getBoundaryCurves().size());
 	}
 	
