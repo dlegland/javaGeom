@@ -34,9 +34,9 @@ import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
-import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
@@ -157,8 +157,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(200, 200),
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
-		CirculinearDomain2D buffer = 
-			CirculinearCurve2DUtils.computeBuffer(curve, 20);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		CirculinearDomain2D buffer = bc.computeBuffer(curve, 20);
 		
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());

@@ -31,9 +31,9 @@ import java.util.Collection;
 import java.util.Locale;
 
 import math.geom2d.*;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
@@ -192,7 +192,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
     public CircleArc2D getParallel (double dist) {

@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -144,9 +145,10 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	 */
     @Override
 	public CirculinearRing2D getParallel(double dist) {
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+
     	return GenericCirculinearRing2D.create(
-    			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
-    			.getSmoothPieces());
+    			bc.createContinuousParallel(this, dist).getSmoothPieces());
     }
     
 	

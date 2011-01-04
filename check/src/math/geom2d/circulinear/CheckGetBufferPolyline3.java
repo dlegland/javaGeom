@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -37,7 +38,8 @@ public class CheckGetBufferPolyline3 extends JPanel{
 				new Point2D(300, 300)});
 		
 		// compute the buffer
-		domain = CirculinearCurve2DUtils.computeBuffer(curve, 80);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		domain = bc.computeBuffer(curve, 80);
 	}
 	
 	public void paintComponent(Graphics g){

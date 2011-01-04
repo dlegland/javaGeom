@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.*;
@@ -407,7 +407,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)

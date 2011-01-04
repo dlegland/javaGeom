@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.polygon.LinearRing2D;
@@ -44,7 +45,8 @@ public class CheckBufferSelfIntersectingContour extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		Domain2D buffer = CirculinearCurve2DUtils.computeBuffer(curve, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		Domain2D buffer = bc.computeBuffer(curve, dist);
 		g2.setColor(Color.CYAN);
 		buffer.fill(g2);
 
