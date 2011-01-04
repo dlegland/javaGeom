@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.polygon.LinearRing2D;
 
 /**
@@ -33,7 +34,8 @@ public class CheckGetBufferLinearRing extends JPanel{
 				new Point2D(300, 200), 
 				new Point2D(200, 200)});
 		
-		domain = CirculinearCurve2DUtils.computeBuffer(curve, 30);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		domain = bc.computeBuffer(curve, 30);
 	}
 	
 	public void paintComponent(Graphics g){

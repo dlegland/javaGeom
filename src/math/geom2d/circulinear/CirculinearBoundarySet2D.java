@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
@@ -137,14 +138,16 @@ extends CirculinearContourArray2D<T> {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
 	public CirculinearBoundary2D getParallel(double d) {
-		return CirculinearCurve2DUtils.createParallelBoundary(this, d);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.createParallelBoundary(this, d);
 	}
 	
 	/* (non-Javadoc)

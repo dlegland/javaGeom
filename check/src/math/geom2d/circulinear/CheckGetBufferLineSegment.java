@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
 
 /**
@@ -30,7 +31,8 @@ public class CheckGetBufferLineSegment extends JPanel{
 		curve = new LineSegment2D(
 				new Point2D(100, 100), new Point2D(200, 100));
 		
-		domain = CirculinearCurve2DUtils.computeBuffer(curve, 30);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		domain = bc.computeBuffer(curve, 30);
 	}
 	
 	public void paintComponent(Graphics g){

@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -103,9 +104,10 @@ implements CirculinearRing2D {
 
 	@Override
     public CirculinearRing2D getParallel(double dist) {
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+
     	return new GenericCirculinearRing2D(
-    			CirculinearCurve2DUtils.createContinuousParallel(this, dist)
-    			.getSmoothPieces());
+    			bc.createContinuousParallel(this, dist).getSmoothPieces());
     }
     
 	public Collection<? extends GenericCirculinearRing2D> getContinuousCurves() {

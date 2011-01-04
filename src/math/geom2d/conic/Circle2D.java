@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.*;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveArray2D;
@@ -296,7 +297,8 @@ CircularShape2D, CircleLine2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	/**

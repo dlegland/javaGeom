@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -121,14 +122,16 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
 	public CirculinearCurve2D getParallel(double d) {
-		return CirculinearCurve2DUtils.createParallel(this, d);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.createParallel(this, d);
 	}
 	
 	/* (non-Javadoc)

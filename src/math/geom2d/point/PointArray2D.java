@@ -32,10 +32,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import math.geom2d.*;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearShape2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -188,7 +192,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	public PointArray2D transform(CircleInversion2D inv) {

@@ -33,9 +33,9 @@ import java.util.Iterator;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -285,14 +285,16 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return CirculinearCurve2DUtils.computeBuffer(this, dist);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
 	public CirculinearContinuousCurve2D getParallel(double d) {
-		return CirculinearCurve2DUtils.createContinuousParallel(this, d);
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.createContinuousParallel(this, d);
 	}
 
 	/* (non-Javadoc)
