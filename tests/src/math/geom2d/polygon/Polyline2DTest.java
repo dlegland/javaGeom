@@ -33,6 +33,9 @@ import java.util.*;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
+import math.geom2d.circulinear.CirculinearContour2D;
+import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 
@@ -111,6 +114,21 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(1, boundary.getBoundaryCurves().size());
 	}
 	
+	public void testGetParallels_SmallAnglePolyline() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(200, 100),
+				new Point2D(100, 100),
+				new Point2D(180, 140) });
+		double dist = 30;
+		
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		Collection<? extends CirculinearContour2D> contours =
+			bc.computeBufferSimpleContour(polyline, dist);
+		
+		assertEquals(1, contours.size());
+	}
+
+
 	public void testGetBufferDouble_SmallAnglePolyline() {
 		Polyline2D polyline = new Polyline2D(new Point2D[]{
 				new Point2D(200, 100),
