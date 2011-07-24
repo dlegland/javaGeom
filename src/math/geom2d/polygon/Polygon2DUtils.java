@@ -176,6 +176,23 @@ public final class Polygon2DUtils {
     	return convertFromGpcjPolygon(result);
     }
     
+    /**
+     * Compute Difference of the two polygons. Uses the modified GPCJ library, 
+     * developed by Solution Engineering, Inc.
+     */
+    public final static Polygon2D difference(Polygon2D polygon1, 
+    		Polygon2D polygon2) {
+    	// convert to GPCJ data structures
+    	Poly poly1 = convertToGpcjPolygon(polygon1);
+    	Poly poly2 = convertToGpcjPolygon(polygon2);
+    	
+    	// compute union
+    	Poly result = poly1.difference(poly2);
+    	
+    	// convert result to javaGeom structure
+    	return convertFromGpcjPolygon(result);
+    }
+    
     private final static Poly convertToGpcjPolygon(Polygon2D polygon) {
     	PolyDefault result = new PolyDefault();
     	for (LinearRing2D ring : polygon.getRings())

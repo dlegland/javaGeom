@@ -8,6 +8,8 @@
  */
 package math.geom2d.polygon;
 
+import java.util.Collection;
+
 import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
@@ -315,4 +317,81 @@ public class Polygon2DUtilsTest extends TestCase {
         assertEquals(2, union.getRings().size());
     }
 
+    /**
+     * Test with two shifted squares. The result is a square with a corner
+     * removed.
+     */
+    public void testDifference_TwoSquares() {
+        // points of the first polygon
+        Point2D pa1 = new Point2D(50, 50);
+        Point2D pa2 = new Point2D(150, 50);
+        Point2D pa3 = new Point2D(150, 150);
+        Point2D pa4 = new Point2D(50, 150);
+        Polygon2D poly1 = new SimplePolygon2D(new Point2D[]{
+                pa1, pa2, pa3, pa4});
+        
+        // Create second polygon
+        Point2D pb1 = new Point2D(100, 100);
+        Point2D pb2 = new Point2D(200, 100);
+        Point2D pb3 = new Point2D(200, 200);
+        Point2D pb4 = new Point2D(100, 200);
+        Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
+                pb1, pb2, pb3, pb4});
+       
+        // compute difference
+        Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
+        assertTrue(diff != null);
+        assertEquals(6, diff.getVertexNumber());
+        
+        // Check if vertices are the good ones
+        Collection<Point2D> vertices = diff.getVertices();
+        assertTrue(vertices.contains(new Point2D(50, 50)));
+        assertTrue(vertices.contains(new Point2D(150, 50)));
+        assertTrue(vertices.contains(new Point2D(150, 100)));
+        assertTrue(vertices.contains(new Point2D(100, 100)));
+        assertTrue(vertices.contains(new Point2D(100, 150)));
+        assertTrue(vertices.contains(new Point2D(50, 150)));
+    }
+    
+    /**
+     * Test with two nested squares. The result is a square polygon with a
+     * square hole.
+     */
+    public void testDifference_NestedSquares() {
+        // points of the first polygon
+        Point2D pa1 = new Point2D(100, 100);
+        Point2D pa2 = new Point2D(400, 100);
+        Point2D pa3 = new Point2D(400, 400);
+        Point2D pa4 = new Point2D(100, 400);
+        Polygon2D poly1 = new SimplePolygon2D(new Point2D[]{
+                pa1, pa2, pa3, pa4});
+        
+        // Create second polygon
+        Point2D pb1 = new Point2D(200, 200);
+        Point2D pb2 = new Point2D(300, 200);
+        Point2D pb3 = new Point2D(300, 300);
+        Point2D pb4 = new Point2D(200, 300);
+        Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
+                pb1, pb2, pb3, pb4});
+    	
+        // compute difference
+        Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
+        assertTrue(diff != null);
+        assertEquals(8, diff.getVertexNumber());
+        
+        assertEquals(2, diff.getRings().size());
+        
+        // Check if vertices are the good ones
+        Collection<Point2D> vertices = diff.getVertices();
+        assertTrue(vertices.contains(new Point2D(100, 100)));
+        assertTrue(vertices.contains(new Point2D(400, 100)));
+        assertTrue(vertices.contains(new Point2D(400, 400)));
+        assertTrue(vertices.contains(new Point2D(100, 400)));
+        assertTrue(vertices.contains(new Point2D(200, 200)));
+        assertTrue(vertices.contains(new Point2D(300, 200)));
+        assertTrue(vertices.contains(new Point2D(300, 300)));
+        assertTrue(vertices.contains(new Point2D(200, 300)));
+    }
+
+    	
 }
