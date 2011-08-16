@@ -487,26 +487,9 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     @Override
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (points.size()<2)
+        if (points.size() < 2)
             return path;
         return this.appendPath(path);
-//        // get point iterator
-//        Iterator<Point2D> iter = points.iterator();
-//
-//        // move to first point
-//        Point2D point = iter.next();
-//        path.moveTo((float) (point.getX()), (float) (point.getY()));
-//
-//        // line to each other point
-//        while (iter.hasNext()) {
-//            point = iter.next();
-//            path.lineTo((float) (point.getX()), (float) (point.getY()));
-//        }
-//
-//        // closes the path
-//        path.closePath();
-//
-//        return path;
     }
     
     @Override

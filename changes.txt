@@ -1,15 +1,26 @@
 Changes in javaGeom library
 
 
-javaGeom-0.9.1 (2010.??.??, rev. ???)
+javaGeom-0.9.1 (201?.??.??, rev. ???)
+=====
+
+New features
+- created interfaces for cap and join creation of curve buffers
+- added computation of polygon difference
+
+Bug fixes
+- fixed bug in Angle2D.getHorizontalAngle(doubles...)
+- fixed buffer of generic circulinear domains
 
 Regressions
 - removed ContinuousCirculinearCurve2D
 - renamed CirculinearBoundarySet2D to CirculinearContourArray2D
 - splitted CirculinearCurveSet2D into interface and array implementation
+- put buffer computation classes in separate directory
 
 
 javaGeom-0.9.0 (2010.11.06, rev. 264)
+====
 
 main changes are removal of obsolete classes and methods, and a slight
 re-organisation of class hierarchy (mainly shape sets)
@@ -43,6 +54,7 @@ Code
 
 
 javaGeom-0.8.1 (2009.11.15, rev. 242)
+====
 
 New features
 - better support for buffer of infinite curves
@@ -66,6 +78,7 @@ Code
 
 
 javaGeom-0.8.0 (2009.06.09, rev. 226)
+====
 
 New features
 - added Circulinear branch, which manages curves composed of portion of lines
@@ -98,6 +111,7 @@ Code
 	
 	
 javaGeom-0.7.1 (2009-04-24, rev. 198)
+====
 
 bug fixes
 - fixed bug in intersecting circle arc and line
@@ -112,6 +126,7 @@ bug fixes
 
 
 javaGeom-0.7.0 (2009-02-17, rev. 192)
+====
 
 New features
 - Added Convex hull by Graham scan
@@ -143,6 +158,7 @@ Code
     
     
 javaGeom-0.6.3 (2008-12-22, rev. 167)
+====
 
 New features
 - Added Convex hull by Jarvis March
@@ -177,6 +193,7 @@ Coding
 
 	
 javaGeom-0.6.2 (2008-07-30, rev. 153)
+====
 
 New features:
 geom2d:
@@ -204,6 +221,7 @@ geom2d:
 
 		
 javaGeom-0.6.1 (2008-05-24, rev. 137)
+====
 
 Start implementing 3D methods, revision of package hierarchy.
 
@@ -228,6 +246,7 @@ geom3d:
 
 
 javaGeom-0.6.0 (2008-03-08, rev. 115)
+====
 
 - changed package hierarchy, by dividing geom2d into several subpackages
 - implemented Iterable for PointSet2D and CurveSet2D
@@ -256,6 +275,7 @@ javaGeom-0.5.2 (2008-01-17, rev. 93)
 
 
 javaGeom-0.5.1 (2007-12-02, rev. 86)
+====
 
 - Use generics for curve set implementations, giving more control on type cast
 	and adding more safety 
@@ -268,6 +288,7 @@ javaGeom-0.5.1 (2007-12-02, rev. 86)
 
 
 javaGeom-0.5.0 (2007-10-20, rev. 76)
+====
 
 - Better support for generics
 - Change implementation of Bounding box, making it more robust and more generic
@@ -281,6 +302,7 @@ javaGeom-0.5.0 (2007-10-20, rev. 76)
 
 
 javaGeom-0.4.0 (2007-05-13, rev. 55)
+====
 
 - update to Java 1.5.0 and to generics (finally !)
 - add method Curve2D.getReverseCurve() which returns same curve with inverse
@@ -292,6 +314,7 @@ javaGeom-0.4.0 (2007-05-13, rev. 55)
 
 
 javaGeom-0.3.2 (2007-05-03, rev. 47)
+====
 
 - Introduce ParabolaArc2D
 - minor changes in Parabola2D
@@ -302,6 +325,7 @@ javaGeom-0.3.2 (2007-05-03, rev. 47)
 
 
 javaGeom-0.3.1 (2007-04-22, rev. 45)
+====
 
 - Box2D implements methods for clipping different types of curves
 - add method ContinuousCurve2D.getSubcurve(double, double) to extract a piece
@@ -313,6 +337,7 @@ javaGeom-0.3.1 (2007-04-22, rev. 45)
 
 
 javaGeom v0.3.0 (rev. 29)
+====
 
 - The support of some conics have been improved, and Parabola2D is introduced.
 - The curve hierarchy have been rewritten, M

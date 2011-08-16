@@ -44,6 +44,7 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.PointSet2DUtils;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -237,7 +238,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 			length += this.getEdge(i).getLength();
 		
 		// add portion of length for last curve
-		if(index<points.size()-1) {
+		if(index < points.size()-1) {
 			double pos2 = pos-index;
 			length += this.getEdge(index).getLength(pos2);
 		}
@@ -266,12 +267,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
 			double edgeLength = edge.getLength();
 			
 			// add either 2, or fraction of length
-			if(cumLength+edgeLength<length) {
+			if(cumLength + edgeLength < length) {
 				cumLength += edgeLength;
 				index ++;
 			} else {
 				// add local position on current curve
-				double pos2 = edge.getPosition(length-cumLength);
+				double pos2 = edge.getPosition(length - cumLength);
 				pos = index + pos2;
 				break;
 			}			
@@ -286,6 +287,14 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+
+		// basic check to avoid degenerate cases
+		if (PointSet2DUtils.hasMultipleVertices(this.points)) {
+			Polyline2D poly2 = Polyline2D.create(
+					PointSet2DUtils.filterMultipleVertices(this.points));
+			return bc.computeBuffer(poly2, dist);			
+		}
+		
 		return bc.computeBuffer(this, dist);
 	}
 

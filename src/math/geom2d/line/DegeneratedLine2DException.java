@@ -10,6 +10,10 @@ package math.geom2d.line;
 
 
 /**
+ * A degenerated line, whose direction vector is undefined, had been
+ * encountered.
+ * This kind of exception can occur during polygon or polylines algorithms,
+ * when polygons have multiple vertices. 
  * @author dlegland
  * @since 0.9.0
  */

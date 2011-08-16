@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import math.geom2d.Angle2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
@@ -17,6 +18,7 @@ import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.PointSet2DUtils;
 
 /**
  * Some utility functions for manipulating Polyline2D.
@@ -26,6 +28,35 @@ import math.geom2d.line.StraightLine2D;
  */
 public abstract class Polyline2DUtils {
 
+	/**
+	 * Checks if the open polyline has multiple vertices. Polyline extremities
+	 * are not tested for equality.
+	 */
+    public final static boolean hasMultipleVertices(Polyline2D polyline) {
+    	return hasMultipleVertices(polyline, false);
+    }
+    
+	/**
+	 * Checks if the input polyline has multiple vertices. Extremities are
+	 * tested if the polyline is closed (second argument is true).
+	 */
+    public final static boolean hasMultipleVertices(Polyline2D polyline, 
+    		boolean closed) {
+    	// Test vertices within polyline
+    	if(PointSet2DUtils.hasMultipleVertices(polyline.points))
+    		return true;
+    	
+    	// Eventually tests extremities
+    	if (closed) {
+    		Point2D p1 = polyline.getFirstPoint();
+    		Point2D p2 = polyline.getLastPoint();
+    		if (p1.distance(p2) < Shape2D.ACCURACY)
+    			return true;
+    	}
+    	
+    	return false;
+    }
+    
     /**
      * Creates a curve parallel to the given polyline, at a distance d. The
      * resulting curve is continuous, but can self-intersect. It is composed of
@@ -319,6 +350,7 @@ public abstract class Polyline2DUtils {
     
     /**
      * Return all intersection points between the 2 polylines.
+     * This method implements a naive algorithm, that tests all possible cases.
      * @param poly1 a polyline
      * @param poly2 a polyline
      * @return the set of intersection points

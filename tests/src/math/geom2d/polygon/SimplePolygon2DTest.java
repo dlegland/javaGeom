@@ -185,6 +185,20 @@ public class SimplePolygon2DTest extends TestCase {
     	assertEquals(1, boundary.getBoundaryCurves().size());
     }
 	
+    public void testGetBuffer_MutipleVertices() {
+    	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
+                new Point2D(100, 100),
+                new Point2D(150, 100),
+                new Point2D(150, 100),
+                new Point2D(150, 150),
+                new Point2D(100, 150)
+        });
+    	
+    	CirculinearDomain2D buffer = polygon.getBuffer(10);
+    	Boundary2D boundary = buffer.getBoundary();
+    	assertEquals(1, boundary.getBoundaryCurves().size());
+    }
+	
     public void testClipBox2D_inside() {
     	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
                 new Point2D(100, 100),

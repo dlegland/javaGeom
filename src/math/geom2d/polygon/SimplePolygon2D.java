@@ -29,6 +29,7 @@ package math.geom2d.polygon;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -39,6 +40,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearDomain2DUtils;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.PointSet2DUtils;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -293,6 +295,15 @@ public class SimplePolygon2D implements Polygon2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
+		// check for multiple vertices
+		if (PointSet2DUtils.hasMultipleVertices(this.points, true)) {
+			List<Point2D> pts2 = 
+				PointSet2DUtils.filterMultipleVertices(this.points, true);
+			SimplePolygon2D poly2 = new SimplePolygon2D(pts2);
+	    	return CirculinearDomain2DUtils.computeBuffer(poly2, dist);
+		}
+		
+		// 
 		return CirculinearDomain2DUtils.computeBuffer(this, dist);
 	}
 
