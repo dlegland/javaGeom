@@ -34,7 +34,6 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearContour2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
@@ -104,6 +103,20 @@ public class Polyline2DTest extends TestCase {
 	public void testGetBufferDouble() {
 		Polyline2D polyline = new Polyline2D(new Point2D[]{
 				new Point2D(50, 50),
+				new Point2D(100, 50),
+				new Point2D(100, 100),
+				new Point2D(150, 100) });
+		double dist = 30;
+		
+		Domain2D buffer = polyline.getBuffer(dist);
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
+	}
+	
+	public void testGetBufferDouble_MultipleVertex() {
+		Polyline2D polyline = new Polyline2D(new Point2D[]{
+				new Point2D(50, 50),
+				new Point2D(100, 50),
 				new Point2D(100, 50),
 				new Point2D(100, 100),
 				new Point2D(150, 100) });

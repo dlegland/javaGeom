@@ -82,6 +82,11 @@ public final class Polygon2DUtils {
     			(pt.getX() - x) * (p2.getY() - y));
     }
     
+    /**
+     * Computes the buffer at a distance d of the input polygon. The result is
+     * a domain whose boundary is composed of line segments and circle arcs.  
+     * @see Polygon.getBuffer(double)
+     */
     public final static Domain2D createBuffer(Polygon2D polygon, double d) {
         ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
             new ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
@@ -92,6 +97,11 @@ public final class Polygon2DUtils {
         return new GenericDomain2D(result);
     }
     
+    /**
+     * Clips a polygon by a box. The result is a new polygon, that can be
+     * multiple.
+     * @see Polygon.clip(Box2D)
+     */
     public final static Polygon2D clipPolygon(Polygon2D polygon, Box2D box) {
     	// Clip the boundary using generic method
     	Boundary2D boundary = polygon.getBoundary();
@@ -126,7 +136,7 @@ public final class Polygon2DUtils {
     }
     
     /**
-     * Compute union of the two polygons. Uses the GPCJ library, developed by
+     * Computes the union of the two polygons. Uses the GPCJ library, developed by
      * Solution Engineering, Inc.
      */
     public final static Polygon2D union(Polygon2D polygon1, 
@@ -143,7 +153,7 @@ public final class Polygon2DUtils {
     }
     
     /**
-     * Compute intersection of the two polygons. Uses the GPCJ library, 
+     * Computes the intersection of the two polygons. Uses the GPCJ library, 
      * developed by Solution Engineering, Inc.
      */
     public final static Polygon2D intersection(Polygon2D polygon1, 
@@ -160,7 +170,7 @@ public final class Polygon2DUtils {
     }
     
     /**
-     * Compute exclusive XOR of the two polygons. Uses the GPCJ library, 
+     * Computes the exclusive XOR of the two polygons. Uses the GPCJ library, 
      * developed by Solution Engineering, Inc.
      */
     public final static Polygon2D exclusiveOr(Polygon2D polygon1, 
@@ -177,7 +187,7 @@ public final class Polygon2DUtils {
     }
     
     /**
-     * Compute Difference of the two polygons. Uses the modified GPCJ library, 
+     * Computes the Difference of the two polygons. Uses the modified GPCJ library, 
      * developed by Solution Engineering, Inc.
      */
     public final static Polygon2D difference(Polygon2D polygon1, 
