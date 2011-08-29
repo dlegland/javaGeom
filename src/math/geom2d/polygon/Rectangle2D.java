@@ -176,24 +176,36 @@ public class Rectangle2D implements Polygon2D {
     // ===================================================================
     // methods inherited from interface AbstractPolygon2D
 
-    /**
-     * Returns the vertices of the rectangle as a collection of points.
-     * 
-     * @return the vertices of the rectangle.
-     */
-    public Collection<Point2D> getVertices() {
-        AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
-        ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+    // ===================================================================
+	// methods inherited from interface AbstractPolygon2D
+	
+	/**
+	 * Returns the vertices of the rectangle as a collection of points.
+	 * 
+	 * @return the vertices of the rectangle.
+	 */
+	public Collection<Point2D> getVertices() {
+	    AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
+	    ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+	
+	    array.add(new Point2D(x0, y0).transform(rot));
+	    array.add(new Point2D(x0+w, y0).transform(rot));
+	    array.add(new Point2D(x0+w, y0+h).transform(rot));
+	    array.add(new Point2D(x0, y0+h).transform(rot));
+	
+	    return array;
+	}
 
-        array.add(new Point2D(x0, y0).transform(rot));
-        array.add(new Point2D(x0+w, y0).transform(rot));
-        array.add(new Point2D(x0+w, y0+h).transform(rot));
-        array.add(new Point2D(x0, y0+h).transform(rot));
+	/**
+	 * Return the number of vertices of the rectangle, which is 4.
+	 * 
+	 * @since 0.6.3
+	 */
+	public int getVertexNumber() {
+	    return 4;
+	}
 
-        return array;
-    }
-
-    /**
+	/**
      * Returns the i-th vertex of the polygon.
      * 
      * @param i index of the vertex, between 0 and 3
@@ -212,15 +224,6 @@ public class Rectangle2D implements Polygon2D {
         default:
             throw new IndexOutOfBoundsException();
         }
-    }
-
-    /**
-     * Return the number of vertices of the rectangle, which is 4.
-     * 
-     * @since 0.6.3
-     */
-    public int getVertexNumber() {
-        return 4;
     }
 
     public Collection<LineSegment2D> getEdges() {
@@ -266,6 +269,9 @@ public class Rectangle2D implements Polygon2D {
 				this.getBoundary().transform(inv));
 	}
 
+	// ===================================================================
+	// methods inherited from interface AbstractPolygon2D
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
