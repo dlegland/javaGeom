@@ -20,7 +20,63 @@ import com.seisw.util.geom.PolySimple;
  */
 public final class Polygon2DUtils {
 
-    /**
+	/**
+	 * Creates a new polygon representing a rectangle centered around a point. 
+	 * Rectangle sides are parallel to the main axes. The function returns an
+	 * instance of SimplePolygon2D.
+	 * @since 0.9.1 
+	 */
+	public final static SimplePolygon2D createCenteredRectangle(Point2D center, 
+			double length, double width) {
+		// extract rectangle parameters
+		double xc = center.getX();
+		double yc = center.getY();
+		double len = length / 2;
+		double wid = width / 2;
+		
+		// coordinates of corners
+		double x1 = xc - len;
+		double y1 = yc - wid;
+		double x2 = xc + len;
+		double y2 = yc + wid;
+
+		// create result polygon
+		return new SimplePolygon2D(new Point2D[]{
+				new Point2D(x1, y1),
+				new Point2D(x2, y1),
+				new Point2D(x2, y2),
+				new Point2D(x1, y2),
+		});
+	}
+	
+	/**
+	 * Creates a new polygon representing an oriented rectangle centered
+	 * around a point. 
+	 * The function returns an instance of SimplePolygon2D. 
+	 * @since 0.9.1 
+	 */
+	public final static SimplePolygon2D createOrientedRectangle(Point2D center, 
+			double length, double width, double theta) {
+		// extract rectangle parameters
+		double xc = center.getX();
+		double yc = center.getY();
+		double len = length / 2;
+		double wid = width / 2;
+		
+		// Pre-compute angle quantities
+		double cot = Math.cos(theta);
+		double sit = Math.sin(theta);
+		
+		// Create resulting rotated rectangle
+		return new SimplePolygon2D(new Point2D[]{
+				new Point2D(-len*cot + wid*sit + xc, -len*sit - wid*cot + yc),
+				new Point2D( len*cot + wid*sit + xc,  len*sit - wid*cot + yc),
+				new Point2D( len*cot - wid*sit + xc,  len*sit + wid*cot + yc),
+				new Point2D(-len*cot - wid*sit + xc, -len*sit + wid*cot + yc),
+		});
+	}
+
+	/**
      * Computes the winding number of the polygon. Algorithm adapted from
      * http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm
      * http://softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm
