@@ -348,11 +348,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         
         // check if the two objects have same number of rings
         MultiPolygon2D polygon = (MultiPolygon2D) obj;
-        if (polygon.rings.size()!=this.rings.size()) 
+        if (polygon.rings.size() != this.rings.size()) 
             return false;
         
         // check each couple of ring
-        for (int i=0; i < rings.size(); i++)
+        for (int i = 0; i < rings.size(); i++)
             if (!this.rings.get(i).equals(polygon.rings.get(i)))
                 return false;
         
