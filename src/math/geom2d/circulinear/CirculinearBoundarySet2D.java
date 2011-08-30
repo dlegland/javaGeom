@@ -38,9 +38,9 @@ extends CirculinearContourArray2D<T> {
      * @since 0.8.1
      */
 	public static <T extends CirculinearContour2D> 
-	CirculinearBoundarySet2D<CirculinearContour2D>
+	CirculinearBoundarySet2D<T>
 	create(Collection<T> curves) {
-		return new CirculinearBoundarySet2D<CirculinearContour2D>(curves);
+		return CirculinearBoundarySet2D.create(curves);
 	}
 
     /**

@@ -28,4 +28,23 @@ public class PointSet2DUtilsTest extends TestCase {
 		assertFalse(res);
 	}
 
+	public void testCountMultipleVertices() {
+		PointArray2D pointSet = new PointArray2D(new Point2D[] {
+				new Point2D(10, 10), 
+				new Point2D(20, 10), 
+				new Point2D(20, 30), 
+				new Point2D(10, 30), // one multiple
+				new Point2D(10, 30), 
+				new Point2D(10, 10)	});
+		int count;
+		
+		count = PointSet2DUtils.countMultipleVertices(pointSet.points);
+		assertEquals(1, count);
+		
+		count = PointSet2DUtils.countMultipleVertices(pointSet.points, false);
+		assertEquals(1, count);
+		
+		count = PointSet2DUtils.countMultipleVertices(pointSet.points, true);
+		assertEquals(2, count);
+	}
 }
