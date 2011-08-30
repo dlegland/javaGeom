@@ -36,9 +36,8 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
      * @since 0.8.1
      */
 	public static <T extends CirculinearContour2D> 
-	CirculinearContourArray2D<CirculinearContour2D>
-	create(Collection<T> curves) {
-		return new CirculinearContourArray2D<CirculinearContour2D>(curves);
+	CirculinearContourArray2D<T> create(Collection<T> curves) {
+		return new CirculinearContourArray2D<T>(curves);
 	}
 
     /**

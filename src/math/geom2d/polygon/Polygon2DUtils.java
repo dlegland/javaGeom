@@ -9,7 +9,12 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.domain.*;
+import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.buffer.BufferCalculator;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Boundary2DUtils;
+import math.geom2d.domain.Contour2D;
+import math.geom2d.domain.ContourArray2D;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
@@ -143,14 +148,13 @@ public final class Polygon2DUtils {
      * a domain whose boundary is composed of line segments and circle arcs.  
      * @see Polygon.getBuffer(double)
      */
-    public final static Domain2D createBuffer(Polygon2D polygon, double d) {
-        ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>> result = 
-            new ContourArray2D<BoundaryPolyCurve2D<SmoothOrientedCurve2D>>();
-
-        for (LinearRing2D ring : polygon.getBoundary())
-            result.addCurve(Polyline2DUtils.createClosedParallel(ring, d));
-
-        return new GenericDomain2D(result);
+    public final static CirculinearDomain2D createBuffer(Polygon2D polygon, 
+    		double dist) {
+    	// get current instance of buffer calculator
+        BufferCalculator bc = BufferCalculator.getDefaultInstance();
+        
+        // compute buffer
+        return bc.computeBuffer(polygon.getBoundary(), dist);
     }
     
     /**
@@ -171,7 +175,7 @@ public final class Polygon2DUtils {
         
         // Create a polygon, either simple or multiple, depending on the ring
         // number
-        if (rings.size()==1)
+        if (rings.size() == 1)
         	return SimplePolygon2D.create(rings.get(0).getVertices());
         else
         	return MultiPolygon2D.create(rings);
@@ -188,6 +192,8 @@ public final class Polygon2DUtils {
     	ArrayList<Point2D> vertices = new ArrayList<Point2D>();
     	for(Point2D v : contour.getSingularPoints())
     		vertices.add(v);
+    	
+    	// Create new ring with vertices
     	return LinearRing2D.create(vertices);
     }
     
@@ -245,6 +251,7 @@ public final class Polygon2DUtils {
     /**
      * Computes the Difference of the two polygons. Uses the modified GPCJ library, 
      * developed by Solution Engineering, Inc.
+     * @since 0.9.1
      */
     public final static Polygon2D difference(Polygon2D polygon1, 
     		Polygon2D polygon2) {
