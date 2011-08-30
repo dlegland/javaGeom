@@ -13,6 +13,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
@@ -65,7 +66,9 @@ public abstract class Polyline2DUtils {
      * @param polyline the source curve
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
+     * @deprecated use functions in BufferCalculator instead (0.9.1)
      */
+    @Deprecated
     public static PolyOrientedCurve2D<SmoothOrientedCurve2D> 
     createParallel(Polyline2D polyline, double d) {
 
@@ -90,9 +93,6 @@ public abstract class Polyline2DUtils {
         // The line parallel to the previous and current line segments
         StraightLine2D line0, line;
 
-        // Circle located at corners
-        Circle2D circle;
-
         Iterator<Point2D> iterator;
 
         // ----- Initializations -----
@@ -115,16 +115,14 @@ public abstract class Polyline2DUtils {
 
             // Check angle of the 2 lines
             p1 = line.getProjectedPoint(v1);
-            if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> next line segment will be
                 // truncated
                 p1 = line.getIntersection(line0);
                 p0 = p1;
             } else {
                 // line is going to the left -> add a circle arc
-                circle = new Circle2D(v1, Math.abs(d));
-                result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                        .getPosition(p0), circle.getPosition(p1), d>0));
+                addCircleArc(result, v1, p0, p1, d);
             }
 
             p2 = line.getProjectedPoint(v2);
@@ -151,7 +149,7 @@ public abstract class Polyline2DUtils {
             line = new StraightLine2D(v1, v2).getParallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
@@ -162,10 +160,7 @@ public abstract class Polyline2DUtils {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
                 result.addCurve(new LineSegment2D(p1, p2));
-                p1 = line.getProjectedPoint(v1);
-                circle = new Circle2D(v1, Math.abs(d));
-                result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                        .getPosition(p2), circle.getPosition(p1), d>0));
+                addCircleArc(result, v1, p2, p1, d);
             }
 
             // Prepare for next iteration
@@ -183,7 +178,7 @@ public abstract class Polyline2DUtils {
             line = new StraightLine2D(v1, v2).getParallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
@@ -194,10 +189,7 @@ public abstract class Polyline2DUtils {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
                 result.addCurve(new LineSegment2D(p1, p2));
-                p1 = line.getProjectedPoint(v1);
-                circle = new Circle2D(v1, Math.abs(d));
-                result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                        .getPosition(p2), circle.getPosition(p1), d>0));
+                addCircleArc(result, v1, p2, p1, d);
             }
 
             // Add the last line segment
@@ -219,7 +211,9 @@ public abstract class Polyline2DUtils {
      * @param polyline the source curve
      * @param d the signed distance between the original curve and its parallel
      * @return the curve parallel to the original curve at a distance d
+     * @deprecated use functions in BufferCalculator instead (0.9.1)
      */
+    @Deprecated
     public static BoundaryPolyCurve2D<SmoothOrientedCurve2D>
     createClosedParallel(LinearRing2D polyline, double d) {
 
@@ -229,7 +223,7 @@ public abstract class Polyline2DUtils {
         result.setClosed(true);
 
         // evacuate degenerate case.
-        if (polyline.getVertices().size()<2)
+        if (polyline.getVertices().size() < 2)
             return result;
 
         // ----- declarations -----
@@ -243,9 +237,6 @@ public abstract class Polyline2DUtils {
 
         // The line parallel to the previous and current line segments
         StraightLine2D line0, line;
-
-        // Circle located at corners
-        Circle2D circle;
 
         Iterator<Point2D> iterator;
 
@@ -268,16 +259,14 @@ public abstract class Polyline2DUtils {
 
         // Check angle of the 2 lines
         p1 = line.getProjectedPoint(v1);
-        if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+        if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
             // Line is going to the right -> next line segment will be
             // truncated
             p1 = line.getIntersection(line0);
             p0 = p1;
         } else {
             // line is going to the left -> add a circle arc
-            circle = new Circle2D(v1, Math.abs(d));
-            result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                    .getPosition(p0), circle.getPosition(p1), d>0));
+            addCircleArc(result, v1, p0, p1, d);
         }
 
         p2 = line.getProjectedPoint(v2);
@@ -293,7 +282,7 @@ public abstract class Polyline2DUtils {
             line = new StraightLine2D(v1, v2).getParallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
                 p2 = line.getIntersection(line0);
@@ -304,10 +293,7 @@ public abstract class Polyline2DUtils {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
                 result.addCurve(new LineSegment2D(p1, p2));
-                p1 = line.getProjectedPoint(v1);
-                circle = new Circle2D(v1, Math.abs(d));
-                result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                        .getPosition(p2), circle.getPosition(p1), d>0));
+                addCircleArc(result, v1, p2, p1, d);
             }
 
             // Prepare for next iteration
@@ -324,7 +310,7 @@ public abstract class Polyline2DUtils {
         line = new StraightLine2D(v1, v2).getParallel(d);
 
         // Check angle of the 2 lines
-        if (Angle2D.getAngle(line0, line)>Math.PI^d<0) {
+        if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
             // Line is going to the right -> add the previous line segment
             // truncated at corner
             p2 = line.getIntersection(line0);
@@ -335,10 +321,7 @@ public abstract class Polyline2DUtils {
             // line is going to the left -> add the complete line segment
             // and a circle arc
             result.addCurve(new LineSegment2D(p1, p2));
-            p1 = line.getProjectedPoint(v1);
-            circle = new Circle2D(v1, Math.abs(d));
-            result.addCurve(new CircleArc2D(v1, Math.abs(d), circle
-                    .getPosition(p2), circle.getPosition(p1), d>0));
+            addCircleArc(result, v1, p2, p1, d);
         }
 
         // Add the last line segment
@@ -347,24 +330,46 @@ public abstract class Polyline2DUtils {
         // Return the resulting curve
         return result;
     }
+
+    /**
+     * Adds a new circle arc to the curve set.
+     * The new circle arc is defined by a center, two points on the circle that
+     * gives the start angle and angle extent of the arc, and a distance that
+     * gives both the circle radius and the arc orientation.
+     */
+    private static void addCircleArc(PolyCurve2D<SmoothOrientedCurve2D> result, 
+    		Point2D v1, Point2D p1, Point2D p2, double d) {
+        Circle2D circle = new Circle2D(v1, Math.abs(d));
+        double t0 = circle.getPosition(p1);
+        double t1 = circle.getPosition(p2);
+        result.addCurve(new CircleArc2D(v1, Math.abs(d), t0, t1, d>0));
+    }
     
     /**
      * Return all intersection points between the 2 polylines.
-     * This method implements a naive algorithm, that tests all possible cases.
-     * @param poly1 a polyline
-     * @param poly2 a polyline
+     * This method implements a naive algorithm, that tests all possible edge
+     * couples.
+     * It is supposed that only one point is returned by intersection.
+     * @param poly1 a first polyline
+     * @param poly2 a second polyline
      * @return the set of intersection points
      */
     public static Collection<Point2D> intersect(
             Polyline2D poly1, Polyline2D poly2) {
+    	// array for storing intersections
         ArrayList<Point2D> points = new ArrayList<Point2D>();
         
+        // iterate on edge couples
         Point2D point;
-        for(LineSegment2D edge1 : poly1.getEdges()){
-            for(LineSegment2D edge2 : poly2.getEdges()){
+        for (LineSegment2D edge1 : poly1.getEdges()) {
+            for (LineSegment2D edge2 : poly2.getEdges()) {
+            	// if the intersection is not empty, add it to the set
                 point = edge1.getIntersection(edge2);
-                if(point!=null)
-                    points.add(point);
+                if (point != null) {
+                	// we keep only one intersection by couple
+                	if (!points.contains(point))
+                		points.add(point);
+                }
             }
         }
 

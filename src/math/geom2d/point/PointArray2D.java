@@ -58,7 +58,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     	return new PointArray2D(points);
     }
     
-    public static<T extends java.awt.geom.Point2D> PointArray2D create(
+    public static <T extends java.awt.geom.Point2D> PointArray2D create(
     		T[] points) {
     	return new PointArray2D(points);
     }
@@ -200,7 +200,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     	
     	PointArray2D array = new PointArray2D(points.size());
     	
-    	for(Point2D point : points) 
+    	for (Point2D point : points) 
     		array.addPoint(point.transform(inv));
     	
     	return array;
@@ -219,23 +219,31 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
     public double getDistance(double x, double y) {
+    	// basic checkup
         if (points.isEmpty())
             return Double.NaN;
+        
+        // find smallest distance
         double dist = Double.MAX_VALUE;
         for (Point2D point : points)
             dist = Math.min(dist, point.getDistance(x, y));
+        
+        // return distance to closest point
         return dist;
     }
 
     /**
-     * always return true.
+     * Always return true.
      */
     public boolean isBounded() {
         return true;
     }
-
+    
+    /** 
+     * Returns true if the point set is empty, i.e. the number of points is 0.
+     */
     public boolean isEmpty() {
-        return points.size()==0;
+        return points.size() == 0;
     }
 
     /*
@@ -249,7 +257,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 
         // select only points inside of box
         for (Point2D point : points) {
-        	if(box.contains(point)) {
+        	if (box.contains(point)) {
         		res.addPoint(point);
         	}
         }
@@ -301,7 +309,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      */
     public boolean contains(double x, double y) {
         for (Point2D point : points)
-            if (point.getDistance(x, y)<Shape2D.ACCURACY)
+            if (point.getDistance(x, y) < Shape2D.ACCURACY)
                 return true;
         return false;
     }
@@ -332,9 +340,13 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * @param g2 the graphics to draw the point set
      */
     public void draw(Graphics2D g2, double r) {
-        for (Point2D point : points)
-            g2.fill(new java.awt.geom.Ellipse2D.Double(point.x-r, point.y-r,
-                    2*r, 2*r));
+    	double x, y;
+    	double w = 2 * r;
+        for (Point2D point : points) {
+        	x = point.getX();
+        	y = point.getY();
+            g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, w, w));
+        }
     }
 
     /*
@@ -353,14 +365,14 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
 	public boolean almostEquals(GeometricObject2D obj, double eps) {
-		if (this==obj)
+		if (this == obj)
 			return true;
 		
-        if(!(obj instanceof PointSet2D))
+        if (!(obj instanceof PointSet2D))
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if(this.points.size()!=set.getPointNumber())
+        if (this.points.size() != set.getPointNumber())
         	return false;
 
         Iterator<Point2D> iter = set.iterator();
@@ -383,14 +395,14 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-    	if(this==obj)
+    	if (this == obj)
     		return true;
     	
-        if(!(obj instanceof PointSet2D))
+        if (!(obj instanceof PointSet2D))
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if(this.points.size()!=set.getPointNumber())
+        if (this.points.size() != set.getPointNumber())
         	return false;
         
         Iterator<Point2D> iter = set.iterator();
@@ -405,7 +417,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     @Override
     public PointArray2D clone() {
         PointArray2D set = new PointArray2D(this.getPointNumber());
-        for(Point2D point : this)
+        for (Point2D point : this)
             set.addPoint(point.clone());
         return set;
     }

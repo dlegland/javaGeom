@@ -11,6 +11,8 @@ package math.geom2d.polygon;
 import java.util.Collection;
 
 import math.geom2d.Point2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 import junit.framework.TestCase;
 
 
@@ -393,5 +395,32 @@ public class Polygon2DUtilsTest extends TestCase {
         assertTrue(vertices.contains(new Point2D(200, 300)));
     }
 
+    /**
+     * Computes  the buffer of two polygons close to each other.
+     * The result should be composed of only one curve.
+     */
+    public void testBufferTwoClosePolygons() {
+    	LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
+        		new Point2D(50, 100),	
+        		new Point2D(100, 100),	
+        		new Point2D(100, 150),	
+        		new Point2D(50, 150)});
+    	LinearRing2D ring2 = new LinearRing2D(new Point2D[]{
+        		new Point2D(150, 100),	
+        		new Point2D(200, 100),	
+        		new Point2D(220, 125),	
+        		new Point2D(200, 150),	
+        		new Point2D(10, 150)});
+    	
+    	Polygon2D polygon = new MultiPolygon2D(
+    			new LinearRing2D[]{ring1, ring2});
+    	
+    	Domain2D domain = Polygon2DUtils.createBuffer(polygon, 30);
+    	assert(domain != null);
+    	Boundary2D boundary = domain.getBoundary();
+    	assert(boundary != null);
+    	
+    	assertEquals(1, boundary.getBoundaryCurves().size());
+    }
     	
 }
