@@ -116,13 +116,16 @@ public class Point3D implements Shape3D {
         return new Box3D(x, x, y, y, z, z);
     }
 
+    /**
+     * Returns the clipped point, or null if empty.
+     */
     public Shape3D clip(Box3D box) {
-        if (x<box.getMinX()||x>box.getMaxX())
-            return Shape3D.EMPTY_SET;
-        if (y<box.getMinY()||y>box.getMaxY())
-            return Shape3D.EMPTY_SET;
-        if (z<box.getMinZ()||z>box.getMaxZ())
-            return Shape3D.EMPTY_SET;
+        if (x < box.getMinX() || x > box.getMaxX())
+            return null;
+        if (y < box.getMinY() || y > box.getMaxY())
+            return null;
+        if (z < box.getMinZ() || z > box.getMaxZ())
+            return null;
         return this;
     }
 

@@ -19,6 +19,14 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
 
     public PointSet3D() {
     }
+    
+    /**
+     * Creates a new point set and allocate memory for storing the points.
+     * @param n the number of points to store
+     */
+    public PointSet3D(int n) {
+    	this.points = new ArrayList<Point3D>(n);
+    }
 
     /**
      * Instances of Point3D are directly added, other Point are converted to
@@ -100,12 +108,12 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
     public Shape3D clip(Box3D box) {
-        PointSet3D res = new PointSet3D();
+        PointSet3D res = new PointSet3D(this.points.size());
         Shape3D clipped;
         for (Point3D point : points) {
             clipped = point.clip(box);
-            if (clipped!=Shape3D.EMPTY_SET)
-                res.addPoint((Point3D) clipped);
+            if (clipped != null)
+                res.addPoint(point);
         }
         return res;
     }
