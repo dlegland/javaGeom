@@ -126,6 +126,26 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(!poly.contains(5, 35));		
 	}
 
+	public void testContainsPoint2D_CW() {
+		// create ring in CW orientation
+		LinearRing2D ring2 = new LinearRing2D(new Point2D[]{
+				new Point2D(13, 13), 
+				new Point2D(13, 17),
+				new Point2D(17, 17),
+				new Point2D(17, 13) });
+		
+		SimplePolygon2D polygon = new SimplePolygon2D(ring2);
+		
+		Point2D pOut = new Point2D(14, 16);
+		assertFalse(polygon.contains(pOut));
+		
+		Point2D pIn1 = new Point2D(21, 20);
+		assertTrue(polygon.contains(pIn1));
+		
+		Point2D pIn2 = new Point2D(11, 19);
+		assertTrue(polygon.contains(pIn2));
+	}
+	
 	public void testGetCentroiddoubledouble(){
 		// start with a simple rectangle
 		Point2D points[] = new Point2D[4];

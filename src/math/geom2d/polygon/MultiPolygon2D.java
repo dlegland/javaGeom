@@ -110,6 +110,34 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return rings.size();
     }
 
+    // Centroid and area
+    /**
+     * Computes area of the polygon, by returning the absolute value of the
+     * signed area.
+     * @since 0.9.1
+     */
+    public double getArea() {
+        return Math.abs(this.getSignedArea());
+    }
+
+    /**
+     * Computes the signed area of the polygon. 
+     * @return the signed area of the polygon.
+     * @since 0.9.1
+     */
+    public double getSignedArea() {
+    	return Polygon2DUtils.computeSignedArea(this);
+    }
+
+    /**
+     * Computes the centroid (center of mass) of the polygon. 
+     * @return the centroid of the polygon
+     * @since 0.9.1
+     */
+    public Point2D getCentroid() {
+    	return Polygon2DUtils.computeCentroid(this);
+    }
+
     // ===================================================================
     // methods implementing the Polygon2D interface
 
@@ -293,7 +321,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         double angle = 0;
         for (LinearRing2D ring : this.rings)
             angle += ring.getWindingAngle(point);
-        return angle > Math.PI;
+      
+        double area = this.getSignedArea();
+    	if (area > 0) {
+    		return angle > Math.PI;
+    	} else {
+    		return angle > -Math.PI;
+    	}
     }
 
     public boolean contains(double x, double y) {

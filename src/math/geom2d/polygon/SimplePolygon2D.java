@@ -117,25 +117,19 @@ public class SimplePolygon2D implements Polygon2D {
         this.points.addAll(points);
     }
 
+    /**
+     * Creates a simple polygon with the given linear ring representing its
+     * boundary.
+     * @param ring the boundary of the polygon
+     */
+    public SimplePolygon2D(LinearRing2D ring) {
+        this.points = new ArrayList<Point2D>(ring.getVertexNumber());
+        this.points.addAll(ring.getVertices());
+    }
+
     
     // ===================================================================
     // methods specific to SimplePolygon2D
-
-    /**
-     * Adds a point as the last vertex.
-     */
-    public void addVertex(Point2D point) {
-        this.points.add(point);
-    }
-
-    /**
-     * Removes a vertex of the polygon.
-     * 
-     * @param point the vertex to be removed.
-     */
-    public void removeVertex(Point2D point) {
-        this.points.remove(point);
-    }
 
     /**
      * Computes area of the polygon, by returning the absolute value of the
@@ -155,13 +149,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @return the signed area of the polygon.
      */
     public double getSignedArea() {
-        double area = 0;
-        Point2D prev = this.points.get(points.size()-1);
-        for (Point2D point : this.points) {
-            area += prev.getX()*point.getY()-prev.getY()*point.getX();
-            prev = point;
-        }
-        return area /= 2;
+    	return Polygon2DUtils.computeSignedArea(this);
     }
 
     /**
@@ -173,18 +161,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @return the centroid of the polygon
      */
     public Point2D getCentroid() {
-        double xc = 0;
-        double yc = 0;
-        double tmp = 0;
-        Point2D prev = this.points.get(points.size()-1);
-        for (Point2D point : this.points) {
-            tmp = prev.getX()*point.getY()-prev.getY()*point.getX();
-            xc += tmp*(point.getX()+prev.getX());
-            yc += tmp*(point.getY()+prev.getY());
-            prev = point;
-        }
-        double area = this.getSignedArea()*6;
-        return new Point2D(xc/area, yc/area);
+    	return Polygon2DUtils.computeCentroid(this);
     }
 
     /**
@@ -199,6 +176,33 @@ public class SimplePolygon2D implements Polygon2D {
         return Polygon2DUtils.windingNumber(points, new Point2D(x, y));
     }
     
+    /**
+     * Returns the linear that composes the boundary of this polygon.
+     * @since 0.9.1
+     */
+    public LinearRing2D getLinearRing() {
+    	return new LinearRing2D(this.points);
+    }
+    
+    // ===================================================================
+    // management of vertex list
+
+    /**
+     * Adds a point as the last vertex.
+     */
+    public void addVertex(Point2D point) {
+        this.points.add(point);
+    }
+
+    /**
+     * Removes a vertex of the polygon.
+     * 
+     * @param point the vertex to be removed.
+     */
+    public void removeVertex(Point2D point) {
+        this.points.remove(point);
+    }
+
     /**
      * Removes all the vertices of the polygon.
      */
@@ -451,8 +455,16 @@ public class SimplePolygon2D implements Polygon2D {
      * given by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
-        return this.getWindingNumber(x, y)==1
-                ||this.getBoundary().contains(x, y);
+    	if (this.getBoundary().contains(x, y))
+    		return true;
+    	
+    	double area = this.getSignedArea();
+    	int winding = this.getWindingNumber(x, y);
+    	if (area > 0) {
+    		return winding == 1;
+    	} else {
+    		return winding == 0;
+    	}
     }
 
     /**
@@ -497,23 +509,20 @@ public class SimplePolygon2D implements Polygon2D {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
     public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         if (!(obj instanceof SimplePolygon2D))
             return false;
         SimplePolygon2D polygon = (SimplePolygon2D) obj;
 
-        if (polygon.getVertexNumber()!=this.getVertexNumber())
+        int nv = this.getVertexNumber();
+        if (polygon.getVertexNumber() != nv)
             return false;
 
-        if (!polygon.getBoundingBox().almostEquals(this.getBoundingBox(), eps))
-            return false;
-
-        for (Point2D point : polygon.getVertices()) {
-        	//TODO: better check of contains
-            if (!this.points.contains(point))
-                return false;
+        for (int i = 0; i < nv ; i++) {
+        	if (!this.getVertex(i).almostEquals(polygon.getVertex(i), eps))
+        		return false;
         }
 
         return true;
@@ -529,22 +538,20 @@ public class SimplePolygon2D implements Polygon2D {
      */
     @Override
     public boolean equals(Object obj) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
         if (!(obj instanceof SimplePolygon2D))
             return false;
 
         SimplePolygon2D polygon = (SimplePolygon2D) obj;
 
-        if (polygon.getVertexNumber()!=this.getVertexNumber())
+        int nv = this.getVertexNumber();
+        if (polygon.getVertexNumber() != nv)
             return false;
 
-        if (!polygon.getBoundingBox().equals(this.getBoundingBox()))
-            return false;
-
-        for (Point2D point : polygon.getVertices()) {
-            if (!this.points.contains(point))
-                return false;
+        for (int i = 0; i < nv ; i++) {
+        	if (!this.getVertex(i).equals(polygon.getVertex(i)))
+        		return false;
         }
 
         return true;
