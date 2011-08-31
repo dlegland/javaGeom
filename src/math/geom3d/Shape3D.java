@@ -35,8 +35,6 @@ public interface Shape3D {
 
     public final static double  ACCURACY  = 1e-12;
 
-    public final static Shape3D EMPTY_SET = new EmptySet3D();
-
     public abstract boolean isEmpty();
 
     /**
@@ -59,46 +57,4 @@ public interface Shape3D {
     public abstract double getDistance(Point3D p);
 
     public abstract boolean contains(Point3D point);
-
-    /**
-     * 
-     */
-    public class EmptySet3D implements Shape3D {
-
-        protected EmptySet3D() {
-        }
-
-        /**
-         * return positive infinity.
-         */
-        public double getDistance(Point3D p) {
-            return Double.POSITIVE_INFINITY;
-        }
-
-        public boolean isEmpty() {
-            return true;
-        }
-
-        public boolean isBounded() {
-            return false;
-        }
-
-        public boolean contains(Point3D point) {
-            return false;
-        }
-
-        public Box3D getBoundingBox() {
-            return new Box3D(Double.NaN, Double.NaN, Double.NaN, Double.NaN,
-                    Double.NaN, Double.NaN);
-        }
-
-        public Shape3D clip(Box3D box) {
-            return this;
-        }
-
-        public Shape3D transform(AffineTransform3D trans) {
-            return this;
-        }
-
-    }
 }
