@@ -80,6 +80,126 @@ public final class Polygon2DUtils {
 				new Point2D(-len*cot - wid*sit + xc, -len*sit + wid*cot + yc),
 		});
 	}
+	
+	/**
+	 * Computes the centroid of the given polygon.
+	 * @since 0.9.1
+	 */
+	public final static Point2D computeCentroid(Polygon2D polygon) {
+		// process case of simple polygon 
+    	if (polygon instanceof SimplePolygon2D) {
+    		LinearRing2D ring = ((SimplePolygon2D) polygon).getLinearRing();
+    		return computeCentroid(ring);
+    	}
+    	
+    	double xc =0;
+    	double yc = 0;
+    	double area;
+    	double cumArea = 0;
+    	Point2D centroid;
+    	
+    	for (LinearRing2D ring : polygon.getRings()) {
+    		area = computeSignedArea(ring);
+    		centroid = computeCentroid(ring);
+    		xc += centroid.getX() * area;
+    		yc += centroid.getY() * area;
+    		cumArea += area;
+    	}
+    	
+    	xc /= cumArea;
+    	yc /= cumArea;
+    	return new Point2D(xc, yc);
+	}
+	
+	/**
+	 * Computes the centroid of the given linear ring.
+	 * @since 0.9.1
+	 */
+	public final static Point2D computeCentroid(LinearRing2D ring) {
+        double xc = 0;
+        double yc = 0;
+        
+        double x, y;
+        double xp, yp;
+        double tmp = 0;
+        
+        // number of vertices
+        int n = ring.getVertexNumber();
+       
+        // initialize with the last vertex
+        Point2D prev = ring.getVertex(n-1);
+        xp = prev.getX();
+        yp = prev.getY();
+
+        // iterate on vertices
+        for (Point2D point : ring.getVertices()) {
+        	x = point.getX();
+        	y = point.getY();
+        	tmp = xp * y - yp * x;
+            xc += (x + xp) * tmp;
+            yc += (y + yp) * tmp;
+            
+            prev = point;
+            xp = x;
+            yp = y;
+        }
+        
+        double denom = computeSignedArea(ring) * 6;
+        return new Point2D(xc / denom, yc / denom);
+	}
+
+	
+    /**
+     * Computes the signed area of the polygon. Algorithm is taken from page: <a
+     * href="http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/">
+     * http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/</a>. Signed area
+     * is positive if polygon is oriented counter-clockwise, and negative
+     * otherwise. Result is wrong if polygon is self-intersecting.
+     * 
+     * @return the signed area of the polygon.
+	 * @since 0.9.1
+     */
+    public final static double computeSignedArea(Polygon2D polygon) {
+    	if (polygon instanceof SimplePolygon2D) {
+    		LinearRing2D ring = ((SimplePolygon2D) polygon).getLinearRing();
+    		return computeSignedArea(ring);
+    	}
+    	
+    	double area = 0;
+    	for (LinearRing2D ring : polygon.getRings()) {
+    		area += computeSignedArea(ring);
+    	}
+    	return area;
+    }
+
+    /**
+     * Computes the signed area of the linear ring. Algorithm is taken from page: <a
+     * href="http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/">
+     * http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/</a>. Signed area
+     * is positive if linear ring is oriented counter-clockwise, and negative
+     * otherwise. Result is wrong if linear ring is self-intersecting.
+     * 
+     * @return the signed area of the polygon.
+	 * @since 0.9.1
+     */
+    public final static double computeSignedArea(LinearRing2D ring) {
+        double area = 0;
+        
+        // number of vertices
+        int n = ring.getVertexNumber();
+       
+        // initialize with the last vertex
+        Point2D prev = ring.getVertex(n-1);
+        
+        // iterate on edges
+        for (Point2D point : ring.getVertices()) {
+            area += prev.getX() * point.getY() - prev.getY() * point.getX();
+            prev = point;
+        }
+        
+        return area /= 2;
+    }
+
 
 	/**
      * Computes the winding number of the polygon. Algorithm adapted from
@@ -192,7 +312,7 @@ public final class Polygon2DUtils {
     	ArrayList<Point2D> vertices = new ArrayList<Point2D>();
     	for(Point2D v : contour.getSingularPoints())
     		vertices.add(v);
-    	
+ 	
     	// Create new ring with vertices
     	return LinearRing2D.create(vertices);
     }
@@ -285,14 +405,14 @@ public final class Polygon2DUtils {
     	int n = poly.getNumInnerPoly();
     	
     	// if the result is single, create a SimplePolygon
-    	if (n==1) {
+    	if (n == 1) {
     		Point2D[] points = extractPolyVertices(poly.getInnerPoly(0));
     		return SimplePolygon2D.create(points);
     	}
     	
     	// extract the different rings of the resulting polygon
     	LinearRing2D[] rings = new LinearRing2D[n];
-    	for (int i=0; i<n; i++) 
+    	for (int i = 0; i < n; i++) 
     		rings[i] = convertFromGpcjSimplePolygon(poly.getInnerPoly(i));
     	
     	// create a multiple polygon
@@ -307,7 +427,7 @@ public final class Polygon2DUtils {
     private final static Point2D[] extractPolyVertices(Poly poly) {
     	int n = poly.getNumPoints();
     	Point2D[] points = new Point2D[n];
-    	for (int i=0; i<n; i++)
+    	for (int i = 0; i < n; i++)
     		points[i] = Point2D.create(poly.getX(i), poly.getY(i));
     	return points;
     }

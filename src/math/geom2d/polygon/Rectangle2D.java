@@ -136,12 +136,27 @@ public class Rectangle2D implements Polygon2D {
         return theta;
     }
 
+    /**
+     * Returns the center point of the rectangle.
+     * @since 0.9.1
+     */
+    public Point2D getCenter() {
+    	double cot = Math.cos(this.theta);
+    	double sit = Math.sin(this.theta);
+    	double xc = x0 + this.w * cot / 2 - this.h * sit / 2;
+    	double yc = y0 + this.w * sit / 2 + this.h * cot / 2;
+    	return new Point2D(xc, yc);
+    }
+    
+    
     // ===================================================================
     // mutators
 
     /**
      * Apply the characteristics of the given Rectangle to this object.
+     * @deprecated simple shapes should be immutable (0.9.1)
      */
+    @Deprecated
     public void setRectangle(Rectangle2D rect) {
         this.x0 = rect.x0;
         this.y0 = rect.y0;
@@ -152,7 +167,9 @@ public class Rectangle2D implements Polygon2D {
 
     /**
      * Apply the characteristics of the given Rectangle to this object.
+     * @deprecated simple shapes should be immutable (0.9.1)
      */
+    @Deprecated
     public void setRectangle(java.awt.geom.Rectangle2D rect) {
         this.x0 = rect.getX();
         this.y0 = rect.getY();
@@ -163,7 +180,9 @@ public class Rectangle2D implements Polygon2D {
 
     /**
      * Apply the characteristics of the given Rectangle to this object.
+     * @deprecated simple shapes should be immutable (0.9.1)
      */
+    @Deprecated
     public void setRectangle(double x, double y, double width, double height,
             double theta) {
         this.x0 = x;
