@@ -489,7 +489,7 @@ public class CirculinearCurve2DUtils {
             // add the first portion of curve, starting from the beginning
             addElements(elements, polyCurve.getSubCurve(pos1, pos2));
             
-            while(pos2!=pos0) {
+            while(pos2 != pos0) {
             	// get the position of the new portion of curve
             	pos1 = twins.remove(pos2);
             	

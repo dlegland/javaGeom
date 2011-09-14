@@ -26,18 +26,17 @@
  */
 
 package math.geom2d.polygon;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
-
-import java.util.*;
-
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
-import math.geom2d.circulinear.CirculinearContour2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
-
 import math.geom2d.line.StraightLine2D;
 
 /**
@@ -135,10 +134,9 @@ public class Polyline2DTest extends TestCase {
 		double dist = 30;
 		
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		Collection<? extends CirculinearContour2D> contours =
-			bc.computeBufferSimpleContour(polyline, dist);
+		Domain2D buffer = bc.computeBuffer(polyline, dist);
 		
-		assertEquals(1, contours.size());
+		assertEquals(1, buffer.getBoundary().getBoundaryCurves().size());
 	}
 
 

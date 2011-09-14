@@ -8,8 +8,6 @@
  */
 package math.geom2d.circulinear.buffer;
 
-import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 
@@ -21,10 +19,12 @@ import math.geom2d.circulinear.CirculinearElement2D;
  */
 public interface JoinFactory {
 
-	public CirculinearContinuousCurve2D createJoin(Point2D center, 
-			Vector2D direction1, Vector2D direction2, double dist);
-	
+	/**
+	 * Creates a join between the parallels of two curves at the specified
+	 * distance.
+	 * The first point of curve2 is assumed to be the last point of curve1.
+	 */
 	public CirculinearContinuousCurve2D createJoin(
-			CirculinearElement2D curve1, 
-			CirculinearElement2D curve2, double dist);
+			CirculinearElement2D previous, 
+			CirculinearElement2D next, double dist);
 }

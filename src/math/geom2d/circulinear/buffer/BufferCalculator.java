@@ -51,20 +51,37 @@ public class BufferCalculator {
     // ===================================================================
     // Class variables
 
-	private CapFactory capFactory = null;
 	private JoinFactory joinFactory = null;
+	private CapFactory capFactory = null;
 	
     // ===================================================================
     // Constructors
 
+	/**
+	 * Creates a new buffer calculator with default join and cap factories.
+	 */
 	public BufferCalculator() {
-		this.capFactory = new CircularCapFactory();
-		this.joinFactory = new CircularJoinFactory();
+		this.joinFactory = new RoundJoinFactory();
+		this.capFactory = new RoundCapFactory();
 	}
+	
+	/**
+	 * Creates a new buffer calculator with specific join and cap factories.
+	 */
+	public BufferCalculator(JoinFactory joinFactory, CapFactory capFactory) {
+		this.joinFactory = joinFactory;
+		this.capFactory = capFactory;
+	}
+	
 	
     // ===================================================================
     // General methods
 
+	/**
+	 * Computes the parallel curve of a circulinear curve (composed only of
+	 * pieces of lines and circles). 
+	 * The result is itself a circulinear curve.
+	 */
 	public CirculinearCurve2D createParallel(
 			CirculinearCurve2D curve, double dist) {
 		
@@ -79,11 +96,11 @@ public class BufferCalculator {
 			new CirculinearCurveArray2D<CirculinearContinuousCurve2D>();
 		
 		// compute parallel of each continuous part, and add it to the result
-		for(CirculinearContinuousCurve2D continuous : 
+		for (CirculinearContinuousCurve2D continuous : 
 			curve.getContinuousCurves()){
 			CirculinearContinuousCurve2D contParallel = 
 				createContinuousParallel(continuous, dist);
-			if(contParallel!=null)
+			if (contParallel != null)
 				parallels.addCurve(contParallel);
 		}
 		
@@ -149,7 +166,8 @@ public class BufferCalculator {
 		
 		// Create a new circulinear continuous curve with the set of parallel
 		// curves
-		return PolyCirculinearCurve2D.create(parallelCurves, curve.isClosed());
+		return PolyCirculinearCurve2D.create(parallelCurves, 
+				curve.isClosed());
 	}
 	
 	private Collection<CirculinearContinuousCurve2D> getParallelElements(
@@ -171,7 +189,7 @@ public class BufferCalculator {
 			new ArrayList<CirculinearContinuousCurve2D> ();
 
 		// check if curve is empty
-		if(!iterator.hasNext())
+		if (!iterator.hasNext())
 			return parallelCurves;
 
 		// add parallel to the first curve
@@ -179,16 +197,16 @@ public class BufferCalculator {
 		CirculinearElement2D parallel = current.getParallel(dist);
 		parallelCurves.add(parallel);
 
-		// iterate on circu-linear element couples
+		// iterate on circulinear element couples
 		CirculinearContinuousCurve2D join;
-		while(iterator.hasNext()){
+		while (iterator.hasNext()){
 			// update the couple of circulinear elements
 			previous = current;
 			current = iterator.next();
 
 			// add circle arc between the two curve elements
 			join = joinFactory.createJoin(previous, current, dist);
-			if (join.getLength()>0)
+			if (join.getLength() > 0)
 				parallelCurves.add(join);
 			
 			// add parallel to set of parallels
@@ -196,12 +214,12 @@ public class BufferCalculator {
 		}
 
 		// Add eventually a circle arc to close the parallel curve
-		if(curve.isClosed()) {
+		if (curve.isClosed()) {
 			previous = current;
 			current = elements.iterator().next();
 			
 			join = joinFactory.createJoin(previous, current, dist);
-			if (join.getLength()>0)
+			if (join.getLength() > 0)
 				parallelCurves.add(join);
 		}
 
@@ -210,7 +228,7 @@ public class BufferCalculator {
 	
 	/**
 	 * Compute the buffer of a circulinear curve.<p>
-	 * The algorithm is as folow:
+	 * The algorithm is as follow:
 	 * <ol>
 	 * <li> split the curve into a set of curves without self-intersections
 	 * <li> for each splitted curve, compute the contour of its buffer
@@ -227,12 +245,12 @@ public class BufferCalculator {
 			new ArrayList<CirculinearContour2D>();
 		
 		// iterate on all continuous curves
-		for(CirculinearContinuousCurve2D cont : curve.getContinuousCurves()) {
+		for (CirculinearContinuousCurve2D cont : curve.getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
-			for(CirculinearContinuousCurve2D splitted : 
+			for (CirculinearContinuousCurve2D splitted : 
 				CirculinearCurve2DUtils.splitContinuousCurve(cont)) {
 				// compute the rings composing the simple curve buffer
-				contours.addAll(computeBufferSimpleContour(splitted, dist));
+				contours.addAll(computeBufferSimpleCurve(splitted, dist));
 			}
 		}
 		
@@ -243,17 +261,17 @@ public class BufferCalculator {
 		// Remove contours that cross or that are too close from base curve
 		ArrayList<CirculinearContour2D> contours2 = 
 			new ArrayList<CirculinearContour2D>(contours.size());
-		for(CirculinearContour2D contour : contours) {
+		for (CirculinearContour2D contour : contours) {
 			
 			// do not keep contours which cross original curve
-			if(CirculinearCurve2DUtils.findIntersections(curve, contour).size()>0)
+			if (CirculinearCurve2DUtils.findIntersections(curve, contour).size() > 0)
 				continue;
 			
 			// check that vertices of contour are not too close from original
 			// curve
 			double distCurves = 
 				getDistanceCurveSingularPoints(curve, contour);
-			if(distCurves<dist-Shape2D.ACCURACY)
+			if(distCurves < dist-Shape2D.ACCURACY)
 				continue;
 			
 			// keep the contours that meet the above conditions
@@ -277,8 +295,8 @@ public class BufferCalculator {
 			new ArrayList<CirculinearContour2D>(set.getPointNumber());
 		
 		// for each point, add a new circle
-		for(Point2D point : set) {
-			contours.add(new Circle2D(point, Math.abs(dist), dist>0));
+		for (Point2D point : set) {
+			contours.add(new Circle2D(point, Math.abs(dist), dist > 0));
 		}
 		
 		// process circles to remove intersections
@@ -287,13 +305,13 @@ public class BufferCalculator {
 		// Remove contours that cross or that are too close from base curve
 		ArrayList<CirculinearContour2D> contours2 = 
 			new ArrayList<CirculinearContour2D>(contours.size());
-		for(CirculinearContour2D ring : contours) {
+		for (CirculinearContour2D ring : contours) {
 			
 			// check that vertices of contour are not too close from original
 			// curve
 			double minDist = CirculinearCurve2DUtils.getDistanceCurvePoints(
 					ring, set.getPoints());
-			if(minDist<dist-Shape2D.ACCURACY)
+			if(minDist < dist-Shape2D.ACCURACY)
 				continue;
 			
 			// keep the contours that meet the above conditions
@@ -305,119 +323,35 @@ public class BufferCalculator {
 	}
 
 	/**
-	 * Computes the rings that form the buffer of a continuous circulinear
-	 * curve that does not self-intersect.
+	 * Computes the buffer of a simple curve.
+	 * This method should replace the method 'computeBufferSimpleContour'.
 	 */
-	public Collection<? extends CirculinearContour2D> 
-	computeBufferSimpleContour(CirculinearContinuousCurve2D curve, double d) {
-		
-		Collection<CirculinearContinuousCurve2D> parallels = 
-			createFreeParallels(curve, d);
+	private Collection<? extends CirculinearContour2D> 
+	computeBufferSimpleCurve(CirculinearContinuousCurve2D curve, double d) {
 		
 		Collection<CirculinearContour2D> contours = 
-			createContoursFromParallels(curve, parallels);
+			new ArrayList<CirculinearContour2D>(2);
+
+		// the parallel in each side
+		CirculinearContinuousCurve2D parallel1, parallel2;
+		parallel1 = createContinuousParallel(curve, d);
+		parallel2 = createContinuousParallel(curve, -d).getReverseCurve();
 		
+		if (curve.isClosed()) {
+			// each parallel is itself a contour
+			contours.add(convertCurveToBoundary(parallel1));
+			contours.add(convertCurveToBoundary(parallel2));
+		} else {
+			// create a new contour from the two parallels and 2 caps
+			contours.addAll(createSingleContourFromTwoParallels(parallel1, parallel2));
+		}
+				
 		// some contours may intersect, so we split them
 		Collection<CirculinearContour2D> contours2 =
 			removeIntersectingContours(contours, curve, d);
 
 		// return the set of created contours
 		return contours2;
-	}
-	
-	/**
-	 * Compute the 2 parallels of a given circulinear curve, process
-	 * self-intersections, and remove parallel pieces that cross the original
-	 * curve.
-	 */
-	private Collection<CirculinearContinuousCurve2D> createFreeParallels(
-			CirculinearContinuousCurve2D curve, double d) {
-		
-		// the parallel in each side
-		CirculinearContinuousCurve2D parallel1, parallel2;
-		parallel1 = curve.getParallel(d);
-		parallel2 = curve.getParallel(-d).getReverseCurve();
-		
-		// split each parallel into continuous curves
-		ArrayList<CirculinearContinuousCurve2D> curves =
-			new ArrayList<CirculinearContinuousCurve2D>();
-		
-		// select only curve parts which do not cross original curve
-		for(CirculinearContinuousCurve2D split : CirculinearCurve2DUtils.splitContinuousCurve(parallel1)) {
-			if(CirculinearCurve2DUtils.findIntersections(curve, split).size()==0)
-				curves.add(split);
-		}
-		for(CirculinearContinuousCurve2D split : CirculinearCurve2DUtils.splitContinuousCurve(parallel2)) {
-			if(CirculinearCurve2DUtils.findIntersections(curve, split).size()==0)
-				curves.add(split);
-		}
-		
-		return curves;
-	}
-
-	/**
-	 * Generate a set of contour from a set of parallels. If the curve is
-	 * closed, return 2 contours. Otherwise, return only one contours, that
-	 * can possibly self-intersect.
-	 */
-	private Collection<CirculinearContour2D> createContoursFromParallels(
-			CirculinearContinuousCurve2D curve, 
-			Collection<CirculinearContinuousCurve2D> parallels) {
-		// create array for storing result
-		ArrayList<CirculinearContour2D> contours = 
-			new ArrayList<CirculinearContour2D>();
-		
-		// If the original curve is closed, create a new contour from each
-		// parallel curve
-		if(curve.isClosed()){
-			for(CirculinearContinuousCurve2D continuous : parallels) {
-				contours.add(convertCurveToBoundary(continuous));
-			}
-			return contours;
-		} 
-		
-		return createContoursFromParallels(parallels);
-	}
-	
-	/**
-	 * Creates the unique contour based on two parallels of the base curve, by
-	 * adding appropriate circle arcs at extremities of the base curve.
-	 */
-	private Collection<CirculinearContour2D> 
-	createContoursFromParallels(
-			Collection<CirculinearContinuousCurve2D> parallels) {
-		
-		// create array for storing result
-		ArrayList<CirculinearContour2D> contours = 
-			new ArrayList<CirculinearContour2D>();
-		
-		// There should be only 2 curves in the list 'curves' that are
-		// not rings
-		CirculinearContinuousCurve2D curve1=null;
-		CirculinearContinuousCurve2D curve2=null;
-
-		for(CirculinearContinuousCurve2D continuous : parallels) {
-			if(continuous.isClosed()){
-				// simply adds a new ring by using same elements
-				contours.add(convertCurveToBoundary(continuous));
-			} else {
-				if(curve1==null){
-					curve1 = continuous;
-				} else if (curve2==null) {
-					curve2 = continuous;
-				} else {
-					//TODO: throw exception instead of this ugly error management
-					System.err.println("more than 2 free curves....");
-					return contours;
-				}
-			}
-		}
-
-		if(curve1!=null && curve2!=null) {
-			contours.addAll(createSingleContourFromTwoParallels(curve1, curve2));
-		}
-		
-		return contours;
 	}
 	
 	/**
@@ -436,7 +370,7 @@ public class BufferCalculator {
 		CirculinearContinuousCurve2D cap;
 		
 		// create new ring using two open curves and two circle arcs
-		if(curve1!=null && curve2!=null){
+		if (curve1 != null && curve2 != null){
 			// array of elements for creating new ring.
 			ArrayList<CirculinearElement2D> elements = 
 				new ArrayList<CirculinearElement2D>();
@@ -468,6 +402,7 @@ public class BufferCalculator {
 
 				// create the last ring
 				contours.add(new GenericCirculinearRing2D(elements));
+				
 			} else if (b1 && !b0) {
 				// case of a curve starting at a point and finishing at
 				// the infinity
@@ -518,9 +453,9 @@ public class BufferCalculator {
 			new ArrayList<CirculinearContour2D>();
 
 		// iterate on the set of rings
-		for(CirculinearContour2D contour : contours)
+		for (CirculinearContour2D contour : contours)
 			// split rings into curves which do not self-intersect
-			for(CirculinearContinuousCurve2D splitted : 
+			for (CirculinearContinuousCurve2D splitted : 
 				CirculinearCurve2DUtils.splitContinuousCurve(contour)) {
 				
 				// compute distance to original curve
@@ -530,7 +465,7 @@ public class BufferCalculator {
 						curve, splitted.getSingularPoints());
 				
 				// check if distance condition is verified
-				if(dist-d<-Shape2D.ACCURACY)
+				if (dist-d < -Shape2D.ACCURACY)
 					continue;
 				
 				// convert the set of elements to a Circulinear ring
