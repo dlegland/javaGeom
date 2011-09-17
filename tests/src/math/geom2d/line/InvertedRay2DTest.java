@@ -32,6 +32,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShape2DException;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.Domain2D;
 import junit.framework.TestCase;
 
 
@@ -48,6 +49,18 @@ public class InvertedRay2DTest extends TestCase {
 		super(arg0);
 	}
 
+	public void testGetBufferDouble() {
+    	Point2D p1 = new Point2D(10, 10);
+    	Point2D p2 = new Point2D(20, 30);
+    	InvertedRay2D ray = new InvertedRay2D(p1, p2);
+		
+    	double dist = 5;
+    	Domain2D buffer = ray.getBuffer(dist);
+    	
+    	assertFalse(buffer.isEmpty());
+    	assertFalse(buffer.isBounded());
+	}
+	
     public void testGetParallelDouble() {
     	Point2D p1 = new Point2D(1, 1);
     	Point2D p2 = new Point2D(1, 3);

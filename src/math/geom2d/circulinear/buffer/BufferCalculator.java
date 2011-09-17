@@ -385,10 +385,10 @@ public class BufferCalculator {
 				new ArrayList<CirculinearElement2D>();
 
 			// some shortcuts for computing infinity of curve
-			boolean b0 = Curve2DUtils.isLeftInfinite(curve1);
-			boolean b1 = Curve2DUtils.isRightInfinite(curve1);
+			boolean b0 = !Curve2DUtils.isLeftInfinite(curve1);
+			boolean b1 = !Curve2DUtils.isRightInfinite(curve1);
 
-			if (!b0 && !b1) {
+			if (b0 && b1) {
 					// case of a curve finite at each extremity
 
 					// extremity points
@@ -408,7 +408,7 @@ public class BufferCalculator {
 					// create the last ring
 					contours.add(new GenericCirculinearRing2D(elements));
 					
-			} else if (b0 && b1) {
+			} else if (!b0 && !b1) {
 				// case of an infinite curve at both extremities
 				// In this case, the two parallel curves do not join,
 				// and are added as contours individually					
