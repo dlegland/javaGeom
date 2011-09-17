@@ -1,5 +1,5 @@
 /*
- * File : geom2dTests.java
+ * File : AllTests.java
  *
  * Project : geometry
  *
@@ -24,7 +24,7 @@
  * author : Legland
  * Created on 30 déc. 2003
  */
-package math.geom2d;
+package math.geom2d.circulinear.buffer;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -32,24 +32,19 @@ import junit.framework.TestSuite;
 /**
  * @author Legland
  */
-public class geom2dTests {
+public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Tests for package math.geom2d");
+		TestSuite suite = new TestSuite("Test for math.geom2d.circulinear");
 		//$JUnit-BEGIN$
-		suite.addTest(math.geom2d.AllTests.suite());
-		suite.addTest(math.geom2d.circulinear.AllTests.suite());
-		suite.addTest(math.geom2d.circulinear.buffer.AllTests.suite());
-		suite.addTest(math.geom2d.conic.AllTests.suite());
-		suite.addTest(math.geom2d.curve.AllTests.suite());
-		suite.addTest(math.geom2d.domain.AllTests.suite());
-		suite.addTest(math.geom2d.line.AllTests.suite());
-        suite.addTest(math.geom2d.point.AllTests.suite());
-        suite.addTest(math.geom2d.polygon.AllTests.suite());
-        suite.addTest(math.geom2d.polygon.convhull.AllTests.suite());
-		suite.addTest(math.geom2d.spline.AllTests.suite());
-		suite.addTest(math.geom2d.transform.AllTests.suite());
-		//$JUnit-END$
+		suite.addTest(new TestSuite(ButtCapFactoryTest.class));
+		suite.addTest(new TestSuite(BevelJoinFactoryTest.class));
+		suite.addTest(new TestSuite(MiterJoinFactoryTest.class));
+		suite.addTest(new TestSuite(RoundCapFactoryTest.class));
+		suite.addTest(new TestSuite(RoundJoinFactoryTest.class));
+		suite.addTest(new TestSuite(SquareCapFactoryTest.class));
+		suite.addTest(new TestSuite(TriangleCapFactoryTest.class));
+        //$JUnit-END$
 		return suite;
 	}
 }
