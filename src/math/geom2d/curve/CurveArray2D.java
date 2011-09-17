@@ -378,6 +378,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * Computes the set of singular points as the set of singular points
      * of each curve, plus the extremities of each curve.
      * Each point is referenced only once.
+     * @see #getVertices()
      */
     public Collection<Point2D> getSingularPoints() {
     	// create array for result
@@ -417,6 +418,15 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     	}
     	pointSet.add(point);
     }
+
+    /**
+     * Implementation of getVertices() for curve returns the same result as 
+     * the method getSingularPoints().
+     * @see #getSingularPoints()
+     */
+	public Collection<Point2D> getVertices() {
+		return this.getSingularPoints();
+	}
 
     public boolean isSingular(double pos) {
         if (Math.abs(pos-Math.round(pos))<Shape2D.ACCURACY)

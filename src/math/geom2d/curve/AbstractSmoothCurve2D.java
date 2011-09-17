@@ -53,6 +53,20 @@ implements SmoothCurve2D, Cloneable {
 		return new ArrayList<Point2D>(0);
 	}
 
+	/** 
+	 * Returns a set of Point2D, containing the extremities of the curve 
+	 * if they are not infinite. 
+	 * @see math.geom2d.curve.Curve2D#getVertices()
+	 */
+	public Collection<Point2D> getVertices() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(2);
+		if (!Double.isInfinite(this.getT0()))
+			array.add(this.getFirstPoint());
+		if (!Double.isInfinite(this.getT1()))
+			array.add(this.getLastPoint());
+		return array;
+	}
+
 	/**
 	 * Returns always false, as a smooth curve does not have singular points
 	 * by definition.
