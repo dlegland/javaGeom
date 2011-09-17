@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
+import math.geom2d.line.LineSegment2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -15,6 +16,23 @@ import math.geom2d.polygon.Polyline2D;
  */
 public class ButtCapFactoryTest extends TestCase {
 
+	public void testGetBufferLineSegment () {
+
+		LineSegment2D curve = new LineSegment2D(
+				new Point2D(100, 100), 
+				new Point2D(200, 100));
+		
+		BufferCalculator bc1 = new BufferCalculator(
+				new BevelJoinFactory(), new ButtCapFactory());
+		Domain2D domain = bc1.computeBuffer(curve, 50);
+
+		assertTrue(domain.isBounded());
+		assertFalse(domain.isEmpty());
+		
+		Boundary2D boundary = domain.getBoundary();
+		assertEquals(1, boundary.getBoundaryCurves().size());
+	}
+	
 	public void testGetBufferPolyline () {
 		Polyline2D curve = new Polyline2D(new Point2D[]{
 				new Point2D(50, 50), 
