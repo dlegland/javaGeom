@@ -16,6 +16,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.point.PointSet2D;
 
@@ -231,7 +232,7 @@ public class BufferCalculator {
 	 * The algorithm is as follow:
 	 * <ol>
 	 * <li> split the curve into a set of curves without self-intersections
-	 * <li> for each splitted curve, compute the contour of its buffer
+	 * <li> for each split curve, compute the contour of its buffer
 	 * <li> split self-intersecting contours into set of disjoint contours
 	 * <li> split all contour which intersect each other to disjoint contours
 	 * <li> remove contours which are too close from the original curve
@@ -261,10 +262,33 @@ public class BufferCalculator {
 		// Remove contours that cross or that are too close from base curve
 		ArrayList<CirculinearContour2D> contours2 = 
 			new ArrayList<CirculinearContour2D>(contours.size());
+		Collection<Point2D> intersects;
+		Collection<Point2D> vertices;
+		
 		for (CirculinearContour2D contour : contours) {
 			
 			// do not keep contours which cross original curve
-			if (CirculinearCurve2DUtils.findIntersections(curve, contour).size() > 0)
+			intersects = CirculinearCurve2DUtils.findIntersections(curve, contour);
+			
+			// remove intersection points that are vertices of the reference curve
+			vertices = curve.getSingularPoints();
+			for (ContinuousCurve2D cont : curve.getContinuousCurves()) {
+				if (cont.isClosed())
+					continue;
+				if (!Curve2DUtils.isLeftInfinite(curve)) {
+					Point2D p0 = curve.getFirstPoint();
+					if (!vertices.contains(p0))
+						vertices.add(p0);
+				}
+				if (!Curve2DUtils.isRightInfinite(curve)) {
+					Point2D p1 = curve.getLastPoint();
+					if (!vertices.contains(p1))
+						vertices.add(p1);
+				}
+			}
+			intersects.removeAll(vertices);
+			
+			if (intersects.size() > 0)
 				continue;
 			
 			// check that vertices of contour are not too close from original
@@ -281,8 +305,7 @@ public class BufferCalculator {
 		// All the rings are created, we can now create a new domain with the
 		// set of rings
 		return new GenericCirculinearDomain2D(
-				new CirculinearContourArray2D<CirculinearContour2D>(
-						contours2));
+				CirculinearContourArray2D.create(contours2));
 	}
 	
 	/**
@@ -379,7 +402,27 @@ public class BufferCalculator {
 			boolean b0 = Curve2DUtils.isLeftInfinite(curve1);
 			boolean b1 = Curve2DUtils.isRightInfinite(curve1);
 
-			if (b0 && b1) {
+			if (!b0 && !b1) {
+					// case of a curve finite at each extremity
+
+					// extremity points
+					Point2D p11 = curve1.getFirstPoint();
+					Point2D p12 = curve1.getLastPoint();
+					Point2D p21 = curve2.getFirstPoint();
+					Point2D p22 = curve2.getLastPoint();
+
+					// Check how to associate open curves and circle arcs
+					elements.addAll(curve1.getSmoothPieces());					
+					cap = capFactory.createCap(p12, p21);
+					elements.addAll(cap.getSmoothPieces());
+					elements.addAll(curve2.getSmoothPieces());
+					cap = capFactory.createCap(p22, p11);
+					elements.addAll(cap.getSmoothPieces());
+					
+					// create the last ring
+					contours.add(new GenericCirculinearRing2D(elements));
+					
+			} else if (b0 && b1) {
 				// case of an infinite curve at both extremities
 				// In this case, the two parallel curves do not join,
 				// and are added as contours individually					
@@ -420,25 +463,6 @@ public class BufferCalculator {
 				// create the last contour
 				contours.add(new GenericCirculinearRing2D(elements));
 
-			} else {
-				// case of a curve finite at each extremity
-
-				// extremity points
-				Point2D p11 = curve1.getFirstPoint();
-				Point2D p12 = curve1.getLastPoint();
-				Point2D p21 = curve2.getFirstPoint();
-				Point2D p22 = curve2.getLastPoint();
-
-				// Check how to associate open curves and circle arcs
-				elements.addAll(curve1.getSmoothPieces());					
-				cap = capFactory.createCap(p12, p21);
-				elements.addAll(cap.getSmoothPieces());
-				elements.addAll(curve2.getSmoothPieces());
-				cap = capFactory.createCap(p22, p11);
-				elements.addAll(cap.getSmoothPieces());
-				
-				// create the last ring
-				contours.add(new GenericCirculinearRing2D(elements));
 			}
 		}
 		
@@ -501,7 +525,7 @@ public class BufferCalculator {
 		Collection<Point2D> points = curve.getSingularPoints();
 		
 		// If no singular point, choose an arbitrary point on the curve
-		if(points.isEmpty()) {
+		if (points.isEmpty()) {
 			points = new ArrayList<Point2D>();
 			double t = Curve2DUtils.choosePosition(curve.getT0(), curve.getT1());
 			points.add(curve.getPoint(t));
@@ -509,7 +533,7 @@ public class BufferCalculator {
 		
 		// Iterate on points to get minimal distance
 		double minDist = Double.MAX_VALUE;
-		for(Point2D point : points){
+		for (Point2D point : points){
 			minDist = Math.min(minDist, ref.getDistance(point));
 		}
 		return minDist;
