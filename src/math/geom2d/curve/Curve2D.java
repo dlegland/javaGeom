@@ -104,9 +104,19 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns a set of singular points, i. e. which do not locally admit
      * derivative.
      * 
+     * @see #getVertices
      * @return a collection of Point2D.
      */
     public abstract Collection<Point2D> getSingularPoints();
+
+    /**
+     * Returns the set of vertices for this curve. Vertices can be either 
+     * singular points, or extremities.
+     * 
+     * @see #getSingularPoints
+     * @return a collection of Point2D.
+     */
+    public abstract Collection<Point2D> getVertices();
 
     /**
      * Checks if a point is singular.

@@ -16,7 +16,6 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.point.PointSet2D;
 
@@ -272,20 +271,7 @@ public class BufferCalculator {
 			
 			// remove intersection points that are vertices of the reference curve
 			vertices = curve.getSingularPoints();
-			for (ContinuousCurve2D cont : curve.getContinuousCurves()) {
-				if (cont.isClosed())
-					continue;
-				if (!Curve2DUtils.isLeftInfinite(curve)) {
-					Point2D p0 = curve.getFirstPoint();
-					if (!vertices.contains(p0))
-						vertices.add(p0);
-				}
-				if (!Curve2DUtils.isRightInfinite(curve)) {
-					Point2D p1 = curve.getLastPoint();
-					if (!vertices.contains(p1))
-						vertices.add(p1);
-				}
-			}
+			vertices = curve.getVertices();
 			intersects.removeAll(vertices);
 			
 			if (intersects.size() > 0)
