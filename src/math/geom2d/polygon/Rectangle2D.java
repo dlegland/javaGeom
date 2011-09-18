@@ -277,7 +277,35 @@ public class Rectangle2D implements Polygon2D {
         return rings;
     }
 
-	// ===================================================================
+    // Centroid and area
+    /**
+     * Computes area of the polygon, by returning the absolute value of the
+     * signed area.
+     * @since 0.9.1
+     */
+    public double getArea() {
+        return Math.abs(this.getSignedArea());
+    }
+
+    /**
+     * Computes the signed area of the polygon. 
+     * @return the signed area of the polygon.
+     * @since 0.9.1
+     */
+    public double getSignedArea() {
+    	return Polygon2DUtils.computeSignedArea(this);
+    }
+
+    /**
+     * Computes the centroid (center of mass) of the polygon. 
+     * @return the centroid of the polygon
+     * @since 0.9.1
+     */
+    public Point2D getCentroid() {
+    	return Polygon2DUtils.computeCentroid(this);
+    }
+    
+    // ===================================================================
     // methods inherited from Domain2D interface
 
 	/* (non-Javadoc)
