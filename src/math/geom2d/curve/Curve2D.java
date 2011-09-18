@@ -152,7 +152,7 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract Collection<Point2D> getIntersections(LinearShape2D line);
 
     /**
-     * Returns the curve with same trace on the plane with parametrization in
+     * Returns the curve with same trace on the plane with parameterization in
      * reverse order.
      */
     public abstract Curve2D getReverseCurve();
@@ -194,7 +194,7 @@ public interface Curve2D extends Shape2D, Cloneable {
     /**
      * Draws the curve on the given Graphics2D object.
      * 
-     * @param g2 the graphics to draw the curve
+     * @param g2 the graphics to draw the curve in
      * @since 0.6.3
      */
     public abstract void draw(Graphics2D g2);

@@ -37,6 +37,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.circulinear");
 		//$JUnit-BEGIN$
+		suite.addTest(new TestSuite(BufferCalculatorTest.class));
 		suite.addTest(new TestSuite(ButtCapFactoryTest.class));
 		suite.addTest(new TestSuite(BevelJoinFactoryTest.class));
 		suite.addTest(new TestSuite(MiterJoinFactoryTest.class));
