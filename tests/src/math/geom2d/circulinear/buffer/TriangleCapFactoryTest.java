@@ -33,7 +33,7 @@ public class TriangleCapFactoryTest extends TestCase {
 		assertFalse(domain.isEmpty());
 		
 		Boundary2D boundary = domain.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 
 }

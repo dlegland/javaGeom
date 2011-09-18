@@ -335,7 +335,7 @@ public class BufferCalculatorTest extends TestCase {
 
 		Boundary2D boundary = buffer.getBoundary();
 
-		assertEquals(2, boundary.getBoundaryCurves().size());
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 
 	public void testComputeBuffer_BiRay() {
@@ -384,7 +384,7 @@ public class BufferCalculatorTest extends TestCase {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		CirculinearDomain2D buffer = bc.computeBuffer(set, 10);
 		CirculinearBoundary2D boundary = buffer.getBoundary();
-		assertEquals(4, boundary.getBoundaryCurves().size());
+		assertEquals(4, boundary.getContinuousCurves().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingLines() {
@@ -405,7 +405,7 @@ public class BufferCalculatorTest extends TestCase {
 
 		Boundary2D boundary = buffer.getBoundary();
 
-		assertEquals(4, boundary.getBoundaryCurves().size());
+		assertEquals(4, boundary.getContinuousCurves().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingRays() {
@@ -424,7 +424,7 @@ public class BufferCalculatorTest extends TestCase {
 
 		Boundary2D boundary = buffer.getBoundary();
 
-		assertEquals(2, boundary.getBoundaryCurves().size());
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 
 	public void testComputeBuffer_PolyRay() {
@@ -452,6 +452,6 @@ public class BufferCalculatorTest extends TestCase {
 
 		Boundary2D boundary = buffer.getBoundary();
 
-		assertEquals(2, boundary.getBoundaryCurves().size());
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 }

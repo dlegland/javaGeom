@@ -29,6 +29,7 @@ package math.geom2d.domain;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -94,12 +95,16 @@ implements Boundary2D {
     // ===================================================================
     // Methods implementing Boundary2D interface
 
-    public Collection<Contour2D> getBoundaryCurves() {
-        ArrayList<Contour2D> list = 
-        	new ArrayList<Contour2D>(curves.size());
-        for (Curve2D curve : this.curves)
-            list.add((Contour2D) curve);
-        return list;
+    /**
+     * @deprecated replaced by getContinuousCurves
+     */
+    @Deprecated
+    public Collection<? extends Contour2D> getBoundaryCurves() {
+    	return this.getContinuousCurves();
+    }
+
+    public Collection<? extends T> getContinuousCurves() {
+    	return Collections.unmodifiableCollection(this.curves);
     }
 
     public Domain2D getDomain() {

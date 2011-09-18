@@ -30,7 +30,14 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2D;
+import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShape2DException;
+import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
@@ -322,7 +329,14 @@ implements Contour2D, Conic2D, Cloneable {
     // ==========================================================
     // methods implementing the ContinuousCurve2D interface
 
-    /**
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
+	 */
+	public Collection<? extends Parabola2D> getContinuousCurves() {
+		return wrapCurve(this);
+	}
+	
+   /**
      * Returns false, as a parabola is an open curve.
      */
     public boolean isClosed() {

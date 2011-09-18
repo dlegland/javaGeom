@@ -37,7 +37,7 @@ public class MiterJoinFactoryTest extends TestCase {
 		assertFalse(domain.isEmpty());
 		
 		Boundary2D boundary = domain.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 
 	public void testGetBufferLinearRing () {
@@ -57,7 +57,7 @@ public class MiterJoinFactoryTest extends TestCase {
 		assertFalse(domain.isEmpty());
 		
 		Boundary2D boundary = domain.getBoundary();
-		assertEquals(2, boundary.getBoundaryCurves().size());
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 	
 	/**

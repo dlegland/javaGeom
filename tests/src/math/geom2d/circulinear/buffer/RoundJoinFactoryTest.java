@@ -27,7 +27,7 @@ public class RoundJoinFactoryTest extends TestCase {
 		assertFalse(domain.isEmpty());
 		
 		Boundary2D boundary = domain.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 
 	public void testGetBufferLinearRing () {
@@ -47,7 +47,7 @@ public class RoundJoinFactoryTest extends TestCase {
 		assertFalse(domain.isEmpty());
 		
 		Boundary2D boundary = domain.getBoundary();
-		assertEquals(2, boundary.getBoundaryCurves().size());
+		assertEquals(2, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetParallels_SmallAnglePolyline() {
@@ -60,7 +60,7 @@ public class RoundJoinFactoryTest extends TestCase {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		Domain2D buffer = bc.computeBuffer(polyline, dist);
 		
-		assertEquals(1, buffer.getBoundary().getBoundaryCurves().size());
+		assertEquals(1, buffer.getBoundary().getContinuousCurves().size());
 	}
 
 

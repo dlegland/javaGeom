@@ -202,7 +202,7 @@ public class SimplePolygon2DTest extends TestCase {
     	
     	CirculinearDomain2D buffer = polygon.getBuffer(10);
     	Boundary2D boundary = buffer.getBoundary();
-    	assertEquals(1, boundary.getBoundaryCurves().size());
+    	assertEquals(1, boundary.getContinuousCurves().size());
     }
 	
     public void testGetBuffer_MutipleVertices() {
@@ -216,7 +216,7 @@ public class SimplePolygon2DTest extends TestCase {
     	
     	CirculinearDomain2D buffer = polygon.getBuffer(10);
     	Boundary2D boundary = buffer.getBoundary();
-    	assertEquals(1, boundary.getBoundaryCurves().size());
+    	assertEquals(1, boundary.getContinuousCurves().size());
     }
 	
     public void testClipBox2D_inside() {

@@ -127,7 +127,7 @@ public class LinearRing2DTest extends TestCase {
 		
 		// should have 1 outer and 2 inner boundaries
 		// Fails for the moment
-		assertEquals(3, boundary.getBoundaryCurves().size());
+		assertEquals(3, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetBuffer_SelfIntersect() {
@@ -162,7 +162,7 @@ public class LinearRing2DTest extends TestCase {
 		
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());
-		assertEquals(2, buffer.getBoundary().getBoundaryCurves().size());
+		assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
 	}
 
 	public void testGetLength() {

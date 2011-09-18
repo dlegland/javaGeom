@@ -5,7 +5,6 @@
 package math.geom2d.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.Box2D;
@@ -125,14 +124,10 @@ public abstract class Boundary2DUtils {
         CurveArray2D<ContinuousOrientedCurve2D> curveSet = 
         	new CurveArray2D<ContinuousOrientedCurve2D>();
 
-        // extract the oriented curves which constitutes the boundary
-        Collection<? extends Contour2D> boundaryCurves = 
-        	boundary.getBoundaryCurves();
-
         // Iterate on boundary curves: extract current curve (continuous and
         // oriented), clip it with box, and add clipped curves to the array
         // 'curveSet'
-        for (Contour2D boundaryCurve : boundaryCurves) {
+        for (Contour2D boundaryCurve : boundary.getContinuousCurves()) {
             clipped = Boundary2DUtils.clipContinuousOrientedCurve(
                     boundaryCurve, box);
 

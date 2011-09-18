@@ -16,7 +16,7 @@ public class PointArray2DTest extends TestCase {
 		
 		Domain2D buffer = set.getBuffer(5);
 		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(3, boundary.getBoundaryCurves().size());
+		assertEquals(3, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetBuffer_Merge() {
@@ -27,7 +27,7 @@ public class PointArray2DTest extends TestCase {
 		
 		Domain2D buffer = set.getBuffer(10);
 		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class PointArray2DTest extends TestCase {
 		
 		Domain2D buffer = set.getBuffer(10);
 		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetDistancePoint2D() {
