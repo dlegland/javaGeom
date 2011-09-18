@@ -72,6 +72,9 @@ public interface Polygon2D extends CirculinearDomain2D {
      */
     public Collection<? extends LinearRing2D> getRings();
 
+    public Point2D getCentroid();
+    public double getArea();
+    public double getSignedArea();
     
     // ===================================================================
     // methods inherited from the Domain2D interface
