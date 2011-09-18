@@ -109,7 +109,7 @@ public class Polyline2DTest extends TestCase {
 		
 		Domain2D buffer = polyline.getBuffer(dist);
 		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetBufferDouble_MultipleVertex() {
@@ -123,7 +123,7 @@ public class Polyline2DTest extends TestCase {
 		
 		Domain2D buffer = polyline.getBuffer(dist);
 		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetParallels_SmallAnglePolyline() {
@@ -136,7 +136,7 @@ public class Polyline2DTest extends TestCase {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		Domain2D buffer = bc.computeBuffer(polyline, dist);
 		
-		assertEquals(1, buffer.getBoundary().getBoundaryCurves().size());
+		assertEquals(1, buffer.getBoundary().getContinuousCurves().size());
 	}
 
 
@@ -150,7 +150,7 @@ public class Polyline2DTest extends TestCase {
 		Domain2D buffer = polyline.getBuffer(dist);
 		Boundary2D boundary = buffer.getBoundary();
 		// Fails for the moment
-		assertEquals(1, boundary.getBoundaryCurves().size());
+		assertEquals(1, boundary.getContinuousCurves().size());
 	}
 	
 	public void testGetParallelDouble() {

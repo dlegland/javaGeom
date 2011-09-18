@@ -170,9 +170,9 @@ extends CirculinearContourArray2D<T> {
     // methods implementing the Curve2D interface
 
     @Override
-    public Collection<? extends CirculinearContour2D> getContinuousCurves() {
+    public Collection<T> getContinuousCurves() {
     	// create array for storing result
-    	ArrayList<T> result = new ArrayList<T>();
+    	ArrayList<T> result = new ArrayList<T>(curves.size());
 
     	// return the set of curves
     	result.addAll(curves);

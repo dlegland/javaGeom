@@ -173,7 +173,14 @@ implements SmoothContour2D, Cloneable {
     // ===================================================================
     // methods inherited from ContinuousCurve2D interface
 
-    /** Return false, by definition of Hyperbola branch */
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
+	 */
+	public Collection<? extends HyperbolaBranch2D> getContinuousCurves() {
+		return wrapCurve(this);
+	}
+
+	/** Return false, by definition of Hyperbola branch */
     public boolean isClosed() {
         return false;
     }

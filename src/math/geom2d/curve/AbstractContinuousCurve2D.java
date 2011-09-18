@@ -26,6 +26,9 @@ import math.geom2d.polygon.Polyline2D;
 public abstract class AbstractContinuousCurve2D 
 implements ContinuousCurve2D, Cloneable {
 
+	/**
+	 * Wrap the given curve into an array list with the appropriate generic.
+	 */
 	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
 		ArrayList<T> list = new ArrayList<T> (1);
 		list.add(curve);

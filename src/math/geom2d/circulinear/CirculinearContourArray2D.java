@@ -10,6 +10,7 @@ package math.geom2d.circulinear;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
@@ -166,14 +167,10 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
     // ===================================================================
     // methods implementing the Curve2D interface
 
+   
     @Override
-    public Collection<? extends CirculinearContour2D> getContinuousCurves() {
-    	// create array for storing result
-    	ArrayList<T> result = new ArrayList<T>();
-
-    	// return the set of curves
-    	result.addAll(curves);
-    	return result;
+    public Collection<T> getContinuousCurves() {
+    	return Collections.unmodifiableCollection(this.curves);
     }
 
 	@Override

@@ -420,7 +420,7 @@ public class Polygon2DUtilsTest extends TestCase {
     	Boundary2D boundary = domain.getBoundary();
     	assert(boundary != null);
     	
-    	assertEquals(1, boundary.getBoundaryCurves().size());
+    	assertEquals(1, boundary.getContinuousCurves().size());
     }
     	
 }

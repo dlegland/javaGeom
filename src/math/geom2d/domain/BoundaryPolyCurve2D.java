@@ -108,8 +108,14 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     /**
      * Returns a ArrayList<ContinuousBoundary2D> containing only
      * <code>this</code>.
+     * @deprecated use getContinuousCurves instead (0.9.1)
      */
+    @Deprecated
     public Collection<? extends Contour2D> getBoundaryCurves() {
+    	return wrapCurve(this);
+    }
+
+    public Collection<BoundaryPolyCurve2D<T>> getContinuousCurves() {
     	return wrapCurve(this);
     }
 
