@@ -17,6 +17,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.PointSet2D;
 
 
@@ -51,8 +52,8 @@ public class BufferCalculator {
     // ===================================================================
     // Class variables
 
-	private JoinFactory joinFactory = null;
-	private CapFactory capFactory = null;
+	private JoinFactory joinFactory;
+	private CapFactory capFactory;
 	
     // ===================================================================
     // Constructors
@@ -134,6 +135,10 @@ public class BufferCalculator {
 	public CirculinearContour2D createParallelContour(
 			CirculinearContour2D contour, double dist) {
 		
+		// straight line is already a circulinear contour
+		if (contour instanceof StraightLine2D) {
+			return ((StraightLine2D) contour).getParallel(dist);
+		} 
 		// The circle is already a circulinear contour
 		if (contour instanceof Circle2D) {
 			return ((Circle2D) contour).getParallel(dist);
@@ -166,8 +171,7 @@ public class BufferCalculator {
 		
 		// Create a new circulinear continuous curve with the set of parallel
 		// curves
-		return PolyCirculinearCurve2D.create(parallelCurves, 
-				curve.isClosed());
+		return PolyCirculinearCurve2D.create(parallelCurves, curve.isClosed());
 	}
 	
 	private Collection<CirculinearContinuousCurve2D> getParallelElements(

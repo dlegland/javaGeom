@@ -33,20 +33,17 @@ import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.polygon.LinearRing2D;
-import math.geom2d.polygon.Polyline2D;
 import math.geom2d.spline.CubicBezierCurve2D;
 
 public class CirculinearCurve2DUtilsTest extends TestCase {
@@ -67,7 +64,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		LineSegment2D seg1 = new LineSegment2D(p1, p2);
 		LineSegment2D seg2 = new LineSegment2D(p2, p3);
 		PolyCurve2D<LineSegment2D> curve = 
-			new PolyCurve2D<LineSegment2D>(new LineSegment2D[]{seg1, seg2});
+			PolyCurve2D.create(new LineSegment2D[]{seg1, seg2});
 		
 		conv = CirculinearCurve2DUtils.convert(curve);
 		assertTrue(conv instanceof PolyCirculinearCurve2D);
@@ -88,7 +85,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		CubicBezierCurve2D bezier = new CubicBezierCurve2D(
 				p3, new Point2D(0, 10), new Point2D(10, 50), new Point2D(20, 50));
 		PolyCurve2D<SmoothCurve2D> curve = 
-			new PolyCurve2D<SmoothCurve2D>(new SmoothCurve2D[]{seg1, seg2, bezier});
+			PolyCurve2D.create(new SmoothCurve2D[]{seg1, seg2, bezier});
 		
 		try {
 			CirculinearCurve2DUtils.convert(curve);
@@ -109,7 +106,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		LineSegment2D seg2 = new LineSegment2D(p2, p3);
 		
 		CurveArray2D<LineSegment2D> curve = 
-			new CurveArray2D<LineSegment2D>(new LineSegment2D[]{seg1, seg2});
+			CurveArray2D.create(new LineSegment2D[]{seg1, seg2});
 		
 		conv = CirculinearCurve2DUtils.convert(curve);
 		assertTrue(conv instanceof CirculinearCurveSet2D);
@@ -132,7 +129,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 				p3, new Point2D(0, 10), new Point2D(10, 50), new Point2D(20, 50));
 		
 		CurveArray2D<SmoothCurve2D> curve = 
-			new CurveArray2D<SmoothCurve2D>(new SmoothCurve2D[]{seg1, seg2, bezier});
+			CurveArray2D.create(new SmoothCurve2D[]{seg1, seg2, bezier});
 		
 		try {
 			CirculinearCurve2DUtils.convert(curve);
@@ -151,9 +148,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 				new Point2D(100, 150), new Point2D(100, 50));
 		
 		// create the curve
-		PolyCirculinearCurve2D<CirculinearElement2D> curve  = 
-			new PolyCirculinearCurve2D<CirculinearElement2D>(
-					new CirculinearElement2D[]{edge1, arc1, edge2} );
+		CirculinearContinuousCurve2D curve = PolyCirculinearCurve2D.create(		
+				new CirculinearElement2D[]{edge1, arc1, edge2} );
 		
 		// split the curve
 		Collection<CirculinearContinuousCurve2D> set = 
@@ -247,135 +243,6 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertTrue(points.contains(new Point2D(100, 100)));
 	}
 	
-	public void testGetParallelInfiniteCurve () {
-		// create an infinite curve, here a straight line
-		Point2D p0 = new Point2D(10, 20);
-		Vector2D v0 = new Vector2D(10, 20);
-		StraightLine2D line = StraightLine2D.create(p0, v0);
-		
-		// computes its parallel
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearContinuousCurve2D parallel =
-			bc.createContinuousParallel(line, 10);
-		
-		// check some assertions
-		assertFalse(parallel==null);
-		assertTrue(parallel.getContinuousCurves().size()==1);
-		assertFalse(parallel.isEmpty());
-		assertEquals(1, parallel.getSmoothPieces().size());
-	}
-	
-	public void testGetParallelBiRay () {
-		// first defines some constants
-		Point2D origin = new Point2D(10, 20);
-		Vector2D v1 = new Vector2D(2, 3);
-		Vector2D v2 = new Vector2D(3, 2);
-		
-		// create elements of the curve
-		InvertedRay2D ray1 = new InvertedRay2D(origin, v1);
-		Ray2D ray2 = new Ray2D(origin, v2);
-		
-		// create the curve
-		PolyCirculinearCurve2D<CirculinearElement2D> curve =
-			new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
-		
-		// computes the parallel
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearContinuousCurve2D parallel =
-			bc.createContinuousParallel(curve, 10);
-		assertFalse(parallel==null);
-		assertFalse(parallel.isEmpty());
-		assertEquals(3, parallel.getSmoothPieces().size());
-
-		// the same in opposite direction
-		CirculinearContinuousCurve2D parallel2 =
-			bc.createContinuousParallel(curve, 10);
-		assertFalse(parallel2==null);
-		assertFalse(parallel2.isEmpty());
-		assertEquals(3, parallel2.getSmoothPieces().size());
-		
-		Collection<CirculinearContinuousCurve2D> splittedCurves =
-			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
-		assertEquals(2, splittedCurves.size());
-	}
-
-	
-	
-	public void testGetParallel_LinearRing () {
-		// polyline with two edges, that are colinear
-		LinearRing2D curve = new LinearRing2D(new Point2D[]{
-				new Point2D(100, 100), 
-				new Point2D(200, 100), 
-				new Point2D(200, 200) });
-		
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearContinuousCurve2D parallel = 
-			bc.createContinuousParallel(curve, 20);
-		
-		assertFalse(parallel==null);
-		assertFalse(parallel.isEmpty());
-		assertEquals(6, parallel.getSmoothPieces().size());
-		assertTrue(parallel.isClosed());
-		
-		CirculinearContinuousCurve2D parallel2 = 
-			bc.createContinuousParallel(curve, -20);
-		
-		assertFalse(parallel2==null);
-		assertFalse(parallel2.isEmpty());
-		assertEquals(6, parallel2.getSmoothPieces().size());
-		assertTrue(parallel.isClosed());
-	}
-
-	public void testGetParallelColinearPolyline () {
-		// polyline with two edges, that are colinear
-		Polyline2D curve = new Polyline2D(new Point2D[]{
-				new Point2D(100, 100), 
-				new Point2D(150, 100), 
-				new Point2D(200, 100) });
-		
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearContinuousCurve2D parallel = 
-			bc.createContinuousParallel(curve, 20);
-		
-		assertFalse(parallel==null);
-		assertFalse(parallel.isEmpty());
-		assertEquals(2, parallel.getSmoothPieces().size());
-		
-		CirculinearContinuousCurve2D parallel2 = 
-			bc.createContinuousParallel(curve, -20);
-		
-		assertFalse(parallel2==null);
-		assertFalse(parallel2.isEmpty());
-		assertEquals(2, parallel2.getSmoothPieces().size());
-	}
-
-	public void testGetBufferInfiniteCurve () {
-		// create an infinite curve, here a straight line
-		Point2D p0 = new Point2D(10, 20);
-		Vector2D v0 = new Vector2D(10, 20);
-		StraightLine2D line = StraightLine2D.create(p0, v0);
-		
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-
-		// compute parallel
-		CirculinearContinuousCurve2D parallel =
-			bc.createContinuousParallel(line, 10);
-		assertFalse(parallel==null);
-		assertTrue(parallel.getContinuousCurves().size()==1);
-		assertFalse(parallel.isEmpty());
-		assertEquals(1, parallel.getSmoothPieces().size());
-		
-		// same in other direction
-		CirculinearContinuousCurve2D parallel2 =
-			bc.createContinuousParallel(line, -10);
-		assertFalse(parallel2==null);
-		assertTrue(parallel2.getContinuousCurves().size()==1);
-		assertFalse(parallel2.isEmpty());
-		assertEquals(1, parallel2.getSmoothPieces().size());		
-	}
-
 	public void testSplitContinuousCurveParallelBiRay () {
 		// first defines some constants
 		Point2D origin = new Point2D(10, 10);
@@ -407,71 +274,9 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(2, points.size());
 		
 		PointArray2D pointSet = PointArray2D.create(points);
-		assertTrue(pointSet.getDistance(new Point2D(18, 4))<Shape2D.ACCURACY);
-		assertTrue(pointSet.getDistance(new Point2D(4, 18))<Shape2D.ACCURACY);
+		assertTrue(pointSet.getDistance(new Point2D(18, 4)) < Shape2D.ACCURACY);
+		assertTrue(pointSet.getDistance(new Point2D(4, 18)) < Shape2D.ACCURACY);
 	}
 	
-	public void testGetBufferBiRay () {
-		// first defines some constants
-		Point2D origin = new Point2D(10, 20);
-		Vector2D v1 = new Vector2D(3, 4);
-		Vector2D v2 = new Vector2D(4, 3);
-		
-		// create elements of the curve
-		InvertedRay2D ray1 = new InvertedRay2D(origin, v1);
-		Ray2D ray2 = new Ray2D(origin, v2);
-		
-		// create the curve
-		PolyCirculinearCurve2D<CirculinearElement2D> curve =
-			new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
-		assertEquals(2, curve.getSmoothPieces().size());
 
-		// computes the buffer
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearDomain2D buffer = bc.computeBuffer(curve, 10);
-		assertNotNull(buffer);
-		assertFalse(buffer.isEmpty());
-		
-		
-		// Extract boundary of buffer
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(2, boundary.getContinuousCurves().size());
-	}
-	
-	public void testGetBufferColinearPolyline () {
-		// polyline with two edges, that are colinear
-		Polyline2D curve = Polyline2D.create(new Point2D[]{
-				new Point2D(100, 100), 
-				new Point2D(150, 100), 
-				new Point2D(200, 100) });
-		
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearDomain2D buffer = bc.computeBuffer(curve, 20);
-		
-		assertFalse(buffer==null);
-		assertFalse(buffer.isEmpty());
-	}
-		
-	public void testGetBufferTwoLines() {
-		// shortcuts for reference elements
-		Point2D origin = new Point2D(0, 0);
-		Vector2D v1 = new Vector2D(10, 0);
-		Vector2D v2 = new Vector2D(0, 10);
-		
-		// create two orthogonal lines
-		StraightLine2D line1 = StraightLine2D.create(origin, v1);
-		StraightLine2D line2 = StraightLine2D.create(origin, v2);
-		
-		// put lines in a set
-		CirculinearCurveSet2D<StraightLine2D> set = 
-			CirculinearCurveArray2D.create(new StraightLine2D[]{line1, line2});
-		
-		// compute set buffer and buffer boundary
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		CirculinearDomain2D buffer = bc.computeBuffer(set, 10);
-		CirculinearBoundary2D boundary = buffer.getBoundary();
-		assertEquals(4, boundary.getBoundaryCurves().size());
-	}
 }

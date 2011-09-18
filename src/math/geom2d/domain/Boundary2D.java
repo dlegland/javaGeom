@@ -34,7 +34,9 @@ import math.geom2d.AffineTransform2D;
 /**
  * A Boundary2D is the curve which defines the contour of a domain in the plane.
  * It is compound of one or several non-intersecting and oriented curves.
+ * Curves composing the boundary implements the Contour2D interface.
  * 
+ * @see Contour2D
  * @author dlegland
  */
 public interface Boundary2D extends OrientedCurve2D {
