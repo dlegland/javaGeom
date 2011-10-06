@@ -1,18 +1,25 @@
 Changes in javaGeom library
 
 
-javaGeom-0.9.1 (201?.??.??, rev. ???)
+javaGeom-0.9.1 (2011.10.06, rev. 285)
 =====
 
 New features
-- created interfaces for cap and join creation of curve buffers
+- added support for centroid and area computation of any polygon
+- added creation of rectangle polygons in Polygon2DUtils.
 - added computation of polygon difference
+- refactoring of buffer computation, created interfaces for cap and join
+	creation of curve buffers
+- added method Curve2D.getVertices()
 
 Bug fixes
 - fixed bug in Angle2D.getHorizontalAngle(doubles...)
 - fixed buffer of generic circulinear domains
+- fix buffer of polylines with multiple vertices
+- fix bug for buffer of infinite curves (lines or rays)
 
 Regressions
+- deprecated Boundary2D.getBoundaryCurves(), replaced by getContinuousCurves()
 - removed ContinuousCirculinearCurve2D
 - renamed CirculinearBoundarySet2D to CirculinearContourArray2D
 - splitted CirculinearCurveSet2D into interface and array implementation

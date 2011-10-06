@@ -71,13 +71,13 @@ public class CheckReflectedBoundary2D extends JPanel{
 		boundary = new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(
 				new LineSegment2D[]{seg1, seg2, seg3});
 		
-		boundary = boundary.transform(trans);
+		Boundary2D boundary2 = boundary.transform(trans);
 		
-		Domain2D domain = new GenericDomain2D(boundary).complement();
+		Domain2D domain2 = new GenericDomain2D(boundary2).complement();
 		
 		// fill the domain
 		g2.setColor(Color.CYAN);
-		Domain2D clipped = domain.clip(box);
+		Domain2D clipped = domain2.clip(box);
 		clipped.fill(g2);
 		
 		g2.setColor(Color.BLACK);
@@ -88,7 +88,7 @@ public class CheckReflectedBoundary2D extends JPanel{
 //	
 		// draw the boundary
 		g2.setColor(Color.BLUE);
-		domain.getBoundary().clip(box).draw(g2);
+		boundary2.clip(box).draw(g2);
 //		
 //		// draw the bounding box
 //		g2.setColor(Color.BLACK);

@@ -28,10 +28,14 @@ package math.geom2d.polygon;
 
 import java.util.ArrayList;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.domain.Boundary2D;
+import math.geom2d.line.StraightLine2D;
 import junit.framework.TestCase;
 
 /**
@@ -62,6 +66,106 @@ public class SimplePolygon2DTest extends TestCase {
 		
 		SimplePolygon2D poly2 = poly.complement();
 		assertEquals(poly2.getSignedArea(), -poly.getSignedArea());
+	}
+	
+	public void testTransform_Motion(){
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(20, 10);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(10, 20);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		
+		Point2D center = new Point2D(0, 0);
+		double angle = Math.PI/2;
+		AffineTransform2D transfo = 
+			AffineTransform2D.createRotation(center, angle);
+		
+		Polygon2D poly2 = poly.transform(transfo);
+		
+		assertFalse(poly2.isEmpty());
+		assertTrue(poly2.isBounded());
+		
+		Point2D centro2 = new Point2D(-15, 15);
+		double dist = centro2.getDistance(poly2.getCentroid());
+		
+		assertTrue(dist < Shape2D.ACCURACY);
+	}
+	
+	public void testTransform_Motion_InvertedPolygon(){
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(10, 20);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(20, 10);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		assertFalse(poly.isBounded());
+		
+		Point2D center = new Point2D(0, 0);
+		double angle = Math.PI/2;
+		AffineTransform2D transfo = 
+			AffineTransform2D.createRotation(center, angle);
+		
+		Polygon2D poly2 = poly.transform(transfo);
+		
+		assertFalse(poly2.isEmpty());
+		assertFalse(poly2.isBounded());
+		
+		Point2D centro2 = new Point2D(-15, 15);
+		double dist = centro2.getDistance(poly2.getCentroid());
+		
+		assertTrue(dist < Shape2D.ACCURACY);
+	}
+	
+	public void testTransform_Reflect(){
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(20, 10);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(10, 20);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		
+		Point2D center = new Point2D(0, 0);
+		Vector2D vect = new Vector2D(0, 3); 
+		StraightLine2D line = new StraightLine2D(center, vect);
+		AffineTransform2D transfo = 
+			AffineTransform2D.createLineReflection(line);
+		
+		Polygon2D poly2 = poly.transform(transfo);
+		
+		assertFalse(poly2.isEmpty());
+		assertTrue(poly2.isBounded());
+		
+		Point2D centro2 = new Point2D(-15, 15);
+		double dist = centro2.getDistance(poly2.getCentroid());
+		
+		assertTrue(dist < Shape2D.ACCURACY);
+	}
+	
+	public void testTransform_Reflect_InvertedPolygon(){
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(10, 20);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(20, 10);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		assertFalse(poly.isBounded());
+		
+		Point2D center = new Point2D(0, 0);
+		Vector2D vect = new Vector2D(0, 3); 
+		StraightLine2D line = new StraightLine2D(center, vect);
+		AffineTransform2D transfo = 
+			AffineTransform2D.createLineReflection(line);
+		
+		Polygon2D poly2 = poly.transform(transfo);
+		
+		assertFalse(poly2.isEmpty());
+		assertFalse(poly2.isBounded());
+		
+		Point2D centro2 = new Point2D(-15, 15);
+		double dist = centro2.getDistance(poly2.getCentroid());
+		
+		assertTrue(dist < Shape2D.ACCURACY);
 	}
 	
 	/*
