@@ -9,6 +9,7 @@
 package math.geom2d.domain;
 
 import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.CircleArc2D;
@@ -16,6 +17,7 @@ import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
+import math.geom2d.line.StraightLine2D;
 
 /**
  * @author dlegland
@@ -23,6 +25,58 @@ import math.geom2d.line.Ray2D;
  */
 public class BoundaryPolyCurve2DTest extends TestCase {
 
+	public void testTransform_Motion() {
+		Point2D p1 = new Point2D(100, 100);
+		Point2D p2 = new Point2D(300, 100);
+		Point2D p3 = new Point2D(200, 270);
+		
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		LineSegment2D seg3 = new LineSegment2D(p3, p1);
+		Boundary2D boundary = BoundaryPolyCurve2D.create(
+				new LineSegment2D[]{seg1, seg2, seg3});
+		Domain2D domain = new GenericDomain2D(boundary);
+		
+		AffineTransform2D trans = 
+			AffineTransform2D.createRotation(new Point2D(0, 0), .1);
+		
+		Boundary2D boundary2 = boundary.transform(trans);
+		
+		assertFalse(boundary2.isEmpty());
+		assertTrue(boundary2.isBounded());
+		
+		// Create a domain from this boundary to check if the domain is bounded
+		Domain2D domain2 = domain.transform(trans);
+		assertFalse(domain2.isEmpty());
+		assertTrue(domain2.isBounded());
+	}
+	
+	public void testTransform_Reflection() {
+		Point2D p1 = new Point2D(100, 100);
+		Point2D p2 = new Point2D(300, 100);
+		Point2D p3 = new Point2D(200, 270);
+		
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		LineSegment2D seg3 = new LineSegment2D(p3, p1);
+		Boundary2D boundary = BoundaryPolyCurve2D.create(
+				new LineSegment2D[]{seg1, seg2, seg3});
+		Domain2D domain = new GenericDomain2D(boundary);
+		
+		StraightLine2D line = new StraightLine2D(p2, p3);
+		AffineTransform2D trans =
+			AffineTransform2D.createLineReflection(line);
+		
+		Boundary2D boundary2 = boundary.transform(trans);
+		
+		assertFalse(boundary2.isEmpty());
+		assertTrue(boundary2.isBounded());
+		
+		Domain2D domain2 = domain.transform(trans);
+		assertFalse(domain2.isEmpty());
+		assertTrue(domain2.isBounded());
+	}
+	
 	/*
 	 * Test method for 'math.geom2d.PolyCurve2D.getSubCurve(double, double)'
 	 */
