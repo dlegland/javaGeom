@@ -1,5 +1,10 @@
 Changes in javaGeom library
 
+javaGeom-0.9.1 (2011.10.16, rev. 285)
+=====
+
+Simply add the gpcj library to the jar and to the source.
+
 
 javaGeom-0.9.1 (2011.10.06, rev. 285)
 =====
