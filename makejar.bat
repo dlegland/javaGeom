@@ -25,7 +25,7 @@ FOR /F "tokens=*" %%i IN ('dir /a:d /s /b jar\*.svn*') DO rmdir /S /Q %%i
 
 @REM change directory and uncompress external library
 cd jar
-jar xf ../lib/gpcj.jar
+jar xf ../lib/gpcj-2.1.0.jar
 rmdir /S /Q META-INF
 cd ..
 
