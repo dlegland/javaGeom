@@ -347,6 +347,19 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(invert.getArea(), 100, 1e-10);
 	}
 	
+    public void testGetSignedDistance_CW() {
+    	LinearRing2D ring = LinearRing2D.create(new Point2D[]{
+                new Point2D(4, 4),
+                new Point2D(4, -4),
+                new Point2D(-4, -4),
+                new Point2D(-4, 4) });
+    	Point2D p0 = new Point2D(6, 4);
+    	
+    	double dist = ring.getSignedDistance(p0);
+    	
+    	assertEquals(-2, dist, Shape2D.ACCURACY);
+    }
+
 	public void testIsInside(){
 		LinearRing2D polyline = new LinearRing2D(new Point2D[]{
 				new Point2D(150, 50),

@@ -231,7 +231,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public double getSignedDistance(double x, double y) {
-        return (this.isInside(x, y) ? -1 : 1)*this.getDistance(x, y);
+    	double dist = this.getDistance(x, y);
+        return this.isInside(x, y) ? -dist : dist;
     }
 
     /*
@@ -252,7 +253,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     @Override
     public double getWindingAngle(java.awt.geom.Point2D point) {
         int wn = Polygon2DUtils.windingNumber(this.points, point);
-        return wn*2*Math.PI;
+        return wn * 2 * Math.PI;
     }
 
     public boolean isInside(double x, double y) {
@@ -267,12 +268,17 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     @Override
     public boolean isInside(java.awt.geom.Point2D point) {
         // TODO: choose convention for points on the boundary
-        int wn = Polygon2DUtils.windingNumber(this.points, point);
-        if (wn==1)
-            return true;
-        if (this.contains(point))
-            return true;
-        return false;
+    	if (this.contains(point))
+    		return true;
+    	
+    	double area = this.getSignedArea();
+    	int winding = Polygon2DUtils.windingNumber(this.points, point);
+    	if (area > 0) {
+    		return winding == 1;
+    	} else {
+    		return winding == 0;
+    	}
+
     }
 
     // ===================================================================

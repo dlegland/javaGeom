@@ -73,16 +73,16 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double x2 = focus2.getX();
         double y2 = focus2.getY();
 
-        double xc = (x1+x2)/2;
-        double yc = (y1+y2)/2;
+        double xc = (x1 + x2) / 2;
+        double yc = (y1 + y2) / 2;
         double theta = Angle2D.getHorizontalAngle(x1, y1, x2, y2);
 
         double dist = focus1.getDistance(focus2);
-        if (dist<Shape2D.ACCURACY)
-            return new Circle2D(xc, yc, chord/2);
+        if (dist < Shape2D.ACCURACY)
+            return new Circle2D(xc, yc, chord / 2);
 
-        double r1 = chord/2;
-        double r2 = Math.sqrt(chord*chord-dist*dist)/2;
+        double r1 = chord / 2;
+        double r2 = Math.sqrt(chord * chord - dist * dist) / 2;
 
         return new Ellipse2D(xc, yc, r1, r2, theta);
     }
@@ -116,7 +116,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public static Ellipse2D create(java.awt.geom.Ellipse2D ellipse) {
         return new Ellipse2D(
         		new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 
-        		ellipse.getWidth()/2, ellipse.getHeight()/2);
+        		ellipse.getWidth() / 2, ellipse.getHeight() / 2);
     }
 
     
@@ -156,7 +156,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         if (coefs2.length>5)
             f = Math.abs(coefs[5]);
 
-        assert Math.abs(coefs2[1]/f)<Shape2D.ACCURACY : 
+        assert Math.abs(coefs2[1]/f) < Shape2D.ACCURACY : 
         	"Second conic coefficient should be zero";
         
         // extract major and minor axis lengths, ensuring r1 is greater
@@ -195,17 +195,17 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double theta = ellipse.theta;
 
         // precompute some parts
-        double r1Sq = r1*r1;
-        double r2Sq = r2*r2;
+        double r1Sq = r1 * r1;
+        double r2Sq = r2 * r2;
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
-        double cotSq = cot*cot;
-        double sitSq = sit*sit;
+        double cotSq = cot * cot;
+        double sitSq = sit * sit;
 
         // compute coefficients of the centered conic
-        double A = cotSq/r1Sq+sitSq/r2Sq;
-        double B = 2*cot*sit*(1/r1Sq-1/r2Sq);
-        double C = cotSq/r2Sq+sitSq/r1Sq;
+        double A = cotSq / r1Sq + sitSq / r2Sq;
+        double B = 2 * cot * sit * (1 / r1Sq - 1 / r2Sq);
+        double C = cotSq / r2Sq + sitSq / r1Sq;
         double[] coefs = new double[] { A, B, C };
 
         // Compute coefficients of the transformed conic
