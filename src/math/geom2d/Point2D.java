@@ -111,7 +111,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the Euclidean distance between p1 and p2.
 	 */
 	public static double getDistance(double x1, double y1, double x2, double y2) {
-		return Math.hypot(x2-x1, y2-y1);
+		return Math.hypot(x2 - x1, y2 - y1);
 	}
 
 	/**
@@ -124,7 +124,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public static double getDistance(java.awt.geom.Point2D p1,
 			java.awt.geom.Point2D p2) {
-		return Math.hypot(p1.getX()-p2.getX(), p1.getY()-p2.getY());
+		return Math.hypot(p1.getX() - p2.getX(), p1.getY() - p2.getY()); 
 	}
 
 	/**
@@ -290,11 +290,19 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// Methods specific to Point2D
 
 	public Point2D plus(java.awt.geom.Point2D p) {
-		return new Point2D(p.getX()+x, p.getY()+y);
+		return new Point2D(this.x + p.getX(), this.y + p.getY());
+	}
+
+	public Point2D plus(Vector2D v) {
+		return new Point2D(this.x + v.getX(), this.y + v.getY());
 	}
 
 	public Point2D minus(java.awt.geom.Point2D p) {
-		return new Point2D(x-p.getX(), y-p.getY());
+		return new Point2D(this.x - p.getX(), this. y -p.getY());
+	}
+
+	public Point2D minus(Vector2D v) {
+		return new Point2D(this.x - v.getX(), this.y - v.getY());
 	}
 
 	/**
@@ -305,7 +313,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the translated point
 	 */
 	public Point2D translate(double tx, double ty) {
-		return new Point2D(this.x+tx, this.y+ty);
+		return new Point2D(this.x + tx, this.y + ty);
 	}
 
 	/**
@@ -394,7 +402,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
 		return new GenericCirculinearDomain2D(new Circle2D(this,
-				Math.abs(dist), dist>0));
+				Math.abs(dist), dist > 0));
 	}
 
 	/*
@@ -408,7 +416,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		double r = inv.getRadius();
 
 		// compute distance and angle of transformed point
-		double d = r*r/Point2D.getDistance(this, center);
+		double d = r * r / Point2D.getDistance(this, center);
 		double theta = Angle2D.getHorizontalAngle(center, this);
 
 		// create the new point

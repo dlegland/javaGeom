@@ -206,6 +206,23 @@ public class Point2DTest extends TestCase {
         assertTrue(p1rc.getDistance(p3) < Shape2D.ACCURACY);
 	}
 	
+	public void testPlusVector() {
+		Point2D p1 = new Point2D(20, 30);
+		Vector2D v = new Vector2D(40, 50);
+		
+		Point2D res = p1.plus(v);
+		Point2D exp = new Point2D(60, 80);
+		assertTrue(res.almostEquals(exp, Shape2D.ACCURACY));
+	}
+	
+	public void testMinusVector() {
+		Point2D p1 = new Point2D(60, 80);
+		Vector2D v = new Vector2D(40, 50);
+		
+		Point2D res = p1.minus(v);
+		Point2D exp = new Point2D(20, 30);
+		assertTrue(res.almostEquals(exp, Shape2D.ACCURACY));
+	}
 	
 	public void testIsBounded() {
 		Point2D p1 = new Point2D(2, 3);
