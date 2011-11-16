@@ -365,6 +365,33 @@ public class SimplePolygon2DTest extends TestCase {
     	assertEquals(2, clipped.getRings().size());
     }
     
+    public void testClipBox2D_CWPolygon() {
+    	SimplePolygon2D polygon = SimplePolygon2D.create(new Point2D[]{
+                new Point2D(4, 4),
+                new Point2D(4, -4),
+                new Point2D(-4, -4),
+                new Point2D(-4, 4) });
+    	Box2D box = new Box2D(-10, 10, -10, 10);
+    	
+    	Polygon2D comp = polygon.clip(box);
+    	
+    	Boundary2D boundary = comp.getBoundary();
+    	assertEquals(2, boundary.getContinuousCurves().size());
+    }
+    
+    public void testGetSignedDistance_CWPolygon() {
+    	SimplePolygon2D polygon = SimplePolygon2D.create(new Point2D[]{
+                new Point2D(4, 4),
+                new Point2D(4, -4),
+                new Point2D(-4, -4),
+                new Point2D(-4, 4) });
+    	Point2D p0 = new Point2D(6, 4);
+    	
+    	double dist = polygon.getSignedDistance(p0);
+    	
+    	assertEquals(-2, dist, Shape2D.ACCURACY);
+    }
+
 	public void testCreate_Collection() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		array.add(new Point2D(10, 10));
