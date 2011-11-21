@@ -81,7 +81,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     // ===================================================================
     // class variables
     
-    protected ArrayList<Point2D> points = new ArrayList<Point2D>();
+    protected ArrayList<Point2D> vertices = new ArrayList<Point2D>();
 
     
     // ===================================================================
@@ -91,21 +91,21 @@ implements CirculinearContinuousCurve2D, Cloneable {
     }
 
     public Polyline2D(Point2D initialPoint) {
-        points.add(initialPoint);
+        vertices.add(initialPoint);
     }
 
     public Polyline2D(Point2D[] points) {
         for (Point2D element : points)
-            this.points.add(element);
+            this.vertices.add(element);
     }
 
     public Polyline2D(Collection<? extends Point2D> points) {
-        this.points.addAll(points);
+        this.vertices.addAll(points);
     }
 
     public Polyline2D(double[] xcoords, double[] ycoords) {
         for (int i = 0; i<xcoords.length; i++)
-            points.add(new Point2D(xcoords[i], ycoords[i]));
+            vertices.add(new Point2D(xcoords[i], ycoords[i]));
     }
 
 
@@ -116,46 +116,100 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * Return an iterator on the collection of points.
      */
     public Iterator<Point2D> getPointsIterator() {
-        return points.iterator();
+        return vertices.iterator();
     }
-
+    
     /**
      * Return the collection of points as an array of Point2D.
      * 
      * @return an array of Point2D
      */
     public Point2D[] getPointArray() {
-        Point2D[] tab = new Point2D[points.size()];
-        for (int i = 0; i<points.size(); i++)
-            tab[i] = points.get(i);
+        Point2D[] tab = new Point2D[vertices.size()];
+        for (int i = 0; i<vertices.size(); i++)
+            tab[i] = vertices.get(i);
         return tab;
     }
 
+    /**
+     * @deprecated replaced by addVertex(Point2D) (0.9.3)
+     */
+    @Deprecated
     public void addPoint(Point2D point) {
-        points.add(point);
-    }
-
-    public void removePoint(Point2D point) {
-        points.remove(point);
+        vertices.add(point);
     }
 
     /**
+     * Add a vertex at the end of this polyline.
+     * @return true if the vertex was correctly added
+     * @since 0.9.3
+     */
+    public boolean addVertex(Point2D vertex) {
+    	 return vertices.add(vertex);
+    }
+    
+    /**
+     * Insert a vertex at a given position in the polyline.
+     * @return true if the vertex was correctly added
+     * @since 0.9.3
+     */
+    public void insertVertex(int index, Point2D vertex) {
+    	vertices.add(index, vertex);
+    }
+    
+    /**
+     * Removes the first instance of the given vertex from this polyline.
+     * @param vertex the position of the vertex to remove
+     * @return true if the vertex was actually removed
+     * @since 0.9.3
+     */
+    public boolean removeVertex(Point2D vertex) {
+        return vertices.remove(vertex);
+    }
+    
+    /**
+     * Removes the vertex specified by the index.
+     * @param index the index of the vertex to remove
+     * @return the position of the vertex removed from the polyline
+     * @since 0.9.3
+     */
+    public Point2D removeVertex(int index) {
+    	return this.vertices.remove(index);
+    }
+
+    /**
+     * @deprecated replaced by removeVertex(Point2D) (0.9.3)
+     */
+    @Deprecated
+    public void removePoint(Point2D point) {
+        vertices.remove(point);
+    }
+
+    /**
+     * Changes the position of the i-th vertex.
+     *  @since 0.9.3
+     */
+    public void setVertex(int index, Point2D position) {
+        this.vertices.set(index, position);
+    }
+
+   /**
      * @deprecated replaced by clearVertices()
      */
     @Deprecated
     public void clearPoints() {
-        points.clear();
+        vertices.clear();
     }
 
     public void clearVertices() {
-        points.clear();
+        vertices.clear();
     }
 
     /**
      * Returns the vertices of the polyline.
      */
     public Collection<Point2D> getVertices() {
-        return points;
+        return vertices;
     }
 
     /**
@@ -164,7 +218,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @param i index of the vertex, between 0 and the number of vertices
      */
     public Point2D getVertex(int i) {
-        return points.get(i);
+        return vertices.get(i);
     }
 
     /**
@@ -173,7 +227,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @return the number of vertices
      */
     public int getVertexNumber() {
-        return points.size();
+        return vertices.size();
     }
 
     /**
@@ -183,33 +237,33 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @return the edges of the polyline
      */
     public Collection<LineSegment2D> getEdges() {
-        int n = points.size();
+        int n = vertices.size();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
 
         if (n<2)
             return edges;
 
         for (int i = 0; i<n-1; i++)
-            edges.add(new LineSegment2D(points.get(i), points.get(i+1)));
+            edges.add(new LineSegment2D(vertices.get(i), vertices.get(i+1)));
 
         return edges;
     }
     
     public LineSegment2D getEdge(int index) {
-    	return new LineSegment2D(points.get(index), points.get(index+1));
+    	return new LineSegment2D(vertices.get(index), vertices.get(index+1));
     }
 
     public LineSegment2D getFirstEdge() {
-        if (points.size()<2)
+        if (vertices.size()<2)
             return null;
-        return new LineSegment2D(points.get(0), points.get(1));
+        return new LineSegment2D(vertices.get(0), vertices.get(1));
     }
 
     public LineSegment2D getLastEdge() {
-        int n = points.size();
+        int n = vertices.size();
         if (n<2)
             return null;
-        return new LineSegment2D(points.get(n-2), points.get(n-1));
+        return new LineSegment2D(vertices.get(n-2), vertices.get(n-1));
     }
 
     // ===================================================================
@@ -238,7 +292,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 			length += this.getEdge(i).getLength();
 		
 		// add portion of length for last curve
-		if(index < points.size()-1) {
+		if(index < vertices.size()-1) {
 			double pos2 = pos-index;
 			length += this.getEdge(index).getLength(pos2);
 		}
@@ -289,9 +343,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
 		// basic check to avoid degenerate cases
-		if (PointSet2DUtils.hasMultipleVertices(this.points)) {
+		if (PointSet2DUtils.hasMultipleVertices(this.vertices)) {
 			Polyline2D poly2 = Polyline2D.create(
-					PointSet2DUtils.filterMultipleVertices(this.points));
+					PointSet2DUtils.filterMultipleVertices(this.vertices));
 			return bc.computeBuffer(poly2, dist);			
 		}
 		
@@ -382,9 +436,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public double getWindingAngle(java.awt.geom.Point2D point) {
         double angle = 0;
-        int n = points.size();
+        int n = vertices.size();
         for (int i = 0; i<n-1; i++)
-            angle += new LineSegment2D(points.get(i), points.get(i+1))
+            angle += new LineSegment2D(vertices.get(i), vertices.get(i+1))
                     .getWindingAngle(point);
 
         return angle;
@@ -399,16 +453,16 @@ implements CirculinearContinuousCurve2D, Cloneable {
         if (new LinearRing2D(this.getPointArray()).isInside(pt))
             return true;
 
-        if (this.points.size()<3)
+        if (this.vertices.size()<3)
             return false;
 
         Point2D p0 = this.getFirstPoint();
-        Point2D q0 = this.points.get(1);
+        Point2D q0 = this.vertices.get(1);
         if (new StraightLine2D(q0, p0).isInside(pt))
             return false;
 
         Point2D p1 = this.getLastPoint();
-        Point2D q1 = this.points.get(points.size()-2);
+        Point2D q1 = this.vertices.get(vertices.size()-2);
         if (new StraightLine2D(p1, q1).isInside(pt))
             return false;
 
@@ -475,7 +529,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
         // index of vertex before point
         int ind0 = (int) Math.floor(t+Shape2D.ACCURACY);
         double tl = t-ind0;
-        Point2D p0 = points.get(ind0);
+        Point2D p0 = vertices.get(ind0);
 
         // check if equal to a vertex
         if (Math.abs(t-ind0)<Shape2D.ACCURACY)
@@ -483,7 +537,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         // index of vertex after point
         int ind1 = ind0+1;
-        Point2D p1 = points.get(ind1);
+        Point2D p1 = vertices.get(ind1);
 
         // position on line;
 
@@ -556,14 +610,14 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * return the number of points in the polyline, minus one.
      */
     public double getT1() {
-        return points.size()-1;
+        return vertices.size()-1;
     }
 
 	@Override
     public Point2D getFirstPoint() {
-        if (points.size()==0)
+        if (vertices.size()==0)
             return null;
-        return points.get(0);
+        return vertices.get(0);
     }
 
     /**
@@ -571,13 +625,13 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
 	@Override
     public Point2D getLastPoint() {
-        if (points.size()==0)
+        if (vertices.size()==0)
             return null;
-        return points.get(points.size()-1);
+        return vertices.get(vertices.size()-1);
     }
 
     public Collection<Point2D> getSingularPoints() {
-        return points;
+        return vertices;
     }
 
     public boolean isSingular(double pos) {
@@ -591,11 +645,11 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * Reversed polyline keep same references as original polyline.
      */
     public Polyline2D getReverseCurve() {
-        Point2D[] points2 = new Point2D[points.size()];
-        int n = points.size();
+        Point2D[] points2 = new Point2D[vertices.size()];
+        int n = vertices.size();
         if (n>0) {
             for (int i = 0; i<n; i++)
-                points2[i] = points.get(n-1-i);
+                points2[i] = vertices.get(n-1-i);
         }
         return new Polyline2D(points2);
     }
@@ -643,7 +697,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         // add all the whole points between the 2 cuts
         for (int n = ind0+1; n<=ind1; n++)
-            res.addPoint(points.get(n));
+            res.addPoint(vertices.get(n));
 
         // add the last point
         res.addPoint(this.getPoint(t1));
@@ -664,7 +718,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * Returns true if the polyline does not contain any point.
      */
     public boolean isEmpty() {
-        return points.size()==0;
+        return vertices.size()==0;
     }
 
     /**
@@ -695,7 +749,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
         double xmax = Double.MIN_VALUE;
         double ymax = Double.MIN_VALUE;
 
-        Iterator<Point2D> iter = points.iterator();
+        Iterator<Point2D> iter = vertices.iterator();
         Point2D point;
         double x, y;
         while (iter.hasNext()) {
@@ -741,9 +795,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
     public Polyline2D transform(AffineTransform2D trans) {
-        Point2D[] pts = new Point2D[points.size()];
-        for (int i = 0; i<points.size(); i++)
-            pts[i] = trans.transform(points.get(i));
+        Point2D[] pts = new Point2D[vertices.size()];
+        for (int i = 0; i<vertices.size(); i++)
+            pts[i] = trans.transform(vertices.get(i));
         return new Polyline2D(pts);
     }
 
@@ -781,11 +835,11 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
-        if (points.size()<2)
+        if (vertices.size()<2)
             return path;
 
         // get point iterator
-        Iterator<Point2D> iter = points.iterator();
+        Iterator<Point2D> iter = vertices.iterator();
 
         // avoid first point
         Point2D point = iter.next();
@@ -804,11 +858,11 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (points.size()<2)
+        if (vertices.size()<2)
             return path;
 
         // get point iterator
-        Iterator<Point2D> iter = points.iterator();
+        Iterator<Point2D> iter = vertices.iterator();
 
         // move to first point
         Point2D point = iter.next();
@@ -843,10 +897,10 @@ implements CirculinearContinuousCurve2D, Cloneable {
             return false;
         Polyline2D polyline = (Polyline2D) obj;
 
-        if (points.size()!=polyline.points.size())
+        if (vertices.size()!=polyline.vertices.size())
             return false;
-        for (int i = 0; i<points.size(); i++)
-            if (!(points.get(i)).almostEquals(polyline.points.get(i), eps))
+        for (int i = 0; i<vertices.size(); i++)
+            if (!(vertices.get(i)).almostEquals(polyline.vertices.get(i), eps))
                 return false;
         return true;
     }
@@ -862,18 +916,18 @@ implements CirculinearContinuousCurve2D, Cloneable {
             return false;
         Polyline2D polyline = (Polyline2D) object;
 
-        if (points.size()!=polyline.points.size())
+        if (vertices.size()!=polyline.vertices.size())
             return false;
-        for (int i = 0; i<points.size(); i++)
-            if (!(points.get(i)).equals(polyline.points.get(i)))
+        for (int i = 0; i<vertices.size(); i++)
+            if (!(vertices.get(i)).equals(polyline.vertices.get(i)))
                 return false;
         return true;
     }
     
     @Override
     public Polyline2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
-        for(Point2D point : points)
+        ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
+        for(Point2D point : vertices)
             array.add(point.clone());
         return new Polyline2D(array);
     }

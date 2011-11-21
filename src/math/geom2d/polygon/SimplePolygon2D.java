@@ -77,7 +77,7 @@ public class SimplePolygon2D implements Polygon2D {
      * The inner ordered list of vertices. The last point is connected to the
      * first one.
      */
-    protected ArrayList<Point2D> points;
+    protected ArrayList<Point2D> vertices;
 
     // ===================================================================
     // constructors
@@ -86,7 +86,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Empty constructor: no vertex.
      */
     public SimplePolygon2D() {
-    	points = new ArrayList<Point2D>();
+    	vertices = new ArrayList<Point2D>();
     }
 
     /**
@@ -95,9 +95,9 @@ public class SimplePolygon2D implements Polygon2D {
      * @param tab the vertices stored in an array of Point2D
      */
     public SimplePolygon2D(Point2D[] tab) {
-        points = new ArrayList<Point2D>(tab.length);
+        vertices = new ArrayList<Point2D>(tab.length);
         for (Point2D element : tab)
-            points.add(element);
+            vertices.add(element);
     }
 
     /**
@@ -107,14 +107,14 @@ public class SimplePolygon2D implements Polygon2D {
      * @param ycoords the y coordinate of each vertex
      */
     public SimplePolygon2D(double[] xcoords, double[] ycoords) {
-        points = new ArrayList<Point2D>(xcoords.length);
+        vertices = new ArrayList<Point2D>(xcoords.length);
         for (int i = 0; i<xcoords.length; i++)
-            points.add(new Point2D(xcoords[i], ycoords[i]));
+            vertices.add(new Point2D(xcoords[i], ycoords[i]));
     }
 
     public SimplePolygon2D(Collection<? extends Point2D> points) {
-        this.points = new ArrayList<Point2D>(points.size());
-        this.points.addAll(points);
+        this.vertices = new ArrayList<Point2D>(points.size());
+        this.vertices.addAll(points);
     }
 
     /**
@@ -123,13 +123,86 @@ public class SimplePolygon2D implements Polygon2D {
      * @param ring the boundary of the polygon
      */
     public SimplePolygon2D(LinearRing2D ring) {
-        this.points = new ArrayList<Point2D>(ring.getVertexNumber());
-        this.points.addAll(ring.getVertices());
+        this.vertices = new ArrayList<Point2D>(ring.getVertexNumber());
+        this.vertices.addAll(ring.getVertices());
     }
 
     
     // ===================================================================
     // methods specific to SimplePolygon2D
+
+    /**
+     * Computes the winding number of the polygon. Algorithm adapted from
+     * http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm
+     * 
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
+     * @return the number of windings of the curve around the point
+     */
+    public int getWindingNumber(double x, double y) {
+        return Polygon2DUtils.windingNumber(vertices, new Point2D(x, y));
+    }
+    
+    /**
+     * Returns the linear that composes the boundary of this polygon.
+     * @since 0.9.1
+     */
+    public LinearRing2D getLinearRing() {
+    	return new LinearRing2D(this.vertices);
+    }
+    
+    // ===================================================================
+    // management of vertex list
+
+    /**
+     * Adds a point as the last vertex.
+     */
+    public boolean addVertex(Point2D point) {
+        return this.vertices.add(point);
+    }
+
+    /**
+     * Adds a point as the last vertex.
+     * @since 0.9.3
+     */
+    public void insertVertex(int index, Point2D point) {
+        this.vertices.add(index, point);
+    }
+
+    /**
+     * Removes a vertex of the polygon.
+     * 
+     * @param point the vertex to be removed.
+     */
+    public boolean removeVertex(Point2D point) {
+        return this.vertices.remove(point);
+    }
+
+    /**
+     * Removes a vertex of the polygon specified by its index.
+     * @since 0.9.3
+     */
+    public void removeVertex(int index) {
+        this.vertices.remove(index);
+    }
+
+    /**
+     * Removes all the vertices of the polygon.
+     */
+    public void clearVertices() {
+        this.vertices.clear();
+    }
+    
+    /**
+     * Changes the position of the i-th vertex.
+     */
+    public void setVertex(int index, Point2D position) {
+        this.vertices.set(index, position);
+    }
+
+    
+    // ===================================================================
+    // methods inherited from Polygon2D interface
 
     /**
      * Computes area of the polygon, by returning the absolute value of the
@@ -165,68 +238,11 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
-     * Computes the winding number of the polygon. Algorithm adapted from
-     * http://www.geometryalgorithms.com/Archive/algorithm_0103/algorithm_0103.htm
-     * 
-     * @param x the x-coordinate of the point
-     * @param y the y-coordinate of the point
-     * @return the number of windings of the curve around the point
-     */
-    public int getWindingNumber(double x, double y) {
-        return Polygon2DUtils.windingNumber(points, new Point2D(x, y));
-    }
-    
-    /**
-     * Returns the linear that composes the boundary of this polygon.
-     * @since 0.9.1
-     */
-    public LinearRing2D getLinearRing() {
-    	return new LinearRing2D(this.points);
-    }
-    
-    // ===================================================================
-    // management of vertex list
-
-    /**
-     * Adds a point as the last vertex.
-     */
-    public void addVertex(Point2D point) {
-        this.points.add(point);
-    }
-
-    /**
-     * Removes a vertex of the polygon.
-     * 
-     * @param point the vertex to be removed.
-     */
-    public void removeVertex(Point2D point) {
-        this.points.remove(point);
-    }
-
-    /**
-     * Removes all the vertices of the polygon.
-     */
-    public void clearVertices() {
-        this.points.clear();
-    }
-    
-    /**
-     * Changes the position of the i-th vertex.
-     */
-    public void setVertex(int index, Point2D position) {
-        this.points.set(index, position);
-    }
-
-    
-    // ===================================================================
-    // methods inherited from Polygon2D interface
-
-    /**
      * Returns the points of the polygon. The result is a pointer to the inner
      * collection of vertices.
      */
     public Collection<Point2D> getVertices() {
-        return points;
+        return vertices;
     }
 
     /**
@@ -235,7 +251,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @param i index of the vertex, between 0 and the number of vertices
      */
     public Point2D getVertex(int i) {
-        return points.get(i);
+        return vertices.get(i);
     }
 
     /**
@@ -244,7 +260,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @since 0.6.3
      */
     public int getVertexNumber() {
-        return points.size();
+        return vertices.size();
     }
 
     /**
@@ -252,16 +268,16 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public Collection<LineSegment2D> getEdges() {
 
-        int nPoints = this.points.size();
+        int nPoints = this.vertices.size();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nPoints);
 
         if (nPoints==0)
             return edges;
 
         for (int i = 0; i<nPoints-1; i++)
-            edges.add(new LineSegment2D(points.get(i), points.get(i+1)));
+            edges.add(new LineSegment2D(vertices.get(i), vertices.get(i+1)));
 
-        edges.add(new LineSegment2D(points.get(nPoints-1), points.get(0)));
+        edges.add(new LineSegment2D(vertices.get(nPoints-1), vertices.get(0)));
 
         return edges;
     }
@@ -271,7 +287,7 @@ public class SimplePolygon2D implements Polygon2D {
      * number of vertices.
      */
     public int getEdgeNumber() {
-        return points.size();
+        return vertices.size();
     }
 
     /* (non-Javadoc)
@@ -279,7 +295,7 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public Collection<LinearRing2D> getRings() {
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(points));
+        rings.add(new LinearRing2D(vertices));
         return rings;
     }
 
@@ -300,9 +316,9 @@ public class SimplePolygon2D implements Polygon2D {
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
 		// check for multiple vertices
-		if (PointSet2DUtils.hasMultipleVertices(this.points, true)) {
+		if (PointSet2DUtils.hasMultipleVertices(this.vertices, true)) {
 			List<Point2D> pts2 = 
-				PointSet2DUtils.filterMultipleVertices(this.points, true);
+				PointSet2DUtils.filterMultipleVertices(this.vertices, true);
 			SimplePolygon2D poly2 = new SimplePolygon2D(pts2);
 	    	return CirculinearDomain2DUtils.computeBuffer(poly2, dist);
 		}
@@ -318,9 +334,9 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns a set of one LinearRing2D, which encloses the polygon.
      */
     public CirculinearContourArray2D<LinearRing2D> getBoundary() {
-        Point2D[] array = new Point2D[this.points.size()];
-        for (int i = 0; i<this.points.size(); i++)
-            array[i] = this.points.get(i);
+        Point2D[] array = new Point2D[this.vertices.size()];
+        for (int i = 0; i<this.vertices.size(); i++)
+            array[i] = this.vertices.get(i);
 
         return new CirculinearContourArray2D<LinearRing2D>(
         		new LinearRing2D(array));
@@ -330,15 +346,15 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns the polygon created by reversing the order of the vertices.
      */
     public SimplePolygon2D complement() {
-        int nPoints = this.points.size();
+        int nPoints = this.vertices.size();
 
         Point2D[] res = new Point2D[nPoints];
 
         if (nPoints>0)
-            res[0] = this.points.get(0);
+            res[0] = this.vertices.get(0);
 
         for (int i = 1; i<nPoints; i++) {
-            res[i] = this.points.get(nPoints-i);
+            res[i] = this.vertices.get(nPoints-i);
         }
         return new SimplePolygon2D(res);
     }
@@ -413,7 +429,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     public boolean isEmpty() {
-        return points.size()==0;
+        return vertices.size()==0;
     }
 
     /**
@@ -421,13 +437,13 @@ public class SimplePolygon2D implements Polygon2D {
      * If the transform is not direct, the order of vertices is reversed.
      */
     public SimplePolygon2D transform(AffineTransform2D trans) {
-        int nPoints = this.points.size();
+        int nPoints = this.vertices.size();
 
         Point2D[] array = new Point2D[nPoints];
         Point2D[] res = new Point2D[nPoints];
 
         for (int i = 0; i<nPoints; i++) {
-            array[i] = this.points.get(i);
+            array[i] = this.vertices.get(i);
             res[i] = new Point2D();
         }
         trans.transform(array, res);
@@ -472,21 +488,21 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (points.size()<2)
+        if (vertices.size()<2)
             return path;
 
         // move to first point
-        Point2D point = points.get(0);
+        Point2D point = vertices.get(0);
         path.moveTo((float) (point.getX()), (float) (point.getY()));
 
         // line to each point
-        for (int i = 0; i<points.size(); i++) {
-            point = points.get(i);
+        for (int i = 0; i<vertices.size(); i++) {
+            point = vertices.get(i);
             path.lineTo((float) (point.getX()), (float) (point.getY()));
         }
 
         // close polygon
-        point = points.get(0);
+        point = vertices.get(0);
         path.lineTo((float) (point.getX()), (float) (point.getY()));
         path.closePath();
 
@@ -559,8 +575,8 @@ public class SimplePolygon2D implements Polygon2D {
     
     @Override
     public SimplePolygon2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
-        for(Point2D point : points)
+        ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
+        for(Point2D point : vertices)
             array.add(point.clone());
         return new SimplePolygon2D(array);
     }

@@ -177,14 +177,14 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(line.getLength(), 40, Shape2D.ACCURACY);
 	}
 
-	public void testAddLine() {
+	public void testAddVertex() {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
 		points[2] = new Point2D(10, 10);
 		points[3] = new Point2D(20, 20);
 		LinearRing2D line = new LinearRing2D(points);
-		line.addPoint(new Point2D(30, 20));
+		line.addVertex(new Point2D(30, 20));
 		assertEquals(line.getVertexNumber(), points.length+1);		
 	}
 
@@ -263,15 +263,19 @@ public class LinearRing2DTest extends TestCase {
 		// Check with a polyline whith t1<t2
 		Polyline2D sub = line1.getSubCurve(.5, 2.5);
 		Polyline2D line2 = new Polyline2D(new Point2D[]{
-				new Point2D(5, 0), 		new Point2D(10, 0), 
-				new Point2D(10, 10),	new Point2D(5, 10)	});
+				new Point2D(5, 0), 		
+				new Point2D(10, 0), 
+				new Point2D(10, 10),	
+				new Point2D(5, 10)	});
 		assertTrue(line2.equals(sub));
 		
 		
 		// Check with a polyline whith t1>t2
 		sub = line1.getSubCurve(3.5, .5);
 		line2 = new Polyline2D(new Point2D[]{
-				new Point2D(0, 5), new Point2D(0, 0), new Point2D(5, 0)});
+				new Point2D(0, 5), 
+				new Point2D(0, 0), 
+				new Point2D(5, 0)});
 		assertTrue(line2.equals(sub));
 		
 	}
