@@ -44,7 +44,7 @@ public abstract class Polyline2DUtils {
     public final static boolean hasMultipleVertices(Polyline2D polyline, 
     		boolean closed) {
     	// Test vertices within polyline
-    	if(PointSet2DUtils.hasMultipleVertices(polyline.points))
+    	if(PointSet2DUtils.hasMultipleVertices(polyline.vertices))
     		return true;
     	
     	// Eventually tests extremities

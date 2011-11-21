@@ -33,7 +33,9 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.circulinear.*;
+import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.circulinear.CirculinearRing2D;
+import math.geom2d.circulinear.GenericCirculinearRing2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
@@ -120,17 +122,17 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * 
      * @return the signed area of the polyline.
      */
-    public double getSignedArea() {
-        double area = 0;
-        Point2D prev = this.points.get(this.points.size()-1);
-        Point2D point;
-        for (int i = 0; i<points.size(); i++) {
-            point = this.points.get(i);
-            area += prev.getX()*point.getY()-prev.getY()*point.getX();
-            prev = point;
-        }
-        return area /= 2;
-    }
+	public double getSignedArea() {
+		double area = 0;
+		Point2D prev = this.vertices.get(this.vertices.size() - 1);
+		Point2D point;
+		for (int i = 0; i < vertices.size(); i++) {
+			point = this.vertices.get(i);
+			area += prev.getX() * point.getY() - prev.getY() * point.getX();
+			prev = point;
+		}
+		return area /= 2;
+	}
 
     // ===================================================================
     // Methods specific to Polyline2D
@@ -142,35 +144,35 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * @return the edges of the polyline
      */
     @Override
-    public Collection<LineSegment2D> getEdges() {
-    	// create resulting array
-        int n = points.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
+	public Collection<LineSegment2D> getEdges() {
+		// create resulting array
+		int n = vertices.size();
+		ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
 
-        // do not process empty polylines
-        if (n<2)
-            return edges;
+		// do not process empty polylines
+		if (n < 2)
+			return edges;
 
-        // create one edge for each couple of vertices
-        for (int i = 0; i<n-1; i++)
-            edges.add(new LineSegment2D(points.get(i), points.get(i+1)));
-        
-        // add a supplementary edge at the end, but only if vertices differ
-        Point2D p0 = points.get(0);
-        Point2D pn = points.get(n-1);
-        if (pn.getDistance(p0)>Shape2D.ACCURACY)
-        	edges.add(new LineSegment2D(pn, p0));
-        
-        // return resulting array
-        return edges;
-    }
+		// create one edge for each couple of vertices
+		for (int i = 0; i < n - 1; i++)
+			edges.add(new LineSegment2D(vertices.get(i), vertices.get(i + 1)));
+
+		// add a supplementary edge at the end, but only if vertices differ
+		Point2D p0 = vertices.get(0);
+		Point2D pn = vertices.get(n - 1);
+		if (pn.getDistance(p0) > Shape2D.ACCURACY)
+			edges.add(new LineSegment2D(pn, p0));
+
+		// return resulting array
+		return edges;
+	}
 
     @Override
-    public LineSegment2D getLastEdge() {
-        int n = points.size();
-        if (n<2)
-            return null;
-        return new LineSegment2D(points.get(n-1), points.get(0));
+	public LineSegment2D getLastEdge() {
+		int n = vertices.size();
+		if (n < 2)
+			return null;
+		return new LineSegment2D(vertices.get(n-1), vertices.get(0));
     }
 
 	// ===================================================================
@@ -252,7 +254,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public double getWindingAngle(java.awt.geom.Point2D point) {
-        int wn = Polygon2DUtils.windingNumber(this.points, point);
+        int wn = Polygon2DUtils.windingNumber(this.vertices, point);
         return wn * 2 * Math.PI;
     }
 
@@ -272,7 +274,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     		return true;
     	
     	double area = this.getSignedArea();
-    	int winding = Polygon2DUtils.windingNumber(this.points, point);
+    	int winding = Polygon2DUtils.windingNumber(this.vertices, point);
     	if (area > 0) {
     		return winding == 1;
     	} else {
@@ -301,38 +303,38 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public math.geom2d.Point2D getPoint(double t) {
-        // format position to stay between limits
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        t = Math.max(Math.min(t, t1), t0);
+		// format position to stay between limits
+		double t0 = this.getT0();
+		double t1 = this.getT1();
+		t = Math.max(Math.min(t, t1), t0);
 
-        int n = points.size();
+		int n = vertices.size();
 
-        // index of vertex before point
-        int ind0 = (int) Math.floor(t+Shape2D.ACCURACY);
-        double tl = t-ind0;
+		// index of vertex before point
+		int ind0 = (int) Math.floor(t + Shape2D.ACCURACY);
+		double tl = t - ind0;
 
-        if (ind0==n)
-            ind0 = 0;
-        Point2D p0 = points.get(ind0);
+		if (ind0 == n)
+			ind0 = 0;
+		Point2D p0 = vertices.get(ind0);
 
-        // check if equal to a vertex
-        if (Math.abs(t-ind0)<Shape2D.ACCURACY)
-            return new Point2D(p0);
+		// check if equal to a vertex
+		if (Math.abs(t - ind0) < Shape2D.ACCURACY)
+			return new Point2D(p0);
 
-        // index of vertex after point
-        int ind1 = ind0+1;
-        if (ind1==n)
-            ind1 = 0;
-        Point2D p1 = points.get(ind1);
+		// index of vertex after point
+		int ind1 = ind0 + 1;
+		if (ind1 == n)
+			ind1 = 0;
+		Point2D p1 = vertices.get(ind1);
 
-        // position on line;
-        double x0 = p0.getX();
-        double y0 = p0.getY();
-        double dx = p1.getX()-x0;
-        double dy = p1.getY()-y0;
+		// position on line;
+		double x0 = p0.getX();
+		double y0 = p0.getY();
+		double dx = p1.getX() - x0;
+		double dy = p1.getY() - y0;
 
-        return new Point2D(x0+tl*dx, y0+tl*dy);
+		return new Point2D(x0 + tl * dx, y0 + tl *dy);
     }
 
     /**
@@ -348,7 +350,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public double getT1() {
-        return points.size();
+        return vertices.size();
     }
 
     /**
@@ -356,19 +358,19 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      */
     @Override
     public Point2D getFirstPoint() {
-        if (points.size()==0)
+        if (vertices.size()==0)
             return null;
-        return points.get(0);
+        return vertices.get(0);
     }
 
     /**
      * return the first point, as this is the same as the last point.
      */
     @Override
-    public Point2D getLastPoint() {
-        if (points.size()==0)
-            return null;
-        return points.get(0);
+	public Point2D getLastPoint() {
+		if (vertices.size() == 0)
+			return null;
+        return vertices.get(0);
     }
 
 	@Override
@@ -382,15 +384,15 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * the original curve (same pointers).
      */
     @Override
-    public LinearRing2D getReverseCurve() {
-        Point2D[] points2 = new Point2D[points.size()];
-        int n = points.size();
-        if (n>0) {
-            points2[0] = points.get(0);
-            for (int i = 1; i<n; i++)
-                points2[i] = points.get(n-i);
-        }
-        return new LinearRing2D(points2);
+	public LinearRing2D getReverseCurve() {
+		Point2D[] points2 = new Point2D[vertices.size()];
+		int n = vertices.size();
+		if (n > 0) {
+			points2[0] = vertices.get(0);
+			for (int i = 1; i < n; i++)
+				points2[i] = vertices.get(n - i);
+		}
+		return new LinearRing2D(points2);
     }
 
     /**
@@ -410,38 +412,38 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
         t0 = Math.min(Math.max(t0, 0), indMax);
         t1 = Math.min(Math.max(t1, 0), indMax);
 
-        // find curves index
-        int ind0 = (int) Math.floor(t0+Shape2D.ACCURACY);
-        int ind1 = (int) Math.floor(t1+Shape2D.ACCURACY);
+		// find curves index
+		int ind0 = (int) Math.floor(t0 + Shape2D.ACCURACY);
+		int ind1 = (int) Math.floor(t1 + Shape2D.ACCURACY);
 
-        // need to subdivide only one line segment
-        if (ind0==ind1&&t0<t1) {
-            // extract limit points
-            res.addPoint(this.getPoint(t0));
-            res.addPoint(this.getPoint(t1));
-            // return result
-            return res;
+		// need to subdivide only one line segment
+		if (ind0 == ind1 && t0 < t1) {
+			// extract limit points
+			res.addVertex(this.getPoint(t0));
+			res.addVertex(this.getPoint(t1));
+			// return result
+			return res;
         }
 
-        // add the point corresponding to t0
-        res.addPoint(this.getPoint(t0));
+		// add the point corresponding to t0
+		res.addVertex(this.getPoint(t0));
 
-        if (ind1>ind0) {
-            // add all the whole points between the 2 cuts
-            for (int n = ind0+1; n<=ind1; n++)
-                res.addPoint(points.get(n));
-        } else {
-            // add all points until the end of the set
-            for (int n = ind0+1; n<indMax; n++)
-                res.addPoint(points.get(n));
+		if (ind1 > ind0) {
+			// add all the whole points between the 2 cuts
+			for (int n = ind0 + 1; n <= ind1; n++)
+				res.addVertex(vertices.get(n));
+		} else {
+			// add all points until the end of the set
+			for (int n = ind0 + 1; n < indMax; n++)
+				res.addVertex(vertices.get(n));
 
-            // add all points from the beginning of the set
-            for (int n = 0; n<=ind1; n++)
-                res.addPoint(points.get(n));
-        }
+			// add all points from the beginning of the set
+			for (int n = 0; n <= ind1; n++)
+				res.addVertex(vertices.get(n));
+		}
 
-        // add the last point
-        res.addPoint(this.getPoint(t1));
+		// add the last point
+        res.addVertex(this.getPoint(t1));
 
         // return the curve set
         return res;
@@ -454,12 +456,12 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * Return the transformed shape, as a ClosePolyline2D.
      */
     @Override
-    public LinearRing2D transform(AffineTransform2D trans) {
-        Point2D[] pts = new Point2D[points.size()];
-        for (int i = 0; i<points.size(); i++)
-            pts[i] = trans.transform(points.get(i));
-        return new LinearRing2D(pts);
-    }
+	public LinearRing2D transform(AffineTransform2D trans) {
+		Point2D[] pts = new Point2D[vertices.size()];
+		for (int i = 0; i < vertices.size(); i++)
+			pts[i] = trans.transform(vertices.get(i));
+		return new LinearRing2D(pts);
+	}
 
     /*
      * (non-Javadoc)
@@ -469,7 +471,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
-        if (points.size()<2)
+        if (vertices.size()<2)
             return path;
 
         // move to last first point of the curve (then a line will be drawn to
@@ -478,7 +480,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
         path.moveTo((float) p0.getX(), (float) p0.getY());
         
         // process each point
-        for(Point2D point : points)
+        for(Point2D point : vertices)
             path.lineTo((float) point.getX(), (float) point.getY());
         
         // close the path, even if the path is already at the right position
@@ -493,30 +495,30 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     @Override
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (points.size() < 2)
+        if (vertices.size() < 2)
             return path;
         return this.appendPath(path);
     }
     
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof LinearRing2D))
-            return false;
-        LinearRing2D ring = (LinearRing2D) object;
+	public boolean equals(Object object) {
+		if (!(object instanceof LinearRing2D))
+			return false;
+		LinearRing2D ring = (LinearRing2D) object;
 
-        if (points.size()!=ring.points.size())
-            return false;
-        for (int i = 0; i<points.size(); i++)
-            if (!(points.get(i)).equals(ring.points.get(i)))
-                return false;
-        return true;
+		if (vertices.size() != ring.vertices.size())
+			return false;
+		for (int i = 0; i < vertices.size(); i++)
+			if (!(vertices.get(i)).equals(ring.vertices.get(i)))
+				return false;
+		return true;
     }
     
     @Override
-    public LinearRing2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(points.size());
-        for(Point2D point : points)
-            array.add(point.clone());
-        return new LinearRing2D(array);
+	public LinearRing2D clone() {
+		ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
+		for (Point2D point : vertices)
+			array.add(point.clone());
+		return new LinearRing2D(array);
     }
 }
