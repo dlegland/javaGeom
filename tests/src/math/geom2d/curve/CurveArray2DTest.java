@@ -129,14 +129,14 @@ public class CurveArray2DTest extends TestCase {
 		set.addCurve(arc2);
 		
 		Curve2D sub1 = set.getSubCurve(0, 2);
-		assertTrue(sub1 instanceof CurveSet2D);
+		assertTrue(sub1 instanceof CurveSet2D<?>);
 		CurveSet2D<?> subset = (CurveSet2D<?>) sub1;
 		assertEquals(subset.getCurveNumber(), 2);
 		
 		double pos0 = set.getPosition(new Point2D(r, 0));
 		double pos1 = set.getPosition(new Point2D(0, 0));
 		sub1 = set.getSubCurve(pos0, pos1);
-		assertTrue(sub1 instanceof CurveSet2D);
+		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
 		assertEquals(subset.getCurveNumber(), 2);
 		Iterator<?> iter = subset.getCurves().iterator();
@@ -146,7 +146,7 @@ public class CurveArray2DTest extends TestCase {
 		assertTrue(arc2h1.equals(sub1));
 		
 		sub1 = set.getSubCurve(pos1, pos0);
-		assertTrue(sub1 instanceof CurveSet2D);
+		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
 		assertEquals(subset.getCurveNumber(), 2);
 		iter = subset.getCurves().iterator();

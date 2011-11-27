@@ -107,7 +107,7 @@ public abstract class Curve2DUtils {
 					(ContinuousCurve2D) curve, box).getCurves());
 
 		// case of a CurveSet2D
-		if (curve instanceof CurveSet2D)
+		if (curve instanceof CurveSet2D<?>)
 			return Curve2DUtils.clipCurveSet((CurveSet2D<?>) curve, box);
 
 		// Unknown case

@@ -723,7 +723,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     		return true;
     	
         // check class, and cast type
-        if (!(obj instanceof CurveArray2D))
+        if (!(obj instanceof CurveArray2D<?>))
             return false;
         CurveArray2D<?> shapeSet = (CurveArray2D<?>) obj;
 
@@ -751,7 +751,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     @Override
     public boolean equals(Object obj) {
         // check class, and cast type
-        if (!(obj instanceof CurveArray2D))
+        if (!(obj instanceof CurveArray2D<?>))
             return false;
         CurveArray2D<?> curveSet = (CurveArray2D<?>) obj;
 

@@ -218,7 +218,7 @@ implements Boundary2D {
     @Override
     public boolean equals(Object obj) {
         // check class
-        if (!(obj instanceof ContourArray2D))
+        if (!(obj instanceof ContourArray2D<?>))
             return false;
         // call superclass method
         return super.equals(obj);

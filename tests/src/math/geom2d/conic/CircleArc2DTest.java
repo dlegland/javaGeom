@@ -347,17 +347,17 @@ public class CircleArc2DTest extends TestCase {
 
 		// a rectangle totally outside the arc
 		clip1 = arc1.clip(new Box2D(15, 25, 15, 25)); 
-		assertTrue(clip1 instanceof CurveSet2D);
+		assertTrue(clip1 instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 0);
 
 		// an rectangle totally inside a circle arc
 		clip1 = arc1.clip(new Box2D(0, 7, 0, 7));
-		assertTrue(clip1 instanceof CurveSet2D);
+		assertTrue(clip1 instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 0);
 
 		// a circle arc totally inside the rectangle
 		clip1 = arc1.clip(new Box2D(-20, 20, -20, 20));
-		assertTrue(clip1 instanceof CurveSet2D);
+		assertTrue(clip1 instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clip1).getCurveNumber(), 1);
 		Curve2D clip1c1 = ((CurveSet2D<?>) clip1).getFirstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
@@ -401,19 +401,19 @@ public class CircleArc2DTest extends TestCase {
 
 		// a box totally outside the arc
 		clipped = arc1.clip(boxOut); 
-		assertTrue(clipped instanceof CurveSet2D);
+		assertTrue(clipped instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clipped).getCurveNumber(), 0);
 		assertTrue(clipped.isEmpty());
 
 		// an box totally inside a circle arc
 		clipped = arc1.clip(boxIn);
-		assertTrue(clipped instanceof CurveSet2D);
+		assertTrue(clipped instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clipped).getCurveNumber(), 0);
 		assertTrue(clipped.isEmpty());
 
 		// a circle arc totally inside the box
 		clipped = arc1.clip(boxFull);
-		assertTrue(clipped instanceof CurveSet2D);
+		assertTrue(clipped instanceof CurveSet2D<?>);
 		assertEquals(((CurveSet2D<?>) clipped).getCurveNumber(), 1);
 		Curve2D clip1c1 = ((CurveSet2D<?>) clipped).getFirstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);

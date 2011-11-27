@@ -207,7 +207,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         }
 
         // Otherwise, iterate on curves of the curve set
-        if (curve instanceof CurveSet2D) {
+        if (curve instanceof CurveSet2D<?>) {
             for (Curve2D curve2 : ((CurveSet2D<?>) curve).getCurves())
                 array.addAll(getSmoothCurves(curve2));
             return array;
@@ -363,7 +363,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     @Override
     public boolean equals(Object obj) {
         // check class, and cast type
-        if (!(obj instanceof CurveSet2D))
+        if (!(obj instanceof CurveSet2D<?>))
             return false;
         PolyCurve2D<?> curveSet = (PolyCurve2D<?>) obj;
 

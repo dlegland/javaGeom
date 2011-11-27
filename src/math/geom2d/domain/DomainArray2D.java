@@ -121,7 +121,7 @@ implements DomainSet2D<T> {
     @Override
     public boolean equals(Object obj) {
         // check class
-        if (!(obj instanceof DomainArray2D))
+        if (!(obj instanceof DomainArray2D<?>))
             return false;
         // call superclass method
         return super.equals(obj);
