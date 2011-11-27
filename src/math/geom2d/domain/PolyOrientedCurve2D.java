@@ -160,7 +160,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
             return ((SmoothCurve2D) curve).getTangent(pos);
 
         // Extract sub curve and recursively call this method on the sub curve
-        if (curve instanceof CurveSet2D) {
+        if (curve instanceof CurveSet2D<?>) {
             CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
             double pos2 = curveSet.getLocalPosition(pos);
             Curve2D subCurve = curveSet.getChildCurve(pos);
@@ -286,7 +286,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     @Override
     public boolean equals(Object obj) {
         // check class
-        if (!(obj instanceof CurveSet2D))
+        if (!(obj instanceof CurveSet2D<?>))
             return false;
         // call superclass method
         return super.equals(obj);

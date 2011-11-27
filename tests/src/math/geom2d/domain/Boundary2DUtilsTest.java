@@ -64,7 +64,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		Collection<? extends Contour2D> curves2 = clipped2.getContinuousCurves();
 		Contour2D curve2 = curves2.iterator().next();
 		assertTrue(!(curve2 instanceof CircleArc2D));
-		assertTrue(curve2 instanceof PolyOrientedCurve2D);
+		assertTrue(curve2 instanceof PolyOrientedCurve2D<?>);
 		
 		Iterator<?> iter = ((PolyOrientedCurve2D<?>) curve2).getCurves().iterator();
 		ContinuousOrientedCurve2D curve3 = (ContinuousOrientedCurve2D) iter.next();
@@ -87,6 +87,6 @@ public class Boundary2DUtilsTest extends TestCase {
 		curves = clipped.getContinuousCurves();
 		assertTrue(curves.size()==1);
 		curve = curves.iterator().next();	
-		assertTrue(curve instanceof PolyOrientedCurve2D);
+		assertTrue(curve instanceof PolyOrientedCurve2D<?>);
 	}
 }

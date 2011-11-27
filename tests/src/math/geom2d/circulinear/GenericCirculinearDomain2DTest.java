@@ -76,7 +76,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		// compare with the theoretical circle
 		Circle2D circle2 = Circle2D.create(center, 30+15, true);
-		assertTrue(boundary instanceof ContourArray2D);
+		assertTrue(boundary instanceof ContourArray2D<?>);
 		ContourArray2D<?> array = (ContourArray2D<?>) boundary;
 		assertTrue(array.containsCurve(circle2));
 	}

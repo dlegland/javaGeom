@@ -43,8 +43,8 @@ public class PolyCurve2DTest extends TestCase {
 		set.addCurve(arc2);
 		
 		Curve2D sub1 = set.getSubCurve(0, 2);
-		assertTrue(sub1 instanceof CurveSet2D);
-		assertTrue(sub1 instanceof PolyCurve2D);
+		assertTrue(sub1 instanceof CurveSet2D<?>);
+		assertTrue(sub1 instanceof PolyCurve2D<?>);
 		
 		CurveSet2D<?> subset = (PolyCurve2D<?>) sub1;
 		assertEquals(subset.getCurveNumber(), 2);

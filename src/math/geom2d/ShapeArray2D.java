@@ -241,7 +241,7 @@ implements ShapeSet2D<T>, Cloneable {
     		return true;
     	
         // check class, and cast type
-        if (!(obj instanceof ShapeSet2D))
+        if (!(obj instanceof ShapeSet2D<?>))
             return false;
         ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
 
@@ -283,7 +283,7 @@ implements ShapeSet2D<T>, Cloneable {
     		return true;
     	
         // check class, and cast type
-        if (!(obj instanceof ShapeSet2D))
+        if (!(obj instanceof ShapeSet2D<?>))
             return false;
         ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
 

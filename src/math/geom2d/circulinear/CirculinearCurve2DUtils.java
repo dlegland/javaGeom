@@ -67,7 +67,7 @@ public class CirculinearCurve2DUtils {
 		}
 
 		// If the curve is continuous, creates a CirculinearContinuousCurve2D
-		if (curve instanceof CurveSet2D) {
+		if (curve instanceof CurveSet2D<?>) {
 			// extract smooth pieces
 			CurveSet2D<?> set = (CurveSet2D<?>) curve;
 			Collection<? extends ContinuousCurve2D> continuousCurves = set
