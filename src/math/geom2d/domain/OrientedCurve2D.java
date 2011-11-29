@@ -28,6 +28,7 @@ package math.geom2d.domain;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 
@@ -48,7 +49,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param point a point of the plane
      * @return a signed angle
      */
-    public abstract double getWindingAngle(java.awt.geom.Point2D point);
+    public abstract double getWindingAngle(Point2D point);
 
     /**
      * Get the signed distance of the curve to the given point: this distance is
@@ -59,7 +60,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param point a point of the plane
      * @return the signed distance to the curve
      */
-    public abstract double getSignedDistance(java.awt.geom.Point2D point);
+    public abstract double getSignedDistance(Point2D point);
 
     /**
      * The same as getSignedDistance(Point2D), but by passing 2 double as
@@ -78,7 +79,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @return true if the point is on the left side of the curve.
      */
     // TODO: think about either deprecate or better define
-    public abstract boolean isInside(java.awt.geom.Point2D pt);
+    public abstract boolean isInside(Point2D pt);
 
     public abstract OrientedCurve2D getReverseCurve();
 

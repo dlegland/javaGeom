@@ -182,7 +182,7 @@ implements Contour2D, Conic2D, Cloneable {
      * @param point
      * @return
      */
-    private Point2D formatPoint(java.awt.geom.Point2D point) {
+    private Point2D formatPoint(Point2D point) {
         Point2D p2 = new Point2D(point);
         p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
         p2 = p2.transform(AffineTransform2D.createRotation(-theta));
@@ -274,7 +274,7 @@ implements Contour2D, Conic2D, Cloneable {
     // ==========================================================
     // methods implementing the OrientedCurve2D interface
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         if (isDirect()) {
             if (isInside(point))
                 return Math.PI*2;
@@ -288,7 +288,7 @@ implements Contour2D, Conic2D, Cloneable {
         }
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -298,7 +298,7 @@ implements Contour2D, Conic2D, Cloneable {
         return -getDistance(x, y);
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         // Process the point to be in a referentiel such that parabola is
         // vertical
         Point2D p2 = formatPoint(point);
@@ -374,7 +374,7 @@ implements Contour2D, Conic2D, Cloneable {
      * parabola returns the positions on its "vertical" projection (i.e. its
      * projection parallel to the symetry axis of the parabola).
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         // t parameter is x-coordinate of point
         return formatPoint(point).getX();
     }
@@ -384,7 +384,7 @@ implements Contour2D, Conic2D, Cloneable {
      * parabola returns the positions on its "vertical" projection (i.e. its
      * projection parallel to the symetry axis of the parabola).
      */
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         // t parameter is x-coordinate of point
         return formatPoint(point).getX();
     }
@@ -463,7 +463,7 @@ implements Contour2D, Conic2D, Cloneable {
         return new ParabolaArc2D(this, t0, t1);
     }
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -567,7 +567,7 @@ implements Contour2D, Conic2D, Cloneable {
         return Math.abs(yp-xp*xp)<Shape2D.ACCURACY;
     }
 
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return contains(point.getX(), point.getY());
     }
 

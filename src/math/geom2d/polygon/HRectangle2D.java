@@ -220,7 +220,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // ===================================================================
     // methods overriding the Shape2D interface
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
     	return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
     }
 
@@ -367,5 +367,9 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         // test ok for 4 corners, then the two rectangles are the same.
         return true;
     }
+
+	public boolean contains(Point2D p) {
+		return this.contains(p.getX(), p.getY());
+	}
 
 }

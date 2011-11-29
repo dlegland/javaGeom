@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.Point2D;
 
 /**
  * A Boundary2D is the curve which defines the contour of a domain in the plane.
@@ -47,7 +48,7 @@ public interface Boundary2D extends OrientedCurve2D {
      * @param pt a point in the plane
      * @return true if the point is on the left side of the curve.
      */
-    public boolean isInside(java.awt.geom.Point2D pt);
+    public boolean isInside(Point2D pt);
 
     /**
      * Returns the different continuous curves composing the boundary

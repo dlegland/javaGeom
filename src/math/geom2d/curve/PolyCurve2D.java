@@ -340,8 +340,8 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         // add the path of the first curve
         for(ContinuousCurve2D curve : curves) {
         	start = curve.getFirstPoint();
-        	if (start.distance(current)>Shape2D.ACCURACY)
-        		path.lineTo((float) start.getX(), (float) start.getY());
+			if (start.getDistance(current) > Shape2D.ACCURACY)
+				path.lineTo((float) start.getX(), (float) start.getY());
         	path = curve.appendPath(path);
         	current = start;
         }

@@ -210,7 +210,7 @@ public final class Polygon2DUtils {
      * @return the number of windings of the curve around the point
      */
     public final static int windingNumber(Collection<Point2D> vertices,
-            java.awt.geom.Point2D point) {
+            Point2D point) {
         int wn = 0; // the winding number counter
 
         // Extract the last point of the collection
@@ -254,8 +254,7 @@ public final class Polygon2DUtils {
      *         <0 for P2 right of the line
      * See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
      */
-    private final static int isLeft(java.awt.geom.Point2D p1, 
-    		java.awt.geom.Point2D p2, java.awt.geom.Point2D pt) {
+    private final static int isLeft(Point2D p1, Point2D p2, Point2D pt) {
     	double x = p1.getX();
     	double y = p1.getY();
     	return (int) Math.signum(
@@ -397,7 +396,7 @@ public final class Polygon2DUtils {
     		LinearRing2D ring) {
     	PolySimple poly = new PolySimple();
     	for (Point2D point : ring.getVertices())
-    		poly.add(point);
+    		poly.add(point.getAsDouble());
     	return poly;
     }
     

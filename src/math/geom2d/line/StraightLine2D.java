@@ -62,8 +62,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Creates a straight line going through a point and with a given angle.
      */
-    public static StraightLine2D create(java.awt.geom.Point2D point,
-            double angle) {
+    public static StraightLine2D create(Point2D point, double angle) {
         return new StraightLine2D(point.getX(), point.getY(), Math.cos(angle),
                 Math.sin(angle));
     }
@@ -71,8 +70,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Creates a straight line through 2 points.
      */
-    public static StraightLine2D create(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2) {
+    public static StraightLine2D create(Point2D p1, Point2D p2) {
         return new StraightLine2D(p1, p2);
     }
 
@@ -80,8 +78,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Creates a straight line through a point and with a given direction
      * vector.
      */
-    public static StraightLine2D create(java.awt.geom.Point2D origin,
-            Vector2D direction) {
+    public static StraightLine2D create(Point2D origin, Vector2D direction) {
         return new StraightLine2D(origin, direction);
     }
 
@@ -93,8 +90,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * @return the median of points p1 and p2
      * @since 0.6.3
      */
-    public static StraightLine2D createMedian(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2) {
+    public static StraightLine2D createMedian(Point2D p1, Point2D p2) {
         Point2D mid = Point2D.midPoint(p1, p2);
         StraightLine2D line = StraightLine2D.create(p1, p2);
         return StraightLine2D.createPerpendicular(line, mid);
@@ -108,7 +104,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * @since 0.6.3
      */
     public static StraightLine2D createParallel(LinearShape2D line,
-            java.awt.geom.Point2D point) {
+            Point2D point) {
         return new StraightLine2D(line, point);
     }
 
@@ -154,9 +150,8 @@ public class StraightLine2D extends AbstractLine2D implements
      * p1 and p2 for the first one, and p3 and p4 for the second one. Returns
      * null if two lines are parallel.
      */
-    public static Point2D getIntersection(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2, java.awt.geom.Point2D p3,
-            java.awt.geom.Point2D p4) {
+    public static Point2D getIntersection(Point2D p1, Point2D p2, Point2D p3,
+            Point2D p4) {
         StraightLine2D line1 = new StraightLine2D(p1, p2);
         StraightLine2D line2 = new StraightLine2D(p3, p4);
         return line1.getIntersection(line2);
@@ -171,8 +166,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /** Define a new Straight line going through the two given points. */
-    public StraightLine2D(java.awt.geom.Point2D point1,
-            java.awt.geom.Point2D point2) {
+    public StraightLine2D(Point2D point1, Point2D point2) {
         this(point1, new Vector2D(point1, point2));
     }
 
@@ -180,7 +174,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Define a new Straight line going through the given point, and with the
      * specified direction vector.
      */
-    public StraightLine2D(java.awt.geom.Point2D point, Vector2D direction) {
+    public StraightLine2D(Point2D point, Vector2D direction) {
         this(point.getX(), point.getY(), direction.getX(), direction.getY());
     }
 
@@ -188,7 +182,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Define a new Straight line going through the given point, and with the
      * specified direction vector.
      */
-    public StraightLine2D(java.awt.geom.Point2D point, double dx, double dy) {
+    public StraightLine2D(Point2D point, double dx, double dy) {
         this(point.getX(), point.getY(), dx, dy);
     }
 
@@ -196,7 +190,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Define a new Straight line going through the given point, and with the
      * specified direction given by angle.
      */
-    public StraightLine2D(java.awt.geom.Point2D point, double angle) {
+    public StraightLine2D(Point2D point, double angle) {
         this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
     }
 
@@ -220,7 +214,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Define a new Straight line, parallel to another straigth object (ray,
      * straight line or edge), and going through the given point.
      */
-    public StraightLine2D(LinearShape2D line, java.awt.geom.Point2D point) {
+    public StraightLine2D(LinearShape2D line, Point2D point) {
         this(point, line.getVector());
     }
 
@@ -246,7 +240,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Returns a new Straight line, parallel to another straight object (ray,
      * straight line or edge), and going through the given point.
      */
-    public StraightLine2D getParallel(java.awt.geom.Point2D point) {
+    public StraightLine2D getParallel(Point2D point) {
         return new StraightLine2D(point, dx, dy);
     }
 
@@ -326,7 +320,7 @@ public class StraightLine2D extends AbstractLine2D implements
     // methods specific to OrientedCurve2D interface
 
     @Override
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
 
         double angle1 = Angle2D.getHorizontalAngle(-dx, -dy);
         double angle2 = Angle2D.getHorizontalAngle(dx, dy);
@@ -444,7 +438,7 @@ public class StraightLine2D extends AbstractLine2D implements
     @Override
     public double getDistance(double x, double y) {
         Point2D proj = super.getProjectedPoint(x, y);
-        return proj.distance(x, y);
+        return proj.getDistance(x, y);
     }
 
     public Box2D getBoundingBox() {
@@ -492,7 +486,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Shape2D.ACCURACY.
      */
     @Override
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return super.supportContains(p.getX(), p.getY());
     }
 

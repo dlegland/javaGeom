@@ -361,7 +361,7 @@ implements LinearElement2D, Cloneable {
     // ===================================================================
     // methods implementing the OrientedCurve2D interface
     
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -397,7 +397,7 @@ implements LinearElement2D, Cloneable {
     /**
      * Get the distance of the point (x, y) to this edge.
      */
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -408,7 +408,7 @@ implements LinearElement2D, Cloneable {
         StraightLine2D support = new StraightLine2D(p1, p2);
         Point2D proj = support.getProjectedPoint(x, y);
         if (contains(proj))
-            return proj.distance(x, y);
+            return proj.getDistance(x, y);
         double d1 = Math.hypot(p1.getX()-x, p1.getY()-y);
         double d2 = Math.hypot(p2.getX()-x, p2.getY()-y);
         // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
@@ -483,11 +483,11 @@ implements LinearElement2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         return new LineSegment2D(p1, p2).getWindingAngle(point);
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         return new LineSegment2D(p1, p2).getSignedDistance(point)<0;
     }
 
@@ -548,11 +548,11 @@ implements LinearElement2D, Cloneable {
      * uses the direction with the biggest derivative, in order to avoid divisions 
      * by zero.
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         return new LineSegment2D(p1, p2).getPosition(point);
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         return new LineSegment2D(p1, p2).project(point);
     }
 
@@ -612,7 +612,7 @@ implements LinearElement2D, Cloneable {
      * Returns true if the point p lies on the line, with precision given by
      * Shape2D.ACCURACY.
      */
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 

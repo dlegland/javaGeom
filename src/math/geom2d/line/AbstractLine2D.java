@@ -248,7 +248,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         return tab;
     }
 
-    public double getPositionOnLine(java.awt.geom.Point2D point) {
+    public double getPositionOnLine(Point2D point) {
         return getPositionOnLine(point.getX(), point.getY());
     }
 
@@ -510,7 +510,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // ===================================================================
     // methods of OrientedCurve2D interface
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
 
         double t0 = this.getT0();
         double t1 = this.getT1();
@@ -548,7 +548,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * not designed to be used directly, because AbstractLine2D is an abstract
      * class, but it can be used by subclasses to help computations.
      */
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -573,7 +573,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * @param p the point to test
      * @return true if point p lies on the 'left' of the line.
      */
-    public boolean isInside(java.awt.geom.Point2D p) {
+    public boolean isInside(Point2D p) {
         return ((p.getX()-x0)*dy-(p.getY()-y0)*dx<0);
     }
 
@@ -635,7 +635,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * <code> t = (yp - y0)/dy <\code>.<p>
      * If point does not belong to line, returns Double.NaN.
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         double pos = this.getPositionOnLine(point);
 
         // compute a threshold depending on line slope
@@ -658,7 +658,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * If point does not belong to line, returns t0, or t1, depending on which
      * one is the closest.
      */
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double pos = this.getPositionOnLine(point);
 
         // Bounds between t0 and t1
@@ -700,7 +700,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * is not designed to be used directly, because AbstractLine2D is an
      * abstract class, but it can be called by subclasses to help computations.
      */
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -719,7 +719,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         
         // if the line contains the projection, returns the distance
         if (contains(proj))
-            return proj.distance(x, y);
+            return proj.getDistance(x, y);
         
         // otherwise, returns the distance to the closest singular point
         double dist = Double.POSITIVE_INFINITY;
@@ -730,7 +730,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
        	return dist;
     }
 
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return this.contains(p.getX(), p.getY());
     }
 

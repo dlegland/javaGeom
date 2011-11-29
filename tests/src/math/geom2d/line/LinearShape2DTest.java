@@ -176,7 +176,7 @@ public class LinearShape2DTest extends TestCase {
 		assertEquals(line3.getSymmetric(p3), new Point2D(1, 5));
 		assertEquals(line3.getSymmetric(p4), new Point2D(2, 2));
 
-		p1.setLocation(6, 0);
+		p1 = new Point2D(6, 0);
 		assertEquals(line4.getSymmetric(p1), new Point2D(4, 6));
 		//assertEquals(line4.getSymmetric(p2), new Point2D(-1, 3));
 		//assertEquals(line4.getSymmetric(p3), new Point2D(1, 5));

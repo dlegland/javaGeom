@@ -84,7 +84,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ==========================================================
     // methods implementing the OrientedCurve2D interface
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         double angle0, angle1;
 
         boolean direct = parabola.isDirect();
@@ -117,7 +117,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         }
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -127,7 +127,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return -getDistance(x, y);
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         boolean direct = parabola.isDirect();
         boolean inside = parabola.isInside(point);
         if (inside&&direct)
@@ -197,7 +197,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return parabola.getPoint(t);
     }
 
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         if (!this.parabola.contains(point))
             return Double.NaN;
         double t = this.parabola.getPosition(point);
@@ -208,7 +208,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return t;
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double t = this.parabola.project(point);
         return Math.min(Math.max(t, t0), t1);
     }
@@ -244,7 +244,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods implementing the Shape2D interface
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -329,7 +329,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
 
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return contains(point.getX(), point.getY());
     }
 

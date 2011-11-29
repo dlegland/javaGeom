@@ -97,10 +97,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param ctrl2 second control point
      * @param p2 last point
      */
-    public CubicBezierCurve2D(java.awt.geom.Point2D p1, java.awt.geom.Point2D ctrl1,
-            java.awt.geom.Point2D ctrl2, java.awt.geom.Point2D p2) {
-        this(p1.getX(), p1.getY(), ctrl1.getX(), ctrl1.getY(), ctrl2.getX(),
-                ctrl2.getY(), p2.getX(), p2.getY());
+	public CubicBezierCurve2D(Point2D p1, Point2D ctrl1, Point2D ctrl2,
+			Point2D p2) {
+		this(p1.getX(), p1.getY(), ctrl1.getX(), ctrl1.getY(), ctrl2.getX(),
+				ctrl2.getY(), p2.getX(), p2.getY());
     }
 
     /**
@@ -112,9 +112,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param p2 position of last point
      * @param v2 last tangent vector
      */
-    public CubicBezierCurve2D(
-    		java.awt.geom.Point2D p1, Vector2D v1,
-            java.awt.geom.Point2D p2, Vector2D v2) {
+	public CubicBezierCurve2D(Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
         this(	p1.getX(), p1.getY(), 
         		p1.getX()+v1.getX()/3, p1.getY()+v1.getY()/3,
         		p2.getX()-v2.getX()/3, p2.getY()-v2.getY()/3,
@@ -222,9 +220,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Use winding angle of approximated polyline
      * 
-     * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(Point2D)
      */
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         return this.getAsPolyline(100).getWindingAngle(point);
     }
 
@@ -235,11 +233,11 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param pt a point in the plane
      * @return true if the point is on the left side of the curve.
      */
-    public boolean isInside(java.awt.geom.Point2D pt) {
+    public boolean isInside(Point2D pt) {
         return this.getAsPolyline(100).isInside(pt);
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         if (isInside(point))
             return -getDistance(point.getX(), point.getY());
         else
@@ -247,7 +245,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(Point2D)
      */
     public double getSignedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
@@ -349,7 +347,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Computes position by approximating cubic spline with a polyline.
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         int N = 100;
         return this.getAsPolyline(N).getPosition(point)/(N);
     }
@@ -357,7 +355,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Computes position by approximating cubic spline with a polyline.
      */
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         int N = 100;
         return this.getAsPolyline(N).project(point)/(N);
     }
@@ -399,16 +397,16 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#contains(java.awt.geom.Point2D)
+	 * @see math.geom2d.Shape2D#contains(Point2D)
 	 */
-	public boolean contains(java.awt.geom.Point2D p) {
+	public boolean contains(Point2D p) {
 		return this.contains(p.getX(), p.getY());
 	}
 
 	/**
-     * @see math.geom2d.Shape2D#getDistance(java.awt.geom.Point2D)
+     * @see math.geom2d.Shape2D#getDistance(Point2D)
      */
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return this.getDistance(p.getX(), p.getY());
     }
 

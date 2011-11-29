@@ -33,6 +33,7 @@ import java.util.Collections;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.curve.*;
 
 /**
@@ -118,14 +119,14 @@ implements Boundary2D {
     // ===================================================================
     // Methods implementing OrientedCurve2D interface
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         double angle = 0;
         for (OrientedCurve2D curve : this.getCurves())
             angle += curve.getWindingAngle(point);
         return angle;
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -146,7 +147,7 @@ implements Boundary2D {
         return minDist;
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         return this.getSignedDistance(point.getX(), point.getY())<0;
     }
 

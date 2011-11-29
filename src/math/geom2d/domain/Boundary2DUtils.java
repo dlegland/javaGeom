@@ -31,7 +31,8 @@ public abstract class Boundary2DUtils {
      * totally inside the box, return a CurveSet2D with only one curve, which is
      * the original curve.
      */
-    public final static CurveSet2D<ContinuousOrientedCurve2D> clipContinuousOrientedCurve(
+    public final static CurveSet2D<ContinuousOrientedCurve2D> 
+    clipContinuousOrientedCurve(
             ContinuousOrientedCurve2D curve, Box2D box) {
 
     	CurveArray2D<ContinuousOrientedCurve2D> result = 
@@ -181,12 +182,12 @@ public abstract class Boundary2DUtils {
         // current index of curve
         int c = 0;
 
-        // iterate while there are boundary curve to build
-        while (c<nb) {
-            int ind = c;
-            // find the current curve (used curves are removed from array)
-            while (curves[ind]==null)
-                ind++;
+		// iterate while there are boundary curve to build
+		while (c < nb) {
+			int ind = c;
+			// find the current curve (used curves are removed from array)
+			while (curves[ind] == null)
+				ind++;
 
             // current curve
             curve = curves[ind];
@@ -338,8 +339,8 @@ public abstract class Boundary2DUtils {
         int ind1 = (int) Math.floor(t1);
 
         // Simple case: returns a polyline with only 2 vertices
-        if (ind0==ind1&&t0<t1)
-            return new Polyline2D(new Point2D[] { p0, p1 });
+		if (ind0 == ind1 && t0 < t1)
+			return new Polyline2D(new Point2D[] { p0, p1 });
 
         // Create an array to store vertices
         // Array can contain at most 6 vertices: 4 for the box corners,
@@ -349,13 +350,13 @@ public abstract class Boundary2DUtils {
         // add the first point.
         vertices.add(p0);
 
-        // compute index of first box boundary edge
-        int ind = (ind0+1)%4;
+		// compute index of first box boundary edge
+		int ind = (ind0 +1)%4;
 
-        // add all vertices segments between the 2 end points
-        while (ind!=ind1) {
-            vertices.add(boundary.getPoint(ind));
-            ind = (ind+1)%4;
+		// add all vertices segments between the 2 end points
+		while (ind != ind1) {
+			vertices.add(boundary.getPoint(ind));
+			ind = (ind + 1)%4;
         }
         vertices.add(boundary.getPoint(ind));
 

@@ -52,11 +52,10 @@ public interface Transform2D {
     // general methods
 
     /** Transforms a point */
-    public abstract Point2D transform(java.awt.geom.Point2D src);
+    public abstract Point2D transform(Point2D src);
 
     /** Transforms an array of points, and returns the transformed points. */
 
-    public abstract Point2D[] transform(java.awt.geom.Point2D[] src,
-            Point2D[] dst);
+    public abstract Point2D[] transform(Point2D[] src, Point2D[] dst);
 
 }

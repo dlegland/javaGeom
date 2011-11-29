@@ -71,7 +71,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         return this.getSignedDistance(point.getX(), point.getY());
     }
 
@@ -80,12 +80,12 @@ implements SmoothOrientedCurve2D, Cloneable {
         return 0;
     }
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    public boolean isInside(java.awt.geom.Point2D pt) {
+    public boolean isInside(Point2D pt) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -127,7 +127,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return branch.getPoint(t);
     }
 
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         if (!this.branch.contains(point))
             return Double.NaN;
         double t = this.branch.getPosition(point);
@@ -138,7 +138,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return t;
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double t = this.branch.project(point);
         return Math.min(Math.max(t, t0), t1);
     }
@@ -203,7 +203,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return result;
     }
 
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         Point2D p = getPoint(project(new Point2D(point)));
         return p.getDistance(point);
     }
@@ -244,7 +244,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         }
     }
 
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return this.contains(p.getX(), p.getY());
     }
 

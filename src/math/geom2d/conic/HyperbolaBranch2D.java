@@ -142,7 +142,7 @@ implements SmoothContour2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         double dist = this.getDistance(point);
         return this.isInside(point) ? -dist : dist;
     }
@@ -151,12 +151,12 @@ implements SmoothContour2D, Cloneable {
         return this.getSignedDistance(new Point2D(x, y));
     }
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         if (hyperbola.isDirect()) {
             if (hyperbola.isInside(point))
                 return true;
@@ -217,13 +217,13 @@ implements SmoothContour2D, Cloneable {
         return hyperbola.toGlobal(new Point2D(x, y));
     }
 
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         Point2D pt = hyperbola.toLocal(new Point2D(point));
         double y = this.positive ? pt.getY() : -pt.getY();
         return Math.log(y+Math.hypot(y, 1));
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         Point2D pt = hyperbola.toLocal(new Point2D(point));
         double y = this.positive ? pt.getY() : -pt.getY();
         return Math.log(y+Math.hypot(y, 1));
@@ -301,7 +301,7 @@ implements SmoothContour2D, Cloneable {
         return result;
     }
 
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         Point2D projected = this.getPoint(this.project(new Point2D(point)));
         return projected.getDistance(point);
     }
@@ -336,7 +336,7 @@ implements SmoothContour2D, Cloneable {
         return new HyperbolaBranch2D(hyperbola, d1<d2);
     }
 
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return this.contains(point.getX(), point.getY());
     }
 

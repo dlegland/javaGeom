@@ -256,7 +256,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface OrientedCurve2D
 
     @Override
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         Point2D p1 = getFirstPoint();
         Point2D p2 = getLastPoint();
 
@@ -331,12 +331,12 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     }
 
     @Override
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         return getSignedDistance(point.getX(), point.getY())<0;
     }
 
     @Override
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -443,7 +443,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * return relative position between 0 and the angle extent.
      */
     @Override
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         double angle = Angle2D.getHorizontalAngle(circle.getCenter(), point);
         if (containsAngle(angle))
             if (angleExtent>0)
@@ -452,8 +452,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
                 return Angle2D.formatAngle(startAngle-angle);
 
         // return either 0 or 1, depending on which extremity is closer.
-        return getFirstPoint().distance(point)<getLastPoint().distance(point) ? 0
-                : Math.abs(angleExtent);
+        return getFirstPoint().getDistance(point) < 
+        getLastPoint().getDistance(point) ? 0 : Math.abs(angleExtent);
     }
 
     /**
@@ -468,7 +468,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     }
 
     @Override
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double angle = circle.project(point);
 
         // Case of an angle contained in the circle arc
@@ -504,7 +504,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface Shape2D
 
     @Override
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -690,7 +690,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // }
 
     @Override
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 
@@ -707,61 +707,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         // check if angle is contained in interval [startAngle-angleExtent]
         return this.containsAngle(angle);
     }
-
-    // public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path){
-    // double cot = Math.cos(circle.theta);
-    // double sit = Math.sin(circle.theta);
-    // double xc = circle.xc;
-    // double yc = circle.yc;
-    // double r = circle.r;
-    // double endAngle = startAngle+angleExtent;
-    //		
-    // if(angleExtent>0)
-    // for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-    // path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit),
-    // (float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-    // else
-    // for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-    // path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit),
-    // (float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-    //
-    // // position to the last point
-    // path.lineTo((float)(xc+r*Math.cos(endAngle)*cot-r*Math.sin(endAngle)*sit),
-    // (float)(yc+r*Math.cos(endAngle)*sit+r*Math.sin(endAngle)*cot));
-    //
-    // return path;
-    // }
-
-    // /* (non-Javadoc)
-    // * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform, double)
-    // */
-    // public java.awt.geom.GeneralPath getInnerPath() {
-    //		
-    // // Creates the path
-    // java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-    //		
-    // double cot = Math.cos(circle.theta);
-    // double sit = Math.sin(circle.theta);
-    // double xc = circle.xc;
-    // double yc = circle.yc;
-    // double r = circle.r;
-    // double endAngle = startAngle+angleExtent;
-    //		
-    // // position to the first point
-    // path.lineTo((float)(xc+r*Math.cos(startAngle)*cot-r*Math.sin(startAngle)*sit),
-    // (float)(yc+r*Math.cos(startAngle)*sit+r*Math.sin(startAngle)*cot));
-    //
-    // if(angleExtent>0)
-    // for(double t=startAngle; t<endAngle; t+=angleExtent/100)
-    // path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit),
-    // (float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-    // else
-    // for(double t=startAngle; t>endAngle; t+=angleExtent/100)
-    // path.lineTo((float)(xc+r*Math.cos(t)*cot-r*Math.sin(t)*sit),
-    // (float)(yc+r*Math.cos(t)*sit+r*Math.sin(t)*cot));
-    //		
-    // return path;
-    // }
 
     // ===================================================================
     // methods implementing GeometricObject2D interface

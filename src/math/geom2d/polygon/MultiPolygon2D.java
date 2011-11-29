@@ -269,7 +269,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     	return Polygon2DUtils.clipPolygon(this, box);
     }
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return Math.max(this.getBoundary().getSignedDistance(p), 0);
     }
 
@@ -317,7 +317,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return new MultiPolygon2D(transformed);
     }
 
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         double angle = 0;
         for (LinearRing2D ring : this.rings)
             angle += ring.getWindingAngle(point);

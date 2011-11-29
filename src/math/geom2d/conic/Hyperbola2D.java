@@ -509,7 +509,7 @@ implements Conic2D, Cloneable {
     // methods implementing the Shape2D interface
 
     @Override
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return this.contains(point.getX(), point.getY());
     }
 

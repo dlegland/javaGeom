@@ -12,7 +12,9 @@ package math.geom2d.curve;
 
 import math.geom2d.Point2D;
 
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
 import java.awt.Shape;
 
 /**
@@ -117,7 +119,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * 
      * @param p the specified point
      */
-    public synchronized void moveTo(java.awt.geom.Point2D p) {
+    public synchronized void moveTo(Point2D p) {
         path.moveTo((float) p.getX(), (float) p.getY());
     }
 
@@ -138,7 +140,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * 
      * @param p the coordinate of the destionation point
      */
-    public synchronized void lineTo(java.awt.geom.Point2D p) {
+    public synchronized void lineTo(Point2D p) {
         path.lineTo((float) p.getX(), (float) p.getY());
     }
 
@@ -166,8 +168,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * @param p1 the control point
      * @param p2 the end point
      */
-    public synchronized void quadTo(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2) {
+    public synchronized void quadTo(Point2D p1, Point2D p2) {
         path.quadTo((float) p1.getX(), (float) p1.getY(), (float) p2.getX(),
                 (float) p2.getY());
     }
@@ -201,8 +202,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * @param p2 the coordinates of the second control point
      * @param p3 the coordinates of the final endpoint
      */
-    public synchronized void curveTo(java.awt.geom.Point2D p1,
-            java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
+    public synchronized void curveTo(Point2D p1,
+            Point2D p2, Point2D p3) {
         path.curveTo((float) p1.getX(), (float) p1.getY(), (float) p2.getX(),
                 (float) p2.getY(), (float) p3.getX(), (float) p3.getY());
     }
@@ -370,7 +371,20 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         otherwise.
      */
     public boolean contains(java.awt.geom.Point2D p) {
-        return path.contains(p);
+        return path.contains(new java.awt.Point.Double(p.getX(), p.getY()));
+    }
+
+    /**
+     * Tests if the specified <code>Point2D</code> is inside the boundary of
+     * this <code>Shape</code>.
+     * 
+     * @param p the specified <code>Point2D</code>
+     * @return <code>true</code> if this <code>Shape</code> contains the
+     *         specified <code>Point2D</code>, <code>false</code>
+     *         otherwise.
+     */
+    public boolean contains(Point2D p) {
+        return path.contains(new java.awt.Point.Double(p.getX(), p.getY()));
     }
 
     /**

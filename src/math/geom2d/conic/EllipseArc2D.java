@@ -206,7 +206,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.OrientedCurve2D#getViewAngle(math.geom2d.Point2D)
      */
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         Point2D p1 = getPoint(0);
         Point2D p2 = getPoint(Math.abs(angleExtent));
 
@@ -252,11 +252,11 @@ implements SmoothOrientedCurve2D, Cloneable {
         }
     }
 
-    public boolean isInside(java.awt.geom.Point2D p) {
+    public boolean isInside(Point2D p) {
         return getSignedDistance(p.getX(), p.getY())<0;
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -379,7 +379,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         double angle = Angle2D.getHorizontalAngle(ellipse.getCenter(), point);
         if (this.containsAngle(angle))
             if (angleExtent>0)
@@ -391,7 +391,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return Double.NaN;
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double angle = ellipse.project(point);
 
         // Case of an angle contained in the ellipse arc
@@ -403,8 +403,8 @@ implements SmoothOrientedCurve2D, Cloneable {
         }
 
         // return either 0 or T1, depending on which extremity is closer.
-        double d1 = this.getFirstPoint().distance(point);
-        double d2 = this.getLastPoint().distance(point);
+        double d1 = this.getFirstPoint().getDistance(point);
+        double d2 = this.getLastPoint().getDistance(point);
         return d1<d2 ? 0 : Math.abs(angleExtent);
     }
     
@@ -466,7 +466,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(math.geom2d.Point2D)
      */
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         return getDistance(point.getX(), point.getY());
     }
 
@@ -584,9 +584,9 @@ implements SmoothOrientedCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.Shape#contains(java.awt.geom.Point2D)
+     * @see java.awt.Shape#contains(Point2D)
      */
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return contains(point.getX(), point.getY());
     }
 

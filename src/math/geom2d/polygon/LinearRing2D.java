@@ -240,20 +240,20 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#getSignedDistance(Point2D)
      */
     @Override
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         return getSignedDistance(point.getX(), point.getY());
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
      */
     @Override
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         int wn = Polygon2DUtils.windingNumber(this.vertices, point);
         return wn * 2 * Math.PI;
     }
@@ -265,10 +265,10 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#isInside(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#isInside(Point2D)
      */
     @Override
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         // TODO: choose convention for points on the boundary
     	if (this.contains(point))
     		return true;

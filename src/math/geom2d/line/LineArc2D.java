@@ -321,7 +321,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods of Shape interface
 
     @Override
-    public boolean contains(java.awt.geom.Point2D pt) {
+    public boolean contains(Point2D pt) {
         return contains(pt.getX(), pt.getY());
     }
 

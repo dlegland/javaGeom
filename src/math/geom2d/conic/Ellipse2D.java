@@ -313,7 +313,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return Math.sqrt(r1*r1*r2*r2/(r2*r2*cot*cot+r1*r1*sit*sit));
     }
 
-    public Point2D getProjectedPoint(java.awt.geom.Point2D point) {
+    public Point2D getProjectedPoint(Point2D point) {
         Vector2D polar = this.getProjectedVector(point, Shape2D.ACCURACY);
         return new Point2D(point.getX()+polar.getX(), point.getY()+polar.getY());
     }
@@ -331,7 +331,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @param eMax
      * @return the projection vector
      */
-    public Vector2D getProjectedVector(java.awt.geom.Point2D point, double eMax) {
+    public Vector2D getProjectedVector(Point2D point, double eMax) {
 
         double ot = 1.0/3.0;
 
@@ -698,7 +698,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Return either 0, 2*PI or -2*PI, depending whether the point is located
      * inside the interior of the ellipse or not.
      */
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         if (this.getSignedDistance(point)>0)
             return 0;
         else
@@ -710,7 +710,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * rotating the ellipse and the point to align with axis, rescaling in each
      * direction, then computing distance to origin.
      */
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         AffineTransform2D rot = AffineTransform2D.createRotation(this.xc,
                 this.yc, -this.theta);
         Point2D pt = rot.transform(point);
@@ -719,7 +719,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return (xp*xp+yp*yp<1)^!direct;
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         Vector2D vector = this.getProjectedVector(point, 1e-10);
         if (isInside(point))
             return -vector.getNorm();
@@ -825,7 +825,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
     }
 
-	private Point2D toUnitCircle(java.awt.geom.Point2D point) {
+	private Point2D toUnitCircle(Point2D point) {
 		// extract coordinates
     	double xp = point.getX();
         double yp = point.getY();
@@ -853,7 +853,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return new Point2D(xp, yp);
 	}
 	
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         Point2D p2 = toUnitCircle(point);
         double xp = p2.getX();
         double yp = p2.getY();
@@ -872,7 +872,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * The ellipse is first converted to a unit circle, then the angular
      * position of the point is computed in the transformed basis.
      */
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         Point2D p2 = toUnitCircle(point);
         double xp = p2.getX();
         double yp = p2.getY();
@@ -926,7 +926,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Computes distance using a polyline approximation.
      */
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
         // return Math.abs(vector.getRho());
         return this.getAsPolyline(128).getDistance(point);
@@ -1037,7 +1037,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Return true if the point p lies on the ellipse, with precision given by
      * Shape2D.ACCURACY.
      */
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 

@@ -193,7 +193,7 @@ public class CircleInversion2D implements Bijection2D {
     // ===================================================================
     // methods implementing the Transform2D interface
 
-    public Point2D transform(java.awt.geom.Point2D pt) {
+    public Point2D transform(Point2D pt) {
     	double r = radius;
         
         double d = r*r/Point2D.getDistance(pt, center);
@@ -202,7 +202,7 @@ public class CircleInversion2D implements Bijection2D {
     }
 
     /** Transforms an array of points, and returns the transformed points. */
-    public Point2D[] transform(java.awt.geom.Point2D[] src, Point2D[] dst) {
+    public Point2D[] transform(Point2D[] src, Point2D[] dst) {
 
         double d, theta;
         double xc, yc, r;
@@ -222,10 +222,10 @@ public class CircleInversion2D implements Bijection2D {
 
         // transform each point
         for (int i = 0; i<src.length; i++) {
-            d = java.awt.geom.Point2D.distance(src[i].getX(), src[i].getY(), xc, yc);
+            d = Point2D.getDistance(src[i].getX(), src[i].getY(), xc, yc);
             d = r*r/d;
             theta = Math.atan2(src[i].getY()-yc, src[i].getX()-xc);
-            dst[i].setLocation(d*Math.cos(theta), d*Math.sin(theta));
+            dst[i] = new Point2D(d*Math.cos(theta), d*Math.sin(theta));
         }
 
         return dst;
