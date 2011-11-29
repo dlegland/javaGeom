@@ -51,7 +51,7 @@ public abstract class Polyline2DUtils {
     	if (closed) {
     		Point2D p1 = polyline.getFirstPoint();
     		Point2D p2 = polyline.getLastPoint();
-    		if (p1.distance(p2) < Shape2D.ACCURACY)
+    		if (p1.getDistance(p2) < Shape2D.ACCURACY)
     			return true;
     	}
     	

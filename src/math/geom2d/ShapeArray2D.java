@@ -9,7 +9,6 @@
 package math.geom2d;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -183,7 +182,7 @@ implements ShapeSet2D<T>, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#getDistance(java.awt.geom.Point2D)
+	 * @see math.geom2d.Shape2D#getDistance(Point2D)
 	 */
 	public double getDistance(Point2D p) {
 		return this.getDistance(p.getX(), p.getY());

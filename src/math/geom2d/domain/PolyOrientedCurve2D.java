@@ -129,14 +129,14 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     // ===================================================================
     // Methods specific to PolyOrientedCurve2D
 
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         double angle = 0;
         for (OrientedCurve2D curve : this.curves)
             angle += curve.getWindingAngle(point);
         return angle;
     }
 
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -172,7 +172,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         return null;
     }
 
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         double pos = this.project(point);
 
         if (this.isSingular(pos)) {

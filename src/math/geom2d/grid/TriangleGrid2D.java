@@ -146,9 +146,9 @@ public class TriangleGrid2D implements Grid2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.grid.Grid2D#getClosestVertex(java.awt.geom.Point2D)
+     * @see math.geom2d.grid.Grid2D#getClosestVertex(Point2D)
      */
-    public Point2D getClosestVertex(java.awt.geom.Point2D point) {
+    public Point2D getClosestVertex(Point2D point) {
         // create the base line
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);

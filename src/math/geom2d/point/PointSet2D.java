@@ -30,7 +30,7 @@ public interface PointSet2D extends PointShape2D, ShapeSet2D<Point2D> {
      * 
      * @param point the initial point in the set
      */
-    public void addPoint(java.awt.geom.Point2D point);
+    public void addPoint(Point2D point);
 
     /**
      * Add a series of points

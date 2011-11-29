@@ -39,7 +39,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     // static functions
 
     /**
-     * Static factory for creating a new vector in cartesian coordinates.
+     * Static factory for creating a new vector in Cartesian coordinates.
      * @since 0.8.1
      */
     public static Vector2D create(double x, double y) {
@@ -116,9 +116,11 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 
     /** the x-coordinate of the vector */
     protected double x;
+    
     /** the y-coordinate of the vector */
     protected double y;
 
+    
     // ===================================================================
     // constructors
 
@@ -141,14 +143,14 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     /**
      * Constructs a new vector between the origin and the given point.
      */
-    public Vector2D(java.awt.geom.Point2D point) {
+    public Vector2D(Point2D point) {
         this(point.getX(), point.getY());
     }
 
     /**
      * Constructs a new vector between two points
      */
-    public Vector2D(java.awt.geom.Point2D point1, java.awt.geom.Point2D point2) {
+    public Vector2D(Point2D point1, Point2D point2) {
         this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
     }
 

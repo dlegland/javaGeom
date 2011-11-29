@@ -133,7 +133,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @param point a point belonging to the curve
      * @return the position of the point on the curve
      */
-    public abstract double getPosition(java.awt.geom.Point2D point);
+    public abstract double getPosition(Point2D point);
 
     /**
      * Returns the position of the closest orthogonal projection of the point on
@@ -143,7 +143,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @param point a point to project
      * @return the position of the closest orthogonal projection
      */
-    public abstract double project(java.awt.geom.Point2D point);
+    public abstract double project(Point2D point);
 
     /**
      * Returns the intersection points of the curve with the specified line. The

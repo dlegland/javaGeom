@@ -129,8 +129,7 @@ implements Cloneable, CirculinearElement2D {
     // constructors
 
     /** Define a new Edge with two extremities. */
-    public LineSegment2D(java.awt.geom.Point2D point1,
-            java.awt.geom.Point2D point2) {
+    public LineSegment2D(Point2D point1, Point2D point2) {
         this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
     }
 
@@ -329,7 +328,7 @@ implements Cloneable, CirculinearElement2D {
     public double getDistance(double x, double y) {
         Point2D proj = super.getProjectedPoint(x, y);
         if (contains(proj))
-            return proj.distance(x, y);
+            return proj.getDistance(x, y);
         double d1 = Math.hypot(x0-x, y0-y);
         double d2 = Math.hypot(x0+dx-x, y0+dy-y);
         return Math.min(d1, d2);

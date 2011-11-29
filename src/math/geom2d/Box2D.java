@@ -173,7 +173,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     // ===================================================================
     // tests of inclusion
 
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         double x = point.getX();
         double y = point.getY();
         if (x<xmin)

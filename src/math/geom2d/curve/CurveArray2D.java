@@ -444,7 +444,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return curve.isSingular(this.getLocalPosition(pos));
     }
 
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
         double x = point.getX(), y = point.getY();
         double pos = 0, t0, t1;
@@ -465,7 +465,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return pos;
     }
 
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
         double x = point.getX(), y = point.getY();
         double pos = 0, t0, t1;
@@ -578,7 +578,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     // ===================================================================
     // methods inherited from interface Shape2D
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -667,7 +667,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     // methods inherited from interface Shape2D
 
     /** Returns true if one of the curves contains the point */
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 

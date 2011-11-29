@@ -53,12 +53,12 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     // ===================================================================
     // static constructors
     
-    public static<T extends java.awt.geom.Point2D> PointArray2D create(
+    public static<T extends Point2D> PointArray2D create(
     		Collection<T> points) {
     	return new PointArray2D(points);
     }
     
-    public static <T extends java.awt.geom.Point2D> PointArray2D create(
+    public static <T extends Point2D> PointArray2D create(
     		T[] points) {
     	return new PointArray2D(points);
     }
@@ -102,13 +102,10 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * Instances of Point2D are directly added, other Point are converted to
      * Point2D with the same location.
      */
-    public PointArray2D(java.awt.geom.Point2D[] points) {
+    public PointArray2D(Point2D[] points) {
         this(points.length);
-        for (java.awt.geom.Point2D element : points)
-            if (Point2D.class.isInstance(element))
-                this.points.add((Point2D) element);
-            else
-                this.points.add(new Point2D(element));
+        for (Point2D element : points)
+            this.points.add(element);
     }
 
     /**
@@ -118,14 +115,11 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @param points
      */
-    public PointArray2D(Collection<? extends java.awt.geom.Point2D> points) {
+    public PointArray2D(Collection<? extends Point2D> points) {
         this(points.size());
 
-        for (java.awt.geom.Point2D point : points) {
-            if (point instanceof Point2D)
-                this.points.add((Point2D) point);
-            else
-                this.points.add(new Point2D(point));
+        for (Point2D point : points) {
+            this.points.add(point);
         }
     }
 
@@ -138,11 +132,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @param point
      */
-    public void addPoint(java.awt.geom.Point2D point) {
-        if (point instanceof Point2D)
-            this.points.add((Point2D) point);
-        else
-            this.points.add(new Point2D(point));
+    public void addPoint(Point2D point) {
+        this.points.add(point);
     }
 
     /**
@@ -150,8 +141,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @param points an array of points
      */
-    public void addPoints(java.awt.geom.Point2D[] points) {
-        for (java.awt.geom.Point2D element : points)
+    public void addPoints(Point2D[] points) {
+        for (Point2D element : points)
             this.addPoint(element);
     }
 
@@ -209,7 +200,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
    /**
      * Return distance to the closest point of the collection
      */
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -319,7 +310,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @see java.awt.Shape#contains(java.awt.geom.Point2D)
      */
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return contains(point.getX(), point.getY());
     }
 

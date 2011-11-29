@@ -56,7 +56,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the origin and
 	 * the given point.
 	 */
-	public static double getHorizontalAngle(java.awt.geom.Point2D point) {
+	public static double getHorizontalAngle(Point2D point) {
 		return (Math.atan2(point.getY(), point.getX()) + M_2PI) % (M_2PI);
 	}
 
@@ -89,8 +89,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the two given
 	 * points.
 	 */
-	public static double getHorizontalAngle(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2) {
+	public static double getHorizontalAngle(Point2D p1,	Point2D p2) {
 		return (Math.atan2(p2.getY() - p1.getY(), p2.getX() - p1.getX()) + M_2PI)
 				% (M_2PI);
 	}
@@ -117,8 +116,7 @@ public class Angle2D {
 	 *            the final point
 	 * @return the pseudo angle of line joining p1 to p2
 	 */
-	public static double getPseudoAngle(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2) {
+	public static double getPseudoAngle(Point2D p1,	Point2D p2) {
 		double dx = p2.getX() - p1.getX();
 		double dy = p2.getY() - p1.getY();
 		double s = Math.abs(dx) + Math.abs(dy);
@@ -155,8 +153,7 @@ public class Angle2D {
 	 * Gets the angle between the ray formed by (p2, p1) and the ray formed by
 	 * (p2, p3). Result is given in radians, between 0 and 2*PI.
 	 */
-	public static double getAngle(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
+	public static double getAngle(Point2D p1, Point2D p2, Point2D p3) {
 		double angle1 = getHorizontalAngle(p2, p1);
 		double angle2 = getHorizontalAngle(p2, p3);
 		return (angle2 - angle1 + M_2PI) % (M_2PI);
@@ -178,8 +175,7 @@ public class Angle2D {
 	 * Gets the absolute angle between the ray formed by (p2, p1) and the ray
 	 * formed by (p2, p3). Result is given in radians, between 0 and PI.
 	 */
-	public static double getAbsoluteAngle(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
+	public static double getAbsoluteAngle(Point2D p1, Point2D p2, Point2D p3) {
 		double angle1 = Angle2D.getHorizontalAngle(new Vector2D(p2, p1));
 		double angle2 = Angle2D.getHorizontalAngle(new Vector2D(p2, p3));
 		angle1 = (angle2 - angle1 + M_2PI) % (M_2PI);

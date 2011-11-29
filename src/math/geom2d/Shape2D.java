@@ -68,13 +68,13 @@ public interface Shape2D extends GeometricObject2D {
     /**
      * Checks if the shape contains the given point.
      */
-    public abstract boolean contains(java.awt.geom.Point2D p);
+    public abstract boolean contains(Point2D p);
 
     /**
      * get the distance of the shape to the given point, or the distance of
      * point to the frontier of the shape in the case of a plain shape.
      */
-    public abstract double getDistance(java.awt.geom.Point2D p);
+    public abstract double getDistance(Point2D p);
 
     /**
      * get the distance of the shape to the given point, specified by x and y,

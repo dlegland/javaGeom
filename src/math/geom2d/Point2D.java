@@ -48,13 +48,21 @@ import math.geom2d.transform.CircleInversion2D;
  * <code>java.awt.geom.Point2D.Double<code> any more.
  * </p>
  */
-public class Point2D extends java.awt.geom.Point2D.Double implements
-GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
+public class Point2D 
+implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	// ===================================================================
 	// constants
 
 	private static final long serialVersionUID = 1L;
+
+	// ===================================================================
+	// class variables
+	
+	protected double x;
+	
+	protected double y;
+	
 
 	// ===================================================================
 	// static methods
@@ -75,6 +83,16 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @since 0.8.1
 	 */
 	public static Point2D create(java.awt.geom.Point2D point) {
+		return new Point2D(point.getX(), point.getY());
+	}
+
+	/**
+	 * Static factory for creating a new point from an existing instance of 
+	 * javageom  point.
+	 * 
+	 * @since 0.10.0
+	 */
+	public static Point2D create(Point2D point) {
 		return new Point2D(point.getX(), point.getY());
 	}
 
@@ -122,8 +140,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param p2 the second point
 	 * @return the Euclidean distance between p1 and p2.
 	 */
-	public static double getDistance(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2) {
+	public static double getDistance(Point2D p1, Point2D p2) {
 		return Math.hypot(p1.getX() - p2.getX(), p1.getY() - p2.getY()); 
 	}
 
@@ -132,8 +149,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * 
 	 * @return true if three points lie on the same line.
 	 */
-	public static boolean isColinear(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2, java.awt.geom.Point2D p3) {
+	public static boolean isColinear(Point2D p1, Point2D p2, Point2D p3) {
 		double dx1, dx2, dy1, dy2;
 		dx1 = p2.getX()-p1.getX();
 		dy1 = p2.getY()-p1.getY();
@@ -174,8 +190,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		return 0;
 	}
 
-	public static Point2D midPoint(java.awt.geom.Point2D p1,
-			java.awt.geom.Point2D p2) {
+	public static Point2D midPoint(Point2D p1, Point2D p2) {
 		return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2);
 	}
 
@@ -185,7 +200,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param points an array of points
 	 * @return the centroid of the points
 	 */
-	public static Point2D centroid(java.awt.geom.Point2D[] points) {
+	public static Point2D centroid(Point2D[] points) {
 		int n = points.length;
 		double sx = 0, sy = 0;
 		for (int i = 0; i<n; i++) {
@@ -202,7 +217,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param weights an array of weights the same size as points
 	 * @return the centroid of the points
 	 */
-	public static Point2D centroid(java.awt.geom.Point2D[] points,
+	public static Point2D centroid(Point2D[] points,
 			double[] weights) {
 		// number of points
 		int n = points.length;
@@ -250,8 +265,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param pt3 the third point
 	 * @return the centroid of the 3 points
 	 */
-	public static Point2D centroid(java.awt.geom.Point2D pt1,
-			java.awt.geom.Point2D pt2, java.awt.geom.Point2D pt3) {
+	public static Point2D centroid(Point2D pt1,	Point2D pt2, Point2D pt3) {
 		return new Point2D(
 				(pt1.getX()+pt2.getX()+pt3.getX())/3, 
 				(pt1.getY()+pt2.getY()+pt3.getY())/3);
@@ -267,7 +281,6 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/** Constructs a new Point2D at position (0,0). */
 	public Point2D() {
-		super(0, 0);
 	}
 
 	/**
@@ -275,7 +288,8 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * using the static factory method instead (0.8.1).
 	 */
 	public Point2D(double x, double y) {
-		super(x, y);
+		this.x = x;
+		this.y = y;
 	}
 
 	/**
@@ -283,13 +297,20 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Please consider using the static factory method instead (0.8.1)
 	 */
 	public Point2D(java.awt.geom.Point2D point) {
-		super(point.getX(), point.getY());
+		this(point.getX(), point.getY());
+	}
+
+	/**
+	 * Constructs a new Point2D by copying coordinates of given javageom point.
+	 */
+	public Point2D(Point2D point) {
+		this(point.x, point.y);
 	}
 
 	// ===================================================================
 	// Methods specific to Point2D
 
-	public Point2D plus(java.awt.geom.Point2D p) {
+	public Point2D plus(Point2D p) {
 		return new Point2D(this.x + p.getX(), this.y + p.getY());
 	}
 
@@ -297,7 +318,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		return new Point2D(this.x + v.getX(), this.y + v.getY());
 	}
 
-	public Point2D minus(java.awt.geom.Point2D p) {
+	public Point2D minus(Point2D p) {
 		return new Point2D(this.x - p.getX(), this. y -p.getY());
 	}
 
@@ -394,6 +415,17 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	// ===================================================================
+	// Getter and setter
+	
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	// ===================================================================
 	// Methods implementing CirculinearShape2D interface
 
 	/*
@@ -452,7 +484,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	/**
 	 * Computes the distance between this and the point <code>point</code>.
 	 */
-	public double getDistance(java.awt.geom.Point2D point) {
+	public double getDistance(Point2D point) {
 		return getDistance(point.getX(), point.getY());
 	}
 
@@ -497,7 +529,7 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	/**
 	 * Returns true if the two points are equal.
 	 */
-	public boolean contains(java.awt.geom.Point2D p) {
+	public boolean contains(Point2D p) {
 		return this.equals(p);
 	}
 
@@ -510,13 +542,13 @@ GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		math.geom2d.point.PointSet2D set = new PointArray2D(0);
 
 		// return empty array if point is clipped
-		if (x<box.getMinX())
+		if (x < box.getMinX())
 			return set;
-		if (y<box.getMinY())
+		if (y < box.getMinY())
 			return set;
-		if (x>box.getMaxX())
+		if (x > box.getMaxX())
 			return set;
-		if (y>box.getMaxY())
+		if (y > box.getMaxY())
 			return set;
 
 		// return an array with the point

@@ -79,7 +79,7 @@ public class GenericDomain2D implements Domain2D {
     // ===================================================================
     // methods implementing the Shape2D interface
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return Math.max(boundary.getSignedDistance(p.getX(), p.getY()), 0);
     }
 
@@ -142,7 +142,7 @@ public class GenericDomain2D implements Domain2D {
     // ===================================================================
     // methods implementing the Shape interface
 
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 

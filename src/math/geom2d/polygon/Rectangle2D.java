@@ -368,7 +368,7 @@ public class Rectangle2D implements Polygon2D {
         return false;
     }
 
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
     }
 
@@ -382,7 +382,7 @@ public class Rectangle2D implements Polygon2D {
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
      */
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -479,7 +479,7 @@ public class Rectangle2D implements Polygon2D {
      * This method simply invoke ancestor method. It is redefined to avoid
      * ambiguity with contains(Shape2D).
      */
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return contains(point.getX(), point.getY());
     }
 

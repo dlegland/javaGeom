@@ -419,9 +419,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#getSignedDistance(Point2D)
      */
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         double dist = this.getDistance(point.getX(), point.getY());
         if (isInside(point))
             return -dist;
@@ -432,9 +432,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
      */
-    public double getWindingAngle(java.awt.geom.Point2D point) {
+    public double getWindingAngle(Point2D point) {
         double angle = 0;
         int n = vertices.size();
         for (int i = 0; i<n-1; i++)
@@ -447,9 +447,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#isInside(java.awt.geom.Point2D)
+     * @see math.geom2d.OrientedCurve2D#isInside(Point2D)
      */
-    public boolean isInside(java.awt.geom.Point2D pt) {
+    public boolean isInside(Point2D pt) {
         if (new LinearRing2D(this.getPointArray()).isInside(pt))
             return true;
 
@@ -531,9 +531,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
         double tl = t-ind0;
         Point2D p0 = vertices.get(ind0);
 
-        // check if equal to a vertex
-        if (Math.abs(t-ind0)<Shape2D.ACCURACY)
-            return new Point2D(p0);
+		// check if equal to a vertex
+		if (Math.abs(t - ind0) < Shape2D.ACCURACY)
+			return new Point2D(p0);
 
         // index of vertex after point
         int ind1 = ind0+1;
@@ -554,7 +554,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
      */
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         int ind = 0;
         double dist, minDist = Double.POSITIVE_INFINITY;
         double x = point.getX();
@@ -580,7 +580,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
      */
-    public double project(java.awt.geom.Point2D point) {
+    public double project(Point2D point) {
         double dist, minDist = Double.POSITIVE_INFINITY;
         double x = point.getX();
         double y = point.getY();
@@ -783,9 +783,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(java.awt.geom.Point2D)
+     * @see math.geom2d.Shape2D#getDistance(Point2D)
      */
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         return getDistance(point.getX(), point.getY());
     }
 
@@ -822,9 +822,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.Shape#contains(java.awt.geom.Point2D)
+     * @see java.awt.Shape#contains(Point2D)
      */
-    public boolean contains(java.awt.geom.Point2D point) {
+    public boolean contains(Point2D point) {
         return this.contains(point.getX(), point.getY());
     }
 

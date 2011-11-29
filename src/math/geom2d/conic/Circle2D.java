@@ -416,14 +416,14 @@ CircularShape2D, CircleLine2D {
      * expressed in unit circle basis.
      */
     @Override
-    public boolean isInside(java.awt.geom.Point2D point) {
+    public boolean isInside(Point2D point) {
         double xp = (point.getX()-this.xc)/this.r;
         double yp = (point.getY()-this.yc)/this.r;
         return (xp*xp+yp*yp<1)^!direct;
     }
 
     @Override
-    public double getSignedDistance(java.awt.geom.Point2D point) {
+    public double getSignedDistance(Point2D point) {
         return getSignedDistance(point.getX(), point.getY());
     }
 
@@ -472,7 +472,7 @@ CircularShape2D, CircleLine2D {
     }
 
     @Override
-    public double getPosition(java.awt.geom.Point2D point) {
+    public double getPosition(Point2D point) {
         double angle = 
             Angle2D.getHorizontalAngle(xc, yc, point.getX(), point.getY());
         if (direct)
@@ -516,7 +516,7 @@ CircularShape2D, CircleLine2D {
     // methods of Shape2D interface
 
     @Override
-    public double getDistance(java.awt.geom.Point2D point) {
+    public double getDistance(Point2D point) {
         return Math.abs(Point2D.getDistance(xc, yc, point.getX(),
                 point.getY())
                 -r);

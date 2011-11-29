@@ -368,7 +368,7 @@ public class SimplePolygon2D implements Polygon2D {
      * minimal distance computed for each edge if the polygon, or ZERO if the
      * point belong to the polygon.
      */
-    public double getDistance(java.awt.geom.Point2D p) {
+    public double getDistance(Point2D p) {
         return getDistance(p.getX(), p.getY());
     }
 
@@ -389,7 +389,7 @@ public class SimplePolygon2D implements Polygon2D {
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
      */
-    public double getSignedDistance(java.awt.geom.Point2D p) {
+    public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
     }
 
@@ -462,7 +462,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Return true if the point p lies inside the polygon, with precision given
      * by Shape2D.ACCURACY.
      */
-    public boolean contains(java.awt.geom.Point2D p) {
+    public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 

@@ -340,7 +340,7 @@ public class Conic2DUtils {
         double xc = 0, yc = 0, d = 1, theta = 0;
 
         public ConicTwoLines2D(Point2D point, double d, double theta) {
-            this(point.x, point.y, d, theta);
+            this(point.getX(), point.getY(), d, theta);
         }
 
         public ConicTwoLines2D(double xc, double yc, double d, double theta) {

@@ -26,5 +26,5 @@ public interface Grid2D {
 
     public Collection<LineSegment2D> getEdges(Box2D box);
 
-    public Point2D getClosestVertex(java.awt.geom.Point2D point);
+    public Point2D getClosestVertex(Point2D point);
 }

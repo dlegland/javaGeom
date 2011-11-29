@@ -213,9 +213,9 @@ public class CircleArc2DTest extends TestCase {
 		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
 		Point2D p = new Point2D(0, 0);
 		assertEquals(arc.getWindingAngle(p), (PI/2), Shape2D.ACCURACY);
-		p.setLocation(0, -10);
+		p = new Point2D(0, -10);
 		assertEquals(arc.getWindingAngle(p), (PI/4), Shape2D.ACCURACY);
-		p.setLocation(0, -20);
+		p = new Point2D(0, -20);
 		assertEquals(arc.getWindingAngle(p), Math.atan(.5), Shape2D.ACCURACY);
 	}
 
