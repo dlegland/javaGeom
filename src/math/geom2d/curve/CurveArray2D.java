@@ -68,7 +68,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * @since 0.8.1
      */
     public static <T extends Curve2D> CurveArray2D<T> create(
-    		T[] curves) {
+    		T... curves) {
     	return new CurveArray2D<T>(curves);
     }
     
@@ -104,7 +104,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @param curves the array of curves in the set
      */
-    public CurveArray2D(T[] curves) {
+    public CurveArray2D(T... curves) {
     	this();
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)

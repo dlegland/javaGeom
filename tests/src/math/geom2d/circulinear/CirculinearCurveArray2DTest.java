@@ -36,7 +36,7 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		LineSegment2D line1 = new LineSegment2D(50, 100, 150, 100);
 		LineSegment2D line2 = new LineSegment2D(100, 50, 100, 150);
 		CirculinearCurveSet2D<LineSegment2D> set = 
-			CirculinearCurveArray2D.create(new LineSegment2D[]{line1, line2});
+			CirculinearCurveArray2D.create(line1, line2);
 		assertEquals(set.getLength(), 200, Shape2D.ACCURACY);
 	}
 
@@ -47,12 +47,11 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		// create the two line segments
 		LineSegment2D line1 = new LineSegment2D(50, 100, 150, 100);
 		LineSegment2D line2 = new LineSegment2D(100, 50, 100, 150);
-		
+
 		// gather line segments into a curve set
 		CirculinearCurveArray2D<LineSegment2D> set = 
-			new CirculinearCurveArray2D<LineSegment2D>(
-					new LineSegment2D[]{line1, line2});
-		
+			CirculinearCurveArray2D.create(line1, line2);
+
 		// only one continuous boundary
 		Domain2D buffer = set.getBuffer(30);
 		Boundary2D boundary = buffer.getBoundary();
@@ -74,8 +73,7 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		
 		// gather line segments into a curve set
 		CirculinearCurveArray2D<LineSegment2D> set = 
-			new CirculinearCurveArray2D<LineSegment2D>(
-					new LineSegment2D[]{line1, line2});
+			CirculinearCurveArray2D.create(line1, line2);
 		
 		Circle2D circle = new Circle2D(new Point2D(0, 0), 50);
 		CircleInversion2D inv = new CircleInversion2D(circle);
@@ -96,8 +94,8 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		LineSegment2D line3 = new LineSegment2D(300, 50, 300, 150);
 		
 		// gather line segments into a curve set
-		CirculinearCurveArray2D<LineSegment2D> set = CirculinearCurveArray2D.create(
-					new LineSegment2D[]{line1, line2, line3});
+		CirculinearCurveArray2D<LineSegment2D> set = 
+			CirculinearCurveArray2D.create(line1, line2, line3);
 
 		Box2D box = new Box2D(0, 200, 0, 200);
 		

@@ -52,15 +52,13 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 
     // ===================================================================
     // static constructors
-    
-    public static<T extends Point2D> PointArray2D create(
-    		Collection<T> points) {
-    	return new PointArray2D(points);
-    }
-    
-    public static <T extends Point2D> PointArray2D create(
-    		T[] points) {
-    	return new PointArray2D(points);
+
+	public static <T extends Point2D> PointArray2D create(Collection<T> points) {
+		return new PointArray2D(points);
+	}
+
+	public static <T extends Point2D> PointArray2D create(T... points) {
+		return new PointArray2D(points);
     }
     
     /**
@@ -102,7 +100,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * Instances of Point2D are directly added, other Point are converted to
      * Point2D with the same location.
      */
-    public PointArray2D(Point2D[] points) {
+    public PointArray2D(Point2D... points) {
         this(points.length);
         for (Point2D element : points)
             this.points.add(element);

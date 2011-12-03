@@ -13,7 +13,7 @@ public class CirculinearContourArray2DTest extends TestCase {
 		Circle2D circle2 = new Circle2D(new Point2D(100, 100), 30);
 
 		CirculinearContourArray2D<Circle2D> array =
-			CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2});
+			CirculinearContourArray2D.create(circle1, circle2);
 		
 		CirculinearDomain2D buffer = array.getBuffer(10);
 		assertFalse(buffer.isEmpty());
@@ -29,7 +29,7 @@ public class CirculinearContourArray2DTest extends TestCase {
 		Circle2D circle2 = new Circle2D(new Point2D(100, 100), 30);
 
 		CirculinearContourArray2D<Circle2D> array =
-			CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2});
+			CirculinearContourArray2D.create(circle1, circle2);
 
 		CircleInversion2D inv = new CircleInversion2D(new Point2D(40, 30), 50);
 		CirculinearContourArray2D<? extends CirculinearContour2D> res =
@@ -47,7 +47,7 @@ public class CirculinearContourArray2DTest extends TestCase {
 		Circle2D circle2 = new Circle2D(new Point2D(150, 100), 30);
 
 		CirculinearContourArray2D<Circle2D> array =
-			CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2});
+			CirculinearContourArray2D.create(circle1, circle2);
 
 		Box2D box = new Box2D(0, 100, 0, 100);
 		

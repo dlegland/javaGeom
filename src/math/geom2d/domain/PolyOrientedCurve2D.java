@@ -73,8 +73,18 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * @since 0.8.1
      */
     public static <T extends ContinuousOrientedCurve2D> 
-    PolyOrientedCurve2D<T> create(T[] curves) {
+    PolyOrientedCurve2D<T> create(T... curves) {
     	return new PolyOrientedCurve2D<T>(curves);
+    }
+
+    /**
+     * Static factory for creating a new PolyOrientedCurve2D from an array of
+     * curves.
+     * @since 0.8.1
+     */
+    public static <T extends ContinuousOrientedCurve2D> 
+    PolyOrientedCurve2D<T> createClosed(T... curves) {
+    	return new PolyOrientedCurve2D<T>(curves, true);
     }
 
     /**
@@ -109,7 +119,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(size);
     }
 
-    public PolyOrientedCurve2D(T[] curves) {
+    public PolyOrientedCurve2D(T... curves) {
         super(curves);
     }
 

@@ -73,7 +73,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * points.
      * @since 0.8.1
      */
-    public static Polyline2D create(Point2D[] points) {
+    public static Polyline2D create(Point2D... points) {
     	return new Polyline2D(points);
     }
     
@@ -90,17 +90,25 @@ implements CirculinearContinuousCurve2D, Cloneable {
     public Polyline2D() {
     }
 
+    /**
+     * Creates a new polyline by allocating enough memory for the specified number of vertices.
+     * @param nVertices
+     */
+    public Polyline2D(int nVertices) {
+    	this.vertices = new ArrayList<Point2D>(nVertices);
+    }
+
     public Polyline2D(Point2D initialPoint) {
-        vertices.add(initialPoint);
+        this.vertices.add(initialPoint);
     }
 
-    public Polyline2D(Point2D[] points) {
-        for (Point2D element : points)
-            this.vertices.add(element);
+    public Polyline2D(Point2D... vertices) {
+        for (Point2D vertex : vertices)
+            this.vertices.add(vertex);
     }
 
-    public Polyline2D(Collection<? extends Point2D> points) {
-        this.vertices.addAll(points);
+    public Polyline2D(Collection<? extends Point2D> vertices) {
+        this.vertices.addAll(vertices);
     }
 
     public Polyline2D(double[] xcoords, double[] ycoords) {

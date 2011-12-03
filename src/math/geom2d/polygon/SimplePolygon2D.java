@@ -65,7 +65,7 @@ public class SimplePolygon2D implements Polygon2D {
      * points.
      * @since 0.8.1
      */
-    public static SimplePolygon2D create(Point2D[] points) {
+    public static SimplePolygon2D create(Point2D... points) {
     	return new SimplePolygon2D(points);
     }
     
@@ -94,28 +94,30 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @param tab the vertices stored in an array of Point2D
      */
-    public SimplePolygon2D(Point2D[] tab) {
-        vertices = new ArrayList<Point2D>(tab.length);
-        for (Point2D element : tab)
-            vertices.add(element);
+    public SimplePolygon2D(Point2D... vertices) {
+        this.vertices = new ArrayList<Point2D>(vertices.length);
+        for (Point2D vertex : vertices)
+            this.vertices.add(vertex);
     }
 
-    /**
-     * Constructor from two arrays, one for each coordinate.
-     * 
-     * @param xcoords the x coordinate of each vertex
-     * @param ycoords the y coordinate of each vertex
-     */
-    public SimplePolygon2D(double[] xcoords, double[] ycoords) {
-        vertices = new ArrayList<Point2D>(xcoords.length);
-        for (int i = 0; i<xcoords.length; i++)
-            vertices.add(new Point2D(xcoords[i], ycoords[i]));
-    }
+	/**
+	 * Constructor from two arrays, one for each coordinate.
+	 * 
+	 * @param xcoords
+	 *            the x coordinate of each vertex
+	 * @param ycoords
+	 *            the y coordinate of each vertex
+	 */
+	public SimplePolygon2D(double[] xcoords, double[] ycoords) {
+		vertices = new ArrayList<Point2D>(xcoords.length);
+		for (int i = 0; i < xcoords.length; i++)
+			vertices.add(new Point2D(xcoords[i], ycoords[i]));
+	}
 
-    public SimplePolygon2D(Collection<? extends Point2D> points) {
-        this.vertices = new ArrayList<Point2D>(points.size());
-        this.vertices.addAll(points);
-    }
+	public SimplePolygon2D(Collection<? extends Point2D> points) {
+		this.vertices = new ArrayList<Point2D>(points.size());
+		this.vertices.addAll(points);
+	}
 
     /**
      * Creates a simple polygon with the given linear ring representing its

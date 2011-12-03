@@ -88,7 +88,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		Circle2D circle2 = new Circle2D(new Point2D(100, 100), 30);
 
 		CirculinearDomain2D domain = GenericCirculinearDomain2D.create(
-				CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2}));
+				CirculinearContourArray2D.create(circle1, circle2));
 
 		CircleInversion2D inv = new CircleInversion2D(new Point2D(40, 30), 50);
 		CirculinearDomain2D res = domain.transform(inv);

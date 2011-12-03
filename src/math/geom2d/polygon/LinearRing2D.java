@@ -73,8 +73,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * points.
      * @since 0.8.1
      */
-    public static LinearRing2D create(Point2D[] points) {
-    	return new LinearRing2D(points);
+    public static LinearRing2D create(Point2D... vertices) {
+    	return new LinearRing2D(vertices);
     }
     
 
@@ -89,8 +89,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
         super(initialPoint);
     }
 
-    public LinearRing2D(Point2D[] points) {
-        super(points);
+    public LinearRing2D(Point2D... vertices) {
+        super(vertices);
     }
 
     public LinearRing2D(double[] xcoords, double[] ycoords) {

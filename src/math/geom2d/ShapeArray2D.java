@@ -25,11 +25,11 @@ implements ShapeSet2D<T>, Cloneable {
     // ===================================================================
     // Static constructors
 
-	public static <T extends Shape2D> ShapeSet2D<T> create(Collection<T> shapes) {
+	public static <T extends Shape2D> ShapeArray2D<T> create(Collection<T> shapes) {
 		return new ShapeArray2D<T>(shapes);
 	}
-	
-	public static <T extends Shape2D> ShapeSet2D<T> create(T[] shapes) {
+
+	public static <T extends Shape2D> ShapeArray2D<T> create(T... shapes) {
 		return new ShapeArray2D<T>(shapes);
 	}
 	
@@ -70,7 +70,7 @@ implements ShapeSet2D<T>, Cloneable {
      * Adds the shape to the shape set, if it does not already belongs to the
      * set.
      * 
-     * @param curve the curve to add
+     * @param shape the shape to add
      */
     public void addShape(T shape) {
         if (!shapes.contains(shape))
@@ -80,7 +80,7 @@ implements ShapeSet2D<T>, Cloneable {
     /**
      * Removes the specified shape from the shape set.
      * 
-     * @param curve the curve to remove
+     * @param shape the shape to remove
      */
     public void removeShape(T shape) {
     	shapes.remove(shape);

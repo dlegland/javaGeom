@@ -65,7 +65,7 @@ implements Boundary2D {
      * @since 0.8.1
      */
     public static <T extends Contour2D> ContourArray2D<T> create(
-    		T[] curves) {
+    		T... curves) {
     	return new ContourArray2D<T>(curves);
     }
 
@@ -79,7 +79,7 @@ implements Boundary2D {
     	super(size);
     }
 
-    public ContourArray2D(T[] curves) {
+    public ContourArray2D(T... curves) {
         super(curves);
     }
 
