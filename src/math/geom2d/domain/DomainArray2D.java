@@ -18,6 +18,8 @@ import math.geom2d.ShapeArray2D;
 
 
 /**
+ * An array of domains. Note that this class if different from a generic domain whose boundary
+ * is a set of contours. In the latter case, the shape is itself a domain, not in the former.
  * @author dlegland
  *
  */

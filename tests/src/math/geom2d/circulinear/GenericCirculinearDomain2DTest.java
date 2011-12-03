@@ -13,6 +13,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.Domain2D;
+import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 
 
@@ -81,4 +82,22 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		assertTrue(array.containsCurve(circle2));
 	}
 
+
+	public void testTransform_CircleInversion2D() {
+		Circle2D circle1 = new Circle2D(new Point2D(0, 100), 30);
+		Circle2D circle2 = new Circle2D(new Point2D(100, 100), 30);
+
+		CirculinearDomain2D domain = GenericCirculinearDomain2D.create(
+				CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2}));
+
+		CircleInversion2D inv = new CircleInversion2D(new Point2D(40, 30), 50);
+		CirculinearDomain2D res = domain.transform(inv);
+		
+		assertFalse(res.isEmpty());
+		
+		CirculinearBoundary2D boundary = res.getBoundary();
+		assertEquals(2, boundary.getContinuousCurves().size());
+		for (CirculinearContour2D contour : boundary.getContinuousCurves())
+			assertTrue(contour instanceof Circle2D);
+	}
 }

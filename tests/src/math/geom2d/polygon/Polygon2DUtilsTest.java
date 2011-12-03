@@ -42,8 +42,8 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
-        assertEquals(union.getVertexNumber(), 12);
+        assertNotNull(union);
+        assertEquals(12, union.getVertexNumber());
     }
 
     public void testUnion_BInsideA() {
@@ -63,8 +63,8 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
-        assertEquals(union.getVertexNumber(), 4);
+        assertNotNull(union);
+        assertEquals(4, union.getVertexNumber());
         //assertTrue(union.getBoundary().equals(poly1.getBoundary()));
     }
 
@@ -85,7 +85,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(union.getVertexNumber(), 4);
         //assertTrue(union.getBoundary().equals(poly2.getBoundary()));
     }
@@ -107,7 +107,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(union.getVertexNumber(), 8);
     }
 
@@ -146,7 +146,7 @@ public class Polygon2DUtilsTest extends TestCase {
     			outerRing2, innerRing2});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(16, union.getVertexNumber());
     }
 
@@ -185,7 +185,7 @@ public class Polygon2DUtilsTest extends TestCase {
     			outerRing2, innerRing2});
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(24, union.getVertexNumber());
         
         assertEquals(4, union.getRings().size());
@@ -211,7 +211,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
-        assertTrue(inter!=null);
+        assertNotNull(inter);
         assertEquals(4, inter.getVertexNumber());
     }
     
@@ -235,7 +235,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
-        assertTrue(inter!=null);
+        assertNotNull(inter);
         assertEquals(0, inter.getVertexNumber());
     }
     
@@ -274,7 +274,7 @@ public class Polygon2DUtilsTest extends TestCase {
     			outerRing2, innerRing2});
        
         Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(0, union.getVertexNumber());
     }
 
@@ -313,7 +313,7 @@ public class Polygon2DUtilsTest extends TestCase {
     			outerRing2, innerRing2});
        
         Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
-        assertTrue(union!=null);
+        assertNotNull(union);
         assertEquals(8, union.getVertexNumber());
         
         assertEquals(2, union.getRings().size());
@@ -323,7 +323,7 @@ public class Polygon2DUtilsTest extends TestCase {
      * Test with two shifted squares. The result is a square with a corner
      * removed.
      */
-    public void testDifference_TwoSquares() {
+    public void testDifference_ShiftedSquares() {
         // points of the first polygon
         Point2D pa1 = new Point2D(50, 50);
         Point2D pa2 = new Point2D(150, 50);
@@ -342,7 +342,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         // compute difference
         Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
-        assertTrue(diff != null);
+        assertNotNull(diff);
         assertEquals(6, diff.getVertexNumber());
         
         // Check if vertices are the good ones
@@ -378,7 +378,7 @@ public class Polygon2DUtilsTest extends TestCase {
     	
         // compute difference
         Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
-        assertTrue(diff != null);
+        assertNotNull(diff);
         assertEquals(8, diff.getVertexNumber());
         
         assertEquals(2, diff.getRings().size());
@@ -395,6 +395,73 @@ public class Polygon2DUtilsTest extends TestCase {
         assertTrue(vertices.contains(new Point2D(200, 300)));
     }
 
+    /**
+     * Test with two shifted squares. The result is the union of two L-shapes
+     */
+    public void testExclusiveOr_ShiftedSquares() {
+        // points of the first polygon
+        Point2D pa1 = new Point2D(50, 50);
+        Point2D pa2 = new Point2D(150, 50);
+        Point2D pa3 = new Point2D(150, 150);
+        Point2D pa4 = new Point2D(50, 150);
+        Polygon2D poly1 = new SimplePolygon2D(new Point2D[]{
+                pa1, pa2, pa3, pa4});
+        
+        // Create second polygon
+        Point2D pb1 = new Point2D(100, 100);
+        Point2D pb2 = new Point2D(200, 100);
+        Point2D pb3 = new Point2D(200, 200);
+        Point2D pb4 = new Point2D(100, 200);
+        Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
+                pb1, pb2, pb3, pb4});
+       
+        // compute exclusive or
+        Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
+        assertNotNull(xor);
+        assertEquals(12, xor.getVertexNumber());
+        
+        // resulting polygon should contain all vertices of input polygons
+        Collection<Point2D> vertices = xor.getVertices();
+        for (Point2D vertex : poly1.getVertices())
+        	assertTrue(vertices.contains(vertex));
+        for (Point2D vertex : poly2.getVertices())
+        	assertTrue(vertices.contains(vertex));
+    }
+    
+
+    /**
+     * Test with two shifted squares. The result is the union of two L-shapes
+     */
+    public void testExclusiveOr_NestedSquares() {
+        // points of the first polygon
+        Point2D pa1 = new Point2D(100, 100);
+        Point2D pa2 = new Point2D(400, 100);
+        Point2D pa3 = new Point2D(400, 400);
+        Point2D pa4 = new Point2D(100, 400);
+        Polygon2D poly1 = new SimplePolygon2D(new Point2D[]{
+                pa1, pa2, pa3, pa4});
+        
+        // Create second polygon
+        Point2D pb1 = new Point2D(200, 200);
+        Point2D pb2 = new Point2D(300, 200);
+        Point2D pb3 = new Point2D(300, 300);
+        Point2D pb4 = new Point2D(200, 300);
+        Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
+                pb1, pb2, pb3, pb4});
+       
+        // compute exclusive or
+        Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
+        assertNotNull(xor);
+        assertEquals(8, xor.getVertexNumber());
+        
+        // resulting polygon should contain all vertices of input polygons
+        Collection<Point2D> vertices = xor.getVertices();
+        for (Point2D vertex : poly1.getVertices())
+        	assertTrue(vertices.contains(vertex));
+        for (Point2D vertex : poly2.getVertices())
+        	assertTrue(vertices.contains(vertex));
+    }
+    
     /**
      * Computes  the buffer of two polygons close to each other.
      * The result should be composed of only one curve.
@@ -416,9 +483,9 @@ public class Polygon2DUtilsTest extends TestCase {
     			new LinearRing2D[]{ring1, ring2});
     	
     	Domain2D domain = Polygon2DUtils.createBuffer(polygon, 30);
-    	assert(domain != null);
+    	assertNotNull(domain);
     	Boundary2D boundary = domain.getBoundary();
-    	assert(boundary != null);
+    	assertNotNull(boundary);
     	
     	assertEquals(1, boundary.getContinuousCurves().size());
     }
