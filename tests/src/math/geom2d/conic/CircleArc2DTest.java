@@ -35,10 +35,14 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
+import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 
 import static java.lang.Math.PI;
 
@@ -98,6 +102,19 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(arc1.equals(arc4));
 	}
 
+	public void testGetBuffer_Double() {
+		Point2D center = new Point2D(0, 0);
+		double r = 10;
+		
+		// direct arc
+		CircleArc2D arc = new CircleArc2D(center, r, 0, PI/2);
+		Domain2D buffer = arc.getBuffer(2);
+		
+		assertFalse(buffer.isEmpty());
+		Boundary2D boundary = buffer.getBoundary();
+		assertEquals(1, boundary.getContinuousCurves().size());
+	}
+	
 	public void testGetParallel() {
 		Point2D center = new Point2D(0, 0);
 		double r = 10;
@@ -113,6 +130,20 @@ public class CircleArc2DTest extends TestCase {
 		CircleArc2D par2 = arc2.getParallel(2);
 		Circle2D circ2 = par2.getSupportingCircle();
 		assertEquals(8, circ2.getRadius(), 1e-12);
+	}
+	
+	public void testTransformInversion() {
+		// create an infinite curve, here a straight line
+		Point2D center = new Point2D(30, 40);
+		double r = 10;
+		CircleArc2D arc = new CircleArc2D(center, r, PI, -PI/2);
+		
+		Circle2D circle = new Circle2D(50, 0, 50);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CirculinearCurve2D res = arc.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof CircleArc2D);		
 	}
 	
 	public void testIsBounded() {

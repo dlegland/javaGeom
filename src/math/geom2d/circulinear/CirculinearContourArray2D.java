@@ -14,14 +14,24 @@ import java.util.Collections;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.*;
-import math.geom2d.domain.ContourArray2D;
+import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
+import math.geom2d.domain.ContourArray2D;
 import math.geom2d.transform.CircleInversion2D;
 
 
 /**
  * A circulinear boundary which is composed of several CirculinearContour2D.
+ * <p>
+ * Creates an array of circular contours:
+ * <pre><code>
+ *  Circle2D circle1 = new Circle2D(new Point2D(0, 100), 30);
+ *	Circle2D circle2 = new Circle2D(new Point2D(0, 100), 30);
+ *	CirculinearContourArray2D<Circle2D> array =
+ *      CirculinearContourArray2D.create(new Circle2D[]{circle1, circle2});
+ * </code></pre>
  * @author dlegland
  *
  */

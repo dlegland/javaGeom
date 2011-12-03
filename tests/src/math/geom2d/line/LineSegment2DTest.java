@@ -70,7 +70,7 @@ public class LineSegment2DTest extends TestCase {
 	    // two circle arcs)
 	    Collection<? extends SmoothCurve2D> smoothCurves =
 	    	boundary.getContinuousCurves().iterator().next().getSmoothPieces();
-	    assertTrue(smoothCurves.size()==4);
+	    assertEquals(4, smoothCurves.size());
 	}
 	
 	public void testGetOtherPoint() {

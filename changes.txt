@@ -1,5 +1,21 @@
 Changes in javaGeom library
 
+javaGeom-0.??.?   (2011.12.??, rev. ???)
+=====
+
+Nex features
+- added Point2D.plus(Vector2D) and Point2D.minus(Vector2D)
+- added methods for inserting vertices into simple polygons
+- added method SimplePolygon2D.getRing()
+
+Bug fixes
+- fixed bug for clipping of clockwise polygons
+- fixed bug for circle inversion of lines and rays
+
+Regressions
+- removed dependency to java.awt.Point, making the library less dependent from awt
+
+
 javaGeom-0.9.2 (2011.10.16, rev. 286)
 =====
 

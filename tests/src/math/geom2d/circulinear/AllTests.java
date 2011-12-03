@@ -37,8 +37,9 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for math.geom2d.circulinear");
 		//$JUnit-BEGIN$
+		suite.addTest(new TestSuite(CirculinearContourArray2DTest.class));
 		suite.addTest(new TestSuite(CirculinearCurve2DUtilsTest.class));
-		suite.addTest(new TestSuite(CirculinearCurveSet2DTest.class));
+		suite.addTest(new TestSuite(CirculinearCurveArray2DTest.class));
 		suite.addTest(new TestSuite(GenericCirculinearDomain2DTest.class));
 		suite.addTest(new TestSuite(PolyCirculinearCurve2DTest.class));
         //$JUnit-END$

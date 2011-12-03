@@ -52,7 +52,7 @@ public interface Boundary2D extends OrientedCurve2D {
 
     /**
      * Returns the different continuous curves composing the boundary
-     * @deprecated replaced by getContinuousCurves
+     * @deprecated replaced by getContinuousCurves (0.9.1)
      */
     @Deprecated
     public Collection<? extends Contour2D> getBoundaryCurves();
