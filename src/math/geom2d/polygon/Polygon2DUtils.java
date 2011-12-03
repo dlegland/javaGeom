@@ -6,6 +6,7 @@ package math.geom2d.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
@@ -15,6 +16,7 @@ import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Boundary2DUtils;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.ContourArray2D;
+import math.geom2d.point.PointSet2DUtils;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
@@ -307,10 +309,12 @@ public final class Polygon2DUtils {
     		return (LinearRing2D) contour;
     	
     	// extract all vertices of the contour
-    	// TODO: check that vertices are not multiple
-    	ArrayList<Point2D> vertices = new ArrayList<Point2D>();
+    	List<Point2D> vertices = new ArrayList<Point2D>();
     	for(Point2D v : contour.getSingularPoints())
     		vertices.add(v);
+
+    	// remove adjacent multiple vertices
+    	vertices = PointSet2DUtils.filterAdjacentMultipleVertices(vertices, true);
  	
     	// Create new ring with vertices
     	return LinearRing2D.create(vertices);

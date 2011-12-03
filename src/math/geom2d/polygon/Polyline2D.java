@@ -351,9 +351,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
 		// basic check to avoid degenerate cases
-		if (PointSet2DUtils.hasMultipleVertices(this.vertices)) {
+		if (PointSet2DUtils.hasAdjacentMultipleVertices(this.vertices)) {
 			Polyline2D poly2 = Polyline2D.create(
-					PointSet2DUtils.filterMultipleVertices(this.vertices));
+					PointSet2DUtils.filterAdjacentMultipleVertices(this.vertices));
 			return bc.computeBuffer(poly2, dist);			
 		}
 		

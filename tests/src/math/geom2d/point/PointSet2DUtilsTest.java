@@ -13,7 +13,7 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(10, 30), 
 				new Point2D(10, 30), 
 				new Point2D(10, 10)	});
-		boolean res = PointSet2DUtils.hasMultipleVertices(pointSet.points);
+		boolean res = PointSet2DUtils.hasAdjacentMultipleVertices(pointSet.points);
 		assertTrue(res);
 	}
 
@@ -24,7 +24,7 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(20, 30), 
 				new Point2D(10, 30), 
 				new Point2D(10, 10)	});
-		boolean res = PointSet2DUtils.hasMultipleVertices(pointSet.points);
+		boolean res = PointSet2DUtils.hasAdjacentMultipleVertices(pointSet.points);
 		assertFalse(res);
 	}
 
@@ -38,13 +38,13 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(10, 10)	});
 		int count;
 		
-		count = PointSet2DUtils.countMultipleVertices(pointSet.points);
+		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points);
 		assertEquals(1, count);
 		
-		count = PointSet2DUtils.countMultipleVertices(pointSet.points, false);
+		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points, false);
 		assertEquals(1, count);
 		
-		count = PointSet2DUtils.countMultipleVertices(pointSet.points, true);
+		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points, true);
 		assertEquals(2, count);
 	}
 }
