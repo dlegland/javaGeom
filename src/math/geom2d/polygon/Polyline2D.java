@@ -505,11 +505,15 @@ implements CirculinearContinuousCurve2D, Cloneable {
         // extract intersections with each edge, and add to a list
         Point2D point;
         for (LineSegment2D edge : this.getEdges()) {
-            point = edge.getIntersection(line);
-            if (point!=null)
-                if (!list.contains(point))
-                    list.add(point);
-        }
+        	// do not process edges parallel to intersection line
+        	if (edge.isParallel(line))
+        		continue;
+        	
+			point = edge.getIntersection(line);
+			if (point != null)
+				if (!list.contains(point))
+					list.add(point);
+		}
 
         // return result
         return list;

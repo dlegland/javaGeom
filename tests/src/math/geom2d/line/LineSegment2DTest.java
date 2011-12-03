@@ -32,9 +32,13 @@ import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * @author Legland
@@ -80,6 +84,20 @@ public class LineSegment2DTest extends TestCase {
         assertEquals(null, edge.getOtherPoint(p3));    
 	}
 
+	public void testTransformInversion() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(30, 40);
+		Point2D v0 = new Point2D(40, 60);
+		LineSegment2D seg = new LineSegment2D(p0, v0);
+		
+		Circle2D circle = new Circle2D(50, 0, 50);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CirculinearCurve2D res = seg.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof CircleArc2D);		
+	}
+	
 	public void testIsBounded() {
         Point2D p1 = new Point2D(10, 10);
         Point2D p2 = new Point2D(40, 50);

@@ -31,7 +31,10 @@ import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.transform.CircleInversion2D;
 
 /**
  * @author Legland
@@ -50,6 +53,10 @@ public class StraightLine2DTest extends TestCase {
 		junit.awtui.TestRunner.run(StraightLine2DTest.class);
 	}
 
+	public void testGetParallel() {
+		
+	}
+	
 	public void testGetBuffer() {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
@@ -60,22 +67,59 @@ public class StraightLine2DTest extends TestCase {
 		CirculinearDomain2D buffer = line.getBuffer(10);
 		
 		// check assertions
-		assertFalse(buffer==null);
+		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
+	}
+	
+	public void testTransformInversion() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(30, 40);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+		
+		Circle2D circle = new Circle2D(50, 0, 50);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CircleLine2D res = line.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof Circle2D);		
+	}
+	
+	public void testTransformInversion_CenterOnLine() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(30, 40);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+		
+		Circle2D circle = new Circle2D(30, 40, 50);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CircleLine2D res = line.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof StraightLine2D);		
+	}
+	
+	public void testGetBoundaryCurves() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(30, 40);
+		Vector2D v0 = new Vector2D(10, 20);
+		StraightLine2D line = new StraightLine2D(p0, v0);
+	
+		assertEquals(1, line.getBoundaryCurves().size());
 	}
 	
 	public void testIsBounded() {
 		StraightLine2D line;
 		
 		line = new StraightLine2D(1, 2, 1, 1);
-		assertTrue(!line.isBounded());
+		assertFalse(line.isBounded());
 
 		line = new StraightLine2D(1, 2, 1, 0);
-		assertTrue(!line.isBounded());
+		assertFalse(line.isBounded());
 
 		line = new StraightLine2D(1, 2, 0, 1);
-		assertTrue(!line.isBounded());
+		assertFalse(line.isBounded());
 	}
 
 	public void testIsColinear() {

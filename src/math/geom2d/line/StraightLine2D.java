@@ -247,14 +247,21 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
-   /**
-     * Return the parallel line located at a distance d. Distance is positive in
-     * the 'right' side of the line (outside of the limiting half-plane), and
-     * negative in the 'left' of the line.
-     */
+	/**
+	 * Return the parallel line located at a distance d from the line. Distance
+	 * is positive in the 'right' side of the line (outside of the limiting
+	 * half-plane), and negative in the 'left' of the line.
+	 * 
+	 * @throws DegeneratedLine2DException
+	 *             if line direction vector is null
+	 */
     public StraightLine2D getParallel(double d) {
-        double dd = Math.sqrt(dx*dx+dy*dy);
-        return new StraightLine2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+		double d2 = Math.hypot(this.dx, this.dy);
+		if (Math.abs(d2) < Shape2D.ACCURACY)
+			throw new DegeneratedLine2DException(
+					"Can not compute parallel of degenerated line", this);
+		d2 = d / d2;
+		return new StraightLine2D(x0 + dy * d2, y0 - dx * d2, dx, dy);
     }
 
     /**
@@ -275,26 +282,27 @@ public class StraightLine2D extends AbstractLine2D implements
         Point2D center 	= inv.getCenter();
         double r 		= inv.getRadius();
         
+        // projection of inversion center on the line
         Point2D po 	= this.getProjectedPoint(center);
-        double d 	= this.getDistance(po);
+        double d 	= this.getDistance(center);
 
         // Degenerate case of a point belonging to the line:
-        // the transform is the line itself.
-        if (Math.abs(d)<Shape2D.ACCURACY){
-        	return new StraightLine2D(this);
+		// the transform is the line itself.
+		if (Math.abs(d) < Shape2D.ACCURACY) {
+			return new StraightLine2D(this);
         }
         
         // angle from center to line
         double angle = Angle2D.getHorizontalAngle(center, po);
 
-        // center of transformed circle
-        double r2 	= r*r/d/2;
-        Point2D c2 	= Point2D.createPolar(center, r2, angle);
+		// center of transformed circle
+		double r2 = r * r / d / 2;
+		Point2D c2 = Point2D.createPolar(center, r2, angle);
 
-        // choose direction of circle arc
-        boolean direct = !this.isInside(center);
-        
-        // return the created circle
+		// choose direction of circle arc
+		boolean direct = !this.isInside(center);
+
+		// return the created circle
         return new Circle2D(c2, r2, direct);
     }
 	
