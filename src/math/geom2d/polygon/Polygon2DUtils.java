@@ -88,7 +88,7 @@ public final class Polygon2DUtils {
 	public final static Point2D computeCentroid(Polygon2D polygon) {
 		// process case of simple polygon 
     	if (polygon instanceof SimplePolygon2D) {
-    		LinearRing2D ring = ((SimplePolygon2D) polygon).getLinearRing();
+    		LinearRing2D ring = ((SimplePolygon2D) polygon).getRing();
     		return computeCentroid(ring);
     	}
     	
@@ -161,7 +161,7 @@ public final class Polygon2DUtils {
      */
     public final static double computeSignedArea(Polygon2D polygon) {
     	if (polygon instanceof SimplePolygon2D) {
-    		LinearRing2D ring = ((SimplePolygon2D) polygon).getLinearRing();
+    		LinearRing2D ring = ((SimplePolygon2D) polygon).getRing();
     		return computeSignedArea(ring);
     	}
     	

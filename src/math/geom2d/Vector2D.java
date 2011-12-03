@@ -58,9 +58,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * Creates a new vector by specifying the distance to the origin, and the
      * angle with the horizontal.
      */
-    public static Vector2D createPolar(double rho, double theta) {
-        return new Vector2D(rho*Math.cos(theta), rho*Math.sin(theta));
-    }
+	public static Vector2D createPolar(double rho, double theta) {
+		return new Vector2D(rho * Math.cos(theta), rho * Math.sin(theta));
+	}
 
     /**
      * Get the dot product of the two vectors, defined by :
@@ -71,33 +71,33 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * orthogonal. It is positive if vectors are in the same direction, and
      * negative if they are in opposite direction.
      */
-    public static double dot(Vector2D v1, Vector2D v2) {
-        return v1.getX()*v2.getX()+v1.getY()*v2.getY();
+	public static double dot(Vector2D v1, Vector2D v2) {
+		return v1.x * v2.x + v1.y * v2.y;
     }
 
-    /**
-     * Get the cross product of the two vectors, defined by :
-     * <p>
-     * <code> dx1*dy2 - dx2*dy1</code>
-     * <p>
-     * Cross product is zero for colinear vectors. It is positive if angle
-     * between vector 1 and vector 2 is comprised between 0 and PI, and negative
-     * otherwise.
-     */
-    public static double cross(Vector2D v1, Vector2D v2) {
-        return v1.getX()*v2.getY()-v2.getX()*v1.getY();
-    }
+	/**
+	 * Get the cross product of the two vectors, defined by :
+	 * <p>
+	 * <code> dx1*dy2 - dx2*dy1</code>
+	 * <p>
+	 * Cross product is zero for colinear vectors. It is positive if angle
+	 * between vector 1 and vector 2 is comprised between 0 and PI, and negative
+	 * otherwise.
+	 */
+	public static double cross(Vector2D v1, Vector2D v2) {
+		return v1.x * v2.y - v2.x * v1.y;
+	}
 
     /**
      * Tests if the two vectors are colinear
      * 
      * @return true if the vectors are colinear
      */
-    public static boolean isColinear(Vector2D v1, Vector2D v2) {
-        v1 = v1.getNormalizedVector();
-        v2 = v2.getNormalizedVector();
-        return Math.abs(v1.getX()*v2.getY()-v1.getY()*v2.getX())<Shape2D.ACCURACY;
-    }
+	public static boolean isColinear(Vector2D v1, Vector2D v2) {
+		v1 = v1.getNormalizedVector();
+		v2 = v2.getNormalizedVector();
+		return Math.abs(v1.x * v2.y - v1.y * v2.x) < Shape2D.ACCURACY;
+	}
 
     /**
      * Tests if the two vectors are orthogonal
@@ -106,9 +106,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      */
     public static boolean isOrthogonal(Vector2D v1, Vector2D v2) {
         v1 = v1.getNormalizedVector();
-        v2 = v2.getNormalizedVector();
-        return Math.abs(v1.getX()*v2.getX()+v1.getY()*v2.getY())<Shape2D.ACCURACY;
-    }
+		v2 = v2.getNormalizedVector();
+		return Math.abs(v1.x * v2.x + v1.y * v2.y) < Shape2D.ACCURACY;
+	}
 
 
     // ===================================================================
@@ -150,9 +150,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     /**
      * Constructs a new vector between two points
      */
-    public Vector2D(Point2D point1, Point2D point2) {
-        this(point2.getX()-point1.getX(), point2.getY()-point1.getY());
-    }
+	public Vector2D(Point2D point1, Point2D point2) {
+		this(point2.getX() - point1.getX(), point2.getY() - point1.getY());
+	}
 
     // ===================================================================
     // accessors
@@ -196,20 +196,20 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     /**
      * Normalizes the vector, such that its norms becomes 1.
      */
-    public void normalize() {
-        double r = Math.hypot(this.x, this.y);
-        this.x = this.x/r;
-        this.y = this.y/r;
-    }
+	public void normalize() {
+		double r = Math.hypot(this.x, this.y);
+		this.x = this.x / r;
+		this.y = this.y / r;
+	}
 
     /**
      * Returns the vector with same direction as this one, but with norm equal
      * to 1.
      */
-    public Vector2D getNormalizedVector() {
-        double r = Math.hypot(this.x, this.y);
-        return new Vector2D(this.x/r, this.y/r);
-    }
+	public Vector2D getNormalizedVector() {
+		double r = Math.hypot(this.x, this.y);
+		return new Vector2D(this.x / r, this.y / r);
+	}
 
     // ===================================================================
     // compare with other vectors
@@ -245,9 +245,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * orthogonal. It is positive if vectors are in the same direction, and
      * negative if they are in opposite direction.
      */
-    public double dot(Vector2D v) {
-        return x*v.getX()+y*v.getY();
-    }
+	public double dot(Vector2D v) {
+		return x * v.x + y * v.y;
+	}
 
     /**
      * Get the cross product with point <code>p</code>. Cross product is
@@ -259,25 +259,25 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * between vector 1 and vector 2 is comprised between 0 and PI, and negative
      * otherwise.
      */
-    public double cross(Vector2D v) {
-        return x*v.getY()-v.getX()*y;
-    }
+	public double cross(Vector2D v) {
+		return x * v.y - v.x * y;
+	}
 
     /**
      * Returns the sum of current vector with vector given as parameter. Inner
      * fields are not modified.
      */
-    public Vector2D plus(Vector2D v) {
-        return new Vector2D(x+v.getX(), y+v.getY());
-    }
+	public Vector2D plus(Vector2D v) {
+		return new Vector2D(x + v.x, y + v.y);
+	}
 
     /**
      * Returns the subtraction of current vector with vector given as
      * parameter. Inner fields are not modified.
      */
-    public Vector2D minus(Vector2D v) {
-        return new Vector2D(x-v.getX(), y-v.getY());
-    }
+	public Vector2D minus(Vector2D v) {
+		return new Vector2D(x - v.x, y - v.y);
+	}
 
     /**
      * Multiplies the vector by a scalar amount. Inner fields are not 
@@ -285,9 +285,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return the scaled vector
      * @since 0.7.0
      */
-    public Vector2D times(double k) {
-        return new Vector2D(this.x*k, this.y*k);
-    }
+	public Vector2D times(double k) {
+		return new Vector2D(this.x * k, this.y * k);
+	}
     
     /**
      * Transform the vector, by using only the first 4 parameters of the
@@ -297,63 +297,64 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return the transformed vector.
      */
     public Vector2D transform(AffineTransform2D trans) {
-        double[] tab = trans.getCoefficients();
-        return new Vector2D(x*tab[0] + y*tab[1], x*tab[3] + y*tab[4]);
-    }
+		double[] tab = trans.getCoefficients();
+		return new Vector2D(x * tab[0] + y * tab[1], x * tab[3] + y * tab[4]);
+	}
 
     /**
      * Test whether this object is the same as another vector, with respect
      * to a given threshold.
      */
-    public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
-    		return true;
-    	
-        if (!(obj instanceof Vector2D))
-            return false;
-        Vector2D v = (Vector2D) obj;
-        
-        if (Math.abs(this.x - v.x) > eps)
-        	return false;
-        if (Math.abs(this.y - v.y) > eps)
-        	return false;
-        
-        return true;
-    }
-    
-    /**
-     * Test whether this object is exactly the same as another vector.
-     * @see almostEquals
-     */
-    @Override
-    public boolean equals(Object obj) {
-    	if (this==obj)
-    		return true;
-    	
-        if (!(obj instanceof Vector2D))
-            return false;
-        Vector2D v = (Vector2D) obj;
+	public boolean almostEquals(GeometricObject2D obj, double eps) {
+		if (this == obj)
+			return true;
 
-        // Code that should be used:
-        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(v.x))
-        	return false;
-        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(v.y))
-        	return false;
-        
-        return true;
-    }
-    
-    /**
-     * Display the coordinates of the vector. Typical output is:
-     * <code>x=3 y=4</code>.
-     */
-    @Override
-    public String toString() {
-        return new String("x=" + x + " y=" + y);
-    }
-    
-    @Override
-    public Vector2D clone() {
-        return new Vector2D(x, y);
-    }
+		if (!(obj instanceof Vector2D))
+			return false;
+		Vector2D v = (Vector2D) obj;
+
+		if (Math.abs(this.x - v.x) > eps)
+			return false;
+		if (Math.abs(this.y - v.y) > eps)
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * Test whether this object is exactly the same as another vector.
+	 * 
+	 * @see almostEquals
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (!(obj instanceof Vector2D))
+			return false;
+		Vector2D v = (Vector2D) obj;
+
+		// Code that should be used:
+		if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(v.x))
+			return false;
+		if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(v.y))
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * Display the coordinates of the vector. Typical output is:
+	 * <code>x=3 y=4</code>.
+	 */
+	@Override
+	public String toString() {
+		return new String("x=" + x + " y=" + y);
+	}
+
+	@Override
+	public Vector2D clone() {
+		return new Vector2D(x, y);
+	}
 }

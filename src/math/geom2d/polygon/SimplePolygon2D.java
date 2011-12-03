@@ -144,10 +144,20 @@ public class SimplePolygon2D implements Polygon2D {
     }
     
     /**
-     * Returns the linear that composes the boundary of this polygon.
+     * Returns the linear ring that composes the boundary of this polygon.
      * @since 0.9.1
+     * @deprecated use getRing instead 
      */
+    @Deprecated
     public LinearRing2D getLinearRing() {
+    	return new LinearRing2D(this.vertices);
+    }
+    
+    /**
+     * Returns the linear ring that composes the boundary of this polygon.
+     * @since 0.9.3
+     */
+    public LinearRing2D getRing() {
     	return new LinearRing2D(this.vertices);
     }
     

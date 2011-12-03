@@ -27,9 +27,19 @@ public class DegeneratedLine2DException extends RuntimeException {
 	protected LinearShape2D line;
 	
 	/**
-	 * @param arg0
+	 * @param msg the error message
+	 * @param line the degenerated line
+	 */
+	public DegeneratedLine2DException(String msg, LinearShape2D line) {
+		super(msg);
+		this.line = line;
+	}
+	
+	/**
+	 * @param line the degenerated line
 	 */
 	public DegeneratedLine2DException(LinearShape2D line) {
+		super();
 		this.line = line;
 	}
 
