@@ -15,14 +15,13 @@ import math.geom2d.Shape2D;
 public class PointSet2DUtils {
 
 	/**
-	 * Tests if the given list of points contains multiple vertices. 
-	 * This function can be used to test presence of multiple vertices in 
-	 * polylines and polygons. First and last point are not compared.
+	 * Tests if the given list of points contains multiple vertices. This
+	 * function can be used to test presence of multiple vertices in polylines
+	 * and polygons. First and last point are not compared.
 	 */
-    public static<T extends Point2D> boolean hasMultipleVertices(
-    		List<T> points) {
-    	return hasMultipleVertices(points, false);
-    }
+	public static <T extends Point2D> boolean hasMultipleVertices(List<T> points) {
+		return hasMultipleVertices(points, false);
+	}
     
 	/**
 	 * Tests if the given list of points contains multiple vertices. 
@@ -99,10 +98,10 @@ public class PointSet2DUtils {
     	return count;
     }
     
-    public static<T extends Point2D> List<T> filterMultipleVertices(
-    		List<T> vertices) {
-    	return filterMultipleVertices(vertices, false);
-    }
+	public static <T extends Point2D> List<T> filterMultipleVertices(
+			List<T> vertices) {
+		return filterMultipleVertices(vertices, false);
+	}
 
     public static<T extends Point2D> List<T> filterMultipleVertices(
     		List<T> vertices, boolean closed) {

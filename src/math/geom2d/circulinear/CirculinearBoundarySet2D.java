@@ -49,7 +49,7 @@ extends CirculinearContourArray2D<T> {
      * @since 0.8.1
      */
     public static <T extends CirculinearContour2D> 
-    CirculinearBoundarySet2D<T> create(T[] curves) {
+    CirculinearBoundarySet2D<T> create(T... curves) {
     	return new CirculinearBoundarySet2D<T>(curves);
     }
 
@@ -78,7 +78,7 @@ extends CirculinearContourArray2D<T> {
      * 
      * @param curves the array of curves in the set
      */
-    public CirculinearBoundarySet2D(T[] curves) {
+    public CirculinearBoundarySet2D(T... curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
             this.addCurve(element);

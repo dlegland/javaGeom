@@ -33,7 +33,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 		return new MultiPolygon2D(rings);
 	}
 
-	public static MultiPolygon2D create(LinearRing2D[] rings) {
+	public static MultiPolygon2D create(LinearRing2D... rings) {
 		return new MultiPolygon2D(rings);
 	}
 
@@ -54,7 +54,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         rings.add(ring);
     }
 
-    public MultiPolygon2D(LinearRing2D[] rings) {
+    public MultiPolygon2D(LinearRing2D... rings) {
         for (LinearRing2D ring : rings)
             this.rings.add(ring);
     }

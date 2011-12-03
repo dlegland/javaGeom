@@ -30,7 +30,7 @@ implements DomainSet2D<T> {
 		return new DomainArray2D<D>(array);
 	}
 	
-	public static <D extends Domain2D> DomainArray2D<D> create(D[] array) {
+	public static <D extends Domain2D> DomainArray2D<D> create(D... array) {
 		return new DomainArray2D<D>(array);
 	}
 	
@@ -57,7 +57,7 @@ implements DomainSet2D<T> {
 	/**
 	 * @param shapes
 	 */
-	public DomainArray2D(T[] domains) {
+	public DomainArray2D(T... domains) {
     	super(domains);
 	}
 

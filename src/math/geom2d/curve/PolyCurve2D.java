@@ -67,8 +67,18 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * @since 0.8.1
      */
     public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
-    		T[] curves) {
+    		T... curves) {
     	return new PolyCurve2D<T>(curves);
+    }
+
+    /**
+     * Static factory for creating a new closed PolyCurve2D from an array of
+     * curves.
+     * @since 0.10.0
+     */
+    public static <T extends ContinuousCurve2D> PolyCurve2D<T> createClosed(
+    		T... curves) {
+    	return new PolyCurve2D<T>(curves, true);
     }
 
     /**
@@ -91,6 +101,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     	return new PolyCurve2D<T>(curves, closed);
     }
 
+	/**
+	 * Shortcut function to convert a curve of class T to a collection of T
+	 * containing only the input curve.
+	 */
 	protected static <T extends ContinuousCurve2D> Collection<T> wrapCurve(T curve) {
 		ArrayList<T> list = new ArrayList<T> (1);
 		list.add(curve);
@@ -101,7 +115,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // ===================================================================
     // class variables
 
-    /** flag for indicating if the curve is closed or not (default is open) */
+    /** flag for indicating if the curve is closed or not (default is false, for open) */
     protected boolean closed = false;
 
     // ===================================================================
@@ -114,7 +128,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     	super(n);
     }
 
-    public PolyCurve2D(T[] curves) {
+    public PolyCurve2D(T... curves) {
         super(curves);
     }
 
