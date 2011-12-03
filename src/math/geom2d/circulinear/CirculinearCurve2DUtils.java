@@ -15,6 +15,7 @@ import java.util.TreeSet;
 
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircularShape2D;
 import math.geom2d.curve.ContinuousCurve2D;
@@ -366,6 +367,25 @@ public class CirculinearCurve2DUtils {
 	public static Collection<Point2D> findIntersections(
 			CirculinearElement2D elem1, CirculinearElement2D elem2) {
 
+		// find which shapes are linear
+		boolean b1 = elem1 instanceof LinearShape2D;
+		boolean b2 = elem2 instanceof LinearShape2D;
+		
+		// if both elements are linear, check parallism to avoid computing
+		// intersection of parallel lines
+		if (b1 && b2) {
+			LinearShape2D line1 = (LinearShape2D) elem1;
+			LinearShape2D line2 = (LinearShape2D) elem2;
+			
+			// test parallel elements
+			Vector2D v1 = line1.getVector(); 
+			Vector2D v2 = line2.getVector(); 
+			if (Vector2D.isColinear(v1, v2))
+				return new ArrayList<Point2D>(0);
+			
+			return line1.getIntersections(line2);
+		}
+		
 		// First try to use linear shape methods
 		if (elem1 instanceof LinearShape2D) {
 			return elem2.getIntersections((LinearShape2D) elem1);

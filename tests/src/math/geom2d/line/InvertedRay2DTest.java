@@ -30,9 +30,14 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.UnboundedShape2DException;
+import math.geom2d.Vector2D;
+import math.geom2d.circulinear.CirculinearCurve2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.Domain2D;
+import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 
 
@@ -60,7 +65,21 @@ public class InvertedRay2DTest extends TestCase {
     	assertFalse(buffer.isEmpty());
     	assertFalse(buffer.isBounded());
 	}
-	
+
+	public void testTransformInversion() {
+		// create an infinite curve, here a straight line
+		Point2D p0 = new Point2D(30, 40);
+		Vector2D v0 = new Vector2D(10, 20);
+		InvertedRay2D ray = new InvertedRay2D(p0, v0);
+		
+		Circle2D circle = new Circle2D(50, 0, 50);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CirculinearCurve2D res = ray.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof CircleArc2D);		
+	}
+
     public void testGetParallelDouble() {
     	Point2D p1 = new Point2D(1, 1);
     	Point2D p2 = new Point2D(1, 3);
