@@ -48,7 +48,7 @@ implements CirculinearRing2D {
      * @since 0.8.1
      */
     public static GenericCirculinearRing2D create(
-    		CirculinearElement2D[] curves) {
+    		CirculinearElement2D... curves) {
     	return new GenericCirculinearRing2D(curves);
     }
 
@@ -66,7 +66,7 @@ implements CirculinearRing2D {
         this.closed = true;
     }
 
-    public GenericCirculinearRing2D(CirculinearElement2D[] curves) {
+    public GenericCirculinearRing2D(CirculinearElement2D... curves) {
         super(curves);
         this.closed = true;
     }
@@ -98,9 +98,6 @@ implements CirculinearRing2D {
 
     // ===================================================================
     // methods specific to GenericCirculinearRing2D
-
-    // ===================================================================
-    // static methods
 
 	@Override
     public CirculinearRing2D getParallel(double dist) {

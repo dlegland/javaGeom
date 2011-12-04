@@ -52,7 +52,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
      * Two consecutive curves share one point, N curves will require 3*n+1
      * points.
      */
-    public final static PolyCubicBezierCurve2D create(Point2D[] points){
+    public final static PolyCubicBezierCurve2D create(Point2D... points){
     	// number of points
     	int np = points.length;
     	
@@ -82,16 +82,16 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     	// number of points
     	int np = Math.min(points.length, vectors.length);
     	
-    	// compute number of curves
-    	int nc = (np-1)/2;
-    	
-    	// create array of curves
-    	PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
-    	
-    	// build each curve
-    	for(int i=0; i<nc; i++)
-    		polyBezier.addCurve(new CubicBezierCurve2D(
-    				points[i*2], vectors[i*2], points[i*2+1], vectors[i*2+1]));
+		// compute number of curves
+		int nc = (np - 1) / 2;
+
+		// create array of curves
+		PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
+
+		// build each curve
+		for (int i = 0; i < nc; i++)
+			polyBezier.addCurve(new CubicBezierCurve2D(
+					points[i * 2], vectors[i*2], points[i*2+1], vectors[i*2+1]));
     	
     	// return the curve
     	return polyBezier;
@@ -109,7 +109,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
         super(n);
     }
 
-    public PolyCubicBezierCurve2D(CubicBezierCurve2D[] curves) {
+    public PolyCubicBezierCurve2D(CubicBezierCurve2D... curves) {
         super(curves);
     }
 
