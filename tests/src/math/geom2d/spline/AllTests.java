@@ -38,6 +38,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for math.geom2d.spline");
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(CubicBezierCurve2DTest.class));
+		suite.addTest(new TestSuite(PolyCubicBezierCurve2DTest.class));
 		suite.addTest(new TestSuite(QuadBezierCurve2DTest.class));
         //$JUnit-END$
 		return suite;

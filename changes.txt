@@ -1,12 +1,15 @@
 Changes in javaGeom library
 
-javaGeom-0.??.?   (2011.12.??, rev. ???)
+javaGeom-0.10.0   (2011.12.04, rev. 298)
 =====
 
 Nex features
 - added Point2D.plus(Vector2D) and Point2D.minus(Vector2D)
 - added methods for inserting vertices into simple polygons
+- added methods for for filtering multiple adjacent vertices
 - added method SimplePolygon2D.getRing()
+- replaced static constructors with arrays by constructors with variable number
+    of arguments (ellipse)
 
 Bug fixes
 - fixed bug for clipping of clockwise polygons
