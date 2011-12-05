@@ -227,6 +227,13 @@ CircularShape2D, CircleLine2D {
         return r;
     }
 
+    /**
+     * Returns the intersection points with another circle. The result is a
+     * collection with 0, 1 or 2 points. 
+     */
+    public Collection<Point2D> getIntersections(Circle2D circle) {
+    	return Circle2D.getIntersections(this, circle);
+    }
 
     // ===================================================================
     // methods implementing CircularShape2D interface
@@ -339,38 +346,48 @@ CircularShape2D, CircleLine2D {
         Point2D center = inv.getCenter();        
         Point2D c1 = this.getCenter();
         
-        // If circles are concentric, creates directly the new circle
-        if(center.getDistance(c1)<Shape2D.ACCURACY) {
-        	double r0 = inv.getRadius();
-        	double r2 = r0*r0 / this.r;
-        	return new Circle2D(center, r2, this.direct);
-        }
+		// If circles are concentric, creates directly the new circle
+		if (center.getDistance(c1) < Shape2D.ACCURACY) {
+			double r0 = inv.getRadius();
+			double r2 = r0 * r0 / this.r;
+			return new Circle2D(center, r2, this.direct);
+		}
         
         // line joining centers of the two circles
-        StraightLine2D line = new StraightLine2D(center, c1);
+        StraightLine2D centersLine = new StraightLine2D(center, c1);
 
-        // transform the two extreme points of the circle
-        Collection<Point2D> points = this.getIntersections(line);
+		// get the two points intersection the line joining the circle centers
+        Collection<Point2D> points = this.getIntersections(centersLine);
         Iterator<Point2D> iter = points.iterator();
-        Point2D p1 = iter.next().transform(inv);
-        Point2D p2 = iter.next().transform(inv);
+        Point2D p1 = iter.next();
+        Point2D p2 = iter.next();
 
         // If the circle contains the inversion center, it transforms into a
         // straight line
-        if(this.getDistance(center)<Shape2D.ACCURACY) {
-        	Point2D p0 = center.getDistance(p1)<Shape2D.ACCURACY ? p2 : p1;
-        	p0 = p0.transform(inv);
-        	return StraightLine2D.createPerpendicular(line, p0);
-        } 
-        
+		if (this.getDistance(center) < Shape2D.ACCURACY) {
+			// choose the intersection point that is not the center
+			double dist1 = center.getDistance(p1);
+			double dist2 = center.getDistance(p2);
+			Point2D p0 = dist1 < dist2 ? p2 : p1;
+			
+			// transform the point, and return the perpendicular
+			p0 = p0.transform(inv);
+			return StraightLine2D.createPerpendicular(centersLine, p0);
+		}
+
         // For regular cases, the circle transforms into an other circle
         
+        // transform the two extreme points of the circle, 
+		// resulting in a diameter of the new circle
+        p1 = p1.transform(inv);
+        p2 = p2.transform(inv);
+        
         // compute center and diameter of transformed circle
-        double d = p1.getDistance(p2);
+        double diam = p1.getDistance(p2);
         c1 = Point2D.midPoint(p1, p2);
 
-        // create the transformed circle
-        return new Circle2D(c1, d/2, !this.isDirect());
+        // create the transformed circle, 
+        return new Circle2D(c1, diam / 2, !this.isDirect());
 	}
 
 	
