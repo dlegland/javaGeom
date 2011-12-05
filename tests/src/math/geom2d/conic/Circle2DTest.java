@@ -122,10 +122,26 @@ public class Circle2DTest extends TestCase {
 	    res = circle.transform(inv);
 	    assertTrue(res instanceof Circle2D);
 	    
+	}
+	
+	public void testTransformInversion2D_ContainsCenter () {
 		// Circle containing inversion center -> transform to line
-		circle = new Circle2D(30, 0, 30);
-	    res = circle.transform(inv);
+		Point2D center = new Point2D(30, 40);
+		Circle2D base = new Circle2D(center, 50);
+		CircleInversion2D inv = new CircleInversion2D(base);
+		
+		// circle contains the inversion center (100-70 = 30).
+		Circle2D circle = new Circle2D(100, 40, 70);
+		CirculinearCurve2D res = circle.transform(inv);
 	    assertTrue(res instanceof StraightLine2D);	    
+		
+	    assertFalse(res.contains(center));
+	    
+	    // result should contain intersection points of original circles
+	    Collection<Point2D> intersects = Circle2D.getIntersections(base, circle);
+	    for (Point2D p : intersects) {
+	    	assertTrue(res.contains(p));
+	    }
 	}
 	
 	public void testContainsDoubleDouble() {
