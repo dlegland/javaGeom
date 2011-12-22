@@ -78,12 +78,16 @@ public class StraightLine2DTest extends TestCase {
 		Vector2D v0 = new Vector2D(10, 20);
 		StraightLine2D line = new StraightLine2D(p0, v0);
 		
-		Circle2D circle = new Circle2D(50, 0, 50);
+		Point2D center = new Point2D(50, 0);
+		Circle2D circle = new Circle2D(center, 50);
 		CircleInversion2D inv = new CircleInversion2D(circle);
 		
 		CircleLine2D res = line.transform(inv);
 		assertNotNull(res);
 		assertTrue(res instanceof Circle2D);		
+		
+		// the new shape does not contains the circle center
+		assertTrue(res.contains(center));
 	}
 	
 	public void testTransformInversion_CenterOnLine() {

@@ -90,12 +90,16 @@ public class LineSegment2DTest extends TestCase {
 		Point2D v0 = new Point2D(40, 60);
 		LineSegment2D seg = new LineSegment2D(p0, v0);
 		
-		Circle2D circle = new Circle2D(50, 0, 50);
+		Point2D center = new Point2D(50, 0);
+		Circle2D circle = new Circle2D(center, 50);
 		CircleInversion2D inv = new CircleInversion2D(circle);
 		
 		CirculinearCurve2D res = seg.transform(inv);
 		assertNotNull(res);
-		assertTrue(res instanceof CircleArc2D);		
+		assertTrue(res instanceof CircleArc2D);
+		
+		// the new shape does not contains the circle center
+		assertFalse(res.contains(center));
 	}
 	
 	public void testIsBounded() {
