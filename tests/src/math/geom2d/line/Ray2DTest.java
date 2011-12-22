@@ -76,12 +76,16 @@ public class Ray2DTest extends TestCase {
 		Vector2D v0 = new Vector2D(10, 20);
 		Ray2D ray = new Ray2D(p0, v0);
 		
-		Circle2D circle = new Circle2D(50, 0, 50);
+		Point2D center = new Point2D(50, 0);
+		Circle2D circle = new Circle2D(center, 50);
 		CircleInversion2D inv = new CircleInversion2D(circle);
 		
 		CirculinearCurve2D res = ray.transform(inv);
 		assertNotNull(res);
-		assertTrue(res instanceof CircleArc2D);		
+		assertTrue(res instanceof CircleArc2D);
+		assertTrue(res.contains(center));
+		// TODO: make test taking into account accuracy
+		// assertTrue(res.getVertices().contains(center));
 	}
 
 	public void testGetParallelDouble() {

@@ -490,7 +490,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 		Point2D c2 = Point2D.createPolar(center, r2, angle);
 
         // choose direction of circle arc
-        boolean direct = !this.isInside(center);
+        boolean direct = this.isInside(center);
         
         // case of a straight line
         if (inf0 && inf1) {
