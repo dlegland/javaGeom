@@ -449,8 +449,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         double r 		= inv.getRadius();
         
         // compute distance of line to inversion center
-        Point2D po 	= this.getProjectedPoint(center);
-        double d 	= this.getDistance(center);
+        StraightLine2D line = this.getSupportingLine();
+        Point2D po 	= line.getProjectedPoint(center);
+        double d 	= line.getDistance(center);
 
         // flag for indicating if line extremities are finite
         boolean inf0 = Double.isInfinite(this.getT0());
@@ -499,8 +500,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         
         // Compute the transform of the end points, which can be the center of
         // the inversion circle in the case of an infinite line.
-        Point2D p1 = inf0 ? center : this.getFirstPoint();
-        Point2D p2 = inf1 ? center : this.getLastPoint();
+        Point2D p1 = inf0 ? center : this.getFirstPoint().transform(inv);
+        Point2D p2 = inf1 ? center : this.getLastPoint().transform(inv);
         
         // compute angle between center of transformed circle and end points
         double theta1 = Angle2D.getHorizontalAngle(c2, p1);
