@@ -84,8 +84,10 @@ public class LineSegment2DTest extends TestCase {
         assertEquals(null, edge.getOtherPoint(p3));    
 	}
 
+	/**
+	 * Tests if the result of the transform by an inversion is a circle arc.
+	 */
 	public void testTransformInversion() {
-		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(30, 40);
 		Point2D v0 = new Point2D(40, 60);
 		LineSegment2D seg = new LineSegment2D(p0, v0);
@@ -102,6 +104,47 @@ public class LineSegment2DTest extends TestCase {
 		assertFalse(res.contains(center));
 	}
 	
+	public void testTransformInversion2() {
+		Point2D p1 = new Point2D(20, 0);
+		Point2D p2 = new Point2D(0, 20);
+		LineSegment2D seg = new LineSegment2D(p1, p2);
+		
+		Point2D center = new Point2D(0, 0);
+		Circle2D circle = new Circle2D(center, 10);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CirculinearCurve2D res = seg.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof CircleArc2D);
+		
+		Point2D pt1 = p1.transform(inv);
+		assertTrue(pt1.getDistance(res.getFirstPoint()) < Shape2D.ACCURACY);
+		Point2D pt2 = p2.transform(inv);
+		assertTrue(pt2.getDistance(res.getLastPoint()) < Shape2D.ACCURACY);
+		
+	}
+	
+	public void testTransformInversion3() {
+		Point2D p1 = new Point2D(10, 20);
+		Point2D p2 = new Point2D(30, 20);
+		LineSegment2D seg = new LineSegment2D(p1, p2);
+		
+		Point2D center = new Point2D(0, 0);
+		Circle2D circle = new Circle2D(center, 10);
+		CircleInversion2D inv = new CircleInversion2D(circle);
+		
+		CirculinearCurve2D res = seg.transform(inv);
+		assertNotNull(res);
+		assertTrue(res instanceof CircleArc2D);
+		
+		Point2D pt1 = p1.transform(inv);
+		Point2D res0 = res.getFirstPoint();
+		assertTrue(pt1.getDistance(res0) < Shape2D.ACCURACY);
+		Point2D pt2 = p2.transform(inv);
+		Point2D res1 = res.getLastPoint();
+		assertTrue(pt2.getDistance(res1) < Shape2D.ACCURACY);	
+	}
+
 	public void testIsBounded() {
         Point2D p1 = new Point2D(10, 10);
         Point2D p2 = new Point2D(40, 50);

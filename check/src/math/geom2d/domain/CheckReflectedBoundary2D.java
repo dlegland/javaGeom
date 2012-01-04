@@ -73,12 +73,18 @@ public class CheckReflectedBoundary2D extends JPanel{
 		
 		Boundary2D boundary2 = boundary.transform(trans);
 		
-		Domain2D domain2 = new GenericDomain2D(boundary2).complement();
+		Domain2D domain = new GenericDomain2D(boundary2);
+		Domain2D domain2 = domain.complement();
 		
 		// fill the domain
 		g2.setColor(Color.CYAN);
-		Domain2D clipped = domain2.clip(box);
+		Domain2D clipped = domain.clip(box);
 		clipped.fill(g2);
+		
+		// fill the domain
+		g2.setColor(Color.YELLOW);
+		Domain2D clipped2 = domain2.clip(box);
+		clipped2.fill(g2);
 		
 		g2.setColor(Color.BLACK);
 		line.clip(box).draw(g2);
@@ -89,10 +95,10 @@ public class CheckReflectedBoundary2D extends JPanel{
 		// draw the boundary
 		g2.setColor(Color.BLUE);
 		boundary2.clip(box).draw(g2);
-//		
-//		// draw the bounding box
-//		g2.setColor(Color.BLACK);
-//		box.getBoundary().draw(g2);
+		
+		// draw the bounding box
+		g2.setColor(Color.BLACK);
+		box.getBoundary().draw(g2);
 	}
 
 	public final static void main(String[] args){
