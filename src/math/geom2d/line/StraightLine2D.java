@@ -32,12 +32,19 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2D;
+import math.geom2d.Box2D;
+import math.geom2d.GeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Shape2D;
+import math.geom2d.UnboundedShape2DException;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CircleLine2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
-import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -300,7 +307,7 @@ public class StraightLine2D extends AbstractLine2D implements
 		Point2D c2 = Point2D.createPolar(center, r2, angle);
 
 		// choose direction of circle arc
-		boolean direct = !this.isInside(center);
+		boolean direct = this.isInside(center);
 
 		// return the created circle
         return new Circle2D(c2, r2, direct);
@@ -317,7 +324,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     public Domain2D getDomain() {
-        return new GenericDomain2D(this);
+        return new GenericCirculinearDomain2D(this);
     }
 
     public void fill(Graphics2D g2) {
