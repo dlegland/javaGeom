@@ -5,8 +5,38 @@ import junit.framework.TestCase;
 import java.util.*;
 
 import math.geom2d.Point2D;
+import math.geom2d.conic.Circle2D;
+import math.geom2d.domain.Domain2D;
+import math.geom2d.transform.CircleInversion2D;
 
 public class MultiPolygon2DTest extends TestCase {
+
+	public void testTransform_Inversion(){
+		LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
+				new Point2D(10, 10), 
+				new Point2D(20, 10),
+				new Point2D(20, 20),
+				new Point2D(10, 20) });
+		
+		LinearRing2D ring2 = new LinearRing2D(new Point2D[]{
+				new Point2D(30,  0), 
+				new Point2D(40,  0),
+				new Point2D(40, 30),
+				new Point2D(30, 30) });
+		
+		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
+				ring1, ring2});
+		
+
+		Point2D center = new Point2D(0, 0);
+		Circle2D circle = new Circle2D(center, 5);
+		CircleInversion2D inversion = new CircleInversion2D(circle);
+		
+		Domain2D poly2 = polygon.transform(inversion);
+		
+		assertFalse(poly2.isEmpty());
+		assertTrue(poly2.isBounded());
+	}
 
 	public void testGetCentroid() {
 		LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
