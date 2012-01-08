@@ -35,6 +35,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.CirculinearBoundary2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearDomain2DUtils;
@@ -319,8 +320,9 @@ public class SimplePolygon2D implements Polygon2D {
 	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
-		return new GenericCirculinearDomain2D(
-				this.getBoundary().transform(inv));
+		CirculinearBoundary2D boundary = 
+			this.getBoundary().transform(inv).getReverseCurve();
+		return new GenericCirculinearDomain2D(boundary);
 	}
 
 	/* (non-Javadoc)

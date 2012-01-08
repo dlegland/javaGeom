@@ -157,7 +157,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
 		return new GenericCirculinearDomain2D(
-				this.getBoundary().transform(inv));
+				this.getBoundary().transform(inv).getReverseCurve());
 	}
 
 	/* (non-Javadoc)

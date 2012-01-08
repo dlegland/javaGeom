@@ -34,8 +34,11 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 
 /**
@@ -68,6 +71,24 @@ public class SimplePolygon2DTest extends TestCase {
 		assertEquals(poly2.getSignedArea(), -poly.getSignedArea());
 	}
 	
+	public void testTransform_Inversion(){
+		Point2D points[] = new Point2D[4];
+		points[0] = new Point2D(10, 10);
+		points[1] = new Point2D(20, 10);
+		points[2] = new Point2D(20, 20);
+		points[3] = new Point2D(10, 20);
+		SimplePolygon2D poly = new SimplePolygon2D(points);
+		
+		Point2D center = new Point2D(0, 0);
+		Circle2D circle = new Circle2D(center, 5);
+		CircleInversion2D inversion = new CircleInversion2D(circle);
+		
+		Domain2D poly2 = poly.transform(inversion);
+		
+		assertFalse(poly2.isEmpty());
+		assertTrue(poly2.isBounded());
+	}
+
 	public void testTransform_Motion(){
 		Point2D points[] = new Point2D[4];
 		points[0] = new Point2D(10, 10);
