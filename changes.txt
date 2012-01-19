@@ -1,9 +1,18 @@
 Changes in javaGeom library
 
+
+javaGeom-0.10.1   (2012.01.19, rev. 306)
+=====
+
+* used gpcj library version 2.2.0
+* added Circle2D.getIntersections(Circle2D)
+* fixed several bugs in circle inversion computation
+
+
 javaGeom-0.10.0   (2011.12.04, rev. 298)
 =====
 
-Nex features
+New features
 - added Point2D.plus(Vector2D) and Point2D.minus(Vector2D)
 - added methods for inserting vertices into simple polygons
 - added methods for filtering multiple adjacent vertices
