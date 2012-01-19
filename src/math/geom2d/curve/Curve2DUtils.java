@@ -103,8 +103,7 @@ public abstract class Curve2DUtils {
 		// Case of continuous curve:
 		// convert the result of ClipContinuousCurve to CurveSet of Curve2D
 		if (curve instanceof ContinuousCurve2D)
-			return new CurveArray2D<Curve2D>(Curve2DUtils.clipContinuousCurve(
-					(ContinuousCurve2D) curve, box).getCurves());
+			return Curve2DUtils.clipContinuousCurve((ContinuousCurve2D) curve, box);
 
 		// case of a CurveSet2D
 		if (curve instanceof CurveSet2D<?>)
