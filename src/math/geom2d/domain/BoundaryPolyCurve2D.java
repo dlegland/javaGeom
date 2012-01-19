@@ -90,7 +90,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods overriding CurveSet2D methods
 
     /**
-     * Override the isClosed() id the following way: return true if all curves
+     * Override the isClosed() in the following way: return true if all curves
      * are bounded. If at least one curve is unbounded, return false.
      */
     @Override
@@ -135,7 +135,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         ContinuousOrientedCurve2D[] curves2 = 
         	new ContinuousOrientedCurve2D[curves.size()];
         int n = curves.size();
-        for (int i = 0; i<n; i++)
+        for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
         return new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves2);
     }

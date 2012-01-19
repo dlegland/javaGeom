@@ -31,7 +31,7 @@ import math.geom2d.AffineTransform2D;
 /**
  * A continuous oriented curve which delimits a
  * connected planar domain.
- * @deprecated replaced by Contour2D
+ * @deprecated replaced by Contour2D (since 0.9.1)
  * @author dlegland
  */
 @Deprecated

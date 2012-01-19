@@ -43,6 +43,9 @@ import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
 
+import static java.lang.Math.*;
+
+
 /**
  * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the
  * end of a curve is the beginning of the next curve, and such that they do not
@@ -164,7 +167,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         return dist;
     }
 
-    private static Vector2D getTangent(ContinuousCurve2D curve, double pos) {
+    private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
         // For smooth curves, simply call the getTangent() method
         if (curve instanceof SmoothCurve2D)
             return ((SmoothCurve2D) curve).getTangent(pos);
@@ -174,71 +177,73 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
             CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
             double pos2 = curveSet.getLocalPosition(pos);
             Curve2D subCurve = curveSet.getChildCurve(pos);
-            return getTangent((ContinuousCurve2D) subCurve, pos2);
+            return computeTangent((ContinuousCurve2D) subCurve, pos2);
         }
 
-        System.err
-                .println("Unknown type of curve: should be either continuous or curveset");
-        return null;
+        throw new IllegalArgumentException(
+        		"Unknown type of curve: should be either continuous or curveset");
     }
 
+    /**
+     * Determines if the given point lies within the domain bounded by this curve.
+     */
     public boolean isInside(Point2D point) {
+//    	double alpha = Math.abs(this.getWindingAngle(point));
+//    	alpha = Math.min(alpha, 4 * PI - alpha);
+//    	return alpha > PI ;
         double pos = this.project(point);
 
-        if (this.isSingular(pos)) {
-
-            // number of curves
-            int n = this.getCurveNumber();
-
-            // vertex index and position
-            int i = this.getCurveIndex(pos);
-            if (pos/2-i>.25)
-                i++;
-
-            // Test case of point equal to last position
-            if (Math.round(pos)==2*n-1) {
-                pos = 0;
-                i = 0;
-            }
-
-            // int i = (int) Math.floor((pos+1.0)/2);
-            Point2D vertex = this.getPoint(2*pos);
-
-            // indices of previous and next curves
-            int iPrev = i>0 ? i-1 : n-1;
-            // int iNext = i<n-1 ? i+1 : 0;
-            int iNext = i;
-
-            // previous and next curves
-            T prev = this.curves.get(iPrev);
-            T next = this.curves.get(iNext);
-
-            // tangent vectors of the 2 neighbor curves
-            Vector2D v1 = getTangent(prev, prev.getT1());
-            Vector2D v2 = getTangent(next, next.getT0());
-
-            // compute on which side of each ray the test point lies
-            boolean in1 = new StraightLine2D(vertex, v1).isInside(point);
-            boolean in2 = new StraightLine2D(vertex, v2).isInside(point);
-
-            // check if angle is acute or obtuse
-            if (Angle2D.getAngle(v1, v2)<Math.PI) {
-                return in1&&in2;
-            } else {
-                return in1||in2;
-            }
-        } else {
+        if (!this.isSingular(pos)) {
             // Simply call the method isInside on the child curve
             return this.getChildCurve(pos).isInside(point);
+        }
+        
+        // number of curves
+        int n = this.getCurveNumber();
+
+        // vertex index and position
+        int i = this.getCurveIndex(pos);
+        if (pos / 2 - i > .25)
+        	i++;
+
+        // Test case of point equal to last position
+        if (round(pos) == 2 * n - 1) {
+        	pos = 0;
+        	i = 0;
+        }
+
+        Point2D vertex = this.getPoint(pos);
+
+        // indices of previous and next curves
+        int iPrev = i > 0 ? i - 1 : n - 1;
+        int iNext = i;
+
+        // previous and next curves
+        T prev = this.curves.get(iPrev);
+        T next = this.curves.get(iNext);
+
+        // tangent vectors of the 2 neighbor curves
+        Vector2D v1 = computeTangent(prev, prev.getT1());
+        Vector2D v2 = computeTangent(next, next.getT0());
+
+        // compute on which side of each ray the test point lies
+        boolean in1 = new StraightLine2D(vertex, v1).isInside(point);
+        boolean in2 = new StraightLine2D(vertex, v2).isInside(point);
+
+        // check if angle is acute or obtuse
+        if (Angle2D.getAngle(v1, v2) < PI) {
+        	return in1 && in2;
+        } else {
+        	return in1 || in2;
         }
     }
 
     @Override
     public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve() {
-        ContinuousOrientedCurve2D[] curves2 = new ContinuousOrientedCurve2D[curves
-                .size()];
+        ContinuousOrientedCurve2D[] curves2 = 
+        	new ContinuousOrientedCurve2D[curves.size()];
         int n = curves.size();
-        for (int i = 0; i<n; i++)
+        for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
         return new PolyOrientedCurve2D<ContinuousOrientedCurve2D>(curves2);
     }
@@ -250,7 +255,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> getSubCurve(
             double t0, double t1) {
         PolyCurve2D<?> set = super.getSubCurve(t0, t1);
-        PolyOrientedCurve2D<ContinuousOrientedCurve2D> subCurve = new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
+        PolyOrientedCurve2D<ContinuousOrientedCurve2D> subCurve = 
+        	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
         subCurve.setClosed(false);
 
         // convert to PolySmoothCurve by adding curves.

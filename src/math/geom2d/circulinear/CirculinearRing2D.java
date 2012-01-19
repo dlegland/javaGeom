@@ -13,7 +13,7 @@ package math.geom2d.circulinear;
  * Interface for circulinear boundary curves which are both bounded
  * and closed.
  * @author dlegland
- *
+ * @see GenericCirculinearRing2D
  */
 public interface CirculinearRing2D extends CirculinearContour2D {
 

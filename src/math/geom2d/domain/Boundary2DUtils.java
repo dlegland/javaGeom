@@ -32,13 +32,14 @@ public abstract class Boundary2DUtils {
      * the original curve.
      */
     public final static CurveSet2D<ContinuousOrientedCurve2D> 
-    clipContinuousOrientedCurve(
-            ContinuousOrientedCurve2D curve, Box2D box) {
+    clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve, Box2D box) {
 
+    	// create result array
     	CurveArray2D<ContinuousOrientedCurve2D> result = 
         	new CurveArray2D<ContinuousOrientedCurve2D>();
-        for (ContinuousCurve2D cont : 
-        	Curve2DUtils.clipContinuousCurve(curve, box))
+    	
+    	// for each clipped curve, add its pieces
+        for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve, box))
             if (cont instanceof ContinuousOrientedCurve2D)
                 result.addCurve((ContinuousOrientedCurve2D) cont);
 
@@ -100,12 +101,13 @@ public abstract class Boundary2DUtils {
     }
 
     /**
-     * Clips a boundary and closes the result curve. Return an instance of
-     * BoundarySet2D.
+     * Clips a boundary and closes the result curve. Returns an instance of
+     * ContourArray2D.
      */
     public final static ContourArray2D<Contour2D> clipBoundary(
             Boundary2D boundary, Box2D box) {
 
+    	// basic check-up
         if (!box.isBounded())
             throw new UnboundedBox2DException(box);
 
@@ -115,8 +117,7 @@ public abstract class Boundary2DUtils {
         // The set of boundary curves. Each curve of this set is either a
         // curve of the original boundary, or a composition of a portion of
         // original boundary with a portion of the box.
-        ContourArray2D<Contour2D> res = 
-        	new ContourArray2D<Contour2D>();
+		ContourArray2D<Contour2D> res = new ContourArray2D<Contour2D>();
 
         // to store result of curve clipping
         CurveSet2D<ContinuousOrientedCurve2D> clipped;
@@ -125,12 +126,10 @@ public abstract class Boundary2DUtils {
         CurveArray2D<ContinuousOrientedCurve2D> curveSet = 
         	new CurveArray2D<ContinuousOrientedCurve2D>();
 
-        // Iterate on boundary curves: extract current curve (continuous and
-        // oriented), clip it with box, and add clipped curves to the array
-        // 'curveSet'
-        for (Contour2D boundaryCurve : boundary.getContinuousCurves()) {
-            clipped = Boundary2DUtils.clipContinuousOrientedCurve(
-                    boundaryCurve, box);
+        // Iterate on contours: clip each contour with box, 
+        // and add clipped curves to the array 'curveSet'
+        for (Contour2D contour : boundary.getContinuousCurves()) {
+            clipped = Boundary2DUtils.clipContinuousOrientedCurve(contour, box);
 
             for (ContinuousOrientedCurve2D clip : clipped)
                 curveSet.addCurve(clip);
@@ -145,17 +144,15 @@ public abstract class Boundary2DUtils {
         boolean intersect = false;
 
         // also create array of curves
-        ContinuousOrientedCurve2D[] curves = 
-        	new ContinuousOrientedCurve2D[nc];
+        ContinuousOrientedCurve2D[] curves = new ContinuousOrientedCurve2D[nc];
 
         // boundary of the box
         Curve2D boxBoundary = box.getBoundary();
 
         // compute position on the box for first and last point of each curve
-        Iterator<ContinuousOrientedCurve2D> iter = curveSet.getCurves()
-                .iterator();
+        Iterator<ContinuousOrientedCurve2D> iter = curveSet.getCurves().iterator();
 
-        for (int i = 0; i<nc; i++) {
+        for (int i = 0; i < nc; i++) {
             // save current curve
             curve = iter.next();
             curves[i] = curve;

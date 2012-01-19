@@ -129,9 +129,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
 		LineSegment2D line3 = new LineSegment2D(p2, p3);
 		LineSegment2D line4 = new LineSegment2D(p3, p4);
 		BoundaryPolyCurve2D<LineSegment2D> boundary = 
-			new BoundaryPolyCurve2D<LineSegment2D>(new LineSegment2D[]{
-					line1, line2, line3, line4
-			});
+			new BoundaryPolyCurve2D<LineSegment2D>(line1, line2, line3, line4);
 		
 		assertTrue(boundary.isInside(pt0));
 		assertTrue(!boundary.isInside(pt1));
