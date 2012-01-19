@@ -400,9 +400,10 @@ public final class Polygon2DUtils {
     		LinearRing2D ring) {
     	PolySimple poly = new PolySimple();
     	for (Point2D point : ring.getVertices())
-    		poly.add(point.getAsDouble());
+    		poly.add(new com.seisw.util.geom.Point2D(point.getX(), point.getY()));
     	return poly;
     }
+    
     
     private final static Polygon2D convertFromGpcjPolygon(Poly poly) {
     	int n = poly.getNumInnerPoly();
