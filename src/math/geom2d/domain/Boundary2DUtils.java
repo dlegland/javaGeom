@@ -229,14 +229,14 @@ public abstract class Boundary2DUtils {
             ind = findNextCurveIndex(startPositions, endPositions[ind0]);
 
             // iterate while we don't come back to first point
-            while (ind!=ind0) {
+            while (ind != ind0) {
                 // find the curve whose first point is just after last point
                 // of current curve on box boundary
                 curve = curves[ind];
 
                 // add a link between previous curve and current curve
-                boundary0.addCurve(getBoundaryPortion(box, p1, curve
-                        .getFirstPoint()));
+                Point2D p0i = curve.getFirstPoint();
+				boundary0.addCurve(getBoundaryPortion(box, p1, p0i));
 
                 // add to current boundary
                 boundary0.addCurve(curve);

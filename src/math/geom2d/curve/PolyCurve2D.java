@@ -175,6 +175,13 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 		return this.getChildCurve(t).getRightTangent(this.getLocalPosition(t));
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 */
+	public double getCurvature(double t) {
+		return this.getChildCurve(t).getCurvature(this.getLocalPosition(t));
+	}
+
 	/**
      * Returns true if the PolyCurve2D is closed.
      */
