@@ -110,6 +110,26 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 	}
 
+	public void testContains_Astroid() {
+		Point2D center = new Point2D(200, 200);
+		double radius = 100;
+		
+		Point2D c1 = center.translate(radius, radius);
+		CircleArc2D arc1 = new CircleArc2D(c1, 100, 3*PI/2, -PI/2);
+		Point2D c2 = center.translate(-radius, radius);
+		CircleArc2D arc2 = new CircleArc2D(c2, 100, 0, -PI/2);
+		Point2D c3 = center.translate(-radius, -radius);
+		CircleArc2D arc3 = new CircleArc2D(c3, 100, PI/2, -PI/2);
+		Point2D c4 = center.translate(radius, -radius);
+		CircleArc2D arc4 = new CircleArc2D(c4, 100, PI, -PI/2);
+		
+		// create a poly circulinear curve
+		GenericCirculinearRing2D ring = new GenericCirculinearRing2D(arc1, arc2, arc3, arc4);
+
+		Point2D point = new Point2D(50, 50);
+		assertFalse(ring.isInside(point));		
+	}
+
 	public void testTransform_CircleInversion2D() {
 		Circle2D circle1 = new Circle2D(new Point2D(0, 100), 30);
 		Circle2D circle2 = new Circle2D(new Point2D(100, 100), 30);

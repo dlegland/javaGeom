@@ -8,6 +8,7 @@ import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.NEGATIVE_INFINITY;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -494,4 +495,55 @@ public abstract class Curve2DUtils {
 		// check last position of last curve
 		return Double.isInfinite(lastCurve.getT1());
 	}
+	
+    public static ContinuousCurve2D getFirstContinuousCurve(Curve2D curve) {
+    	if (curve instanceof ContinuousCurve2D)
+    		return (ContinuousCurve2D) curve;
+    	
+    	Collection<? extends ContinuousCurve2D> curves = 
+    		curve.getContinuousCurves();
+    	if (curves.size() == 0)
+    		return null;
+    	
+    	return curves.iterator().next();
+    }
+
+    public static ContinuousCurve2D getLastContinuousCurve(Curve2D curve) {
+    	if (curve instanceof ContinuousCurve2D)
+    		return (ContinuousCurve2D) curve;
+    	ContinuousCurve2D res = null;
+    	for (ContinuousCurve2D continuous : curve.getContinuousCurves())
+    		res = continuous;
+    	return res;
+    }
+
+    public static SmoothCurve2D getFirstSmoothCurve(Curve2D curve) {
+    	if (curve instanceof SmoothCurve2D)
+    		return (SmoothCurve2D) curve;
+    	
+    	// Extract last continuous piece of the last continuous curve
+    	ContinuousCurve2D continuous = getFirstContinuousCurve(curve);
+    	if (continuous == null)
+    		return null;
+    	
+    	Collection<? extends SmoothCurve2D> curves = 
+    		continuous.getSmoothPieces();
+    	if (curves.size() == 0)
+    		return null;
+    	
+    	return curves.iterator().next();
+    }
+
+    public static SmoothCurve2D getLastSmoothCurve(Curve2D curve) {
+    	if (curve instanceof SmoothCurve2D)
+    		return (SmoothCurve2D) curve;
+    	
+    	// Extract last continuous piece of the last continuous curve
+    	ContinuousCurve2D continuous = getLastContinuousCurve(curve);
+    	SmoothCurve2D res = null;
+    	for (SmoothCurve2D smooth : continuous.getSmoothPieces())
+    		res = smooth;
+    	return res;
+    }
+
 }

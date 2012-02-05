@@ -408,6 +408,18 @@ implements CirculinearContinuousCurve2D, Cloneable {
 		return this.getEdge(index).getTangent(0);
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getCurvature(double)
+	 */
+	public double getCurvature(double t) {
+		double index = Math.round(t);
+		if (Math.abs(index - t) > Shape2D.ACCURACY)
+			return 0;
+		else
+			return Double.POSITIVE_INFINITY;
+			
+	}
+
     // ===================================================================
     // Methods implementing OrientedCurve2D interface
 

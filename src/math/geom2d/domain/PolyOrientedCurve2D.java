@@ -188,9 +188,6 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * Determines if the given point lies within the domain bounded by this curve.
      */
     public boolean isInside(Point2D point) {
-//    	double alpha = Math.abs(this.getWindingAngle(point));
-//    	alpha = Math.min(alpha, 4 * PI - alpha);
-//    	return alpha > PI ;
         double pos = this.project(point);
 
         if (!this.isSingular(pos)) {
@@ -230,14 +227,56 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         boolean in1 = new StraightLine2D(vertex, v1).isInside(point);
         boolean in2 = new StraightLine2D(vertex, v2).isInside(point);
 
-        // check if angle is acute or obtuse
-        if (Angle2D.getAngle(v1, v2) < PI) {
+        // check if angle between vectors is acute or obtuse
+        double diff = Angle2D.getAngle(v1, v2);
+        double eps = 1e-12;
+        if (diff < PI - eps) {
+        	// Acute angle
         	return in1 && in2;
-        } else {
-        	return in1 || in2;
+        } 
+        
+        if (diff > PI + eps) {
+        	// obtuse angle
+            return in1 || in2;
         }
+        
+        // Extract curvatures of both curves around singular point
+        SmoothCurve2D smoothPrev = Curve2DUtils.getLastSmoothCurve(prev);
+        SmoothCurve2D smoothNext = Curve2DUtils.getFirstSmoothCurve(next);
+        double kappaPrev = smoothPrev.getCurvature(smoothPrev.getT1());
+        double kappaNext = smoothNext.getCurvature(smoothNext.getT0());
+        
+        // get curvature signs
+        double sp = Math.signum(kappaPrev);
+        double sn = Math.signum(kappaNext);
+        
+        // Both curvatures have same sign
+        // -> point is inside if both curvature are positive
+        if (sn * sp > 0) {
+        	return kappaPrev > 0 && kappaNext > 0;
+        }
+        
+        // One of the curvature is zero (straight curve)
+		if (sn * sp == 0) {
+			if (sn == 0 && sp == 0) {
+				throw new IllegalArgumentException("colinear lines...");
+			}
+			
+			if (sp == 0)
+				return kappaNext > 0;
+			else
+				return kappaPrev > 0;
+		}
+        
+		// if curvatures have opposite signs, curves point in the same
+		// direction but with opposite direction.
+		if (kappaPrev > 0 && kappaNext < 0) {
+			return Math.abs(kappaPrev) > Math.abs(kappaNext);
+		} else {
+			return Math.abs(kappaPrev) < Math.abs(kappaNext);
+		}
     }
-
+    
     @Override
     public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve() {
         ContinuousOrientedCurve2D[] curves2 = 

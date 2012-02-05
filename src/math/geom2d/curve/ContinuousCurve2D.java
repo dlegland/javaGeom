@@ -63,7 +63,9 @@ public interface ContinuousCurve2D extends Curve2D {
 
     public Vector2D getLeftTangent(double t);
     public Vector2D getRightTangent(double t);
-    
+    public abstract double getCurvature(double t);
+
+   
     /**
      * Returns a set of smooth curves.
      */
