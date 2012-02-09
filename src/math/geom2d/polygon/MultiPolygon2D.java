@@ -106,6 +106,22 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         rings.remove(ring);
     }
 
+    public void clearRings() {
+    	rings.clear();
+    }
+    
+    public LinearRing2D getRing(int index) {
+        return rings.get(index);
+    }
+
+    public void insertRing(int index, LinearRing2D ring) {
+    	rings.add(index, ring);
+    }
+    
+    public void setRing(int index, LinearRing2D ring) {
+        rings.set(index, ring);
+    }
+
     public int getRingNumber() {
         return rings.size();
     }
