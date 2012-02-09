@@ -41,6 +41,7 @@ public class AllTests {
 		suite.addTest(new TestSuite(CirculinearCurve2DUtilsTest.class));
 		suite.addTest(new TestSuite(CirculinearCurveArray2DTest.class));
 		suite.addTest(new TestSuite(GenericCirculinearDomain2DTest.class));
+		suite.addTest(new TestSuite(GenericCirculinearRing2DTest.class));
 		suite.addTest(new TestSuite(PolyCirculinearCurve2DTest.class));
         //$JUnit-END$
 		return suite;

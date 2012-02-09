@@ -473,7 +473,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         int i = 0;
         for (Curve2D curve : curves) {
             dist = curve.getDistance(x, y);
-            if (dist<minDist) {
+            if (dist < minDist) {
                 minDist = dist;
                 pos = curve.project(point);
                 // format position
@@ -487,12 +487,12 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     }
 
     public Curve2D getReverseCurve() {
-    	int n = curves.size();
         // create array of reversed curves
+    	int n = curves.size();
         Curve2D[] curves2 = new Curve2D[n];
         
         // reverse each curve
-        for (int i = 0; i<n; i++)
+        for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n-1-i).getReverseCurve();
         
         // create the reversed final curve
