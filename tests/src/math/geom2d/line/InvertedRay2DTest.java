@@ -155,7 +155,7 @@ public class InvertedRay2DTest extends TestCase {
 	
 	public void testClipBox2D(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
-		Box2D box = new Box2D(10, -10, 10, -10);
+		Box2D box = new Box2D(-10, 10, -10, 10);
 		CurveSet2D<?> clipped = ray1.clip(box);
 		assertTrue(clipped.iterator().next().equals(
 				new LineSegment2D(-10, 2, 2, 2)));

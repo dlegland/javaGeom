@@ -158,7 +158,7 @@ public class Ray2DTest extends TestCase {
 	
 	public void testClipBox2D(){
 		Ray2D ray1 = new Ray2D(2, 2, 1, 0);
-		Box2D box = new Box2D(10, -10, 10, -10);
+		Box2D box = new Box2D(-10, 10, -10, 10);
 		CurveSet2D<?> clipped = ray1.clip(box);
 		assertTrue(clipped.iterator().next().equals(
 				new LineSegment2D(2, 2, 10, 2)));

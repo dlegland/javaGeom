@@ -133,8 +133,8 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
 	public InvertedRay2D getParallel(double d) {
-        double dd = Math.sqrt(dx*dx+dy*dy);
-        return new InvertedRay2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+        double dd = Math.hypot(dx, dy);
+		return new InvertedRay2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
 	}
 
     // ===================================================================
@@ -182,22 +182,24 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
         if (!this.supportContains(x, y))
             return false;
         double t = this.getPositionOnLine(x, y);
-        return t<Shape2D.ACCURACY;
+        return t < Shape2D.ACCURACY;
     }
 
     public Box2D getBoundingBox() {
         double t = Double.NEGATIVE_INFINITY;
-        return new Box2D(x0+t*dx, x0, y0+t*dy, y0);
-    }
+        Point2D p0 = new Point2D(x0, y0);
+        Point2D p1 = new Point2D(t * dx, t* dy);
+		return new Box2D(p0, p1);
+	}
 
     @Override
-    public InvertedRay2D transform(AffineTransform2D trans) {
-        double[] tab = trans.getCoefficients();
-        double x1 = x0*tab[0]+y0*tab[1]+tab[2];
-        double y1 = x0*tab[3]+y0*tab[4]+tab[5];
-        return new InvertedRay2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy
-                *tab[4]);
-    }
+	public InvertedRay2D transform(AffineTransform2D trans) {
+		double[] tab = trans.getCoefficients();
+		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
+		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
+		return new InvertedRay2D(x1, y1, 
+				dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+	}
 
     // ===================================================================
     // methods implementing the Shape interface
@@ -210,22 +212,22 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
     public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
-    		return true;
+		if (this == obj)
+			return true;
     	
-        if (!(obj instanceof InvertedRay2D))
-            return false;
-        InvertedRay2D ray = (InvertedRay2D) obj;
-        if (Math.abs(x0-ray.x0)>eps)
-            return false;
-        if (Math.abs(y0-ray.y0)>eps)
-            return false;
-        if (Math.abs(dx-ray.dx)>eps)
-            return false;
-        if (Math.abs(dy-ray.dy)>eps)
-            return false;
-        
-        return true;
+		if (!(obj instanceof InvertedRay2D))
+			return false;
+		InvertedRay2D ray = (InvertedRay2D) obj;
+		if (Math.abs(x0 - ray.x0) > eps)
+			return false;
+		if (Math.abs(y0 - ray.y0) > eps)
+			return false;
+		if (Math.abs(dx - ray.dx) > eps)
+			return false;
+		if (Math.abs(dy - ray.dy) > eps)
+			return false;
+
+		return true;
     }
 
     // ===================================================================
@@ -238,19 +240,19 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
     
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof InvertedRay2D))
-            return false;
-        InvertedRay2D ray = (InvertedRay2D) obj;
-        if (Math.abs(x0-ray.x0)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(y0-ray.y0)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(dx-ray.dx)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(dy-ray.dy)>Shape2D.ACCURACY)
-            return false;
-        return true;
+	public boolean equals(Object obj) {
+		if (!(obj instanceof InvertedRay2D))
+			return false;
+		InvertedRay2D ray = (InvertedRay2D) obj;
+		if (Math.abs(x0 - ray.x0) > Shape2D.ACCURACY)
+			return false;
+		if (Math.abs(y0 - ray.y0) > Shape2D.ACCURACY)
+			return false;
+		if (Math.abs(dx - ray.dx) > Shape2D.ACCURACY)
+			return false;
+		if (Math.abs(dy - ray.dy) > Shape2D.ACCURACY)
+			return false;
+		return true;
     }
 
     @Override
