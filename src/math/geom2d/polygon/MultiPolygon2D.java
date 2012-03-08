@@ -185,7 +185,14 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 
 	
     // ===================================================================
-    // methods inherited from interface Domain2D
+    // methods implementing the Domain2D interface 
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 */
+	public Polygon2D getAsPolygon(int n) {
+		return this;
+	}
 
     public CirculinearContourArray2D<LinearRing2D> getBoundary() {
         return CirculinearContourArray2D.create(rings);

@@ -198,6 +198,13 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // ===================================================================
     // methods inherited from interface Domain2D
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 */
+	public Polygon2D getAsPolygon(int n) {
+		return this;
+	}
+
     public CirculinearContourArray2D<LinearRing2D> getBoundary() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);

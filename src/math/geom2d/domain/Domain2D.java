@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Shape2D;
+import math.geom2d.polygon.Polygon2D;
 
 // Imports
 
@@ -64,6 +65,13 @@ public interface Domain2D extends Shape2D {
      */
     public abstract Domain2D complement();
 
+    /**
+     * Returns an approximation of the domain as a polygon, or a MultiPolygon.
+     * @return a polygon
+     * @since 0.10.2
+     */
+    public abstract Polygon2D getAsPolygon(int n);
+    
     public abstract Domain2D transform(AffineTransform2D transform);
 
     public abstract Domain2D clip(Box2D box);

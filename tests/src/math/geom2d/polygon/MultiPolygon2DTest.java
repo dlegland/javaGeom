@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.*;
 
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Domain2D;
@@ -207,6 +208,30 @@ public class MultiPolygon2DTest extends TestCase {
 		Point2D pOut = new Point2D(11, 19);
 		assertFalse(complement.contains(pOut));
 		
+	}
+	
+	public void testGetBoundingBox2D() {
+		Point2D[] pts1 = new Point2D[]{
+				new Point2D(0, 0),
+				new Point2D(10, 0),
+				new Point2D(10, 10),
+				new Point2D(0, 10) };
+		LinearRing2D ring1 = new LinearRing2D(pts1);
+		
+		Point2D[] pts2 = new Point2D[]{
+				new Point2D(20, 10),
+				new Point2D(30, 10),
+				new Point2D(30, 20),
+				new Point2D(20, 20) };
+		LinearRing2D ring2 = new LinearRing2D(pts2);		
+		
+		MultiPolygon2D polygon = new MultiPolygon2D();
+		polygon.addRing(ring1);
+		polygon.addRing(ring2);
+		
+		Box2D expBox = new Box2D(0, 30, 0, 20);
+		Box2D bbox = polygon.getBoundingBox();
+		assertTrue(expBox.almostEquals(bbox, 1e-14));
 	}
 	
 	public void testContainsPoint2D() {

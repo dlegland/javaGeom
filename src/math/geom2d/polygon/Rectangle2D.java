@@ -309,6 +309,13 @@ public class Rectangle2D implements Polygon2D {
     // methods inherited from Domain2D interface
 
 	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 */
+	public Polygon2D getAsPolygon(int n) {
+		return this;
+	}
+
+	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
