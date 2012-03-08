@@ -200,16 +200,19 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
 
     public Box2D getBoundingBox() {
         double t = Double.POSITIVE_INFINITY;
-        return new Box2D(x0, x0+t*dx, y0, y0+t*dy);
+        Point2D p0 = new Point2D(x0, y0);
+        Point2D p1 = new Point2D(t * dx, t* dy);
+        return new Box2D(p0, p1);
     }
 
     @Override
-    public Ray2D transform(AffineTransform2D trans) {
-        double[] tab = trans.getCoefficients();
-        double x1 = x0*tab[0]+y0*tab[1]+tab[2];
-        double y1 = x0*tab[3]+y0*tab[4]+tab[5];
-        return new Ray2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4]);
-    }
+	public Ray2D transform(AffineTransform2D trans) {
+		double[] tab = trans.getCoefficients();
+		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
+		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
+		return new Ray2D(x1, y1, 
+				dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+	}
 
 
 	// ===================================================================

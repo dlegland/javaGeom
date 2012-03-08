@@ -499,11 +499,11 @@ public class Circle2DTest extends TestCase {
 	
 	public void testClipBox_Problem(){
 		Circle2D circle = new Circle2D(6, 0, 6+6.4);
-		Box2D box = new Box2D(-10, 10, 10, -10);
+		Box2D box = new Box2D(-10, 10, -10, 10);
 
 		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
 		Collection<?> curves = clipped.getCurves();
-		assertTrue(curves.size()==1);
+		assertTrue(curves.size() == 1);
 	}
 	
 	public void testClone() {
