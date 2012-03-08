@@ -344,6 +344,13 @@ public class SimplePolygon2D implements Polygon2D {
 	// ===================================================================
     // methods inherited from Domain2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 */
+	public Polygon2D getAsPolygon(int n) {
+		return this;
+	}
+
     /**
      * Returns a set of one LinearRing2D, which encloses the polygon.
      */

@@ -15,6 +15,11 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.ShapeArray2D;
+import math.geom2d.UnboundedShape2DException;
+import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.MultiPolygon2D;
+import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.Polyline2D;
 
 
 /**
@@ -61,6 +66,37 @@ implements DomainSet2D<T> {
     	super(domains);
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 */
+	public Polygon2D getAsPolygon(int n) {
+		// Compute number of contours
+		int nContours = 0;
+		for (Domain2D domain : this.shapes)
+			nContours += domain.getBoundary().getContinuousCurves().size();
+
+		// concatenate the set of linear rings
+		ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(nContours);
+		for (Domain2D domain : this.shapes) {
+			for (Contour2D contour : domain.getBoundary().getContinuousCurves()) {
+				// Check that the curve is bounded
+		        if (!contour.isBounded())
+		            throw new UnboundedShape2DException(this);
+		        
+		        // If contour is bounded, it should be closed
+		        if (!contour.isClosed())
+		        	throw new IllegalArgumentException("Can not transform open curve to linear ring");
+
+		        Polyline2D poly = contour.getAsPolyline(n);
+		        assert poly instanceof LinearRing2D : "expected result as a linear ring";
+		        
+				rings.add((LinearRing2D) poly);
+			}
+		}
+		
+		return new MultiPolygon2D(rings);
+	}
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#complement()
 	 */
