@@ -167,23 +167,6 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         return dist;
     }
 
-    private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
-        // For smooth curves, simply call the getTangent() method
-        if (curve instanceof SmoothCurve2D)
-            return ((SmoothCurve2D) curve).getTangent(pos);
-
-        // Extract sub curve and recursively call this method on the sub curve
-        if (curve instanceof CurveSet2D<?>) {
-            CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
-            double pos2 = curveSet.getLocalPosition(pos);
-            Curve2D subCurve = curveSet.getChildCurve(pos);
-            return computeTangent((ContinuousCurve2D) subCurve, pos2);
-        }
-
-        throw new IllegalArgumentException(
-        		"Unknown type of curve: should be either continuous or curveset");
-    }
-
     /**
      * Determines if the given point lies within the domain bounded by this curve.
      */
@@ -277,6 +260,26 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
 		}
     }
     
+    /**
+     * Computes the tangent of the curve at the given position.
+     */
+    private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
+        // For smooth curves, simply call the getTangent() method
+        if (curve instanceof SmoothCurve2D)
+            return ((SmoothCurve2D) curve).getTangent(pos);
+
+        // Extract sub curve and recursively call this method on the sub curve
+        if (curve instanceof CurveSet2D<?>) {
+            CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
+            double pos2 = curveSet.getLocalPosition(pos);
+            Curve2D subCurve = curveSet.getChildCurve(pos);
+            return computeTangent((ContinuousCurve2D) subCurve, pos2);
+        }
+
+        throw new IllegalArgumentException(
+        		"Unknown type of curve: should be either continuous or curveset");
+    }
+
     @Override
     public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve() {
         ContinuousOrientedCurve2D[] curves2 = 

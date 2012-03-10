@@ -1,5 +1,7 @@
 package math.geom2d.circulinear.buffer;
 
+import static java.lang.Math.PI;
+
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -15,8 +17,10 @@ import math.geom2d.circulinear.CirculinearCurveArray2D;
 import math.geom2d.circulinear.CirculinearCurveSet2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
+import math.geom2d.circulinear.GenericCirculinearRing2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.InvertedRay2D;
@@ -232,6 +236,41 @@ public class BufferCalculatorTest extends TestCase {
 		assertEquals(2, parallel2.getContinuousCurves().size());
 	}
 
+	public void testCreateContinousParallel_CircleArcInverse() {
+		// create the circle arc
+		Point2D center = new Point2D(10, 20);
+		double radius = 50;
+		CircleArc2D arc = new CircleArc2D(center, radius, PI/2, -PI/2);
+
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+
+		// compute parallel
+		CirculinearContinuousCurve2D parallel = 
+			bc.createContinuousParallel(arc, 10);
+		
+		assertNotNull(parallel);
+		assertEquals(1, parallel.getContinuousCurves().size());
+		assertFalse(parallel.isEmpty());
+		assertEquals(1, parallel.getSmoothPieces().size());
+		
+		assertTrue(parallel instanceof CircleArc2D);
+		CircleArc2D pArc = (CircleArc2D) parallel;
+		assertEquals(40., pArc.getSupportingCircle().getRadius(), 1e-14);
+
+		// same in other direction
+		CirculinearContinuousCurve2D parallel2 = 
+			bc.createContinuousParallel(arc, -10);
+		
+		assertNotNull(parallel2);
+		assertEquals(1, parallel2.getContinuousCurves().size());
+		assertFalse(parallel2.isEmpty());
+		assertEquals(1, parallel2.getSmoothPieces().size());
+		
+		assertTrue(parallel instanceof CircleArc2D);
+		CircleArc2D pArc2 = (CircleArc2D) parallel2;
+		assertEquals(60., pArc2.getSupportingCircle().getRadius(), 1e-14);
+	}
+
 	public void testCreateContinousParallel_InfiniteCurve() {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
@@ -291,6 +330,38 @@ public class BufferCalculatorTest extends TestCase {
 		Collection<CirculinearContinuousCurve2D> splittedCurves = 
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
 		assertEquals(2, splittedCurves.size());
+	}
+
+
+	public void testCreateContinuousParallel_Astroid() {
+
+		Point2D center = new Point2D(200, 200);
+		double radius = 100;
+
+		Point2D c1 = center.translate(radius, radius);
+		CircleArc2D arc1 = new CircleArc2D(c1, 100, 3*PI/2, -PI/2);
+		Point2D c2 = center.translate(-radius, radius);
+		CircleArc2D arc2 = new CircleArc2D(c2, 100, 0, -PI/2);
+		Point2D c3 = center.translate(-radius, -radius);
+		CircleArc2D arc3 = new CircleArc2D(c3, 100, PI/2, -PI/2);
+		Point2D c4 = center.translate(radius, -radius);
+		CircleArc2D arc4 = new CircleArc2D(c4, 100, PI, -PI/2);
+
+		// create a poly circulinear curve
+		GenericCirculinearRing2D astroid = new GenericCirculinearRing2D(arc1, arc2, arc3, arc4);
+
+		// computes the parallel
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		CirculinearContinuousCurve2D parallel =
+			bc.createContinuousParallel(astroid, 10);
+		
+		assertNotNull(parallel);
+		assertFalse(parallel.isEmpty());
+		assertEquals(8, parallel.getSmoothPieces().size());
+		
+		for (CirculinearCurve2D curve : parallel.getSmoothPieces()) {
+			assertTrue(curve instanceof CircleArc2D);
+		}
 	}
 
 	public void testComputeBuffer_LineSegment() {

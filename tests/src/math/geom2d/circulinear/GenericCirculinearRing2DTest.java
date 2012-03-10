@@ -5,6 +5,7 @@ import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curve2D;
+import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import junit.framework.TestCase;
 
@@ -179,5 +180,27 @@ public class GenericCirculinearRing2DTest extends TestCase {
 		assertFalse(ring.isInside(new Point2D(x0 + r1 + r2 + 1, y0 - r2 + 1)));
 		assertFalse(ring.isInside(new Point2D(x0 + r1 + r2 + 1, y0 - r2)));
 		assertFalse(ring.isInside(new Point2D(x0 + r1 + r2 + 1, y0 - r2 - 1)));
+	}
+
+	public void testGetBuffer_Astroid() {
+
+		Point2D center = new Point2D(200, 200);
+		double radius = 100;
+
+		Point2D c1 = center.translate(radius, radius);
+		CircleArc2D arc1 = new CircleArc2D(c1, 100, 3*PI/2, -PI/2);
+		Point2D c2 = center.translate(-radius, radius);
+		CircleArc2D arc2 = new CircleArc2D(c2, 100, 0, -PI/2);
+		Point2D c3 = center.translate(-radius, -radius);
+		CircleArc2D arc3 = new CircleArc2D(c3, 100, PI/2, -PI/2);
+		Point2D c4 = center.translate(radius, -radius);
+		CircleArc2D arc4 = new CircleArc2D(c4, 100, PI, -PI/2);
+
+		// create a poly circulinear curve
+		GenericCirculinearRing2D ring = new GenericCirculinearRing2D(arc1, arc2, arc3, arc4);
+
+		Domain2D buffer = ring.getBuffer(20);
+		
+		assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
 	}
 }

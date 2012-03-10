@@ -6,6 +6,7 @@ package math.geom2d.curve;
 
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Math.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import math.geom2d.Angle2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
@@ -544,6 +546,108 @@ public abstract class Curve2DUtils {
     	for (SmoothCurve2D smooth : continuous.getSmoothPieces())
     		res = smooth;
     	return res;
+    }
+
+    public enum JunctionType {
+    	SALIENT, REENTRANT, FLAT
+    }
+    
+    /**
+     * Returns the junction type between the end of first curve and the
+     * beginning of second curve. 
+     */
+    public static JunctionType getJunctionType(Curve2D prev, Curve2D next) {
+    	
+    	// Extract corresponding smooth curves
+        SmoothCurve2D smoothPrev = getLastSmoothCurve(prev);
+        SmoothCurve2D smoothNext = getFirstSmoothCurve(next);
+    	
+        // tangent vectors of the 2 neighbor curves
+        Vector2D v1 = computeTangent(smoothPrev, smoothPrev.getT1());
+        Vector2D v2 = computeTangent(smoothNext, smoothNext.getT0());
+
+        // check if angle between vectors is acute or obtuse
+        double diff = Angle2D.getAngle(v1, v2);
+        double eps = 1e-12;
+        if (diff < eps || diff > (2*PI-eps)) {
+        	return JunctionType.FLAT;
+        }
+        
+        if (diff < PI - eps) {
+        	// Acute angle
+        	return JunctionType.SALIENT;
+        } 
+        
+        if (diff > PI + eps) {
+        	// obtuse angle
+        	return JunctionType.REENTRANT;
+        }
+        
+        // Extract curvatures of both curves around singular point
+        double kappaPrev = smoothPrev.getCurvature(smoothPrev.getT1());
+        double kappaNext = smoothNext.getCurvature(smoothNext.getT0());
+        
+        // get curvature signs
+        double sp = Math.signum(kappaPrev);
+        double sn = Math.signum(kappaNext);
+        
+        // Both curvatures have same sign
+        if (sn * sp > 0) {
+        	if (sn > 0)
+        		return JunctionType.REENTRANT;
+        	else
+        		return JunctionType.SALIENT;
+        }
+        
+        // One of the curvature is zero (straight curve)
+        if (sp == 0) {
+        	if (sn < 0)
+        		return JunctionType.SALIENT;
+        	else if (sn > 0)
+        		return JunctionType.REENTRANT;
+        	else {
+        		// Both curvatures are zero => problem...
+        		throw new IllegalArgumentException("colinear lines...");
+        	}
+        } else if (sn == 0) {
+        	if (sp < 0)
+        		return JunctionType.SALIENT;
+        	else if (sp > 0)
+        		return JunctionType.REENTRANT;				
+        }
+
+        
+		// curvatures have opposite signs: curves point in opposite directions.
+		// We need to check curvature values
+		if (sp == 1 && sn == -1) {
+			return abs(kappaPrev) < abs(kappaNext) ? 
+					JunctionType.SALIENT : JunctionType.REENTRANT;
+		} else if (sp == -1 && sn == 1){
+			return abs(kappaPrev) > abs(kappaNext) ? 
+					JunctionType.SALIENT : JunctionType.REENTRANT;
+		}
+
+		throw new RuntimeException("Could not determine junction type");
+    }
+    
+    /**
+     * Computes the tangent of the curve at the given position.
+     */
+    private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
+        // For smooth curves, simply call the getTangent() method
+        if (curve instanceof SmoothCurve2D)
+            return ((SmoothCurve2D) curve).getTangent(pos);
+
+        // Extract sub curve and recursively call this method on the sub curve
+        if (curve instanceof CurveSet2D<?>) {
+            CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
+            double pos2 = curveSet.getLocalPosition(pos);
+            Curve2D subCurve = curveSet.getChildCurve(pos);
+            return computeTangent((ContinuousCurve2D) subCurve, pos2);
+        }
+
+        throw new IllegalArgumentException(
+        		"Unknown type of curve: should be either continuous or curveset");
     }
 
 }
