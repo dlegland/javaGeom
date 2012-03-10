@@ -36,6 +36,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.polygon.Polyline2D;
+import static java.lang.Math.PI;
 
 public class Curve2DUtilsTest extends TestCase {
 
@@ -56,7 +57,7 @@ public class Curve2DUtilsTest extends TestCase {
 	public void testClipCurve_Circle2D() {
 		Box2D box = new Box2D(0, 10, 0, 10);
 		Circle2D 	line1 = new Circle2D(0, 0, 5, true);
-		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, Math.PI/2);
+		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, PI/2);
 		
 		CurveSet2D<? extends Curve2D> curveSet = 
 			Curve2DUtils.clipCurve(line1, box);
@@ -69,8 +70,8 @@ public class Curve2DUtilsTest extends TestCase {
 		double L = 40;
 		double l = 10;
 		Box2D box = new Box2D(-L/2, L/2, -l/2, l/2);
-		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
+		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*PI/3, 2*PI/3);
+		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*PI/3, 2*PI/3);		
 
 		CurveSet2D<? extends Curve2D> clipped1 = 
 			Curve2DUtils.clipCurve(arc1, box);
@@ -82,9 +83,9 @@ public class Curve2DUtilsTest extends TestCase {
 
 		double alpha = Math.asin(l/2/r);
 		CircleArc2D arc1c = new CircleArc2D(0, 0, r, 
-				Angle2D.formatAngle(Math.PI*2-alpha), 2*alpha);
+				Angle2D.formatAngle(PI*2-alpha), 2*alpha);
 		CircleArc2D arc2c = new CircleArc2D(r, 0, r,
-				Angle2D.formatAngle(Math.PI-alpha), 2*alpha);
+				Angle2D.formatAngle(PI-alpha), 2*alpha);
 
 		assertTrue(arc1c.equals(curve1));
 		assertTrue(arc2c.equals(curve2));
@@ -97,8 +98,8 @@ public class Curve2DUtilsTest extends TestCase {
 
 		Box2D box = new Box2D(-L/2, L/2, -l/2, l/2);
 		
-		CircleArc2D arc1 	= new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 	= new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
+		CircleArc2D arc1 	= new CircleArc2D(0, 0, r, 5*PI/3, 2*PI/3);
+		CircleArc2D arc2 	= new CircleArc2D(r, 0, r, 2*PI/3, 2*PI/3);		
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
 		set.addCurve(arc1);
 		set.addCurve(arc2);
@@ -111,9 +112,9 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		double alpha 	= Math.asin(l/2/r);
 		CircleArc2D arc1c = new CircleArc2D(0, 0, r, 
-				Angle2D.formatAngle(Math.PI*2-alpha), 2*alpha);
+				Angle2D.formatAngle(PI*2-alpha), 2*alpha);
 		CircleArc2D arc2c = new CircleArc2D(r, 0, r,
-				Angle2D.formatAngle(Math.PI-alpha), 2*alpha);
+				Angle2D.formatAngle(PI-alpha), 2*alpha);
 		
 		assertTrue(arc1c.equals(curve1));
 		assertTrue(arc2c.equals(curve2));
@@ -156,4 +157,89 @@ public class Curve2DUtilsTest extends TestCase {
 		assertEquals(Curve2DUtils.findNextCurveIndex(tab1, .3), 5);
 		assertEquals(Curve2DUtils.findNextCurveIndex(tab1, .8), 3);
 	}
+	
+	public void testGetJunctionType_LineLineAcute() {
+		LineSegment2D line1 = new LineSegment2D(new Point2D(10, 10), new Point2D(30, 10));
+		LineSegment2D line2 = new LineSegment2D(new Point2D(30, 10), new Point2D(30, 50));
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(line1, line2);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+
+	public void testGetJunctionType_LineLineObtuse() {
+		LineSegment2D line1 = new LineSegment2D(new Point2D(10, 10), new Point2D(30, 10));
+		LineSegment2D line2 = new LineSegment2D(new Point2D(30, 10), new Point2D(30, 0));
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(line1, line2);
+		assertEquals(Curve2DUtils.JunctionType.REENTRANT, type);
+	}
+
+	public void testGetJunctionType_LineLineFlat() {
+		LineSegment2D line1 = new LineSegment2D(new Point2D(10, 10), new Point2D(30, 10));
+		LineSegment2D line2 = new LineSegment2D(new Point2D(30, 10), new Point2D(50, 10));
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(line1, line2);
+		assertEquals(Curve2DUtils.JunctionType.FLAT, type);
+	}
+	
+	public void testGetJunctionType_LineArcAcute() {
+		LineSegment2D line = new LineSegment2D(new Point2D(10, 10), new Point2D(30, 10));
+		CircleArc2D arc = new CircleArc2D(new Point2D(30, 10), 10, -PI/2, -PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(line, arc);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+
+	public void testGetJunctionType_LineArcObtuse() {
+		LineSegment2D line = new LineSegment2D(new Point2D(10, 10), new Point2D(30, 10));
+		CircleArc2D arc = new CircleArc2D(new Point2D(30, 0), 10, PI/2, PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(line, arc);
+		assertEquals(Curve2DUtils.JunctionType.REENTRANT, type);
+	}
+	
+	public void testGetJunctionType_ArcLineAcute() {
+		CircleArc2D arc = new CircleArc2D(new Point2D(30, 0), 10, PI, -PI/2);
+		LineSegment2D line = new LineSegment2D(new Point2D(30, 10), new Point2D(10, 10));
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc, line);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+
+	public void testGetJunctionType_Arcs_Reentrant() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(10, 10), 10, PI, PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(10, 10), 10, PI/2, PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.REENTRANT, type);
+	}
+
+	public void testGetJunctionType_Arcs_Salient() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(10, 30), 10, 0, -PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(10, 10), 10, PI/2, -PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+	
+	public void testGetJunctionType_ArcsSmallLarge_Salient() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(5, 20), 10, 0, -PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(5, 30), 20, 3*PI/2, PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+
+	public void testGetJunctionType_ArcsSmallLarge_Reentrant() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(5, 20), 10, 0, PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(5, 10), 20, PI/2, -PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.REENTRANT, type);
+	}
+
+	public void testGetJunctionType_ArcsLargeSmall_Salient() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(5, 30), 20, 0, PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(5, 20), 10, PI/2, -PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.SALIENT, type);
+	}
+
+	public void testGetJunctionType_ArcsLargeSmall_Reentrant() {
+		CircleArc2D arc1 = new CircleArc2D(new Point2D(5, 30), 20, 0, -PI/2);
+		CircleArc2D arc2 = new CircleArc2D(new Point2D(5, 20), 10, -PI/2, PI/2);
+		Curve2DUtils.JunctionType type = Curve2DUtils.getJunctionType(arc1, arc2);
+		assertEquals(Curve2DUtils.JunctionType.REENTRANT, type);
+	}
+
 }
