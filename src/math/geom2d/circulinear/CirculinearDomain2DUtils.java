@@ -28,14 +28,14 @@ public class CirculinearDomain2DUtils {
 			new ArrayList<CirculinearContour2D>();
 		
 		// iterate on all continuous curves
-		for(CirculinearContour2D cont : 
+		for(CirculinearContour2D contour : 
 			domain.getBoundary().getContinuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
 			for(CirculinearContinuousCurve2D simpleCurve : 
-				CirculinearCurve2DUtils.splitContinuousCurve(cont)) {
+				CirculinearCurve2DUtils.splitContinuousCurve(contour)) {
 				CirculinearContour2D boundary = 
 					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
-							simpleCurve.getSmoothPieces());
+							simpleCurve.getSmoothPieces(), contour.isClosed());
 				// compute the rings composing the simple curve buffer
 				rings.addAll(computeBufferSimpleRing(boundary, dist));
 			}

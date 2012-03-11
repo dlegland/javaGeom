@@ -36,6 +36,7 @@ import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -317,7 +318,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(box.equals(bounds));
 	}
     
-    public void testGetBuffer() {
+    public void testGetBuffer_Square() {
     	SimplePolygon2D polygon =  new SimplePolygon2D(new Point2D[]{
                 new Point2D(100, 100),
                 new Point2D(150, 100),
@@ -328,6 +329,9 @@ public class SimplePolygon2DTest extends TestCase {
     	CirculinearDomain2D buffer = polygon.getBuffer(10);
     	Boundary2D boundary = buffer.getBoundary();
     	assertEquals(1, boundary.getContinuousCurves().size());
+    	
+    	Contour2D contour = boundary.getContinuousCurves().iterator().next();
+    	assertEquals(8, contour.getSmoothPieces().size());
     }
 	
     public void testGetBuffer_MutipleVertices() {
