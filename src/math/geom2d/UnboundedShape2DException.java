@@ -5,6 +5,8 @@
 package math.geom2d;
 
 /**
+ * Exception thrown when an unbounded shape is involved in an operation
+ * that assumes a bounded shape. 
  * @author dlegland
  */
 public class UnboundedShape2DException extends RuntimeException {

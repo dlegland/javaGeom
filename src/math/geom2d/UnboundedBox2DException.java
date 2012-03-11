@@ -5,6 +5,9 @@
 package math.geom2d;
 
 /**
+ * Exception thrown when an unbounded box  is involved in an operation
+ * that assumes a bounded box. 
+ * @see Box2D
  * @author dlegland
  */
 public class UnboundedBox2DException extends RuntimeException {
