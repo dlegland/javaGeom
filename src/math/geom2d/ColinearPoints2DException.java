@@ -10,6 +10,8 @@ package math.geom2d;
 
 
 /**
+ * Exception thrown when the assumption of non colinearity is not respected.
+ * Methods are provided by retrieving the three incriminated points.
  * @author dlegland
  *
  */

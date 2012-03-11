@@ -23,6 +23,9 @@ import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
 
 /**
+ * Several utility functions for working on polygons, including polygon
+ * creation, and basic computations.  
+ * I
  * @author dlegland
  */
 public final class Polygon2DUtils {

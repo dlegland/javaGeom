@@ -7,6 +7,8 @@ package math.geom2d;
 import math.geom2d.transform.Transform2D;
 
 /**
+ * Exception thrown when trying to compute an inverse transform of a transform
+ * that does not allows this feature.
  * @author dlegland
  */
 public class NonInvertibleTransform2DException extends RuntimeException {
