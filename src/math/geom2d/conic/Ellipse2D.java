@@ -25,18 +25,15 @@
 
 package math.geom2d.conic;
 
+import static java.lang.Math.*;
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothContour2D;
@@ -82,7 +79,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
             return new Circle2D(xc, yc, chord / 2);
 
         double r1 = chord / 2;
-        double r2 = Math.sqrt(chord * chord - dist * dist) / 2;
+        double r2 = sqrt(chord * chord - dist * dist) / 2;
 
         return new Ellipse2D(xc, yc, r1, r2, theta);
     }
@@ -137,14 +134,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double C = coefs[2];
 
         // Compute orientation angle of the ellipse
-        double theta;
-        if (Math.abs(A-C)<Shape2D.ACCURACY) {
-            theta = Math.PI/4;
-        } else {
-            theta = Math.atan2(B, (A-C))/2.0;
-            if (B<0)
-                theta -= Math.PI;
-            theta = Angle2D.formatAngle(theta);
+		double theta;
+		if (abs(A - C) < Shape2D.ACCURACY) {
+			theta = PI / 4;
+		} else {
+			theta = atan2(B, (A - C)) / 2.0;
+			if (B < 0)
+				theta -= PI;
+			theta = Angle2D.formatAngle(theta);
         }
 
         // compute ellipse in isothetic basis
@@ -152,27 +149,27 @@ implements SmoothContour2D, Conic2D, Cloneable {
                 AffineTransform2D.createRotation(-theta));
 
         // extract coefficients f if present
-        double f = 1;
-        if (coefs2.length>5)
-            f = Math.abs(coefs[5]);
+		double f = 1;
+		if (coefs2.length > 5)
+			f = abs(coefs[5]);
 
-        assert Math.abs(coefs2[1]/f) < Shape2D.ACCURACY : 
-        	"Second conic coefficient should be zero";
+		assert abs(coefs2[1] / f) < Shape2D.ACCURACY :        	
+			"Second conic coefficient should be zero";
         
         // extract major and minor axis lengths, ensuring r1 is greater
         double r1, r2;
         if (coefs2[0]<coefs2[2]) {
-            r1 = Math.sqrt(f/coefs2[0]);
-            r2 = Math.sqrt(f/coefs2[2]);
+            r1 = sqrt(f/coefs2[0]);
+            r2 = sqrt(f/coefs2[2]);
         } else {
-            r1 = Math.sqrt(f/coefs2[2]);
-            r2 = Math.sqrt(f/coefs2[0]);
-            theta = Angle2D.formatAngle(theta+Math.PI/2);
-            theta = Math.min(theta, Angle2D.formatAngle(theta+Math.PI));
+            r1 = sqrt(f/coefs2[2]);
+            r2 = sqrt(f/coefs2[0]);
+            theta = Angle2D.formatAngle(theta+PI/2);
+            theta = Math.min(theta, Angle2D.formatAngle(theta+PI));
         }
 
         // If both semi-axes are equal, return a circle
-        if (Math.abs(r1-r2)<Shape2D.ACCURACY)
+        if (abs(r1-r2)<Shape2D.ACCURACY)
             return new Circle2D(0, 0, r1);
         
         // return the reduced ellipse
@@ -197,8 +194,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
         // precompute some parts
         double r1Sq = r1 * r1;
         double r2Sq = r2 * r2;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot = cos(theta);
+        double sit = sin(theta);
         double cotSq = cot * cot;
         double sitSq = sit * sit;
 
@@ -292,9 +289,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * construct an ellipse from the java.awt.geom class for ellipse.
      */
     public Ellipse2D(java.awt.geom.Ellipse2D ellipse) {
-        this(new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 
-        		ellipse.getWidth()/2, ellipse.getHeight()/2);
-    }
+		this(new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 
+				ellipse.getWidth() / 2, ellipse.getHeight() / 2);
+	}
 
     
     // ===================================================================
@@ -308,14 +305,15 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @return distance of ellipse from ellipse center in direction theta
      */
     public double getRho(double angle) {
-        double cot = Math.cos(angle-theta);
-        double sit = Math.cos(angle-theta);
-        return Math.sqrt(r1*r1*r2*r2/(r2*r2*cot*cot+r1*r1*sit*sit));
+		double cot = cos(angle - theta);
+		double sit = cos(angle - theta);
+		return sqrt(r1 * r1 * r2 * r2
+				/ (r2 * r2 * cot * cot + r1 * r1 * sit * sit));
     }
 
     public Point2D getProjectedPoint(Point2D point) {
-        Vector2D polar = this.getProjectedVector(point, Shape2D.ACCURACY);
-        return new Point2D(point.getX()+polar.getX(), point.getY()+polar.getY());
+		Vector2D polar = this.getProjectedVector(point, Shape2D.ACCURACY);
+		return new Point2D(point.getX() + polar.getX(), point.getY() + polar.getY());
     }
 
     /**
@@ -333,168 +331,162 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public Vector2D getProjectedVector(Point2D point, double eMax) {
 
-        double ot = 1.0/3.0;
+		double ot = 1.0 / 3.0;
 
-        // center the ellipse
-        double x = point.getX()-xc;
-        double y = point.getY()-yc;
+		// center the ellipse
+		double x = point.getX() - xc;
+		double y = point.getY() - yc;
 
-        double la, lb, theta;
-        if (r1>=r2) {
-            la = r1;
-            lb = r2;
-            theta = this.theta;
-        } else {
-            la = r2;
-            lb = r1;
-            theta = this.theta+Math.PI/2;
-            double tmp = x;
-            x = -y;
-            y = tmp;
-        }
+		double la, lb, theta;
+		if (r1 >= r2) {
+			la = r1;
+			lb = r2;
+			theta = this.theta;
+		} else {
+			la = r2;
+			lb = r1;
+			theta = this.theta + PI / 2;
+			double tmp = x;
+			x = -y;
+			y = tmp;
+		}
 
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot = cos(theta);
+        double sit = sin(theta);
         double tmpx = x, tmpy = y;
-        x = tmpx*cot-tmpy*sit;
-        y = tmpx*sit+tmpy*cot;
+		x = tmpx * cot - tmpy * sit;
+		y = tmpx * sit + tmpy * cot;
 
-        double ae = la;
-        double f = 1-lb/la;
-        double e2 = f*(2.0-f);
-        double g = 1.0-f;
-        double g2 = g*g;
-        // double e2ae = e2 * ae;
-        double ae2 = ae*ae;
+		double ae = la;
+		double f = 1 - lb / la;
+		double e2 = f * (2.0 - f);
+		double g = 1.0 - f;
+		double g2 = g * g;
+		double ae2 = ae * ae;
 
         // compute some miscellaneous variables outside of the loop
-        double z = y;
-        double z2 = y*y;
-        double r = x;
-        double r2 = x*x;
-        double g2r2ma2 = g2*(r2-ae2);
-        // double g2r2ma2mz2 = g2r2ma2 - z2;
-        double g2r2ma2pz2 = g2r2ma2+z2;
-        double dist = Math.sqrt(r2+z2);
-        // double threshold = Math.max(1.0e-14 * dist, eMax);
-        boolean inside = (g2r2ma2pz2<=0);
+		double z = y;
+		double z2 = y * y;
+		double r = x;
+		double r2 = x * x;
+		double g2r2ma2 = g2 * (r2 - ae2);
+		double g2r2ma2pz2 = g2r2ma2 + z2;
+		double dist = sqrt(r2 + z2);
+		boolean inside = g2r2ma2pz2 <= 0;
 
         // point at the center
-        if (dist<(1.0e-10*ae)) {
+		if (dist < (1.0e-10 * ae)) {
             System.out.println("point at the center");
             return Vector2D.createPolar(r, 0);
         }
 
-        double cz = r/dist;
-        double sz = z/dist;
-        double t = z/(dist+r);
+		double cz = r / dist;
+		double sz = z / dist;
+		double t = z / (dist + r);
 
         // distance to the ellipse along the current line
         // as the smallest root of a 2nd degree polynom :
         // a k^2 - 2 b k + c = 0
-        double a = 1.0-e2*cz*cz;
-        double b = g2*r*cz+z*sz;
-        double c = g2r2ma2pz2;
-        double b2 = b*b;
-        double ac = a*c;
-        double k = c/(b+Math.sqrt(b2-ac));
-        // double lambda = Math.atan2(cart.y, cart.x);
-        double phi = Math.atan2(z-k*sz, g2*(r-k*cz));
+		double a = 1.0 - e2 * cz * cz;
+		double b = g2 * r * cz + z * sz;
+		double c = g2r2ma2pz2;
+		double b2 = b * b;
+		double ac = a * c;
+		double k = c / (b + sqrt(b2 - ac));
+		// double lambda =atan2(cart.y, cart.x);
+		double phi = atan2(z - k * sz, g2 * (r - k * cz));
 
         // point on the ellipse
-        if (Math.abs(k)<(1.0e-10*dist)) {
-            // return new Ellipsoidic(lambda, phi, k);
-            return Vector2D.createPolar(k, phi);
-        }
+		if (abs(k) < (1.0e-10 * dist)) {
+			// return new Ellipsoidic(lambda, phi, k);
+			return Vector2D.createPolar(k, phi);
+		}
 
-        for (int iterations = 0; iterations<100; ++iterations) {
+		for (int iterations = 0; iterations < 100; ++iterations) {
 
             // 4th degree normalized polynom describing
             // circle/ellipse intersections
             // tau^4 + b tau^3 + c tau^2 + d tau + e = 0
             // (there is no need to compute e here)
-            a = g2r2ma2pz2+g2*(2.0*r+k)*k;
-            b = -4.0*k*z/a;
-            c = 2.0*(g2r2ma2pz2+(1.0+e2)*k*k)/a;
+			a = g2r2ma2pz2 + g2 * (2.0 * r + k) * k;
+			b = -4.0 * k * z / a;
+			c = 2.0 * (g2r2ma2pz2 + (1.0 + e2) * k * k) / a;
             double d = b;
 
             // reduce the polynom to degree 3 by removing
             // the already known real root
             // tau^3 + b tau^2 + c tau + d = 0
-            b += t;
-            c += t*b;
-            d += t*c;
+			b += t;
+			c += t * b;
+			d += t * c;
 
             // find the other real root
-            b2 = b*b;
-            double Q = (3.0*c-b2)/9.0;
-            double R = (b*(9.0*c-2.0*b2)-27.0*d)/54.0;
-            double D = Q*Q*Q+R*R;
-            double tildeT, tildePhi;
-            if (D>=0) {
-                double rootD = Math.sqrt(D);
-                double rMr = R-rootD;
-                double rPr = R+rootD;
-                tildeT = ((rPr>0) ? Math.pow(rPr, ot) : -Math.pow(-rPr, ot))
-                        +((rMr>0) ? Math.pow(rMr, ot) : -Math.pow(-rMr, ot))-b
-                        *ot;
-                double tildeT2 = tildeT*tildeT;
-                double tildeT2P1 = 1.0+tildeT2;
-                tildePhi = Math.atan2(z*tildeT2P1-2*k*tildeT, g2
-                        *(r*tildeT2P1-k*(1.0-tildeT2)));
-            } else {
-                Q = -Q;
-                double qRoot = Math.sqrt(Q);
-                double alpha = Math.acos(R/(Q*qRoot));
-                tildeT = 2*qRoot*Math.cos(alpha*ot)-b*ot;
-                double tildeT2 = tildeT*tildeT;
-                double tildeT2P1 = 1.0+tildeT2;
-                tildePhi = Math.atan2(z*tildeT2P1-2*k*tildeT, g2
-                        *(r*tildeT2P1-k*(1.0-tildeT2)));
-                if ((tildePhi*phi)<0) {
-                    tildeT = 2*qRoot*Math.cos((alpha+2*Math.PI)*ot)-b*ot;
-                    tildeT2 = tildeT*tildeT;
-                    tildeT2P1 = 1.0+tildeT2;
-                    tildePhi = Math.atan2(z*tildeT2P1-2*k*tildeT, g2
-                            *(r*tildeT2P1-k*(1.0-tildeT2)));
-                    if (tildePhi*phi<0) {
-                        tildeT = 2*qRoot*Math.cos((alpha+4*Math.PI)*ot)-b*ot;
-                        tildeT2 = tildeT*tildeT;
-                        tildeT2P1 = 1.0+tildeT2;
-                        tildePhi = Math.atan2(z*tildeT2P1-2*k*tildeT, g2
-                                *(r*tildeT2P1-k*(1.0-tildeT2)));
-                    }
-                }
-            }
+			b2 = b * b;
+			double Q = (3.0 * c - b2) / 9.0;
+			double R = (b * (9.0 * c - 2.0 * b2) - 27.0 * d) / 54.0;
+			double D = Q * Q * Q + R * R;
+			double tildeT, tildePhi;
+			if (D >= 0) {
+				double rootD = sqrt(D);
+				double rMr = R - rootD;
+				double rPr = R + rootD;
+				tildeT = ((rPr > 0) ? pow(rPr, ot) : -pow(-rPr, ot))
+						+ ((rMr > 0) ? pow(rMr, ot) : -pow(-rMr, ot))
+						- b * ot;
+				double tildeT2 = tildeT * tildeT;
+				double tildeT2P1 = 1.0 + tildeT2;
+				tildePhi = atan2(z * tildeT2P1 - 2 * k * tildeT, 
+						g2 * (r * tildeT2P1 - k * (1.0 - tildeT2)));
+			} else {
+				Q = -Q;
+				double qRoot = sqrt(Q);
+				double alpha = acos(R / (Q * qRoot));
+				tildeT = 2 * qRoot * cos(alpha * ot) - b * ot;
+				double tildeT2 = tildeT * tildeT;
+				double tildeT2P1 = 1.0 + tildeT2;
+				tildePhi = atan2(z * tildeT2P1 - 2 * k * tildeT, 
+						g2 * (r * tildeT2P1 - k * (1.0 - tildeT2)));
+				if ((tildePhi * phi) < 0) {
+					tildeT = 2 * qRoot * cos((alpha + 2 * PI) * ot) - b * ot;
+					tildeT2 = tildeT * tildeT;
+					tildeT2P1 = 1.0 + tildeT2;
+					tildePhi = atan2(z * tildeT2P1 - 2 * k * tildeT, g2
+							* (r * tildeT2P1 - k * (1.0 - tildeT2)));
+					if (tildePhi * phi < 0) {
+						tildeT = 2 * qRoot * cos((alpha + 4 * PI) * ot) - b	* ot;
+						tildeT2 = tildeT * tildeT;
+						tildeT2P1 = 1.0 + tildeT2;
+						tildePhi = atan2(z * tildeT2P1 - 2 * k * tildeT, g2
+								* (r * tildeT2P1 - k * (1.0 - tildeT2)));
+					}
+				}
+			}
 
             // midpoint on the ellipse
-            double dPhi = Math.abs(0.5*(tildePhi-phi));
-            phi = 0.5*(phi+tildePhi);
-            double cPhi = Math.cos(phi);
-            double sPhi = Math.sin(phi);
-            double coeff = Math.sqrt(1.0-e2*sPhi*sPhi);
+			double dPhi = abs(0.5 * (tildePhi - phi));
+			phi = 0.5 * (phi + tildePhi);
+			double cPhi = cos(phi);
+			double sPhi = sin(phi);
+			double coeff = sqrt(1.0 - e2 * sPhi * sPhi);
 
 //            // Eventually display result of iterations
 //            System.out.println(iterations+": phi = "+Math.toDegrees(phi)
 //            		+" +/- "+Math.toDegrees(dPhi)+", k = "+k);
 
-            b = ae/coeff;
-            double dR = r-cPhi*b;
-            double dZ = z-sPhi*b*g2;
-            k = Math.sqrt(dR*dR+dZ*dZ);
-            if (inside) {
-                k = -k;
-            }
-            t = dZ/(k+dR);
+			b = ae / coeff;
+			double dR = r - cPhi * b;
+			double dZ = z - sPhi * b * g2;
+			k = sqrt(dR * dR + dZ * dZ);
+			if (inside) {
+				k = -k;
+			}
+			t = dZ / (k + dR);
 
-            if (dPhi<1.0e-14) {
-                if (this.r1>=this.r2)
-                    return Vector2D.createPolar(-k, phi+theta);
-                // -(r * cPhi + z * sPhi - ae * coeff), phi+theta);
-                else
-                    return Vector2D.createPolar(-k, phi+theta-Math.PI/2);
-                // -(r * cPhi + z * sPhi - ae * coeff),
-                // phi+theta-Math.PI/2);
+			if (dPhi < 1.0e-14) {
+				if (this.r1 >= this.r2)
+					return Vector2D.createPolar(-k, phi + theta);
+				else
+					return Vector2D.createPolar(-k, phi + theta - PI / 2);
             }
         }
 
@@ -507,8 +499,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * negative inside
      */
     public Ellipse2D getParallel(double d) {
-        return new Ellipse2D(xc, yc, Math.abs(r1+d), Math.abs(r2+d), theta,
-                direct);
+		return new Ellipse2D(xc, yc, abs(r1 + d), abs(r2 + d), theta, direct);
     }
 
     
@@ -523,7 +514,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     }
 
     public boolean isCircle() {
-        return Math.abs(r1-r2)<Shape2D.ACCURACY;
+		return abs(r1 - r2) < Shape2D.ACCURACY;
     }
 
     /**
@@ -552,17 +543,17 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * axis, in the direction given by angle theta.
      */
     public Point2D getFocus1() {
-        double a, b, theta;
-        if (r1>r2) {
-            a = r1;
-            b = r2;
-            theta = this.theta;
-        } else {
-            a = r2;
-            b = r1;
-            theta = this.theta+Math.PI/2;
-        }
-        return Point2D.createPolar(xc, yc, Math.sqrt(a*a-b*b), theta+Math.PI);
+		double a, b, theta;
+		if (r1 > r2) {
+			a = r1;
+			b = r2;
+			theta = this.theta;
+		} else {
+			a = r2;
+			b = r1;
+			theta = this.theta + PI / 2;
+		}
+		return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta + PI);
     }
 
     /**
@@ -571,27 +562,27 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public Point2D getFocus2() {
         double a, b, theta;
-        if (r1>r2) {
+		if (r1 > r2) {
             a = r1;
             b = r2;
             theta = this.theta;
         } else {
             a = r2;
             b = r1;
-            theta = this.theta+Math.PI/2;
+            theta = this.theta+PI/2;
         }
-        return Point2D.createPolar(xc, yc, Math.sqrt(a*a-b*b), theta);
+		return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta);
     }
 
     public Vector2D getVector1() {
-        return new Vector2D(Math.cos(theta), Math.sin(theta));
+        return new Vector2D(cos(theta), sin(theta));
     }
 
     public Vector2D getVector2() {
         if (direct)
-            return new Vector2D(-Math.sin(theta), Math.cos(theta));
+            return new Vector2D(-sin(theta), cos(theta));
         else
-            return new Vector2D(Math.sin(theta), -Math.cos(theta));
+            return new Vector2D(sin(theta), -cos(theta));
     }
 
     /**
@@ -605,10 +596,10 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // methods implementing Conic2D interface
 
     public Conic2D.Type getConicType() {
-        if (Math.abs(r1-r2)<Shape2D.ACCURACY)
-            return Conic2D.Type.CIRCLE;
-        else
-            return Conic2D.Type.ELLIPSE;
+		if (abs(r1 - r2) < Shape2D.ACCURACY)
+			return Conic2D.Type.CIRCLE;
+		else
+			return Conic2D.Type.ELLIPSE;
     }
 
     /**
@@ -618,39 +609,38 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public double[] getConicCoefficients() {
 
         // common coefficients
-        double r1Sq = this.r1*this.r1;
-        double r2Sq = this.r2*this.r2;
+		double r1Sq = this.r1 * this.r1;
+		double r2Sq = this.r2 * this.r2;
 
         // angle of ellipse, and trigonometric formulas
-        double sint = Math.sin(this.theta);
-        double cost = Math.cos(this.theta);
-        double sin2t = 2.0*sint*cost;
-        double sintSq = sint*sint;
-        double costSq = cost*cost;
+		double sint = sin(this.theta);
+		double cost = cos(this.theta);
+		double sin2t = 2.0 * sint * cost;
+		double sintSq = sint * sint;
+		double costSq = cost * cost;
 
-        // coefs from ellipse center
-        double xcSq = xc*xc;
-        double ycSq = yc*yc;
-        double r1SqInv = 1.0/r1Sq;
-        double r2SqInv = 1.0/r2Sq;
+		// coefs from ellipse center
+		double xcSq = xc * xc;
+		double ycSq = yc * yc;
+		double r1SqInv = 1.0 / r1Sq;
+		double r2SqInv = 1.0 / r2Sq;
 
         /*
          * Compute the coefficients. These formulae are the transformations on
          * the unit circle written out long hand
          */
 
-        double a = costSq/r1Sq+sintSq/r2Sq;
-        double b = (r2Sq-r1Sq)*sin2t/(r1Sq*r2Sq);
-        double c = costSq/r2Sq+sintSq/r1Sq;
-        double d = -yc*b-2*xc*a;
-        double e = -xc*b-2*yc*c;
-        double f = -1.0
-        	+(xcSq+ycSq)*(r1SqInv+r2SqInv)/2.0
-        	+(costSq-sintSq)*(xcSq-ycSq)*(r1SqInv-r2SqInv)/2.0
-        	+xc*yc*(r1SqInv-r2SqInv)*sin2t;
+		double a = costSq / r1Sq + sintSq / r2Sq;
+		double b = (r2Sq - r1Sq) * sin2t / (r1Sq * r2Sq);
+		double c = costSq / r2Sq + sintSq / r1Sq;
+		double d = -yc * b - 2 * xc * a;
+		double e = -xc * b - 2 * yc * c;
+		double f = -1.0 + (xcSq + ycSq) * (r1SqInv + r2SqInv) / 2.0
+				+ (costSq - sintSq) * (xcSq - ycSq) * (r1SqInv - r2SqInv) / 2.0
+				+ xc * yc * (r1SqInv - r2SqInv) * sin2t;
 
-        // Return array of results
-        return new double[] { a, b, c, d, e, f };
+		// Return array of results
+		return new double[] { a, b, c, d, e, f };
     }
 
     /**
@@ -659,11 +649,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * ellipse elongates.
      */
     public double getEccentricity() {
-        double a = Math.max(r1, r2);
-        double b = Math.min(r1, r2);
-        double r = b/a;
-        return Math.sqrt(1-r*r);
-    }
+		double a = max(r1, r2);
+		double b = min(r1, r2);
+		double r = b / a;
+		return sqrt(1 - r * r);
+	}
 
 
     // ===================================================================
@@ -679,13 +669,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     public void fill(Graphics2D g2) {
     	// convert ellipse to awt shape
-        java.awt.geom.Ellipse2D.Double ellipse = 
-        	new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
-        
-        // need to rotate by angle theta
-        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform
-                .getRotateInstance(theta, xc, yc);
-        Shape shape = trans.createTransformedShape(ellipse);
+		java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(
+				xc - r1, yc - r2, 2 * r1, 2 * r2);
+
+		// need to rotate by angle theta
+		java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform
+				.getRotateInstance(theta, xc, yc);
+		Shape shape = trans.createTransformedShape(ellipse);
         
         // draw the awt ellipse
         g2.fill(shape);
@@ -699,10 +689,10 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * inside the interior of the ellipse or not.
      */
     public double getWindingAngle(Point2D point) {
-        if (this.getSignedDistance(point)>0)
-            return 0;
-        else
-            return direct ? Math.PI*2 : -Math.PI*2;
+		if (this.getSignedDistance(point) > 0)
+			return 0;
+		else
+			return direct ? PI * 2 : -PI * 2;
     }
 
     /**
@@ -711,12 +701,12 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * direction, then computing distance to origin.
      */
     public boolean isInside(Point2D point) {
-        AffineTransform2D rot = AffineTransform2D.createRotation(this.xc,
-                this.yc, -this.theta);
-        Point2D pt = rot.transform(point);
-        double xp = (pt.getX()-this.xc)/this.r1;
-        double yp = (pt.getY()-this.yc)/this.r2;
-        return (xp*xp+yp*yp<1)^!direct;
+		AffineTransform2D rot = AffineTransform2D.createRotation(this.xc,
+				this.yc, -this.theta);
+		Point2D pt = rot.transform(point);
+		double xp = (pt.getX() - this.xc) / this.r1;
+		double yp = (pt.getY() - this.yc) / this.r2;
+		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
     public double getSignedDistance(Point2D point) {
@@ -737,18 +727,18 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public Vector2D getTangent(double t) {
         if (!direct)
             t = -t;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot = cos(theta);
+        double sit = sin(theta);
 
-        if (direct)
-            return new Vector2D(
-                    -r1*Math.sin(t)*cot-r2*Math.cos(t)*sit,
-                    -r1*Math.sin(t)*sit+r2*Math.cos(t)*cot);
-        else
-            return new Vector2D(
-                    r1*Math.sin(t)*cot+r2*Math.cos(t)*sit,
-                    r1*Math.sin(t)*sit-r2*Math.cos(t)*cot);
-    }
+		if (direct)
+			return new Vector2D(
+					-r1 * sin(t) * cot - r2 * cos(t) * sit, 
+					-r1 * sin(t) * sit + r2 * cos(t) * cot);
+		else
+			return new Vector2D(
+					r1 * sin(t) * cot + r2 * cos(t) * sit, 
+					r1 * sin(t) * sit - r2 * cos(t) * cot);
+	}
 
     /**
      * Returns the curvature of the ellipse.
@@ -756,11 +746,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public double getCurvature(double t) {
         if (!direct)
             t = -t;
-        double cot = Math.cos(t);
-        double sit = Math.sin(t);
-        double k = r1*r2/Math.pow(r2*r2*cot*cot+r1*r1*sit*sit, 1.5);
-        return direct ? k : -k;
-    }
+		double cot = cos(t);
+		double sit = sin(t);
+		double k = r1 * r2 / pow(hypot(r2 * cot, r1 * sit), 3);
+		return direct ? k : -k;
+   }
 
     // ===================================================================
     // methods of ContinuousCurve2D interface
@@ -786,21 +776,22 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Returns the parameter of the last point of the ellipse, set to 2*PI.
      */
     public double getT1() {
-        return 2*Math.PI;
+        return 2*PI;
     }
 
     /**
      * get the position of the curve from internal parametric representation,
      * depending on the parameter t. This parameter is between the two limits 0
-     * and 2*Math.PI.
+     * and 2*PI.
      */
     public Point2D getPoint(double t) {
         if (!direct)
             t = -t;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        return new Point2D(xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit, yc+r1
-                *Math.cos(t)*sit+r2*Math.sin(t)*cot);
+        double cot = cos(theta);
+		double sit = sin(theta);
+		return new Point2D(
+				xc + r1 * cos(t) * cot - r2 * sin(t) * sit, 
+				yc + r1 * cos(t) * sit + r2 * sin(t) * cot);
     }
 
     /**
@@ -811,7 +802,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
 	@Override
     public Point2D getFirstPoint() {
-        return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
+		return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
     }
 
     /**
@@ -822,7 +813,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
 	@Override
     public Point2D getLastPoint() {
-        return new Point2D(xc+r1*Math.cos(theta), yc+r1*Math.sin(theta));
+		return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
     }
 
 	private Point2D toUnitCircle(Point2D point) {
@@ -830,26 +821,26 @@ implements SmoothContour2D, Conic2D, Cloneable {
     	double xp = point.getX();
         double yp = point.getY();
 
-        // translate
-        xp = xp-this.xc;
-        yp = yp-this.yc;
+		// translate
+		xp = xp - this.xc;
+		yp = yp - this.yc;
 
-        // rotate
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        double xp1 =  xp*cot + yp*sit;
-        double yp1 = -xp*sit + yp*cot;
-        xp = xp1;
-        yp = yp1;
+		// rotate
+		double cot = cos(theta);
+		double sit = sin(theta);
+		double xp1 = xp * cot + yp * sit;
+		double yp1 = -xp * sit + yp * cot;
+		xp = xp1;
+		yp = yp1;
 
-        // scale
-        xp = xp/this.r1;
-        yp = yp/this.r2;
+		// scale
+		xp = xp / this.r1;
+		yp = yp / this.r2;
 
-        // manage orientation
-        if (!direct)
-        	yp = -yp;
-        
+		// manage orientation
+		if (!direct)
+			yp = -yp;
+
         return new Point2D(xp, yp);
 	}
 	
@@ -861,8 +852,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
         // compute angle
         double angle = Angle2D.getHorizontalAngle(xp, yp);
 
-        if (Math.abs(Math.hypot(xp, yp)-1)<Shape2D.ACCURACY)
-            return angle;
+		if (abs(hypot(xp, yp) - 1) < Shape2D.ACCURACY)
+			return angle;
         else
             return Double.NaN;
     }
@@ -928,7 +919,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public double getDistance(Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
-        // return Math.abs(vector.getRho());
+        // return abs(vector.getRho());
         return this.getAsPolyline(128).getDistance(point);
     }
 
@@ -971,11 +962,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
         // Each equation can then be written in the form : x(t) =
         // Xm*cos(t+theta_X).
         // We compute Xm and Ym, and use it to calculate bounds.
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        double xm = Math.sqrt(r1*r1*cot*cot+r2*r2*sit*sit);
-        double ym = Math.sqrt(r1*r1*sit*sit+r2*r2*cot*cot);
-        return new Box2D(xc-xm, xc+xm, yc-ym, yc+ym);
+		double cot = cos(theta);
+		double sit = sin(theta);
+		double xm = hypot(r1 * cot, r2 * sit);
+		double ym = hypot(r1 * sit, r2 * cot);
+		return new Box2D(xc - xm, xc + xm, yc - ym, yc + ym);
     }
 
     /**
@@ -1003,7 +994,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         // Compute intersection points with circle
         Circle2D circle = new Circle2D(0, 0, 1);
         points = circle.getIntersections(line2);
-        if (points.size()==0)
+		if (points.size() == 0)
             return points;
 
         // convert points on circle as angles
@@ -1026,7 +1017,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         Point2D center = this.getCenter().transform(trans);
         result.xc = center.getX();
         result.yc = center.getY();
-        result.direct = !(this.direct^trans.isDirect());
+		result.direct = !(this.direct ^ trans.isDirect());
         return result;
     }
 
@@ -1051,14 +1042,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         // precompute cosine and sine of angle
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot = cos(theta);
+        double sit = sin(theta);
         
         // create new path
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         
         // move to the first point
-        path.moveTo((float) (xc+r1*cot), (float) (yc+r1*sit));
+		path.moveTo((float) (xc + r1 * cot), (float) (yc + r1 * sit));
 
         // return path after adding curve
         return this.appendPath(path);
@@ -1071,31 +1062,31 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @return the completed path
      */
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
+        double cot = cos(theta);
+        double sit = sin(theta);
 
         // draw each line of the boundary
-        if (direct)
-            for (double t = .1; t<=2*Math.PI; t += .1)
-                path.lineTo(
-                		(float) (xc+r1*Math.cos(t)*cot-r2*Math.sin(t)*sit),
-                        (float) (yc+r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
-        else
-            for (double t = .1; t<=2*Math.PI; t += .1)
-                path.lineTo(
-                		(float) (xc+r1*Math.cos(t)*cot+r2*Math.sin(t)*sit),
-                        (float) (yc-r2*Math.sin(t)*cot+r1*Math.cos(t)*sit));
+		if (direct)
+			for (double t = .1; t <= 2 * PI; t += .1)
+				path.lineTo(
+						(float) (xc + r1 * cos(t) * cot - r2 * sin(t) * sit),
+						(float) (yc + r2 * sin(t) * cot + r1 * cos(t) * sit));
+		else
+			for (double t = .1; t <= 2 * PI; t += .1)
+				path.lineTo(
+						(float) (xc + r1 * cos(t) * cot + r2 * sin(t) * sit),
+						(float) (yc - r2 * sin(t) * cot + r1 * cos(t) * sit));
 
-        // loop to the first/last point
-        path.lineTo((float) (xc+r1*cot), (float) (yc+r1*sit));
+		// loop to the first/last point
+		path.lineTo((float) (xc + r1 * cot), (float) (yc + r1 * sit));
 
         return path;
     }
 
 	@Override
     public void draw(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = 
-            new java.awt.geom.Ellipse2D.Double(xc-r1, yc-r2, 2*r1, 2*r2);
+		java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(
+				xc - r1, yc - r2, 2 * r1, 2 * r2);
         java.awt.geom.AffineTransform trans = 
             java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
         g2.draw(trans.createTransformedShape(ellipse));
@@ -1119,9 +1110,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         if (!ell.getCenter().almostEquals(this.getCenter(), eps))
             return false;
-        if (Math.abs(ell.r1-this.r1)>eps)
+        if (abs(ell.r1-this.r1)>eps)
             return false;
-        if (Math.abs(ell.r2-this.r2)>eps)
+        if (abs(ell.r2-this.r2)>eps)
             return false;
         if (!Angle2D.almostEquals(ell.getAngle(), this.getAngle(), eps))
             return false;
@@ -1146,11 +1137,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         if (!ell.getCenter().equals(this.getCenter()))
             return false;
-        if (Math.abs(ell.r1-this.r1)>Shape2D.ACCURACY)
+        if (abs(ell.r1-this.r1)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(ell.r2-this.r2)>Shape2D.ACCURACY)
+        if (abs(ell.r2-this.r2)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(Angle2D.formatAngle(ell.getAngle()-this.getAngle()))>Shape2D.ACCURACY)
+        if (abs(Angle2D.formatAngle(ell.getAngle()-this.getAngle()))>Shape2D.ACCURACY)
             return false;
         if (ell.isDirect()!=this.isDirect())
             return false;
@@ -1167,26 +1158,4 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return String.format("Ellipse2D(%f,%f,%f,%f,%f,%s)", 
                 xc, yc, r1, r2, theta, direct?"true":"false");
     }
-
-    // /**
-    // * A class to compute shortest distance of a point to an ellipse.
-    // * @author dlegland
-    // */
-    // private class Ellipsoidic {
-    // /** angle of the line joining current point to ref point.*/
-    // public final double lambda;
-    //		
-    // /** normal angle of ellipse at the cuurent point */
-    // public final double phi;
-    //		
-    // /** shortest signed distance of the point to the ellipse
-    // * (negative if inside ellipse). */
-    // public final double h;
-    //		
-    // public Ellipsoidic (double lambda, double phi, double h) {
-    // this.lambda = lambda;
-    // this.phi = phi;
-    // this.h = h;
-    // }
-    // }
 }

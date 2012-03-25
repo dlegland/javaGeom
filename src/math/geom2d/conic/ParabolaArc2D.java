@@ -25,17 +25,15 @@
  */
 
 package math.geom2d.conic;
+import static java.lang.Math.PI;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
@@ -91,31 +89,31 @@ implements SmoothOrientedCurve2D, Cloneable {
         boolean inside = this.isInside(point);
 
         if (Double.isInfinite(t0)) {
-            angle0 = parabola.getAngle()+(direct ? +1 : -1)*Math.PI/2;
-        } else {
-            angle0 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t0));
-        }
+			angle0 = parabola.getAngle() + (direct ? +1 : -1) * PI / 2;
+		} else {
+			angle0 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t0));
+		}
 
-        if (Double.isInfinite(t1)) {
-            angle1 = parabola.getAngle()+(direct ? +1 : -1)*Math.PI/2;
+		if (Double.isInfinite(t1)) {
+			angle1 = parabola.getAngle() + (direct ? +1 : -1) * PI / 2;
         } else {
             angle1 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t1));
         }
 
-        if (inside) {
-            // turn CCW -> return positive angle
-            if (angle0>angle1)
-                return 2*Math.PI-angle0+angle1;
-            else
-                return angle1-angle0;
-        } else {
-            // turn CW -> return negative angle
-            if (angle0>angle1)
-                return angle1-angle0;
-            else
-                return (angle1-angle0)-2*Math.PI;
-        }
-    }
+		if (inside) {
+			// turn CCW -> return positive angle
+			if (angle0 > angle1)
+				return 2 * PI - angle0 + angle1;
+			else
+				return angle1 - angle0;
+		} else {
+			// turn CW -> return negative angle
+			if (angle0 > angle1)
+				return angle1 - angle0;
+			else
+				return (angle1 - angle0) - 2 * PI;
+		}
+	}
 
     public double getSignedDistance(Point2D p) {
         return getSignedDistance(p.getX(), p.getY());
@@ -130,27 +128,27 @@ implements SmoothOrientedCurve2D, Cloneable {
     public boolean isInside(Point2D point) {
         boolean direct = parabola.isDirect();
         boolean inside = parabola.isInside(point);
-        if (inside&&direct)
-            return true;
-        if (!inside&&!direct)
-            return false;
+		if (inside && direct)
+			return true;
+		if (!inside && !direct)
+			return false;
 
         double pos = parabola.project(point);
 
-        if (pos<t0) {
-            Point2D p0 = parabola.getPoint(t0);
-            Vector2D v0 = parabola.getTangent(t0);
-            StraightLine2D line0 = new StraightLine2D(p0, v0);
-            return line0.isInside(point);
-        }
+		if (pos < t0) {
+			Point2D p0 = parabola.getPoint(t0);
+			Vector2D v0 = parabola.getTangent(t0);
+			StraightLine2D line0 = new StraightLine2D(p0, v0);
+			return line0.isInside(point);
+		}
 
-        if (pos>t1) {
-            Point2D p1 = parabola.getPoint(t1);
-            Vector2D v1 = parabola.getTangent(t1);
-            StraightLine2D line1 = new StraightLine2D(p1, v1);
-            return line1.isInside(point);
-        }
-        return !direct;
+		if (pos > t1) {
+			Point2D p1 = parabola.getPoint(t1);
+			Vector2D v1 = parabola.getTangent(t1);
+			StraightLine2D line1 = new StraightLine2D(p1, v1);
+			return line1.isInside(point);
+		}
+		return !direct;
     }
 
     // ==========================================================
@@ -193,32 +191,32 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public Point2D getPoint(double t) {
-        t = Math.min(Math.max(t, t0), t1);
+        t = min(max(t, t0), t1);
         return parabola.getPoint(t);
     }
 
     public double getPosition(Point2D point) {
-        if (!this.parabola.contains(point))
-            return Double.NaN;
-        double t = this.parabola.getPosition(point);
-        if (t-t0<-ACCURACY)
-            return Double.NaN;
-        if (t1-t<ACCURACY)
-            return Double.NaN;
+		if (!this.parabola.contains(point))
+			return Double.NaN;
+		double t = this.parabola.getPosition(point);
+		if (t - t0 < -ACCURACY)
+			return Double.NaN;
+		if (t1 - t < ACCURACY)
+			return Double.NaN;
         return t;
     }
 
     public double project(Point2D point) {
         double t = this.parabola.project(point);
-        return Math.min(Math.max(t, t0), t1);
+        return min(max(t, t0), t1);
     }
 
     public Collection<Point2D> getIntersections(LinearShape2D line) {
         Collection<Point2D> inters0 = this.parabola.getIntersections(line);
-        ArrayList<Point2D> inters = new ArrayList<Point2D>();
+        ArrayList<Point2D> inters = new ArrayList<Point2D>(2);
         for (Point2D point : inters0) {
             double pos = this.parabola.getPosition(point);
-            if (pos>this.t0&&pos<this.t1)
+			if (pos > this.t0 && pos < this.t1)
                 inters.add(point);
         }
 
@@ -234,10 +232,10 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public ParabolaArc2D getSubCurve(double t0, double t1) {
-        if (t1<t0)
-            return null;
-        t0 = Math.max(this.t0, t0);
-        t1 = Math.min(this.t1, t1);
+		if (t1 < t0)
+			return null;
+        t0 = max(this.t0, t0);
+        t1 = min(this.t1, t1);
         return new ParabolaArc2D(parabola, t0, t1);
     }
 
@@ -257,9 +255,9 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Returns true if the arc is bounded, i.e. if both limits are finite.
      */
     public boolean isBounded() {
-        if (t0==Double.NEGATIVE_INFINITY)
-            return false;
-        if (t1==Double.POSITIVE_INFINITY)
+		if (t0 == Double.NEGATIVE_INFINITY)
+			return false;
+		if (t1 == Double.POSITIVE_INFINITY)
             return false;
         return true;
     }
@@ -268,7 +266,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Return true if t1<t0.
      */
     public boolean isEmpty() {
-        return t1<=t0;
+		return t1 <= t0;
     }
 
     /**
@@ -319,12 +317,12 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!parabola.contains(x, y))
             return false;
         
-        // Check if position of point is inside of bounds
-        double t = parabola.getPosition(new Point2D(x, y));
-        if (t<this.t0)
-            return false;
-        if (t>this.t1)
-            return false;
+		// Check if position of point is inside of bounds
+		double t = parabola.getPosition(new Point2D(x, y));
+		if (t < this.t0)
+			return false;
+		if (t > this.t1)
+			return false;
 
         return true;
     }

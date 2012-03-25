@@ -28,6 +28,7 @@
 package math.geom2d;
 
 // Imports
+import static java.lang.Double.*;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,8 +83,8 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @since 0.9.1
      */
     public final static Box2D INFINITE_BOX = Box2D.create(
-    		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
-    		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+    		NEGATIVE_INFINITY, POSITIVE_INFINITY, 
+    		NEGATIVE_INFINITY, POSITIVE_INFINITY);
     
     // ===================================================================
     // class variables
@@ -113,8 +114,8 @@ public class Box2D implements GeometricObject2D, Cloneable {
 
     /** Constructor from awt, to allow easy construction from existing apps. */
     public Box2D(java.awt.geom.Rectangle2D rect) {
-        this(rect.getX(), rect.getX()+rect.getWidth(), rect.getY(), rect.getY()
-                +rect.getHeight());
+		this(rect.getX(), rect.getX() + rect.getWidth(), 
+			rect.getY(), rect.getY() + rect.getHeight());
     }
 
     /**
@@ -133,7 +134,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
 
     /** Constructor from a point, a width and an height */
     public Box2D(Point2D point, double w, double h) {
-        this(point.getX(), point.getX()+w, point.getY(), point.getY()+h);
+		this(point.getX(), point.getX() + w, point.getY(), point.getY() + h);
     }
 
     // ===================================================================
@@ -156,22 +157,22 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
 
     public double getWidth() {
-        return xmax-xmin;
-    }
+		return xmax - xmin;
+	}
 
-    public double getHeight() {
-        return ymax-ymin;
+	public double getHeight() {
+		return ymax - ymin;
     }
 
     /** Returns true if all bounds are finite. */
     public boolean isBounded() {
-        if (Double.isInfinite(xmin))
+        if (isInfinite(xmin))
             return false;
-        if (Double.isInfinite(ymin))
+        if (isInfinite(ymin))
             return false;
-        if (Double.isInfinite(xmax))
+        if (isInfinite(xmax))
             return false;
-        if (Double.isInfinite(ymax))
+        if (isInfinite(ymax))
             return false;
         return true;
     }
@@ -235,13 +236,13 @@ public class Box2D implements GeometricObject2D, Cloneable {
     public Collection<StraightLine2D> getClippingLines() {
         ArrayList<StraightLine2D> lines = new ArrayList<StraightLine2D>(4);
 
-		if (!(Double.isInfinite(ymin) || Double.isNaN(ymin)))
+		if (!(isInfinite(ymin) || isNaN(ymin)))
 			lines.add(new StraightLine2D(0, ymin, 1, 0));
-		if (!(Double.isInfinite(xmax) || Double.isNaN(xmax)))
+		if (!(isInfinite(xmax) || isNaN(xmax)))
 			lines.add(new StraightLine2D(xmax, 0, 0, 1));
-		if (!(Double.isInfinite(ymax) || Double.isNaN(ymax)))
+		if (!(isInfinite(ymax) || isNaN(ymax)))
 			lines.add(new StraightLine2D(0, ymax, -1, 0));
-		if (!(Double.isInfinite(xmin) || Double.isNaN(xmin)))
+		if (!(isInfinite(xmin) || isNaN(xmin)))
 			lines.add(new StraightLine2D(xmin, 0, 0, -1));
         return lines;
     }
@@ -261,42 +262,40 @@ public class Box2D implements GeometricObject2D, Cloneable {
             return edges;
         }
 
-		if (!Double.isInfinite(ymin)) {
-			if (Double.isInfinite(xmin) && Double.isInfinite(xmax))
+		if (!isInfinite(ymin)) {
+			if (isInfinite(xmin) && isInfinite(xmax))
 				edges.add(new StraightLine2D(0, ymin, 1, 0));
-			else if (!Double.isInfinite(xmin) && !Double.isInfinite(xmax))
+			else if (!isInfinite(xmin) && !isInfinite(xmax))
 				edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
 			else
 				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax));
 		}
 
-		if (!Double.isInfinite(xmax)) {
-			if (Double.isInfinite(ymin) && Double.isInfinite(ymax))
+		if (!isInfinite(xmax)) {
+			if (isInfinite(ymin) && isInfinite(ymax))
 				edges.add(new StraightLine2D(xmax, 0, 0, 1));
-			else if (!Double.isInfinite(ymin) && !Double.isInfinite(ymax))
+			else if (!isInfinite(ymin) && !isInfinite(ymax))
 				edges.add(new LineSegment2D(xmax, ymin, xmax, ymax));
 			else
 				edges.add(new LineArc2D(xmax, 0, 0, 1, ymin, ymax));
 		}
 
-		if (!Double.isInfinite(ymax)) {
-			if (Double.isInfinite(xmin) && Double.isInfinite(xmax))
+		if (!isInfinite(ymax)) {
+			if (isInfinite(xmin) && isInfinite(xmax))
 				edges.add(new StraightLine2D(0, ymax, 1, 0));
-			else if (!Double.isInfinite(xmin) && !Double.isInfinite(xmax))
+			else if (!isInfinite(xmin) && !isInfinite(xmax))
 				edges.add(new LineSegment2D(xmax, ymax, xmin, ymax));
 			else
-				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax)
-						.getReverseCurve());
+				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax).getReverseCurve());
 		}
 
-		if (!Double.isInfinite(xmin)) {
-			if (Double.isInfinite(ymin) && Double.isInfinite(ymax))
+		if (!isInfinite(xmin)) {
+			if (isInfinite(ymin) && isInfinite(ymax))
 				edges.add(new StraightLine2D(xmin, 0, 0, -1));
-			else if (!Double.isInfinite(ymin) && !Double.isInfinite(ymax))
+			else if (!isInfinite(ymin) && !isInfinite(ymax))
 				edges.add(new LineSegment2D(xmin, ymax, xmin, ymin));
 			else
-				edges.add(new LineArc2D(xmin, 0, 0, 1, ymin, ymax)
-						.getReverseCurve());
+				edges.add(new LineArc2D(xmin, 0, 0, 1, ymin, ymax).getReverseCurve());
         }
 
         return edges;
@@ -322,10 +321,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
         }
 
         // extract boolean info on "boundedness" in each direction
-        boolean bx0 = !Double.isInfinite(xmin);
-        boolean bx1 = !Double.isInfinite(xmax);
-        boolean by0 = !Double.isInfinite(ymin);
-        boolean by1 = !Double.isInfinite(ymax);
+        boolean bx0 = !isInfinite(xmin);
+        boolean bx1 = !isInfinite(xmax);
+        boolean by0 = !isInfinite(ymin);
+        boolean by1 = !isInfinite(ymax);
 
 		// case of boxes unbounded in both x directions
 		if (!bx0 && !bx1) {
@@ -356,73 +355,50 @@ public class Box2D implements GeometricObject2D, Cloneable {
 		// "corner boxes"
 
 		if (bx0 && by0) // lower left corner
-			return new BoundaryPolyCurve2D<LineArc2D>(
-					new LineArc2D[] {
-							new LineArc2D(xmin, ymin, 0, -1,
-									Double.NEGATIVE_INFINITY, 0),
-							new LineArc2D(xmin, ymin, 1, 0, 0,
-									Double.POSITIVE_INFINITY) });
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] {
+					new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
 		if (bx1 && by0) // lower right corner
-			return new BoundaryPolyCurve2D<LineArc2D>(
-                    new LineArc2D[] {
-                            new LineArc2D(xmax, ymin, 1, 0,
-                                    Double.NEGATIVE_INFINITY, 0),
-                            new LineArc2D(xmax, ymin, 0, 1, 0,
-                                    Double.POSITIVE_INFINITY) });
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] {
+					new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
 		if (bx1 && by1) // upper right corner
-			return new BoundaryPolyCurve2D<LineArc2D>(
-					new LineArc2D[] {
-							new LineArc2D(xmax, ymax, 0, 1,
-									Double.NEGATIVE_INFINITY, 0),
-							new LineArc2D(xmax, ymax, -1, 0, 0,
-									Double.POSITIVE_INFINITY) });
+			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] {
+					new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
 
 		if (bx0 && by1) // upper left corner
 			return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] {
-                    new LineArc2D(xmin, ymax, -1, 0, Double.NEGATIVE_INFINITY,
-                            0),
-                    new LineArc2D(xmin, ymax, 0, -1, 0,
-                            Double.POSITIVE_INFINITY) });
+					new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0),
+					new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         // Remains only 4 cases: boxes unbounded in only one direction
 
         if (bx0)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(
-                    new AbstractLine2D[] {
-                            new LineArc2D(xmin, ymax, -1, 0,
-                                    Double.NEGATIVE_INFINITY, 0),
-                            new LineSegment2D(xmin, ymax, xmin, ymin),
-                            new LineArc2D(xmin, ymin, 1, 0, 0,
-                                    Double.POSITIVE_INFINITY) });
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] {
+					new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmin, ymax, xmin, ymin),
+					new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx1)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(
-                    new AbstractLine2D[] {
-                            new LineArc2D(xmax, ymin, 1, 0,
-                                    Double.NEGATIVE_INFINITY, 0),
-                            new LineSegment2D(xmax, ymin, xmax, ymax),
-                            new LineArc2D(xmax, ymax, -1, 0, 0,
-                                    Double.POSITIVE_INFINITY) });
+			return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] {
+					new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0),
+					new LineSegment2D(xmax, ymin, xmax, ymax),
+					new LineArc2D(xmax, ymax, -1, 0, 0,	POSITIVE_INFINITY) });
 
         if (by0)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(
-                    new AbstractLine2D[] {
-                            new LineArc2D(xmin, ymin, 0, -1,
-                                    Double.NEGATIVE_INFINITY, 0),
-                            new LineSegment2D(xmin, ymin, xmax, ymin),
-                            new LineArc2D(xmax, ymin, 0, 1, 0,
-                                    Double.POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] {
+                    new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0),
+                    new LineSegment2D(xmin, ymin, xmax, ymin),
+                    new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
         if (by1)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(
-                    new AbstractLine2D[] {
-                            new LineArc2D(xmax, ymax, 0, 1,
-                                    Double.NEGATIVE_INFINITY, 0),
-                            new LineSegment2D(xmax, ymax, xmin, ymax),
-                            new LineArc2D(xmin, ymax, 0, -1, 0,
-                                    Double.POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] {
+                    new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0),
+                    new LineSegment2D(xmax, ymax, xmin, ymax),
+                    new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         return null;
     }
@@ -445,9 +421,9 @@ public class Box2D implements GeometricObject2D, Cloneable {
 	}
 
     private final static boolean isFinite(double value) {
-    	if (Double.isInfinite(value))
+    	if (isInfinite(value))
     		return false;
-    	if (Double.isNaN(value))
+    	if (isNaN(value))
     		return false;
     	return true;
     }
@@ -467,10 +443,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return a new Box2D
      */
     public Box2D union(Box2D box) {
-        double xmin = Math.min(this.xmin, box.xmin);
-        double xmax = Math.max(this.xmax, box.xmax);
-        double ymin = Math.min(this.ymin, box.ymin);
-        double ymax = Math.max(this.ymax, box.ymax);
+        double xmin = min(this.xmin, box.xmin);
+        double xmax = max(this.xmax, box.xmax);
+        double ymin = min(this.ymin, box.ymin);
+        double ymax = max(this.ymax, box.ymax);
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -482,10 +458,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return a new Box2D
      */
     public Box2D intersection(Box2D box) {
-        double xmin = Math.max(this.xmin, box.xmin);
-        double xmax = Math.min(this.xmax, box.xmax);
-        double ymin = Math.max(this.ymin, box.ymin);
-        double ymax = Math.min(this.ymax, box.ymax);
+        double xmin = max(this.xmin, box.xmin);
+        double xmax = min(this.xmax, box.xmax);
+        double ymin = max(this.ymin, box.ymin);
+        double ymax = min(this.ymax, box.ymax);
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -496,10 +472,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return this
      */
     public Box2D merge(Box2D box) {
-        this.xmin = Math.min(this.xmin, box.xmin);
-        this.xmax = Math.max(this.xmax, box.xmax);
-        this.ymin = Math.min(this.ymin, box.ymin);
-        this.ymax = Math.max(this.ymax, box.ymax);
+        this.xmin = min(this.xmin, box.xmin);
+        this.xmax = max(this.xmax, box.xmax);
+        this.ymin = min(this.ymin, box.ymin);
+        this.ymax = max(this.ymax, box.ymax);
         return this;
     }
 
@@ -510,10 +486,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return the clipped box
      */
     public Box2D clip(Box2D box) {
-        this.xmin = Math.max(this.xmin, box.xmin);
-        this.xmax = Math.min(this.xmax, box.xmax);
-        this.ymin = Math.max(this.ymin, box.ymin);
-        this.ymax = Math.min(this.ymax, box.ymax);
+        this.xmin = max(this.xmin, box.xmin);
+        this.xmax = min(this.xmax, box.xmax);
+        this.ymin = max(this.ymin, box.ymin);
+        this.ymax = min(this.ymax, box.ymax);
         return this;
     }
 
@@ -526,16 +502,16 @@ public class Box2D implements GeometricObject2D, Cloneable {
             // Extract the 4 vertices, transform them, and compute
             // the new bounding box.
             Collection<Point2D> points = this.getVertices();
-            double xmin = Double.POSITIVE_INFINITY;
-            double xmax = Double.NEGATIVE_INFINITY;
-            double ymin = Double.POSITIVE_INFINITY;
-            double ymax = Double.NEGATIVE_INFINITY;
+            double xmin = POSITIVE_INFINITY;
+            double xmax = NEGATIVE_INFINITY;
+            double ymin = POSITIVE_INFINITY;
+            double ymax = NEGATIVE_INFINITY;
             for (Point2D point : points) {
                 point = point.transform(trans);
-                xmin = Math.min(xmin, point.getX());
-                ymin = Math.min(ymin, point.getY());
-                xmax = Math.max(xmax, point.getX());
-                ymax = Math.max(ymax, point.getY());
+                xmin = min(xmin, point.getX());
+                ymin = min(ymin, point.getY());
+                xmax = max(xmax, point.getX());
+                ymax = max(ymax, point.getY());
             }
             return new Box2D(xmin, xmax, ymin, ymax);
         }
@@ -552,10 +528,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return an instance of java.awt.geom.Rectangle2D
      */
     public java.awt.Rectangle getAsAWTRectangle() {
-        int xr = (int) Math.floor(this.xmin);
-        int yr = (int) Math.floor(this.ymin);
-        int wr = (int) Math.ceil(this.xmax-xr);
-        int hr = (int) Math.ceil(this.ymax-yr);
+        int xr = (int) floor(this.xmin);
+        int yr = (int) floor(this.ymin);
+        int wr = (int) ceil(this.xmax-xr);
+        int hr = (int) ceil(this.ymax-yr);
         return new java.awt.Rectangle(xr, yr, wr, hr);
     }
 
@@ -566,8 +542,8 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return an instance of java.awt.geom.Rectangle2D
      */
     public java.awt.geom.Rectangle2D getAsAWTRectangle2D() {
-        return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
-    }
+		return new HRectangle2D(xmin, ymin, xmax - xmin, ymax - ymin);
+	}
 
     /**
      * Converts to a rectangle. Result is an instance of HRectangle, which
@@ -641,13 +617,13 @@ public class Box2D implements GeometricObject2D, Cloneable {
             return false;
         Box2D box = (Box2D) obj;
 
-        if (Double.doubleToLongBits(this.xmin) != Double.doubleToLongBits(box.xmin))
+        if (doubleToLongBits(this.xmin) != doubleToLongBits(box.xmin))
         	return false;
-        if (Double.doubleToLongBits(this.xmax) != Double.doubleToLongBits(box.xmax))
+        if (doubleToLongBits(this.xmax) != doubleToLongBits(box.xmax))
         	return false;
-        if (Double.doubleToLongBits(this.ymin) != Double.doubleToLongBits(box.ymin))
+        if (doubleToLongBits(this.ymin) != doubleToLongBits(box.ymin))
         	return false;
-        if (Double.doubleToLongBits(this.ymax) != Double.doubleToLongBits(box.ymax))
+        if (doubleToLongBits(this.ymax) != doubleToLongBits(box.ymax))
         	return false;
         
         return true;

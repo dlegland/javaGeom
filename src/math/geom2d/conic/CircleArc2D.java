@@ -44,6 +44,7 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
+import static java.lang.Math.*;
 
 /**
  * A circle arc, defined by the center and the radius of the containing circle,
@@ -98,7 +99,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * radius equal to 1. Start angle is 0, and angle extent is PI/2.
      */
     public CircleArc2D() {
-        this(0, 0, 1, 0, Math.PI/2);
+        this(0, 0, 1, 0, PI/2);
     }
 
     // Constructors based on Circles
@@ -163,17 +164,16 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     /**
      * convert position on curve to angle with circle center.
      */
-    private double positionToAngle(double t) {
-        if (t>Math.abs(angleExtent))
-            t = Math.abs(angleExtent);
-        if (t<0)
-            t = 0;
-        if (angleExtent<0)
-            t = -t;
-        t = t+startAngle;
-        return t;
-    }
-
+	private double positionToAngle(double t) {
+		if (t > abs(angleExtent))
+			t = abs(angleExtent);
+		if (t < 0)
+			t = 0;
+		if (angleExtent < 0)
+			t = -t;
+		t = t + startAngle;
+		return t;
+	}
 
     // ===================================================================
     // methods implementing CircularShape2D interface
@@ -198,28 +198,30 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     public CircleArc2D getParallel (double dist) {
     	double r = circle.getRadius();
-    	double r2 = Math.max(angleExtent>0 ? r+dist : r-dist, 0);
-    	return new CircleArc2D(
-    			circle.getCenter(), r2, 
-    			startAngle, angleExtent);
+		double r2 = max(angleExtent > 0 ? r + dist : r - dist, 0);
+		return new CircleArc2D(circle.getCenter(), r2, startAngle, angleExtent);
     }
     
     public double getLength() {
-        return circle.getRadius()*Math.abs(angleExtent);
+		return circle.getRadius() * abs(angleExtent);
     }
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
 	public double getLength(double pos) {
-		return pos*circle.getRadius();
+		return pos * circle.getRadius();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
 	public double getPosition(double length) {
-		return length/circle.getRadius();
+		return length / circle.getRadius();
 	}
 
 	/* (non-Javadoc)
@@ -264,75 +266,39 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         double angle1 = Angle2D.getHorizontalAngle(point, p1);
         double angle2 = Angle2D.getHorizontalAngle(point, p2);
 
-        // boolean b0 = circle.isInside(point);
-        // boolean b1 = new StraightLine2D(p1,
-        // this.getTangent(0)).isInside(point);
-        // boolean b2 = new StraightLine2D(p2,
-        // this.getTangent(Math.abs(angleExtent))).isInside(point);
-        //		
-        // // True if point is located in 'triangular' area formed by arc edge
-        // // and tangents at extremities
-        // boolean bl = new StraightLine2D(p2, p1).isInside(point) && b1 && b2;
-        //		
-        // if(angleExtent>0){
-        // if(b0 || bl){
-        // if(angle2>angle1) return angle2 - angle1;
-        // else return 2*Math.PI - angle1 + angle2;
-        // }else{
-        // if(angle2>angle1) return angle2 - angle1 - 2*Math.PI;
-        // else return angle2 - angle1;
-        // }
-        // }else{
-        // if(b0 || bl){
-        // if(angle1>angle2) return angle1 - angle2;
-        // else return 2*Math.PI - angle2 + angle1;
-        // }else{
-        // if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
-        // else return angle1 - angle2;
-        // }
-        // }
-        // test on which 'side' of the arc the point lie
         boolean b1 = (new StraightLine2D(p1, p2)).isInside(point);
         boolean b2 = ellipse.isInside(point);
 
-        if (angleExtent>0) {
-            if (b1||b2) {
-                if (angle2>angle1)
-                    return angle2-angle1;
-                else
-                    return 2*Math.PI-angle1+angle2;
-            } else {
-                if (angle2>angle1)
-                    return angle2-angle1-2*Math.PI;
-                else
-                    return angle2-angle1;
-            }
-        } else {
-            if (!b1||b2) {
-                if (angle1>angle2)
-                    return angle2-angle1;
-                else
-                    return angle2-angle1-2*Math.PI;
-            } else {
-                if (angle1>angle2)
-                    return angle2-angle1+2*Math.PI;
-                else
-                    return angle2-angle1;
-            }
-            // }else{
-            // if(b1 || b2){
-            // if(angle1>angle2) return angle1 - angle2;
-            // else return 2*Math.PI - angle2 + angle1;
-            // }else{
-            // if(angle1>angle2) return angle1 - angle2 - 2*Math.PI;
-            // else return angle1 - angle2;
-            // }
+		if (angleExtent > 0) {
+			if (b1 || b2) {
+				if (angle2 > angle1)
+					return angle2 - angle1;
+				else
+					return 2 * Math.PI - angle1 + angle2;
+			} else {
+				if (angle2 > angle1)
+					return angle2 - angle1 - 2 * Math.PI;
+				else
+					return angle2 - angle1;
+			}
+		} else {
+			if (!b1 || b2) {
+				if (angle1 > angle2)
+					return angle2 - angle1;
+				else
+					return angle2 - angle1 - 2 * Math.PI;
+			} else {
+				if (angle1 > angle2)
+					return angle2 - angle1 + 2 * Math.PI;
+				else
+					return angle2 - angle1;
+			}
         }
     }
 
     @Override
     public boolean isInside(Point2D point) {
-        return getSignedDistance(point.getX(), point.getY())<0;
+		return getSignedDistance(point.getX(), point.getY()) < 0;
     }
 
     @Override
@@ -349,30 +315,30 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         // boolean inCircle = Point2D.getDistance(x, y, xc, yc)<=r;
         boolean inCircle = circle.isInside(point);
         if (inCircle)
-            return angleExtent>0 ? -dist : dist;
+			return angleExtent > 0 ? -dist : dist;
 
         Point2D p1 = circle.getPoint(startAngle);
-        Point2D p2 = circle.getPoint(startAngle+angleExtent);
+		Point2D p2 = circle.getPoint(startAngle + angleExtent);
         boolean onLeft = (new StraightLine2D(p1, p2)).isInside(point);
 
-        if (direct&&!onLeft)
-            return dist;
-        if (!direct&&onLeft)
-            return -dist;
+		if (direct && !onLeft)
+			return dist;
+		if (!direct && onLeft)
+			return -dist;
 
-        boolean left1 = (new Ray2D(p1, circle.getTangent(startAngle)))
-                .isInside(point);
-        if (direct&&!left1)
-            return dist;
-        if (!direct&&left1)
-            return -dist;
+		Vector2D tangent = circle.getTangent(startAngle);
+		boolean left1 = (new Ray2D(p1, tangent)).isInside(point);
+		if (direct && !left1)
+			return dist;
+		if (!direct && left1)
+			return -dist;
 
-        boolean left2 = (new Ray2D(p2, circle
-                .getTangent(startAngle+angleExtent))).isInside(point);
-        if (direct&&!left2)
-            return dist;
-        if (!direct&&left2)
-            return -dist;
+		tangent = circle.getTangent(startAngle + angleExtent);
+		boolean left2 = (new Ray2D(p2, tangent)).isInside(point);
+		if (direct && !left2)
+			return dist;
+		if (!direct && left2)
+			return -dist;
 
         if (direct)
             return -dist;
@@ -388,10 +354,10 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         t = this.positionToAngle(t);
 
         double r = circle.getRadius();
-        if (angleExtent>0)
-            return new Vector2D(-r*Math.sin(t), r*Math.cos(t));
-        else
-            return new Vector2D(r*Math.sin(t), -r*Math.cos(t));
+		if (angleExtent > 0)
+			return new Vector2D(-r * sin(t), r * cos(t));
+		else
+			return new Vector2D(r * sin(t), -r * cos(t));
     }
 
     // ===================================================================
@@ -427,7 +393,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      */
     @Override
     public double getT1() {
-        return Math.abs(this.angleExtent);
+        return abs(this.angleExtent);
     }
 
     /**
@@ -446,14 +412,14 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     public double getPosition(Point2D point) {
         double angle = Angle2D.getHorizontalAngle(circle.getCenter(), point);
         if (containsAngle(angle))
-            if (angleExtent>0)
-                return Angle2D.formatAngle(angle-startAngle);
-            else
-                return Angle2D.formatAngle(startAngle-angle);
+			if (angleExtent > 0)
+				return Angle2D.formatAngle(angle - startAngle);
+			else
+				return Angle2D.formatAngle(startAngle - angle);
 
         // return either 0 or 1, depending on which extremity is closer.
         return getFirstPoint().getDistance(point) < 
-        getLastPoint().getDistance(point) ? 0 : Math.abs(angleExtent);
+        getLastPoint().getDistance(point) ? 0 : abs(angleExtent);
     }
 
     /**
@@ -473,31 +439,19 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         // Case of an angle contained in the circle arc
         if (Angle2D.containsAngle(startAngle, startAngle+angleExtent, angle,
-                angleExtent>0)) {
-            if (angleExtent>0)
-                return Angle2D.formatAngle(angle-startAngle);
-            else
-                return Angle2D.formatAngle(startAngle-angle);
+				angleExtent > 0)) {
+			if (angleExtent > 0)
+				return Angle2D.formatAngle(angle - startAngle);
+			else
+				return Angle2D.formatAngle(startAngle - angle);
         }
 
         Point2D p1 = this.getFirstPoint();
         Point2D p2 = this.getLastPoint();
-        if (p1.getDistance(point)<p2.getDistance(point))
+		if (p1.getDistance(point) < p2.getDistance(point))
             return 0;
         else
-            return Math.abs(angleExtent);
-
-        // // convert to arc parameterization
-        // if(angleExtent>0)
-        // angle = Angle2D.formatAngle(angle-startAngle);
-        // else
-        // angle = Angle2D.formatAngle(startAngle-angle);
-        //		
-        // // ensure projection lies on the arc
-        // if(angle<0) return 0;
-        // if(angle>Math.abs(angleExtent)) return Math.abs(angleExtent);
-        //		
-        // return angle;
+            return abs(angleExtent);
     }
 
     // ====================================================================
@@ -513,10 +467,10 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         double angle = Angle2D.getHorizontalAngle(circle.xc, circle.yc, x, y);
 
         if (containsAngle(angle))
-            return Math.abs(Point2D.getDistance(circle.xc, circle.yc, x, y)
+            return abs(Point2D.getDistance(circle.xc, circle.yc, x, y)
                     -circle.r);
         else
-            return Math.min(getFirstPoint().getDistance(x, y), getLastPoint()
+            return min(getFirstPoint().getDistance(x, y), getLastPoint()
                     .getDistance(x, y));
     }
 
@@ -534,20 +488,20 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     public CircleArc2D getSubCurve(double t0, double t1) {
         // convert position to angle
         if (angleExtent>0) {
-            t0 = Angle2D.formatAngle(startAngle+t0);
-            t1 = Angle2D.formatAngle(startAngle+t1);
-        } else {
-            t0 = Angle2D.formatAngle(startAngle-t0);
-            t1 = Angle2D.formatAngle(startAngle-t1);
+			t0 = Angle2D.formatAngle(startAngle + t0);
+			t1 = Angle2D.formatAngle(startAngle + t1);
+		} else {
+			t0 = Angle2D.formatAngle(startAngle - t0);
+			t1 = Angle2D.formatAngle(startAngle - t1);
         }
 
         // check bounds of angles
-        if (!Angle2D.containsAngle(startAngle, startAngle+angleExtent, t0,
-                angleExtent>0))
-            t0 = startAngle;
-        if (!Angle2D.containsAngle(startAngle, startAngle+angleExtent, t1,
-                angleExtent>0))
-            t1 = Angle2D.formatAngle(startAngle+angleExtent);
+		if (!Angle2D.containsAngle(startAngle, startAngle + angleExtent, t0,
+				angleExtent > 0))
+			t0 = startAngle;
+		if (!Angle2D.containsAngle(startAngle, startAngle + angleExtent, t1,
+				angleExtent > 0))
+			t1 = Angle2D.formatAngle(startAngle + angleExtent);
 
         // create new arc
         return new CircleArc2D(circle, t0, t1, angleExtent>0);
@@ -634,60 +588,6 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         return new CircleArc2D(xc, yc, r2, startAngle, angleExtent);
     }
 
-    // // following are inherited from EllipseArc2D
-    // public java.awt.Rectangle getBounds() {
-    // java.awt.geom.Rectangle2D bounds = this.getBounds2D();
-    // int xmin = (int) bounds.getMinX();
-    // int ymin = (int) bounds.getMinY();
-    // int xmax = (int) Math.ceil(bounds.getMaxX());
-    // int ymax = (int) Math.ceil(bounds.getMaxY());
-    // return new java.awt.Rectangle(xmin, ymin, xmax-xmin, ymax-ymin);
-    // }
-    //
-    // /**
-    // * Returns more precise bounds for the shape. Result is an instance of Box2D.
-    // */
-    // public java.awt.geom.Rectangle2D getBounds2D() {
-    // Point2D p; double x, y;
-    //		
-    // double xc = circle.xc;
-    // double yc = circle.yc;
-    // double r = circle.r;
-    //
-    // p = getFirstPoint(); x = p.getX(); y = p.getY();
-    // double xmin = x; double ymin = y;
-    // double xmax = x; double ymax = y;
-    //
-    // p = getLastPoint(); x = p.getX(); y = p.getY();
-    // xmin = Math.min(xmin, x); ymin = Math.min(ymin, y);
-    // xmax = Math.max(xmax, x); ymax = Math.max(ymax, y);
-    //
-    // if(containsAngle(0)){
-    // x = xc+r; y = yc;
-    // xmin = Math.min(xmin, x); ymin = Math.min(ymin, y);
-    // xmax = Math.max(xmax, x); ymax = Math.max(ymax, y);
-    // }
-    //
-    // if(containsAngle(Math.PI)){
-    // x = xc-r; y = yc;
-    // xmin = Math.min(xmin, x); ymin = Math.min(ymin, y);
-    // xmax = Math.max(xmax, x); ymax = Math.max(ymax, y);
-    // }
-    //
-    // if(containsAngle(Math.PI/2)){
-    // x = xc; y = yc+r;
-    // xmin = Math.min(xmin, x); ymin = Math.min(ymin, y);
-    // xmax = Math.max(xmax, x); ymax = Math.max(ymax, y);
-    // }
-    //
-    // if(containsAngle(3*Math.PI/2)){
-    // x = xc; y = yc-r;
-    // xmin = Math.min(xmin, x); ymin = Math.min(ymin, y);
-    // xmax = Math.max(xmax, x); ymax = Math.max(ymax, y);
-    // }
-    //		
-    // return new Box2D(xmin, ymin, (xmax-xmin), (ymax-ymin));
-    // }
 
     @Override
     public boolean contains(Point2D p) {
@@ -698,7 +598,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     public boolean contains(double x, double y) {
         // Check if radius is correct
     	double r = circle.getRadius();
-        if (Math.abs(Point2D.getDistance(circle.xc, circle.yc, x, y)-r)>Shape2D.ACCURACY)
+		if (abs(Point2D.getDistance(circle.xc, circle.yc, x, y) - r) > Shape2D.ACCURACY)
             return false;
 
         // angle from circle center to point
@@ -726,24 +626,24 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         CircleArc2D arc = (CircleArc2D) obj;
         // test whether supporting ellipses have same support
-        if (Math.abs(circle.xc-arc.circle.xc)>eps)
+        if (abs(circle.xc-arc.circle.xc)>eps)
             return false;
-        if (Math.abs(circle.yc-arc.circle.yc)>eps)
+        if (abs(circle.yc-arc.circle.yc)>eps)
             return false;
-        if (Math.abs(circle.r-arc.circle.r)>eps)
+        if (abs(circle.r-arc.circle.r)>eps)
             return false;
-        if (Math.abs(circle.r1-arc.circle.r1)>eps)
+        if (abs(circle.r1-arc.circle.r1)>eps)
             return false;
-        if (Math.abs(circle.r2-arc.circle.r2)>eps)
+        if (abs(circle.r2-arc.circle.r2)>eps)
             return false;
-        if (Math.abs(circle.theta-arc.circle.theta)>eps)
+        if (abs(circle.theta-arc.circle.theta)>eps)
             return false;
 
         // test is angles are the same
-        if (Math.abs(Angle2D.formatAngle(startAngle)
+        if (abs(Angle2D.formatAngle(startAngle)
                 -Angle2D.formatAngle(arc.startAngle))>eps)
             return false;
-        if (Math.abs(Angle2D.formatAngle(angleExtent)
+        if (abs(Angle2D.formatAngle(angleExtent)
                 -Angle2D.formatAngle(arc.angleExtent))>eps)
             return false;
 
@@ -777,26 +677,26 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         CircleArc2D arc = (CircleArc2D) obj;
         // test whether supporting ellipses have same support
-        if (Math.abs(circle.xc-arc.circle.xc)>Shape2D.ACCURACY)
+        if (abs(circle.xc-arc.circle.xc)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(circle.yc-arc.circle.yc)>Shape2D.ACCURACY)
+        if (abs(circle.yc-arc.circle.yc)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(circle.r-arc.circle.r)>Shape2D.ACCURACY)
+        if (abs(circle.r-arc.circle.r)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(circle.r1-arc.circle.r1)>Shape2D.ACCURACY)
+        if (abs(circle.r1-arc.circle.r1)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(circle.r2-arc.circle.r2)>Shape2D.ACCURACY)
+        if (abs(circle.r2-arc.circle.r2)>Shape2D.ACCURACY)
             return false;
-        if (Math.abs(circle.theta-arc.circle.theta)>Shape2D.ACCURACY)
+        if (abs(circle.theta-arc.circle.theta)>Shape2D.ACCURACY)
             return false;
 
-        // test is angles are the same
-        if (Math.abs(Angle2D.formatAngle(startAngle)
-                -Angle2D.formatAngle(arc.startAngle))>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(Angle2D.formatAngle(angleExtent)
-                -Angle2D.formatAngle(arc.angleExtent))>Shape2D.ACCURACY)
-            return false;
+		// test is angles are the same
+		if (abs(Angle2D.formatAngle(startAngle)
+				- Angle2D.formatAngle(arc.startAngle)) > Shape2D.ACCURACY)
+			return false;
+		if (abs(Angle2D.formatAngle(angleExtent)
+				- Angle2D.formatAngle(arc.angleExtent)) > Shape2D.ACCURACY)
+			return false;
 
         // if no difference, this is the same
         return true;

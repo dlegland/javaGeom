@@ -236,7 +236,7 @@ implements ShapeSet2D<T>, Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
 	public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         // check class, and cast type
@@ -245,7 +245,7 @@ implements ShapeSet2D<T>, Cloneable {
         ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
 
         // check the number of curves in each set
-        if (this.shapes.size()!=shapeSet.shapes.size())
+        if (this.shapes.size() != shapeSet.shapes.size())
             return false;
 
         // return false if at least one couple of curves does not match
@@ -287,7 +287,7 @@ implements ShapeSet2D<T>, Cloneable {
         ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
 
         // check the number of curves in each set
-        if (this.shapes.size()!=shapeSet.shapes.size())
+        if (this.shapes.size() != shapeSet.shapes.size())
             return false;
 
         // return false if at least one couple of curves does not match

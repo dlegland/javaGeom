@@ -3,6 +3,8 @@
  */
 
 package math.geom2d.conic;
+import static java.lang.Math.*;
+
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2D;
@@ -20,7 +22,7 @@ import math.geom2d.line.StraightLine2D;
 public class Conic2DUtils {
 
     public final static Conic2D reduceConic(double[] coefs) {
-        if (coefs.length<6) {
+		if (coefs.length < 6) {
             System.err.println(
             		"Conic2DUtils.reduceConic: must provide 6 coefficients");
             return null;
@@ -47,7 +49,7 @@ public class Conic2DUtils {
 
         double theta0 = 0;
         // Check if b is zero
-        if (Math.abs(b)<eps) {
+		if (abs(b) < eps) {
             // Simply keep the same coefficients
             a1 = a;
             b1 = b;
@@ -58,154 +60,150 @@ public class Conic2DUtils {
             theta0 = 0;
         } else {
             // determine rotation angle (between 0 and PI/2).
-            if (Math.abs(a-c)<eps)
-                theta0 = Math.PI/4; // conic symmetric wrt diagonal
-            else
-                theta0 = Angle2D.formatAngle(Math.atan2(b, a-c)/2);
-            
-            if(debug)
-            	System.out.println("conic main angle: " + 
-            			Math.toDegrees(theta0));
+			if (abs(a - c) < eps)
+				theta0 = PI / 4; // conic symmetric wrt diagonal
+			else
+				theta0 = Angle2D.formatAngle(atan2(b, a - c) / 2);
 
-            // computation shortcuts
-            double cot = Math.cos(theta0);
-            double sit = Math.sin(theta0);
-            double co2t = Math.cos(2*theta0);
-            double si2t = Math.sin(2*theta0);
-            double cot2 = cot*cot;
-            double sit2 = sit*sit;
+			if (debug)
+				System.out.println("conic main angle: " + toDegrees(theta0));
 
-            // Compute coefficients of the conic rotated around origin
-            a1 = a*cot2+b*sit*cot+c*sit2;
-            b1 = si2t*(c-a)+b*co2t; // should be equal to zero
-            c1 = a*sit2-b*sit*cot+c*cot2;
-            d1 = d*cot+e*sit;
-            e1 = -d*sit+e*cot;
-            f1 = f;
+			// computation shortcuts
+			double cot = cos(theta0);
+			double sit = sin(theta0);
+			double co2t = cos(2 * theta0);
+			double si2t = sin(2 * theta0);
+			double cot2 = cot * cot;
+			double sit2 = sit * sit;
+
+			// Compute coefficients of the conic rotated around origin
+			a1 = a * cot2 + b * sit * cot + c * sit2;
+			b1 = si2t * (c - a) + b * co2t; // should be equal to zero
+			c1 = a * sit2 - b * sit * cot + c * cot2;
+			d1 = d * cot + e * sit;
+			e1 = -d * sit + e * cot;
+			f1 = f;
         }
 
         // small control on the value of b1
-        if (Math.abs(b1)>eps) {
+		if (abs(b1) > eps) {
             System.err.println(
             		"Conic2DUtils.reduceConic: " + 
             		"conic was not correctly transformed");
             return null;
         }
 
-        // Test degenerate cases
-        if (Math.abs(a)<eps&&Math.abs(c)<eps) {
-            if (Math.abs(d)>eps||Math.abs(e)>eps)
-                return new ConicStraightLine2D(d, e, f);
-            else
-                return null; //TODO: throw exception ?
+		// Test degenerate cases
+		if (abs(a) < eps && abs(c) < eps) {
+			if (abs(d) > eps || abs(e) > eps)
+				return new ConicStraightLine2D(d, e, f);
+			else
+				return null; // TODO: throw exception ?
         }
 
         // Case of a parabola
-        if (Math.abs(a1)<eps) {
+		if (abs(a1) < eps) {
             // case of a1 close to 0 -> parabola parallel to horizontal axis
             if (debug)
                 System.out.println("horizontal parabola");
 
-            // Check degenerate case d=0
-            if (Math.abs(d1)<eps) {
-                double delta = e1*e1-4*c1*f1;
-                if (delta>=0) {
-                    // find the 2 roots
-                    double ys = -e1/2.0/c1;
-                    double dist = Math.sqrt(delta)/2.0/c1;
-                    Point2D center = new Point2D(0, ys).transform(
-                            AffineTransform2D.createRotation(theta0));
-                    return new ConicTwoLines2D(center, dist, theta0);
-                } else
-                    return null; //TODO: throw exception ?
+			// Check degenerate case d=0
+			if (abs(d1) < eps) {
+				double delta = e1 * e1 - 4 * c1 * f1;
+				if (delta >= 0) {
+					// find the 2 roots
+					double ys = -e1 / 2.0 / c1;
+					double dist = sqrt(delta) / 2.0 / c1;
+					Point2D center = new Point2D(0, ys)
+							.transform(AffineTransform2D.createRotation(theta0));
+					return new ConicTwoLines2D(center, dist, theta0);
+				} else
+					return null; // TODO: throw exception ?
             }
 
             // compute reduced coefficients
-            double c2 = -c1/d1;
-            double e2 = -e1/d1;
-            double f2 = -f1/d1;
+			double c2 = -c1 / d1;
+			double e2 = -e1 / d1;
+			double f2 = -f1 / d1;
 
             // vertex of the parabola
-            double xs = -(e2*e2-4*c2*f2)/(4*c2);
-            double ys = -e2*.5/c2;
+			double xs = -(e2 * e2 - 4 * c2 * f2) / (4 * c2);
+			double ys = -e2 * .5 / c2;
             
             // create and return result
-            return new Parabola2D(xs, ys, c2, theta0-Math.PI/2);
+			return new Parabola2D(xs, ys, c2, theta0 - PI / 2);
 
-        } else if (Math.abs(c1)<eps) {
-            // Case of c1 close to 0 -> parabola parallel to vertical axis
-            if (debug)
-                System.out.println("vertical parabola");
+		} else if (abs(c1) < eps) {
+			// Case of c1 close to 0 -> parabola parallel to vertical axis
+			if (debug)
+				System.out.println("vertical parabola");
 
             // Check degenerate case d=0
-            if (Math.abs(e1)<eps) {
-                double delta = d1*d1-4*a1*f1;
-                if (delta>=0) {
-                    // find the 2 roots
-                    double xs = -d1/2.0/a1;
-                    double dist = Math.sqrt(delta)/2.0/a1;
-                    Point2D center = new Point2D(0, xs).transform(
-                    		AffineTransform2D.createRotation(theta0));
-                    return new ConicTwoLines2D(center, dist, theta0);
-                } else
-                    return null; //TODO: throw exception ?
-            }
+			if (abs(e1) < eps) {
+				double delta = d1 * d1 - 4 * a1 * f1;
+				if (delta >= 0) {
+					// find the 2 roots
+					double xs = -d1 / 2.0 / a1;
+					double dist = sqrt(delta) / 2.0 / a1;
+					Point2D center = new Point2D(0, xs)
+							.transform(AffineTransform2D.createRotation(theta0));
+					return new ConicTwoLines2D(center, dist, theta0);
+				} else
+					return null; // TODO: throw exception ?
+			}
 
-            // compute reduced coefficients
-            double a2 = -a1/e1;
-            double d2 = -d1/e1;
-            double f2 = -f1/e1;
+			// compute reduced coefficients
+			double a2 = -a1 / e1;
+			double d2 = -d1 / e1;
+			double f2 = -f1 / e1;
 
-            // vertex of parabola
-            double xs = -d2*.5/a2;
-            double ys = -(d2*d2-4*a2*f2)/(4*a2);
-            
-            // create and return result
-            return new Parabola2D(xs, ys, a2, theta0);
+			// vertex of parabola
+			double xs = -d2 * .5 / a2;
+			double ys = -(d2 * d2 - 4 * a2 * f2) / (4 * a2);
+
+			// create and return result
+			return new Parabola2D(xs, ys, a2, theta0);
         }
 
         // Remaining cases: ellipse or hyperbola
 
         // compute coordinate of conic center
-        Point2D center = new Point2D(-d1/(2*a1), -e1/(2*c1));
-        center = center.transform(AffineTransform2D.createRotation(theta0));
+		Point2D center = new Point2D(-d1 / (2 * a1), -e1 / (2 * c1));
+		center = center.transform(AffineTransform2D.createRotation(theta0));
 
-        // length of semi axes
-        double num = (c1*d1*d1+a1*e1*e1-4*a1*c1*f1)/(4*a1*c1);
-        double at = num/a1;
-        double bt = num/c1;
+		// length of semi axes
+		double num = (c1 * d1 * d1 + a1 * e1 * e1 - 4 * a1 * c1 * f1)
+				/ (4 * a1 * c1);
+		double at = num / a1;
+		double bt = num / c1;
 
-        if (at<0&&bt<0) {
-            System.err.println(
-            		"Conic2DUtils.reduceConic(): found A<0 and C<0");
-            return null;
+		if (at < 0 && bt < 0) {
+			System.err.println("Conic2DUtils.reduceConic(): found A<0 and C<0");
+			return null;
         }
 
         // Case of an ellipse
-        if (at>0&&bt>0) {
-            if (debug)
-                System.out.println("ellipse");
-            if (at>bt)
-                return new Ellipse2D(center, Math.sqrt(at), Math.sqrt(bt),
-                        theta0);
-            else
-                return new Ellipse2D(center, Math.sqrt(bt), Math.sqrt(at),
-                        Angle2D.formatAngle(theta0+Math.PI/2));
+		if (at > 0 && bt > 0) {
+			if (debug)
+				System.out.println("ellipse");
+			if (at > bt)
+				return new Ellipse2D(center, sqrt(at), sqrt(bt), theta0);
+			else
+				return new Ellipse2D(center, sqrt(bt), sqrt(at),
+						Angle2D.formatAngle(theta0 + PI / 2));
         }
 
         // remaining case is the hyperbola
 
-        // Case of east-west hyperbola
-        if (at>0) {
-            if (debug)
-                System.out.println("east-west hyperbola");
-            return new Hyperbola2D(center, Math.sqrt(at), Math.sqrt(-bt),
-                    theta0);
-        } else {
-            if (debug)
-                System.out.println("north-south hyperbola");
-            return new Hyperbola2D(center, Math.sqrt(bt), Math.sqrt(-at),
-                    theta0+Math.PI/2);
+		// Case of east-west hyperbola
+		if (at > 0) {
+			if (debug)
+				System.out.println("east-west hyperbola");
+			return new Hyperbola2D(center, sqrt(at), sqrt(-bt), theta0);
+		} else {
+			if (debug)
+				System.out.println("north-south hyperbola");
+			return new Hyperbola2D(center, sqrt(bt), sqrt(-at), theta0 + PI / 2);
         }
     }
 
@@ -234,23 +232,23 @@ public class Conic2DUtils {
         double C = coefs[2];
 
         // compute matrix determinant
-        double delta = a*d-b*c;
-        delta = delta*delta;
+		double delta = a * d - b * c;
+		delta = delta * delta;
 
-        double A2 = (A*d*d+C*b*b-B*b*d)/delta;
-        double B2 = (B*(a*d+b*c)-2*(A*c*d+C*a*b))/delta;
-        double C2 = (A*c*c+C*a*a-B*a*c)/delta;
+		double A2 = (A * d * d + C * b * b - B * b * d) / delta;
+		double B2 = (B * (a * d + b * c) - 2 * (A * c * d + C * a * b)) / delta;
+		double C2 = (A * c * c + C * a * a - B * a * c) / delta;
 
         // return only 3 parameters if needed
         if (coefs.length==3)
             return new double[] { A2, B2, C2 };
 
         // Compute other coefficients
-        double D = coefs[3];
-        double E = coefs[4];
-        double F = coefs[5];
-        double D2 = D*d-E*b;
-        double E2 = E*a-D*c;
+		double D = coefs[3];
+		double E = coefs[4];
+		double F = coefs[5];
+		double D2 = D * d - E * b;
+		double E2 = E * a - D * c;
         return new double[] { A2, B2, C2, D2, E2, F };
     }
 
@@ -280,13 +278,13 @@ public class Conic2DUtils {
         double E = coefs[4];
         double F = coefs[5];
 
-        // Compute coefficients of the transformed conic
-        double A2 = A*a*a+B*a*b+C*b*b;
-        double B2 = 2*(A*a*c+C*b*d)+B*(a*d+b*c);
-        double C2 = A*c*c+B*c*d+C*d*d;
-        double D2 = 2*(A*a*e+C*b*f)+B*(a*f+b*e)+D*a+E*b;
-        double E2 = 2*(A*c*e+C*d*f)+B*(c*f+d*e)+D*c+E*d;
-        double F2 = A*e*e+B*e*f+C*f*f+D*e+E*f+F;
+		// Compute coefficients of the transformed conic
+		double A2 = A * a * a + B * a * b + C * b * b;
+		double B2 = 2 * (A * a * c + C * b * d) + B * (a * d + b * c);
+		double C2 = A * c * c + B * c * d + C * d * d;
+		double D2 = 2 * (A * a * e + C * b * f) + B * (a * f + b * e) + D * a + E * b;
+		double E2 = 2 * (A * c * e + C * d * f) + B * (c * f + d * e) + D * c + E * d;
+		double F2 = A * e * e + B * e * f + C * f * f + D * e + E * f + F;
 
         // Return the array of coefficients
         return new double[] { A2, B2, C2, D2, E2, F2 };
@@ -301,7 +299,7 @@ public class Conic2DUtils {
 
         public ConicStraightLine2D(StraightLine2D line) {
             super(line);
-            coefs = new double[] { 0, 0, 0, dy, -dx, dx*y0-dy*x0 };
+			coefs = new double[] { 0, 0, 0, dy, -dx, dx * y0 - dy * x0 };
         }
 
         public ConicStraightLine2D(double a, double b, double c) {

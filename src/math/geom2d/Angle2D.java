@@ -27,6 +27,7 @@
 package math.geom2d;
 
 import math.geom2d.line.LinearShape2D;
+import static java.lang.Math.*;
 
 /**
  * This class is only devoted to static computations.
@@ -57,7 +58,7 @@ public class Angle2D {
 	 * the given point.
 	 */
 	public static double getHorizontalAngle(Point2D point) {
-		return (Math.atan2(point.getY(), point.getX()) + M_2PI) % (M_2PI);
+		return (Math.atan2(point.y, point.x) + M_2PI) % (M_2PI);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class Angle2D {
 	 * the point with given coordinate.
 	 */
 	public static double getHorizontalAngle(Vector2D vect) {
-		return (Math.atan2(vect.getY(), vect.getX()) + M_2PI) % (M_2PI);
+		return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class Angle2D {
 	 */
 	public static double getHorizontalAngle(LinearShape2D object) {
 		Vector2D vect = object.getSupportingLine().getVector();
-		return (Math.atan2(vect.getY(), vect.getX()) + M_2PI) % (M_2PI);
+		return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
 	}
 
 	/**
@@ -90,8 +91,7 @@ public class Angle2D {
 	 * points.
 	 */
 	public static double getHorizontalAngle(Point2D p1,	Point2D p2) {
-		return (Math.atan2(p2.getY() - p1.getY(), p2.getX() - p1.getX()) + M_2PI)
-				% (M_2PI);
+		return (Math.atan2(p2.y - p1.y, p2.x - p1.x) + M_2PI) % (M_2PI);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Angle2D {
 	 */
 	public static double getHorizontalAngle(double x1, double y1, double x2,
 			double y2) {
-		return (Math.atan2(y2 - y1, x2 - x1) + M_2PI) % (M_2PI);
+		return (atan2(y2 - y1, x2 - x1) + M_2PI) % (M_2PI);
 	}
 
 	/**
@@ -117,9 +117,9 @@ public class Angle2D {
 	 * @return the pseudo angle of line joining p1 to p2
 	 */
 	public static double getPseudoAngle(Point2D p1,	Point2D p2) {
-		double dx = p2.getX() - p1.getX();
-		double dy = p2.getY() - p1.getY();
-		double s = Math.abs(dx) + Math.abs(dy);
+		double dx = p2.x - p1.x;
+		double dy = p2.y - p1.y;
+		double s = abs(dx) + abs(dy);
 		double t = (s == 0) ? 0.0 : dy / s;
 		if (dx < 0) {
 			t = 2 - t;
@@ -176,8 +176,8 @@ public class Angle2D {
 	 * formed by (p2, p3). Result is given in radians, between 0 and PI.
 	 */
 	public static double getAbsoluteAngle(Point2D p1, Point2D p2, Point2D p3) {
-		double angle1 = Angle2D.getHorizontalAngle(new Vector2D(p2, p1));
-		double angle2 = Angle2D.getHorizontalAngle(new Vector2D(p2, p3));
+		double angle1 = getHorizontalAngle(new Vector2D(p2, p1));
+		double angle2 = getHorizontalAngle(new Vector2D(p2, p3));
 		angle1 = (angle2 - angle1 + M_2PI) % (M_2PI);
 		if (angle1 < Math.PI)
 			return angle1;
@@ -213,12 +213,12 @@ public class Angle2D {
 	 * @return true if the two angle are equal modulo 2*PI
 	 */
 	public static boolean almostEquals(double angle1, double angle2, double eps) {
-		angle1 = Angle2D.formatAngle(angle1);
-		angle2 = Angle2D.formatAngle(angle2);
-		double diff = Angle2D.formatAngle(angle1 - angle2);
+		angle1 = formatAngle(angle1);
+		angle2 = formatAngle(angle2);
+		double diff = formatAngle(angle1 - angle2);
 		if (diff < eps)
 			return true;
-		if (Math.abs(diff - Math.PI * 2) < eps)
+		if (abs(diff - PI * 2) < eps)
 			return true;
 		return false;
 	}
@@ -233,12 +233,12 @@ public class Angle2D {
 	 * @return true if the two angle are equal modulo 2*PI
 	 */
 	public static boolean equals(double angle1, double angle2) {
-		angle1 = Angle2D.formatAngle(angle1);
-		angle2 = Angle2D.formatAngle(angle2);
-		double diff = Angle2D.formatAngle(angle1 - angle2);
+		angle1 = formatAngle(angle1);
+		angle2 = formatAngle(angle2);
+		double diff = formatAngle(angle1 - angle2);
 		if (diff < Shape2D.ACCURACY)
 			return true;
-		if (Math.abs(diff - Math.PI * 2) < Shape2D.ACCURACY)
+		if (abs(diff - PI * 2) < Shape2D.ACCURACY)
 			return true;
 		return false;
 	}
@@ -257,9 +257,9 @@ public class Angle2D {
 	 */
 	public static boolean containsAngle(double startAngle, double endAngle,
 			double angle) {
-		startAngle = Angle2D.formatAngle(startAngle);
-		endAngle = Angle2D.formatAngle(endAngle);
-		angle = Angle2D.formatAngle(angle);
+		startAngle 	= formatAngle(startAngle);
+		endAngle 	= formatAngle(endAngle);
+		angle 		= formatAngle(angle);
 		if (startAngle < endAngle)
 			return angle >= startAngle && angle <= endAngle;
 		else
@@ -283,9 +283,9 @@ public class Angle2D {
 	 */
 	public static boolean containsAngle(double startAngle, double endAngle,
 			double angle, boolean direct) {
-		startAngle = Angle2D.formatAngle(startAngle);
-		endAngle = Angle2D.formatAngle(endAngle);
-		angle = Angle2D.formatAngle(angle);
+		startAngle 	= formatAngle(startAngle);
+		endAngle 	= formatAngle(endAngle);
+		angle 		= formatAngle(angle);
 		if (direct) {
 			if (startAngle < endAngle)
 				return angle >= startAngle && angle <= endAngle;

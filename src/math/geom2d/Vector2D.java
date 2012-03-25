@@ -26,6 +26,7 @@
 package math.geom2d;
 
 import math.geom2d.AffineTransform2D;
+import static java.lang.Math.*;
 
 // Imports
 
@@ -51,7 +52,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @since 0.8.1
      */
     public static Vector2D create(Point2D point) {
-        return new Vector2D(point.getX(), point.getY());
+        return new Vector2D(point.x, point.y);
     }
     
     /**
@@ -59,7 +60,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * angle with the horizontal.
      */
 	public static Vector2D createPolar(double rho, double theta) {
-		return new Vector2D(rho * Math.cos(theta), rho * Math.sin(theta));
+		return new Vector2D(rho * cos(theta), rho * sin(theta));
 	}
 
     /**
@@ -96,7 +97,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 	public static boolean isColinear(Vector2D v1, Vector2D v2) {
 		v1 = v1.getNormalizedVector();
 		v2 = v2.getNormalizedVector();
-		return Math.abs(v1.x * v2.y - v1.y * v2.x) < Shape2D.ACCURACY;
+		return abs(v1.x * v2.y - v1.y * v2.x) < Shape2D.ACCURACY;
 	}
 
     /**
@@ -107,7 +108,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     public static boolean isOrthogonal(Vector2D v1, Vector2D v2) {
         v1 = v1.getNormalizedVector();
 		v2 = v2.getNormalizedVector();
-		return Math.abs(v1.x * v2.x + v1.y * v2.y) < Shape2D.ACCURACY;
+		return abs(v1.x * v2.x + v1.y * v2.y) < Shape2D.ACCURACY;
 	}
 
 
@@ -144,14 +145,14 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * Constructs a new vector between the origin and the given point.
      */
     public Vector2D(Point2D point) {
-        this(point.getX(), point.getY());
+        this(point.x, point.y);
     }
 
     /**
      * Constructs a new vector between two points
      */
 	public Vector2D(Point2D point1, Point2D point2) {
-		this(point2.getX() - point1.getX(), point2.getY() - point1.getY());
+		this(point2.x - point1.x, point2.y - point1.y);
 	}
 
     // ===================================================================
@@ -181,7 +182,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return the euclidean norm of the vector
      */
     public double getNorm() {
-        return Math.hypot(x, y);
+        return hypot(x, y);
     }
 
     /**
@@ -197,7 +198,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * Normalizes the vector, such that its norms becomes 1.
      */
 	public void normalize() {
-		double r = Math.hypot(this.x, this.y);
+		double r = hypot(this.x, this.y);
 		this.x = this.x / r;
 		this.y = this.y / r;
 	}
@@ -207,7 +208,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * to 1.
      */
 	public Vector2D getNormalizedVector() {
-		double r = Math.hypot(this.x, this.y);
+		double r = hypot(this.x, this.y);
 		return new Vector2D(this.x / r, this.y / r);
 	}
 

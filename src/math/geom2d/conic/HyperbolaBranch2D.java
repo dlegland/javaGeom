@@ -1,17 +1,13 @@
 
 package math.geom2d.conic;
+import static java.lang.Math.*;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
@@ -93,11 +89,11 @@ implements SmoothContour2D, Cloneable {
      * href="http://mathworld.wolfram.com/Hyperbola.html">http://mathworld.wolfram.com/Hyperbola.html</a>
      */
     public double getCurvature(double t) {
-        double a = hyperbola.a;
-        double b = hyperbola.b;
-        double asih = a*Math.sinh(t);
-        double bcoh = b*Math.cosh(t);
-        return a*b/Math.pow(Math.hypot(bcoh, asih), 3);
+		double a = hyperbola.a;
+		double b = hyperbola.b;
+		double asih = a * sinh(t);
+		double bcoh = b * cosh(t);
+		return a * b / pow(hypot(bcoh, asih), 3);
     }
 
     public Vector2D getTangent(double t) {
@@ -106,15 +102,15 @@ implements SmoothContour2D, Cloneable {
         double theta = hyperbola.theta;
         double dx, dy;
         if (positive) {
-            dx = a*Math.sinh(t);
-            dy = b*Math.cosh(t);
-        } else {
-            dx = -a*Math.sinh(t);
-            dy = -b*Math.cosh(t);
-        }
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        return new Vector2D(dx*cot-dy*sit, dx*sit+dy*cot);
+			dx = a * sinh(t);
+			dy = b * cosh(t);
+		} else {
+			dx = -a * sinh(t);
+			dy = -b * cosh(t);
+		}
+		double cot = cos(theta);
+		double sit = sin(theta);
+		return new Vector2D(dx * cot - dy * sit, dx * sit + dy * cot);
     }
 
     // ===================================================================
@@ -157,17 +153,17 @@ implements SmoothContour2D, Cloneable {
     }
 
     public boolean isInside(Point2D point) {
-        if (hyperbola.isDirect()) {
-            if (hyperbola.isInside(point))
-                return true;
-            double x = hyperbola.toLocal(new Point2D(point)).getX();
-            return positive ? x<0 : x>0;
-        } else {
-            if (!hyperbola.isInside(point))
-                return false;
-            double x = hyperbola.toLocal(new Point2D(point)).getX();
-            return positive ? x>0 : x<0;
-        }
+		if (hyperbola.isDirect()) {
+			if (hyperbola.isInside(point))
+				return true;
+			double x = hyperbola.toLocal(new Point2D(point)).getX();
+			return positive ? x < 0 : x > 0;
+		} else {
+			if (!hyperbola.isInside(point))
+				return false;
+			double x = hyperbola.toLocal(new Point2D(point)).getX();
+			return positive ? x > 0 : x < 0;
+		}
     }
 
     // ===================================================================
@@ -200,17 +196,17 @@ implements SmoothContour2D, Cloneable {
 
         double x, y;
         if (positive) {
-            x = Math.cosh(t);
+            x = cosh(t);
             if (Double.isInfinite(x))
-                x = Math.abs(t);
-            y = Math.sinh(t);
+                x = abs(t);
+            y = sinh(t);
             if (Double.isInfinite(y))
                 y = t;
         } else {
-            x = -Math.cosh(t);
+            x = -cosh(t);
             if (Double.isInfinite(x))
-                x = -Math.abs(t);
-            y = -Math.sinh(t);
+                x = -abs(t);
+            y = -sinh(t);
             if (Double.isInfinite(y))
                 y = -t;
         }
@@ -218,15 +214,15 @@ implements SmoothContour2D, Cloneable {
     }
 
     public double getPosition(Point2D point) {
-        Point2D pt = hyperbola.toLocal(new Point2D(point));
-        double y = this.positive ? pt.getY() : -pt.getY();
-        return Math.log(y+Math.hypot(y, 1));
-    }
+		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		double y = this.positive ? pt.getY() : -pt.getY();
+		return log(y + hypot(y, 1));
+	}
 
-    public double project(Point2D point) {
-        Point2D pt = hyperbola.toLocal(new Point2D(point));
-        double y = this.positive ? pt.getY() : -pt.getY();
-        return Math.log(y+Math.hypot(y, 1));
+	public double project(Point2D point) {
+		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		double y = this.positive ? pt.getY() : -pt.getY();
+		return log(y + hypot(y, 1));
     }
 
     public HyperbolaBranch2D getReverseCurve() {
@@ -260,8 +256,8 @@ implements SmoothContour2D, Cloneable {
         // check which points belong to this branch
         Collection<Point2D> result = new ArrayList<Point2D>();
         for (Point2D point : inters) {
-            if (!(hyperbola.toLocal(point).getX()>0^positive))
-                result.add(point);
+			if (!(hyperbola.toLocal(point).getX() > 0 ^ positive))
+				result.add(point);
         }
 
         // return result
