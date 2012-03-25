@@ -25,25 +25,14 @@
  */
 
 package math.geom2d.conic;
+import static java.lang.Math.*;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.GeometricObject2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShape2DException;
-import math.geom2d.Vector2D;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.*;
+import math.geom2d.curve.*;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
@@ -80,10 +69,10 @@ implements Contour2D, Conic2D, Cloneable {
      * @return the parabola with given vertex and focus
      */
     public final static Parabola2D create(Point2D vertex, Point2D focus) {
-        double p = Point2D.getDistance(vertex, focus);
-        double theta = Angle2D.getHorizontalAngle(vertex, focus)-Math.PI/2;
-        return new Parabola2D(vertex, 1/(4*p), theta);
-    }
+		double p = Point2D.getDistance(vertex, focus);
+		double theta = Angle2D.getHorizontalAngle(vertex, focus) - PI / 2;
+		return new Parabola2D(vertex, 1 / (4 * p), theta);
+	}
 
     
     // ==========================================================
@@ -127,17 +116,17 @@ implements Contour2D, Conic2D, Cloneable {
      * Returns the focus of the parabola.
      */
     public Point2D getFocus() {
-        double c = 1/a/4.0;
-        return new Point2D(xv-c*Math.sin(theta), yv+c*Math.cos(theta));
-    }
+		double c = 1 / a / 4.0;
+		return new Point2D(xv - c * sin(theta), yv + c * cos(theta));
+   }
 
     public double getParameter() {
         return a;
     }
 
     public double getFocusDistance() {
-        return 1.0/(4*a);
-    }
+		return 1.0 / (4 * a);
+	}
 
     public Point2D getVertex() {
         return new Point2D(xv, yv);
@@ -156,8 +145,7 @@ implements Contour2D, Conic2D, Cloneable {
      */
     public Vector2D getVector2() {
         Vector2D vect = new Vector2D(1, 0);
-        return vect
-                .transform(AffineTransform2D.createRotation(theta+Math.PI/2));
+		return vect.transform(AffineTransform2D.createRotation(theta + PI / 2));
     }
 
     /**
@@ -172,7 +160,7 @@ implements Contour2D, Conic2D, Cloneable {
      * Returns true if the parameter a is positive.
      */
     public boolean isDirect() {
-        return a>0;
+		return a > 0;
     }
 
     /**
@@ -183,10 +171,10 @@ implements Contour2D, Conic2D, Cloneable {
      * @return
      */
     private Point2D formatPoint(Point2D point) {
-        Point2D p2 = new Point2D(point);
-        p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
-        p2 = p2.transform(AffineTransform2D.createRotation(-theta));
-        p2 = p2.transform(AffineTransform2D.createScaling(1, 1.0/a));
+		Point2D p2 = new Point2D(point);
+		p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
+		p2 = p2.transform(AffineTransform2D.createRotation(-theta));
+		p2 = p2.transform(AffineTransform2D.createScaling(1, 1.0 / a));
         return p2;
     }
 
@@ -200,7 +188,7 @@ implements Contour2D, Conic2D, Cloneable {
     private LinearShape2D formatLine(LinearShape2D line) {
         line = line.transform(AffineTransform2D.createTranslation(-xv, -yv));
         line = line.transform(AffineTransform2D.createRotation(-theta));
-        line = line.transform(AffineTransform2D.createScaling(1, 1.0/a));
+		line = line.transform(AffineTransform2D.createScaling(1, 1.0 / a));
         return line;
     }
 
@@ -212,17 +200,6 @@ implements Contour2D, Conic2D, Cloneable {
     }
 
     public double[] getConicCoefficients() {
-//        // computation shortcuts
-//        double cot = Math.cos(theta);
-//        double sit = Math.sin(theta);
-//        double cot2 = cot*cot;
-//        double sit2 = sit*sit;
-//        // Compute new coefficients after rotation of parabola located at
-//        // (xv,yv) by a rotation of angle theta around origin.
-//        return new double[] {
-//        		a*cot2, -2*a*cot*sit, a*sit2, 
-//        		-2*a*xv*cot-sit, 2*a*xv*sit-cot, a*xv*xv+yv };
-
     	// The transformation matrix from base parabola y=x^2
     	AffineTransform2D transform =
     		AffineTransform2D.createRotation(theta).chain(
@@ -239,15 +216,15 @@ implements Contour2D, Conic2D, Cloneable {
         
         // Default conic coefficients are A=a, F=1.
         // Compute result of transformed coefficients, which simplifies in:
-        double A = a*m00*m00;
-        double B = 2*a*m00*m01;
-        double C = a*m01*m01;
-        double D = 2*a*m00*m02 - m10;
-        double E = 2*a*m01*m02 - m11;
-        double F = a*m02*m02 - m12;
+		double A = a * m00 * m00;
+		double B = 2 * a * m00 * m01;
+		double C = a * m01 * m01;
+		double D = 2 * a * m00 * m02 - m10;
+		double E = 2 * a * m01 * m02 - m11;
+		double F = a * m02 * m02 - m12;
         
         // arrange into array
-        return new double[]{A, B, C, D, E, F};
+		return new double[] { A, B, C, D, E, F };
     }
 
     /**
@@ -261,8 +238,7 @@ implements Contour2D, Conic2D, Cloneable {
     // methods implementing the Boundary2D interface
 
     public Collection<Contour2D> getBoundaryCurves() {
-        ArrayList<Contour2D> list = new ArrayList<Contour2D>(
-                1);
+		ArrayList<Contour2D> list = new ArrayList<Contour2D>(1);
         list.add(this);
         return list;
     }
@@ -275,17 +251,17 @@ implements Contour2D, Conic2D, Cloneable {
     // methods implementing the OrientedCurve2D interface
 
     public double getWindingAngle(Point2D point) {
-        if (isDirect()) {
-            if (isInside(point))
-                return Math.PI*2;
-            else
-                return 0.0;
-        } else {
-            if (isInside(point))
-                return 0.0;
-            else
-                return -Math.PI*2;
-        }
+		if (isDirect()) {
+			if (isInside(point))
+				return PI * 2;
+			else
+				return 0.0;
+		} else {
+			if (isInside(point))
+				return 0.0;
+			else
+				return -PI * 2;
+		}
     }
 
     public double getSignedDistance(Point2D p) {
@@ -308,22 +284,22 @@ implements Contour2D, Conic2D, Cloneable {
         double y = p2.getY();
 
         // check condition of parabola
-        return y>x*x^a<0;
+		return y > x * x ^ a < 0;
     }
 
     // ==========================================================
     // methods implementing the SmoothCurve2D interface
 
     public Vector2D getTangent(double t) {
-        Vector2D vect = new Vector2D(1, 2.0*a*t);
-        return vect.transform(AffineTransform2D.createRotation(theta));
+		Vector2D vect = new Vector2D(1, 2.0 * a * t);
+		return vect.transform(AffineTransform2D.createRotation(theta));
     }
 
     /**
      * Returns the curvature of the parabola at the given position.
      */
     public double getCurvature(double t) {
-        return 2*a/Math.pow(Math.hypot(1, 2*a*t), 3);
+		return 2 * a / pow(hypot(1, 2 * a * t), 3);
     }
 
     // ==========================================================
@@ -363,7 +339,7 @@ implements Contour2D, Conic2D, Cloneable {
     }
 
     public Point2D getPoint(double t) {
-        Point2D point = new Point2D(t, a*t*t);
+		Point2D point = new Point2D(t, a * t * t);
         point = AffineTransform2D.createRotation(theta).transform(point);
         point = AffineTransform2D.createTranslation(xv, yv).transform(point);
         return point;
@@ -402,7 +378,7 @@ implements Contour2D, Conic2D, Cloneable {
             if (debug)
                 System.out.println("intersect parabola with vertical line ");
             double x = line2.getOrigin().getX();
-            Point2D point = new Point2D(x, x*x);
+			Point2D point = new Point2D(x, x * x);
             if (line2.contains(point))
                 points.add(line.getPoint(line2.getPosition(point)));
             return points;
@@ -414,12 +390,12 @@ implements Contour2D, Conic2D, Cloneable {
         double y0 = origin.getY();
 
         // Solve second order equation
-        double k = dy/dx; // slope of the line
-        double yl = k*x0-y0;
-        double delta = k*k-4*yl;
+		double k = dy / dx; // slope of the line
+		double yl = k * x0 - y0;
+		double delta = k * k - 4 * yl;
 
         // Case of a line 'below' the parabola
-        if (delta<0)
+		if (delta < 0)
             return points;
 
         // There are two intersections with supporting line,
@@ -430,14 +406,14 @@ implements Contour2D, Conic2D, Cloneable {
         StraightLine2D support = line2.getSupportingLine();
 
         // test first intersection point
-        x = (k-Math.sqrt(delta))*.5;
-        point = new Point2D(x, x*x);
+		x = (k - Math.sqrt(delta)) * .5;
+		point = new Point2D(x, x * x);
         if (line2.contains(support.getProjectedPoint(point)))
             points.add(line.getPoint(line2.getPosition(point)));
 
         // test second intersection point
-        x = (k+Math.sqrt(delta))*.5;
-        point = new Point2D(x, x*x);
+		x = (k + Math.sqrt(delta)) * .5;
+		point = new Point2D(x, x * x);
         if (line2.contains(support.getProjectedPoint(point)))
             points.add(line.getPoint(line2.getPosition(point)));
 
@@ -449,7 +425,7 @@ implements Contour2D, Conic2D, Cloneable {
      * direction and opposite parameter <code>p</code>.
      */
     public Parabola2D getReverseCurve() {
-        return new Parabola2D(xv, yv, -a, Angle2D.formatAngle(theta+Math.PI));
+		return new Parabola2D(xv, yv, -a, Angle2D.formatAngle(theta + PI));
     }
 
     /**
@@ -457,8 +433,8 @@ implements Contour2D, Conic2D, Cloneable {
      */
     public ParabolaArc2D getSubCurve(double t0, double t1) {
         if (debug)
-            System.out.println("theta = "+Math.toDegrees(theta));
-        if (t1<t0)
+			System.out.println("theta = " + Math.toDegrees(theta));
+		if (t1 < t0)
             return null;
         return new ParabolaArc2D(this, t0, t1);
     }
@@ -540,16 +516,16 @@ implements Contour2D, Conic2D, Cloneable {
     	//TODO: check if transform work also for non-motion transforms...
         Point2D vertex = this.getVertex().transform(trans);
         Point2D focus = this.getFocus().transform(trans);
-        double a = 1/(4.0*Point2D.getDistance(vertex, focus));
-        double theta = Angle2D.getHorizontalAngle(vertex, focus)-Math.PI/2;
+		double a = 1 / (4.0 * Point2D.getDistance(vertex, focus));
+		double theta = Angle2D.getHorizontalAngle(vertex, focus) - PI / 2;
 
         // check orientation of resulting parabola
-        if (this.a<0^trans.isDirect())
+		if (this.a < 0 ^ trans.isDirect())
             // normal case
             return new Parabola2D(vertex, a, theta);
         else
             // inverted case
-            return new Parabola2D(vertex, -a, theta+Math.PI);
+			return new Parabola2D(vertex, -a, theta + PI);
     }
 
     // ===============================================
@@ -564,7 +540,7 @@ implements Contour2D, Conic2D, Cloneable {
         double yp = p2.getY();
 
         // check condition of parabola
-        return Math.abs(yp-xp*xp)<Shape2D.ACCURACY;
+		return abs(yp - xp * xp) < Shape2D.ACCURACY;
     }
 
     public boolean contains(Point2D point) {

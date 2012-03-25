@@ -1,16 +1,13 @@
 
 package math.geom2d.conic;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 
@@ -106,13 +103,13 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods inherited from Curve2D interface
 
     public Collection<Point2D> getIntersections(LinearShape2D line) {
-        Collection<Point2D> inters0 = this.branch.getIntersections(line);
-        ArrayList<Point2D> inters = new ArrayList<Point2D>();
-        for (Point2D point : inters0) {
-            double pos = this.branch.project(point);
-            if (pos>this.t0&&pos<this.t1)
-                inters.add(point);
-        }
+		Collection<Point2D> inters0 = this.branch.getIntersections(line);
+		ArrayList<Point2D> inters = new ArrayList<Point2D>();
+		for (Point2D point : inters0) {
+			double pos = this.branch.project(point);
+			if (pos > this.t0 && pos < this.t1)
+				inters.add(point);
+		}
 
         return inters;
     }
@@ -123,24 +120,24 @@ implements SmoothOrientedCurve2D, Cloneable {
    public Point2D getPoint(double t) {
        if(Double.isInfinite(t))
            throw new UnboundedShape2DException(this);
-        t = Math.min(Math.max(t, t0), t1);
+        t = min(max(t, t0), t1);
         return branch.getPoint(t);
     }
 
     public double getPosition(Point2D point) {
         if (!this.branch.contains(point))
-            return Double.NaN;
-        double t = this.branch.getPosition(point);
-        if (t-t0<-ACCURACY)
-            return Double.NaN;
-        if (t1-t<ACCURACY)
-            return Double.NaN;
-        return t;
+			return Double.NaN;
+		double t = this.branch.getPosition(point);
+		if (t - t0 < -ACCURACY)
+			return Double.NaN;
+		if (t1 - t < ACCURACY)
+			return Double.NaN;
+		return t;
     }
 
     public double project(Point2D point) {
         double t = this.branch.project(point);
-        return Math.min(Math.max(t, t0), t1);
+        return min(max(t, t0), t1);
     }
 
     public HyperbolaBranchArc2D getReverseCurve() {
@@ -157,10 +154,10 @@ implements SmoothOrientedCurve2D, Cloneable {
      * belong to the old bounds interval. If t1<t0, returns null.
      */
     public HyperbolaBranchArc2D getSubCurve(double t0, double t1) {
-        if (t1<t0)
+		if (t1 < t0)
             return null;
-        t0 = Math.max(this.t0, t0);
-        t1 = Math.min(this.t1, t1);
+        t0 = max(this.t0, t0);
+        t1 = min(this.t1, t1);
         return new HyperbolaBranchArc2D(branch, t0, t1);
     }
 
@@ -214,10 +211,10 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean isBounded() {
-        if (t0==Double.NEGATIVE_INFINITY)
-            return false;
-        if (t1==Double.POSITIVE_INFINITY)
-            return false;
+		if (t0 == Double.NEGATIVE_INFINITY)
+			return false;
+		if (t1 == Double.POSITIVE_INFINITY)
+			return false;
         return true;
     }
 
@@ -236,7 +233,7 @@ implements SmoothOrientedCurve2D, Cloneable {
                 : branch2.project(this.getLastPoint().transform(trans));
 
         // Compute the new arc
-        if(startPos>endPos){
+		if (startPos > endPos) {
         	return new HyperbolaBranchArc2D(branch2.getReverseCurve(), 
         			endPos, startPos);
         } else {
@@ -249,15 +246,15 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean contains(double x, double y) {
-        if (!branch.contains(x, y))
-            return false;
-        double t = branch.getPosition(new Point2D(x, y));
-        if (t<t0)
-            return false;
-        if (t>t1)
-            return false;
-        return true;
-    }
+		if (!branch.contains(x, y))
+			return false;
+		double t = branch.getPosition(new Point2D(x, y));
+		if (t < t0)
+			return false;
+		if (t > t1)
+			return false;
+		return true;
+	}
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())

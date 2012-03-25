@@ -25,6 +25,8 @@
 
 package math.geom2d.conic;
 
+import static java.lang.Math.*;
+
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,14 +77,14 @@ implements Conic2D, Cloneable {
         double C = coefs[2];
 
         // Compute orientation angle of the hyperbola
-        double theta;
-        if (Math.abs(A-C)<Shape2D.ACCURACY) {
-            theta = Math.PI/4;
-        } else {
-            theta = Math.atan2(B, (A-C))/2.0;
-            if (B<0)
-                theta -= Math.PI;
-            theta = Angle2D.formatAngle(theta);
+		double theta;
+		if (abs(A - C) < Shape2D.ACCURACY) {
+			theta = PI / 4;
+		} else {
+			theta = atan2(B, (A - C)) / 2.0;
+			if (B < 0)
+				theta -= PI;
+			theta = Angle2D.formatAngle(theta);
         }
 
         // compute ellipse in isothetic basis
@@ -91,28 +93,28 @@ implements Conic2D, Cloneable {
 
         // extract coefficient f if present
         double f = 1;
-        if (coefs2.length>5)
-            f = Math.abs(coefs[5]);
+		if (coefs2.length > 5)
+			f = abs(coefs[5]);
 
-        assert Math.abs(coefs2[1]/f)<Shape2D.ACCURACY :
-        	"Second conic coefficient should be zero";
+		assert abs(coefs2[1] / f) < Shape2D.ACCURACY :
+			"Second conic coefficient should be zero";
 
-        assert coefs2[0]*coefs2[2]<0:
+		assert coefs2[0] * coefs2[2] < 0 :
             "Transformed conic is not an Hyperbola";
         
 
         // extract major and minor axis lengths, ensuring r1 is greater
         double r1, r2;
-        if (coefs2[0]>0) {
-            // East-West hyperbola
-            r1 = Math.sqrt(f/coefs2[0]);
-            r2 = Math.sqrt(-f/coefs2[2]);
+		if (coefs2[0] > 0) {
+			// East-West hyperbola
+			r1 = sqrt(f / coefs2[0]);
+			r2 = sqrt(-f / coefs2[2]);
         } else {
             // North-South hyperbola
-            r1 = Math.sqrt(f/coefs2[2]);
-            r2 = Math.sqrt(-f/coefs2[0]);
-            theta = Angle2D.formatAngle(theta+Math.PI/2);
-            theta = Math.min(theta, Angle2D.formatAngle(theta+Math.PI));
+			r1 = sqrt(f / coefs2[2]);
+			r2 = sqrt(-f / coefs2[0]);
+			theta = Angle2D.formatAngle(theta + PI / 2);
+			theta = Math.min(theta, Angle2D.formatAngle(theta + PI));
         }
 
         // Return the new Hyperbola
@@ -135,18 +137,18 @@ implements Conic2D, Cloneable {
         double theta = hyper.theta;
 
         // precompute some parts
-        double aSq = a*a;
-        double bSq = b*b;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-        double cotSq = cot*cot;
-        double sitSq = sit*sit;
+		double aSq = a * a;
+		double bSq = b * b;
+		double cot = cos(theta);
+		double sit = sin(theta);
+		double cotSq = cot * cot;
+		double sitSq = sit * sit;
 
         // compute coefficients of the centered conic
-        double A = cotSq/aSq-sitSq/bSq;
-        double B = 2*cot*sit*(1/aSq+1/bSq);
-        double C = sitSq/aSq-cotSq/bSq;
-        double[] coefs = new double[] { A, B, C };
+		double A = cotSq / aSq - sitSq / bSq;
+		double B = 2 * cot * sit * (1 / aSq + 1 / bSq);
+		double C = sitSq / aSq - cotSq / bSq;
+		double[] coefs = new double[] { A, B, C };
 
         // Compute coefficients of the transformed conic, still centered
         double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
@@ -237,9 +239,9 @@ implements Conic2D, Cloneable {
     }
 
     public Point2D toLocal(Point2D point) {
-        point = point.transform(AffineTransform2D.createTranslation(-xc, -yc));
-        point = point.transform(AffineTransform2D.createRotation(-theta));
-        point = point.transform(AffineTransform2D.createScaling(1/a, 1/b));
+		point = point.transform(AffineTransform2D.createTranslation(-xc, -yc));
+		point = point.transform(AffineTransform2D.createRotation(-theta));
+		point = point.transform(AffineTransform2D.createScaling(1 / a, 1 / b));
         return point;
     }
 
@@ -289,11 +291,11 @@ implements Conic2D, Cloneable {
     }
 
     public Vector2D getVector1() {
-        return new Vector2D(Math.cos(theta), Math.sin(theta));
+        return new Vector2D(cos(theta), sin(theta));
     }
 
     public Vector2D getVector2() {
-        return new Vector2D(-Math.sin(theta), Math.cos(theta));
+        return new Vector2D(-sin(theta), cos(theta));
     }
 
     /**
@@ -301,8 +303,8 @@ implements Conic2D, Cloneable {
      * axis.
      */
     public Point2D getFocus1() {
-        double c = Math.hypot(a, b);
-        return new Point2D(xc+c*Math.cos(theta), yc+c*Math.sin(theta));
+        double c = hypot(a, b);
+		return new Point2D(xc + c * cos(theta), yc + c * sin(theta));
     }
 
     /**
@@ -310,8 +312,8 @@ implements Conic2D, Cloneable {
      * axis.
      */
     public Point2D getFocus2() {
-        double c = Math.hypot(a, b);
-        return new Point2D(xc-c*Math.cos(theta), yc-c*Math.sin(theta));
+        double c = hypot(a, b);
+		return new Point2D(xc - c * cos(theta), yc - c * sin(theta));
     }
     
     public HyperbolaBranch2D getPositiveBranch() {
@@ -360,34 +362,35 @@ implements Conic2D, Cloneable {
 
     public double[] getConicCoefficients() {
         // scaling coefficients
-        double aSq = this.a*this.a;
-        double bSq = this.b*this.b;
-        double aSqInv = 1.0/aSq;
-        double bSqInv = 1.0/bSq;
+		double aSq = this.a * this.a;
+		double bSq = this.b * this.b;
+		double aSqInv = 1.0 / aSq;
+		double bSqInv = 1.0 / bSq;
 
         // angle of hyperbola with horizontal, and trigonometric formulas
-        double sint = Math.sin(this.theta);
-        double cost = Math.cos(this.theta);
-        double sin2t = 2.0*sint*cost;
-        double sintSq = sint*sint;
-        double costSq = cost*cost;
+		double sint = sin(this.theta);
+		double cost = cos(this.theta);
+		double sin2t = 2.0 * sint * cost;
+		double sintSq = sint * sint;
+		double costSq = cost * cost;
 
         // coefs from hyperbola center
-        double xcSq = xc*xc;
-        double ycSq = yc*yc;
+		double xcSq = xc * xc;
+		double ycSq = yc * yc;
 
         /*
          * Compute the coefficients. These formulae are the transformations on
          * the unit hyperbola written out long hand
          */
 
-        double a = costSq/aSq-sintSq/bSq;
-        double b = (bSq+aSq)*sin2t/(aSq*bSq);
-        double c = sintSq/aSq-costSq/bSq;
-        double d = -yc*b-2*xc*a;
-        double e = -xc*b-2*yc*c;
-        double f = -1.0+(xcSq+ycSq)*(aSqInv-bSqInv)/2.0+(costSq-sintSq)
-                *(xcSq-ycSq)*(aSqInv+bSqInv)/2.0+xc*yc*(aSqInv+bSqInv)*sin2t;
+		double a = costSq / aSq - sintSq / bSq;
+		double b = (bSq + aSq) * sin2t / (aSq * bSq);
+		double c = sintSq / aSq - costSq / bSq;
+		double d = -yc * b - 2 * xc * a;
+		double e = -xc * b - 2 * yc * c;
+		double f = -1.0 + (xcSq + ycSq) * (aSqInv - bSqInv) / 2.0
+				+ (costSq - sintSq) * (xcSq - ycSq) * (aSqInv + bSqInv) / 2.0
+				+ xc * yc * (aSqInv + bSqInv) * sin2t;
         // Equivalent to:
         // double f = (xcSq*costSq + xc*yc*sin2t + ycSq*sintSq)*aSqInv
         // - (xcSq*sintSq - xc*yc*sin2t + ycSq*costSq)*bSqInv - 1;
@@ -401,7 +404,7 @@ implements Conic2D, Cloneable {
     }
 
     public double getEccentricity() {
-        return Math.hypot(1, b*b/a/a);
+		return hypot(1, b * b / a / a);
     }
 
     
@@ -430,39 +433,39 @@ implements Conic2D, Cloneable {
         // extract line parameters
         // different strategy depending if line is more horizontal or more
         // vertical
-        if (Math.abs(dx)>Math.abs(dy)) {
+		if (abs(dx) > abs(dy)) {
             // Line is mainly horizontal
 
             // slope and intercept of the line: y(x) = k*x + yi
-            double k = dy/dx;
-            double yi = origin.getY()-k*origin.getX();
+			double k = dy / dx;
+			double yi = origin.getY() - k * origin.getX();
 
             // compute coefficients of second order equation
-            double a = 1-k*k;
-            double b = -2*k*yi;
-            double c = -yi*yi-1;
+			double a = 1 - k * k;
+			double b = -2 * k * yi;
+			double c = -yi * yi - 1;
 
-            double delta = b*b-4*a*c;
-            if (delta<=0) {
-                System.out.println(
-                        "Intersection with horizontal line should alays give positive delta");
-                return points;
-            }
+			double delta = b * b - 4 * a * c;
+			if (delta <= 0) {
+				System.out
+						.println("Intersection with horizontal line should alays give positive delta");
+				return points;
+			}
 
             // x coordinate of intersection points
-            double x1 = (-b-Math.sqrt(delta))/(2*a);
-            double x2 = (-b+Math.sqrt(delta))/(2*a);
+			double x1 = (-b - sqrt(delta)) / (2 * a);
+			double x2 = (-b + sqrt(delta)) / (2 * a);
 
             // support line of formatted line
             StraightLine2D support = line2.getSupportingLine();
 
             // check first point is on the line
-            double pos1 = support.project(new Point2D(x1, k*x1+yi));
-            if (line2.contains(support.getPoint(pos1)))
-                points.add(line.getPoint(pos1));
+			double pos1 = support.project(new Point2D(x1, k * x1 + yi));
+			if (line2.contains(support.getPoint(pos1)))
+				points.add(line.getPoint(pos1));
 
-            // check second point is on the line
-            double pos2 = support.project(new Point2D(x2, k*x2+yi));
+			// check second point is on the line
+			double pos2 = support.project(new Point2D(x2, k * x2 + yi));
             if (line2.contains(support.getPoint(pos2)))
                 points.add(line.getPoint(pos2));
 
@@ -470,34 +473,34 @@ implements Conic2D, Cloneable {
             // Line is mainly vertical
 
             // slope and intercept of the line: x(y) = k*y + xi
-            double k = dx/dy;
-            double xi = origin.getX()-k*origin.getY();
+			double k = dx / dy;
+			double xi = origin.getX() - k * origin.getY();
 
-            // compute coefficients of second order equation
-            double a = k*k-1;
-            double b = 2*k*xi;
-            double c = xi*xi-1;
+			// compute coefficients of second order equation
+			double a = k * k - 1;
+			double b = 2 * k * xi;
+			double c = xi * xi - 1;
 
-            double delta = b*b-4*a*c;
-            if (delta<=0) {
-                // No intersection with the hyperbola
-                return points;
-            }
+			double delta = b * b - 4 * a * c;
+			if (delta <= 0) {
+				// No intersection with the hyperbola
+				return points;
+			}
 
-            // x coordinate of intersection points
-            double y1 = (-b-Math.sqrt(delta))/(2*a);
-            double y2 = (-b+Math.sqrt(delta))/(2*a);
+			// x coordinate of intersection points
+			double y1 = (-b - sqrt(delta)) / (2 * a);
+			double y2 = (-b + sqrt(delta)) / (2 * a);
 
             // support line of formatted line
             StraightLine2D support = line2.getSupportingLine();
 
             // check first point is on the line
-            double pos1 = support.project(new Point2D(k*y1+xi, y1));
-            if (line2.contains(support.getPoint(pos1)))
-                points.add(line.getPoint(pos1));
+			double pos1 = support.project(new Point2D(k * y1 + xi, y1));
+			if (line2.contains(support.getPoint(pos1)))
+				points.add(line.getPoint(pos1));
 
-            // check second point is on the line
-            double pos2 = support.project(new Point2D(k*y2+xi, y2));
+			// check second point is on the line
+			double pos2 = support.project(new Point2D(k * y2 + xi, y2));
             if (line2.contains(support.getPoint(pos2)))
                 points.add(line.getPoint(pos2));
         }
@@ -515,12 +518,11 @@ implements Conic2D, Cloneable {
 
     @Override
     public boolean contains(double x, double y) {
-        Point2D point = toLocal(new Point2D(x, y));
-        double xa = point.getX()/a;
-        double yb = point.getY()/b;
-        double res = xa*xa-yb*yb-1;
-        // double res = x*x*b*b - y*y*a*a - a*a*b*b;
-        return Math.abs(res)<1e-6;
+		Point2D point = toLocal(new Point2D(x, y));
+		double xa = point.getX() / a;
+		double yb = point.getY() / b;
+		double res = xa * xa - yb * yb - 1;
+		return abs(res) < 1e-6;
     }
 
     /**
@@ -533,7 +535,7 @@ implements Conic2D, Cloneable {
         result.xc = center.getX();
         result.yc = center.getY();
         //TODO: check convention for transform with indirect transform, see Curve2D.
-        result.direct = this.direct^!trans.isDirect();
+		result.direct = this.direct ^ !trans.isDirect();
         return result;
     }
 
@@ -560,15 +562,15 @@ implements Conic2D, Cloneable {
         Hyperbola2D that = (Hyperbola2D) obj;
 
         // check if each parameter is the same
-        if (Math.abs(that.xc-this.xc)>eps)
+        if (abs(that.xc-this.xc)>eps)
             return false;
-        if (Math.abs(that.yc-this.yc)>eps)
+        if (abs(that.yc-this.yc)>eps)
             return false;
-        if (Math.abs(that.a-this.a)>eps)
+        if (abs(that.a-this.a)>eps)
             return false;
-        if (Math.abs(that.b-this.b)>eps)
+        if (abs(that.b-this.b)>eps)
             return false;
-        if (Math.abs(that.theta-this.theta)>eps)
+        if (abs(that.theta-this.theta)>eps)
             return false;
         if (this.direct!=that.direct)
             return false;
@@ -593,15 +595,15 @@ implements Conic2D, Cloneable {
 
         // check if each parameter is the same
         double eps = 1e-6;
-        if (Math.abs(that.xc-this.xc)>eps)
+        if (abs(that.xc-this.xc)>eps)
             return false;
-        if (Math.abs(that.yc-this.yc)>eps)
+        if (abs(that.yc-this.yc)>eps)
             return false;
-        if (Math.abs(that.a-this.a)>eps)
+        if (abs(that.a-this.a)>eps)
             return false;
-        if (Math.abs(that.b-this.b)>eps)
+        if (abs(that.b-this.b)>eps)
             return false;
-        if (Math.abs(that.theta-this.theta)>eps)
+        if (abs(that.theta-this.theta)>eps)
             return false;
         if (this.direct!=that.direct)
             return false;

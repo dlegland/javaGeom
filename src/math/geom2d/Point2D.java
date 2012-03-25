@@ -38,23 +38,17 @@ import math.geom2d.point.PointArray2D;
 import math.geom2d.point.PointShape2D;
 import math.geom2d.transform.CircleInversion2D;
 
+import static java.lang.Math.*;
+
+
 /**
  * <p>
  * A point in the plane defined by its 2 Cartesian coordinates x and y. The
  * class provides static methods to compute distance between two points.
  * </p>
- * <p>
- * Important note: in a future release, Point2D will not extend
- * <code>java.awt.geom.Point2D.Double<code> any more.
- * </p>
  */
 public class Point2D 
 implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
-
-	// ===================================================================
-	// constants
-
-	private static final long serialVersionUID = 1L;
 
 	// ===================================================================
 	// class variables
@@ -93,7 +87,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @since 0.10.0
 	 */
 	public static Point2D create(Point2D point) {
-		return new Point2D(point.getX(), point.getY());
+		return new Point2D(point.x, point.y);
 	}
 
 	/**
@@ -101,7 +95,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * <code>theta</code>.
 	 */
 	public static Point2D createPolar(double rho, double theta) {
-		return new Point2D(rho*Math.cos(theta), rho*Math.sin(theta));
+		return new Point2D(rho * cos(theta), rho * sin(theta));
 	}
 
 	/**
@@ -109,8 +103,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * <code>theta</code>, from the given point.
 	 */
 	public static Point2D createPolar(Point2D point, double rho, double theta) {
-		return new Point2D(point.getX()+rho*Math.cos(theta), point.getY()+rho
-				*Math.sin(theta));
+		return new Point2D(point.x + rho * cos(theta), point.y + rho * sin(theta));
 	}
 
 	/**
@@ -119,7 +112,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public static Point2D createPolar(double x0, double y0, double rho,
 			double theta) {
-		return new Point2D(x0+rho*Math.cos(theta), y0+rho*Math.sin(theta));
+		return new Point2D(x0 + rho * cos(theta), y0 + rho * sin(theta));
 	}
 
 	/**
@@ -129,7 +122,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the Euclidean distance between p1 and p2.
 	 */
 	public static double getDistance(double x1, double y1, double x2, double y2) {
-		return Math.hypot(x2 - x1, y2 - y1);
+		return hypot(x2 - x1, y2 - y1);
 	}
 
 	/**
@@ -141,7 +134,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the Euclidean distance between p1 and p2.
 	 */
 	public static double getDistance(Point2D p1, Point2D p2) {
-		return Math.hypot(p1.getX() - p2.getX(), p1.getY() - p2.getY()); 
+		return hypot(p1.x - p2.x, p1.y - p2.y); 
 	}
 
 	/**
@@ -151,13 +144,13 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public static boolean isColinear(Point2D p1, Point2D p2, Point2D p3) {
 		double dx1, dx2, dy1, dy2;
-		dx1 = p2.getX()-p1.getX();
-		dy1 = p2.getY()-p1.getY();
-		dx2 = p3.getX()-p1.getX();
-		dy2 = p3.getY()-p1.getY();
+		dx1 = p2.x - p1.x;
+		dy1 = p2.y - p1.y;
+		dx2 = p3.x - p1.x;
+		dy2 = p3.y - p1.y;
 
 		// tests if the two lines are parallel
-		return Math.abs(dx1*dy2-dy1*dx2)<Shape2D.ACCURACY;
+		return Math.abs(dx1 * dy2 - dy1 * dx2) < Shape2D.ACCURACY;
 	}
 
 	/**
@@ -172,26 +165,26 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return +1, 0 or -1, depending on the relative position of the points
 	 */
 	public static int ccw(Point2D p0, Point2D p1, Point2D p2) {
-		double x0 = p0.getX();
-		double y0 = p0.getY();
-		double dx1 = p1.getX()-x0;
-		double dy1 = p1.getY()-y0;
-		double dx2 = p2.getX()-x0;
-		double dy2 = p2.getY()-y0;
+		double x0 = p0.x;
+		double y0 = p0.y;
+		double dx1 = p1.x - x0;
+		double dy1 = p1.y - y0;
+		double dx2 = p2.x - x0;
+		double dy2 = p2.y - y0;
 
-		if (dx1*dy2>dy1*dx2)
+		if (dx1 * dy2 > dy1 * dx2)
 			return +1;
-		if (dx1*dy2<dy1*dx2)
+		if (dx1 * dy2 < dy1 * dx2)
 			return -1;
-		if ((dx1*dx2<0)||(dy1*dy2<0))
+		if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0))
 			return -1;
-		if ((dx1*dx1+dy1*dy1)<(dx2*dx2+dy2*dy2))
+		if (hypot(dx1, dy1) < hypot(dx2, dy2))
 			return +1;
 		return 0;
 	}
 
 	public static Point2D midPoint(Point2D p1, Point2D p2) {
-		return new Point2D((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2);
+		return new Point2D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
 	}
 
 	/**
@@ -203,11 +196,11 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	public static Point2D centroid(Point2D[] points) {
 		int n = points.length;
 		double sx = 0, sy = 0;
-		for (int i = 0; i<n; i++) {
-			sx += points[i].getX();
-			sy += points[i].getY();
+		for (int i = 0; i < n; i++) {
+			sx += points[i].x;
+			sy += points[i].y;
 		}
-		return new Point2D(sx/n, sy/n);
+		return new Point2D(sx / n, sy / n);
 	}
 
 	/**
@@ -223,7 +216,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		int n = points.length;
 
 		// check size of second array
-		if (n!=weights.length) {
+		if (n != weights.length) {
 			throw new RuntimeException("Arrays must have the same size");
 		}
 
@@ -232,13 +225,13 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		double w;
 		for (int i = 0; i<n; i++) {
 			w = weights[i];
-			sx += points[i].getX()*w;
-			sy += points[i].getY()*w;
+			sx += points[i].x * w;
+			sy += points[i].y * w;
 			sw += w;
 		}
 
 		// compute weighted average of each coordinate
-		return new Point2D(sx/sw, sy/sw);
+		return new Point2D(sx / sw, sy / sw);
 	}
 
 	/**
@@ -251,8 +244,8 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		int n = points.size();
 		double sx = 0, sy = 0;
 		for (Point2D point : points) {
-			sx += point.getX();
-			sy += point.getY();
+			sx += point.x;
+			sy += point.y;
 		}
 		return new Point2D(sx/n, sy/n);
 	}
@@ -267,8 +260,8 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public static Point2D centroid(Point2D pt1,	Point2D pt2, Point2D pt3) {
 		return new Point2D(
-				(pt1.getX()+pt2.getX()+pt3.getX())/3, 
-				(pt1.getY()+pt2.getY()+pt3.getY())/3);
+				(pt1.x + pt2.x + pt3.x) / 3, 
+				(pt1.y + pt2.y + pt3.y) / 3);
 	}
 
 	// ===================================================================
@@ -301,7 +294,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * Constructs a new Point2D by copying coordinates of given javageom point.
+	 * Constructs a new Point2D by copying coordinates of given point.
 	 */
 	public Point2D(Point2D point) {
 		this(point.x, point.y);
@@ -311,19 +304,19 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// Methods specific to Point2D
 
 	public Point2D plus(Point2D p) {
-		return new Point2D(this.x + p.getX(), this.y + p.getY());
+		return new Point2D(this.x + p.x, this.y + p.y);
 	}
 
 	public Point2D plus(Vector2D v) {
-		return new Point2D(this.x + v.getX(), this.y + v.getY());
+		return new Point2D(this.x + v.x, this.y + v.y);
 	}
 
 	public Point2D minus(Point2D p) {
-		return new Point2D(this.x - p.getX(), this. y -p.getY());
+		return new Point2D(this.x - p.x, this. y -p.y);
 	}
 
 	public Point2D minus(Vector2D v) {
-		return new Point2D(this.x - v.getX(), this.y - v.getY());
+		return new Point2D(this.x - v.x, this.y - v.y);
 	}
 
 	/**
@@ -345,7 +338,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the scaled point
 	 */
 	public Point2D scale(double kx, double ky) {
-		return new Point2D(this.x*kx, this.y*ky);
+		return new Point2D(this.x * kx, this.y * ky);
 	}
 
 	/**
@@ -355,35 +348,36 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @return the scaled point
 	 */
 	public Point2D scale(double k) {
-		return new Point2D(this.x*k, this.y*k);
+		return new Point2D(this.x * k, this.y * k);
 	}
 
 	/**
 	 * Rotates the point by a given angle around the origin.
 	 * 
-	 * @param theta the angle of rotation
+	 * @param theta the angle of rotation, in radians
 	 * @return the rotated point.
 	 */
 	public Point2D rotate(double theta) {
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		return new Point2D(x*cot-y*sit, x*sit+y*cot);
+		double cot = cos(theta);
+		double sit = sin(theta);
+		return new Point2D(x * cot - y * sit, x * sit + y * cot);
 	}
 
 	/**
 	 * Rotates the point by a given angle around an arbitrary center.
 	 * 
 	 * @param center the center of the rotation
-	 * @param theta the angle of rotation
+	 * @param theta the angle of rotation, in radians
 	 * @return the rotated point.
 	 */
 	public Point2D rotate(Point2D center, double theta) {
-		double cx = center.getX();
-		double cy = center.getY();
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
-		return new Point2D(x*cot-y*sit+(1-cot)*cx+sit*cy, x*sit+y*cot+(1-cot)
-				*cy-sit*cx);
+		double cx = center.x;
+		double cy = center.y;
+		double cot = cos(theta);
+		double sit = sin(theta);
+		return new Point2D(
+				x * cot - y * sit + (1 - cot) * cx + sit * cy, 
+				x * sit + y * cot + (1 - cot) * cy - sit * cx);
 	}
 
 	// ===================================================================
@@ -433,8 +427,8 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D getBuffer(double dist) {
-		return new GenericCirculinearDomain2D(new Circle2D(this,
-				Math.abs(dist), dist > 0));
+		return new GenericCirculinearDomain2D(
+				new Circle2D(this, Math.abs(dist), dist > 0));
 	}
 
 	/*
@@ -485,7 +479,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Computes the distance between this and the point <code>point</code>.
 	 */
 	public double getDistance(Point2D point) {
-		return getDistance(point.getX(), point.getY());
+		return getDistance(point.x, point.y);
 	}
 
 	/**
@@ -494,7 +488,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * better robustness than simple square root.
 	 */
 	public double getDistance(double x, double y) {
-		return Math.hypot(getX()-x, getY()-y);
+		return hypot(this.x - x, this.y - y);
 	}
 
 	/**
@@ -561,7 +555,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * limits are point coordinates.
 	 */
 	public Box2D getBoundingBox() {
-		return new Box2D(getX(), getX(), getY(), getY());
+		return new Box2D(x, x, y, y);
 	}
 
 	/**
@@ -569,7 +563,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public Point2D transform(AffineTransform2D trans) {
 		double[] tab = trans.getCoefficients();
-		return new Point2D(x*tab[0]+y*tab[1]+tab[2], x*tab[3]+y*tab[4]+tab[5]);
+		return new Point2D(
+				x * tab[0] + y * tab[1] + tab[2], 
+				x * tab[3] + y * tab[4] + tab[5]);
 	}
 
 	// ===================================================================
@@ -592,7 +588,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param g2 the graphics to draw the point
 	 */
 	public void draw(Graphics2D g2, double r) {
-		g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, 2*r, 2*r));
+		g2.fill(new java.awt.geom.Ellipse2D.Double(x - r, y - r, 2 * r, 2 * r));
 	}
 
 	// ===================================================================
