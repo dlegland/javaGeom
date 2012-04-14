@@ -41,8 +41,9 @@ import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.HRectangle2D;
 import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.Polygon2D;
+import math.geom2d.polygon.Polygon2DUtils;
 
 import static java.lang.Math.*;
 
@@ -542,17 +543,16 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return an instance of java.awt.geom.Rectangle2D
      */
     public java.awt.geom.Rectangle2D getAsAWTRectangle2D() {
-		return new HRectangle2D(xmin, ymin, xmax - xmin, ymax - ymin);
+		return new java.awt.geom.Rectangle2D.Double(xmin, ymin, xmax - xmin, ymax - ymin);
 	}
 
     /**
-     * Converts to a rectangle. Result is an instance of HRectangle, which
-     * extends java.awt.geom.Rectangle2D.Double.
+     * Converts to a rectangle. 
      * 
      * @return an instance of HRectangle2D
      */
-    public HRectangle2D getAsRectangle() {
-        return new HRectangle2D(xmin, ymin, xmax-xmin, ymax-ymin);
+    public Polygon2D getAsRectangle() {
+        return Polygon2DUtils.createRectangle(xmin, ymin, xmax, ymax);
     }
 
     public void draw(Graphics2D g2) {

@@ -4,6 +4,8 @@
 
 package math.geom2d.polygon;
 
+import static java.lang.Math.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,6 +31,42 @@ import com.seisw.util.geom.PolySimple;
  * @author dlegland
  */
 public final class Polygon2DUtils {
+
+	/**
+	 * Creates a new polygon representing a rectangle with edges parallel to
+	 * the main directions, and having the two specified opposite corners.
+	 * @since 0.10.3
+	 */
+	public final static SimplePolygon2D createRectangle(Point2D p1, Point2D p2) {
+		// corners coordinates
+    	double x1 = p1.getX();
+    	double y1 = p1.getY();
+    	double x2 = p2.getX();
+    	double y2 = p2.getY();
+
+    	return createRectangle(x1, y1, x2, y2);
+	}
+
+	/**
+	 * Creates a new polygon representing a rectangle with edges parallel to
+	 * the main directions, and having the two specified opposite corners.
+	 * @since 0.10.3
+	 */
+	public final static SimplePolygon2D createRectangle(double x1, double y1, 
+			double x2, double y2) {
+		// extremes coordinates
+        double xmin = min(x1, x2);
+        double xmax = max(x1, x2);
+        double ymin = min(y1, y2);
+        double ymax = max(y1, y2);
+ 
+		// create result polygon
+		return new SimplePolygon2D(
+				new Point2D(xmin, ymin),
+				new Point2D(xmax, ymin),
+				new Point2D(xmax, ymax),
+				new Point2D(xmin, ymax)	);
+	}
 
 	/**
 	 * Creates a new polygon representing a rectangle centered around a point. 
@@ -74,8 +112,8 @@ public final class Polygon2DUtils {
 		double wid = width / 2;
 		
 		// Pre-compute angle quantities
-		double cot = Math.cos(theta);
-		double sit = Math.sin(theta);
+		double cot = cos(theta);
+		double sit = sin(theta);
 		
 		// Create resulting rotated rectangle
 		return new SimplePolygon2D(new Point2D[]{
@@ -97,7 +135,7 @@ public final class Polygon2DUtils {
     		return computeCentroid(ring);
     	}
     	
-    	double xc =0;
+    	double xc = 0;
     	double yc = 0;
     	double area;
     	double cumArea = 0;
@@ -233,15 +271,15 @@ public final class Polygon2DUtils {
             // second vertex of current edge
             y2 = current.getY();
             
-            if (y1<=y) {
-                if (y2>y) // an upward crossing
-                    if (isLeft(previous, current, point)>0)
-                        wn++;
-            } else {
-                if (y2<=y) // a downward crossing
-                    if (isLeft(previous, current, point)<0)
-                        wn--;
-            }
+			if (y1 <= y) {
+				if (y2 > y) // an upward crossing
+					if (isLeft(previous, current, point) > 0)
+						wn++;
+			} else {
+				if (y2 <= y) // a downward crossing
+					if (isLeft(previous, current, point) < 0)
+						wn--;
+			}
 
             // for next iteration
             y1 = y2;

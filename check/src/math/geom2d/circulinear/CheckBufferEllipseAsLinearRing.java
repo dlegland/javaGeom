@@ -31,7 +31,7 @@ public class CheckBufferEllipseAsLinearRing extends JPanel{
 	public CheckBufferEllipseAsLinearRing(){
 		
 		ellipse = new Ellipse2D(300, 200, 200, 100, Math.PI/6);
-		ring = (LinearRing2D) ellipse.getAsPolyline(60);
+		ring = ellipse.getAsPolyline(60);
 	}
 	
 	public void paintComponent(Graphics g){
