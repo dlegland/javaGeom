@@ -39,13 +39,14 @@ import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.polygon.LinearRing2D;
 
 // Imports
 
 /**
  * An ellipse in the plane. It is defined by the center, the orientation angle,
  * and the lengths of the two axis. No convention is taken about lengths of
- * semiaxis : the second semi axis can be greater than the first one.
+ * semiaxis: the second semi axis can be greater than the first one.
  */
 public class Ellipse2D extends AbstractSmoothCurve2D
 implements SmoothContour2D, Conic2D, Cloneable {
@@ -157,21 +158,21 @@ implements SmoothContour2D, Conic2D, Cloneable {
 			"Second conic coefficient should be zero";
         
         // extract major and minor axis lengths, ensuring r1 is greater
-        double r1, r2;
-        if (coefs2[0]<coefs2[2]) {
-            r1 = sqrt(f/coefs2[0]);
-            r2 = sqrt(f/coefs2[2]);
-        } else {
-            r1 = sqrt(f/coefs2[2]);
-            r2 = sqrt(f/coefs2[0]);
-            theta = Angle2D.formatAngle(theta+PI/2);
-            theta = Math.min(theta, Angle2D.formatAngle(theta+PI));
-        }
+		double r1, r2;
+		if (coefs2[0] < coefs2[2]) {
+			r1 = sqrt(f / coefs2[0]);
+			r2 = sqrt(f / coefs2[2]);
+		} else {
+			r1 = sqrt(f / coefs2[2]);
+			r2 = sqrt(f / coefs2[0]);
+			theta = Angle2D.formatAngle(theta + PI / 2);
+			theta = Math.min(theta, Angle2D.formatAngle(theta + PI));
+		}
 
-        // If both semi-axes are equal, return a circle
-        if (abs(r1-r2)<Shape2D.ACCURACY)
-            return new Circle2D(0, 0, r1);
-        
+		// If both semi-axes are equal, return a circle
+		if (abs(r1 - r2) < Shape2D.ACCURACY)
+			return new Circle2D(0, 0, r1);
+
         // return the reduced ellipse
         return new Ellipse2D(0, 0, r1, r2, theta);
     }
@@ -216,20 +217,20 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // ===================================================================
     // class variables
 
-    /** coordinate of center. */
+    /** Coordinate of center. */
     protected double  xc;
     protected double  yc;
 
-    /** length of major semi-axis */
+    /** Length of major semi-axis. Should be always positive. */
     protected double  r1;
     
-    /** length of minor semi-axis */
+    /** Length of minor semi-axis. Should be always positive. */
     protected double  r2;
 
-    /** orientation of major semi-axis */
+    /** Orientation of major semi-axis, in radians, between 0 and 2*PI. */
     protected double  theta  = 0;
 
-    /** directed ellipse or not */
+    /** Directed ellipse or not */
     protected boolean direct = true;
 
     // ===================================================================
@@ -307,8 +308,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public double getRho(double angle) {
 		double cot = cos(angle - theta);
 		double sit = cos(angle - theta);
-		return sqrt(r1 * r1 * r2 * r2
-				/ (r2 * r2 * cot * cot + r1 * r1 * sit * sit));
+		return r1 * r2 / hypot(r2 * cot, r1 * sit);
     }
 
     public Point2D getProjectedPoint(Point2D point) {
@@ -476,7 +476,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 			b = ae / coeff;
 			double dR = r - cPhi * b;
 			double dZ = z - sPhi * b * g2;
-			k = sqrt(dR * dR + dZ * dZ);
+			k = hypot(dR, dZ);
 			if (inside) {
 				k = -k;
 			}
@@ -490,7 +490,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
             }
         }
 
-        return null;
+		System.out.println("Ellipse.getProjectedVector() did not converge");
+        return Vector2D.createPolar(k, phi);
     }
 
     /**
@@ -710,11 +711,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
     }
 
     public double getSignedDistance(Point2D point) {
-        Vector2D vector = this.getProjectedVector(point, 1e-10);
-        if (isInside(point))
-            return -vector.getNorm();
-        else
-            return vector.getNorm();
+//        Vector2D vector = this.getProjectedVector(point, 1e-10);
+//        if (isInside(point))
+//            return -vector.getNorm();
+//        else
+//            return vector.getNorm();
+    	double dist = this.getAsPolyline(180).getDistance(point);
+    	return isInside(point) ? -dist : dist;
     }
 
     public double getSignedDistance(double x, double y) {
@@ -762,6 +765,25 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return true;
     }
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
+	 */
+	public LinearRing2D getAsPolyline(int n) {
+
+        // compute start and increment values
+		double t0 = this.getT0();
+		double dt = (this.getT1() - t0) / n;
+
+        // compute position of points, without the last one, 
+        // which is included by default with linear rings
+        Point2D[] points = new Point2D[n];
+		for (int i = 0; i < n; i++)
+			points[i] = this.getPoint(t0 + i * dt);
+
+        return new LinearRing2D(points);
+	}
+	
+	
     // ===================================================================
     // methods of Curve2D interface
 
@@ -920,7 +942,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public double getDistance(Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
         // return abs(vector.getRho());
-        return this.getAsPolyline(128).getDistance(point);
+        return this.getAsPolyline(180).getDistance(point);
     }
 
     public double getDistance(double x, double y) {

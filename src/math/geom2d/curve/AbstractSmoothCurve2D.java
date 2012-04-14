@@ -38,6 +38,13 @@ implements SmoothCurve2D, Cloneable {
     }
     
 	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getNormal(double)
+	 */
+    public Vector2D getNormal(double t){
+    	return this.getTangent(t).rotate(-Math.PI / 2);
+    }
+    
+	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
 	 */
 	public Collection<? extends SmoothCurve2D> getSmoothPieces() {

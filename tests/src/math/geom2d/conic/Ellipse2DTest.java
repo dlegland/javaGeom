@@ -250,6 +250,15 @@ public class Ellipse2DTest extends TestCase {
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
 		assertEquals(el1.getDistance(new Point2D(30, 0)), 10, Shape2D.ACCURACY);
 		assertEquals(el1.getDistance(new Point2D(0, 20)), 10, Shape2D.ACCURACY);
+		
+		double pos = .3;
+		Point2D p0 = el1.getPoint(pos);
+		Vector2D v0 = el1.getNormal(pos);
+		
+		double d = 6;
+		Point2D p1 = p0.plus(v0.getNormalizedVector().times(d));
+		double dist = p1.getDistance(p0);
+		assertEquals(d, dist, 1e-6);
 	}
 	
 	/**
