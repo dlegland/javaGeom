@@ -48,7 +48,9 @@ import math.geom2d.transform.CircleInversion2D;
  * can not be rotated, contrary to Rectangle2D. This class is actually simply a
  * wrapper of class <code>java.awt.geom.Rectangle2D.Double</code> with
  * interface <code>AbstractPolygon</code>.
+ * @deprecated since 0.10.3
  */
+@Deprecated
 public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         Polygon2D {
 

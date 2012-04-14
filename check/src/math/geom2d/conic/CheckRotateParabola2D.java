@@ -63,10 +63,10 @@ public class CheckRotateParabola2D extends JPanel{
 			
 
 		g2.setColor(Color.BLACK);
-		g2.draw(box.getAsRectangle());
+		box.draw(g2);
 
-		for(int i=0; i<8; i++){
-			double theta = i*Math.PI*2/8;
+		for (int i = 0; i < 8; i++) {
+			double theta = i * Math.PI / 4;
 			AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 			Parabola2D rotated = parabola.transform(rot);
 

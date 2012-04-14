@@ -65,7 +65,7 @@ public class CheckPolygon2D_Clip extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 	
 		g2.setColor(Color.BLUE);
-		g2.draw(box.getAsRectangle());
+		box.draw(g2);
 
 		
 		Boundary2D boundary = polygon.getBoundary();

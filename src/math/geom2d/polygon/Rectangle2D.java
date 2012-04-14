@@ -45,7 +45,9 @@ import math.geom2d.transform.CircleInversion2D;
 
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
+ * @deprecated since 0.10.3
  */
+@Deprecated
 public class Rectangle2D implements Polygon2D {
 
     // ===================================================================

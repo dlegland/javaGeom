@@ -33,7 +33,9 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.polygon.HRectangle2D;
+import math.geom2d.polygon.Polygon2D;
+
+import static math.geom2d.polygon.Polygon2DUtils.*;
 
 
 public class CheckBox2D_ClipBoundary extends JPanel{
@@ -80,18 +82,18 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 		g2.fillRect(x0, y0, w*sx*4, h*sy*4);
 		
 		g2.setColor(Color.BLACK);
-		new HRectangle2D(0, 0, 4*w, 4*h).transform(user2Display).draw(g2);
-		new HRectangle2D(w, 0, 2*w, 4*h).transform(user2Display).draw(g2);
-		new HRectangle2D(w, 0, 1*w, 4*h).transform(user2Display).draw(g2);
-		new HRectangle2D(0, h, 4*w, 2*h).transform(user2Display).draw(g2);
-		new HRectangle2D(0, h, 4*w, 1*h).transform(user2Display).draw(g2);
+		createRectangle(0, 0, 4*w, 4*h).transform(user2Display).draw(g2);
+		createRectangle(w, 0, 3*w, 4*h).transform(user2Display).draw(g2);
+		createRectangle(w, 0, 2*w, 4*h).transform(user2Display).draw(g2);
+		createRectangle(0, h, 4*w, 3*h).transform(user2Display).draw(g2);
+		createRectangle(0, h, 4*w, 2*h).transform(user2Display).draw(g2);
 		
 		g2.setColor(Color.BLUE);
 		Box2D box;
 		AffineTransform2D tra;
 		
 		Box2D clip;
-		HRectangle2D rect;
+		Polygon2D rect;
 		for(int y=0; y<4; y++)
 			for(int x=0; x<4; x++){
 				box = boxes[y][x];
@@ -103,8 +105,7 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 				g2.setColor(Color.BLUE);
 				rect.transform(tra).transform(user2Display).draw(g2);
 				g2.setColor(Color.LIGHT_GRAY);
-				clippingBox.getAsRectangle().transform(tra).
-				transform(user2Display).draw(g2);
+				clippingBox.getAsRectangle().transform(tra).transform(user2Display).draw(g2);
 			}
 		
 //		Shape2D bnd;

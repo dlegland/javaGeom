@@ -32,6 +32,7 @@ import math.geom2d.Shape2D;
 /**
  * @author Legland
  */
+@Deprecated
 public class Rectangle2DTest extends TestCase {
 
 	/**
