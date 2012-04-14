@@ -90,6 +90,22 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
+     * Creates a vertical straight line through the given point.
+     * @since 0.10.3
+     */
+    public static StraightLine2D createHorizontal(Point2D origin) {
+        return new StraightLine2D(origin, new Vector2D(1, 0));
+    }
+
+    /**
+     * Creates a vertical straight line through the given point.
+     * @since 0.10.3
+     */
+    public static StraightLine2D createVertical(Point2D origin) {
+        return new StraightLine2D(origin, new Vector2D(0, 1));
+    }
+
+    /**
      * Creates a median between 2 points.
      * 
      * @param p1 one point
@@ -125,10 +141,11 @@ public class StraightLine2D extends AbstractLine2D implements
     public static StraightLine2D createParallel(LinearShape2D linear,
             double d) {
         StraightLine2D line = linear.getSupportingLine();
-        double dd = Math.hypot(line.dx, line.dy);
-        return new StraightLine2D(line.x0+line.dy*d/dd, line.y0-line.dx*d/dd,
-                line.dx, line.dy);
-    }
+        double d2 = d / Math.hypot(line.dx, line.dy);
+		return new StraightLine2D(
+				line.x0 + line.dy * d2, line.y0 - line.dx * d2, 
+				line.dx, line.dy);
+	}
 
     /**
      * Return a new Straight line, perpendicular to a straight object (ray,
@@ -232,9 +249,9 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     public StraightLine2D(double a, double b, double c) {
         this(0, 0, 1, 0);
-        double d = a*a+b*b;
-        x0 = -a*c/d;
-        y0 = -b*c/d;
+		double d = a * a + b * b;
+		x0 = -a * c / d;
+		y0 = -b * c / d;
         double theta = Math.atan2(-a, b);
         dx = Math.cos(theta);
         dy = Math.sin(theta);
