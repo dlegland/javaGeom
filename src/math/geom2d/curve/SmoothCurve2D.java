@@ -40,6 +40,8 @@ public interface SmoothCurve2D extends ContinuousCurve2D {
 
     public abstract Vector2D getTangent(double t);
 
+    public abstract Vector2D getNormal(double t);
+
     public abstract SmoothCurve2D getReverseCurve();
 
     public abstract SmoothCurve2D getSubCurve(double t0, double t1);

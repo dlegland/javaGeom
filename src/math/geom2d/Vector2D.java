@@ -290,6 +290,18 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 		return new Vector2D(this.x * k, this.y * k);
 	}
     
+	/**
+	 * Rotates the vector by the given angle.
+	 * @param theta the angle of rotation, in radians counter-clockwise
+	 */
+	public Vector2D rotate(double theta) {
+		double cot = cos(theta);
+		double sit = sin(theta);
+		double x2 = x * cot - y * sit; 
+		double y2 = x * sit + y * cot;
+		return new Vector2D(x2, y2);
+	}
+	
     /**
      * Transform the vector, by using only the first 4 parameters of the
      * transform. Translation of a vector returns the same vector.
