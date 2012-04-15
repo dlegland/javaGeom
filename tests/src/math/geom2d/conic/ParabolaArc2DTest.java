@@ -59,19 +59,19 @@ public class ParabolaArc2DTest extends TestCase {
 		Point2D p0;
 		
 		// origin
-		p0 = arc.getPoint(0);
+		p0 = arc.point(0);
 		assertEquals(p0, new Point2D(0, 0));
 
 		// after origin
-		p0 = arc.getPoint(1);
+		p0 = arc.point(1);
 		assertEquals(p0, new Point2D(1, 1));
-		p0 = arc.getPoint(2);
+		p0 = arc.point(2);
 		assertEquals(p0, new Point2D(2, 4));
 		
 		// before origin
-		p0 = arc.getPoint(-1);
+		p0 = arc.point(-1);
 		assertEquals(p0, new Point2D(-1, 1));
-		p0 = arc.getPoint(-2);
+		p0 = arc.point(-2);
 		assertEquals(p0, new Point2D(-2, 4));
 
 
@@ -79,19 +79,19 @@ public class ParabolaArc2DTest extends TestCase {
 		arc = new ParabolaArc2D(new Parabola2D(0, 0, 1, -Math.PI/2), -5, 5);	
 
 		// origin
-		p0 = arc.getPoint(0);
+		p0 = arc.point(0);
 		assertEquals(p0, new Point2D(0, 0));
 
 		// after origin
-		p0 = arc.getPoint(1);
+		p0 = arc.point(1);
 		assertEquals(p0, new Point2D(1, -1));
-		p0 = arc.getPoint(2);
+		p0 = arc.point(2);
 		assertEquals(p0, new Point2D(4, -2));
 
 		// before origin
-		p0 = arc.getPoint(-1);
+		p0 = arc.point(-1);
 		assertEquals(p0, new Point2D(1, 1));
-		p0 = arc.getPoint(-2);
+		p0 = arc.point(-2);
 		assertEquals(p0, new Point2D(4, 2));
 
 
@@ -99,19 +99,19 @@ public class ParabolaArc2DTest extends TestCase {
 		arc = new ParabolaArc2D(new Parabola2D(20, 10, 1, -Math.PI/2), -5, 5);	
 
 		// origin
-		p0 = arc.getPoint(0);
+		p0 = arc.point(0);
 		assertEquals(p0, new Point2D(20, 10));
 
 		// after origin
-		p0 = arc.getPoint(1);
+		p0 = arc.point(1);
 		assertEquals(p0, new Point2D(20+1, 10-1));
-		p0 = arc.getPoint(2);
+		p0 = arc.point(2);
 		assertEquals(p0, new Point2D(20+4, 10-2));
 
 		// before origin
-		p0 = arc.getPoint(-1);
+		p0 = arc.point(-1);
 		assertEquals(p0, new Point2D(20+1, 10+1));
-		p0 = arc.getPoint(-2);
+		p0 = arc.point(-2);
 		assertEquals(p0, new Point2D(20+4, 10+2));
 	}
 
@@ -119,7 +119,7 @@ public class ParabolaArc2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		ParabolaArc2D parabolaArc = new ParabolaArc2D(parabola, -10, 10);
 		
-		Polyline2D polyline = parabolaArc.getAsPolyline(4);
+		Polyline2D polyline = parabolaArc.asPolyline(4);
 		assertTrue(polyline.getPointArray().length==5);
 	}
 	
@@ -140,10 +140,10 @@ public class ParabolaArc2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		
 		Point2D point1 = new Point2D(-2, 4);
-		assertEquals(parabola.getPosition(point1), -2, Shape2D.ACCURACY);
+		assertEquals(parabola.position(point1), -2, Shape2D.ACCURACY);
 		
 		Point2D point2 = new Point2D(2, 4);
-		assertEquals(parabola.getPosition(point2), 2, Shape2D.ACCURACY);
+		assertEquals(parabola.position(point2), 2, Shape2D.ACCURACY);
 		
 	}
 
@@ -158,17 +158,17 @@ public class ParabolaArc2DTest extends TestCase {
 		
 		// Horizontal line cutting in two points
 		line = new StraightLine2D(10, 4, -20, 0);		
-		inters = arc.getIntersections(line);
+		inters = arc.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		inter = iter.next();
 		assertEquals(inter, new Point2D(-2, 4));
 		assertTrue(arc.contains(inter));
-		assertEquals(arc.getPosition(inter), -2, Shape2D.ACCURACY);
+		assertEquals(arc.position(inter), -2, Shape2D.ACCURACY);
 		inter = iter.next();
 		assertEquals(inter, new Point2D(2, 4));
 		assertTrue(arc.contains(inter));
-		assertEquals(arc.getPosition(inter), 2, Shape2D.ACCURACY);
+		assertEquals(arc.position(inter), 2, Shape2D.ACCURACY);
 	}
 	
 	public void testClipLine2D(){
@@ -180,9 +180,9 @@ public class ParabolaArc2DTest extends TestCase {
 		StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
 	
 		CurveSet2D<?> clippedCurve = Curve2DUtils.clipSmoothCurve(arc, line);
-		Curve2D curve = clippedCurve.getFirstCurve();
+		Curve2D curve = clippedCurve.firstCurve();
 		
-		assertTrue(clippedCurve.getCurveNumber()==1);
+		assertTrue(clippedCurve.curveNumber()==1);
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(clippedArc.equals(curve));		
 	}
@@ -262,26 +262,26 @@ public class ParabolaArc2DTest extends TestCase {
 		double eps = 1e-12;
 		
 		pt = new Point2D(0, 2);
-		assertEquals(arc.getWindingAngle(pt), Math.PI, eps);
+		assertEquals(arc.windingAngle(pt), Math.PI, eps);
 		
 		pt = new Point2D(-1, 4);
-		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
 		
 		pt = new Point2D(2, 1);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
 		
 		
 		parabola = new Parabola2D(0, 0, 1, Math.PI);
 		arc = new ParabolaArc2D(parabola, -1, 2);
 		
 		pt = new Point2D(0, -2);
-		assertEquals(arc.getWindingAngle(pt), Math.PI, eps);
+		assertEquals(arc.windingAngle(pt), Math.PI, eps);
 		
 		pt = new Point2D(1, -4);
-		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
 		
 		pt = new Point2D(-2, -1);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);		
+		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);		
 	}
 	
 	public void testGetWindingAnglePoint2D_Inverse(){
@@ -291,26 +291,26 @@ public class ParabolaArc2DTest extends TestCase {
 		double eps = 1e-12;
 		
 		pt = new Point2D(0, -2);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI, eps);
+		assertEquals(arc.windingAngle(pt), -Math.PI, eps);
 		
 		pt = new Point2D(1, -4);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
 		
 		pt = new Point2D(-2, -1);
-		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
 		
 		
 		parabola = new Parabola2D(0, 0, -1, Math.PI);
 		arc = new ParabolaArc2D(parabola, -2, 1);
 		
 		pt = new Point2D(0, 2);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI, eps);
+		assertEquals(arc.windingAngle(pt), -Math.PI, eps);
 		
 		pt = new Point2D(-1, 4);
-		assertEquals(arc.getWindingAngle(pt), -Math.PI/2, eps);
+		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
 		
 		pt = new Point2D(2, 1);
-		assertEquals(arc.getWindingAngle(pt), Math.PI/2, eps);		
+		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);		
 	}
 	
 	public void testClone() {

@@ -95,8 +95,8 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return true if the vectors are colinear
      */
 	public static boolean isColinear(Vector2D v1, Vector2D v2) {
-		v1 = v1.getNormalizedVector();
-		v2 = v2.getNormalizedVector();
+		v1 = v1.normalize();
+		v2 = v2.normalize();
 		return abs(v1.x * v2.y - v1.y * v2.x) < Shape2D.ACCURACY;
 	}
 
@@ -106,8 +106,8 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return true if the vectors are orthogonal
      */
     public static boolean isOrthogonal(Vector2D v1, Vector2D v2) {
-        v1 = v1.getNormalizedVector();
-		v2 = v2.getNormalizedVector();
+        v1 = v1.normalize();
+		v2 = v2.normalize();
 		return abs(v1.x * v2.x + v1.y * v2.y) < Shape2D.ACCURACY;
 	}
 
@@ -172,7 +172,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * 
      * @return the vector opposite to <code>this</code>.
      */
-    public Vector2D getOpposite() {
+    public Vector2D opposite() {
         return new Vector2D(-this.x, -this.y);
     }
 
@@ -181,7 +181,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * 
      * @return the euclidean norm of the vector
      */
-    public double getNorm() {
+    public double norm() {
         return hypot(x, y);
     }
 
@@ -190,24 +190,15 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * 
      * @return the horizontal angle of the vector
      */
-    public double getAngle() {
-        return Angle2D.getHorizontalAngle(this);
+    public double angle() {
+        return Angle2D.horizontalAngle(this);
     }
-
-    /**
-     * Normalizes the vector, such that its norms becomes 1.
-     */
-	public void normalize() {
-		double r = hypot(this.x, this.y);
-		this.x = this.x / r;
-		this.y = this.y / r;
-	}
 
     /**
      * Returns the vector with same direction as this one, but with norm equal
      * to 1.
      */
-	public Vector2D getNormalizedVector() {
+	public Vector2D normalize() {
 		double r = hypot(this.x, this.y);
 		return new Vector2D(this.x / r, this.y / r);
 	}
@@ -310,7 +301,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * @return the transformed vector.
      */
     public Vector2D transform(AffineTransform2D trans) {
-		double[] tab = trans.getCoefficients();
+		double[] tab = trans.coefficients();
 		return new Vector2D(x * tab[0] + y * tab[1], x * tab[3] + y * tab[4]);
 	}
 

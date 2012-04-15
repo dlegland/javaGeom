@@ -74,10 +74,10 @@ public class CubicBezierCurve2DTest extends TestCase {
 		double[][] tab = bezier1.getParametric();
 		
 		CubicBezierCurve2D bezier2 = new CubicBezierCurve2D(tab);
-		assertTrue(p1.equals(bezier2.getFirstPoint()));
+		assertTrue(p1.equals(bezier2.firstPoint()));
 		assertTrue(p2.equals(bezier2.getControl1()));
 		assertTrue(p3.equals(bezier2.getControl2()));
-		assertTrue(p4.equals(bezier2.getLastPoint()));
+		assertTrue(p4.equals(bezier2.lastPoint()));
 		
 		p1 = new Point2D(100, 100);
 		p2 = new Point2D(100, 200);
@@ -88,10 +88,10 @@ public class CubicBezierCurve2DTest extends TestCase {
 		tab = bezier1.getParametric();		
 		bezier2 = new CubicBezierCurve2D(tab);
 		
-		assertTrue(p1.equals(bezier2.getFirstPoint()));
+		assertTrue(p1.equals(bezier2.firstPoint()));
 		assertTrue(p2.equals(bezier2.getControl1()));
 		assertTrue(p3.equals(bezier2.getControl2()));
-		assertTrue(p4.equals(bezier2.getLastPoint()));
+		assertTrue(p4.equals(bezier2.lastPoint()));
 	}
 	
 
@@ -106,11 +106,11 @@ public class CubicBezierCurve2DTest extends TestCase {
 		
 		CubicBezierCurve2D bezier1 = new CubicBezierCurve2D(p1, p2, p3, p4);
 		
-		assertEquals(bezier1.getPoint(0), p1);
-		assertEquals(bezier1.getPoint(1./3.), new Point2D(7./27., 2./3.));
-		assertEquals(bezier1.getPoint(.5), new Point2D(.5, .75));
-		assertEquals(bezier1.getPoint(2./3.), new Point2D(20./27., 2./3.));
-		assertEquals(bezier1.getPoint(1), p4);
+		assertEquals(bezier1.point(0), p1);
+		assertEquals(bezier1.point(1./3.), new Point2D(7./27., 2./3.));
+		assertEquals(bezier1.point(.5), new Point2D(.5, .75));
+		assertEquals(bezier1.point(2./3.), new Point2D(20./27., 2./3.));
+		assertEquals(bezier1.point(1), p4);
 	}
 		
 	public void testGetTangent(){
@@ -120,9 +120,9 @@ public class CubicBezierCurve2DTest extends TestCase {
 		Point2D p4 = new Point2D(1, 0);		
 		CubicBezierCurve2D bezier1 = new CubicBezierCurve2D(p1, p2, p3, p4);
 		
-		Vector2D vect0 = bezier1.getTangent(0);
+		Vector2D vect0 = bezier1.tangent(0);
 		assertEquals(vect0, new Vector2D(0, 3));
-		Vector2D vect1 = bezier1.getTangent(1);
+		Vector2D vect1 = bezier1.tangent(1);
 		assertEquals(vect1, new Vector2D(0, -3));
 	}
 	
@@ -137,8 +137,8 @@ public class CubicBezierCurve2DTest extends TestCase {
 //		System.out.println(bezier1.getPosition(p2));
 //		System.out.println(bezier1.getPosition(p3));
 //		System.out.println(bezier1.getPosition(p4));
-		assertEquals(bezier1.getPosition(p1), 0, 1e-6);
-		assertEquals(bezier1.getPosition(p4), 1, 1e-6);		
+		assertEquals(bezier1.position(p1), 0, 1e-6);
+		assertEquals(bezier1.position(p4), 1, 1e-6);		
 	}
 	
 	public void testGetDistance(){
@@ -149,8 +149,8 @@ public class CubicBezierCurve2DTest extends TestCase {
 		
 		CubicBezierCurve2D bezier1 = new CubicBezierCurve2D(p1, p2, p3, p4);
 
-		assertEquals(bezier1.getDistance(p1), 0, 1e-10);
-		assertEquals(bezier1.getDistance(p4), 0, 1e-10);
+		assertEquals(bezier1.distance(p1), 0, 1e-10);
+		assertEquals(bezier1.distance(p4), 0, 1e-10);
 	}
 	
 	public void testClone(){

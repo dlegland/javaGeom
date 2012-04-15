@@ -37,7 +37,7 @@ public class CheckGetBufferTwoLineSegments extends JPanel{
 		
 		curve = CirculinearCurveArray2D.create(
 				new LineSegment2D[]{line1, line2});
-		domain = curve.getBuffer(30);
+		domain = curve.buffer(30);
 	}
 	
 	public void paintComponent(Graphics g){
@@ -46,7 +46,7 @@ public class CheckGetBufferTwoLineSegments extends JPanel{
 		g2.setColor(Color.CYAN);
 		domain.clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
-		domain.getBoundary().clip(box).draw(g2);
+		domain.boundary().clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
 		curve.clip(box).draw(g2);

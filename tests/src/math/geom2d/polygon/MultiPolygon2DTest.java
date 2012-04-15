@@ -55,7 +55,7 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
 				ring1, ring2});
 		
-		Point2D centroid = polygon.getCentroid();
+		Point2D centroid = polygon.centroid();
 		Point2D expected = new Point2D(30, 15);
 		
 		assertTrue(expected.equals(centroid));
@@ -77,7 +77,7 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
 				ring1, ring2});
 		
-		double area = polygon.getArea();
+		double area = polygon.area();
 		double expected = 400;
 		
 		assertEquals(expected, area);
@@ -101,7 +101,7 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
 				ring1, ring2});
 		
-		double area = polygon.getArea();
+		double area = polygon.area();
 		double expected = 84;
 		
 		assertEquals(expected, area);
@@ -125,7 +125,7 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
 				ring1, ring2});
 		
-		Collection<Point2D> vertices = polygon.getVertices();
+		Collection<Point2D> vertices = polygon.vertices();
 		assertEquals(pts1.length + pts2.length, vertices.size());
 		
 		for(int i = 0; i < pts1.length; i++)
@@ -152,7 +152,7 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D polygon = new MultiPolygon2D(new LinearRing2D[]{
 				ring1, ring2});
 		
-		assertEquals(8, polygon.getVertexNumber());
+		assertEquals(8, polygon.vertexNumber());
 	}
 	
 	public void testGetVertex(){
@@ -168,12 +168,12 @@ public class MultiPolygon2DTest extends TestCase {
 		MultiPolygon2D poly = new MultiPolygon2D(
 				new LinearRing2D[]{tri1, tri2});
 		
-		assertEquals(new Point2D(0, 0), poly.getVertex(0));
-		assertEquals(new Point2D(10, 0), poly.getVertex(1));
-		assertEquals(new Point2D(10, 10), poly.getVertex(2));
-		assertEquals(new Point2D(20, 0), poly.getVertex(3));
-		assertEquals(new Point2D(30, 0), poly.getVertex(4));
-		assertEquals(new Point2D(30, 10), poly.getVertex(5));
+		assertEquals(new Point2D(0, 0), poly.vertex(0));
+		assertEquals(new Point2D(10, 0), poly.vertex(1));
+		assertEquals(new Point2D(10, 10), poly.vertex(2));
+		assertEquals(new Point2D(20, 0), poly.vertex(3));
+		assertEquals(new Point2D(30, 0), poly.vertex(4));
+		assertEquals(new Point2D(30, 10), poly.vertex(5));
 	}
 
 	
@@ -197,7 +197,7 @@ public class MultiPolygon2DTest extends TestCase {
 
 		Polygon2D complement = polygon.complement();
 		
-		assertEquals(2, complement.getRings().size());
+		assertEquals(2, complement.rings().size());
 		
 		Point2D pIn1 = new Point2D(14, 16);
 		assertTrue(complement.contains(pIn1));
@@ -230,7 +230,7 @@ public class MultiPolygon2DTest extends TestCase {
 		polygon.addRing(ring2);
 		
 		Box2D expBox = new Box2D(0, 30, 0, 20);
-		Box2D bbox = polygon.getBoundingBox();
+		Box2D bbox = polygon.boundingBox();
 		assertTrue(expBox.almostEquals(bbox, 1e-14));
 	}
 	

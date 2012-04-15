@@ -48,7 +48,7 @@ public class DrawLineIntersectionsDemo extends JPanel {
 		Point2D intersection;
 		for(StraightLine2D line1 : lines)
 			for(StraightLine2D line2 : lines){
-				intersection = line1.getIntersection(line2);
+				intersection = line1.intersection(line2);
 				if(intersection!=null)
 					points.addPoint(intersection);
 			}

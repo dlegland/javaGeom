@@ -128,7 +128,7 @@ public abstract class Boundary2DUtils {
 
         // Iterate on contours: clip each contour with box, 
         // and add clipped curves to the array 'curveSet'
-        for (Contour2D contour : boundary.getContinuousCurves()) {
+        for (Contour2D contour : boundary.continuousCurves()) {
             clipped = Boundary2DUtils.clipContinuousOrientedCurve(contour, box);
 
             for (ContinuousOrientedCurve2D clip : clipped)
@@ -136,7 +136,7 @@ public abstract class Boundary2DUtils {
         }
 
         // array of position on the box for first and last point of each curve
-        int nc = curveSet.getCurveNumber();
+        int nc = curveSet.curveNumber();
         double[] startPositions = new double[nc];
         double[] endPositions = new double[nc];
 
@@ -147,10 +147,10 @@ public abstract class Boundary2DUtils {
         ContinuousOrientedCurve2D[] curves = new ContinuousOrientedCurve2D[nc];
 
         // boundary of the box
-        Curve2D boxBoundary = box.getBoundary();
+        Curve2D boxBoundary = box.boundary();
 
         // compute position on the box for first and last point of each curve
-        Iterator<ContinuousOrientedCurve2D> iter = curveSet.getCurves().iterator();
+        Iterator<ContinuousOrientedCurve2D> iter = curveSet.curves().iterator();
 
         for (int i = 0; i < nc; i++) {
             // save current curve
@@ -164,8 +164,8 @@ public abstract class Boundary2DUtils {
             }
 
             // compute positions of first point and last point on box boundary
-            startPositions[i] = boxBoundary.getPosition(curve.getFirstPoint());
-            endPositions[i] = boxBoundary.getPosition(curve.getLastPoint());
+            startPositions[i] = boxBoundary.position(curve.firstPoint());
+            endPositions[i] = boxBoundary.position(curve.lastPoint());
 
             // set up the flag
             intersect = true;
@@ -215,8 +215,8 @@ public abstract class Boundary2DUtils {
             boundary0.addCurve(curve);
 
             // get last points (to add a line with next curve)
-            Point2D p0 = curve.getFirstPoint();
-            Point2D p1 = curve.getLastPoint();
+            Point2D p0 = curve.firstPoint();
+            Point2D p1 = curve.lastPoint();
 
             // index of first curve, used as a stop flag
             int ind0 = ind;
@@ -235,7 +235,7 @@ public abstract class Boundary2DUtils {
                 curve = curves[ind];
 
                 // add a link between previous curve and current curve
-                Point2D p0i = curve.getFirstPoint();
+                Point2D p0i = curve.firstPoint();
 				boundary0.addCurve(getBoundaryPortion(box, p1, p0i));
 
                 // add to current boundary
@@ -247,7 +247,7 @@ public abstract class Boundary2DUtils {
                 ind = findNextCurveIndex(startPositions, endPositions[ind]);
 
                 // get last points
-                p1 = curve.getLastPoint();
+                p1 = curve.lastPoint();
 
                 // decrease total number of boundary curves
                 nb--;
@@ -272,9 +272,9 @@ public abstract class Boundary2DUtils {
         // In this case add the boundary of the box to the resulting boundary
         // set.
         if (!intersect) {
-            Point2D vertex = box.getVertices().iterator().next();
+            Point2D vertex = box.vertices().iterator().next();
             if (boundary.isInside(vertex))
-                res.addCurve(box.getAsRectangle().getBoundary().getFirstCurve());
+                res.addCurve(box.getAsRectangle().boundary().firstCurve());
         }
 
         // return the result
@@ -325,11 +325,11 @@ public abstract class Boundary2DUtils {
      */
     public final static Polyline2D getBoundaryPortion(Box2D box, Point2D p0,
             Point2D p1) {
-        Boundary2D boundary = box.getBoundary();
+        Boundary2D boundary = box.boundary();
 
         // position of start and end points
-        double t0 = boundary.getPosition(p0);
-        double t1 = boundary.getPosition(p1);
+        double t0 = boundary.position(p0);
+        double t1 = boundary.position(p1);
 
         // curve index of each point
         int ind0 = (int) Math.floor(t0);
@@ -348,14 +348,14 @@ public abstract class Boundary2DUtils {
         vertices.add(p0);
 
 		// compute index of first box boundary edge
-		int ind = (ind0 +1)%4;
+		int ind = (ind0 + 1) % 4;
 
 		// add all vertices segments between the 2 end points
 		while (ind != ind1) {
-			vertices.add(boundary.getPoint(ind));
-			ind = (ind + 1)%4;
-        }
-        vertices.add(boundary.getPoint(ind));
+			vertices.add(boundary.point(ind));
+			ind = (ind + 1) % 4;
+		}
+        vertices.add(boundary.point(ind));
 
         // add the last line segment
         vertices.add(p1);

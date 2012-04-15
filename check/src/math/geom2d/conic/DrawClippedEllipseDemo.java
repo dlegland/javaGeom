@@ -62,13 +62,13 @@ public class DrawClippedEllipseDemo extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 	
 		g2.setColor(Color.YELLOW);
-		ellipse.getDomain().fill(g2);
+		ellipse.domain().fill(g2);
 		
 		g2.setColor(Color.BLUE);
 		ellipse.draw(g2);
 
 		g2.setColor(Color.BLUE);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		Curve2D clipped = ellipse.clip(box);
 		g2.setStroke(new BasicStroke(4.0f));
@@ -78,7 +78,7 @@ public class DrawClippedEllipseDemo extends JPanel{
 		Boundary2D boundary = Boundary2DUtils.clipBoundary(ellipse, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
-		boundary.getDomain().fill(g2);
+		boundary.domain().fill(g2);
 		g2.setColor(Color.BLUE);
 		boundary.draw(g2);
 	}

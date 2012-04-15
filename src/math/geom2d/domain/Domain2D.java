@@ -55,7 +55,7 @@ public interface Domain2D extends Shape2D {
      * 
      * @return the boundary of the domain
      */
-    public abstract Boundary2D getBoundary();
+    public abstract Boundary2D boundary();
 
     /**
      * Returns the domain which complements this domain in the plane.
@@ -70,7 +70,7 @@ public interface Domain2D extends Shape2D {
      * @return a polygon
      * @since 0.10.2
      */
-    public abstract Polygon2D getAsPolygon(int n);
+    public abstract Polygon2D asPolygon(int n);
     
     public abstract Domain2D transform(AffineTransform2D transform);
 

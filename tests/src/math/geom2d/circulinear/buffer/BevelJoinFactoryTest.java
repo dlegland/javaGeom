@@ -26,8 +26,8 @@ public class BevelJoinFactoryTest extends TestCase {
 		assertTrue(domain.isBounded());
 		assertFalse(domain.isEmpty());
 		
-		Boundary2D boundary = domain.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Boundary2D boundary = domain.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 
 	public void testGetBufferLinearRing () {
@@ -46,7 +46,7 @@ public class BevelJoinFactoryTest extends TestCase {
 		assertTrue(domain.isBounded());
 		assertFalse(domain.isEmpty());
 		
-		Boundary2D boundary = domain.getBoundary();
-		assertEquals(2, boundary.getContinuousCurves().size());
+		Boundary2D boundary = domain.boundary();
+		assertEquals(2, boundary.continuousCurves().size());
 	}
 }

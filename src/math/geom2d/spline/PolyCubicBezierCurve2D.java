@@ -131,10 +131,10 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
         // Stores the result in appropriate structure
         PolyCubicBezierCurve2D result = new PolyCubicBezierCurve2D(
-        		set.getCurveNumber());
+        		set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CubicBezierCurve2D)
                 result.addCurve((CubicBezierCurve2D) curve);
         }

@@ -26,7 +26,7 @@ public class SquareCapFactory implements CapFactory {
 	 */
 	public CirculinearContinuousCurve2D createCap(Point2D center,
 			Vector2D direction, double dist) {
-		double theta = direction.getAngle();
+		double theta = direction.angle();
 		return createCap(center, theta, dist);
 	}
 
@@ -36,7 +36,7 @@ public class SquareCapFactory implements CapFactory {
 	public CirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
 		Point2D center = Point2D.midPoint(p1, p2);
 		double dist = Point2D.getDistance(p1, p2)/2;
-		double theta = Angle2D.getHorizontalAngle(p1, p2) - Math.PI/2;
+		double theta = Angle2D.horizontalAngle(p1, p2) - Math.PI/2;
 		return createCap(center, theta, dist);
 	}
 

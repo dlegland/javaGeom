@@ -76,7 +76,7 @@ public class CheckEllipse2DTransform extends JPanel{
 			Ellipse2D rotated = ellipse.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			rotated.getDomain().clip(box).fill(g2);
+			rotated.domain().clip(box).fill(g2);
 			g2.setColor(Color.BLUE);
 			rotated.draw(g2);
 			g2.setColor(Color.BLACK);
@@ -88,7 +88,7 @@ public class CheckEllipse2DTransform extends JPanel{
 		Ellipse2D scaled = ellipse.transform(rot);
 		
 		g2.setColor(Color.CYAN);
-		scaled.getDomain().clip(box).fill(g2);
+		scaled.domain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
 		scaled.clip(box).draw(g2);
 

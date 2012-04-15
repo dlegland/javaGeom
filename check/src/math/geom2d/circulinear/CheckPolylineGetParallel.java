@@ -47,12 +47,12 @@ public class CheckPolylineGetParallel extends JPanel{
 		curve.draw(g2);
 		
 		// first parallel
-		Curve2D parallel = curve.getParallel(30);
+		Curve2D parallel = curve.parallel(30);
 		g2.setColor(Color.BLUE);
 		parallel.draw(g2);
 		
 		// second parallel
-		parallel = curve.getParallel(-30);
+		parallel = curve.parallel(-30);
 		g2.setColor(Color.RED);
 		parallel.draw(g2);
 	}

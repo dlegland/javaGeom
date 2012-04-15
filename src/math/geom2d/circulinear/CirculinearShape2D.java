@@ -29,7 +29,7 @@ public interface CirculinearShape2D extends Shape2D {
 	 * 		shape
 	 * @return the buffer of the shape
 	 */
-	public CirculinearDomain2D getBuffer(double dist);
+	public CirculinearDomain2D buffer(double dist);
 	
 	/**
 	 * Transforms the shape by a circle inversion. The result is still an

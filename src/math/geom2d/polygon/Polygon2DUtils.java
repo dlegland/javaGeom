@@ -141,7 +141,7 @@ public final class Polygon2DUtils {
     	double cumArea = 0;
     	Point2D centroid;
     	
-    	for (LinearRing2D ring : polygon.getRings()) {
+    	for (LinearRing2D ring : polygon.rings()) {
     		area = computeSignedArea(ring);
     		centroid = computeCentroid(ring);
     		xc += centroid.getX() * area;
@@ -167,15 +167,15 @@ public final class Polygon2DUtils {
         double tmp = 0;
         
         // number of vertices
-        int n = ring.getVertexNumber();
+        int n = ring.vertexNumber();
        
         // initialize with the last vertex
-        Point2D prev = ring.getVertex(n-1);
+        Point2D prev = ring.vertex(n-1);
         xp = prev.getX();
         yp = prev.getY();
 
         // iterate on vertices
-        for (Point2D point : ring.getVertices()) {
+        for (Point2D point : ring.vertices()) {
         	x = point.getX();
         	y = point.getY();
         	tmp = xp * y - yp * x;
@@ -209,7 +209,7 @@ public final class Polygon2DUtils {
     	}
     	
     	double area = 0;
-    	for (LinearRing2D ring : polygon.getRings()) {
+    	for (LinearRing2D ring : polygon.rings()) {
     		area += computeSignedArea(ring);
     	}
     	return area;
@@ -229,13 +229,13 @@ public final class Polygon2DUtils {
         double area = 0;
         
         // number of vertices
-        int n = ring.getVertexNumber();
+        int n = ring.vertexNumber();
        
         // initialize with the last vertex
-        Point2D prev = ring.getVertex(n-1);
+        Point2D prev = ring.vertex(n-1);
         
         // iterate on edges
-        for (Point2D point : ring.getVertices()) {
+        for (Point2D point : ring.vertices()) {
             area += prev.getX() * point.getY() - prev.getY() * point.getX();
             prev = point;
         }
@@ -316,7 +316,7 @@ public final class Polygon2DUtils {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         
         // compute buffer
-        return bc.computeBuffer(polygon.getBoundary(), dist);
+        return bc.computeBuffer(polygon.boundary(), dist);
     }
     
     /**
@@ -326,7 +326,7 @@ public final class Polygon2DUtils {
      */
     public final static Polygon2D clipPolygon(Polygon2D polygon, Box2D box) {
     	// Clip the boundary using generic method
-    	Boundary2D boundary = polygon.getBoundary();
+    	Boundary2D boundary = polygon.boundary();
         ContourArray2D<Contour2D> contours = 
             Boundary2DUtils.clipBoundary(boundary, box);
 
@@ -338,7 +338,7 @@ public final class Polygon2DUtils {
         // Create a polygon, either simple or multiple, depending on the ring
         // number
         if (rings.size() == 1)
-        	return SimplePolygon2D.create(rings.get(0).getVertices());
+        	return SimplePolygon2D.create(rings.get(0).vertices());
         else
         	return MultiPolygon2D.create(rings);
     }
@@ -351,7 +351,7 @@ public final class Polygon2DUtils {
     	
     	// extract all vertices of the contour
     	List<Point2D> vertices = new ArrayList<Point2D>();
-    	for(Point2D v : contour.getSingularPoints())
+    	for(Point2D v : contour.singularPoints())
     		vertices.add(v);
 
     	// remove adjacent multiple vertices
@@ -432,7 +432,7 @@ public final class Polygon2DUtils {
     
     private final static Poly convertToGpcjPolygon(Polygon2D polygon) {
     	PolyDefault result = new PolyDefault();
-    	for (LinearRing2D ring : polygon.getRings())
+    	for (LinearRing2D ring : polygon.rings())
     		result.add(convertToGpcjSimplePolygon(ring));
     	return result;
     }
@@ -440,7 +440,7 @@ public final class Polygon2DUtils {
     private final static PolySimple convertToGpcjSimplePolygon(
     		LinearRing2D ring) {
     	PolySimple poly = new PolySimple();
-    	for (Point2D point : ring.getVertices())
+    	for (Point2D point : ring.vertices())
     		poly.add(new com.seisw.util.geom.Point2D(point.getX(), point.getY()));
     	return poly;
     }

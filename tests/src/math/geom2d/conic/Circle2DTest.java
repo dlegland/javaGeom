@@ -72,26 +72,26 @@ public class Circle2DTest extends TestCase {
 	
 	public void testGetBuffer() {
 	    Circle2D circle = new Circle2D(50, 60, 50);
-	    Domain2D buffer = circle.getBuffer(20);	    
-	    assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
+	    Domain2D buffer = circle.buffer(20);	    
+	    assertEquals(2, buffer.boundary().continuousCurves().size());
 	    
-	    buffer = circle.getBuffer(60);	    
-	    assertEquals(1, buffer.getBoundary().getContinuousCurves().size());	    
+	    buffer = circle.buffer(60);	    
+	    assertEquals(1, buffer.boundary().continuousCurves().size());	    
 	}
 	
 	public void testGetParallel() {
 	    Circle2D circle = new Circle2D(10, 20, 30);
-	    Circle2D parallel = circle.getParallel(10);
+	    Circle2D parallel = circle.parallel(10);
 	    assertEquals(parallel, new Circle2D(10, 20, 40));
-	    parallel = circle.getParallel(-10);
+	    parallel = circle.parallel(-10);
 	    assertEquals(parallel, new Circle2D(10, 20, 20));	    
 	}
 	
 	public void testGetParallelInverse() {
 	    Circle2D circle = new Circle2D(10, 20, 30, false);
-	    Circle2D parallel = circle.getParallel(10);
+	    Circle2D parallel = circle.parallel(10);
 	    assertEquals(parallel, new Circle2D(10, 20, 20, false));
-	    parallel = circle.getParallel(-10);
+	    parallel = circle.parallel(-10);
 	    assertEquals(parallel, new Circle2D(10, 20, 40, false));
 	}
 	
@@ -156,7 +156,7 @@ public class Circle2DTest extends TestCase {
 	
 	public void testGetConicType () {
 	    Circle2D circle = new Circle2D();
-	    assertEquals(circle.getConicType(), Conic2D.Type.CIRCLE);
+	    assertEquals(circle.conicType(), Conic2D.Type.CIRCLE);
 	}
 	
 	public void testGetTangent() {
@@ -165,16 +165,16 @@ public class Circle2DTest extends TestCase {
 	    double eps = Shape2D.ACCURACY;
 	    
 	    Circle2D circle = Circle2D.create(center, r);
-	    assertVectorEquals(circle.getTangent(0), new Vector2D(0, r), eps);
-	    assertVectorEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0), eps);
-	    assertVectorEquals(circle.getTangent(Math.PI), new Vector2D(0, -r), eps);
-	    assertVectorEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0), eps);
+	    assertVectorEquals(circle.tangent(0), new Vector2D(0, r), eps);
+	    assertVectorEquals(circle.tangent(Math.PI/2), new Vector2D(-r, 0), eps);
+	    assertVectorEquals(circle.tangent(Math.PI), new Vector2D(0, -r), eps);
+	    assertVectorEquals(circle.tangent(3*Math.PI/2), new Vector2D(r, 0), eps);
 	    
         circle = Circle2D.create(center, r, false);
-        assertVectorEquals(circle.getTangent(0), new Vector2D(0, -r), eps);
-        assertVectorEquals(circle.getTangent(Math.PI/2), new Vector2D(-r, 0), eps);
-        assertVectorEquals(circle.getTangent(Math.PI), new Vector2D(0, r), eps);
-        assertVectorEquals(circle.getTangent(3*Math.PI/2), new Vector2D(r, 0), eps);
+        assertVectorEquals(circle.tangent(0), new Vector2D(0, -r), eps);
+        assertVectorEquals(circle.tangent(Math.PI/2), new Vector2D(-r, 0), eps);
+        assertVectorEquals(circle.tangent(Math.PI), new Vector2D(0, r), eps);
+        assertVectorEquals(circle.tangent(3*Math.PI/2), new Vector2D(r, 0), eps);
 	}
 	
 	public void testGetPositionPoint2D() {
@@ -189,12 +189,12 @@ public class Circle2DTest extends TestCase {
 		// Standard circle
 		circle = new Circle2D(x0, y0, 10);
 		point = new Point2D(x0+r2, y0+r2);
-		assertEquals(circle.getPosition(point), Math.PI/4, eps);
+		assertEquals(circle.position(point), Math.PI/4, eps);
 		
 		// inverted circle
 		circle = new Circle2D(x0, y0, 10, false);
 		point = new Point2D(x0+r2, y0-r2);
-		assertEquals(circle.getPosition(point), Math.PI/4, eps);
+		assertEquals(circle.position(point), Math.PI/4, eps);
 	}
 	
 	public void testGetPointDouble() {
@@ -207,12 +207,12 @@ public class Circle2DTest extends TestCase {
 		
 		// Standard circle
 		circle = new Circle2D(x0, y0, 10);
-		point = circle.getPoint(Math.PI/2);
+		point = circle.point(Math.PI/2);
 		assertTrue(new Point2D(x0, y0+r).almostEquals(point, eps));
 		
 		// inverted circle
 		circle = new Circle2D(x0, y0, 10, false);
-		point = circle.getPoint(3*Math.PI/2);
+		point = circle.point(3*Math.PI/2);
 		assertTrue(new Point2D(x0, y0+r).almostEquals(point, eps));
 	}
 	
@@ -221,14 +221,14 @@ public class Circle2DTest extends TestCase {
 	 */
 	public void testGetDistancePoint2D() {
 		Circle2D circle = new Circle2D(0, 0, 10);
-		assertEquals(circle.getDistance(new Point2D(10, 0)), 0, 1e-14);
+		assertEquals(circle.distance(new Point2D(10, 0)), 0, 1e-14);
 		
 		circle = new Circle2D(2, 3, 4);
-		assertEquals(circle.getDistance(new Point2D(2, 3)), 4, 1e-14);
-		assertEquals(circle.getDistance(new Point2D(6, 3)), 0, 1e-14);
-		assertEquals(circle.getDistance(new Point2D(2, 7)), 0, 1e-14);
-		assertEquals(circle.getDistance(new Point2D(-2, 3)), 0, 1e-14);
-		assertEquals(circle.getDistance(new Point2D(2, -1)), 0, 1e-14);
+		assertEquals(circle.distance(new Point2D(2, 3)), 4, 1e-14);
+		assertEquals(circle.distance(new Point2D(6, 3)), 0, 1e-14);
+		assertEquals(circle.distance(new Point2D(2, 7)), 0, 1e-14);
+		assertEquals(circle.distance(new Point2D(-2, 3)), 0, 1e-14);
+		assertEquals(circle.distance(new Point2D(2, -1)), 0, 1e-14);
 	}
 	
     /*
@@ -236,13 +236,13 @@ public class Circle2DTest extends TestCase {
      */
     public void testGetSignedDistancePoint2D() {
         Circle2D circle = new Circle2D(0, 0, 10);
-        assertEquals(circle.getSignedDistance(new Point2D(10, 0)), 0, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(10, 0)), 0, 1e-14);
         
-        assertEquals(circle.getSignedDistance(new Point2D(0, 0)), -10, 1e-14);
-        assertEquals(circle.getSignedDistance(new Point2D(6, 0)), -4, 1e-14);
-        assertEquals(circle.getSignedDistance(new Point2D(0, 6)), -4, 1e-14);
-        assertEquals(circle.getSignedDistance(new Point2D(-6, 0)), -4, 1e-14);
-        assertEquals(circle.getSignedDistance(new Point2D(0, -6)), -4, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(0, 0)), -10, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(6, 0)), -4, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(0, 6)), -4, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(-6, 0)), -4, 1e-14);
+        assertEquals(circle.distanceSigned(new Point2D(0, -6)), -4, 1e-14);
     }
     
 	/*
@@ -275,12 +275,12 @@ public class Circle2DTest extends TestCase {
 		
 		// horizontal line through touching circle on one point
 		StraightLine2D line0 = new StraightLine2D(6, 0, 0, 1);
-		points = circle.getIntersections(line0);
+		points = circle.intersections(line0);
 		assertTrue(points.size() == 1);
 
 		// horizontal line touching circle in 2 points, passing through center
 		StraightLine2D line1 = new StraightLine2D(2, 0, 0, 1);
-		points = circle.getIntersections(line1);
+		points = circle.intersections(line1);
 		assertTrue(points.size() == 2);
 		Iterator<Point2D> iter = points.iterator();
 		Point2D point1 = iter.next();
@@ -290,7 +290,7 @@ public class Circle2DTest extends TestCase {
 
 		// not touching
 		StraightLine2D line2 = new StraightLine2D(6.2, 0, 0, 1);
-		points = circle.getIntersections(line2);
+		points = circle.intersections(line2);
 		assertTrue(points.size() == 0);
 	}
 	
@@ -302,10 +302,10 @@ public class Circle2DTest extends TestCase {
 		Circle2D circle = new Circle2D(0, 0, 10);
 		double eps = Shape2D.ACCURACY;
 		
-		Collection<Point2D> points1 = circle.getIntersections(new LineSegment2D(0, 0, 20, 0));
-		Collection<Point2D> points2 = circle.getIntersections(new LineSegment2D(0, 0, 0, 20));
-		Collection<Point2D> points3 = circle.getIntersections(new LineSegment2D(0, 0, -20, 0));
-		Collection<Point2D> points4 = circle.getIntersections(new LineSegment2D(0, 0, 0, -20));
+		Collection<Point2D> points1 = circle.intersections(new LineSegment2D(0, 0, 20, 0));
+		Collection<Point2D> points2 = circle.intersections(new LineSegment2D(0, 0, 0, 20));
+		Collection<Point2D> points3 = circle.intersections(new LineSegment2D(0, 0, -20, 0));
+		Collection<Point2D> points4 = circle.intersections(new LineSegment2D(0, 0, 0, -20));
 		assertTrue(points1.iterator().next().almostEquals(new Point2D(10, 0), eps));
 		assertTrue(points2.iterator().next().almostEquals(new Point2D(0, 10), eps));
 		assertTrue(points3.iterator().next().almostEquals(new Point2D(-10, 0), eps));
@@ -313,7 +313,7 @@ public class Circle2DTest extends TestCase {
 		
 		circle = new Circle2D(50, 100, 50);
 		LineSegment2D line = new LineSegment2D(new Point2D(100, 0), new Point2D(100, 100));
-		assertTrue(circle.getIntersections(line).size()==1);
+		assertTrue(circle.intersections(line).size()==1);
 	}
 	
 	public void testGetIntersectionsCircle2DCircle2D(){
@@ -393,13 +393,13 @@ public class Circle2DTest extends TestCase {
 		// try with a direct circle 
 		circle = new Circle2D(0, 0, 10, true);
 		arc1 = new CircleArc2D(circle, Math.PI/2, Math.PI/2);		
-		arc2 = circle.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = circle.subCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 		
 		// try again with an indirect circle
 		circle = new Circle2D(0, 0, 10, false);
 		arc1 = new CircleArc2D(circle, Math.PI/2, -Math.PI/2);
-		arc2 = circle.getSubCurve(3*Math.PI/2, 2*Math.PI);
+		arc2 = circle.subCurve(3*Math.PI/2, 2*Math.PI);
 		assertTrue(arc1.equals(arc2));
 	}
 	
@@ -413,7 +413,7 @@ public class Circle2DTest extends TestCase {
 		CurveSet2D<? extends ContinuousOrientedCurve2D> clipped =
 			circle.clip(box);
 		Collection<? extends ContinuousOrientedCurve2D> curves = 
-			clipped.getCurves();
+			clipped.curves();
 		assertTrue(curves.size()==1);
 		
 		ContinuousOrientedCurve2D curve = curves.iterator().next();
@@ -430,7 +430,7 @@ public class Circle2DTest extends TestCase {
 		CurveSet2D<? extends ContinuousOrientedCurve2D> clipped =
 			circle.clip(box);
 		Collection<? extends ContinuousOrientedCurve2D> curves = 
-			clipped.getCurves();
+			clipped.curves();
 		assertTrue(curves.size()==0);
 	}
 	
@@ -444,7 +444,7 @@ public class Circle2DTest extends TestCase {
 		CurveSet2D<? extends ContinuousOrientedCurve2D> clipped =
 			circle.clip(box);
 		Collection<? extends ContinuousOrientedCurve2D> curves = 
-			clipped.getCurves();
+			clipped.curves();
 		assertTrue(curves.size()==1);
 		
 		ContinuousOrientedCurve2D curve = curves.iterator().next();
@@ -464,7 +464,7 @@ public class Circle2DTest extends TestCase {
 		CurveSet2D<? extends ContinuousOrientedCurve2D> clipped =
 			circle.clip(box);
 		Collection<? extends ContinuousOrientedCurve2D> curves = 
-			clipped.getCurves();
+			clipped.curves();
 		assertTrue(curves.size()==1);
 		
 		ContinuousOrientedCurve2D curve = curves.iterator().next();
@@ -483,7 +483,7 @@ public class Circle2DTest extends TestCase {
 		Box2D box = new Box2D(0, 100, 0, 100);
 		
 		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
-		Collection<?> curves = clipped.getCurves();
+		Collection<?> curves = clipped.curves();
 		assertTrue(curves.size()==1);
 		assertTrue(curves.iterator().next().equals(circle));
 	}
@@ -493,7 +493,7 @@ public class Circle2DTest extends TestCase {
 		Box2D box = new Box2D(50, 150, 50, 150);
 
 		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
-		Collection<?> curves = clipped.getCurves();
+		Collection<?> curves = clipped.curves();
 		assertTrue(curves.size()==0);
 	}
 	
@@ -502,7 +502,7 @@ public class Circle2DTest extends TestCase {
 		Box2D box = new Box2D(-10, 10, -10, 10);
 
 		CurveSet2D<? extends SmoothCurve2D> clipped = circle.clip(box);
-		Collection<?> curves = clipped.getCurves();
+		Collection<?> curves = clipped.curves();
 		assertTrue(curves.size() == 1);
 	}
 	

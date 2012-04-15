@@ -316,15 +316,15 @@ implements Conic2D, Cloneable {
 		return new Point2D(xc - c * cos(theta), yc - c * sin(theta));
     }
     
-    public HyperbolaBranch2D getPositiveBranch() {
+    public HyperbolaBranch2D positiveBranch() {
     	return branch2;
     }
 
-    public HyperbolaBranch2D getNegativeBranch() {
+    public HyperbolaBranch2D negativeBranch() {
     	return branch1;
     }
     
-    public Collection<HyperbolaBranch2D> getBranches() {
+    public Collection<HyperbolaBranch2D> branches() {
     	ArrayList<HyperbolaBranch2D> array = 
     		new ArrayList<HyperbolaBranch2D>(2);
     	array.add(branch1);
@@ -335,7 +335,7 @@ implements Conic2D, Cloneable {
     /**
      * Returns the asymptotes of the hyperbola.
      */
-    public Collection<StraightLine2D> getAsymptotes() {    	
+    public Collection<StraightLine2D> asymptotes() {    	
     	// Compute base direction vectors
     	Vector2D v1 = new Vector2D(a, b);
     	Vector2D v2 = new Vector2D(a, -b);
@@ -360,7 +360,7 @@ implements Conic2D, Cloneable {
     // ===================================================================
     // methods inherited from Conic2D interface
 
-    public double[] getConicCoefficients() {
+    public double[] conicCoefficients() {
         // scaling coefficients
 		double aSq = this.a * this.a;
 		double bSq = this.b * this.b;
@@ -399,11 +399,11 @@ implements Conic2D, Cloneable {
         return new double[] { a, b, c, d, e, f };
     }
 
-    public Conic2D.Type getConicType() {
+    public Conic2D.Type conicType() {
         return Conic2D.Type.HYPERBOLA;
     }
 
-    public double getEccentricity() {
+    public double eccentricity() {
 		return hypot(1, b * b / a / a);
     }
 
@@ -412,13 +412,13 @@ implements Conic2D, Cloneable {
     // methods implementing the Curve2D interface
 
     @Override
-    public Hyperbola2D getReverseCurve() {
+    public Hyperbola2D reverse() {
         return new Hyperbola2D(this.xc, this.yc, this.a, this.b, this.theta,
                 !this.direct);
     }
 
     @Override
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
 
         Collection<Point2D> points = new ArrayList<Point2D>();
 
@@ -426,9 +426,9 @@ implements Conic2D, Cloneable {
         LinearShape2D line2 = formatLine(line);
 
         // Extract formatted line parameters
-        Point2D origin = line2.getOrigin();
-        double dx = line2.getVector().getX();
-        double dy = line2.getVector().getY();
+        Point2D origin = line2.origin();
+        double dx = line2.direction().getX();
+        double dy = line2.direction().getY();
 
         // extract line parameters
         // different strategy depending if line is more horizontal or more
@@ -457,17 +457,17 @@ implements Conic2D, Cloneable {
 			double x2 = (-b + sqrt(delta)) / (2 * a);
 
             // support line of formatted line
-            StraightLine2D support = line2.getSupportingLine();
+            StraightLine2D support = line2.supportingLine();
 
             // check first point is on the line
 			double pos1 = support.project(new Point2D(x1, k * x1 + yi));
-			if (line2.contains(support.getPoint(pos1)))
-				points.add(line.getPoint(pos1));
+			if (line2.contains(support.point(pos1)))
+				points.add(line.point(pos1));
 
 			// check second point is on the line
 			double pos2 = support.project(new Point2D(x2, k * x2 + yi));
-            if (line2.contains(support.getPoint(pos2)))
-                points.add(line.getPoint(pos2));
+            if (line2.contains(support.point(pos2)))
+                points.add(line.point(pos2));
 
         } else {
             // Line is mainly vertical
@@ -492,17 +492,17 @@ implements Conic2D, Cloneable {
 			double y2 = (-b + sqrt(delta)) / (2 * a);
 
             // support line of formatted line
-            StraightLine2D support = line2.getSupportingLine();
+            StraightLine2D support = line2.supportingLine();
 
             // check first point is on the line
 			double pos1 = support.project(new Point2D(k * y1 + xi, y1));
-			if (line2.contains(support.getPoint(pos1)))
-				points.add(line.getPoint(pos1));
+			if (line2.contains(support.point(pos1)))
+				points.add(line.point(pos1));
 
 			// check second point is on the line
 			double pos2 = support.project(new Point2D(k * y2 + xi, y2));
-            if (line2.contains(support.getPoint(pos2)))
-                points.add(line.getPoint(pos2));
+            if (line2.contains(support.point(pos2)))
+                points.add(line.point(pos2));
         }
 
         return points;

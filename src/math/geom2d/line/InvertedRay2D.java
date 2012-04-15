@@ -132,7 +132,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
-	public InvertedRay2D getParallel(double d) {
+	public InvertedRay2D parallel(double d) {
         double dd = Math.hypot(dx, dy);
 		return new InvertedRay2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
 	}
@@ -153,7 +153,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the Curve2D interface
 
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         t = Math.min(t, 0);
         return new Point2D(x0+t*dx, y0+t*dy);
     }
@@ -166,7 +166,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
         return 0;
     }
 
-    public Ray2D getReverseCurve() {
+    public Ray2D reverse() {
         return new Ray2D(x0, y0, -dx, -dy);
     }
 
@@ -181,11 +181,11 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     public boolean contains(double x, double y) {
         if (!this.supportContains(x, y))
             return false;
-        double t = this.getPositionOnLine(x, y);
+        double t = this.positionOnLine(x, y);
         return t < Shape2D.ACCURACY;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         double t = Double.NEGATIVE_INFINITY;
         Point2D p0 = new Point2D(x0, y0);
         Point2D p1 = new Point2D(t * dx, t* dy);
@@ -194,7 +194,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     @Override
 	public InvertedRay2D transform(AffineTransform2D trans) {
-		double[] tab = trans.getCoefficients();
+		double[] tab = trans.coefficients();
 		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
 		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
 		return new InvertedRay2D(x1, y1, 

@@ -60,7 +60,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     public MultiPolygon2D(SimplePolygon2D polygon) {
-        rings.addAll(polygon.getBoundary().getCurves());
+        rings.addAll(polygon.boundary().curves());
     }
 
     public MultiPolygon2D(Collection<LinearRing2D> lines) {
@@ -75,7 +75,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     */
    @Deprecated
     public void addPolygon(SimplePolygon2D polygon) {
-        rings.addAll(polygon.getRings());
+        rings.addAll(polygon.rings());
     }
 
     /**
@@ -91,7 +91,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         
         // create a new SimplePolygon with each ring
         for (LinearRing2D ring : rings)
-            polygons.add(new SimplePolygon2D(ring.getVertices()));
+            polygons.add(new SimplePolygon2D(ring.vertices()));
         return polygons;
     }
     
@@ -132,8 +132,8 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * signed area.
      * @since 0.9.1
      */
-    public double getArea() {
-        return Math.abs(this.getSignedArea());
+    public double area() {
+        return Math.abs(this.areaSigned());
     }
 
     /**
@@ -141,7 +141,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double getSignedArea() {
+    public double areaSigned() {
     	return Polygon2DUtils.computeSignedArea(this);
     }
 
@@ -150,7 +150,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * @return the centroid of the polygon
      * @since 0.9.1
      */
-    public Point2D getCentroid() {
+    public Point2D centroid() {
     	return Polygon2DUtils.computeCentroid(this);
     }
 
@@ -161,7 +161,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<LinearRing2D> getRings() {
+    public Collection<LinearRing2D> rings() {
         return Collections.unmodifiableList(rings);
     }
 
@@ -173,13 +173,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
 		return new GenericCirculinearDomain2D(
-				this.getBoundary().transform(inv).getReverseCurve());
+				this.boundary().transform(inv).reverse());
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		return Polygon2DUtils.createBuffer(this, dist);
 	}
 
@@ -190,11 +190,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
+	public Polygon2D asPolygon(int n) {
 		return this;
 	}
 
-    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
+    public CirculinearContourArray2D<LinearRing2D> boundary() {
         return CirculinearContourArray2D.create(rings);
     }
 
@@ -205,7 +205,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         
         // reverse each ring
         for (LinearRing2D ring : rings)
-            reverseLines.add(ring.getReverseCurve());
+            reverseLines.add(ring.reverse());
         
         // create the new MultiMpolygon2D with set of reversed rings
         return new MultiPolygon2D(reverseLines);
@@ -214,26 +214,26 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     // ===================================================================
     // methods implementing the interface Polygon2D
 
-    public Collection<LineSegment2D> getEdges() {
-    	int nEdges = getEdgeNumber();
+    public Collection<LineSegment2D> edges() {
+    	int nEdges = edgeNumber();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nEdges);
         for (LinearRing2D ring : rings)
-            edges.addAll(ring.getEdges());
+            edges.addAll(ring.edges());
         return edges;
     }
 
-    public int getEdgeNumber() {
+    public int edgeNumber() {
         int count = 0;
         for (LinearRing2D ring : rings)
-            count += ring.getVertexNumber();
+            count += ring.vertexNumber();
         return count;
     }
 
-    public Collection<Point2D> getVertices() {
-    	int nv = getVertexNumber();
+    public Collection<Point2D> vertices() {
+    	int nv = vertexNumber();
         ArrayList<Point2D> points = new ArrayList<Point2D>(nv);
         for (LinearRing2D ring : rings)
-            points.addAll(ring.getVertices());
+            points.addAll(ring.vertices());
         return points;
     }
 
@@ -242,12 +242,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * 
      * @param i index of the vertex, between 0 and the number of vertices
      */
-    public Point2D getVertex(int i) {
+    public Point2D vertex(int i) {
         int count = 0;
         LinearRing2D boundary = null;
 
         for (LinearRing2D ring : rings) {
-            int nv = ring.getVertexNumber();
+            int nv = ring.vertexNumber();
             if (count + nv > i) {
                 boundary = ring;
                 break;
@@ -258,20 +258,20 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         if (boundary == null)
             throw new IndexOutOfBoundsException();
 
-        return boundary.getVertex(i-count);
+        return boundary.vertex(i-count);
     }
 
-    public int getVertexNumber() {
+    public int vertexNumber() {
         int count = 0;
         for (LinearRing2D ring : rings)
-            count += ring.getVertexNumber();
+            count += ring.vertexNumber();
         return count;
     }
 
     // ===================================================================
     // methods inherited from interface Shape2D
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         // start with empty bounding box
         Box2D box = new Box2D(
         		Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 
@@ -279,7 +279,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         
         // compute union of all bounding boxes
         for (LinearRing2D ring : this.rings)
-            box = box.union(ring.getBoundingBox());
+            box = box.union(ring.boundingBox());
         
         // return result
         return box;
@@ -292,24 +292,24 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     	return Polygon2DUtils.clipPolygon(this, box);
     }
 
-    public double getDistance(Point2D p) {
-        return Math.max(this.getBoundary().getSignedDistance(p), 0);
+    public double distance(Point2D p) {
+        return Math.max(this.boundary().distanceSigned(p), 0);
     }
 
-    public double getDistance(double x, double y) {
-        return Math.max(this.getBoundary().getSignedDistance(x, y), 0);
+    public double distance(double x, double y) {
+        return Math.max(this.boundary().distanceSigned(x, y), 0);
     }
 
     public boolean isBounded() {
         // If boundary is not bounded, the polygon is not
-        Boundary2D boundary = this.getBoundary();
+        Boundary2D boundary = this.boundary();
         if (!boundary.isBounded())
             return false;
 
         // Computes the signed area
         double area = 0;
         for (LinearRing2D ring : rings)
-            area += ring.getSignedArea();
+            area += ring.areaSigned();
 
         // bounded if positive area
         return area>0;
@@ -343,9 +343,9 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     public boolean contains(Point2D point) {
         double angle = 0;
         for (LinearRing2D ring : this.rings)
-            angle += ring.getWindingAngle(point);
+            angle += ring.windingAngle(point);
       
-        double area = this.getSignedArea();
+        double area = this.areaSigned();
     	if (area > 0) {
     		return angle > Math.PI;
     	} else {
@@ -358,11 +358,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     public void draw(Graphics2D g2) {
-        g2.draw(this.getBoundary().getGeneralPath());
+        g2.draw(this.boundary().getGeneralPath());
     }
 
     public void fill(Graphics2D g) {
-        g.fill(this.getBoundary().getGeneralPath());
+        g.fill(this.boundary().getGeneralPath());
     }
     
 

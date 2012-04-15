@@ -156,38 +156,38 @@ public class TriangleGrid2D implements Grid2D {
 
         // compute distance to line, and deduces indices of surrounding lines
         double s2 = s*Math.sqrt(3)/2;
-        double d = baseLine.getSignedDistance(point);
+        double d = baseLine.distanceSigned(point);
         int n1 = (int) Math.floor(d/s2);
         int n2 = (int) Math.ceil(d/s2);
 
         // compute the two surrounding lines
-        StraightLine2D line1 = baseLine.getParallel(n1*s2);
-        StraightLine2D line2 = baseLine.getParallel(n2*s2);
+        StraightLine2D line1 = baseLine.parallel(n1*s2);
+        StraightLine2D line2 = baseLine.parallel(n2*s2);
 
         // projection of point on the surrounding lines
         double t = line1.project(new Point2D(point));
 
         Point2D p1, p2, p3;
         if (isEven(n1)) {
-            p1 = line1.getPoint(Math.floor(t/s)*s);
-            p2 = line1.getPoint(Math.ceil(t/s)*s);
-            p3 = line2.getPoint((Math.floor(t/s)+.5)*s);
+            p1 = line1.point(Math.floor(t/s)*s);
+            p2 = line1.point(Math.ceil(t/s)*s);
+            p3 = line2.point((Math.floor(t/s)+.5)*s);
         } else {
-            p1 = line1.getPoint((Math.floor(t/s)+.5)*s);
-            p2 = line2.getPoint(Math.floor(t/s)*s);
-            p3 = line2.getPoint(Math.ceil(t/s)*s);
+            p1 = line1.point((Math.floor(t/s)+.5)*s);
+            p2 = line2.point(Math.floor(t/s)*s);
+            p3 = line2.point(Math.ceil(t/s)*s);
         }
 
         Point2D res = p1;
-        double minDist = res.getDistance(point);
+        double minDist = res.distance(point);
 
-        double d2 = p2.getDistance(point);
+        double d2 = p2.distance(point);
         if (d2<minDist) {
             res = p2;
             minDist = d2;
         }
 
-        double d3 = p3.getDistance(point);
+        double d3 = p3.distance(point);
         if (d3<minDist) {
             res = p3;
             minDist = d3;
@@ -218,8 +218,8 @@ public class TriangleGrid2D implements Grid2D {
             // get extreme distances of box corners to the base line
             dmin = Double.POSITIVE_INFINITY;
             dmax = Double.NEGATIVE_INFINITY;
-            for (Point2D point : box.getVertices()) {
-                double dist = baseLine.getSignedDistance(point);
+            for (Point2D point : box.vertices()) {
+                double dist = baseLine.distanceSigned(point);
                 dmin = Math.min(dmin, dist);
                 dmax = Math.max(dmax, dist);
             }
@@ -231,7 +231,7 @@ public class TriangleGrid2D implements Grid2D {
 
             // add each clipped line
             for (int i = i0; i<=i1; i++) {
-                StraightLine2D line = baseLine.getParallel(d*i);
+                StraightLine2D line = baseLine.parallel(d*i);
                 for (LinearShape2D arc : line.clip(box)) {
                     if (arc instanceof LineSegment2D)
                         array.add((LineSegment2D) arc);
@@ -262,8 +262,8 @@ public class TriangleGrid2D implements Grid2D {
         // get extreme distances of box corners to the base line
         dmin = Double.POSITIVE_INFINITY;
         dmax = Double.NEGATIVE_INFINITY;
-        for (Point2D point : box.getVertices()) {
-            double dist = baseLine.getSignedDistance(point);
+        for (Point2D point : box.vertices()) {
+            double dist = baseLine.distanceSigned(point);
             dmin = Math.min(dmin, dist);
             dmax = Math.max(dmax, dist);
         }
@@ -276,15 +276,15 @@ public class TriangleGrid2D implements Grid2D {
         for (int i = i0; i<=i1; i++) {
             // compute supporting line, supposing that the norm of the
             // direction vector equals 1 (should be the case)
-            StraightLine2D line = baseLine.getParallel(d*i);
+            StraightLine2D line = baseLine.parallel(d*i);
 
             // extract the line segment
-            LineSegment2D seg = (LineSegment2D) line.clip(box).getFirstCurve();
+            LineSegment2D seg = (LineSegment2D) line.clip(box).firstCurve();
 
             // compute position of extreme points, which is also the geodesic
             // distance
-            double t1 = line.getPosition(seg.getFirstPoint());
-            double t2 = line.getPosition(seg.getLastPoint());
+            double t1 = line.position(seg.firstPoint());
+            double t2 = line.position(seg.lastPoint());
 
             // check if point on this line are shifted or not
             double t0 = isEven(i) ? 0 : s*.5;
@@ -297,7 +297,7 @@ public class TriangleGrid2D implements Grid2D {
             if (j1<j0)
                 continue;
             for (int j = j0; j<=j1; j++)
-                array.add(line.getPoint(j*s+t0));
+                array.add(line.point(j*s+t0));
         }
 
         return new PointArray2D(array);

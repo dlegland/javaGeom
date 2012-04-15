@@ -43,7 +43,7 @@ public class CheckGetBufferDiscs extends JPanel{
 		buffer.draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		domain.getBoundary().draw(g2);
+		domain.boundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

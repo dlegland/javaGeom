@@ -44,14 +44,14 @@ public interface PointSet2D extends PointShape2D, ShapeSet2D<Point2D> {
      * 
      * @return the collection of points
      */
-    public Collection<Point2D> getPoints();
+    public Collection<Point2D> points();
 
     /**
      * Returns the number of points in the set.
      * 
      * @return the number of points
      */
-    public int getPointNumber();
+    public int pointNumber();
     
     /**
      * Transforms the point set by returning a new point set containing each 

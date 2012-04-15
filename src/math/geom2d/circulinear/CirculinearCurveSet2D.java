@@ -26,8 +26,8 @@ extends CurveSet2D<T>, CirculinearCurve2D {
 
 	public CirculinearCurveSet2D<? extends CirculinearCurve2D> clip(Box2D box);
 
-	public CirculinearCurveSet2D<? extends CirculinearCurve2D> getSubCurve(
+	public CirculinearCurveSet2D<? extends CirculinearCurve2D> subCurve(
 			double t0, double t1);
 	
-	public CirculinearCurveSet2D<? extends CirculinearCurve2D> getReverseCurve();
+	public CirculinearCurveSet2D<? extends CirculinearCurve2D> reverse();
 }

@@ -47,7 +47,7 @@ public class CurveArray2DTest extends TestCase {
 		LineSegment2D seg3 = LineSegment2D.create(p3, p4);
 		CurveArray2D<LineSegment2D> set = 
 			CurveArray2D.create(new LineSegment2D[]{seg1, seg2, seg3});
-		assertEquals(3, set.getCurveNumber());
+		assertEquals(3, set.curveNumber());
 		assertTrue(set.containsCurve(seg1));
 		assertTrue(set.containsCurve(seg2));
 		assertTrue(set.containsCurve(seg3));
@@ -61,25 +61,25 @@ public class CurveArray2DTest extends TestCase {
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		
-		assertEquals(set.getCurveNumber(), 2);
+		assertEquals(set.curveNumber(), 2);
 		assertEquals(set.getT0(), 0, 1e-14);
 		assertEquals(set.getT1(), 3, 1e-14);
 		
 		double pos1 = .3;
-		Point2D point1 = set.getPoint(pos1);
-		assertEquals(set.getPosition(point1), pos1, 1e-10);
+		Point2D point1 = set.point(pos1);
+		assertEquals(set.position(point1), pos1, 1e-10);
 
 		pos1 = 1.2;
-		point1 = set.getPoint(pos1);
-		assertEquals(set.getPosition(point1), 1, 1e-10);
+		point1 = set.point(pos1);
+		assertEquals(set.position(point1), 1, 1e-10);
 
 		pos1 = 1.6;
-		point1 = set.getPoint(pos1);
-		assertEquals(set.getPosition(point1), 2, 1e-10);
+		point1 = set.point(pos1);
+		assertEquals(set.position(point1), 2, 1e-10);
 
 		pos1 = 2.3;
-		point1 = set.getPoint(pos1);
-		assertEquals(set.getPosition(point1), pos1, 1e-10);
+		point1 = set.point(pos1);
+		assertEquals(set.position(point1), pos1, 1e-10);
 	}
 	
 	public void testGetLocalPosition() {
@@ -128,28 +128,28 @@ public class CurveArray2DTest extends TestCase {
 		set.addCurve(arc1);
 		set.addCurve(arc2);
 		
-		Curve2D sub1 = set.getSubCurve(0, 2);
+		Curve2D sub1 = set.subCurve(0, 2);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		CurveSet2D<?> subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.getCurveNumber(), 2);
+		assertEquals(subset.curveNumber(), 2);
 		
-		double pos0 = set.getPosition(new Point2D(r, 0));
-		double pos1 = set.getPosition(new Point2D(0, 0));
-		sub1 = set.getSubCurve(pos0, pos1);
+		double pos0 = set.position(new Point2D(r, 0));
+		double pos1 = set.position(new Point2D(0, 0));
+		sub1 = set.subCurve(pos0, pos1);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.getCurveNumber(), 2);
-		Iterator<?> iter = subset.getCurves().iterator();
+		assertEquals(subset.curveNumber(), 2);
+		Iterator<?> iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc1h1.equals(sub1));
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc2h1.equals(sub1));
 		
-		sub1 = set.getSubCurve(pos1, pos0);
+		sub1 = set.subCurve(pos1, pos0);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.getCurveNumber(), 2);
-		iter = subset.getCurves().iterator();
+		assertEquals(subset.curveNumber(), 2);
+		iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc2h2.equals(sub1));
 		sub1 = (Curve2D) iter.next();

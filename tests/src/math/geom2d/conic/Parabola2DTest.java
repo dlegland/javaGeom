@@ -60,19 +60,19 @@ public class Parabola2DTest extends TestCase {
 		Point2D p0;
 		
 		// origin
-		p0 = parabola.getPoint(0);
+		p0 = parabola.point(0);
 		assertEquals(p0, new Point2D(0, 0));
 
 		// after origin
-		p0 = parabola.getPoint(1);
+		p0 = parabola.point(1);
 		assertEquals(p0, new Point2D(1, 1));
-		p0 = parabola.getPoint(2);
+		p0 = parabola.point(2);
 		assertEquals(p0, new Point2D(2, 4));
 		
 		// before origin
-		p0 = parabola.getPoint(-1);
+		p0 = parabola.point(-1);
 		assertEquals(p0, new Point2D(-1, 1));
-		p0 = parabola.getPoint(-2);
+		p0 = parabola.point(-2);
 		assertEquals(p0, new Point2D(-2, 4));
 		
 		
@@ -80,19 +80,19 @@ public class Parabola2DTest extends TestCase {
 		 parabola = new Parabola2D(0, 0, 1, -Math.PI/2);	
 
 		 // origin
-		 p0 = parabola.getPoint(0);
+		 p0 = parabola.point(0);
 		 assertEquals(p0, new Point2D(0, 0));
 
 		 // after origin
-		 p0 = parabola.getPoint(1);
+		 p0 = parabola.point(1);
 		 assertEquals(p0, new Point2D(1, -1));
-		 p0 = parabola.getPoint(2);
+		 p0 = parabola.point(2);
 		 assertEquals(p0, new Point2D(4, -2));
 
 		 // before origin
-		 p0 = parabola.getPoint(-1);
+		 p0 = parabola.point(-1);
 		 assertEquals(p0, new Point2D(1, 1));
-		 p0 = parabola.getPoint(-2);
+		 p0 = parabola.point(-2);
 		 assertEquals(p0, new Point2D(4, 2));
 		 
 		 
@@ -100,19 +100,19 @@ public class Parabola2DTest extends TestCase {
 		 parabola = new Parabola2D(20, 10, 1, -Math.PI/2);	
 
 		 // origin
-		 p0 = parabola.getPoint(0);
+		 p0 = parabola.point(0);
 		 assertEquals(p0, new Point2D(20, 10));
 
 		 // after origin
-		 p0 = parabola.getPoint(1);
+		 p0 = parabola.point(1);
 		 assertEquals(p0, new Point2D(20+1, 10-1));
-		 p0 = parabola.getPoint(2);
+		 p0 = parabola.point(2);
 		 assertEquals(p0, new Point2D(20+4, 10-2));
 
 		 // before origin
-		 p0 = parabola.getPoint(-1);
+		 p0 = parabola.point(-1);
 		 assertEquals(p0, new Point2D(20+1, 10+1));
-		 p0 = parabola.getPoint(-2);
+		 p0 = parabola.point(-2);
 		 assertEquals(p0, new Point2D(20+4, 10+2));
 	}
 	
@@ -133,10 +133,10 @@ public class Parabola2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		
 		Point2D point1 = new Point2D(-2, 4);
-		assertEquals(parabola.getPosition(point1), -2, Shape2D.ACCURACY);
+		assertEquals(parabola.position(point1), -2, Shape2D.ACCURACY);
 		
 		Point2D point2 = new Point2D(2, 4);
-		assertEquals(parabola.getPosition(point2), 2, Shape2D.ACCURACY);
+		assertEquals(parabola.position(point2), 2, Shape2D.ACCURACY);
 		
 	}
 
@@ -144,7 +144,7 @@ public class Parabola2DTest extends TestCase {
 	public void testGetDistance(){
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		Point2D p = new Point2D(0, -1);
-		assertEquals(parabola.getDistance(p), 1, 1e-6);
+		assertEquals(parabola.distance(p), 1, 1e-6);
 	}
 	
 	public void testGetIntersectionsLine(){
@@ -156,7 +156,7 @@ public class Parabola2DTest extends TestCase {
 		
 		// Horizontal line cutting in two points
 		line = new StraightLine2D(10, 4, -20, 0);		
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		inter = iter.next();
@@ -167,33 +167,33 @@ public class Parabola2DTest extends TestCase {
 		
 		// Horizontal line cutting in one points
 		line = new StraightLine2D(-2, 0, 1, 0);		
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(0, 0));
 		
 		// Horizontal line cutting in one points
 		line = new StraightLine2D(-2, -1, 1, 0);		
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==0);
 		
 		// Vertical line cutting in origin
 		line = new StraightLine2D(0, -6, 0, 1);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==1);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(0, 0));
 		
 		// Vertical line cutting at(1, 1)
 		line = new StraightLine2D(1, -6, 0, 1);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==1);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(1, 1));
 		
 		// diagonal line cutting in (0 0) and (1,1).
 		line = new StraightLine2D(-2, -2, 3, 3);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(0, 0));
@@ -202,7 +202,7 @@ public class Parabola2DTest extends TestCase {
 		// Parabola pointing to the right
 		parabola = new Parabola2D(0, 0, 1, -Math.PI/2);
 		line = new StraightLine2D(4, 0, 0, 1);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(4, 2));
@@ -211,19 +211,19 @@ public class Parabola2DTest extends TestCase {
 		// Parabola pointing to the top, line over -> 2 intersections
 		parabola = new Parabola2D(0, 0, 1./88, 0);
 		line = new StraightLine2D(0, 50, -1, 0);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 
 		// Parabola pointing to the right, line at the right -> 2 intersections
 		parabola = new Parabola2D(0, 0, 1./88, Math.PI*1.5);
 		line = new StraightLine2D(50, 0, 0, 1);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		
 		// Translated parabola pointing to the right
 		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
 		line = new StraightLine2D(24, 0, 0, 20);
-		inters = parabola.getIntersections(line);
+		inters = parabola.intersections(line);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertEquals(iter.next(), new Point2D(24, 12));
@@ -238,9 +238,9 @@ public class Parabola2DTest extends TestCase {
 		CurveSet2D<?> clippedCurve;
 		
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
-		Curve2D curve = clippedCurve.getFirstCurve();
+		Curve2D curve = clippedCurve.firstCurve();
 		
-		assertTrue(clippedCurve.getCurveNumber()==1);
+		assertTrue(clippedCurve.curveNumber()==1);
 		assertTrue(curve instanceof ParabolaArc2D);
 		
 		
@@ -248,8 +248,8 @@ public class Parabola2DTest extends TestCase {
 		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
 		line = new StraightLine2D(24, 0, 0, 20);
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
 		
@@ -258,8 +258,8 @@ public class Parabola2DTest extends TestCase {
 		parabola = new Parabola2D(20, 10, 1, 0);
 		line = new StraightLine2D(20, 10, -1, -2);
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, 0, 2).equals(curve));
 		
@@ -267,8 +267,8 @@ public class Parabola2DTest extends TestCase {
 		parabola = new Parabola2D(0, 0, 1, 0);
 		line = new StraightLine2D(0, 8, -1, -2);
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
 		
@@ -279,8 +279,8 @@ public class Parabola2DTest extends TestCase {
 		origin = origin.transform(AffineTransform2D.createRotation(20, 10, theta));
 		line = new StraightLine2D(origin, new Vector2D(-1, 0));
 		clippedCurve = Curve2DUtils.clipSmoothCurve(parabola, line);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
 	}
@@ -291,17 +291,17 @@ public class Parabola2DTest extends TestCase {
 		Box2D box = new Box2D(-10, 10, -4, 4);
 		
 		CurveSet2D<ParabolaArc2D> clippedCurve = parabola.clip(box);
-		Curve2D curve = clippedCurve.getFirstCurve();
+		Curve2D curve = clippedCurve.firstCurve();
 		
-		assertTrue(clippedCurve.getCurveNumber()==1);
+		assertTrue(clippedCurve.curveNumber()==1);
 		assertTrue(curve instanceof ParabolaArc2D);
 
 		// parabola pointing to the right
 		parabola = new Parabola2D(0, 0, 1, -Math.PI/2);
 		box = new Box2D(-4, 4, -10, 10);
 		clippedCurve = parabola.clip(box);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
 		
@@ -310,8 +310,8 @@ public class Parabola2DTest extends TestCase {
 		parabola = new Parabola2D(20, 10, 1, -Math.PI/2);
 		box = new Box2D(20-4, 20+4, 10-10, 10+10);
 		clippedCurve = parabola.clip(box);
-		assertTrue(clippedCurve.getCurveNumber()==1);
-		curve = clippedCurve.getFirstCurve();
+		assertTrue(clippedCurve.curveNumber()==1);
+		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
 	}
@@ -325,11 +325,11 @@ public class Parabola2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(xv, yv, a, theta);
 		
 		double t0 = 0;
-		assertEquals(parabola.getCurvature(t0), 2*a, 1e-12);
+		assertEquals(parabola.curvature(t0), 2*a, 1e-12);
 		
 		double t1 = 1;
 		double k1 = 2*a/Math.pow(Math.hypot(1, 2*a*t1), 3);		
-		assertEquals(parabola.getCurvature(t1), k1, 1e-12);
+		assertEquals(parabola.curvature(t1), k1, 1e-12);
 	}
 
 	public void testTransformAffineTransform2D(){
@@ -409,19 +409,19 @@ public class Parabola2DTest extends TestCase {
 		
 		// point inside a direct parabola
 		pt = new Point2D(1, 2);
-		assertEquals(parabola.getWindingAngle(pt), Math.PI*2, eps);
+		assertEquals(parabola.windingAngle(pt), Math.PI*2, eps);
 		
 		// point outside a direct parabola
 		pt = new Point2D(1, -2);
-		assertEquals(parabola.getWindingAngle(pt), 0, eps);
+		assertEquals(parabola.windingAngle(pt), 0, eps);
 		
 		// point inside an inverse parabola
 		pt = new Point2D(1, 2);
-		assertEquals(inverse.getWindingAngle(pt), 0, eps);
+		assertEquals(inverse.windingAngle(pt), 0, eps);
 		
 		// point outside an ibverse parabola
 		pt = new Point2D(1, -2);
-		assertEquals(inverse.getWindingAngle(pt), -2*Math.PI, eps);
+		assertEquals(inverse.windingAngle(pt), -2*Math.PI, eps);
 	}
 	
 	public void testClone() {

@@ -82,11 +82,11 @@ public class JavaGeomDemo extends JPanel{
 		line2.clip(box).draw(g2);
 
 		// Compute intersection between 2 lines
-		Point2D intLine = line2.getIntersection(line1);
+		Point2D intLine = line2.intersection(line1);
 		intLine.draw(g2, 2);
 		
 		// Compute intersections between a circle and lines
-		Collection<Point2D> intersects = circle1.getIntersections(line2);
+		Collection<Point2D> intersects = circle1.intersections(line2);
 		for(Point2D point : intersects)
 			point.draw(g2, 2);
 		

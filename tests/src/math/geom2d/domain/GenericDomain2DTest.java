@@ -34,7 +34,7 @@ public class GenericDomain2DTest extends TestCase {
 		Domain2D boundedDomain = new GenericDomain2D(circle);
 		assertTrue(boundedDomain.isBounded());
 		
-		Domain2D unboundedDomain = new GenericDomain2D(circle.getReverseCurve());
+		Domain2D unboundedDomain = new GenericDomain2D(circle.reverse());
 		assertTrue(!unboundedDomain.isBounded());
 		
 		StraightLine2D line = 
@@ -42,7 +42,7 @@ public class GenericDomain2DTest extends TestCase {
 		Domain2D halfDomain = new GenericDomain2D(line);
 		assertTrue(!halfDomain.isBounded());
 		
-		Domain2D halfDomain2 = new GenericDomain2D(line.getReverseCurve());
+		Domain2D halfDomain2 = new GenericDomain2D(line.reverse());
 		assertTrue(!halfDomain2.isBounded());
 		
 	}
@@ -55,12 +55,12 @@ public class GenericDomain2DTest extends TestCase {
 		
 		Domain2D domain = new GenericDomain2D(circle);
 		
-		Polygon2D polygon = domain.getAsPolygon(32);
+		Polygon2D polygon = domain.asPolygon(32);
 		
 		assertTrue(polygon.isBounded());
 		
 		Box2D expBox = new Box2D(-20, 40, -10, 50);
-		Box2D bbox = polygon.getBoundingBox();
+		Box2D bbox = polygon.boundingBox();
 		assertTrue(bbox.almostEquals(expBox, 1e-14));
 	}
 	
@@ -80,12 +80,12 @@ public class GenericDomain2DTest extends TestCase {
 		
 		Domain2D domain = new GenericDomain2D(discs);
 		
-		Polygon2D polygon = domain.getAsPolygon(32);
+		Polygon2D polygon = domain.asPolygon(32);
 		
 		assertTrue(polygon.isBounded());
 		
 		Box2D expBox = new Box2D(-20, 60, -10, 100);
-		Box2D bbox = polygon.getBoundingBox();
+		Box2D bbox = polygon.boundingBox();
 		assertTrue(bbox.almostEquals(expBox, 1e-14));
 	}
 }

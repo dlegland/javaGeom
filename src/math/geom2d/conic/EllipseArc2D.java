@@ -203,13 +203,13 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.OrientedCurve2D#getViewAngle(math.geom2d.Point2D)
      */
-    public double getWindingAngle(Point2D point) {
-        Point2D p1 = getPoint(0);
-        Point2D p2 = getPoint(abs(angleExtent));
+    public double windingAngle(Point2D point) {
+        Point2D p1 = point(0);
+        Point2D p2 = point(abs(angleExtent));
 
         // compute angle of point with extreme points
-		double angle1 = Angle2D.getHorizontalAngle(point, p1);
-		double angle2 = Angle2D.getHorizontalAngle(point, p2);
+		double angle1 = Angle2D.horizontalAngle(point, p1);
+		double angle2 = Angle2D.horizontalAngle(point, p2);
 
         // test on which 'side' of the arc the point lie
         boolean b1 = (new StraightLine2D(p1, p2)).isInside(point);
@@ -243,11 +243,11 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean isInside(Point2D p) {
-		return getSignedDistance(p.getX(), p.getY()) < 0;
+		return distanceSigned(p.getX(), p.getY()) < 0;
     }
 
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
+    public double distanceSigned(Point2D p) {
+        return distanceSigned(p.getX(), p.getY());
     }
 
     /*
@@ -255,19 +255,19 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
      */
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         boolean direct = angleExtent>0;
 
-        double dist = getDistance(x, y);
+        double dist = distance(x, y);
         Point2D point = new Point2D(x, y);
 
         boolean inside = ellipse.isInside(point);
         if (inside)
 			return angleExtent > 0 ? -dist : dist;
 
-        Point2D p1 = getPoint(startAngle);
+        Point2D p1 = point(startAngle);
 		double endAngle = startAngle + angleExtent;
-		Point2D p2 = getPoint(endAngle);
+		Point2D p2 = point(endAngle);
 		boolean onLeft = (new StraightLine2D(p1, p2)).isInside(point);
 
 		if (direct && !onLeft)
@@ -299,29 +299,29 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods from interface SmoothCurve2D
 
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
     	// format between min and max admissible values
     	t = min(max(0, t), abs(angleExtent));
     	
     	// compute tangent vector depending on position
 		if (angleExtent < 0) {
 			// need to invert vector for indirect arcs
-			return ellipse.getTangent(startAngle - t).times(-1);
+			return ellipse.tangent(startAngle - t).times(-1);
 		} else {
-			return ellipse.getTangent(startAngle + t);
+			return ellipse.tangent(startAngle + t);
         }
     }
 
     /**
      * returns the curvature of the ellipse arc.
      */
-    public double getCurvature(double t) {
+    public double curvature(double t) {
         // convert position to angle
 		if (angleExtent < 0)
 			t = startAngle - t;
 		else
 			t = startAngle + t;
-		double kappa = ellipse.getCurvature(t);
+		double kappa = ellipse.curvature(t);
 		return this.isDirect() ? kappa : -kappa;
     }
 
@@ -351,7 +351,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
      */
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         // check bounds
         t = max(t, 0);
         t = min(t, abs(angleExtent));
@@ -363,7 +363,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 			t = startAngle + t;
 
         // return corresponding point
-        return ellipse.getPoint(t);
+        return ellipse.point(t);
     }
 
     /*
@@ -371,8 +371,8 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
      */
-    public double getPosition(Point2D point) {
-        double angle = Angle2D.getHorizontalAngle(ellipse.getCenter(), point);
+    public double position(Point2D point) {
+        double angle = Angle2D.horizontalAngle(ellipse.center(), point);
 		if (this.containsAngle(angle))
 			if (angleExtent > 0)
 				return Angle2D.formatAngle(angle - startAngle);
@@ -395,8 +395,8 @@ implements SmoothOrientedCurve2D, Cloneable {
         }
 
         // return either 0 or T1, depending on which extremity is closer.
-        double d1 = this.getFirstPoint().getDistance(point);
-        double d2 = this.getLastPoint().getDistance(point);
+        double d1 = this.firstPoint().distance(point);
+        double d2 = this.lastPoint().distance(point);
 		return d1 < d2 ? 0 : abs(angleExtent);
     }
     
@@ -405,11 +405,11 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
      */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
 
         // check point contained in it
         ArrayList<Point2D> array = new ArrayList<Point2D>();
-        for (Point2D point : ellipse.getIntersections(line))
+        for (Point2D point : ellipse.intersections(line))
             if (contains(point))
                 array.add(point);
 
@@ -420,20 +420,20 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Returns the ellipse arc which refers to the reversed parent ellipse, with
      * same start angle, and with opposite angle extent.
      */
-    public EllipseArc2D getReverseCurve() {
+    public EllipseArc2D reverse() {
 		return new EllipseArc2D(ellipse, Angle2D.formatAngle(startAngle
 				+ angleExtent), -angleExtent);
     }
 
 	@Override
-    public Collection<? extends EllipseArc2D> getContinuousCurves() {
+    public Collection<? extends EllipseArc2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
     /**
      * Returns a new EllipseArc2D.
      */
-    public EllipseArc2D getSubCurve(double t0, double t1) {
+    public EllipseArc2D subCurve(double t0, double t1) {
         // convert position to angle
 		t0 = Angle2D.formatAngle(startAngle + t0);
 		t1 = Angle2D.formatAngle(startAngle + t1);
@@ -458,8 +458,8 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(math.geom2d.Point2D)
      */
-    public double getDistance(Point2D point) {
-        return getDistance(point.getX(), point.getY());
+    public double distance(Point2D point) {
+        return distance(point.getX(), point.getY());
     }
 
     /*
@@ -467,9 +467,9 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
-    public double getDistance(double x, double y) {
-        Point2D p = getPoint(project(new Point2D(x, y)));
-        return p.getDistance(x, y);
+    public double distance(double x, double y) {
+        Point2D p = point(project(new Point2D(x, y)));
+        return p.distance(x, y);
     }
 
     /** Always return true: an ellipse arc is bounded by definition */
@@ -493,21 +493,21 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<EllipseArc2D> result = 
-        	new CurveArray2D<EllipseArc2D>(set.getCurveNumber());
+        	new CurveArray2D<EllipseArc2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof EllipseArc2D)
                 result.addCurve((EllipseArc2D) curve);
         }
         return result;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
 
         // first get ending points
-        Point2D p0 = getFirstPoint();
-        Point2D p1 = getLastPoint();
+        Point2D p0 = firstPoint();
+        Point2D p1 = lastPoint();
 
         // get coordinate of ending points
         double x0 = p0.getX();
@@ -522,7 +522,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         double ymax = max(y0, y1);
 
         // check cases arc contains one maximum
-        Point2D center = ellipse.getCenter();
+        Point2D center = ellipse.center();
         double xc = center.getX();
 		double yc = center.getY();
 		double endAngle = startAngle + angleExtent;
@@ -554,11 +554,11 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // ensure ellipse is direct
         if (!ell.isDirect())
-            ell = ell.getReverseCurve();
+            ell = ell.reverse();
 
         // Compute position of end points on the transformed ellipse
-        double startPos = ell.project(this.getFirstPoint().transform(trans));
-        double endPos = ell.project(this.getLastPoint().transform(trans));
+        double startPos = ell.project(this.firstPoint().transform(trans));
+        double endPos = ell.project(this.lastPoint().transform(trans));
 
         // Compute the new arc
 		boolean direct = !(angleExtent > 0 ^ trans.isDirect());
@@ -571,7 +571,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @see java.awt.Shape#contains(double, double)
      */
     public boolean contains(double x, double y) {
-		return getDistance(x, y) > Shape2D.ACCURACY;
+		return distance(x, y) > Shape2D.ACCURACY;
     }
 
     /*
@@ -600,12 +600,12 @@ implements SmoothOrientedCurve2D, Cloneable {
 			double ti1 = abs((i + 1) * ext);
     		
     		// extremity points
-    		Point2D p1 = this.getPoint(ti0);
-    		Point2D p2 = this.getPoint(ti1);
+    		Point2D p1 = this.point(ti0);
+    		Point2D p2 = this.point(ti1);
     		
     		// tangent vectors, multiplied by appropriate coefficient
-    		Vector2D v1 = this.getTangent(ti0).times(k);
-    		Vector2D v2 = this.getTangent(ti1).times(k);
+    		Vector2D v1 = this.tangent(ti0).times(k);
+    		Vector2D v2 = this.tangent(ti1).times(k);
     		
     		// append a cubic curve to the path
     		path.curveTo(
@@ -621,7 +621,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 
         // move to the first point
-        Point2D point = this.getFirstPoint();
+        Point2D point = this.firstPoint();
         path.moveTo((float) point.getX(), (float) point.getY());
 
         // append the curve
@@ -760,7 +760,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public String toString() {
-    	Point2D center = ellipse.getCenter();
+    	Point2D center = ellipse.center();
         return String.format(Locale.US, 
                 "EllipseArc2D(%7.2f,%7.2f,%7.2f,%7.2f,%7.5f,%7.5f,%7.5f)", 
                 center.getX(), center.getY(), 

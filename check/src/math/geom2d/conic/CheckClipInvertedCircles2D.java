@@ -74,7 +74,7 @@ public class CheckClipInvertedCircles2D extends JPanel{
 				new Circle2D[]{circle1, circle2, circle3, circle4});		
 		
 		g2.setColor(Color.CYAN);
-		boundary.getDomain().clip(box).fill(g2);
+		boundary.domain().clip(box).fill(g2);
 		
 		g2.setColor(Color.RED);
 		boundary.clip(box).draw(g2);

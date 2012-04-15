@@ -82,7 +82,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ==========================================================
     // methods implementing the OrientedCurve2D interface
 
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
         double angle0, angle1;
 
         boolean direct = parabola.isDirect();
@@ -91,13 +91,13 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (Double.isInfinite(t0)) {
 			angle0 = parabola.getAngle() + (direct ? +1 : -1) * PI / 2;
 		} else {
-			angle0 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t0));
+			angle0 = Angle2D.horizontalAngle(point, parabola.point(t0));
 		}
 
 		if (Double.isInfinite(t1)) {
 			angle1 = parabola.getAngle() + (direct ? +1 : -1) * PI / 2;
         } else {
-            angle1 = Angle2D.getHorizontalAngle(point, parabola.getPoint(t1));
+            angle1 = Angle2D.horizontalAngle(point, parabola.point(t1));
         }
 
 		if (inside) {
@@ -115,14 +115,14 @@ implements SmoothOrientedCurve2D, Cloneable {
 		}
 	}
 
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
+    public double distanceSigned(Point2D p) {
+        return distanceSigned(p.getX(), p.getY());
     }
 
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         if (isInside(new Point2D(x, y)))
-            return -getDistance(x, y);
-        return -getDistance(x, y);
+            return -distance(x, y);
+        return -distance(x, y);
     }
 
     public boolean isInside(Point2D point) {
@@ -136,15 +136,15 @@ implements SmoothOrientedCurve2D, Cloneable {
         double pos = parabola.project(point);
 
 		if (pos < t0) {
-			Point2D p0 = parabola.getPoint(t0);
-			Vector2D v0 = parabola.getTangent(t0);
+			Point2D p0 = parabola.point(t0);
+			Vector2D v0 = parabola.tangent(t0);
 			StraightLine2D line0 = new StraightLine2D(p0, v0);
 			return line0.isInside(point);
 		}
 
 		if (pos > t1) {
-			Point2D p1 = parabola.getPoint(t1);
-			Vector2D v1 = parabola.getTangent(t1);
+			Point2D p1 = parabola.point(t1);
+			Vector2D v1 = parabola.tangent(t1);
 			StraightLine2D line1 = new StraightLine2D(p1, v1);
 			return line1.isInside(point);
 		}
@@ -154,15 +154,15 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ==========================================================
     // methods implementing the SmoothCurve2D interface
 
-    public Vector2D getTangent(double t) {
-        return parabola.getTangent(t);
+    public Vector2D tangent(double t) {
+        return parabola.tangent(t);
     }
 
     /**
      * Returns the curvature of the parabola arc.
      */
-    public double getCurvature(double t) {
-        return parabola.getCurvature(t);
+    public double curvature(double t) {
+        return parabola.curvature(t);
     }
 
     // ==========================================================
@@ -190,15 +190,15 @@ implements SmoothOrientedCurve2D, Cloneable {
         return t1;
     }
 
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         t = min(max(t, t0), t1);
-        return parabola.getPoint(t);
+        return parabola.point(t);
     }
 
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
 		if (!this.parabola.contains(point))
 			return Double.NaN;
-		double t = this.parabola.getPosition(point);
+		double t = this.parabola.position(point);
 		if (t - t0 < -ACCURACY)
 			return Double.NaN;
 		if (t1 - t < ACCURACY)
@@ -211,11 +211,11 @@ implements SmoothOrientedCurve2D, Cloneable {
         return min(max(t, t0), t1);
     }
 
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
-        Collection<Point2D> inters0 = this.parabola.getIntersections(line);
+    public Collection<Point2D> intersections(LinearShape2D line) {
+        Collection<Point2D> inters0 = this.parabola.intersections(line);
         ArrayList<Point2D> inters = new ArrayList<Point2D>(2);
         for (Point2D point : inters0) {
-            double pos = this.parabola.getPosition(point);
+            double pos = this.parabola.position(point);
 			if (pos > this.t0 && pos < this.t1)
                 inters.add(point);
         }
@@ -227,11 +227,11 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Returns the parabola arc which refers to the reversed parent parabola,
      * and with inverted parametrization bounds.
      */
-    public ParabolaArc2D getReverseCurve() {
-        return new ParabolaArc2D(this.parabola.getReverseCurve(), -t1, -t0);
+    public ParabolaArc2D reverse() {
+        return new ParabolaArc2D(this.parabola.reverse(), -t1, -t0);
     }
 
-    public ParabolaArc2D getSubCurve(double t0, double t1) {
+    public ParabolaArc2D subCurve(double t0, double t1) {
 		if (t1 < t0)
 			return null;
         t0 = max(this.t0, t0);
@@ -242,13 +242,13 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ====================================================================
     // methods implementing the Shape2D interface
 
-    public double getDistance(Point2D p) {
-        return getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return distance(p.getX(), p.getY());
     }
 
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         // TODO Auto-generated method stub
-        return this.getAsPolyline(100).getDistance(x, y);
+        return this.asPolyline(100).distance(x, y);
     }
 
     /**
@@ -281,19 +281,19 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<ParabolaArc2D> result = 
-        	new CurveArray2D<ParabolaArc2D>(set.getCurveNumber());
+        	new CurveArray2D<ParabolaArc2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof ParabolaArc2D)
                 result.addCurve((ParabolaArc2D) curve);
         }
         return result;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         // TODO Auto-generated method stub
-        return this.getAsPolyline(100).getBoundingBox();
+        return this.asPolyline(100).boundingBox();
     }
 
     public ParabolaArc2D transform(AffineTransform2D trans) {
@@ -301,9 +301,9 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Compute position of end points on the transformed parabola
         double startPos = Double.isInfinite(t0) ? Double.NEGATIVE_INFINITY
-                : par.project(this.getFirstPoint().transform(trans));
+                : par.project(this.firstPoint().transform(trans));
         double endPos = Double.isInfinite(t1) ? Double.POSITIVE_INFINITY : par
-                .project(this.getLastPoint().transform(trans));
+                .project(this.lastPoint().transform(trans));
 
         // Compute the new arc
         return new ParabolaArc2D(par, startPos, endPos);
@@ -318,7 +318,7 @@ implements SmoothOrientedCurve2D, Cloneable {
             return false;
         
 		// Check if position of point is inside of bounds
-		double t = parabola.getPosition(new Point2D(x, y));
+		double t = parabola.position(new Point2D(x, y));
 		if (t < this.t0)
 			return false;
 		if (t > this.t1)
@@ -340,17 +340,17 @@ implements SmoothOrientedCurve2D, Cloneable {
             throw new UnboundedShape2DException(this);
 
         // Compute position and tangent at extremities
-        Point2D p1 = this.getFirstPoint();
-        Point2D p2 = this.getLastPoint();
-        Vector2D v1 = this.getTangent(this.getT0());
-        Vector2D v2 = this.getTangent(this.getT1());
+        Point2D p1 = this.firstPoint();
+        Point2D p2 = this.lastPoint();
+        Vector2D v1 = this.tangent(this.getT0());
+        Vector2D v2 = this.tangent(this.getT1());
         
         // Compute tangent lines at extremities
         StraightLine2D line1 = new StraightLine2D(p1, v1);
         StraightLine2D line2 = new StraightLine2D(p2, v2);
         
         // Compute intersection point of tangent lines
-        Point2D pc = line1.getIntersection(line2);
+        Point2D pc = line1.intersection(line2);
         
         // Use quadratic curve to represent (exactly) the parabola arc
         path.quadTo(pc.getX(), pc.getY(), p2.getX(), p2.getY());
@@ -360,7 +360,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
-        return this.getAsPolyline(32).getGeneralPath();
+        return this.asPolyline(32).asGeneralPath();
     }
 
 

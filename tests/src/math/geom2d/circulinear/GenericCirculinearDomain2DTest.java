@@ -27,7 +27,7 @@ import math.geom2d.transform.CircleInversion2D;
 public class GenericCirculinearDomain2DTest extends TestCase {
 
 	/**
-	 * Test method for {@link math.geom2d.circulinear.GenericCirculinearDomain2D#getBoundary()}.
+	 * Test method for {@link math.geom2d.circulinear.GenericCirculinearDomain2D#boundary()}.
 	 */
 	public void testGetBoundary() {
 		// create a boundary
@@ -38,7 +38,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		Domain2D domain = GenericCirculinearDomain2D.create(circle);
 		
 		// extract boundary, and compare to base circle
-		Boundary2D boundary = domain.getBoundary();
+		Boundary2D boundary = domain.boundary();
 		
 		assertTrue(boundary.equals(circle));
 	}
@@ -56,7 +56,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		// extract boundary, and compare to base circle
 		Domain2D complement = domain.complement();
-		Boundary2D boundary = complement.getBoundary();
+		Boundary2D boundary = complement.boundary();
 		
 		assertTrue(boundary instanceof Circle2D);
 		Circle2D circle2 = Circle2D.create(center, 30, false);
@@ -64,7 +64,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.circulinear.GenericCirculinearDomain2D#getBuffer(double)}.
+	 * Test method for {@link math.geom2d.circulinear.GenericCirculinearDomain2D#buffer(double)}.
 	 */
 	public void testGetBuffer() {
 		// create a boundary
@@ -75,8 +75,8 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		CirculinearDomain2D domain = GenericCirculinearDomain2D.create(circle);
 		
 		// extract boundary, and compare to base circle
-		Domain2D buffer = domain.getBuffer(15);
-		Boundary2D boundary = buffer.getBoundary();
+		Domain2D buffer = domain.buffer(15);
+		Boundary2D boundary = buffer.boundary();
 		
 		// compare with the theoretical circle
 		Circle2D circle2 = Circle2D.create(center, 30+15, true);
@@ -105,8 +105,8 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		Box2D box = new Box2D(50, 350, 50, 350);
 		Domain2D clipped = domain.clip(box);
 		
-		Boundary2D boundary = clipped.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Boundary2D boundary = clipped.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 		
 	}
 
@@ -142,9 +142,9 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		assertFalse(res.isEmpty());
 		
-		CirculinearBoundary2D boundary = res.getBoundary();
-		assertEquals(2, boundary.getContinuousCurves().size());
-		for (CirculinearContour2D contour : boundary.getContinuousCurves())
+		CirculinearBoundary2D boundary = res.boundary();
+		assertEquals(2, boundary.continuousCurves().size());
+		for (CirculinearContour2D contour : boundary.continuousCurves())
 			assertTrue(contour instanceof Circle2D);
 	}
 }

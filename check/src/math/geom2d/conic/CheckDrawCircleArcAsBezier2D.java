@@ -33,10 +33,10 @@ public class CheckDrawCircleArcAsBezier2D  extends JPanel{
 		g2.setColor(Color.BLUE);
 		arc.draw(g2);
 		
-		Point2D p1 = arc.getFirstPoint();
-		Point2D p2 = arc.getLastPoint();
-		Vector2D v1 = arc.getTangent(arc.getT0());
-		Vector2D v2 = arc.getTangent(arc.getT1());
+		Point2D p1 = arc.firstPoint();
+		Point2D p2 = arc.lastPoint();
+		Vector2D v1 = arc.tangent(arc.getT0());
+		Vector2D v2 = arc.tangent(arc.getT1());
 		
 		double k = 0.5522847498307933;
 		Point2D c1 = new Point2D(p1.getX()+k*v1.getX(), p1.getY()+k*v1.getY());
@@ -56,7 +56,7 @@ public class CheckDrawCircleArcAsBezier2D  extends JPanel{
 		double[] dists = new double[N];
 		double maxDist = 0;
 		for(int i=0; i<N; i++){
-			dists[i] = arc.getDistance(bezier.getPoint(1.0/N));
+			dists[i] = arc.distance(bezier.point(1.0/N));
 			maxDist = Math.max(dists[i], maxDist);
 		}
 		System.out.println(maxDist/2 + "%");

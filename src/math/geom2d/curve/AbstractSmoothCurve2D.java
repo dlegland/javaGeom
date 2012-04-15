@@ -26,51 +26,51 @@ implements SmoothCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
-    public Vector2D getLeftTangent(double t){
-    	return this.getTangent(t);
+    public Vector2D leftTangent(double t){
+    	return this.tangent(t);
     }
     
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
 	 */
-    public Vector2D getRightTangent(double t){
-    	return this.getTangent(t);
+    public Vector2D rightTangent(double t){
+    	return this.tangent(t);
     }
     
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getNormal(double)
 	 */
-    public Vector2D getNormal(double t){
-    	return this.getTangent(t).rotate(-Math.PI / 2);
+    public Vector2D normal(double t){
+    	return this.tangent(t).rotate(-Math.PI / 2);
     }
     
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
 	 */
-	public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+	public Collection<? extends SmoothCurve2D> smoothPieces() {
 		return wrapCurve(this);
 	}
 
 	/** 
 	 * Returns an empty set of Point2D, as a smooth curve does not have
 	 * singular points by definition. 
-	 * @see math.geom2d.curve.Curve2D#getSingularPoints()
+	 * @see math.geom2d.curve.Curve2D#singularPoints()
 	 */
-	public Collection<Point2D> getSingularPoints() {
+	public Collection<Point2D> singularPoints() {
 		return new ArrayList<Point2D>(0);
 	}
 
 	/** 
 	 * Returns a set of Point2D, containing the extremities of the curve 
 	 * if they are not infinite. 
-	 * @see math.geom2d.curve.Curve2D#getVertices()
+	 * @see math.geom2d.curve.Curve2D#vertices()
 	 */
-	public Collection<Point2D> getVertices() {
+	public Collection<Point2D> vertices() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(2);
 		if (!Double.isInfinite(this.getT0()))
-			array.add(this.getFirstPoint());
+			array.add(this.firstPoint());
 		if (!Double.isInfinite(this.getT1()))
-			array.add(this.getLastPoint());
+			array.add(this.lastPoint());
 		return array;
 	}
 

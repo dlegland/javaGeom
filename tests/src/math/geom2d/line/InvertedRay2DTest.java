@@ -60,7 +60,7 @@ public class InvertedRay2DTest extends TestCase {
     	InvertedRay2D ray = new InvertedRay2D(p1, p2);
 		
     	double dist = 5;
-    	Domain2D buffer = ray.getBuffer(dist);
+    	Domain2D buffer = ray.buffer(dist);
     	
     	assertFalse(buffer.isEmpty());
     	assertFalse(buffer.isBounded());
@@ -89,7 +89,7 @@ public class InvertedRay2DTest extends TestCase {
     	Point2D p2p = new Point2D(2, 3);
     	InvertedRay2D line1p = new InvertedRay2D(p1p, p2p);
     	
-    	assertTrue(line1.getParallel(1).equals(line1p));
+    	assertTrue(line1.parallel(1).equals(line1p));
     }
 
 	public static void main(String[] args) {
@@ -104,7 +104,7 @@ public class InvertedRay2DTest extends TestCase {
 	public void testGetFirstPoint(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
 		try {
-		    ray1.getFirstPoint();
+		    ray1.firstPoint();
 		    fail("Should throw an InfiniteShapeException");
 		}catch(UnboundedShape2DException ex){		    
 		}
@@ -112,7 +112,7 @@ public class InvertedRay2DTest extends TestCase {
 	
 	public void testGetLastPoint(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
-		Point2D lastPoint = ray1.getLastPoint();
+		Point2D lastPoint = ray1.lastPoint();
 		assertTrue(lastPoint.equals(new Point2D(2, 2)));
 	}
 	
@@ -122,22 +122,22 @@ public class InvertedRay2DTest extends TestCase {
 		double eps = Shape2D.ACCURACY;
 		
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 1);
-		assertTrue(ray1.getBoundingBox().equals(new Box2D(minus, 2, minus, 2)));
+		assertTrue(ray1.boundingBox().equals(new Box2D(minus, 2, minus, 2)));
 		
 		InvertedRay2D ray2 = new InvertedRay2D(2, 2, 1, 0);
 		Box2D ray2Box = new Box2D(minus, 2, 2, 2);
-		assertTrue(ray2.getBoundingBox().almostEquals(ray2Box, eps));
+		assertTrue(ray2.boundingBox().almostEquals(ray2Box, eps));
 		
 		InvertedRay2D ray3 = new InvertedRay2D(2, 2, -1, -1);
 		Box2D ray3Box = new Box2D(2, plus, 2, plus);
-		assertTrue(ray3.getBoundingBox().almostEquals(ray3Box, eps));
+		assertTrue(ray3.boundingBox().almostEquals(ray3Box, eps));
 	}
 	
 	public void testGetReverseCurve(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
 		Ray2D inv1 = new Ray2D(2, 2, -1, 0);
 
-		Curve2D inverted = ray1.getReverseCurve();
+		Curve2D inverted = ray1.reverse();
 		assertTrue(inverted.equals(inv1));
 		
 	}
@@ -167,23 +167,23 @@ public class InvertedRay2DTest extends TestCase {
 		
 		// test origin point
 		pt = new Point2D(1, 2);
-		assertEquals(0, ray.getDistance(pt), 1e-14);
+		assertEquals(0, ray.distance(pt), 1e-14);
 		
 		// point on the line (positive extent)
 		pt = new Point2D(1+2*3, 2+2*4);
-		assertEquals(10, ray.getDistance(pt), 1e-14);
+		assertEquals(10, ray.distance(pt), 1e-14);
 		
 		// point on the line (negative extent)
 		pt = new Point2D(1-2*3, 2-2*4);
-		assertEquals(0, ray.getDistance(pt), 1e-14);
+		assertEquals(0, ray.distance(pt), 1e-14);
 		
 		// point outside the line
 		pt = new Point2D(5, -1);
-		assertEquals(5, ray.getDistance(pt), 1e-14);	
+		assertEquals(5, ray.distance(pt), 1e-14);	
 		
 		// point outside the line, in the other side
 		pt = new Point2D(-3, 5);
-		assertEquals(5, ray.getDistance(pt), 1e-14);	
+		assertEquals(5, ray.distance(pt), 1e-14);	
 	}
 
 	public void testClone(){

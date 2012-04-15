@@ -23,7 +23,7 @@ public interface CircleLine2D extends CirculinearContour2D,
     // ===================================================================
     // redefines declaration of some interfaces
 
-	public CircleLine2D getParallel(double dist);
+	public CircleLine2D parallel(double dist);
 	public CircleLine2D transform(CircleInversion2D inv);
-	public CircleLine2D getReverseCurve();
+	public CircleLine2D reverse();
 }

@@ -29,7 +29,7 @@ public class StraightLine3DTest extends TestCase {
 		StraightLine3D line = new StraightLine3D(new Point3D(2, 2, 2), new Vector3D(2, 0, 0));
 		Point3D p1 = new Point3D(4, 2, 2);
 		
-		assertEquals(line.getPosition(p1), 1, 1e-14);
+		assertEquals(line.position(p1), 1, 1e-14);
 	}
 
 }

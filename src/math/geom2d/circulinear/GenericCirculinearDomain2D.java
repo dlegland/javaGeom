@@ -36,27 +36,27 @@ implements CirculinearDomain2D {
 	}
 	
 	@Override
-	public CirculinearBoundary2D getBoundary() {
+	public CirculinearBoundary2D boundary() {
 		return (CirculinearBoundary2D) boundary;
 	}
 
 	@Override
     public CirculinearDomain2D complement() {
         return new GenericCirculinearDomain2D(
-        		(CirculinearBoundary2D) boundary.getReverseCurve());
+        		(CirculinearBoundary2D) boundary.reverse());
     }
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		
 		CirculinearBoundary2D newBoundary = 
-			((CirculinearBoundary2D) this.boundary).getParallel(dist);
+			((CirculinearBoundary2D) this.boundary).parallel(dist);
 		return new GenericCirculinearDomain2D(
 				CirculinearContourArray2D.create(
 						CirculinearCurve2DUtils.splitIntersectingContours(
-								newBoundary.getContinuousCurves())));
+								newBoundary.continuousCurves())));
 	}
 
 	/* (non-Javadoc)
@@ -67,7 +67,7 @@ implements CirculinearDomain2D {
 		CirculinearBoundary2D boundary2 = (CirculinearBoundary2D) boundary;
 		
 		// transform and reverse
-		boundary2 = boundary2.transform(inv).getReverseCurve();
+		boundary2 = boundary2.transform(inv).reverse();
 		
 		// create the result domain
 		return new GenericCirculinearDomain2D(boundary2);

@@ -97,7 +97,7 @@ implements Cloneable, CirculinearElement2D {
 			return Double.NaN;
 		}
 
-		return Angle2D.getAngle(new Vector2D(x1 - x0, y1 - y0), new Vector2D(x2
+		return Angle2D.angle(new Vector2D(x1 - x0, y1 - y0), new Vector2D(x2
 				- x0, y2 - y0));
 	}
 
@@ -110,10 +110,10 @@ implements Cloneable, CirculinearElement2D {
      * @return true if the 2 line segments intersect
      */
 	public static boolean intersects(LineSegment2D edge1, LineSegment2D edge2) {
-		Point2D e1p1 = edge1.getFirstPoint();
-		Point2D e1p2 = edge1.getLastPoint();
-		Point2D e2p1 = edge2.getFirstPoint();
-		Point2D e2p2 = edge2.getLastPoint();
+		Point2D e1p1 = edge1.firstPoint();
+		Point2D e1p2 = edge1.lastPoint();
+		Point2D e2p1 = edge2.firstPoint();
+		Point2D e2p2 = edge2.lastPoint();
 
 		boolean b1 = Point2D.ccw(e1p1, e1p2, e2p1)
 				* Point2D.ccw(e1p1, e1p2, e2p2) <= 0;
@@ -146,7 +146,7 @@ implements Cloneable, CirculinearElement2D {
      * @param point one of the vertices of the edge
      * @return the other vertex, or null if point is nor a vertex of the edge
      */
-	public Point2D getOtherPoint(Point2D point) {
+	public Point2D opposite(Point2D point) {
 		if (point.equals(new Point2D(x0, y0)))
 			return new Point2D(x0 + dx, y0 + dy);
 		if (point.equals(new Point2D(x0 + dx, y0 + dy)))
@@ -172,14 +172,14 @@ implements Cloneable, CirculinearElement2D {
      * Returns the length of the line segment.
      */
 	@Override
-    public double getLength() {
+    public double length() {
         return Math.hypot(dx, dy);
     }
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
-	public LineSegment2D getParallel(double d) {
+	public LineSegment2D parallel(double d) {
 		double d2 = Math.hypot(dx, dy);
 		if (Math.abs(d2) < Shape2D.ACCURACY)
 			throw new DegeneratedLine2DException(
@@ -194,13 +194,13 @@ implements Cloneable, CirculinearElement2D {
     // Methods implementing the OrientedCurve2D interface
 
     @Override
-    public double getSignedDistance(double x, double y) {
-        Point2D proj = super.getProjectedPoint(x, y);
+    public double distanceSigned(double x, double y) {
+        Point2D proj = super.projectedPoint(x, y);
         if (contains(proj))
-            return super.getSignedDistance(x, y);
+            return super.distanceSigned(x, y);
 
-		double d = this.getDistance(x, y);
-		return super.getSignedDistance(x, y) > 0 ? d : -d;
+		double d = this.distance(x, y);
+		return super.distanceSigned(x, y) > 0 ? d : -d;
 	}
     
     
@@ -214,7 +214,7 @@ implements Cloneable, CirculinearElement2D {
      * @return the first point of the edge
      */
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         return new Point2D(x0, y0);
     }
 
@@ -224,7 +224,7 @@ implements Cloneable, CirculinearElement2D {
      * @return the last point of the edge
      */
 	@Override
-	public Point2D getLastPoint() {
+	public Point2D lastPoint() {
 		return new Point2D(x0 + dx, y0 + dy);
 	}
 
@@ -242,7 +242,7 @@ implements Cloneable, CirculinearElement2D {
         return 1.0;
     }
 
-	public Point2D getPoint(double t) {
+	public Point2D point(double t) {
 		t = Math.min(Math.max(t, 0), 1);
 		return new Point2D(x0 + dx * t, y0 + dy * t);
 	}
@@ -251,7 +251,7 @@ implements Cloneable, CirculinearElement2D {
      * Returns the LineSegment which start from last point of this line segment,
      * and which ends at the fist point of this last segment.
      */
-	public LineSegment2D getReverseCurve() {
+	public LineSegment2D reverse() {
 		return new LineSegment2D(x0 + dx, y0 + dy, x0, y0);
 	}
 
@@ -270,7 +270,7 @@ implements Cloneable, CirculinearElement2D {
             return false;
 
         // compute position on the line
-        double t = getPositionOnLine(xp, yp);
+        double t = positionOnLine(xp, yp);
 
 		if (t < -ACCURACY)
 			return false;
@@ -284,10 +284,10 @@ implements Cloneable, CirculinearElement2D {
      * Get the distance of the point (x, y) to this edge.
      */
     @Override
-	public double getDistance(double x, double y) {
-		Point2D proj = super.getProjectedPoint(x, y);
+	public double distance(double x, double y) {
+		Point2D proj = super.projectedPoint(x, y);
 		if (contains(proj))
-			return proj.getDistance(x, y);
+			return proj.distance(x, y);
 		double d1 = Math.hypot(x0 - x, y0 - y);
 		double d2 = Math.hypot(x0 + dx - x, y0 + dy - y);
 		return Math.min(d1, d2);
@@ -295,7 +295,7 @@ implements Cloneable, CirculinearElement2D {
 
     @Override
 	public LineSegment2D transform(AffineTransform2D trans) {
-		double[] tab = trans.getCoefficients();
+		double[] tab = trans.coefficients();
 		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
 		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
 		double x2 = (x0 + dx) * tab[0] + (y0 + dy) * tab[1] + tab[2];
@@ -303,7 +303,7 @@ implements Cloneable, CirculinearElement2D {
 		return new LineSegment2D(x1, y1, x2, y2);
 	}
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         return new Box2D(x0, x0+dx, y0, y0+dy);
     }
 

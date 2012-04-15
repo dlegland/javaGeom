@@ -51,7 +51,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel.isEmpty());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel.getContinuousCurves().size());
+		assertEquals(1, parallel.continuousCurves().size());
 
 		CirculinearCurve2D parallel2 = bc.createParallel(curve, -20);
 
@@ -60,7 +60,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel2.isEmpty());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel2.getContinuousCurves().size());
+		assertEquals(1, parallel2.continuousCurves().size());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel.isEmpty());
 
 		// should have 2 linear piece
-		assertEquals(2, parallel.getContinuousCurves().size());
+		assertEquals(2, parallel.continuousCurves().size());
 
 		CirculinearCurve2D parallel2 = bc.createParallel(curve, -20);
 
@@ -92,7 +92,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel2.isEmpty());
 
 		// should have 2 linear piece
-		assertEquals(2, parallel2.getContinuousCurves().size());
+		assertEquals(2, parallel2.continuousCurves().size());
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel.isClosed());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel.getSmoothPieces().size());
+		assertEquals(1, parallel.smoothPieces().size());
 
 		CirculinearContour2D parallel2 = bc.createParallelContour(curve, -20);
 
@@ -121,7 +121,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel2.isClosed());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel2.getSmoothPieces().size());
+		assertEquals(1, parallel2.smoothPieces().size());
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertTrue(parallel.isClosed());
 		
 		// should have 3 linear pieces, and 3 circular pieces
-		assertEquals(6, parallel.getSmoothPieces().size());
+		assertEquals(6, parallel.smoothPieces().size());
 
 		CirculinearContour2D parallel2 = bc.createParallelContour(curve, -20);
 
@@ -151,7 +151,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertTrue(parallel.isClosed());
 		
 		// should have 3 linear pieces, and 3 circular pieces
-		assertEquals(6, parallel2.getSmoothPieces().size());
+		assertEquals(6, parallel2.smoothPieces().size());
 	}
 
 	/**
@@ -169,14 +169,14 @@ public class BufferCalculatorTest extends TestCase {
 
 		assertNotNull(parallel);
 		assertFalse(parallel.isEmpty());
-		assertEquals(2, parallel.getSmoothPieces().size());
+		assertEquals(2, parallel.smoothPieces().size());
 
 		CirculinearContinuousCurve2D parallel2 = bc.createContinuousParallel(
 				curve, -20);
 
 		assertNotNull(parallel2);
 		assertFalse(parallel2.isEmpty());
-		assertEquals(2, parallel2.getSmoothPieces().size());
+		assertEquals(2, parallel2.smoothPieces().size());
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertTrue(parallel.isClosed());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel.getSmoothPieces().size());
+		assertEquals(1, parallel.smoothPieces().size());
 
 		CirculinearContour2D parallel2 = bc.createParallelContour(curve, -20);
 
@@ -204,7 +204,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertTrue(parallel2.isClosed());
 
 		// should have 1 circular piece
-		assertEquals(1, parallel2.getSmoothPieces().size());
+		assertEquals(1, parallel2.smoothPieces().size());
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel.isEmpty());
 
 		// should have 2 circular piece
-		assertEquals(2, parallel.getContinuousCurves().size());
+		assertEquals(2, parallel.continuousCurves().size());
 
 		CirculinearBoundary2D parallel2 = bc.createParallelBoundary(curve, -20);
 
@@ -233,7 +233,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(parallel2.isEmpty());
 		
 		// should have 2 circular piece
-		assertEquals(2, parallel2.getContinuousCurves().size());
+		assertEquals(2, parallel2.continuousCurves().size());
 	}
 
 	public void testCreateContinousParallel_CircleArcInverse() {
@@ -249,26 +249,26 @@ public class BufferCalculatorTest extends TestCase {
 			bc.createContinuousParallel(arc, 10);
 		
 		assertNotNull(parallel);
-		assertEquals(1, parallel.getContinuousCurves().size());
+		assertEquals(1, parallel.continuousCurves().size());
 		assertFalse(parallel.isEmpty());
-		assertEquals(1, parallel.getSmoothPieces().size());
+		assertEquals(1, parallel.smoothPieces().size());
 		
 		assertTrue(parallel instanceof CircleArc2D);
 		CircleArc2D pArc = (CircleArc2D) parallel;
-		assertEquals(40., pArc.getSupportingCircle().getRadius(), 1e-14);
+		assertEquals(40., pArc.supportingCircle().radius(), 1e-14);
 
 		// same in other direction
 		CirculinearContinuousCurve2D parallel2 = 
 			bc.createContinuousParallel(arc, -10);
 		
 		assertNotNull(parallel2);
-		assertEquals(1, parallel2.getContinuousCurves().size());
+		assertEquals(1, parallel2.continuousCurves().size());
 		assertFalse(parallel2.isEmpty());
-		assertEquals(1, parallel2.getSmoothPieces().size());
+		assertEquals(1, parallel2.smoothPieces().size());
 		
 		assertTrue(parallel instanceof CircleArc2D);
 		CircleArc2D pArc2 = (CircleArc2D) parallel2;
-		assertEquals(60., pArc2.getSupportingCircle().getRadius(), 1e-14);
+		assertEquals(60., pArc2.supportingCircle().radius(), 1e-14);
 	}
 
 	public void testCreateContinousParallel_InfiniteCurve() {
@@ -283,17 +283,17 @@ public class BufferCalculatorTest extends TestCase {
 		CirculinearContinuousCurve2D parallel = bc.createContinuousParallel(
 				line, 10);
 		assertNotNull(parallel);
-		assertEquals(1, parallel.getContinuousCurves().size());
+		assertEquals(1, parallel.continuousCurves().size());
 		assertFalse(parallel.isEmpty());
-		assertEquals(1, parallel.getSmoothPieces().size());
+		assertEquals(1, parallel.smoothPieces().size());
 
 		// same in other direction
 		CirculinearContinuousCurve2D parallel2 = bc.createContinuousParallel(
 				line, -10);
 		assertNotNull(parallel2);
-		assertEquals(1, parallel2.getContinuousCurves().size());
+		assertEquals(1, parallel2.continuousCurves().size());
 		assertFalse(parallel2.isEmpty());
-		assertEquals(1, parallel2.getSmoothPieces().size());
+		assertEquals(1, parallel2.smoothPieces().size());
 	}
 
 	public void testCreateContinousParallel_BiRay() {
@@ -318,14 +318,14 @@ public class BufferCalculatorTest extends TestCase {
 				curve, 10);
 		assertNotNull(parallel);
 		assertFalse(parallel.isEmpty());
-		assertEquals(3, parallel.getSmoothPieces().size());
+		assertEquals(3, parallel.smoothPieces().size());
 
 		// the same in opposite direction
 		CirculinearContinuousCurve2D parallel2 = bc.createContinuousParallel(
 				curve, 10);
 		assertNotNull(parallel2);
 		assertFalse(parallel2.isEmpty());
-		assertEquals(3, parallel2.getSmoothPieces().size());
+		assertEquals(3, parallel2.smoothPieces().size());
 
 		Collection<CirculinearContinuousCurve2D> splittedCurves = 
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
@@ -357,9 +357,9 @@ public class BufferCalculatorTest extends TestCase {
 		
 		assertNotNull(parallel);
 		assertFalse(parallel.isEmpty());
-		assertEquals(8, parallel.getSmoothPieces().size());
+		assertEquals(8, parallel.smoothPieces().size());
 		
-		for (CirculinearCurve2D curve : parallel.getSmoothPieces()) {
+		for (CirculinearCurve2D curve : parallel.smoothPieces()) {
 			assertTrue(curve instanceof CircleArc2D);
 		}
 	}
@@ -375,8 +375,8 @@ public class BufferCalculatorTest extends TestCase {
 		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
 
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_ColinearPolyline() {
@@ -404,9 +404,9 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.getBoundary();
+		Boundary2D boundary = buffer.boundary();
 
-		assertEquals(2, boundary.getContinuousCurves().size());
+		assertEquals(2, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_BiRay() {
@@ -424,7 +424,7 @@ public class BufferCalculatorTest extends TestCase {
 			new PolyCirculinearCurve2D<CirculinearElement2D>();
 		curve.addCurve(ray1);
 		curve.addCurve(ray2);
-		assertEquals(2, curve.getSmoothPieces().size());
+		assertEquals(2, curve.smoothPieces().size());
 
 		// computes the buffer
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -433,8 +433,8 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 
 		// Extract boundary of buffer
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(2, boundary.getContinuousCurves().size());
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(2, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_TwoLines() {
@@ -454,8 +454,8 @@ public class BufferCalculatorTest extends TestCase {
 		// compute set buffer and buffer boundary
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		CirculinearDomain2D buffer = bc.computeBuffer(set, 10);
-		CirculinearBoundary2D boundary = buffer.getBoundary();
-		assertEquals(4, boundary.getContinuousCurves().size());
+		CirculinearBoundary2D boundary = buffer.boundary();
+		assertEquals(4, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingLines() {
@@ -474,9 +474,9 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.getBoundary();
+		Boundary2D boundary = buffer.boundary();
 
-		assertEquals(4, boundary.getContinuousCurves().size());
+		assertEquals(4, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingRays() {
@@ -493,9 +493,9 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.getBoundary();
+		Boundary2D boundary = buffer.boundary();
 
-		assertEquals(2, boundary.getContinuousCurves().size());
+		assertEquals(2, boundary.continuousCurves().size());
 	}
 
 	public void testComputeBuffer_PolyRay() {
@@ -521,8 +521,8 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.getBoundary();
+		Boundary2D boundary = buffer.boundary();
 
-		assertEquals(2, boundary.getContinuousCurves().size());
+		assertEquals(2, boundary.continuousCurves().size());
 	}
 }

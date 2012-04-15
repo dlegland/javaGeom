@@ -205,7 +205,7 @@ public class Rectangle2D implements Polygon2D {
 	 * 
 	 * @return the vertices of the rectangle.
 	 */
-	public Collection<Point2D> getVertices() {
+	public Collection<Point2D> vertices() {
 	    AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
 	    ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 	
@@ -222,7 +222,7 @@ public class Rectangle2D implements Polygon2D {
 	 * 
 	 * @since 0.6.3
 	 */
-	public int getVertexNumber() {
+	public int vertexNumber() {
 	    return 4;
 	}
 
@@ -231,7 +231,7 @@ public class Rectangle2D implements Polygon2D {
      * 
      * @param i index of the vertex, between 0 and 3
      */
-    public Point2D getVertex(int i) {
+    public Point2D vertex(int i) {
         AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
         switch (i) {
         case 0:
@@ -247,7 +247,7 @@ public class Rectangle2D implements Polygon2D {
         }
     }
 
-    public Collection<LineSegment2D> getEdges() {
+    public Collection<LineSegment2D> edges() {
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(4);
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
@@ -266,16 +266,16 @@ public class Rectangle2D implements Polygon2D {
         return edges;
     }
 
-    public int getEdgeNumber() {
+    public int edgeNumber() {
         return 4;
     }
 
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<LinearRing2D> getRings() {
+    public Collection<LinearRing2D> rings() {
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(this.getVertices()));
+        rings.add(new LinearRing2D(this.vertices()));
         return rings;
     }
 
@@ -285,8 +285,8 @@ public class Rectangle2D implements Polygon2D {
      * signed area.
      * @since 0.9.1
      */
-    public double getArea() {
-        return Math.abs(this.getSignedArea());
+    public double area() {
+        return Math.abs(this.areaSigned());
     }
 
     /**
@@ -294,7 +294,7 @@ public class Rectangle2D implements Polygon2D {
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double getSignedArea() {
+    public double areaSigned() {
     	return Polygon2DUtils.computeSignedArea(this);
     }
 
@@ -303,7 +303,7 @@ public class Rectangle2D implements Polygon2D {
      * @return the centroid of the polygon
      * @since 0.9.1
      */
-    public Point2D getCentroid() {
+    public Point2D centroid() {
     	return Polygon2DUtils.computeCentroid(this);
     }
     
@@ -313,7 +313,7 @@ public class Rectangle2D implements Polygon2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
+	public Polygon2D asPolygon(int n) {
 		return this;
 	}
 
@@ -322,7 +322,7 @@ public class Rectangle2D implements Polygon2D {
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
 		return new GenericCirculinearDomain2D(
-				this.getBoundary().transform(inv));
+				this.boundary().transform(inv));
 	}
 
 	// ===================================================================
@@ -331,16 +331,16 @@ public class Rectangle2D implements Polygon2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		return bc.computeBuffer(this.getBoundary(), dist);
+		return bc.computeBuffer(this.boundary(), dist);
 	}
 
 	
     // ===================================================================
     // methods inherited from interface Domain2D
 
-   public CirculinearContourArray2D<LinearRing2D> getBoundary() {
+   public CirculinearContourArray2D<LinearRing2D> boundary() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
@@ -377,11 +377,11 @@ public class Rectangle2D implements Polygon2D {
         return false;
     }
 
-    public double getDistance(Point2D p) {
+    public double distance(Point2D p) {
         return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
     }
 
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         return Math.max(getSignedDistance(x, y), 0);
     }
 
@@ -402,7 +402,7 @@ public class Rectangle2D implements Polygon2D {
      * equals to the distance to the border of the shape.
      */
     public double getSignedDistance(double x, double y) {
-        double dist = getBoundary().getDistance(x, y);
+        double dist = boundary().distance(x, y);
         if (contains(x, y))
             return -dist;
         else
@@ -419,7 +419,7 @@ public class Rectangle2D implements Polygon2D {
     /**
      * Return bounding box of the rectangle.
      */
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         double xmin = x0;
         double xmax = x0;
         double ymin = y0;
@@ -471,7 +471,7 @@ public class Rectangle2D implements Polygon2D {
         int nPoints = 4;
         Point2D[] array = new Point2D[nPoints];
         Point2D[] res = new Point2D[nPoints];
-        Iterator<Point2D> iter = this.getVertices().iterator();
+        Iterator<Point2D> iter = this.vertices().iterator();
         for (int i = 0; i<nPoints; i++) {
             array[i] = iter.next();
             res[i] = new Point2D();
@@ -504,28 +504,28 @@ public class Rectangle2D implements Polygon2D {
         double y3 = h*cot+y0;
 
         StraightLine2D line = new StraightLine2D(x0, y0, x1-x0, y1-y0);
-        if (line.getSignedDistance(x, y)>0)
+        if (line.distanceSigned(x, y)>0)
             return false;
         line = new StraightLine2D(x1, y1, x2-x1, y2-y1);
-        if (line.getSignedDistance(x, y)>0)
+        if (line.distanceSigned(x, y)>0)
             return false;
         line = new StraightLine2D(x2, y2, x3-x2, y3-y2);
         // line.setPoints(x2, y2, x3, y3);
-        if (line.getSignedDistance(x, y)>0)
+        if (line.distanceSigned(x, y)>0)
             return false;
         line = new StraightLine2D(x3, y3, x0-x3, y0-y3);
         // line.setPoints(x3, y3, x0, y0);
-        if (line.getSignedDistance(x, y)>0)
+        if (line.distanceSigned(x, y)>0)
             return false;
         return true;
     }
 
     public void draw(Graphics2D g2) {
-        g2.draw(this.getBoundary().getGeneralPath());
+        g2.draw(this.boundary().getGeneralPath());
     }
 
     public void fill(Graphics2D g) {
-        g.fill(this.getBoundary().getGeneralPath());
+        g.fill(this.boundary().getGeneralPath());
     }
 
 
@@ -546,11 +546,11 @@ public class Rectangle2D implements Polygon2D {
 
         // check all 4 corners of the first rectangle
         boolean ok;
-        for (Point2D point : this.getVertices()) {
+        for (Point2D point : this.vertices()) {
             ok = false;
 
             // compare with all 4 corners of second rectangle
-            for (Point2D point2 : rect.getVertices())
+            for (Point2D point2 : rect.vertices())
                 if (point.almostEquals(point2, eps)) {
                     ok = true;
                     break;
@@ -589,7 +589,7 @@ public class Rectangle2D implements Polygon2D {
         // while(iter1.hasNext()){
         // point = (Point2D) iter1.next();
         boolean ok;
-        for (Point2D point : this.getVertices()) {
+        for (Point2D point : this.vertices()) {
             ok = false;
 
             // compare with all 4 corners of second rectangle
@@ -597,7 +597,7 @@ public class Rectangle2D implements Polygon2D {
             // while(iter2.hasNext())
             // if(point.equals(iter2.next()))
             // ok = true;
-            for (Point2D point2 : rect.getVertices())
+            for (Point2D point2 : rect.vertices())
                 if (point.equals(point2)) {
                     ok = true;
                     break;

@@ -64,11 +64,11 @@ public class TunePointSet2DNearestNeighbor {
 		    Point2D point = new Point2D(200, 200);
 		    
 		    long t0 = System.currentTimeMillis();
-		    Point2D closest = set.getPoints().iterator().next();
+		    Point2D closest = set.points().iterator().next();
 		    double dist;
-		    double minDist = point.getDistance(closest);
+		    double minDist = point.distance(closest);
 		    for(Point2D p : set) {
-		        dist = p.getDistance(point);
+		        dist = p.distance(point);
 		        if(dist<minDist) {
 		            closest = p;
 		            minDist = dist;

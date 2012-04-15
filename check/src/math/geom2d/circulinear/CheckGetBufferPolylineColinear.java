@@ -40,7 +40,7 @@ public class CheckGetBufferPolylineColinear extends JPanel{
 				new Point2D(250, 250),
 				new Point2D(300, 300) });
 		
-		domain = curve.getBuffer(30);
+		domain = curve.buffer(30);
 	}
 	
 	public void paintComponent(Graphics g){

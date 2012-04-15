@@ -68,7 +68,7 @@ public class CheckPolygon2D_Clip extends JPanel{
 		box.draw(g2);
 
 		
-		Boundary2D boundary = polygon.getBoundary();
+		Boundary2D boundary = polygon.boundary();
 
 		// Draw initial polygon
 		g2.setColor(Color.YELLOW);
@@ -83,7 +83,7 @@ public class CheckPolygon2D_Clip extends JPanel{
 		g2.setStroke(new BasicStroke(2.0f));
 		boundary.clip(box).draw(g2);
 		
-		boundary = polygon2.getBoundary();
+		boundary = polygon2.boundary();
 		
 		// Draw initial polygon
 		g2.setColor(Color.YELLOW);

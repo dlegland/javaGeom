@@ -88,7 +88,7 @@ implements SmoothContour2D, Cloneable {
      * Use formula given in <a
      * href="http://mathworld.wolfram.com/Hyperbola.html">http://mathworld.wolfram.com/Hyperbola.html</a>
      */
-    public double getCurvature(double t) {
+    public double curvature(double t) {
 		double a = hyperbola.a;
 		double b = hyperbola.b;
 		double asih = a * sinh(t);
@@ -96,7 +96,7 @@ implements SmoothContour2D, Cloneable {
 		return a * b / pow(hypot(bcoh, asih), 3);
     }
 
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
         double a = hyperbola.a;
         double b = hyperbola.b;
         double theta = hyperbola.theta;
@@ -120,13 +120,13 @@ implements SmoothContour2D, Cloneable {
      * Returns an instance of ArrayList<Contour2D> containing only
      * <code>this</code>.
      */
-    public Collection<Contour2D> getBoundaryCurves() {
+    public Collection<Contour2D> boundaryCurves() {
         ArrayList<Contour2D> list = new ArrayList<Contour2D>();
         list.add(this);
         return list;
     }
 
-    public Domain2D getDomain() {
+    public Domain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -138,16 +138,16 @@ implements SmoothContour2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double getSignedDistance(Point2D point) {
-        double dist = this.getDistance(point);
+    public double distanceSigned(Point2D point) {
+        double dist = this.distance(point);
         return this.isInside(point) ? -dist : dist;
     }
 
-    public double getSignedDistance(double x, double y) {
-        return this.getSignedDistance(new Point2D(x, y));
+    public double distanceSigned(double x, double y) {
+        return this.distanceSigned(new Point2D(x, y));
     }
 
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -172,7 +172,7 @@ implements SmoothContour2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
 	 */
-	public Collection<? extends HyperbolaBranch2D> getContinuousCurves() {
+	public Collection<? extends HyperbolaBranch2D> continuousCurves() {
 		return wrapCurve(this);
 	}
 
@@ -190,7 +190,7 @@ implements SmoothContour2D, Cloneable {
     // ===================================================================
     // methods inherited from Curve2D interface
 
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         if (Double.isInfinite(t))
             throw new UnboundedShape2DException(this);
 
@@ -213,7 +213,7 @@ implements SmoothContour2D, Cloneable {
         return hyperbola.toGlobal(new Point2D(x, y));
     }
 
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
 		Point2D pt = hyperbola.toLocal(new Point2D(point));
 		double y = this.positive ? pt.getY() : -pt.getY();
 		return log(y + hypot(y, 1));
@@ -225,7 +225,7 @@ implements SmoothContour2D, Cloneable {
 		return log(y + hypot(y, 1));
     }
 
-    public HyperbolaBranch2D getReverseCurve() {
+    public HyperbolaBranch2D reverse() {
         Hyperbola2D hyper2 = new Hyperbola2D(hyperbola.xc, hyperbola.yc,
                 hyperbola.a, hyperbola.b, hyperbola.theta, !hyperbola.direct);
         return new HyperbolaBranch2D(hyper2, positive);
@@ -235,7 +235,7 @@ implements SmoothContour2D, Cloneable {
      * Returns an instance of HyprbolaBranchArc2D initialized with
      * <code>this</code>.
      */
-    public HyperbolaBranchArc2D getSubCurve(double t0, double t1) {
+    public HyperbolaBranchArc2D subCurve(double t0, double t1) {
         return new HyperbolaBranchArc2D(this, t0, t1);
     }
 
@@ -249,9 +249,9 @@ implements SmoothContour2D, Cloneable {
         return Double.POSITIVE_INFINITY;
     }
 
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
         // compute intersections with support hyperbola
-        Collection<Point2D> inters = hyperbola.getIntersections(line);
+        Collection<Point2D> inters = hyperbola.intersections(line);
 
         // check which points belong to this branch
         Collection<Point2D> result = new ArrayList<Point2D>();
@@ -269,7 +269,7 @@ implements SmoothContour2D, Cloneable {
     // methods inherited from Shape2D interface
 
     /** Returns a bounding box with infinite bounds in every direction */
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         return new Box2D(
         		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
@@ -287,24 +287,24 @@ implements SmoothContour2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<HyperbolaBranchArc2D> result = 
-        	new CurveArray2D<HyperbolaBranchArc2D>(set.getCurveNumber());
+        	new CurveArray2D<HyperbolaBranchArc2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof HyperbolaBranchArc2D)
                 result.addCurve((HyperbolaBranchArc2D) curve);
         }
         return result;
     }
 
-    public double getDistance(Point2D point) {
-        Point2D projected = this.getPoint(this.project(new Point2D(point)));
-        return projected.getDistance(point);
+    public double distance(Point2D point) {
+        Point2D projected = this.point(this.project(new Point2D(point)));
+        return projected.distance(point);
     }
 
-    public double getDistance(double x, double y) {
-        Point2D projected = this.getPoint(this.project(new Point2D(x, y)));
-        return projected.getDistance(x, y);
+    public double distance(double x, double y) {
+        Point2D projected = this.point(this.project(new Point2D(x, y)));
+        return projected.distance(x, y);
     }
 
     /** Returns false, as an hyperbola branch is never bounded. */
@@ -322,11 +322,11 @@ implements SmoothContour2D, Cloneable {
     public HyperbolaBranch2D transform(AffineTransform2D trans) {
     	// The transform the base hypebola, and a point of the branch
     	Hyperbola2D hyperbola = this.hyperbola.transform(trans);
-    	Point2D base = this.getPoint(0).transform(trans);
+    	Point2D base = this.point(0).transform(trans);
     	
     	// compute distance of the transformed point to each branch
-    	double d1 = hyperbola.getPositiveBranch().getDistance(base);
-    	double d2 = hyperbola.getNegativeBranch().getDistance(base);
+    	double d1 = hyperbola.positiveBranch().distance(base);
+    	double d2 = hyperbola.negativeBranch().distance(base);
     	
     	// choose the 'positivity' of the branch from the closest branch
         return new HyperbolaBranch2D(hyperbola, d1<d2);

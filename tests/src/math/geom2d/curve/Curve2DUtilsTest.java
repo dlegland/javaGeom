@@ -50,7 +50,7 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		CurveSet2D<? extends Curve2D> curveSet = 
 			Curve2DUtils.clipCurve(line1, box);
-		Curve2D curve = curveSet.getFirstCurve();
+		Curve2D curve = curveSet.firstCurve();
 		assertTrue(clip1.equals(curve));
 	}
 
@@ -61,7 +61,7 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		CurveSet2D<? extends Curve2D> curveSet = 
 			Curve2DUtils.clipCurve(line1, box);
-		Curve2D curve = curveSet.getFirstCurve();
+		Curve2D curve = curveSet.firstCurve();
 		assertTrue(clip1.equals(curve));
 	}
 
@@ -75,11 +75,11 @@ public class Curve2DUtilsTest extends TestCase {
 
 		CurveSet2D<? extends Curve2D> clipped1 = 
 			Curve2DUtils.clipCurve(arc1, box);
-		Curve2D curve1 = clipped1.getFirstCurve();
+		Curve2D curve1 = clipped1.firstCurve();
 		
 		CurveSet2D<? extends Curve2D> clipped2 = 
 			Curve2DUtils.clipCurve(arc2, box);
-		Curve2D curve2 = clipped2.getFirstCurve();
+		Curve2D curve2 = clipped2.firstCurve();
 
 		double alpha = Math.asin(l/2/r);
 		CircleArc2D arc1c = new CircleArc2D(0, 0, r, 
@@ -106,7 +106,7 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		CurveSet2D<? extends Curve2D> clippedSet = 
 			Curve2DUtils.clipCurve(set, box);
-		Iterator<? extends Curve2D> iter = clippedSet.getCurves().iterator();
+		Iterator<? extends Curve2D> iter = clippedSet.curves().iterator();
 		Curve2D curve1 	= iter.next();
 		Curve2D curve2 	= iter.next();
 		

@@ -34,7 +34,7 @@ public class CheckBufferLozenge extends JPanel{
 				new Point2D(100, 200)	});
 		
 		//domain = BufferCalculator.computeBuffer(curve, 30);
-		domain = curve.getBuffer(30);
+		domain = curve.buffer(30);
 	}
 	
 	public void paintComponent(Graphics g){

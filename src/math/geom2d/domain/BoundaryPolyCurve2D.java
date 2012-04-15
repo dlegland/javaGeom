@@ -111,15 +111,15 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
      * @deprecated use getContinuousCurves instead (0.9.1)
      */
     @Deprecated
-    public Collection<? extends Contour2D> getBoundaryCurves() {
+    public Collection<? extends Contour2D> boundaryCurves() {
     	return wrapCurve(this);
     }
 
-    public Collection<BoundaryPolyCurve2D<T>> getContinuousCurves() {
+    public Collection<BoundaryPolyCurve2D<T>> continuousCurves() {
     	return wrapCurve(this);
     }
 
-    public Domain2D getDomain() {
+    public Domain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -131,12 +131,12 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods implementing OrientedCurve2D interface
 
     @Override
-    public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> getReverseCurve() {
+    public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> reverse() {
         ContinuousOrientedCurve2D[] curves2 = 
         	new ContinuousOrientedCurve2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i < n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         return new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves2);
     }
 

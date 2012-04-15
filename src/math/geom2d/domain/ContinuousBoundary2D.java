@@ -38,7 +38,7 @@ import math.geom2d.AffineTransform2D;
 public interface ContinuousBoundary2D extends Boundary2D,
 ContinuousOrientedCurve2D{
 
-    public abstract ContinuousBoundary2D getReverseCurve();
+    public abstract ContinuousBoundary2D reverse();
 
     public abstract ContinuousBoundary2D transform(AffineTransform2D trans);
 }

@@ -164,22 +164,22 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
-	public Vector2D getLeftTangent(double t) {
-		return this.getChildCurve(t).getLeftTangent(this.getLocalPosition(t));
+	public Vector2D leftTangent(double t) {
+		return this.childCurve(t).leftTangent(this.getLocalPosition(t));
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
 	 */
-	public Vector2D getRightTangent(double t) {
-		return this.getChildCurve(t).getRightTangent(this.getLocalPosition(t));
+	public Vector2D rightTangent(double t) {
+		return this.childCurve(t).rightTangent(this.getLocalPosition(t));
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
-	public double getCurvature(double t) {
-		return this.getChildCurve(t).getCurvature(this.getLocalPosition(t));
+	public double curvature(double t) {
+		return this.childCurve(t).curvature(this.getLocalPosition(t));
 	}
 
 	/**
@@ -189,13 +189,13 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         return closed;
     }
 
-    public Polyline2D getAsPolyline(int n) {
+    public Polyline2D asPolyline(int n) {
         Point2D[] points = new Point2D[n+1];
         double t0 = this.getT0();
         double t1 = this.getT1();
         double dt = (t1-t0)/n;
         for (int i = 0; i<n; i++)
-            points[i] = this.getPoint(i*dt+t0);
+            points[i] = this.point(i*dt+t0);
         return new Polyline2D(points);
     }
 
@@ -204,7 +204,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * 
      * @return a collection of SmoothCurve2D
      */
-    public Collection<? extends SmoothCurve2D> getSmoothPieces() {
+    public Collection<? extends SmoothCurve2D> smoothPieces() {
         ArrayList<SmoothCurve2D> list = new ArrayList<SmoothCurve2D>();
         for (Curve2D curve : this.curves)
             list.addAll(PolyCurve2D.getSmoothCurves(curve));
@@ -229,7 +229,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
         // Otherwise, iterate on curves of the curve set
         if (curve instanceof CurveSet2D<?>) {
-            for (Curve2D curve2 : ((CurveSet2D<?>) curve).getCurves())
+            for (Curve2D curve2 : ((CurveSet2D<?>) curve).curves())
                 array.addAll(getSmoothCurves(curve2));
             return array;
         }
@@ -246,19 +246,19 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // Methods implementing the ContinuousCurve2D interface
 
     @Override
-    public Collection<? extends PolyCurve2D<?>> getContinuousCurves() {
+    public Collection<? extends PolyCurve2D<?>> continuousCurves() {
     	return wrapCurve(this);
     }
 
    @Override
-    public PolyCurve2D<? extends ContinuousCurve2D> getReverseCurve() {
+    public PolyCurve2D<? extends ContinuousCurve2D> reverse() {
     	// create array for storing reversed curves
     	int n = curves.size();
         ContinuousCurve2D[] curves2 = new ContinuousCurve2D[n];
         
         // reverse each curve
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the new reversed curve
         return new PolyCurve2D<ContinuousCurve2D>(curves2);
@@ -269,24 +269,24 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * return a PolyCurve2D without curves inside.
      */
     @Override
-    public PolyCurve2D<? extends ContinuousCurve2D> getSubCurve(double t0,
+    public PolyCurve2D<? extends ContinuousCurve2D> subCurve(double t0,
             double t1) {
         // check limit conditions
         if (t1<t0&!this.isClosed())
             return new PolyCurve2D<ContinuousCurve2D>();
 
         // Call the parent method
-        CurveSet2D<?> set = super.getSubCurve(t0, t1);
+        CurveSet2D<?> set = super.subCurve(t0, t1);
         
         // create result object, with appropriate numbe of curves
         PolyCurve2D<ContinuousCurve2D> subCurve = 
-        	new PolyCurve2D<ContinuousCurve2D>(set.getCurveNumber());
+        	new PolyCurve2D<ContinuousCurve2D>(set.curveNumber());
 
         // If a part is selected, the result is obviously open
         subCurve.setClosed(false);
 
         // convert to PolySmoothCurve by adding curves, after class cast
-        for (Curve2D curve : set.getCurves())
+        for (Curve2D curve : set.curves())
             subCurve.addCurve((ContinuousCurve2D) curve);
 
         // return the resulting portion of curve
@@ -306,10 +306,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
         // Stores the result in appropriate structure
         CurveArray2D<ContinuousCurve2D> result = 
-        	new CurveArray2D<ContinuousCurve2D>(set.getCurveNumber());
+        	new CurveArray2D<ContinuousCurve2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof ContinuousCurve2D)
                 result.addCurve((ContinuousCurve2D) curve);
         }
@@ -328,15 +328,15 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         Point2D point;
-        for (ContinuousCurve2D curve : getCurves()) {
-            point = curve.getPoint(curve.getT0());
+        for (ContinuousCurve2D curve : curves()) {
+            point = curve.point(curve.getT0());
             path.lineTo((float) point.getX(), (float) point.getY());
             curve.appendPath(path);
         }
 
         // eventually close the curve
         if (closed) {
-            point = this.getFirstPoint();
+            point = this.firstPoint();
             path.lineTo((float) point.getX(), (float) point.getY());
         }
 
@@ -354,14 +354,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
         // move to the first point
         Point2D start, current;
-        start = this.getFirstPoint();
+        start = this.firstPoint();
         path.moveTo((float) start.getX(), (float) start.getY());
         current = start;
 
         // add the path of the first curve
         for(ContinuousCurve2D curve : curves) {
-        	start = curve.getFirstPoint();
-			if (start.getDistance(current) > Shape2D.ACCURACY)
+        	start = curve.firstPoint();
+			if (start.distance(current) > Shape2D.ACCURACY)
 				path.lineTo((float) start.getX(), (float) start.getY());
         	path = curve.appendPath(path);
         	current = start;
@@ -389,7 +389,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         PolyCurve2D<?> curveSet = (PolyCurve2D<?>) obj;
 
         // check the number of curves in each set
-        if (this.getCurveNumber()!=curveSet.getCurveNumber())
+        if (this.curveNumber()!=curveSet.curveNumber())
             return false;
 
         // return false if at least one couple of curves does not match

@@ -162,7 +162,7 @@ implements ShapeSet2D<T>, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getBoundingBox()
 	 */
-	public Box2D getBoundingBox() {
+	public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double xmax = Double.MIN_VALUE;
@@ -171,7 +171,7 @@ implements ShapeSet2D<T>, Cloneable {
         Box2D box;
         for (Shape2D shape : shapes) {
         	
-            box = shape.getBoundingBox();
+            box = shape.boundingBox();
             xmin = Math.min(xmin, box.getMinX());
             ymin = Math.min(ymin, box.getMinY());
             xmax = Math.max(xmax, box.getMaxX());
@@ -184,17 +184,17 @@ implements ShapeSet2D<T>, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getDistance(Point2D)
 	 */
-	public double getDistance(Point2D p) {
-		return this.getDistance(p.getX(), p.getY());
+	public double distance(Point2D p) {
+		return this.distance(p.getX(), p.getY());
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getDistance(double, double)
 	 */
-	public double getDistance(double x, double y) {
+	public double distance(double x, double y) {
         double dist = Double.POSITIVE_INFINITY;
         for (Shape2D shape : shapes)
-            dist = Math.min(dist, shape.getDistance(x, y));
+            dist = Math.min(dist, shape.distance(x, y));
         return dist;
 	}
 

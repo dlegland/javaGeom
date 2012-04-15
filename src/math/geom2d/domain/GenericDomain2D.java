@@ -78,8 +78,8 @@ public class GenericDomain2D implements Domain2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
-		Collection<? extends Contour2D> contours = boundary.getContinuousCurves();
+	public Polygon2D asPolygon(int n) {
+		Collection<? extends Contour2D> contours = boundary.continuousCurves();
 		ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(contours.size());
 		for (Contour2D contour : contours) {
 			// Check that the curve is bounded
@@ -90,7 +90,7 @@ public class GenericDomain2D implements Domain2D {
 	        if (!contour.isClosed())
 	        	throw new IllegalArgumentException("Can not transform open curve to linear ring");
 
-	        Polyline2D poly = contour.getAsPolyline(n);
+	        Polyline2D poly = contour.asPolyline(n);
 	        assert poly instanceof LinearRing2D : "expected result as a linear ring";
 	        
 			rings.add((LinearRing2D) poly);
@@ -99,23 +99,23 @@ public class GenericDomain2D implements Domain2D {
 		return new MultiPolygon2D(rings);
 	}
 
-    public Boundary2D getBoundary() {
+    public Boundary2D boundary() {
         return boundary;
     }
 
     public Domain2D complement() {
-        return new GenericDomain2D(boundary.getReverseCurve());
+        return new GenericDomain2D(boundary.reverse());
     }
 
     // ===================================================================
     // methods implementing the Shape2D interface
 
-    public double getDistance(Point2D p) {
-        return Math.max(boundary.getSignedDistance(p.getX(), p.getY()), 0);
+    public double distance(Point2D p) {
+        return Math.max(boundary.distanceSigned(p.getX(), p.getY()), 0);
     }
 
-    public double getDistance(double x, double y) {
-        return Math.max(boundary.getSignedDistance(x, y), 0);
+    public double distance(double x, double y) {
+        return Math.max(boundary.distanceSigned(x, y), 0);
     }
 
     /**
@@ -130,7 +130,7 @@ public class GenericDomain2D implements Domain2D {
 
         // If boundary is bounded, get the bounding box, choose a point
         // outside of the box, and check if its belongs to the domain.
-        Box2D box = boundary.getBoundingBox();
+        Box2D box = boundary.boundingBox();
         Point2D point = new Point2D(box.getMinX(), box.getMinY());
 
         return !boundary.isInside(point);
@@ -142,16 +142,16 @@ public class GenericDomain2D implements Domain2D {
 
     public Domain2D clip(Box2D box) {
         return new GenericDomain2D(
-        		Boundary2DUtils.clipBoundary(this.getBoundary(), box));
+        		Boundary2DUtils.clipBoundary(this.boundary(), box));
     }
 
     /**
      * If the domain is bounded, returns the bounding box of its boundary,
      * otherwise returns an infinite bounding box.
      */
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         if (this.isBounded())
-            return boundary.getBoundingBox();
+            return boundary.boundingBox();
         return Box2D.INFINITE_BOX;
     }
 
@@ -162,12 +162,12 @@ public class GenericDomain2D implements Domain2D {
     public GenericDomain2D transform(AffineTransform2D trans) {
         Boundary2D transformed = boundary.transform(trans);
         if (!trans.isDirect())
-            transformed = transformed.getReverseCurve();
+            transformed = transformed.reverse();
         return new GenericDomain2D(transformed);
     }
 
     public boolean contains(double x, double y) {
-        return boundary.getSignedDistance(x, y)<=0;
+        return boundary.distanceSigned(x, y)<=0;
     }
 
     // ===================================================================

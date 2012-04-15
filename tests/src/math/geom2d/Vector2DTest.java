@@ -177,19 +177,13 @@ public class Vector2DTest extends TestCase {
 	
 	public void testGetOpposite() {
 		Vector2D v1 = new Vector2D(2, 3);
-		assertEquals(v1.getOpposite(), new Vector2D(-2, -3));
+		assertEquals(v1.opposite(), new Vector2D(-2, -3));
 	}
 
 	public void testNormalize() {
 		Vector2D v1 = new Vector2D(2, 3);
-		v1.normalize();
-		assertEquals(v1, new Vector2D(2.0 / Math.sqrt(13), 3.0 / Math.sqrt(13)));
-	}
-
-	public void testGetNormalizedVector() {
-		Vector2D v1 = new Vector2D(2, 3);
 		Vector2D v1n = new Vector2D(2.0 / Math.sqrt(13), 3.0 / Math.sqrt(13));
-		assertEquals(v1.getNormalizedVector(), v1n);
+		assertEquals(v1.normalize(), v1n);
 	}
 
 	/**
@@ -199,28 +193,28 @@ public class Vector2DTest extends TestCase {
 	    double eps = 1e-14;
 	    
 	    Vector2D v1 = new Vector2D(10, 0);
-	    assertEquals(v1.getAngle(), 0, eps);
+	    assertEquals(v1.angle(), 0, eps);
 	    
         Vector2D v2 = new Vector2D(10, 10);
-        assertEquals(v2.getAngle(), Math.PI/4, eps);
+        assertEquals(v2.angle(), Math.PI/4, eps);
         
         Vector2D v3 = new Vector2D(0, 10);
-        assertEquals(v3.getAngle(), Math.PI/2, eps);
+        assertEquals(v3.angle(), Math.PI/2, eps);
         
         Vector2D v4 = new Vector2D(-10, 10);
-        assertEquals(v4.getAngle(), 3*Math.PI/4, eps);
+        assertEquals(v4.angle(), 3*Math.PI/4, eps);
         
         Vector2D v5 = new Vector2D(-10, 0);
-        assertEquals(v5.getAngle(), Math.PI, eps);
+        assertEquals(v5.angle(), Math.PI, eps);
         
         Vector2D v6 = new Vector2D(-10, -10);
-        assertEquals(v6.getAngle(), 5*Math.PI/4, eps);
+        assertEquals(v6.angle(), 5*Math.PI/4, eps);
         
         Vector2D v7 = new Vector2D(0, -10);
-        assertEquals(v7.getAngle(), 3*Math.PI/2, eps);
+        assertEquals(v7.angle(), 3*Math.PI/2, eps);
         
         Vector2D v8 = new Vector2D(10, -10);
-        assertEquals(v8.getAngle(), 7*Math.PI/4, eps);
+        assertEquals(v8.angle(), 7*Math.PI/4, eps);
 	}
 
 	public void testPlusVector2D() {

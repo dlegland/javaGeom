@@ -15,12 +15,12 @@ public class CirculinearContourArray2DTest extends TestCase {
 		CirculinearContourArray2D<Circle2D> array =
 			CirculinearContourArray2D.create(circle1, circle2);
 		
-		CirculinearDomain2D buffer = array.getBuffer(10);
+		CirculinearDomain2D buffer = array.buffer(10);
 		assertFalse(buffer.isEmpty());
 		
-		CirculinearBoundary2D boundary = buffer.getBoundary();
-		assertEquals(4, boundary.getContinuousCurves().size());
-		for (CirculinearContour2D contour : boundary.getContinuousCurves())
+		CirculinearBoundary2D boundary = buffer.boundary();
+		assertEquals(4, boundary.continuousCurves().size());
+		for (CirculinearContour2D contour : boundary.continuousCurves())
 			assertTrue(contour instanceof Circle2D);
 	}
 
@@ -37,7 +37,7 @@ public class CirculinearContourArray2DTest extends TestCase {
 		
 		assertFalse(res.isEmpty());
 		
-		assertEquals(2, res.getContinuousCurves().size());
+		assertEquals(2, res.continuousCurves().size());
 		for (CirculinearContour2D contour : res)
 			assertTrue(contour instanceof Circle2D);
 	}
@@ -53,7 +53,7 @@ public class CirculinearContourArray2DTest extends TestCase {
 		
 		CirculinearCurveSet2D<? extends CirculinearCurve2D> res = array.clip(box);
 		
-		assertEquals(1, res.getContinuousCurves().size());
+		assertEquals(1, res.continuousCurves().size());
 		for (CirculinearCurve2D curve : res)
 			assertTrue(curve instanceof Circle2D);
 	}

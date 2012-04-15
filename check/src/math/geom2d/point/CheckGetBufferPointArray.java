@@ -31,7 +31,7 @@ public class CheckGetBufferPointArray extends JPanel{
 						new Point2D(80, 50), 
 						new Point2D(110, 50), 
 						new Point2D(50, 150)});
-		domain = set.getBuffer(20);
+		domain = set.buffer(20);
 	}
 	
 	public void paintComponent(Graphics g){

@@ -15,16 +15,16 @@ import junit.framework.TestCase;
 public class Plane3DTest extends TestCase {
 
 	/**
-	 * Test method for {@link math.geom3d.plane.Plane3D#getNormalVector()}.
+	 * Test method for {@link math.geom3d.plane.Plane3D#normal()}.
 	 */
 	public void testGetNormalVector() {
 		Plane3D plane 	= Plane3D.createXYPlane();
 		Vector3D vz 	= new Vector3D(0, 0, -1);
-		assertTrue(vz.equals(plane.getNormalVector()));
+		assertTrue(vz.equals(plane.normal()));
 	}
 
 	/**
-	 * Test method for {@link math.geom3d.plane.Plane3D#getLineIntersection(math.geom3d.line.StraightLine3D)}.
+	 * Test method for {@link math.geom3d.plane.Plane3D#lineIntersection(math.geom3d.line.StraightLine3D)}.
 	 */
 	public void testGetLineIntersection() {
 		Plane3D plane 	= Plane3D.createXYPlane();
@@ -32,7 +32,7 @@ public class Plane3DTest extends TestCase {
 		Point3D p1 = new Point3D(2, 2, 0);
 		
 		Point3D pInt;
-		pInt = plane.getLineIntersection(line1);
+		pInt = plane.lineIntersection(line1);
 		
 		assertTrue(p1.equals(pInt));
 	}

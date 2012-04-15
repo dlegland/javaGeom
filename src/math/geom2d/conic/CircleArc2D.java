@@ -181,7 +181,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     /**
      * Returns the circle which contains the circle arc.
      */
-    public Circle2D getSupportingCircle() {
+    public Circle2D supportingCircle() {
         return circle;
     }
 
@@ -191,19 +191,19 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
 
-    public CircleArc2D getParallel (double dist) {
-    	double r = circle.getRadius();
+    public CircleArc2D parallel (double dist) {
+    	double r = circle.radius();
 		double r2 = max(angleExtent > 0 ? r + dist : r - dist, 0);
-		return new CircleArc2D(circle.getCenter(), r2, startAngle, angleExtent);
+		return new CircleArc2D(circle.center(), r2, startAngle, angleExtent);
     }
     
-    public double getLength() {
-		return circle.getRadius() * abs(angleExtent);
+    public double length() {
+		return circle.radius() * abs(angleExtent);
     }
 
 	/*
@@ -211,8 +211,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 	 * 
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
-		return pos * circle.getRadius();
+	public double length(double pos) {
+		return pos * circle.radius();
 	}
 
 	/*
@@ -220,8 +220,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 	 * 
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
-		return length / circle.getRadius();
+	public double position(double length) {
+		return length / circle.radius();
 	}
 
 	/* (non-Javadoc)
@@ -232,16 +232,16 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         Point2D center = inv.getCenter();        
         
         // transform the extremities
-        Point2D p1 = this.getFirstPoint().transform(inv);
-        Point2D p2 = this.getLastPoint().transform(inv);
+        Point2D p1 = this.firstPoint().transform(inv);
+        Point2D p2 = this.lastPoint().transform(inv);
         	
         CirculinearElement2D element = circle.transform(inv);
         
         if(element instanceof Circle2D) {
         	return new CircleArc2D(
         			(Circle2D)element, 
-        			Angle2D.getHorizontalAngle(center, p1),
-        			Angle2D.getHorizontalAngle(center, p2),
+        			Angle2D.horizontalAngle(center, p1),
+        			Angle2D.horizontalAngle(center, p2),
         			!this.isDirect());
         } else if (element instanceof StraightLine2D) {
             //TODO: add processing of special cases (arc contains transform center)            
@@ -258,13 +258,13 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface OrientedCurve2D
 
     @Override
-    public double getWindingAngle(Point2D point) {
-        Point2D p1 = getFirstPoint();
-        Point2D p2 = getLastPoint();
+    public double windingAngle(Point2D point) {
+        Point2D p1 = firstPoint();
+        Point2D p2 = lastPoint();
 
         // compute angle of point with extreme points
-        double angle1 = Angle2D.getHorizontalAngle(point, p1);
-        double angle2 = Angle2D.getHorizontalAngle(point, p2);
+        double angle1 = Angle2D.horizontalAngle(point, p1);
+        double angle2 = Angle2D.horizontalAngle(point, p2);
 
         boolean b1 = (new StraightLine2D(p1, p2)).isInside(point);
         boolean b2 = ellipse.isInside(point);
@@ -298,17 +298,17 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public boolean isInside(Point2D point) {
-		return getSignedDistance(point.getX(), point.getY()) < 0;
+		return distanceSigned(point.getX(), point.getY()) < 0;
     }
 
     @Override
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
+    public double distanceSigned(Point2D p) {
+        return distanceSigned(p.getX(), p.getY());
     }
 
     @Override
-    public double getSignedDistance(double x, double y) {
-        double dist = getDistance(x, y);
+    public double distanceSigned(double x, double y) {
+        double dist = distance(x, y);
         Point2D point = new Point2D(x, y);
 
         boolean direct = angleExtent>0;
@@ -317,8 +317,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         if (inCircle)
 			return angleExtent > 0 ? -dist : dist;
 
-        Point2D p1 = circle.getPoint(startAngle);
-		Point2D p2 = circle.getPoint(startAngle + angleExtent);
+        Point2D p1 = circle.point(startAngle);
+		Point2D p2 = circle.point(startAngle + angleExtent);
         boolean onLeft = (new StraightLine2D(p1, p2)).isInside(point);
 
 		if (direct && !onLeft)
@@ -326,14 +326,14 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 		if (!direct && onLeft)
 			return -dist;
 
-		Vector2D tangent = circle.getTangent(startAngle);
+		Vector2D tangent = circle.tangent(startAngle);
 		boolean left1 = (new Ray2D(p1, tangent)).isInside(point);
 		if (direct && !left1)
 			return dist;
 		if (!direct && left1)
 			return -dist;
 
-		tangent = circle.getTangent(startAngle + angleExtent);
+		tangent = circle.tangent(startAngle + angleExtent);
 		boolean left2 = (new Ray2D(p2, tangent)).isInside(point);
 		if (direct && !left2)
 			return dist;
@@ -350,10 +350,10 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface SmoothCurve2D
 
     @Override
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
         t = this.positionToAngle(t);
 
-        double r = circle.getRadius();
+        double r = circle.radius();
 		if (angleExtent > 0)
 			return new Vector2D(-r * sin(t), r * cos(t));
 		else
@@ -364,7 +364,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface ContinuousCurve2D
 
     @Override
-    public Collection<? extends CircleArc2D> getSmoothPieces() {
+    public Collection<? extends CircleArc2D> smoothPieces() {
         ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
         list.add(this);
         return list;
@@ -400,17 +400,17 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * Returns the position of a point form the curvilinear position.
      */
     @Override
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         t = this.positionToAngle(t);
-        return circle.getPoint(t);
+        return circle.point(t);
     }
 
     /**
      * return relative position between 0 and the angle extent.
      */
     @Override
-    public double getPosition(Point2D point) {
-        double angle = Angle2D.getHorizontalAngle(circle.getCenter(), point);
+    public double position(Point2D point) {
+        double angle = Angle2D.horizontalAngle(circle.center(), point);
         if (containsAngle(angle))
 			if (angleExtent > 0)
 				return Angle2D.formatAngle(angle - startAngle);
@@ -418,8 +418,8 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 				return Angle2D.formatAngle(startAngle - angle);
 
         // return either 0 or 1, depending on which extremity is closer.
-        return getFirstPoint().getDistance(point) < 
-        getLastPoint().getDistance(point) ? 0 : abs(angleExtent);
+        return firstPoint().distance(point) < 
+        lastPoint().distance(point) ? 0 : abs(angleExtent);
     }
 
     /**
@@ -429,7 +429,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * the first one on the line.
      */
     @Override
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
     	return Circle2D.getIntersections(this, line);
     }
 
@@ -446,9 +446,9 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 				return Angle2D.formatAngle(startAngle - angle);
         }
 
-        Point2D p1 = this.getFirstPoint();
-        Point2D p2 = this.getLastPoint();
-		if (p1.getDistance(point) < p2.getDistance(point))
+        Point2D p1 = this.firstPoint();
+        Point2D p2 = this.lastPoint();
+		if (p1.distance(point) < p2.distance(point))
             return 0;
         else
             return abs(angleExtent);
@@ -458,20 +458,20 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     // methods from interface Shape2D
 
     @Override
-    public double getDistance(Point2D p) {
-        return getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return distance(p.getX(), p.getY());
     }
 
     @Override
-    public double getDistance(double x, double y) {
-        double angle = Angle2D.getHorizontalAngle(circle.xc, circle.yc, x, y);
+    public double distance(double x, double y) {
+        double angle = Angle2D.horizontalAngle(circle.xc, circle.yc, x, y);
 
         if (containsAngle(angle))
             return abs(Point2D.getDistance(circle.xc, circle.yc, x, y)
                     -circle.r);
         else
-            return min(getFirstPoint().getDistance(x, y), getLastPoint()
-                    .getDistance(x, y));
+            return min(firstPoint().distance(x, y), lastPoint()
+                    .distance(x, y));
     }
 
     /** Always return true */
@@ -485,7 +485,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * and the angle extent of the arc.
      */
     @Override
-    public CircleArc2D getSubCurve(double t0, double t1) {
+    public CircleArc2D subCurve(double t0, double t1) {
         // convert position to angle
         if (angleExtent>0) {
 			t0 = Angle2D.formatAngle(startAngle + t0);
@@ -512,13 +512,13 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      * start angle, and with opposite angle extent.
      */
     @Override
-    public CircleArc2D getReverseCurve() {
+    public CircleArc2D reverse() {
         return new CircleArc2D(this.circle, Angle2D.formatAngle(startAngle
                 +angleExtent), -angleExtent);
     }
 
     @Override
-    public Collection<? extends CircleArc2D> getContinuousCurves() {
+    public Collection<? extends CircleArc2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -534,10 +534,10 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         // create a new structure for storing result
         CurveArray2D<CircleArc2D> result = 
-        	new CurveArray2D<CircleArc2D>(set.getCurveNumber());
+        	new CurveArray2D<CircleArc2D>(set.curveNumber());
 
         // convert result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CircleArc2D)
                 result.addCurve((CircleArc2D) curve);
         }
@@ -556,9 +556,9 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         // System.out.println("transform a circle");
 
         // extract the control points
-        Point2D center = circle.getCenter();
-        Point2D point1 = this.getFirstPoint();
-        Point2D point2 = this.getLastPoint();
+        Point2D center = circle.center();
+        Point2D point1 = this.firstPoint();
+        Point2D point2 = this.lastPoint();
 
         // transform each point
         center = center.transform(trans);
@@ -566,16 +566,16 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         point2 = point2.transform(trans);
 
         // compute new angles
-        double angle1 = Angle2D.getHorizontalAngle(center, point1);
-        double angle2 = Angle2D.getHorizontalAngle(center, point2);
+        double angle1 = Angle2D.horizontalAngle(center, point1);
+        double angle2 = Angle2D.horizontalAngle(center, point2);
 
         // compute factor of transform
-        double[] coefs = trans.getCoefficients();
+        double[] coefs = trans.coefficients();
         double factor = Math.sqrt(coefs[0]*coefs[0]+coefs[3]*coefs[3]);
 
         // compute parameters of new circle arc
         double xc = center.getX(), yc = center.getY();
-        double r2 = circle.getRadius()*factor;
+        double r2 = circle.radius()*factor;
         double startAngle = angle1;
         double angleExtent = Angle2D.formatAngle(angle2-angle1);
 
@@ -597,12 +597,12 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     @Override
     public boolean contains(double x, double y) {
         // Check if radius is correct
-    	double r = circle.getRadius();
+    	double r = circle.radius();
 		if (abs(Point2D.getDistance(circle.xc, circle.yc, x, y) - r) > Shape2D.ACCURACY)
             return false;
 
         // angle from circle center to point
-        double angle = Angle2D.getHorizontalAngle(circle.xc, circle.yc, x, y);
+        double angle = Angle2D.horizontalAngle(circle.xc, circle.yc, x, y);
         
         // check if angle is contained in interval [startAngle-angleExtent]
         return this.containsAngle(angle);
@@ -656,10 +656,10 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public String toString() {
-    	Point2D center = circle.getCenter();
+    	Point2D center = circle.center();
         return String.format(Locale.US, 
                 "CircleArc2D(%7.2f,%7.2f,%7.2f,%7.5f,%7.5f)", 
-                center.getX(), center.getY(), circle.getRadius(),
+                center.getX(), center.getY(), circle.radius(),
                 getStartAngle(), getAngleExtent());
     }
 

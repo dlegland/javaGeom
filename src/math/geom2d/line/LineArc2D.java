@@ -126,9 +126,9 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Returns the length of the line arc.
      */
 	@Override
-    public double getLength() {
+    public double length() {
         if (t0!=Double.NEGATIVE_INFINITY&&t1!=Double.POSITIVE_INFINITY)
-            return getPoint1().getDistance(getPoint2());
+            return getPoint1().distance(getPoint2());
         else
             return Double.POSITIVE_INFINITY;
     }
@@ -193,7 +193,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
-	public LineArc2D getParallel(double d) {
+	public LineArc2D parallel(double d) {
         double dd = Math.hypot(dx, dy);
         return new LineArc2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy, t0, t1);
 	}
@@ -218,7 +218,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return t1;
     }
 
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         if (t<t0)
             t = t0;
         if (t>t1)
@@ -237,7 +237,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @return the last point of the arc
      */
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         if (!Double.isInfinite(t0))
             return new Point2D(x0+t0*dx, y0+t0*dy);
         else
@@ -251,7 +251,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @return the last point of the arc
      */
 	@Override
-    public Point2D getLastPoint() {
+    public Point2D lastPoint() {
         if (!Double.isInfinite(t1))
             return new Point2D(x0+t1*dx, y0+t1*dy);
         else
@@ -259,12 +259,12 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
 	@Override
-    public Collection<Point2D> getSingularPoints() {
+    public Collection<Point2D> singularPoints() {
         ArrayList<Point2D> list = new ArrayList<Point2D>(2);
         if (t0!=Double.NEGATIVE_INFINITY)
-            list.add(this.getFirstPoint());
+            list.add(this.firstPoint());
         if (t1!=Double.POSITIVE_INFINITY)
-            list.add(this.getLastPoint());
+            list.add(this.lastPoint());
         return list;
     }
 
@@ -278,7 +278,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     @Override
-    public Collection<? extends LineArc2D> getContinuousCurves() {
+    public Collection<? extends LineArc2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -286,7 +286,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * Returns the line arc which have the same trace, but has the inverse
      * parameterization.
      */
-    public LineArc2D getReverseCurve() {
+    public LineArc2D reverse() {
         return new LineArc2D(x0, y0, -dx, -dy, -t1, -t0);
     }
 
@@ -295,7 +295,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * by parameters t0 and t1.
      */
     @Override
-    public LineArc2D getSubCurve(double t0, double t1) {
+    public LineArc2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, this.getT0());
         t1 = Math.min(t1, this.getT1());
         return new LineArc2D(this, t0, t1);
@@ -313,7 +313,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         return new Box2D(x0+t0*dx, x0+t1*dx, y0+t0*dy, y0+t1*dy);
     }
 
@@ -330,7 +330,7 @@ implements SmoothOrientedCurve2D, Cloneable {
             return false;
 
         // compute position on the line
-        double t = getPositionOnLine(xp, yp);
+        double t = positionOnLine(xp, yp);
 
         if (t-t0<-ACCURACY)
             return false;
@@ -370,7 +370,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public LineArc2D transform(AffineTransform2D trans) {
-        double[] tab = trans.getCoefficients();
+        double[] tab = trans.coefficients();
         double x1 = x0*tab[0]+y0*tab[1]+tab[2];
         double y1 = x0*tab[3]+y0*tab[4]+tab[5];
         return new LineArc2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4],
@@ -416,17 +416,17 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t0==Double.NEGATIVE_INFINITY) {
             // Check limits
             if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint2().getDistance(arc.getPoint2())<eps;
+                return this.getPoint2().distance(arc.getPoint2())<eps;
             if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint2().getDistance(arc.getPoint1())<eps;
+                return this.getPoint2().distance(arc.getPoint1())<eps;
             return false;
         }
         if (t1==Double.POSITIVE_INFINITY) {
             // Check limits
             if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint1().getDistance(arc.getPoint2())<eps;
+                return this.getPoint1().distance(arc.getPoint2())<eps;
             if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint1().getDistance(arc.getPoint1())<eps;
+                return this.getPoint1().distance(arc.getPoint1())<eps;
             return false;
         }
 
@@ -438,12 +438,12 @@ implements SmoothOrientedCurve2D, Cloneable {
             return false;
 
         // We still have to test the case of edges
-        if (getPoint1().getDistance(arc.getPoint1())<eps)
-            return getPoint2().getDistance(arc.getPoint2())<eps;
+        if (getPoint1().distance(arc.getPoint1())<eps)
+            return getPoint2().distance(arc.getPoint2())<eps;
 
-        if (getPoint1().getDistance(arc.getPoint2())>eps)
+        if (getPoint1().distance(arc.getPoint2())>eps)
             return false;
-        if (getPoint2().getDistance(arc.getPoint1())>eps)
+        if (getPoint2().distance(arc.getPoint1())>eps)
             return false;
         return true;
     }
@@ -475,17 +475,17 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (t0==Double.NEGATIVE_INFINITY) {
             // Check limits
             if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint2().getDistance(arc.getPoint2())<Shape2D.ACCURACY;
+                return this.getPoint2().distance(arc.getPoint2())<Shape2D.ACCURACY;
             if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint2().getDistance(arc.getPoint1())<Shape2D.ACCURACY;
+                return this.getPoint2().distance(arc.getPoint1())<Shape2D.ACCURACY;
             return false;
         }
         if (t1==Double.POSITIVE_INFINITY) {
             // Check limits
             if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint1().getDistance(arc.getPoint2())<Shape2D.ACCURACY;
+                return this.getPoint1().distance(arc.getPoint2())<Shape2D.ACCURACY;
             if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint1().getDistance(arc.getPoint1())<Shape2D.ACCURACY;
+                return this.getPoint1().distance(arc.getPoint1())<Shape2D.ACCURACY;
             return false;
         }
 
@@ -497,12 +497,12 @@ implements SmoothOrientedCurve2D, Cloneable {
             return false;
 
         // We still have to test the case of edges
-        if (getPoint1().getDistance(arc.getPoint1())<ACCURACY)
-            return getPoint2().getDistance(arc.getPoint2())<ACCURACY;
+        if (getPoint1().distance(arc.getPoint1())<ACCURACY)
+            return getPoint2().distance(arc.getPoint2())<ACCURACY;
 
-        if (getPoint1().getDistance(arc.getPoint2())>ACCURACY)
+        if (getPoint1().distance(arc.getPoint2())>ACCURACY)
             return false;
-        if (getPoint2().getDistance(arc.getPoint1())>ACCURACY)
+        if (getPoint2().distance(arc.getPoint1())>ACCURACY)
             return false;
         return true;
     }

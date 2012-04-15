@@ -32,7 +32,7 @@ public class RoundCapFactory implements CapFactory {
 	 */
 	public CirculinearContinuousCurve2D createCap(Point2D center,
 			Vector2D direction, double dist) {
-		double angle = direction.getAngle();
+		double angle = direction.angle();
 		double angle1 = Angle2D.formatAngle(angle - PI/2);
 		double angle2 = Angle2D.formatAngle(angle + PI/2);
 		return CircleArc2D.create(center, dist, angle1, angle2, true);
@@ -40,10 +40,10 @@ public class RoundCapFactory implements CapFactory {
 
 	public CirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
 		Point2D center = Point2D.midPoint(p1, p2);
-		double radius = p1.getDistance(p2)/2;
+		double radius = p1.distance(p2)/2;
 		
-		double angle1 = Angle2D.getHorizontalAngle(center, p1);
-		double angle2 = Angle2D.getHorizontalAngle(center, p2);
+		double angle1 = Angle2D.horizontalAngle(center, p1);
+		double angle2 = Angle2D.horizontalAngle(center, p2);
 		return CircleArc2D.create(center, radius, angle1, angle2, true);
 	}
 

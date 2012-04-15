@@ -49,7 +49,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param point a point of the plane
      * @return a signed angle
      */
-    public abstract double getWindingAngle(Point2D point);
+    public abstract double windingAngle(Point2D point);
 
     /**
      * Get the signed distance of the curve to the given point: this distance is
@@ -60,7 +60,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param point a point of the plane
      * @return the signed distance to the curve
      */
-    public abstract double getSignedDistance(Point2D point);
+    public abstract double distanceSigned(Point2D point);
 
     /**
      * The same as getSignedDistance(Point2D), but by passing 2 double as
@@ -70,7 +70,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param y y-coord of a point
      * @return the signed distance of the point (x,y) to the curve
      */
-    public abstract double getSignedDistance(double x, double y);
+    public abstract double distanceSigned(double x, double y);
 
     /**
      * Returns true if the point is 'inside' the domain bounded by the curve.
@@ -81,7 +81,7 @@ public interface OrientedCurve2D extends Curve2D {
     // TODO: think about either deprecate or better define
     public abstract boolean isInside(Point2D pt);
 
-    public abstract OrientedCurve2D getReverseCurve();
+    public abstract OrientedCurve2D reverse();
 
     // TODO: what to do with non-continuous oriented curves ?
     // public abstract OrientedCurve2D getSubCurve(double t0, double t1);

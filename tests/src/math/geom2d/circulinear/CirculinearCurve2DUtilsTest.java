@@ -71,7 +71,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// unchecked class cast
 		PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D> poly = 
 			(PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D>) conv;
-		assertEquals(2, poly.getCurveNumber());
+		assertEquals(2, poly.curveNumber());
 		assertTrue(poly.containsCurve(seg1));
 		assertTrue(poly.containsCurve(seg2));
 	}
@@ -113,7 +113,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// unchecked class cast
 		CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> set = 
 			(CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D>) conv;
-		assertEquals(2, set.getCurveNumber());
+		assertEquals(2, set.curveNumber());
 		assertTrue(set.containsCurve(seg1));
 		assertTrue(set.containsCurve(seg2));
 	}
@@ -218,7 +218,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			CirculinearCurveArray2D.create(new StraightLine2D[]{
 					line1, line2, line3, line4});
 		
-		Collection<StraightLine2D> curves = set.getCurves();
+		Collection<StraightLine2D> curves = set.curves();
 		Collection<CirculinearContour2D> contours = 
 			CirculinearCurve2DUtils.splitIntersectingContours(curves);
 		assertEquals(5, contours.size());
@@ -258,10 +258,10 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			new PolyCirculinearCurve2D<CirculinearElement2D>();
 		curve.addCurve(ray1);
 		curve.addCurve(ray2);
-		assertEquals(2, curve.getSmoothPieces().size());
+		assertEquals(2, curve.smoothPieces().size());
 
 		// computes the positive parallel
-		CirculinearContinuousCurve2D parallel = curve.getParallel(10);
+		CirculinearContinuousCurve2D parallel = curve.parallel(10);
 		Collection<CirculinearContinuousCurve2D> splittedCurves =
 			CirculinearCurve2DUtils.splitContinuousCurve(parallel);
 		
@@ -269,13 +269,13 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertEquals(1, splittedCurves.size());
 		
 		// computes the negative parallel
-		CirculinearContinuousCurve2D parallel2 = curve.getParallel(-10);
-		Collection<Point2D> points = parallel2.getSingularPoints();
+		CirculinearContinuousCurve2D parallel2 = curve.parallel(-10);
+		Collection<Point2D> points = parallel2.singularPoints();
 		assertEquals(2, points.size());
 		
 		PointArray2D pointSet = PointArray2D.create(points);
-		assertTrue(pointSet.getDistance(new Point2D(18, 4)) < Shape2D.ACCURACY);
-		assertTrue(pointSet.getDistance(new Point2D(4, 18)) < Shape2D.ACCURACY);
+		assertTrue(pointSet.distance(new Point2D(18, 4)) < Shape2D.ACCURACY);
+		assertTrue(pointSet.distance(new Point2D(4, 18)) < Shape2D.ACCURACY);
 	}
 	
 

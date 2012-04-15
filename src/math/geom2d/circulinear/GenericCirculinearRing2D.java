@@ -100,14 +100,14 @@ implements CirculinearRing2D {
     // methods specific to GenericCirculinearRing2D
 
 	@Override
-    public CirculinearRing2D getParallel(double dist) {
+    public CirculinearRing2D parallel(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
     	return new GenericCirculinearRing2D(
-    			bc.createContinuousParallel(this, dist).getSmoothPieces());
+    			bc.createContinuousParallel(this, dist).smoothPieces());
     }
     
-	public Collection<? extends GenericCirculinearRing2D> getContinuousCurves() {
+	public Collection<? extends GenericCirculinearRing2D> continuousCurves() {
     	return wrapCurve(this);
     }
 	
@@ -133,26 +133,26 @@ implements CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
 	 */
-	public Collection<? extends CirculinearContour2D> getBoundaryCurves() {
+	public Collection<? extends CirculinearContour2D> boundaryCurves() {
         return wrapCurve(this);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getDomain()
 	 */
-	public CirculinearDomain2D getDomain() {
+	public CirculinearDomain2D domain() {
 		return new GenericCirculinearDomain2D(this);
 	}
 
 	@Override
-	public GenericCirculinearRing2D getReverseCurve(){
+	public GenericCirculinearRing2D reverse(){
     	int n = curves.size();
         // create array of reversed curves
     	CirculinearElement2D[] curves2 = new CirculinearElement2D[n];
         
         // reverse each curve
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the reversed final curve
         return new GenericCirculinearRing2D(curves2);
@@ -162,7 +162,7 @@ implements CirculinearRing2D {
 	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> 
 	transform(AffineTransform2D trans) {
 		// number of curves
-		int n = this.getCurveNumber();
+		int n = this.curveNumber();
 		
 		// create result curve
         BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =

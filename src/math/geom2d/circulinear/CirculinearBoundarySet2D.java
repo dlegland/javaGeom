@@ -113,31 +113,31 @@ extends CirculinearContourArray2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
 	 */
-	public double getLength() {
+	public double length() {
 		double sum = 0;
-		for(CirculinearCurve2D curve : this.getCurves())
-			sum += curve.getLength();
+		for(CirculinearCurve2D curve : this.curves())
+			sum += curve.length();
 		return sum;
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
+	public double length(double pos) {
 		return CirculinearCurve2DUtils.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
+	public double position(double length) {
 		return CirculinearCurve2DUtils.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
@@ -145,7 +145,7 @@ extends CirculinearContourArray2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
-	public CirculinearBoundary2D getParallel(double d) {
+	public CirculinearBoundary2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.createParallelBoundary(this, d);
 	}
@@ -170,7 +170,7 @@ extends CirculinearContourArray2D<T> {
     // methods implementing the Curve2D interface
 
     @Override
-    public Collection<T> getContinuousCurves() {
+    public Collection<T> continuousCurves() {
     	// create array for storing result
     	ArrayList<T> result = new ArrayList<T>(curves.size());
 
@@ -185,12 +185,12 @@ extends CirculinearContourArray2D<T> {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.getCurveNumber();
+        int n = set.curveNumber();
         CirculinearCurveArray2D<CirculinearContinuousCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearContinuousCurve2D)
                 result.addCurve((CirculinearContinuousCurve2D) curve);
         }
@@ -201,33 +201,33 @@ extends CirculinearContourArray2D<T> {
     
 	@Override
 	public CirculinearBoundarySet2D<? extends CirculinearContour2D>
-	getReverseCurve(){
+	reverse(){
     	int n = curves.size();
         // create array of reversed curves
     	CirculinearContour2D[] curves2 = new CirculinearContour2D[n];
         
         // reverse each curve
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the reversed final curve
         return new CirculinearBoundarySet2D<CirculinearContour2D>(curves2);
 	}
 	
     @Override
-    public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> getSubCurve(
+    public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> subCurve(
             double t0, double t1) {
         // get the subcurve
     	CurveSet2D<? extends ContinuousOrientedCurve2D> curveSet =
-    		super.getSubCurve(t0, t1);
+    		super.subCurve(t0, t1);
 
         // create subcurve array
         ArrayList<CirculinearContinuousCurve2D> curves = 
         	new ArrayList<CirculinearContinuousCurve2D>(
-        			curveSet.getCurveNumber());
+        			curveSet.curveNumber());
         
         // class cast each curve
-        for (Curve2D curve : curveSet.getCurves())
+        for (Curve2D curve : curveSet.curves())
             curves.add((CirculinearContinuousCurve2D) curve);
 
         // Create CurveSet for the result

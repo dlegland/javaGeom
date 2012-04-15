@@ -126,8 +126,8 @@ public class SimplePolygon2D implements Polygon2D {
      * @param ring the boundary of the polygon
      */
     public SimplePolygon2D(LinearRing2D ring) {
-        this.vertices = new ArrayList<Point2D>(ring.getVertexNumber());
-        this.vertices.addAll(ring.getVertices());
+        this.vertices = new ArrayList<Point2D>(ring.vertexNumber());
+        this.vertices.addAll(ring.vertices());
     }
 
     
@@ -221,8 +221,8 @@ public class SimplePolygon2D implements Polygon2D {
      * Computes area of the polygon, by returning the absolute value of the
      * signed area.
      */
-    public double getArea() {
-        return Math.abs(this.getSignedArea());
+    public double area() {
+        return Math.abs(this.areaSigned());
     }
 
     /**
@@ -234,7 +234,7 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @return the signed area of the polygon.
      */
-    public double getSignedArea() {
+    public double areaSigned() {
     	return Polygon2DUtils.computeSignedArea(this);
     }
 
@@ -246,7 +246,7 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @return the centroid of the polygon
      */
-    public Point2D getCentroid() {
+    public Point2D centroid() {
     	return Polygon2DUtils.computeCentroid(this);
     }
 
@@ -254,7 +254,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns the points of the polygon. The result is a pointer to the inner
      * collection of vertices.
      */
-    public Collection<Point2D> getVertices() {
+    public Collection<Point2D> vertices() {
         return vertices;
     }
 
@@ -263,7 +263,7 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @param i index of the vertex, between 0 and the number of vertices
      */
-    public Point2D getVertex(int i) {
+    public Point2D vertex(int i) {
         return vertices.get(i);
     }
 
@@ -272,14 +272,14 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @since 0.6.3
      */
-    public int getVertexNumber() {
+    public int vertexNumber() {
         return vertices.size();
     }
 
     /**
      * Returns the set of edges, as a collection of LineSegment2D.
      */
-    public Collection<LineSegment2D> getEdges() {
+    public Collection<LineSegment2D> edges() {
 
         int nPoints = this.vertices.size();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nPoints);
@@ -299,14 +299,14 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns the number of edges. For a simple polygon, this equals the
      * number of vertices.
      */
-    public int getEdgeNumber() {
+    public int edgeNumber() {
         return vertices.size();
     }
 
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<LinearRing2D> getRings() {
+    public Collection<LinearRing2D> rings() {
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
         rings.add(new LinearRing2D(vertices));
         return rings;
@@ -321,14 +321,14 @@ public class SimplePolygon2D implements Polygon2D {
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
 		CirculinearBoundary2D boundary = 
-			this.getBoundary().transform(inv).getReverseCurve();
+			this.boundary().transform(inv).reverse();
 		return new GenericCirculinearDomain2D(boundary);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		// check for multiple vertices
 		if (PointSet2DUtils.hasAdjacentMultipleVertices(this.vertices, true)) {
 			List<Point2D> pts2 = 
@@ -347,14 +347,14 @@ public class SimplePolygon2D implements Polygon2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
+	public Polygon2D asPolygon(int n) {
 		return this;
 	}
 
     /**
      * Returns a set of one LinearRing2D, which encloses the polygon.
      */
-    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
+    public CirculinearContourArray2D<LinearRing2D> boundary() {
         Point2D[] array = new Point2D[this.vertices.size()];
         for (int i = 0; i<this.vertices.size(); i++)
             array[i] = this.vertices.get(i);
@@ -389,8 +389,8 @@ public class SimplePolygon2D implements Polygon2D {
      * minimal distance computed for each edge if the polygon, or ZERO if the
      * point belong to the polygon.
      */
-    public double getDistance(Point2D p) {
-        return getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return distance(p.getX(), p.getY());
     }
 
     /**
@@ -398,10 +398,10 @@ public class SimplePolygon2D implements Polygon2D {
      * minimal distance computed for each edge if the polygon, or ZERO if the
      * point belong to the polygon.
      */
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         if (contains(x, y))
             return 0;
-        return getBoundary().getDistance(x, y);
+        return boundary().distance(x, y);
     }
 
     /**
@@ -410,8 +410,8 @@ public class SimplePolygon2D implements Polygon2D {
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
      */
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
+    public double distanceSigned(Point2D p) {
+        return distanceSigned(p.getX(), p.getY());
     }
 
     /**
@@ -420,8 +420,8 @@ public class SimplePolygon2D implements Polygon2D {
      * point lies inside the shape. In this case, absolute value of distance is
      * equals to the distance to the border of the shape.
      */
-    public double getSignedDistance(double x, double y) {
-        double dist = getBoundary().getDistance(x, y);
+    public double distanceSigned(double x, double y) {
+        double dist = boundary().distance(x, y);
         if (contains(x, y))
             return -dist;
         else
@@ -438,15 +438,15 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Returns the bounding box of the polygon.
      */
-    public Box2D getBoundingBox() {
-        return getBoundary().getBoundingBox();
+    public Box2D boundingBox() {
+        return boundary().boundingBox();
     }
 
     /**
      * Returns true if polygon is oriented counter-clockwise, false otherwise.
      */
     public boolean isBounded() {
-        return this.getSignedArea()>0;
+        return this.areaSigned()>0;
     }
 
     public boolean isEmpty() {
@@ -492,10 +492,10 @@ public class SimplePolygon2D implements Polygon2D {
      * given by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
-    	if (this.getBoundary().contains(x, y))
+    	if (this.boundary().contains(x, y))
     		return true;
     	
-    	double area = this.getSignedArea();
+    	double area = this.areaSigned();
     	int winding = this.getWindingNumber(x, y);
     	if (area > 0) {
     		return winding == 1;
@@ -553,12 +553,12 @@ public class SimplePolygon2D implements Polygon2D {
             return false;
         SimplePolygon2D polygon = (SimplePolygon2D) obj;
 
-        int nv = this.getVertexNumber();
-        if (polygon.getVertexNumber() != nv)
+        int nv = this.vertexNumber();
+        if (polygon.vertexNumber() != nv)
             return false;
 
         for (int i = 0; i < nv ; i++) {
-        	if (!this.getVertex(i).almostEquals(polygon.getVertex(i), eps))
+        	if (!this.vertex(i).almostEquals(polygon.vertex(i), eps))
         		return false;
         }
 
@@ -582,12 +582,12 @@ public class SimplePolygon2D implements Polygon2D {
 
         SimplePolygon2D polygon = (SimplePolygon2D) obj;
 
-        int nv = this.getVertexNumber();
-        if (polygon.getVertexNumber() != nv)
+        int nv = this.vertexNumber();
+        if (polygon.vertexNumber() != nv)
             return false;
 
         for (int i = 0; i < nv ; i++) {
-        	if (!this.getVertex(i).equals(polygon.getVertex(i)))
+        	if (!this.vertex(i).equals(polygon.vertex(i)))
         		return false;
         }
 

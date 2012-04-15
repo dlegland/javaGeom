@@ -153,7 +153,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @return the collection of points
      */
-    public Collection<Point2D> getPoints() {
+    public Collection<Point2D> points() {
         return Collections.unmodifiableList(points);
     }
 
@@ -169,7 +169,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @return the number of points
      */
-    public int getPointNumber() {
+    public int pointNumber() {
         return points.size();
     }
 
@@ -180,7 +180,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
@@ -198,8 +198,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
    /**
      * Return distance to the closest point of the collection
      */
-    public double getDistance(Point2D p) {
-        return getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return distance(p.getX(), p.getY());
     }
 
     /*
@@ -207,7 +207,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
     	// basic checkup
         if (points.isEmpty())
             return Double.NaN;
@@ -215,7 +215,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         // find smallest distance
         double dist = Double.MAX_VALUE;
         for (Point2D point : points)
-            dist = Math.min(dist, point.getDistance(x, y));
+            dist = Math.min(dist, point.distance(x, y));
         
         // return distance to closest point
         return dist;
@@ -258,7 +258,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return res;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
     	// init with max values in each direction
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
@@ -298,7 +298,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      */
     public boolean contains(double x, double y) {
         for (Point2D point : points)
-            if (point.getDistance(x, y) < Shape2D.ACCURACY)
+            if (point.distance(x, y) < Shape2D.ACCURACY)
                 return true;
         return false;
     }
@@ -361,7 +361,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if (this.points.size() != set.getPointNumber())
+        if (this.points.size() != set.pointNumber())
         	return false;
 
         Iterator<Point2D> iter = set.iterator();
@@ -391,7 +391,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if (this.points.size() != set.getPointNumber())
+        if (this.points.size() != set.pointNumber())
         	return false;
         
         Iterator<Point2D> iter = set.iterator();
@@ -405,7 +405,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     
     @Override
     public PointArray2D clone() {
-        PointArray2D set = new PointArray2D(this.getPointNumber());
+        PointArray2D set = new PointArray2D(this.pointNumber());
         for (Point2D point : this)
             set.addPoint(point.clone());
         return set;

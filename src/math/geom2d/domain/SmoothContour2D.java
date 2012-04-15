@@ -24,5 +24,5 @@ extends SmoothOrientedCurve2D, Contour2D {
     // redefines declaration of some interfaces
 
 	SmoothContour2D transform(AffineTransform2D trans);
-	SmoothContour2D getReverseCurve();
+	SmoothContour2D reverse();
 }

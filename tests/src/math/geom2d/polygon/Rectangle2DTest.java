@@ -49,15 +49,15 @@ public class Rectangle2DTest extends TestCase {
 
 	public void testGetVerticesNumber() {
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
-		assertEquals(rect.getVertexNumber(), 4);
+		assertEquals(rect.vertexNumber(), 4);
 	}
 
 	public void testGetDistance(){
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
-		assertEquals(rect.getDistance(10, 20), 0, Shape2D.ACCURACY);		
-		assertEquals(rect.getDistance(40, 20), 0, Shape2D.ACCURACY);		
-		assertEquals(rect.getDistance(40, 60), 0, Shape2D.ACCURACY);		
-		assertEquals(rect.getDistance(10, 60), 0, Shape2D.ACCURACY);		
+		assertEquals(rect.distance(10, 20), 0, Shape2D.ACCURACY);		
+		assertEquals(rect.distance(40, 20), 0, Shape2D.ACCURACY);		
+		assertEquals(rect.distance(40, 60), 0, Shape2D.ACCURACY);		
+		assertEquals(rect.distance(10, 60), 0, Shape2D.ACCURACY);		
 	}
 
 	/*

@@ -67,7 +67,7 @@ public class CheckClipPolySmoothCurve2D extends JPanel{
 		clipped.fill(g2);
 		
 		g2.setColor(Color.RED);
-		domain.clip(box).getBoundary().draw(g2);
+		domain.clip(box).boundary().draw(g2);
 	
 		// draw the boundary
 		g2.setColor(Color.BLUE);
@@ -75,7 +75,7 @@ public class CheckClipPolySmoothCurve2D extends JPanel{
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

@@ -50,14 +50,14 @@ public class CheckPolyCirculinearCurve2DGetBuffer2 extends JPanel{
 		curve.addCurve(ray1);
 		curve.addCurve(ray2);
 		
-		parallel1 = curve.getParallel(100);
-		parallel2 = curve.getParallel(-100);
+		parallel1 = curve.parallel(100);
+		parallel2 = curve.parallel(-100);
 		}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		Domain2D buffer = curve.getBuffer(100);
+		Domain2D buffer = curve.buffer(100);
 		g2.setColor(Color.CYAN);
 		buffer.clip(box).fill(g2);
 		
@@ -71,7 +71,7 @@ public class CheckPolyCirculinearCurve2DGetBuffer2 extends JPanel{
 //		parallel2.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLUE);
-		buffer.getBoundary().clip(box).draw(g2);
+		buffer.boundary().clip(box).draw(g2);
 		
 	}
 	

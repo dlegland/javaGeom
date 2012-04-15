@@ -115,31 +115,31 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
 	 */
-	public double getLength() {
+	public double length() {
 		double sum = 0;
-		for(CirculinearCurve2D curve : this.getCurves())
-			sum += curve.getLength();
+		for(CirculinearCurve2D curve : this.curves())
+			sum += curve.length();
 		return sum;
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
+	public double length(double pos) {
 		return CirculinearCurve2DUtils.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
+	public double position(double length) {
 		return CirculinearCurve2DUtils.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
@@ -147,7 +147,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
-	public CirculinearContinuousCurve2D getParallel(double d) {
+	public CirculinearContinuousCurve2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.createContinuousParallel(this, d);
 	}
@@ -177,14 +177,14 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
      * @see math.geom2d.CirculinearContinuousCurve2D#getSmoothPieces()
      */
     @Override
-	public Collection<? extends CirculinearElement2D> getSmoothPieces() {
+	public Collection<? extends CirculinearElement2D> smoothPieces() {
     	// create array for storing result
     	ArrayList<CirculinearElement2D> result = 
     		new ArrayList<CirculinearElement2D>();
     	
     	// add elements of each curve
     	for(CirculinearContinuousCurve2D curve : curves)
-    		result.addAll(curve.getSmoothPieces());
+    		result.addAll(curve.smoothPieces());
     	
     	// return the collection
         return result;
@@ -195,7 +195,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 
     @Override
     public Collection<? extends PolyCirculinearCurve2D<?>> 
-    getContinuousCurves() {
+    continuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -206,12 +206,12 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.getCurveNumber();
+        int n = set.curveNumber();
         CirculinearCurveArray2D<CirculinearContinuousCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearContinuousCurve2D)
                 result.addCurve((CirculinearContinuousCurve2D) curve);
         }
@@ -222,7 +222,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 	
 	@Override
 	public PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D> 
-	getReverseCurve() {
+	reverse() {
     	int n = curves.size();
         // create array of reversed curves
     	CirculinearContinuousCurve2D[] curves2 = 
@@ -230,7 +230,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
         
         // reverse each curve
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the reversed final curve
         return PolyCirculinearCurve2D.create(curves2, this.closed);
@@ -239,13 +239,13 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
 	
 	@Override
 	public PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D>
-	getSubCurve(double t0, double t1) {
+	subCurve(double t0, double t1) {
 		// Call the superclass method
 		PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> subcurve =
-			super.getSubCurve(t0, t1);
+			super.subCurve(t0, t1);
 		
 		// prepare result
-		int n = subcurve.getCurveNumber();
+		int n = subcurve.curveNumber();
 		PolyCirculinearCurve2D<CirculinearContinuousCurve2D> result = 
 			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(n);
 		

@@ -50,10 +50,10 @@ public class CheckFindIntersections extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 
-		parallel1 = curve.getParallel(20);
+		parallel1 = curve.parallel(20);
 		parallel1.draw(g2);
 		
-		parallel2 = curve.getParallel(-20);
+		parallel2 = curve.parallel(-20);
 //		parallel2.draw(g2);
 		
 		Collection<Point2D> points;

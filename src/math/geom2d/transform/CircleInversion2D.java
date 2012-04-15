@@ -79,8 +79,8 @@ public class CircleInversion2D implements Bijection2D {
     }
 
     public CircleInversion2D(Circle2D circle) {
-        this.center = circle.getCenter().clone();
-        this.radius = circle.getRadius();
+        this.center = circle.center().clone();
+        this.radius = circle.radius();
     }
 
     public CircleInversion2D(Point2D center, double radius) {
@@ -118,8 +118,8 @@ public class CircleInversion2D implements Bijection2D {
      */
     @Deprecated
     public void setCircle(Circle2D circle) {
-        this.center = circle.getCenter().clone();
-        this.radius = circle.getRadius();
+        this.center = circle.center().clone();
+        this.radius = circle.radius();
     }
 
     // ===================================================================
@@ -148,7 +148,7 @@ public class CircleInversion2D implements Bijection2D {
 
         } else if (shape instanceof Polygon2D) {
             // get all rings of polygon
-            Collection<? extends LinearRing2D> rings = ((Polygon2D) shape).getRings();
+            Collection<? extends LinearRing2D> rings = ((Polygon2D) shape).rings();
 
             // for each ring, create a curve formed by several circle arcs
             ArrayList<CirculinearRing2D> curves = 
@@ -169,7 +169,7 @@ public class CircleInversion2D implements Bijection2D {
     @Deprecated
     public BoundaryPolyCurve2D<CircleArc2D> transformRing(LinearRing2D ring) {    
         // get all edges of the ring
-        Collection<LineSegment2D> edges = ring.getEdges();
+        Collection<LineSegment2D> edges = ring.edges();
 
         // transform each edge into a circle arc
         ArrayList<CircleArc2D> arcs = new ArrayList<CircleArc2D>();
@@ -197,7 +197,7 @@ public class CircleInversion2D implements Bijection2D {
     	double r = radius;
         
         double d = r*r/Point2D.getDistance(pt, center);
-        double theta = Angle2D.getHorizontalAngle(center, pt);
+        double theta = Angle2D.horizontalAngle(center, pt);
         return Point2D.createPolar(center, d, theta);
     }
 

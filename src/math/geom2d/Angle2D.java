@@ -57,7 +57,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the origin and
 	 * the given point.
 	 */
-	public static double getHorizontalAngle(Point2D point) {
+	public static double horizontalAngle(Point2D point) {
 		return (Math.atan2(point.y, point.x) + M_2PI) % (M_2PI);
 	}
 
@@ -65,7 +65,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the origin and
 	 * the point with given coordinate.
 	 */
-	public static double getHorizontalAngle(double x, double y) {
+	public static double horizontalAngle(double x, double y) {
 		return (Math.atan2(y, x) + M_2PI) % (M_2PI);
 	}
 
@@ -73,7 +73,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the origin and
 	 * the point with given coordinate.
 	 */
-	public static double getHorizontalAngle(Vector2D vect) {
+	public static double horizontalAngle(Vector2D vect) {
 		return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
 	}
 
@@ -81,8 +81,8 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the two given
 	 * points.
 	 */
-	public static double getHorizontalAngle(LinearShape2D object) {
-		Vector2D vect = object.getSupportingLine().getVector();
+	public static double horizontalAngle(LinearShape2D object) {
+		Vector2D vect = object.supportingLine().direction();
 		return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
 	}
 
@@ -90,7 +90,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the two given
 	 * points.
 	 */
-	public static double getHorizontalAngle(Point2D p1,	Point2D p2) {
+	public static double horizontalAngle(Point2D p1,	Point2D p2) {
 		return (Math.atan2(p2.y - p1.y, p2.x - p1.x) + M_2PI) % (M_2PI);
 	}
 
@@ -98,7 +98,7 @@ public class Angle2D {
 	 * Returns the horizontal angle formed by the line joining the two given
 	 * points.
 	 */
-	public static double getHorizontalAngle(double x1, double y1, double x2,
+	public static double horizontalAngle(double x1, double y1, double x2,
 			double y2) {
 		return (atan2(y2 - y1, x2 - x1) + M_2PI) % (M_2PI);
 	}
@@ -116,7 +116,7 @@ public class Angle2D {
 	 *            the final point
 	 * @return the pseudo angle of line joining p1 to p2
 	 */
-	public static double getPseudoAngle(Point2D p1,	Point2D p2) {
+	public static double pseudoAngle(Point2D p1, Point2D p2) {
 		double dx = p2.x - p1.x;
 		double dy = p2.y - p1.y;
 		double s = abs(dx) + abs(dy);
@@ -133,9 +133,9 @@ public class Angle2D {
 	 * Gets angle between two (directed) straight objects. Result is given in
 	 * radians, between 0 and 2*PI.
 	 */
-	public static double getAngle(LinearShape2D obj1, LinearShape2D obj2) {
-		double angle1 = obj1.getHorizontalAngle();
-		double angle2 = obj2.getHorizontalAngle();
+	public static double angle(LinearShape2D obj1, LinearShape2D obj2) {
+		double angle1 = obj1.horizontalAngle();
+		double angle2 = obj2.horizontalAngle();
 		return (angle2 - angle1 + M_2PI) % (M_2PI);
 	}
 
@@ -143,9 +143,9 @@ public class Angle2D {
 	 * Gets angle between two vectors. Result is given in radians, between 0 and
 	 * 2*PI.
 	 */
-	public static double getAngle(Vector2D vect1, Vector2D vect2) {
-		double angle1 = getHorizontalAngle(vect1);
-		double angle2 = getHorizontalAngle(vect2);
+	public static double angle(Vector2D vect1, Vector2D vect2) {
+		double angle1 = horizontalAngle(vect1);
+		double angle2 = horizontalAngle(vect2);
 		return (angle2 - angle1 + M_2PI) % (M_2PI);
 	}
 
@@ -153,9 +153,9 @@ public class Angle2D {
 	 * Gets the angle between the ray formed by (p2, p1) and the ray formed by
 	 * (p2, p3). Result is given in radians, between 0 and 2*PI.
 	 */
-	public static double getAngle(Point2D p1, Point2D p2, Point2D p3) {
-		double angle1 = getHorizontalAngle(p2, p1);
-		double angle2 = getHorizontalAngle(p2, p3);
+	public static double angle(Point2D p1, Point2D p2, Point2D p3) {
+		double angle1 = horizontalAngle(p2, p1);
+		double angle2 = horizontalAngle(p2, p3);
 		return (angle2 - angle1 + M_2PI) % (M_2PI);
 	}
 
@@ -164,10 +164,10 @@ public class Angle2D {
 	 * (p2, p3), where pi = (xi,yi), i=1,2,3. Result is given in radians,
 	 * between 0 and 2*PI.
 	 */
-	public static double getAngle(double x1, double y1, double x2, double y2,
+	public static double angle(double x1, double y1, double x2, double y2,
 			double x3, double y3) {
-		double angle1 = getHorizontalAngle(x2, y2, x1, y1);
-		double angle2 = getHorizontalAngle(x2, y2, x3, y3);
+		double angle1 = horizontalAngle(x2, y2, x1, y1);
+		double angle2 = horizontalAngle(x2, y2, x3, y3);
 		return (angle2 - angle1 + M_2PI) % (M_2PI);
 	}
 
@@ -175,9 +175,9 @@ public class Angle2D {
 	 * Gets the absolute angle between the ray formed by (p2, p1) and the ray
 	 * formed by (p2, p3). Result is given in radians, between 0 and PI.
 	 */
-	public static double getAbsoluteAngle(Point2D p1, Point2D p2, Point2D p3) {
-		double angle1 = getHorizontalAngle(new Vector2D(p2, p1));
-		double angle2 = getHorizontalAngle(new Vector2D(p2, p3));
+	public static double absoluteAngle(Point2D p1, Point2D p2, Point2D p3) {
+		double angle1 = horizontalAngle(new Vector2D(p2, p1));
+		double angle2 = horizontalAngle(new Vector2D(p2, p3));
 		angle1 = (angle2 - angle1 + M_2PI) % (M_2PI);
 		if (angle1 < Math.PI)
 			return angle1;
@@ -190,10 +190,10 @@ public class Angle2D {
 	 * formed by (p2, p3), where pi = (xi,yi), i=1,2,3. Result is given in
 	 * radians, between 0 and PI.
 	 */
-	public static double getAbsoluteAngle(double x1, double y1, double x2,
+	public static double absoluteAngle(double x1, double y1, double x2,
 			double y2, double x3, double y3) {
-		double angle1 = getHorizontalAngle(x2, y2, x1, y1);
-		double angle2 = getHorizontalAngle(x2, y2, x3, y3);
+		double angle1 = horizontalAngle(x2, y2, x1, y1);
+		double angle2 = horizontalAngle(x2, y2, x3, y3);
 		angle1 = (angle2 - angle1 + M_2PI) % (M_2PI);
 		if (angle1 < Math.PI)
 			return angle1;

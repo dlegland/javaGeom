@@ -81,7 +81,7 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// Hyperbola centered and reduced
 		hyperbola = new Hyperbola2D(origin, a1, b1, 0);
-		double[] coefs = hyperbola.getConicCoefficients();
+		double[] coefs = hyperbola.conicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], -1, 1e-14);
@@ -90,13 +90,13 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[5], -1, 1e-14);
 		
 		conic = Conic2DUtils.reduceConic(coefs);
-		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 		
 		// Hyperbola reduced but not located at origin
 		hyperbola = new Hyperbola2D(center, a1, b1, 0);
-		coefs = hyperbola.getConicCoefficients();
+		coefs = hyperbola.conicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], -1, 1e-14);
@@ -105,7 +105,7 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[5], -501, 1e-14);
 		
 		conic = Conic2DUtils.reduceConic(coefs);
-		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
 		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
@@ -113,18 +113,18 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// hyperbola not reduced, not at origin, but oriented east-west
 		hyperbola = new Hyperbola2D(center, a2, b2, 0);
-		coefs = hyperbola.getConicCoefficients();
+		coefs = hyperbola.conicCoefficients();
 		conic = Conic2DUtils.reduceConic(coefs);
-		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
 		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
 		
 		// hyperbola centered, scaled, rotated
 		hyperbola = new Hyperbola2D(center, a2, b2, theta);
-		coefs = hyperbola.getConicCoefficients();
+		coefs = hyperbola.conicCoefficients();
 		conic = Conic2DUtils.reduceConic(coefs);
-		assertTrue(conic.getConicType()==Conic2D.Type.HYPERBOLA);
+		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
 		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
@@ -136,12 +136,12 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// test number of intersections
 		CurveSet2D<?> clipped = hyperbola.clip(box);
-		assertTrue(clipped.getCurveNumber()==2);
+		assertTrue(clipped.curveNumber()==2);
 		
 		// test class of curve portions
-		Curve2D curve1 = clipped.getFirstCurve();
+		Curve2D curve1 = clipped.firstCurve();
 		assertTrue(curve1 instanceof HyperbolaBranchArc2D);
-		Curve2D curve2 = clipped.getLastCurve();
+		Curve2D curve2 = clipped.lastCurve();
 		assertTrue(curve2 instanceof HyperbolaBranchArc2D);
 		
 		// extract curve arcs
@@ -159,12 +159,12 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// test number of intersections
 		clipped = hyperbola.clip(box);
-		assertTrue(clipped.getCurveNumber()==2);
+		assertTrue(clipped.curveNumber()==2);
 		
 		// test class of curve portions
-		curve1 = clipped.getFirstCurve();
+		curve1 = clipped.firstCurve();
 		assertTrue(curve1 instanceof HyperbolaBranchArc2D);
-		curve2 = clipped.getLastCurve();
+		curve2 = clipped.lastCurve();
 		assertTrue(curve2 instanceof HyperbolaBranchArc2D);
 		
 		// extract curve arcs

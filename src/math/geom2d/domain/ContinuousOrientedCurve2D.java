@@ -40,9 +40,9 @@ import math.geom2d.curve.CurveSet2D;
 public interface ContinuousOrientedCurve2D extends ContinuousCurve2D,
         OrientedCurve2D {
 
-    public abstract ContinuousOrientedCurve2D getReverseCurve();
+    public abstract ContinuousOrientedCurve2D reverse();
 
-    public abstract ContinuousOrientedCurve2D getSubCurve(double t0, double t1);
+    public abstract ContinuousOrientedCurve2D subCurve(double t0, double t1);
 
     public abstract ContinuousOrientedCurve2D transform(AffineTransform2D trans);
 

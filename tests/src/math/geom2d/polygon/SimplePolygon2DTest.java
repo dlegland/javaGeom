@@ -69,7 +69,7 @@ public class SimplePolygon2DTest extends TestCase {
 		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		SimplePolygon2D poly2 = poly.complement();
-		assertEquals(poly2.getSignedArea(), -poly.getSignedArea());
+		assertEquals(poly2.areaSigned(), -poly.areaSigned());
 	}
 	
 	public void testTransform_Inversion(){
@@ -109,7 +109,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(poly2.isBounded());
 		
 		Point2D centro2 = new Point2D(-15, 15);
-		double dist = centro2.getDistance(poly2.getCentroid());
+		double dist = centro2.distance(poly2.centroid());
 		
 		assertTrue(dist < Shape2D.ACCURACY);
 	}
@@ -134,7 +134,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertFalse(poly2.isBounded());
 		
 		Point2D centro2 = new Point2D(-15, 15);
-		double dist = centro2.getDistance(poly2.getCentroid());
+		double dist = centro2.distance(poly2.centroid());
 		
 		assertTrue(dist < Shape2D.ACCURACY);
 	}
@@ -159,7 +159,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(poly2.isBounded());
 		
 		Point2D centro2 = new Point2D(-15, 15);
-		double dist = centro2.getDistance(poly2.getCentroid());
+		double dist = centro2.distance(poly2.centroid());
 		
 		assertTrue(dist < Shape2D.ACCURACY);
 	}
@@ -185,7 +185,7 @@ public class SimplePolygon2DTest extends TestCase {
 		assertFalse(poly2.isBounded());
 		
 		Point2D centro2 = new Point2D(-15, 15);
-		double dist = centro2.getDistance(poly2.getCentroid());
+		double dist = centro2.distance(poly2.centroid());
 		
 		assertTrue(dist < Shape2D.ACCURACY);
 	}
@@ -282,7 +282,7 @@ public class SimplePolygon2DTest extends TestCase {
 		SimplePolygon2D poly = new SimplePolygon2D(points);
 
 		Point2D centro = new Point2D(30, 40);
-		assertTrue(centro.equals(poly.getCentroid()));
+		assertTrue(centro.equals(poly.centroid()));
 		
 		
 		// a cross centered around (15, 15), in reverse order
@@ -300,7 +300,7 @@ public class SimplePolygon2DTest extends TestCase {
 				new Point2D(20, 10),
 				new Point2D(20, 0)});
 		centro = new Point2D(15, 15);
-		assertTrue(centro.equals(poly.getCentroid()));
+		assertTrue(centro.equals(poly.centroid()));
 	}
 	
 	public void testGetBoundingBox(){
@@ -314,7 +314,7 @@ public class SimplePolygon2DTest extends TestCase {
 		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		Box2D box = new Box2D(20, 80, 10, 70);
-		Box2D bounds = poly.getBoundingBox();
+		Box2D bounds = poly.boundingBox();
 		assertTrue(box.equals(bounds));
 	}
     
@@ -326,12 +326,12 @@ public class SimplePolygon2DTest extends TestCase {
                 new Point2D(100, 150)
         });
     	
-    	CirculinearDomain2D buffer = polygon.getBuffer(10);
-    	Boundary2D boundary = buffer.getBoundary();
-    	assertEquals(1, boundary.getContinuousCurves().size());
+    	CirculinearDomain2D buffer = polygon.buffer(10);
+    	Boundary2D boundary = buffer.boundary();
+    	assertEquals(1, boundary.continuousCurves().size());
     	
-    	Contour2D contour = boundary.getContinuousCurves().iterator().next();
-    	assertEquals(8, contour.getSmoothPieces().size());
+    	Contour2D contour = boundary.continuousCurves().iterator().next();
+    	assertEquals(8, contour.smoothPieces().size());
     }
 	
     public void testGetBuffer_MutipleVertices() {
@@ -343,9 +343,9 @@ public class SimplePolygon2DTest extends TestCase {
                 new Point2D(100, 150)
         });
     	
-    	CirculinearDomain2D buffer = polygon.getBuffer(10);
-    	Boundary2D boundary = buffer.getBoundary();
-    	assertEquals(1, boundary.getContinuousCurves().size());
+    	CirculinearDomain2D buffer = polygon.buffer(10);
+    	Boundary2D boundary = buffer.boundary();
+    	assertEquals(1, boundary.continuousCurves().size());
     }
 	
     public void testClipBox2D_inside() {
@@ -357,7 +357,7 @@ public class SimplePolygon2DTest extends TestCase {
         });
     	Box2D box = new Box2D(0, 500, 0, 500);
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(1, clipped.getRings().size());
+    	assertEquals(1, clipped.rings().size());
     }
     
     public void testClipBox2D_intersect() {
@@ -369,7 +369,7 @@ public class SimplePolygon2DTest extends TestCase {
         });
     	Box2D box = new Box2D(0, 200, 0, 200);
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(1, clipped.getRings().size());
+    	assertEquals(1, clipped.rings().size());
     }
     
     public void testClipBox2D_intersectMulti() {
@@ -387,7 +387,7 @@ public class SimplePolygon2DTest extends TestCase {
     	Box2D box = new Box2D(100, 200, 100, 200);
     	
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(2, clipped.getRings().size());
+    	assertEquals(2, clipped.rings().size());
     }
     
     public void testClipBox2D_CWPolygon() {
@@ -400,8 +400,8 @@ public class SimplePolygon2DTest extends TestCase {
     	
     	Polygon2D comp = polygon.clip(box);
     	
-    	Boundary2D boundary = comp.getBoundary();
-    	assertEquals(2, boundary.getContinuousCurves().size());
+    	Boundary2D boundary = comp.boundary();
+    	assertEquals(2, boundary.continuousCurves().size());
     }
     
     public void testGetSignedDistance_CWPolygon() {
@@ -412,7 +412,7 @@ public class SimplePolygon2DTest extends TestCase {
                 new Point2D(-4, 4) });
     	Point2D p0 = new Point2D(6, 4);
     	
-    	double dist = polygon.getSignedDistance(p0);
+    	double dist = polygon.distanceSigned(p0);
     	
     	assertEquals(-2, dist, Shape2D.ACCURACY);
     }

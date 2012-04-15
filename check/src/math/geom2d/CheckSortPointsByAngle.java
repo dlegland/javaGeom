@@ -54,8 +54,8 @@ public class CheckSortPointsByAngle extends JPanel{
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Point2D point1, Point2D point2) {
-            double angle1 = Angle2D.getHorizontalAngle(basePoint, point1);
-            double angle2 = Angle2D.getHorizontalAngle(basePoint, point2);
+            double angle1 = Angle2D.horizontalAngle(basePoint, point1);
+            double angle2 = Angle2D.horizontalAngle(basePoint, point2);
             
             if(angle1<angle2) return -1;
             if(angle1>angle2) return +1;

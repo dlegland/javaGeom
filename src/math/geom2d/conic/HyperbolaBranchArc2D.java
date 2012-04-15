@@ -57,27 +57,27 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods inherited from SmoothCurve2D interface
 
-    public double getCurvature(double t) {
-        return branch.getCurvature(t);
+    public double curvature(double t) {
+        return branch.curvature(t);
     }
 
-    public Vector2D getTangent(double t) {
-        return branch.getTangent(t);
+    public Vector2D tangent(double t) {
+        return branch.tangent(t);
     }
 
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double getSignedDistance(Point2D point) {
-        return this.getSignedDistance(point.getX(), point.getY());
+    public double distanceSigned(Point2D point) {
+        return this.distanceSigned(point.getX(), point.getY());
     }
 
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         // TODO Auto-generated method stub
         return 0;
     }
 
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -91,7 +91,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods inherited from ContinuousCurve2D interface
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        return this.getAsPolyline(60).appendPath(path);
+        return this.asPolyline(60).appendPath(path);
     }
 
     /** Returns false. */
@@ -102,8 +102,8 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods inherited from Curve2D interface
 
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
-		Collection<Point2D> inters0 = this.branch.getIntersections(line);
+    public Collection<Point2D> intersections(LinearShape2D line) {
+		Collection<Point2D> inters0 = this.branch.intersections(line);
 		ArrayList<Point2D> inters = new ArrayList<Point2D>();
 		for (Point2D point : inters0) {
 			double pos = this.branch.project(point);
@@ -117,17 +117,17 @@ implements SmoothOrientedCurve2D, Cloneable {
     /**
      * If t0 equals minus infinity, throws an UnboundedShapeException.
      */
-   public Point2D getPoint(double t) {
+   public Point2D point(double t) {
        if(Double.isInfinite(t))
            throw new UnboundedShape2DException(this);
         t = min(max(t, t0), t1);
-        return branch.getPoint(t);
+        return branch.point(t);
     }
 
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
         if (!this.branch.contains(point))
 			return Double.NaN;
-		double t = this.branch.getPosition(point);
+		double t = this.branch.position(point);
 		if (t - t0 < -ACCURACY)
 			return Double.NaN;
 		if (t1 - t < ACCURACY)
@@ -140,7 +140,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         return min(max(t, t0), t1);
     }
 
-    public HyperbolaBranchArc2D getReverseCurve() {
+    public HyperbolaBranchArc2D reverse() {
         Hyperbola2D hyper = branch.hyperbola;
         Hyperbola2D hyper2 = new Hyperbola2D(hyper.xc, hyper.yc, hyper.a,
                 hyper.b, hyper.theta, !hyper.direct);
@@ -153,7 +153,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * and with new parameterization bounds. The new bounds are constrained to
      * belong to the old bounds interval. If t1<t0, returns null.
      */
-    public HyperbolaBranchArc2D getSubCurve(double t0, double t1) {
+    public HyperbolaBranchArc2D subCurve(double t0, double t1) {
 		if (t1 < t0)
             return null;
         t0 = max(this.t0, t0);
@@ -172,10 +172,10 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods inherited from Shape2D interface
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
-        return this.getAsPolyline(100).getBoundingBox();
+        return this.asPolyline(100).boundingBox();
     }
 
     /**
@@ -190,24 +190,24 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<HyperbolaBranchArc2D> result = 
-        	new CurveArray2D<HyperbolaBranchArc2D>(set.getCurveNumber());
+        	new CurveArray2D<HyperbolaBranchArc2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof HyperbolaBranchArc2D)
                 result.addCurve((HyperbolaBranchArc2D) curve);
         }
         return result;
     }
 
-    public double getDistance(Point2D point) {
-        Point2D p = getPoint(project(new Point2D(point)));
-        return p.getDistance(point);
+    public double distance(Point2D point) {
+        Point2D p = point(project(new Point2D(point)));
+        return p.distance(point);
     }
 
-    public double getDistance(double x, double y) {
-        Point2D p = getPoint(project(new Point2D(x, y)));
-        return p.getDistance(x, y);
+    public double distance(double x, double y) {
+        Point2D p = point(project(new Point2D(x, y)));
+        return p.distance(x, y);
     }
 
     public boolean isBounded() {
@@ -228,13 +228,13 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Compute position of end points on the transformed parabola
         double startPos = Double.isInfinite(t0) ? Double.NEGATIVE_INFINITY
-                : branch2.project(this.getFirstPoint().transform(trans));
+                : branch2.project(this.firstPoint().transform(trans));
         double endPos = Double.isInfinite(t1) ? Double.POSITIVE_INFINITY
-                : branch2.project(this.getLastPoint().transform(trans));
+                : branch2.project(this.lastPoint().transform(trans));
 
         // Compute the new arc
 		if (startPos > endPos) {
-        	return new HyperbolaBranchArc2D(branch2.getReverseCurve(), 
+        	return new HyperbolaBranchArc2D(branch2.reverse(), 
         			endPos, startPos);
         } else {
         	return new HyperbolaBranchArc2D(branch2, startPos, endPos);
@@ -248,7 +248,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     public boolean contains(double x, double y) {
 		if (!branch.contains(x, y))
 			return false;
-		double t = branch.getPosition(new Point2D(x, y));
+		double t = branch.position(new Point2D(x, y));
 		if (t < t0)
 			return false;
 		if (t > t1)
@@ -259,7 +259,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     public java.awt.geom.GeneralPath getGeneralPath() {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
-        return this.getAsPolyline(100).getGeneralPath();
+        return this.asPolyline(100).asGeneralPath();
     }
 
     

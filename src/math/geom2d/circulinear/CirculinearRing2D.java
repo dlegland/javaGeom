@@ -17,6 +17,6 @@ package math.geom2d.circulinear;
  */
 public interface CirculinearRing2D extends CirculinearContour2D {
 
-	public CirculinearRing2D getParallel(double d);
-	public CirculinearRing2D getReverseCurve();
+	public CirculinearRing2D parallel(double d);
+	public CirculinearRing2D reverse();
 }

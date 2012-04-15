@@ -89,7 +89,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // methods inherited from interface Polygon2D
 
 
-    public Collection<Point2D> getVertices() {
+    public Collection<Point2D> vertices() {
         ArrayList<Point2D> points = new ArrayList<Point2D>(4);
         points.add(new Point2D(x, y));
         points.add(new Point2D(x+width, y));
@@ -103,7 +103,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * 
      * @param i index of the vertex, between 0 and 3
      */
-    public Point2D getVertex(int i) {
+    public Point2D vertex(int i) {
         switch (i) {
         case 0:
             return new Point2D(x, y);
@@ -123,11 +123,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * 
      * @since 0.6.3
      */
-    public int getVertexNumber() {
+    public int vertexNumber() {
         return 4;
     }
 
-    public Collection<LineSegment2D> getEdges() {
+    public Collection<LineSegment2D> edges() {
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(4);
         edges.add(new LineSegment2D(x, y, x+width, y));
         edges.add(new LineSegment2D(x+width, y, x+width, y+height));
@@ -136,16 +136,16 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return edges;
     }
 
-    public int getEdgeNumber() {
+    public int edgeNumber() {
         return 4;
     }
 
     /* (non-Javadoc)
      * @see math.geom2d.polygon.Polygon2D#getRings()
      */
-    public Collection<LinearRing2D> getRings() {
+    public Collection<LinearRing2D> rings() {
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(this.getVertices()));
+        rings.add(new LinearRing2D(this.vertices()));
         return rings;
     }
 
@@ -155,8 +155,8 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * signed area.
      * @since 0.9.1
      */
-    public double getArea() {
-        return Math.abs(this.getSignedArea());
+    public double area() {
+        return Math.abs(this.areaSigned());
     }
 
     /**
@@ -164,7 +164,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double getSignedArea() {
+    public double areaSigned() {
     	return Polygon2DUtils.computeSignedArea(this);
     }
 
@@ -173,7 +173,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * @return the centroid of the polygon
      * @since 0.9.1
      */
-    public Point2D getCentroid() {
+    public Point2D centroid() {
     	return Polygon2DUtils.computeCentroid(this);
     }
     
@@ -186,15 +186,15 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 	 */
 	public CirculinearDomain2D transform(CircleInversion2D inv) {
 		return new GenericCirculinearDomain2D(
-				this.getBoundary().transform(inv));
+				this.boundary().transform(inv));
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		return bc.computeBuffer(this.getBoundary(), dist);
+		return bc.computeBuffer(this.boundary(), dist);
 	}
 
     // ===================================================================
@@ -203,11 +203,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
+	public Polygon2D asPolygon(int n) {
 		return this;
 	}
 
-    public CirculinearContourArray2D<LinearRing2D> getBoundary() {
+    public CirculinearContourArray2D<LinearRing2D> boundary() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
         pts[1] = new Point2D(width+x, y);
@@ -229,11 +229,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // ===================================================================
     // methods overriding the Shape2D interface
 
-    public double getDistance(Point2D p) {
+    public double distance(Point2D p) {
     	return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
     }
 
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         return Math.max(getSignedDistance(x, y), 0);
     }
 
@@ -244,7 +244,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * equals to the distance to the border of the shape.
      */
     private double getSignedDistance(double x, double y) {
-        double dist = getBoundary().getDistance(x, y);
+        double dist = boundary().distance(x, y);
         if (contains(x, y))
             return -dist;
         else
@@ -272,7 +272,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return true;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         return new Box2D(this.getMinX(), this.getMaxX(), this.getMinY(), this
                 .getMaxY());
     }
@@ -284,7 +284,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         int nPoints = 4;
         Point2D[] array = new Point2D[nPoints];
         Point2D[] res = new Point2D[nPoints];
-        Iterator<Point2D> iter = this.getVertices().iterator();
+        Iterator<Point2D> iter = this.vertices().iterator();
         for (int i = 0; i<nPoints; i++) {
             array[i] = iter.next();
             res[i] = new Point2D();
@@ -295,11 +295,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     }
 
     public void draw(Graphics2D g2) {
-        g2.draw(this.getBoundary().getGeneralPath());
+        g2.draw(this.boundary().getGeneralPath());
     }
 
     public void fill(Graphics2D g2) {
-        g2.fill(this.getBoundary().getGeneralPath());
+        g2.fill(this.boundary().getGeneralPath());
     }
 
 
@@ -321,11 +321,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 
         // check all 4 corners of the first rectangle
         boolean ok;
-        for (Point2D point : this.getVertices()) {
+        for (Point2D point : this.vertices()) {
             ok = false;
 
             // compare with all 4 corners of second rectangle
-            for (Point2D point2 : rect.getVertices())
+            for (Point2D point2 : rect.vertices())
                 if (point.almostEquals(point2, eps))
                     ok = true;
 
@@ -358,11 +358,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 
         // check all 4 corners of the first rectangle
         boolean ok;
-        for (Point2D point : this.getVertices()) {
+        for (Point2D point : this.vertices()) {
             ok = false;
 
             // compare with all 4 corners of second rectangle
-            for (Point2D point2 : rect.getVertices())
+            for (Point2D point2 : rect.vertices())
                 if (point.equals(point2))
                     ok = true;
 

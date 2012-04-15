@@ -70,8 +70,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
 		
-		CirculinearContinuousCurve2D parallel =	ring.getParallel(20);
-		assertEquals(8, parallel.getSmoothPieces().size());
+		CirculinearContinuousCurve2D parallel =	ring.parallel(20);
+		assertEquals(8, parallel.smoothPieces().size());
 		assertTrue(parallel.isClosed());
 	}
 	
@@ -84,8 +84,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 200),
 				new Point2D(100, 100) });
 		
-		CirculinearContinuousCurve2D parallel =	ring.getParallel(-20);
-		assertEquals(8, parallel.getSmoothPieces().size());
+		CirculinearContinuousCurve2D parallel =	ring.parallel(-20);
+		assertEquals(8, parallel.smoothPieces().size());
 		assertTrue(parallel.isClosed());
 	}
 	
@@ -98,18 +98,18 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(0, 10) });
 		
 		// one loop makes two boundaries
-		Domain2D buffer = line.getBuffer(3);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(boundary.getContinuousCurves().size(), 2);
+		Domain2D buffer = line.buffer(3);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(boundary.continuousCurves().size(), 2);
 		
 		// one loop makes two boundaries
-		buffer = line.getBuffer(6);
-		boundary = buffer.getBoundary();
-		assertEquals(boundary.getContinuousCurves().size(), 1);
+		buffer = line.buffer(6);
+		boundary = buffer.boundary();
+		assertEquals(boundary.continuousCurves().size(), 1);
 		
 		// 8 parts: 4 circle arcs, and 4 line segments
 		Collection<? extends SmoothCurve2D> smoothCurves =
-			boundary.getContinuousCurves().iterator().next().getSmoothPieces();
+			boundary.continuousCurves().iterator().next().smoothPieces();
 		assertEquals(smoothCurves.size(), 8);
 	}
 	
@@ -122,12 +122,12 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 300) });
 		double dist = 51;
 		
-		Domain2D buffer = ring.getBuffer(dist);
-		Boundary2D boundary = buffer.getBoundary();
+		Domain2D buffer = ring.buffer(dist);
+		Boundary2D boundary = buffer.boundary();
 		
 		// should have 1 outer and 2 inner boundaries
 		// Fails for the moment
-		assertEquals(3, boundary.getContinuousCurves().size());
+		assertEquals(3, boundary.continuousCurves().size());
 	}
 	
 	public void testGetBuffer_SelfIntersect() {
@@ -141,9 +141,9 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(100, 0) });
 		
 		// should be 3 parts for boundary
-		Domain2D buffer = line.getBuffer(30);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(boundary.getContinuousCurves().size(), 3);
+		Domain2D buffer = line.buffer(30);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(boundary.continuousCurves().size(), 3);
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public class LinearRing2DTest extends TestCase {
 		
 		assertFalse(buffer==null);
 		assertFalse(buffer.isEmpty());
-		assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
+		assertEquals(2, buffer.boundary().continuousCurves().size());
 	}
 
 	public void testGetLength() {
@@ -174,7 +174,7 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(0, 10) });
 		
 		// length is 4*10=40
-		assertEquals(line.getLength(), 40, Shape2D.ACCURACY);
+		assertEquals(line.length(), 40, Shape2D.ACCURACY);
 	}
 
 	public void testAddVertex() {
@@ -185,7 +185,7 @@ public class LinearRing2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		LinearRing2D line = new LinearRing2D(points);
 		line.addVertex(new Point2D(30, 20));
-		assertEquals(line.getVertexNumber(), points.length+1);		
+		assertEquals(line.vertexNumber(), points.length+1);		
 	}
 
 	public void testGetPoint() {
@@ -201,25 +201,25 @@ public class LinearRing2DTest extends TestCase {
 
 		// find the first point
 		Point2D p00 = new Point2D(0, 0);
-		assertTrue(p00.equals(line1.getPoint(-.5)));
-		assertTrue(p00.equals(line1.getPoint(0)));
+		assertTrue(p00.equals(line1.point(-.5)));
+		assertTrue(p00.equals(line1.point(0)));
 		
 		// find intermediate points
 		Point2D p05 = new Point2D(5, 0);
-		assertTrue(p05.equals(line1.getPoint(.5)));		
+		assertTrue(p05.equals(line1.point(.5)));		
 		Point2D p15 = new Point2D(10, 5);
-		assertTrue(p15.equals(line1.getPoint(1.5)));		
+		assertTrue(p15.equals(line1.point(1.5)));		
 		Point2D p25 = new Point2D(15, 15);
-		assertTrue(p25.equals(line1.getPoint(2.5)));
+		assertTrue(p25.equals(line1.point(2.5)));
 		Point2D p30 = new Point2D(20, 20);
-		assertTrue(p30.equals(line1.getPoint(3)));
+		assertTrue(p30.equals(line1.point(3)));
 		Point2D p35 = new Point2D(10, 10);
-		assertTrue(p35.equals(line1.getPoint(3.5)));
+		assertTrue(p35.equals(line1.point(3.5)));
 		
 		// find the last point
 		Point2D p40 = new Point2D(0, 0);
-		assertTrue(p40.equals(line1.getPoint(4)));
-		assertTrue(p40.equals(line1.getPoint(4.1)));
+		assertTrue(p40.equals(line1.point(4)));
+		assertTrue(p40.equals(line1.point(4.1)));
 	}
 
 	public void testgetIntersections() {
@@ -236,13 +236,13 @@ public class LinearRing2DTest extends TestCase {
 		StraightLine2D line = new StraightLine2D(0, 0, 1, 0);
 		StraightLine2D edge = new StraightLine2D(0, 0, 20, 0);
 		
-		Collection<Point2D> inters1 = poly.getIntersections(line);
+		Collection<Point2D> inters1 = poly.intersections(line);
 		assertTrue(inters1.size()==2);
 		Iterator<Point2D> iter1 = inters1.iterator();
 		assertTrue(iter1.next().equals(new Point2D(5, 0)));
 		assertTrue(iter1.next().equals(new Point2D(15, 0)));
 		
-		Collection<Point2D> inters2 = poly.getIntersections(edge);
+		Collection<Point2D> inters2 = poly.intersections(edge);
 		assertTrue(inters2.size()==2);
 		Iterator<Point2D> iter2 = inters2.iterator();
 		assertTrue(iter2.next().equals(new Point2D(5, 0)));
@@ -261,7 +261,7 @@ public class LinearRing2DTest extends TestCase {
 		LinearRing2D line1 = new LinearRing2D(points);
 		
 		// Check with a polyline whith t1<t2
-		Polyline2D sub = line1.getSubCurve(.5, 2.5);
+		Polyline2D sub = line1.subCurve(.5, 2.5);
 		Polyline2D line2 = new Polyline2D(new Point2D[]{
 				new Point2D(5, 0), 		
 				new Point2D(10, 0), 
@@ -271,7 +271,7 @@ public class LinearRing2DTest extends TestCase {
 		
 		
 		// Check with a polyline whith t1>t2
-		sub = line1.getSubCurve(3.5, .5);
+		sub = line1.subCurve(3.5, .5);
 		line2 = new Polyline2D(new Point2D[]{
 				new Point2D(0, 5), 
 				new Point2D(0, 0), 
@@ -295,8 +295,8 @@ public class LinearRing2DTest extends TestCase {
 		});
 		
 		CurveSet2D<? extends Polyline2D> clipped = polyline1.clip(box);
-		assertTrue(clipped.getCurveNumber()==1);
-		assertTrue(clipped.getFirstCurve().equals(line1));
+		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.firstCurve().equals(line1));
 		
 		
 		// Oblic polyline, cutting the box in two points
@@ -314,8 +314,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(30, -10) });
 		clipped = polyline1.clip(box);
 		
-		assertTrue(clipped.getCurveNumber()==1);
-		assertTrue(clipped.getFirstCurve().equals(line1));
+		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.firstCurve().equals(line1));
 	}
 
 	public void testClipBox2D_TouchesAtCorners(){
@@ -328,7 +328,7 @@ public class LinearRing2DTest extends TestCase {
 		Box2D box = new Box2D(0, 10, 0, 10);
 		
 		CurveSet2D<?> clipped = polyline.clip(box);
-		assertEquals(1, clipped.getCurveNumber());
+		assertEquals(1, clipped.curveNumber());
 	}
 
 	public void testGetSignedArea(){
@@ -338,8 +338,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(10, 20),
 				new Point2D(10, 10)
 		});
-		assertEquals(polyline.getSignedArea(), 100, 1e-10);
-		assertEquals(polyline.getArea(), 100, 1e-10);
+		assertEquals(polyline.areaSigned(), 100, 1e-10);
+		assertEquals(polyline.area(), 100, 1e-10);
 
 		LinearRing2D invert = new LinearRing2D(new Point2D[]{
 				new Point2D(20, 10),
@@ -347,8 +347,8 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(10, 20),
 				new Point2D(20, 20)
 		});
-		assertEquals(invert.getSignedArea(), -100, 1e-10);
-		assertEquals(invert.getArea(), 100, 1e-10);
+		assertEquals(invert.areaSigned(), -100, 1e-10);
+		assertEquals(invert.area(), 100, 1e-10);
 	}
 	
     public void testGetSignedDistance_CW() {
@@ -359,7 +359,7 @@ public class LinearRing2DTest extends TestCase {
                 new Point2D(-4, 4) });
     	Point2D p0 = new Point2D(6, 4);
     	
-    	double dist = ring.getSignedDistance(p0);
+    	double dist = ring.distanceSigned(p0);
     	
     	assertEquals(-2, dist, Shape2D.ACCURACY);
     }

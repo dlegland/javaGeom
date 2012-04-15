@@ -69,26 +69,26 @@ public class Plane3D implements Shape3D {
     // ===================================================================
     // methods specific to Plane3D
 
-    public Point3D getOrigin() {
+    public Point3D origin() {
         return new Point3D(x0, y0, z0);
     }
 
-    public Vector3D getVector1() {
+    public Vector3D vector1() {
         return new Vector3D(dx1, dy1, dz1);
     }
 
-    public Vector3D getVector2() {
+    public Vector3D vector2() {
         return new Vector3D(dx2, dy2, dz2);
     }
 
     /**
-     * Points towars the outside part of the plane.
+     * Returns a normal vector that points towards the outside part of the plane.
      * 
      * @return the outer normal vector.
      */
-    public Vector3D getNormalVector() {
-        return Vector3D.crossProduct(this.getVector1(), this.getVector2())
-                .getOpposite();
+    public Vector3D normal() {
+        return Vector3D.crossProduct(this.vector1(), this.vector2())
+                .opposite();
     }
 
     /**
@@ -99,24 +99,24 @@ public class Plane3D implements Shape3D {
      * @param line the line which intersects the plane
      * @return the intersection point
      */
-    public Point3D getLineIntersection(StraightLine3D line) {
+    public Point3D lineIntersection(StraightLine3D line) {
         // the plane normal
-        Vector3D n = this.getNormalVector();
+        Vector3D n = this.normal();
 
         // the difference between origin of plane and origin of line
-        Vector3D dp = new Vector3D(line.getOrigin(), this.getOrigin());
+        Vector3D dp = new Vector3D(line.origin(), this.origin());
 
         // compute ratio of dot products,
         // see http://local.wasp.uwa.edu.au/~pbourke/geometry/planeline/
         double t = Vector3D.dotProduct(n, dp)
-                /Vector3D.dotProduct(n, line.getDirection());
+                /Vector3D.dotProduct(n, line.direction());
 
-        return line.getPoint(t);
+        return line.point(t);
     }
 
     public Point3D projectPoint(Point3D point) {
-        StraightLine3D line = new StraightLine3D(point, this.getNormalVector());
-        return this.getLineIntersection(line);
+        StraightLine3D line = new StraightLine3D(point, this.normal());
+        return this.lineIntersection(line);
     }
 
     public Vector3D projectVector(Vector3D vect) {
@@ -126,11 +126,11 @@ public class Plane3D implements Shape3D {
         return new Vector3D(point.getX()-x0, point.getY()-y0, point.getZ()-z0);
     }
 
-    public Point3D getPoint(double u, double v) {
+    public Point3D point(double u, double v) {
         return new Point3D(x0+u*dx1+v*dx2, y0+u*dy1+v*dy2, z0+u*dz1+v*dz2);
     }
 
-    public Point2D getPointPosition(Point3D point) {
+    public Point2D pointPosition(Point3D point) {
         point = this.projectPoint(point);
         // TODO: complete it
         return null;
@@ -156,7 +156,7 @@ public class Plane3D implements Shape3D {
      */
     public boolean contains(Point3D point) {
         Point3D proj = this.projectPoint(point);
-        return (point.getDistance(proj)<Shape3D.ACCURACY);
+        return (point.distance(proj)<Shape3D.ACCURACY);
     }
 
     /*
@@ -164,7 +164,7 @@ public class Plane3D implements Shape3D {
      * 
      * @see math.geom3d.Shape3D#getBoundingBox()
      */
-    public Box3D getBoundingBox() {
+    public Box3D boundingBox() {
         // plane parallel to XY plane
         if (Math.abs(dz1)<Shape3D.ACCURACY&&Math.abs(dz2)<Shape3D.ACCURACY)
             return new Box3D(Double.NEGATIVE_INFINITY,
@@ -193,8 +193,8 @@ public class Plane3D implements Shape3D {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
-    public double getDistance(Point3D point) {
-        return point.getDistance(this.projectPoint(point));
+    public double distance(Point3D point) {
+        return point.distance(this.projectPoint(point));
     }
 
     /*
@@ -221,8 +221,8 @@ public class Plane3D implements Shape3D {
      * @see math.geom3d.Shape3D#transform(math.geom3d.transform.AffineTransform3D)
      */
     public Shape3D transform(AffineTransform3D trans) {
-        return new Plane3D(this.getOrigin().transform(trans), this.getVector1()
-                .transform(trans), this.getVector2().transform(trans));
+        return new Plane3D(this.origin().transform(trans), this.vector1()
+                .transform(trans), this.vector2().transform(trans));
     }
 
     // ===================================================================

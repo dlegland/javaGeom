@@ -24,8 +24,8 @@ public class BevelJoinFactory implements JoinFactory {
 	 */
 	public LineSegment2D createJoin(CirculinearElement2D curve1,
 			CirculinearElement2D curve2, double dist) {
-		Point2D p1 = curve1.getLastPoint();
-		Point2D p2 = curve2.getFirstPoint();
+		Point2D p1 = curve1.lastPoint();
+		Point2D p2 = curve2.firstPoint();
 		return new LineSegment2D(p1, p2);
 	}
 }

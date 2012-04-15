@@ -108,7 +108,7 @@ public class DrawCircularShapeDemo extends JPanel{
 		domain.fill(g2);
 		
 		g2.setColor(Color.BLUE);
-		domain.getBoundary().draw(g2);
+		domain.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

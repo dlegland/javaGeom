@@ -27,7 +27,7 @@ extends CirculinearCurve2D, ContinuousOrientedCurve2D {
 	// ===================================================================
     // redefines declaration of CirculinearCurve2D interfaces
 
-	public CirculinearContinuousCurve2D getParallel(double d);
+	public CirculinearContinuousCurve2D parallel(double d);
 	public CirculinearContinuousCurve2D transform(CircleInversion2D inv);
 	
 	// ===================================================================
@@ -37,9 +37,9 @@ extends CirculinearCurve2D, ContinuousOrientedCurve2D {
      * Returns a set of circulinear elements, which are basis for circulinear
      * curves.
      */
-    public abstract Collection<? extends CirculinearElement2D> getSmoothPieces();
+    public abstract Collection<? extends CirculinearElement2D> smoothPieces();
 
     public CurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box);
-	public CirculinearContinuousCurve2D getSubCurve(double t0, double t1);
-	public CirculinearContinuousCurve2D getReverseCurve();
+	public CirculinearContinuousCurve2D subCurve(double t0, double t1);
+	public CirculinearContinuousCurve2D reverse();
 }
