@@ -63,7 +63,7 @@ public class CheckDrawWedges2D extends JPanel{
 		rotated.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		domain.getBoundary().clip(box).draw(g2);
+		domain.boundary().clip(box).draw(g2);
 		box.draw(g2);
 	}
 	

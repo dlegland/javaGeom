@@ -30,7 +30,7 @@ public class Conic2DUtilsTest extends TestCase {
 	
 	public void testTransformEllipse(){
 		Ellipse2D ell0 		= new Ellipse2D(0, 0, 40, 30, 0);
-		double[] coefs 		= ell0.getConicCoefficients();
+		double[] coefs 		= ell0.conicCoefficients();
 
 		double[] coefs2;
 		Conic2D conic;
@@ -82,7 +82,7 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs = new double[]{0, 0, 1, -1, 0, 0};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], 0, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 1, eps);
@@ -103,7 +103,7 @@ public class Conic2DUtilsTest extends TestCase {
 		
 		Point2D vertex = new Point2D(2, 3);
 		Parabola2D parabola = new Parabola2D(vertex, 1, 3*Math.PI/2);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -114,7 +114,7 @@ public class Conic2DUtilsTest extends TestCase {
 		assertEquals(parabola.getParameter(), 1, eps);	
 	
 		parabola = new Parabola2D(vertex, 3, 3*Math.PI/2);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -133,7 +133,7 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs = new double[]{1, 0, 0, 0, -1, 0};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], 1, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 0, eps);
@@ -144,7 +144,7 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs = new double[]{5, 0, 0, 0, -1, 0};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], 5, eps);
 		assertEquals(coefs[1], 0, eps);
 		assertEquals(coefs[2], 0, eps);
@@ -160,7 +160,7 @@ public class Conic2DUtilsTest extends TestCase {
 		
 		Point2D vertex = new Point2D(2, 3);
 		Parabola2D parabola = new Parabola2D(vertex, 1, 0);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -171,7 +171,7 @@ public class Conic2DUtilsTest extends TestCase {
 
 		
 		parabola = new Parabola2D(vertex, 3, 0);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -190,7 +190,7 @@ public class Conic2DUtilsTest extends TestCase {
 		Point2D vertex = new Point2D(0,0);
 		double theta = 11*Math.PI/6;
 		Parabola2D parabola = new Parabola2D(vertex, 1, theta);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -201,7 +201,7 @@ public class Conic2DUtilsTest extends TestCase {
 
 		theta = Math.PI/3;
 		parabola = new Parabola2D(vertex, 1, theta);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -220,7 +220,7 @@ public class Conic2DUtilsTest extends TestCase {
 		double theta = Math.PI/6;
 		vertex = vertex.transform(AffineTransform2D.createRotation(theta));
 		Parabola2D parabola = new Parabola2D(vertex, 1, theta-Math.PI/2);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -239,7 +239,7 @@ public class Conic2DUtilsTest extends TestCase {
 		Point2D vertex = new Point2D(2, 3);
 		double theta = 11*Math.PI/6;
 		Parabola2D parabola = new Parabola2D(vertex, 1, theta);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -251,7 +251,7 @@ public class Conic2DUtilsTest extends TestCase {
 
 		theta = Math.PI/3;
 		parabola = new Parabola2D(vertex, 1, theta);
-		coefs = parabola.getConicCoefficients();
+		coefs = parabola.conicCoefficients();
 		
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Parabola2D);
@@ -271,7 +271,7 @@ public class Conic2DUtilsTest extends TestCase {
 		
 		for(double t=0; t<Math.PI/2; t+=Math.PI/16){
 			ellipse = new Ellipse2D(0, 0, 2, 1, t);
-			coefs0 = ellipse.getConicCoefficients();
+			coefs0 = ellipse.conicCoefficients();
 			conic = Conic2DUtils.reduceConic(coefs0);
 		}
 		
@@ -280,7 +280,7 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs0 = new double[]{b*b/delta, 0, a*a/delta, 0, 0, -1};
 		conic = Conic2DUtils.reduceConic(coefs0);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], coefs0[0], eps);
 		assertEquals(coefs[1], coefs0[1], eps);
 		assertEquals(coefs[2], coefs0[2], eps);
@@ -291,10 +291,10 @@ public class Conic2DUtilsTest extends TestCase {
 		
 		a = 4; b = 2; xc=3; yc=5; theta=0;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		double[] coefsTranslated = ellipse.getConicCoefficients();
+		double[] coefsTranslated = ellipse.conicCoefficients();
 		conic = Conic2DUtils.reduceConic(coefsTranslated);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], coefsTranslated[0], eps);
 		assertEquals(coefs[1], coefsTranslated[1], eps);
 		assertEquals(coefs[2], coefsTranslated[2], eps);
@@ -304,10 +304,10 @@ public class Conic2DUtilsTest extends TestCase {
 
 		a = 4; b = 2; xc=0; yc=0; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		double[] coefsRotated = ellipse.getConicCoefficients();
+		double[] coefsRotated = ellipse.conicCoefficients();
 		conic = Conic2DUtils.reduceConic(coefsRotated);
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], coefsRotated[0], eps);
 		assertEquals(coefs[1], coefsRotated[1], eps);
 		assertEquals(coefs[2], coefsRotated[2], eps);
@@ -317,14 +317,14 @@ public class Conic2DUtilsTest extends TestCase {
 
 		a = 4; b = 2; xc=3; yc=5; theta=Math.PI/3;
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
-		double[] coefsRotTrans = ellipse.getConicCoefficients();
+		double[] coefsRotTrans = ellipse.conicCoefficients();
 		
 		Ellipse2D rotated = ellipse.transform(AffineTransform2D.createRotation(-theta));
-		double[] coefsRTR = rotated.getConicCoefficients();
+		double[] coefsRTR = rotated.conicCoefficients();
 		conic = Conic2DUtils.reduceConic(coefsRTR);
 		
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], coefsRTR[0], eps);
 		assertEquals(coefs[1], coefsRTR[1], eps);
 		assertEquals(coefs[2], coefsRTR[2], eps);
@@ -336,7 +336,7 @@ public class Conic2DUtilsTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefsRotTrans);
 		
 		assertTrue(conic instanceof Ellipse2D);
-		coefs = conic.getConicCoefficients();
+		coefs = conic.conicCoefficients();
 		assertEquals(coefs[0], coefsRotTrans[0], eps);
 		assertEquals(coefs[1], coefsRotTrans[1], eps);
 		assertEquals(coefs[2], coefsRotTrans[2], eps);
@@ -358,32 +358,32 @@ public class Conic2DUtilsTest extends TestCase {
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicStraightLine2D);
 		line = (StraightLine2D) conic;
-		assertEquals(line.getDistance(origin), 1, eps);
-		assertEquals(line.getHorizontalAngle(), 3*Math.PI/2, eps);
+		assertEquals(line.distance(origin), 1, eps);
+		assertEquals(line.horizontalAngle(), 3*Math.PI/2, eps);
 
 		// Horizontal line
 		coefs = new double[]{0, 0, 0, 0, 1, -1};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicStraightLine2D);
 		line = (StraightLine2D) conic;
-		assertEquals(line.getDistance(origin), 1, eps);
-		assertEquals(line.getHorizontalAngle(), 0, eps);
+		assertEquals(line.distance(origin), 1, eps);
+		assertEquals(line.horizontalAngle(), 0, eps);
 		
 		// Diagonal line
 		coefs = new double[]{0, 0, 0, -1, 1, -1};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicStraightLine2D);
 		line = (StraightLine2D) conic;
-		assertEquals(line.getDistance(origin), Math.sqrt(2)/2, eps);
-		assertEquals(line.getHorizontalAngle(), Math.PI/4, eps);
+		assertEquals(line.distance(origin), Math.sqrt(2)/2, eps);
+		assertEquals(line.horizontalAngle(), Math.PI/4, eps);
 		
 		// line with slope 1/2 and going through (0, 2.5)
 		coefs = new double[]{0, 0, 0, -1, 2, -5};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicStraightLine2D);
 		line = (StraightLine2D) conic;
-		assertEquals(line.getDistance(origin), Math.sqrt(5), eps);
-		assertEquals(line.getHorizontalAngle(), Math.atan(.5), eps);	
+		assertEquals(line.distance(origin), Math.sqrt(5), eps);
+		assertEquals(line.horizontalAngle(), Math.atan(.5), eps);	
 	}
 	
 	public void testReduceConicTwoStraightLines(){
@@ -398,25 +398,25 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs = new double[]{0, 0, 1, 0, 0, -1};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicTwoLines2D);
-		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		assertEquals(conic.conicType(), Conic2D.Type.TWO_LINES);
 		lines = (Conic2DUtils.ConicTwoLines2D) conic;
-		assertEquals(lines.getDistance(origin), 1, eps);
+		assertEquals(lines.distance(origin), 1, eps);
 		
 		// Horizontal lines (different from 1)
 		coefs = new double[]{0, 0, 1, 0, 0, -4};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicTwoLines2D);
-		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		assertEquals(conic.conicType(), Conic2D.Type.TWO_LINES);
 		lines = (Conic2DUtils.ConicTwoLines2D) conic;
-		assertEquals(lines.getDistance(origin), 2, eps);
+		assertEquals(lines.distance(origin), 2, eps);
 		
 		// Vertical lines
 		coefs = new double[]{1, 0, 0, 0, 0, -1};
 		conic = Conic2DUtils.reduceConic(coefs);
 		assertTrue(conic instanceof Conic2DUtils.ConicTwoLines2D);
-		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		assertEquals(conic.conicType(), Conic2D.Type.TWO_LINES);
 		lines = (Conic2DUtils.ConicTwoLines2D) conic;
-		assertEquals(lines.getDistance(origin), 1, eps);
+		assertEquals(lines.distance(origin), 1, eps);
 		
 	}
 	
@@ -438,17 +438,17 @@ public class Conic2DUtilsTest extends TestCase {
 		coefs2 = Conic2DUtils.transform(coefs, tra);		
 		conic = Conic2DUtils.reduceConic(coefs2);
 		assertTrue(conic instanceof Conic2DUtils.ConicTwoLines2D);
-		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		assertEquals(conic.conicType(), Conic2D.Type.TWO_LINES);
 		lines = (Conic2DUtils.ConicTwoLines2D) conic;
-		assertEquals(lines.getDistance(center), 1, eps);
+		assertEquals(lines.distance(center), 1, eps);
 				
 		// Rotation
 		AffineTransform2D rot = AffineTransform2D.createRotation(Math.PI/6);
 		coefs2 = Conic2DUtils.transform(coefs, rot);		
 		conic = Conic2DUtils.reduceConic(coefs2);
 		assertTrue(conic instanceof Conic2DUtils.ConicTwoLines2D);
-		assertEquals(conic.getConicType(), Conic2D.Type.TWO_LINES);
+		assertEquals(conic.conicType(), Conic2D.Type.TWO_LINES);
 		lines = (Conic2DUtils.ConicTwoLines2D) conic;
-		assertEquals(lines.getDistance(origin), 1, eps);
+		assertEquals(lines.distance(origin), 1, eps);
 	}
 }

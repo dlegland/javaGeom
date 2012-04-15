@@ -32,14 +32,14 @@ public class MiterJoinFactory implements JoinFactory {
 			CirculinearElement2D curve2, double dist) {
 		
 		// extremity of each curve
-		Point2D pc1 = curve1.getLastPoint();
-		Point2D pc2 = curve2.getFirstPoint();
+		Point2D pc1 = curve1.lastPoint();
+		Point2D pc2 = curve2.firstPoint();
 		
 		// Compute tangent angle of each curve 
-		Vector2D vect1 = curve1.getTangent(curve1.getT1());
-		Vector2D vect2 = curve2.getTangent(curve2.getT0());
-		double theta1 = vect1.getAngle();
-		double theta2 = vect2.getAngle();
+		Vector2D vect1 = curve1.tangent(curve1.getT1());
+		Vector2D vect2 = curve2.tangent(curve2.getT0());
+		double theta1 = vect1.angle();
+		double theta2 = vect2.angle();
 //		System.out.println(Math.toDegrees(theta1) + " " + Math.toDegrees(theta2));
 		
 //		// compute center point

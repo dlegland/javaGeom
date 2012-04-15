@@ -26,9 +26,9 @@ public interface CirculinearBoundary2D extends CirculinearCurve2D, Boundary2D {
     // ===================================================================
     // redefines declaration of some interfaces
 
-	public CirculinearBoundary2D getParallel(double d);
-    public Collection<? extends CirculinearContour2D> getContinuousCurves();
+	public CirculinearBoundary2D parallel(double d);
+    public Collection<? extends CirculinearContour2D> continuousCurves();
 	public CurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box);
     public CirculinearBoundary2D transform(CircleInversion2D inv);
-	public CirculinearBoundary2D getReverseCurve();
+	public CirculinearBoundary2D reverse();
 }

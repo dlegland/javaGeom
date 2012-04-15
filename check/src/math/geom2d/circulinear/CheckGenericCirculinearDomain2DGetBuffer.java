@@ -43,14 +43,14 @@ public class CheckGenericCirculinearDomain2DGetBuffer extends JPanel{
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
-		Domain2D buffer = domain.getBuffer(30);
+		Domain2D buffer = domain.buffer(30);
 		g2.setColor(Color.CYAN);
 		buffer.fill(g2);
 		g2.setColor(Color.BLUE);
-		buffer.getBoundary().draw(g2);
+		buffer.boundary().draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		domain.getBoundary().draw(g2);
+		domain.boundary().draw(g2);
 		
 	}
 	

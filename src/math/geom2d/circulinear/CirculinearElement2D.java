@@ -28,10 +28,10 @@ import math.geom2d.transform.CircleInversion2D;
 public interface CirculinearElement2D extends CirculinearContinuousCurve2D,
 		SmoothOrientedCurve2D {
 
-	public CirculinearElement2D getParallel(double d);
+	public CirculinearElement2D parallel(double d);
 	public CirculinearElement2D transform(CircleInversion2D inv);
 	
 	public CurveSet2D<? extends CirculinearElement2D> clip(Box2D box);
-    public CirculinearElement2D getSubCurve(double t0, double t1);
-	public CirculinearElement2D getReverseCurve();
+    public CirculinearElement2D subCurve(double t0, double t1);
+	public CirculinearElement2D reverse();
 }

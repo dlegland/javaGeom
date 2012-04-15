@@ -44,37 +44,37 @@ import math.geom2d.line.LineSegment2D;
 public interface Polygon2D extends CirculinearDomain2D {
 
     /** Returns the vertices (singular points) of the polygon */
-    public Collection<Point2D> getVertices();
+    public Collection<Point2D> vertices();
 
     /**
      * Returns the i-th vertex of the polygon.
      * 
      * @param i index of the vertex, between 0 and the number of vertices
      */
-    public Point2D getVertex(int i);
+    public Point2D vertex(int i);
 
     /**
      * Returns the number of vertices of the polygon
      * 
      * @since 0.6.3
      */
-    public int getVertexNumber();
+    public int vertexNumber();
 
     /** Return the edges as line segments of the polygon */
-    public Collection<? extends LineSegment2D> getEdges();
+    public Collection<? extends LineSegment2D> edges();
 
     /** Returns the number of edges of the polygon */
-    public int getEdgeNumber();
+    public int edgeNumber();
     
     /**
      * Returns the set of rings comprising the boundary of this polygon.
      * @return the set of boundary rings.
      */
-    public Collection<? extends LinearRing2D> getRings();
+    public Collection<? extends LinearRing2D> rings();
 
-    public Point2D getCentroid();
-    public double getArea();
-    public double getSignedArea();
+    public Point2D centroid();
+    public double area();
+    public double areaSigned();
     
     // ===================================================================
     // methods inherited from the Domain2D interface
@@ -84,7 +84,7 @@ public interface Polygon2D extends CirculinearDomain2D {
      * polygon is defined as a set of LinearRing2D.
      */
     public CirculinearContourArray2D<? extends LinearRing2D> 
-    getBoundary();
+    boundary();
 
     
     /**

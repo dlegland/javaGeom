@@ -29,12 +29,12 @@ import javax.swing.*;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
 
+import static java.lang.Math.*;
 
 public class DrawVennDiagram extends JPanel{
 
@@ -53,53 +53,53 @@ public class DrawVennDiagram extends JPanel{
 		Point2D origin = new Point2D(x0, y0);
 		
 		// Orthogonal lines
-		StraightLine2D lineX = new StraightLine2D(origin, new Vector2D(1, 0));
-		StraightLine2D lineY = new StraightLine2D(origin, new Vector2D(0, 1));
+		StraightLine2D lineX = StraightLine2D.createHorizontal(origin);
+		StraightLine2D lineY = StraightLine2D.createVertical(origin);
 
 		// center circle
 		Circle2D c0 = new Circle2D(x0, y0, r0);
 		
 		// intersection points of main circle with diagonals
-		double tc0  = Math.PI/4;
-		double tc1  = Math.PI/2+Math.PI/4;
-		double tc2  = Math.PI+Math.PI/4;
-		double tc3  = 3*Math.PI/2+Math.PI/4;
-		Point2D pc0 = c0.getPoint(tc0);
-		Point2D pc1 = c0.getPoint(tc1);
-		Point2D pc2 = c0.getPoint(tc2);
-		Point2D pc3 = c0.getPoint(tc3);
+		double tc0 = PI / 4;
+		double tc1 = PI / 2 + PI / 4;
+		double tc2 = PI + PI / 4;
+		double tc3 = 3 * PI / 2 + PI / 4;
+		Point2D pc0 = c0.point(tc0);
+		Point2D pc1 = c0.point(tc1);
+		Point2D pc2 = c0.point(tc2);
+		Point2D pc3 = c0.point(tc3);
 		
 		// compute right circle
-		StraightLine2D tangentC0 = new StraightLine2D(pc0, c0.getTangent(tc0));
-		StraightLine2D tangentC1 = new StraightLine2D(pc1, c0.getTangent(tc1));
-		StraightLine2D tangentC2 = new StraightLine2D(pc2, c0.getTangent(tc2));
-		StraightLine2D tangentC3 = new StraightLine2D(pc3, c0.getTangent(tc3));
+		StraightLine2D tangentC0 = new StraightLine2D(pc0, c0.tangent(tc0));
+		StraightLine2D tangentC1 = new StraightLine2D(pc1, c0.tangent(tc1));
+		StraightLine2D tangentC2 = new StraightLine2D(pc2, c0.tangent(tc2));
+		StraightLine2D tangentC3 = new StraightLine2D(pc3, c0.tangent(tc3));
 		
 		// center of first circle of curve number 'd'
-		Point2D pcd0 = tangentC0.getIntersection(tangentC3);
-		Point2D pcd1 = tangentC1.getIntersection(tangentC0);
-		Point2D pcd2 = tangentC2.getIntersection(tangentC1);
-		Point2D pcd3 = tangentC3.getIntersection(tangentC2);
+		Point2D pcd0 = tangentC0.intersection(tangentC3);
+		Point2D pcd1 = tangentC1.intersection(tangentC0);
+		Point2D pcd2 = tangentC2.intersection(tangentC1);
+		Point2D pcd3 = tangentC3.intersection(tangentC2);
 		
 		// circles of curve D
-		Circle2D cd0 = new Circle2D(pcd0, pcd0.getDistance(pc0));
-		Circle2D cd1 = new Circle2D(pcd1, pcd1.getDistance(pc1));
-		Circle2D cd2 = new Circle2D(pcd2, pcd2.getDistance(pc2));
-		Circle2D cd3 = new Circle2D(pcd3, pcd3.getDistance(pc3));
+		Circle2D cd0 = new Circle2D(pcd0, pcd0.distance(pc0));
+		Circle2D cd1 = new Circle2D(pcd1, pcd1.distance(pc1));
+		Circle2D cd2 = new Circle2D(pcd2, pcd2.distance(pc2));
+		Circle2D cd3 = new Circle2D(pcd3, pcd3.distance(pc3));
 		
 		// circle arcs
 		CircleArc2D cad0 = new CircleArc2D(cd0, 
-				cd0.getPosition(pc3), cd0.getPosition(pc0), true);
+				cd0.position(pc3), cd0.position(pc0), true);
 		CircleArc2D cad1 = new CircleArc2D(cd1, 
-				cd1.getPosition(pc0), cd1.getPosition(pc1), false);
+				cd1.position(pc0), cd1.position(pc1), false);
 		CircleArc2D cad2 = new CircleArc2D(cd2, 
-				cd2.getPosition(pc1), cd2.getPosition(pc2), true);
+				cd2.position(pc1), cd2.position(pc2), true);
 		CircleArc2D cad3 = new CircleArc2D(cd3, 
-				cd3.getPosition(pc2), cd3.getPosition(pc3), false);
+				cd3.position(pc2), cd3.position(pc3), false);
 		
 		// Create curve d
-		PolyCurve2D<CircleArc2D> cd = new PolyCurve2D<CircleArc2D>(
-				new CircleArc2D[]{cad0, cad1, cad2, cad3});
+		PolyCurve2D<CircleArc2D> cd = 
+			new PolyCurve2D<CircleArc2D>(cad0, cad1, cad2, cad3);
 		Graphics2D g2 = (Graphics2D) g;
 		Box2D box = new Box2D(10, 590, 10, 390);
 		
@@ -125,13 +125,8 @@ public class DrawVennDiagram extends JPanel{
 		
 		PolyCurve2D<CircleArc2D> cg = this.createVennCurve(6);
 		cg.draw(g2);
-	
-//		g2.draw(cad0);
-//		g2.draw(cad1);
-//		g2.draw(cad2);
-//		g2.draw(cad3);
-		
 	}
+	
 	private PolyCurve2D<CircleArc2D> createVennCurve(int level){
 		// center circle
 		Circle2D c0 = new Circle2D(x0, y0, r0);
@@ -143,12 +138,12 @@ public class DrawVennDiagram extends JPanel{
 		double[] positions 	= new double[n];
 		Point2D[] points 	= new Point2D[n];
 		StraightLine2D[] tangents = new StraightLine2D[n];
-		for(int i=0; i<n; i++){
-			positions[i] = i*2*Math.PI/n + Math.PI/n;
-			points[i] 	= c0.getPoint(positions[i]);
-			tangents[i] = new StraightLine2D(points[i], 
-					c0.getTangent(positions[i]));
-		}
+		for (int i = 0; i < n; i++) {
+			positions[i] = (2 * i + 1) * PI / n;
+			points[i] = c0.point(positions[i]);
+			tangents[i] = new StraightLine2D(points[i],
+					c0.tangent(positions[i]));
+	}
 		
 		// circle centers
 		Point2D[] centers 	= new Point2D[n];
@@ -156,15 +151,15 @@ public class DrawVennDiagram extends JPanel{
 		CircleArc2D[] arcs 	= new CircleArc2D[n];
 		for(int i=0; i<n; i++){
 			int j = (i-1+n) % n;
-			centers[i] 	= tangents[i].getIntersection(tangents[j]);
+			centers[i] 	= tangents[i].intersection(tangents[j]);
 			circles[i] 	= new Circle2D(
 					centers[i], 
-					centers[i].getDistance(points[i]));
-			arcs[i] 	= new CircleArc2D(
+					centers[i].distance(points[i]));
+			arcs[i]	= new CircleArc2D(
 					circles[i], 
-					circles[i].getPosition(points[j]), 
-					circles[i].getPosition(points[i]), 
-					i%2 == 0);
+					circles[i].position(points[j]), 
+					circles[i].position(points[i]), 
+					i % 2 == 0);
 		}
 		
 		// Create the curve

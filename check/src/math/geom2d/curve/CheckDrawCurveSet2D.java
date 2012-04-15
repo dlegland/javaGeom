@@ -38,14 +38,14 @@ public class CheckDrawCurveSet2D extends JPanel{
 		g2.setStroke(new BasicStroke(2.0f));
 	
 		Box2D box = new Box2D(0, 200, 0, 200);
-		Domain2D domain =  circleSet.getDomain().complement();
+		Domain2D domain =  circleSet.domain().complement();
 
 		g2.setColor(Color.CYAN);
 		Domain2D clipped = domain.clip(box);
 		clipped.fill(g2);
 		
 		g2.setColor(Color.BLUE);
-		domain.getBoundary().clip(box).draw(g2);
+		domain.boundary().clip(box).draw(g2);
 	}
 	
 	public final static void main(String[] args){

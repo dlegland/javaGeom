@@ -62,33 +62,33 @@ public class Polyline2DTest extends TestCase {
 		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
 				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
 
-		assertEquals(polyline.getLength(), 30, 1e-14);
+		assertEquals(polyline.length(), 30, 1e-14);
 	}
 
 	public void testGetLengthDouble() {
 		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
 				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
 
-		assertEquals(polyline.getLength(0), 0, 1e-14);
-		assertEquals(polyline.getLength(.5), 5, 1e-14);
-		assertEquals(polyline.getLength(1), 10, 1e-14);
-		assertEquals(polyline.getLength(1.5), 15, 1e-14);
-		assertEquals(polyline.getLength(2), 20, 1e-14);
-		assertEquals(polyline.getLength(2.5), 25, 1e-14);
-		assertEquals(polyline.getLength(3), 30, 1e-14);
+		assertEquals(polyline.length(0), 0, 1e-14);
+		assertEquals(polyline.length(.5), 5, 1e-14);
+		assertEquals(polyline.length(1), 10, 1e-14);
+		assertEquals(polyline.length(1.5), 15, 1e-14);
+		assertEquals(polyline.length(2), 20, 1e-14);
+		assertEquals(polyline.length(2.5), 25, 1e-14);
+		assertEquals(polyline.length(3), 30, 1e-14);
 	}
 
 	public void testGetPositionDouble() {
 		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
 				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
 
-		assertEquals(polyline.getPosition(0), 0, 1e-14);
-		assertEquals(polyline.getPosition(5), .5, 1e-14);
-		assertEquals(polyline.getPosition(10), 1, 1e-14);
-		assertEquals(polyline.getPosition(15), 1.5, 1e-14);
-		assertEquals(polyline.getPosition(20), 2, 1e-14);
-		assertEquals(polyline.getPosition(25), 2.5, 1e-14);
-		assertEquals(polyline.getPosition(30), 3, 1e-14);
+		assertEquals(polyline.position(0), 0, 1e-14);
+		assertEquals(polyline.position(5), .5, 1e-14);
+		assertEquals(polyline.position(10), 1, 1e-14);
+		assertEquals(polyline.position(15), 1.5, 1e-14);
+		assertEquals(polyline.position(20), 2, 1e-14);
+		assertEquals(polyline.position(25), 2.5, 1e-14);
+		assertEquals(polyline.position(30), 3, 1e-14);
 	}
 
 	public void testGetBufferDouble() {
@@ -97,9 +97,9 @@ public class Polyline2DTest extends TestCase {
 				new Point2D(100, 100), new Point2D(150, 100) });
 		double dist = 30;
 
-		Domain2D buffer = polyline.getBuffer(dist);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Domain2D buffer = polyline.buffer(dist);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 
 	public void testGetBufferDouble_MultipleVertex() {
@@ -109,9 +109,9 @@ public class Polyline2DTest extends TestCase {
 				new Point2D(150, 100) });
 		double dist = 30;
 
-		Domain2D buffer = polyline.getBuffer(dist);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Domain2D buffer = polyline.buffer(dist);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 
 	public void testGetParallels_SmallAnglePolyline() {
@@ -123,7 +123,7 @@ public class Polyline2DTest extends TestCase {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		Domain2D buffer = bc.computeBuffer(polyline, dist);
 
-		assertEquals(1, buffer.getBoundary().getContinuousCurves().size());
+		assertEquals(1, buffer.boundary().continuousCurves().size());
 	}
 
 	public void testGetBufferDouble_SmallAnglePolyline() {
@@ -132,10 +132,10 @@ public class Polyline2DTest extends TestCase {
 				new Point2D(180, 140) });
 		double dist = 30;
 
-		Domain2D buffer = polyline.getBuffer(dist);
-		Boundary2D boundary = buffer.getBoundary();
+		Domain2D buffer = polyline.buffer(dist);
+		Boundary2D boundary = buffer.boundary();
 		// Fails for the moment
-		assertEquals(1, boundary.getContinuousCurves().size());
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 
 	public void testGetParallelDouble() {
@@ -143,7 +143,7 @@ public class Polyline2DTest extends TestCase {
 				new Point2D(50, 50), new Point2D(100, 50),
 				new Point2D(100, 100), new Point2D(150, 100) });
 
-		CirculinearContinuousCurve2D parallel = polyline.getParallel(30);
+		CirculinearContinuousCurve2D parallel = polyline.parallel(30);
 		assertTrue(parallel != null);
 	}
 
@@ -151,16 +151,16 @@ public class Polyline2DTest extends TestCase {
 		Polyline2D line = new Polyline2D(new Point2D[] { new Point2D(10, 10),
 				new Point2D(20, 10), new Point2D(20, 20) });
 
-		assertTrue(line.getLeftTangent(1).equals(new Vector2D(10, 0)));
-		assertTrue(line.getLeftTangent(2).equals(new Vector2D(0, 10)));
+		assertTrue(line.leftTangent(1).equals(new Vector2D(10, 0)));
+		assertTrue(line.leftTangent(2).equals(new Vector2D(0, 10)));
 	}
 
 	public void testGetRightTangent() {
 		Polyline2D line = new Polyline2D(new Point2D[] { new Point2D(10, 10),
 				new Point2D(20, 10), new Point2D(20, 20) });
 
-		assertTrue(line.getRightTangent(0).equals(new Vector2D(10, 0)));
-		assertTrue(line.getRightTangent(1).equals(new Vector2D(0, 10)));
+		assertTrue(line.rightTangent(0).equals(new Vector2D(10, 0)));
+		assertTrue(line.rightTangent(1).equals(new Vector2D(0, 10)));
 	}
 
 	public void testAddVertex() {
@@ -171,7 +171,7 @@ public class Polyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		Polyline2D line = new Polyline2D(points);
 		line.addVertex(new Point2D(30, 20));
-		assertEquals(line.getVertexNumber(), points.length + 1);
+		assertEquals(line.vertexNumber(), points.length + 1);
 	}
 
 	public void testRemoveVertex_Point2D() {
@@ -182,7 +182,7 @@ public class Polyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		Polyline2D line = new Polyline2D(points);
 		line.removeVertex(new Point2D(10, 10));
-		assertEquals(3, line.getVertexNumber());
+		assertEquals(3, line.vertexNumber());
 	}
 
 	public void testRemoveVertex_int() {
@@ -193,7 +193,7 @@ public class Polyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		Polyline2D line = new Polyline2D(points);
 		line.removeVertex(2);
-		assertEquals(3, line.getVertexNumber());
+		assertEquals(3, line.vertexNumber());
 	}
 
 	public void testInsertVertex() {
@@ -204,8 +204,8 @@ public class Polyline2DTest extends TestCase {
 		points[3] = new Point2D(20, 20);
 		Polyline2D line = new Polyline2D(points);
 		line.insertVertex(2, new Point2D(15, 20));
-		assertEquals(5, line.getVertexNumber());
-		assertEquals(line.getVertex(2), new Point2D(15, 20));
+		assertEquals(5, line.vertexNumber());
+		assertEquals(line.vertex(2), new Point2D(15, 20));
 	}
 
 	public void testGetPoint() {
@@ -221,21 +221,21 @@ public class Polyline2DTest extends TestCase {
 
 		// find the first point
 		Point2D p00 = new Point2D(0, 0);
-		assertTrue(p00.equals(line1.getPoint(-.5)));
-		assertTrue(p00.equals(line1.getPoint(0)));
+		assertTrue(p00.equals(line1.point(-.5)));
+		assertTrue(p00.equals(line1.point(0)));
 
 		// find intermediate points
 		Point2D p05 = new Point2D(5, 0);
-		assertTrue(p05.equals(line1.getPoint(.5)));
+		assertTrue(p05.equals(line1.point(.5)));
 		Point2D p15 = new Point2D(10, 5);
-		assertTrue(p15.equals(line1.getPoint(1.5)));
+		assertTrue(p15.equals(line1.point(1.5)));
 		Point2D p25 = new Point2D(15, 15);
-		assertTrue(p25.equals(line1.getPoint(2.5)));
+		assertTrue(p25.equals(line1.point(2.5)));
 
 		// find the last point
 		Point2D p30 = new Point2D(20, 20);
-		assertTrue(p30.equals(line1.getPoint(3)));
-		assertTrue(p30.equals(line1.getPoint(3.5)));
+		assertTrue(p30.equals(line1.point(3)));
+		assertTrue(p30.equals(line1.point(3.5)));
 	}
 
 	public void testGetPosition() {
@@ -244,15 +244,15 @@ public class Polyline2DTest extends TestCase {
 		double eps = 1e-14;
 
 		// corners
-		assertEquals(line.getPosition(new Point2D(0, 0)), 0, eps);
-		assertEquals(line.getPosition(new Point2D(10, 0)), 1, eps);
-		assertEquals(line.getPosition(new Point2D(10, 10)), 2, eps);
-		assertEquals(line.getPosition(new Point2D(20, 20)), 3, eps);
+		assertEquals(line.position(new Point2D(0, 0)), 0, eps);
+		assertEquals(line.position(new Point2D(10, 0)), 1, eps);
+		assertEquals(line.position(new Point2D(10, 10)), 2, eps);
+		assertEquals(line.position(new Point2D(20, 20)), 3, eps);
 
 		// middles of edges
-		assertEquals(line.getPosition(new Point2D(5, 0)), .5, eps);
-		assertEquals(line.getPosition(new Point2D(10, 5)), 1.5, eps);
-		assertEquals(line.getPosition(new Point2D(15, 15)), 2.5, eps);
+		assertEquals(line.position(new Point2D(5, 0)), .5, eps);
+		assertEquals(line.position(new Point2D(10, 5)), 1.5, eps);
+		assertEquals(line.position(new Point2D(15, 15)), 2.5, eps);
 
 	}
 
@@ -270,13 +270,13 @@ public class Polyline2DTest extends TestCase {
 		StraightLine2D line = new StraightLine2D(0, 0, 1, 0);
 		StraightLine2D edge = new StraightLine2D(0, 0, 20, 0);
 
-		Collection<Point2D> inters1 = poly.getIntersections(line);
+		Collection<Point2D> inters1 = poly.intersections(line);
 		assertTrue(inters1.size() == 2);
 		Iterator<Point2D> iter1 = inters1.iterator();
 		assertTrue(iter1.next().equals(new Point2D(5, 0)));
 		assertTrue(iter1.next().equals(new Point2D(15, 0)));
 
-		Collection<Point2D> inters2 = poly.getIntersections(edge);
+		Collection<Point2D> inters2 = poly.intersections(edge);
 		assertTrue(inters2.size() == 2);
 		Iterator<Point2D> iter2 = inters1.iterator();
 		assertTrue(iter2.next().equals(new Point2D(5, 0)));
@@ -293,7 +293,7 @@ public class Polyline2DTest extends TestCase {
 
 		// create polyline, and subcurve
 		Polyline2D line1 = new Polyline2D(points);
-		Polyline2D sub = line1.getSubCurve(.5, 2.5);
+		Polyline2D sub = line1.subCurve(.5, 2.5);
 
 		// to check result
 		Polyline2D line2 = new Polyline2D(new Point2D[] { new Point2D(5, 0),

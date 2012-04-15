@@ -55,7 +55,7 @@ public class AffineTransform2DTest extends TestCase {
 		    AffineTransform2D.createRotation(center, theta);
 		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(10+Math.sqrt(2)*5/2, 20+Math.sqrt(2)*5/2);
-		assertTrue(expect.getDistance(point2)<1e-14);
+		assertTrue(expect.distance(point2)<1e-14);
 	}
 	
 	public void testCreateQuadrantRotationInt(){
@@ -74,7 +74,7 @@ public class AffineTransform2DTest extends TestCase {
 		AffineTransform2D trans = AffineTransform2D.createScaling(s1, s2);
 		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(x0*s1, y0*s2);
-		assertTrue(expect.getDistance(point2)<1e-14);
+		assertTrue(expect.distance(point2)<1e-14);
 	}	
 	
 	public void testCreateScalingPointDoubleDouble(){
@@ -90,7 +90,7 @@ public class AffineTransform2DTest extends TestCase {
 		    AffineTransform2D.createScaling(center, s1, s2);
 		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D((x0-xc)*s1+xc, (y0-yc)*s2+yc);
-		assertTrue(expect.getDistance(point2)<1e-14);
+		assertTrue(expect.distance(point2)<1e-14);
 	}	
 	
 	public void testCreateTranslationVector(){
@@ -99,7 +99,7 @@ public class AffineTransform2DTest extends TestCase {
 		AffineTransform2D trans = AffineTransform2D.createTranslation(vector);
 		Point2D point2 = trans.transform(point);
 		Point2D expect = new Point2D(13, 25);
-		assertTrue(expect.getDistance(point2)<1e-14);
+		assertTrue(expect.distance(point2)<1e-14);
 	}
 	
 	public void testIsIsometryAffineTransform2D(){

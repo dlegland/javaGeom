@@ -62,7 +62,7 @@ public class CheckClipBoundary2D extends JPanel{
 		
 		// draw the boundary
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

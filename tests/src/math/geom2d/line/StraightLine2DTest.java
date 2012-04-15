@@ -64,7 +64,7 @@ public class StraightLine2DTest extends TestCase {
 		StraightLine2D line = new StraightLine2D(p0, v0);
 	
 		// computes buffer
-		CirculinearDomain2D buffer = line.getBuffer(10);
+		CirculinearDomain2D buffer = line.buffer(10);
 		
 		// check assertions
 		assertNotNull(buffer);
@@ -110,7 +110,7 @@ public class StraightLine2DTest extends TestCase {
 		Vector2D v0 = new Vector2D(10, 20);
 		StraightLine2D line = new StraightLine2D(p0, v0);
 	
-		assertEquals(1, line.getBoundaryCurves().size());
+		assertEquals(1, line.boundaryCurves().size());
 	}
 	
 	public void testIsBounded() {
@@ -195,7 +195,7 @@ public class StraightLine2DTest extends TestCase {
     	Point2D p2p = new Point2D(2, 3);
     	StraightLine2D line1p = new StraightLine2D(p1p, p2p);
     	
-    	assertTrue(line1.getParallel(1).equals(line1p));
+    	assertTrue(line1.parallel(1).equals(line1p));
     }
 
 	/*
@@ -230,23 +230,23 @@ public class StraightLine2DTest extends TestCase {
 		
 		// test origin point
 		pt = new Point2D(1, 2);
-		assertEquals(0, line.getDistance(pt), 1e-14);
+		assertEquals(0, line.distance(pt), 1e-14);
 		
 		// point on the line (positive extent)
 		pt = new Point2D(1+1.5*3, 2+1.5*4);
-		assertEquals(0, line.getDistance(pt), 1e-14);
+		assertEquals(0, line.distance(pt), 1e-14);
 		
 		// point on the line (negative extent)
 		pt = new Point2D(1-1.5*3, 2-1.5*4);
-		assertEquals(0, line.getDistance(pt), 1e-14);
+		assertEquals(0, line.distance(pt), 1e-14);
 		
 		// point outside the line
 		pt = new Point2D(5, -1);
-		assertEquals(5, line.getDistance(pt), 1e-14);	
+		assertEquals(5, line.distance(pt), 1e-14);	
 		
 		// point outside the line, in the other side
 		pt = new Point2D(-3, 5);
-		assertEquals(5, line.getDistance(pt), 1e-14);	
+		assertEquals(5, line.distance(pt), 1e-14);	
 	}
 	
 	/*
@@ -256,34 +256,34 @@ public class StraightLine2DTest extends TestCase {
 		StraightLine2D line;
 		
 		line = new StraightLine2D(1, 2, 1, 1);
-		assertEquals(line.getSignedDistance(2, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(1, 3), -Math.sqrt(2)/2, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), -Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), Math.sqrt(2)/2, Shape2D.ACCURACY);
 		
 		line = new StraightLine2D(1, 2, -1, -1);
-		assertEquals(line.getSignedDistance(2, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(1, 3), Math.sqrt(2)/2, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), -Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), -Math.sqrt(2)/2, Shape2D.ACCURACY);
 		
 		line = new StraightLine2D(1, 2, 1, 0);
-		assertEquals(line.getSignedDistance(1, 3), -1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(1, 1), 1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), -1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 1), 1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), 0, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, -1, 0);
-		assertEquals(line.getSignedDistance(1, 3), 1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(1, 1), -1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), 1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 1), -1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), 0, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, 1);
-		assertEquals(line.getSignedDistance(1, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(0, 2), -1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), 1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(0, 2), -1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), 1, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, -1);
-		assertEquals(line.getSignedDistance(1, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(0, 2), 1, Shape2D.ACCURACY);
-		assertEquals(line.getSignedDistance(2, 2), -1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(1, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(0, 2), 1, Shape2D.ACCURACY);
+		assertEquals(line.distanceSigned(2, 2), -1, Shape2D.ACCURACY);
 	}
 
 	/*
@@ -296,34 +296,34 @@ public class StraightLine2DTest extends TestCase {
 		Point2D p3 = new Point2D(2, 2);
 
 		line = new StraightLine2D(1, 2, 1, 1);
-		assertEquals(line.getProjectedPoint(p1), p1);
-		assertEquals(line.getProjectedPoint(p2), new Point2D(1.5, 2.5));
-		assertEquals(line.getProjectedPoint(p3), new Point2D(1.5, 2.5));
+		assertEquals(line.projectedPoint(p1), p1);
+		assertEquals(line.projectedPoint(p2), new Point2D(1.5, 2.5));
+		assertEquals(line.projectedPoint(p3), new Point2D(1.5, 2.5));
 		
 		line = new StraightLine2D(1, 2, -1, -1);
-		assertEquals(line.getProjectedPoint(p1), p1);
-		assertEquals(line.getProjectedPoint(p2), new Point2D(1.5, 2.5));
-		assertEquals(line.getProjectedPoint(p3), new Point2D(1.5, 2.5));
+		assertEquals(line.projectedPoint(p1), p1);
+		assertEquals(line.projectedPoint(p2), new Point2D(1.5, 2.5));
+		assertEquals(line.projectedPoint(p3), new Point2D(1.5, 2.5));
 		
 		line = new StraightLine2D(1, 2, 1, 0);
-		assertEquals(line.getProjectedPoint(p1), p3);
-		assertEquals(line.getProjectedPoint(p2), new Point2D(1, 2));
-		assertEquals(line.getProjectedPoint(p3), p3);
+		assertEquals(line.projectedPoint(p1), p3);
+		assertEquals(line.projectedPoint(p2), new Point2D(1, 2));
+		assertEquals(line.projectedPoint(p3), p3);
 
 		line = new StraightLine2D(1, 2, -1, 0);
-		assertEquals(line.getProjectedPoint(p1), p3);
-		assertEquals(line.getProjectedPoint(p2), new Point2D(1, 2));
-		assertEquals(line.getProjectedPoint(p3), p3);
+		assertEquals(line.projectedPoint(p1), p3);
+		assertEquals(line.projectedPoint(p2), new Point2D(1, 2));
+		assertEquals(line.projectedPoint(p3), p3);
 
 		line = new StraightLine2D(1, 2, 0, 1);
-		assertEquals(line.getProjectedPoint(p1), p2);
-		assertEquals(line.getProjectedPoint(p2), p2);
-		assertEquals(line.getProjectedPoint(p3), new Point2D(1, 2));
+		assertEquals(line.projectedPoint(p1), p2);
+		assertEquals(line.projectedPoint(p2), p2);
+		assertEquals(line.projectedPoint(p3), new Point2D(1, 2));
 
 		line = new StraightLine2D(1, 2, 0, -1);
-		assertEquals(line.getProjectedPoint(p1), p2);
-		assertEquals(line.getProjectedPoint(p2), p2);
-		assertEquals(line.getProjectedPoint(p3), new Point2D(1, 2));
+		assertEquals(line.projectedPoint(p1), p2);
+		assertEquals(line.projectedPoint(p2), p2);
+		assertEquals(line.projectedPoint(p3), new Point2D(1, 2));
 	}
 
 	public void testGetPolarCoefficients(){
@@ -331,32 +331,32 @@ public class StraightLine2DTest extends TestCase {
 		double tab[];
 		
 		line = new StraightLine2D(1, 2, 1, 1);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], Math.sqrt(2)/2, Shape2D.ACCURACY);
 		assertEquals(tab[1], 5*Math.PI/4, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, -1, -1);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], Math.sqrt(2)/2, Shape2D.ACCURACY);
 		assertEquals(tab[1], 5*Math.PI/4, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 1, 0);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], 2, Shape2D.ACCURACY);
 		assertEquals(tab[1], Math.PI, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, -1, 0);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], 2, Shape2D.ACCURACY);
 		assertEquals(tab[1], Math.PI, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, 1);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], 1, Shape2D.ACCURACY);
 		assertEquals(tab[1], Math.PI/2, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, -1);
-		tab = line.getPolarCoefficients();
+		tab = line.polarCoefficients();
 		assertEquals(tab[0], 1, Shape2D.ACCURACY);
 		assertEquals(tab[1], Math.PI/2, Shape2D.ACCURACY);
 	
@@ -372,18 +372,18 @@ public class StraightLine2DTest extends TestCase {
 		Point2D p2 = new Point2D(5, 3); 
 		Point2D p3 = new Point2D(3, 5); 
 		Point2D p4 = new Point2D(1, 5);
-		assertEquals(line1.getWindingAngle(p1), -Math.PI, 1e-14);
-		assertEquals(line2.getWindingAngle(p1), -Math.PI, 1e-14);
-		assertEquals(line3.getWindingAngle(p1), -Math.PI, 1e-14);
-		assertEquals(line1.getWindingAngle(p2), Math.PI, 1e-14);
-		assertEquals(line2.getWindingAngle(p2), -Math.PI, 1e-14);
-		assertEquals(line3.getWindingAngle(p2), -Math.PI, 1e-14);
-		assertEquals(line1.getWindingAngle(p3), Math.PI, 1e-14);
-		assertEquals(line2.getWindingAngle(p3), Math.PI, 1e-14);
-		assertEquals(line3.getWindingAngle(p3), -Math.PI, 1e-14);
-		assertEquals(line1.getWindingAngle(p4), Math.PI, 1e-14);
-		assertEquals(line2.getWindingAngle(p4), Math.PI, 1e-14);
-		assertEquals(line3.getWindingAngle(p4), Math.PI, 1e-14);		
+		assertEquals(line1.windingAngle(p1), -Math.PI, 1e-14);
+		assertEquals(line2.windingAngle(p1), -Math.PI, 1e-14);
+		assertEquals(line3.windingAngle(p1), -Math.PI, 1e-14);
+		assertEquals(line1.windingAngle(p2), Math.PI, 1e-14);
+		assertEquals(line2.windingAngle(p2), -Math.PI, 1e-14);
+		assertEquals(line3.windingAngle(p2), -Math.PI, 1e-14);
+		assertEquals(line1.windingAngle(p3), Math.PI, 1e-14);
+		assertEquals(line2.windingAngle(p3), Math.PI, 1e-14);
+		assertEquals(line3.windingAngle(p3), -Math.PI, 1e-14);
+		assertEquals(line1.windingAngle(p4), Math.PI, 1e-14);
+		assertEquals(line2.windingAngle(p4), Math.PI, 1e-14);
+		assertEquals(line3.windingAngle(p4), Math.PI, 1e-14);		
 	}
 
 	public void testClone() {

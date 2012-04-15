@@ -22,7 +22,7 @@ public interface CirculinearDomain2D extends CirculinearShape2D, Domain2D {
     // ===================================================================
     // redefines declaration of some parent interfaces
 
-    public abstract CirculinearBoundary2D getBoundary();
+    public abstract CirculinearBoundary2D boundary();
 
     public CirculinearDomain2D transform(CircleInversion2D inv);
 }

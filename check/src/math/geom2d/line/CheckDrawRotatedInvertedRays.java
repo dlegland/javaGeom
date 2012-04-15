@@ -46,7 +46,7 @@ public class CheckDrawRotatedInvertedRays extends JPanel{
 			ray.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

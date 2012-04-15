@@ -41,14 +41,14 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		
 		double dist = 5;
 		
-		CirculinearContinuousCurve2D parallel1 = curve.getParallel(dist);
-		assertEquals(3, parallel1.getSmoothPieces().size());
-		CirculinearContinuousCurve2D parallel2 = curve.getParallel(-dist);
-		assertEquals(3, parallel2.getSmoothPieces().size());
+		CirculinearContinuousCurve2D parallel1 = curve.parallel(dist);
+		assertEquals(3, parallel1.smoothPieces().size());
+		CirculinearContinuousCurve2D parallel2 = curve.parallel(-dist);
+		assertEquals(3, parallel2.smoothPieces().size());
 	}
 	
 	/**
-	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getLength()}.
+	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#length()}.
 	 */
 	public void testGetLength() {
 		LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), 
@@ -60,11 +60,11 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
-		assertEquals(curve.getLength(), 30, 1e-14);
+		assertEquals(curve.length(), 30, 1e-14);
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getLength(double)}.
+	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#length(double)}.
 	 */
 	public void testGetLengthDouble() {
 		LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), 
@@ -76,16 +76,16 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
-		assertEquals(curve.getLength(1), 10, 1e-14);
-		assertEquals(curve.getLength(2), 10, 1e-14);
-		assertEquals(curve.getLength(3), 20, 1e-14);
-		assertEquals(curve.getLength(4), 20, 1e-14);
-		assertEquals(curve.getLength(5), 30, 1e-14);
-		assertEquals(curve.getLength(0), 0, 1e-14);
+		assertEquals(curve.length(1), 10, 1e-14);
+		assertEquals(curve.length(2), 10, 1e-14);
+		assertEquals(curve.length(3), 20, 1e-14);
+		assertEquals(curve.length(4), 20, 1e-14);
+		assertEquals(curve.length(5), 30, 1e-14);
+		assertEquals(curve.length(0), 0, 1e-14);
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getPosition(double)}.
+	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#position(double)}.
 	 */
 	public void testGetPositionDouble() {
 		LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), 
@@ -97,13 +97,13 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 				new CirculinearContinuousCurve2D[]{line1, line2, line3});
 		
-		assertEquals(curve.getPosition(0), 0, 1e-14);
-		assertEquals(curve.getPosition(5), .5, 1e-14);
-		assertEquals(curve.getPosition(10), 1, 1e-14);
-		assertEquals(curve.getPosition(15), 2.5, 1e-14);
-		assertEquals(curve.getPosition(20), 3, 1e-14);
-		assertEquals(curve.getPosition(25), 4.5, 1e-14);
-		assertEquals(curve.getPosition(30), 5, 1e-14);
+		assertEquals(curve.position(0), 0, 1e-14);
+		assertEquals(curve.position(5), .5, 1e-14);
+		assertEquals(curve.position(10), 1, 1e-14);
+		assertEquals(curve.position(15), 2.5, 1e-14);
+		assertEquals(curve.position(20), 3, 1e-14);
+		assertEquals(curve.position(25), 4.5, 1e-14);
+		assertEquals(curve.position(30), 5, 1e-14);
 	}
 	
 	public void testGetReverseCurve() {
@@ -124,7 +124,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		
 		assertTrue(curve.isClosed());
 		
-		CirculinearContinuousCurve2D reversed = curve.getReverseCurve();
+		CirculinearContinuousCurve2D reversed = curve.reverse();
 		assertTrue(reversed.isClosed());
 		
 	}

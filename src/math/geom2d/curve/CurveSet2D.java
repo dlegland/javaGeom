@@ -54,7 +54,7 @@ extends Curve2D, ShapeSet2D<T> {
      * 
      * @return the inner collection of curves
      */
-	public Collection<T> getCurves() ;
+	public Collection<T> curves() ;
 
     /**
      * Returns the inner curve corresponding to the given index.
@@ -63,7 +63,7 @@ extends Curve2D, ShapeSet2D<T> {
      * @return the i-th inner curve
      * @since 0.6.3
      */
-	public T getCurve(int index) ;
+	public T curve(int index) ;
 
     /**
      * Returns the child curve corresponding to a given position.
@@ -73,28 +73,28 @@ extends Curve2D, ShapeSet2D<T> {
      * @return the curve corresponding to the position.
      * @since 0.6.3
      */
-    public T getChildCurve(double t) ;
+    public T childCurve(double t) ;
 
     /**
      * Returns the first curve of the collection if it exists, null otherwise.
      * 
      * @return the first curve of the collection
      */
-    public T getFirstCurve() ;
+    public T firstCurve() ;
 
     /**
      * Returns the last curve of the collection if it exists, null otherwise.
      * 
      * @return the last curve of the collection
      */
-    public T getLastCurve();
+    public T lastCurve();
 
     /**
      * Returns the number of curves in the collection
      * 
      * @return the number of curves in the collection
      */
-    public int getCurveNumber();
+    public int curveNumber();
     /**
      * Converts the position on the curve set, which is comprised between 0 and
      * 2*Nc-1 with Nc being the number of curves, to the position on the curve
@@ -102,7 +102,7 @@ extends Curve2D, ShapeSet2D<T> {
      * the t1 of the child curve.
      * 
      * @see #getGlobalPosition(int, double)
-     * @see #getCurveIndex(double)
+     * @see #curveIndex(double)
      * @param t the position on the curve set
      * @return the position on the subcurve
      */
@@ -113,7 +113,7 @@ extends Curve2D, ShapeSet2D<T> {
      * position on the curve set (between 0 and 2*Nc-1).
      * 
      * @see #getLocalPosition(double)
-     * @see #getCurveIndex(double)
+     * @see #curveIndex(double)
      * @param i the index of the curve to consider
      * @param t the position on the curve
      * @return the position on the curve set, between 0 and 2*Nc-1
@@ -127,7 +127,7 @@ extends Curve2D, ShapeSet2D<T> {
      *            number of curves minus 1
      * @return the index of the curve which contains position t
      */
-    public int getCurveIndex(double t);
+    public int curveIndex(double t);
 
     
     // ===================================================================

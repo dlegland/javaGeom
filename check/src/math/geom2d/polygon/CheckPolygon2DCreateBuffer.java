@@ -86,10 +86,10 @@ public class CheckPolygon2DCreateBuffer extends JPanel{
 		g2.setColor(Color.CYAN);
 		buffer.fill(g2);
 		g2.setColor(Color.BLUE);
-		buffer.getBoundary().draw(g2);
+		buffer.boundary().draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		polygon.getBoundary().draw(g2);
+		polygon.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){		

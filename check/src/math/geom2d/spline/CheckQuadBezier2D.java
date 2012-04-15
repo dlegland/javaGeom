@@ -44,7 +44,7 @@ public class CheckQuadBezier2D  extends JPanel{
 		for(Point2D point : points)
 			point.draw(g2, 5);
 		
-		QuadBezierCurve2D bezier2 = bezier.getSubCurve(.5, .75);
+		QuadBezierCurve2D bezier2 = bezier.subCurve(.5, .75);
 		g2.setColor(Color.MAGENTA);
 		g2.setStroke(new BasicStroke(2.0f));
 		bezier2.draw(g2);

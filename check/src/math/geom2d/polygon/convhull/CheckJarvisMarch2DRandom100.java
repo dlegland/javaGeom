@@ -70,7 +70,7 @@ public class CheckJarvisMarch2DRandom100 extends JPanel{
 			point.draw(g2, 2);
 		}
 		
-		Polygon2D hull = new JarvisMarch2D().convexHull(points.getPoints());
+		Polygon2D hull = new JarvisMarch2D().convexHull(points.points());
 		g2.setColor(Color.BLUE);
 		hull.draw(g2);
 	}

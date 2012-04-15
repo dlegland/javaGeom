@@ -18,33 +18,33 @@ import math.geom2d.circulinear.CirculinearCurve2D;
  */
 public interface LinearShape2D extends CirculinearCurve2D {
 
-    public abstract StraightLine2D getSupportingLine();
+    public abstract StraightLine2D supportingLine();
 
     /**
      * Gets Angle with axis (O,i), counted counter-clockwise. Result is given
      * between 0 and 2*pi.
      */
-    public abstract double getHorizontalAngle();
+    public abstract double horizontalAngle();
 
     /**
      * Returns a point in the linear shape.
      * 
      * @return a point in the linear shape.
      */
-    public abstract Point2D getOrigin();
+    public abstract Point2D origin();
 
     /**
      * Return one direction vector of the linear shape.
      * 
      * @return a direction vector
      */
-    public abstract Vector2D getVector();
+    public abstract Vector2D direction();
 
     /**
      * Returns the unique intersection with a linear shape. If the intersection
      * doesn't exist (parallel lines), returns null.
      */
-    public abstract Point2D getIntersection(LinearShape2D line);
+    public abstract Point2D intersection(LinearShape2D line);
 
     public LinearShape2D transform(AffineTransform2D trans);
 }

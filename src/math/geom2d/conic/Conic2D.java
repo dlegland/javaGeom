@@ -78,7 +78,7 @@ public interface Conic2D extends Boundary2D {
 
     // type accessors ------------
 
-    public abstract Type getConicType();
+    public abstract Type conicType();
 
     /**
      * Returns the coefficient of the Cartesian representation of the conic.
@@ -88,17 +88,17 @@ public interface Conic2D extends Boundary2D {
      * <p>
      * The length of the array is then of size 6.
      */
-    public abstract double[] getConicCoefficients();
+    public abstract double[] conicCoefficients();
 
     /**
      * Returns the eccentricity of the conic.
      */
-    public abstract double getEccentricity();
+    public abstract double eccentricity();
 
     // ===================================================================
     // modifiers
 
-    public abstract Conic2D getReverseCurve();
+    public abstract Conic2D reverse();
 
     public abstract Conic2D transform(AffineTransform2D trans);
 

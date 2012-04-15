@@ -106,7 +106,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#getSignedDistance(double, double)}.
+	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#distanceSigned(double, double)}.
 	 * Test the method getSignedDistance. Use a clinical case based on line
 	 * segments. The test point is outside the curve, but inside the domain
 	 * bounded by the 'closest' curve. Actually, 2 curves are closest.
@@ -137,7 +137,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
 		assertTrue(!boundary.isInside(pt3));
 		
 		// Try on the inverse curve
-		Boundary2D reverse = boundary.getReverseCurve();
+		Boundary2D reverse = boundary.reverse();
 		assertTrue(!reverse.isInside(pt0));
 		assertTrue(reverse.isInside(pt1));
 		assertTrue(reverse.isInside(pt2));
@@ -155,7 +155,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
 		assertTrue(!boundary2.isInside(pt3));
 		
 		// Try on the inverse curve
-		Boundary2D reverse2 = boundary.getReverseCurve();
+		Boundary2D reverse2 = boundary.reverse();
 		assertTrue(!reverse2.isInside(pt0));
 		assertTrue(reverse2.isInside(pt1));
 		assertTrue(reverse2.isInside(pt2));

@@ -44,7 +44,7 @@ public class CheckBufferPolyCurveColinear extends JPanel{
 		curve = new PolyCirculinearCurve2D<CirculinearElement2D>(
 				new CirculinearElement2D[]{line1, arc1, line2, arc2}, true);
 		
-		domain = curve.getBuffer(dist);
+		domain = curve.buffer(dist);
 	}
 	
 	public void paintComponent(Graphics g){

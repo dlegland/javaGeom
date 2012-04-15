@@ -140,7 +140,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     public static StraightLine2D createParallel(LinearShape2D linear,
             double d) {
-        StraightLine2D line = linear.getSupportingLine();
+        StraightLine2D line = linear.supportingLine();
         double d2 = d / Math.hypot(line.dx, line.dy);
 		return new StraightLine2D(
 				line.x0 + line.dy * d2, line.y0 - line.dx * d2, 
@@ -155,7 +155,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     public static StraightLine2D createPerpendicular(
             LinearShape2D linear, Point2D point) {
-        StraightLine2D line = linear.getSupportingLine();
+        StraightLine2D line = linear.supportingLine();
         return new StraightLine2D(point, -line.dy, line.dx);
     }
 
@@ -178,7 +178,7 @@ public class StraightLine2D extends AbstractLine2D implements
             Point2D p4) {
         StraightLine2D line1 = new StraightLine2D(p1, p2);
         StraightLine2D line2 = new StraightLine2D(p3, p4);
-        return line1.getIntersection(line2);
+        return line1.intersection(line2);
     }
 
     // ===================================================================
@@ -239,7 +239,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * straight line or edge), and going through the given point.
      */
     public StraightLine2D(LinearShape2D line, Point2D point) {
-        this(point, line.getVector());
+        this(point, line.direction());
     }
 
     /**
@@ -264,7 +264,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Returns a new Straight line, parallel to another straight object (ray,
      * straight line or edge), and going through the given point.
      */
-    public StraightLine2D getParallel(Point2D point) {
+    public StraightLine2D parallel(Point2D point) {
         return new StraightLine2D(point, dx, dy);
     }
 
@@ -279,7 +279,7 @@ public class StraightLine2D extends AbstractLine2D implements
 	 * @throws DegeneratedLine2DException
 	 *             if line direction vector is null
 	 */
-    public StraightLine2D getParallel(double d) {
+    public StraightLine2D parallel(double d) {
 		double d2 = Math.hypot(this.dx, this.dy);
 		if (Math.abs(d2) < Shape2D.ACCURACY)
 			throw new DegeneratedLine2DException(
@@ -293,7 +293,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * straight line or edge), and going through the given point.
      */
     @Override
-    public StraightLine2D getPerpendicular(Point2D point) {
+    public StraightLine2D perpendicular(Point2D point) {
         return new StraightLine2D(point, -dy, dx);
     }
     
@@ -307,8 +307,8 @@ public class StraightLine2D extends AbstractLine2D implements
         double r 		= inv.getRadius();
         
         // projection of inversion center on the line
-        Point2D po 	= this.getProjectedPoint(center);
-        double d 	= this.getDistance(center);
+        Point2D po 	= this.projectedPoint(center);
+        double d 	= this.distance(center);
 
         // Degenerate case of a point belonging to the line:
 		// the transform is the line itself.
@@ -317,7 +317,7 @@ public class StraightLine2D extends AbstractLine2D implements
         }
         
         // angle from center to line
-        double angle = Angle2D.getHorizontalAngle(center, po);
+        double angle = Angle2D.horizontalAngle(center, po);
 
 		// center of transformed circle
 		double r2 = r * r / d / 2;
@@ -334,13 +334,13 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods specific to Boundary2D interface
 
-    public Collection<Contour2D> getBoundaryCurves() {
+    public Collection<Contour2D> boundaryCurves() {
         ArrayList<Contour2D> list = new ArrayList<Contour2D>(1);
         list.add(this);
         return list;
     }
 
-    public Domain2D getDomain() {
+    public Domain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
 
@@ -352,10 +352,10 @@ public class StraightLine2D extends AbstractLine2D implements
     // methods specific to OrientedCurve2D interface
 
     @Override
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
 
-        double angle1 = Angle2D.getHorizontalAngle(-dx, -dy);
-        double angle2 = Angle2D.getHorizontalAngle(dx, dy);
+        double angle1 = Angle2D.horizontalAngle(-dx, -dy);
+        double angle2 = Angle2D.horizontalAngle(dx, dy);
 
         if (this.isInside(point)) {
             if (angle2>angle1)
@@ -378,7 +378,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Throws an exception when called.
      */
 	@Override
-    public Polyline2D getAsPolyline(int n) {
+    public Polyline2D asPolyline(int n) {
         throw new UnboundedShape2DException(this);
     }
 
@@ -388,19 +388,19 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /** Throws an infiniteShapeException */
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         throw new UnboundedShape2DException(this);
     }
 
 	/** Throws an infiniteShapeException */
 	@Override
-	public Point2D getLastPoint() {
+	public Point2D lastPoint() {
 		throw new UnboundedShape2DException(this);
 	}
 
     /** Returns an empty list of points. */
 	@Override
-    public Collection<Point2D> getSingularPoints() {
+    public Collection<Point2D> singularPoints() {
         return new ArrayList<Point2D>(0);
     }
 
@@ -429,7 +429,7 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Gets the point specified with the parametric representation of the line.
      */
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         return new Point2D(x0+dx*t, y0+dy*t);
     }
 
@@ -437,7 +437,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Need to override to cast the type.
      */
     @Override
-    public Collection<? extends StraightLine2D> getContinuousCurves() {
+    public Collection<? extends StraightLine2D> continuousCurves() {
         ArrayList<StraightLine2D> list = 
         	new ArrayList<StraightLine2D>(1);
         list.add(this);
@@ -448,7 +448,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Returns the straight line with same origin but with opposite direction
      * vector.
      */
-    public StraightLine2D getReverseCurve() {
+    public StraightLine2D reverse() {
         return new StraightLine2D(this.x0, this.y0, -this.dx, -this.dy);
     }
 
@@ -468,12 +468,12 @@ public class StraightLine2D extends AbstractLine2D implements
      * Returns the distance of the point (x, y) to this straight line.
      */
     @Override
-    public double getDistance(double x, double y) {
-        Point2D proj = super.getProjectedPoint(x, y);
-        return proj.getDistance(x, y);
+    public double distance(double x, double y) {
+        Point2D proj = super.projectedPoint(x, y);
+        return proj.distance(x, y);
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         if (Math.abs(dx)<0)
             return new Box2D(
                     x0, x0, 
@@ -493,7 +493,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     @Override
     public StraightLine2D transform(AffineTransform2D trans) {
-        double[] tab = trans.getCoefficients();
+        double[] tab = trans.coefficients();
         return new StraightLine2D(
                 x0*tab[0]+y0*tab[1]+tab[2], 
                 x0*tab[3]+y0*tab[4]+tab[5], 

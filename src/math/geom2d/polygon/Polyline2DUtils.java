@@ -49,9 +49,9 @@ public abstract class Polyline2DUtils {
     	
     	// Eventually tests extremities
     	if (closed) {
-    		Point2D p1 = polyline.getFirstPoint();
-    		Point2D p2 = polyline.getLastPoint();
-    		if (p1.getDistance(p2) < Shape2D.ACCURACY)
+    		Point2D p1 = polyline.firstPoint();
+    		Point2D p2 = polyline.lastPoint();
+    		if (p1.distance(p2) < Shape2D.ACCURACY)
     			return true;
     	}
     	
@@ -78,7 +78,7 @@ public abstract class Polyline2DUtils {
         result.setClosed(polyline instanceof LinearRing2D);
 
         // evacuate degenerate case.
-        if (polyline.getVertices().size()<2)
+        if (polyline.vertices().size()<2)
             return result;
 
         // ----- declarations -----
@@ -101,42 +101,42 @@ public abstract class Polyline2DUtils {
             // Add eventually a circle arc, and the first line segment.
 
             // Extract parallel to last edge
-            LineSegment2D lastEdge = polyline.getLastEdge();
+            LineSegment2D lastEdge = polyline.lastEdge();
             line0 = StraightLine2D.createParallel(lastEdge, d);
 
-            v2 = lastEdge.getLastPoint();
-            p0 = line0.getProjectedPoint(v2);
+            v2 = lastEdge.lastPoint();
+            p0 = line0.projectedPoint(v2);
 
             // extract current vertices, and current parallel
-            iterator = polyline.getVertices().iterator();
+            iterator = polyline.vertices().iterator();
             v1 = iterator.next();
             v2 = iterator.next();
-            line = new StraightLine2D(v1, v2).getParallel(d);
+            line = new StraightLine2D(v1, v2).parallel(d);
 
             // Check angle of the 2 lines
-            p1 = line.getProjectedPoint(v1);
-            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+            p1 = line.projectedPoint(v1);
+            if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> next line segment will be
                 // truncated
-                p1 = line.getIntersection(line0);
+                p1 = line.intersection(line0);
                 p0 = p1;
             } else {
                 // line is going to the left -> add a circle arc
                 addCircleArc(result, v1, p0, p1, d);
             }
 
-            p2 = line.getProjectedPoint(v2);
+            p2 = line.projectedPoint(v2);
             line0 = line;
         } else {
             // extract current vertices
-            iterator = polyline.getVertices().iterator();
+            iterator = polyline.vertices().iterator();
             v1 = iterator.next();
             v2 = iterator.next();
 
             // current parallel
-            line0 = new StraightLine2D(v1, v2).getParallel(d);
-            p1 = line0.getProjectedPoint(v1);
-            p2 = line0.getProjectedPoint(v2);
+            line0 = new StraightLine2D(v1, v2).parallel(d);
+            p1 = line0.projectedPoint(v1);
+            p2 = line0.projectedPoint(v2);
         }
 
         // ----- Main loop -----
@@ -146,13 +146,13 @@ public abstract class Polyline2DUtils {
             // Compute line parallel to current line segment
             v1 = v2;
             v2 = iterator.next();
-            line = new StraightLine2D(v1, v2).getParallel(d);
+            line = new StraightLine2D(v1, v2).parallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+            if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
-                p2 = line.getIntersection(line0);
+                p2 = line.intersection(line0);
                 // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
@@ -164,7 +164,7 @@ public abstract class Polyline2DUtils {
             }
 
             // Prepare for next iteration
-            p2 = line.getProjectedPoint(v2);
+            p2 = line.projectedPoint(v2);
             line0 = line;
         }
 
@@ -172,16 +172,16 @@ public abstract class Polyline2DUtils {
 
         if (polyline instanceof LinearRing2D) {
             // current line segment join the last point to the first point
-            iterator = polyline.getVertices().iterator();
+            iterator = polyline.vertices().iterator();
             v1 = v2;
             v2 = iterator.next();
-            line = new StraightLine2D(v1, v2).getParallel(d);
+            line = new StraightLine2D(v1, v2).parallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+            if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
-                p2 = line.getIntersection(line0);
+                p2 = line.intersection(line0);
                 // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
@@ -223,7 +223,7 @@ public abstract class Polyline2DUtils {
         result.setClosed(true);
 
         // evacuate degenerate case.
-        if (polyline.getVertices().size() < 2)
+        if (polyline.vertices().size() < 2)
             return result;
 
         // ----- declarations -----
@@ -245,31 +245,31 @@ public abstract class Polyline2DUtils {
         // Add eventually a circle arc, and the first line segment.
 
         // Extract parallel to last edge
-        LineSegment2D lastEdge = polyline.getLastEdge();
+        LineSegment2D lastEdge = polyline.lastEdge();
         line0 = StraightLine2D.createParallel(lastEdge, d);
 
-        v2 = lastEdge.getLastPoint();
-        p0 = line0.getProjectedPoint(v2);
+        v2 = lastEdge.lastPoint();
+        p0 = line0.projectedPoint(v2);
 
         // extract current vertices, and current parallel
-        iterator = polyline.getVertices().iterator();
+        iterator = polyline.vertices().iterator();
         v1 = iterator.next();
         v2 = iterator.next();
-        line = new StraightLine2D(v1, v2).getParallel(d);
+        line = new StraightLine2D(v1, v2).parallel(d);
 
         // Check angle of the 2 lines
-        p1 = line.getProjectedPoint(v1);
-        if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+        p1 = line.projectedPoint(v1);
+        if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
             // Line is going to the right -> next line segment will be
             // truncated
-            p1 = line.getIntersection(line0);
+            p1 = line.intersection(line0);
             p0 = p1;
         } else {
             // line is going to the left -> add a circle arc
             addCircleArc(result, v1, p0, p1, d);
         }
 
-        p2 = line.getProjectedPoint(v2);
+        p2 = line.projectedPoint(v2);
         line0 = line;
 
         // ----- Main loop -----
@@ -279,13 +279,13 @@ public abstract class Polyline2DUtils {
             // Compute line parallel to current line segment
             v1 = v2;
             v2 = iterator.next();
-            line = new StraightLine2D(v1, v2).getParallel(d);
+            line = new StraightLine2D(v1, v2).parallel(d);
 
             // Check angle of the 2 lines
-            if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+            if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
                 // Line is going to the right -> add the previous line segment
                 // truncated at corner
-                p2 = line.getIntersection(line0);
+                p2 = line.intersection(line0);
                 // TODO: need mode precise control
                 result.addCurve(new LineSegment2D(p1, p2));
                 p1 = p2;
@@ -297,23 +297,23 @@ public abstract class Polyline2DUtils {
             }
 
             // Prepare for next iteration
-            p2 = line.getProjectedPoint(v2);
+            p2 = line.projectedPoint(v2);
             line0 = line;
         }
 
         // ----- Post processing -----
 
         // current line segment join the last point to the first point
-        iterator = polyline.getVertices().iterator();
+        iterator = polyline.vertices().iterator();
         v1 = v2;
         v2 = iterator.next();
-        line = new StraightLine2D(v1, v2).getParallel(d);
+        line = new StraightLine2D(v1, v2).parallel(d);
 
         // Check angle of the 2 lines
-        if (Angle2D.getAngle(line0, line) > Math.PI ^ d < 0) {
+        if (Angle2D.angle(line0, line) > Math.PI ^ d < 0) {
             // Line is going to the right -> add the previous line segment
             // truncated at corner
-            p2 = line.getIntersection(line0);
+            p2 = line.intersection(line0);
             // TODO: need mode precise control
             result.addCurve(new LineSegment2D(p1, p2));
             p1 = p2;
@@ -340,8 +340,8 @@ public abstract class Polyline2DUtils {
     private static void addCircleArc(PolyCurve2D<SmoothOrientedCurve2D> result, 
     		Point2D v1, Point2D p1, Point2D p2, double d) {
         Circle2D circle = new Circle2D(v1, Math.abs(d));
-        double t0 = circle.getPosition(p1);
-        double t1 = circle.getPosition(p2);
+        double t0 = circle.position(p1);
+        double t1 = circle.position(p2);
         result.addCurve(new CircleArc2D(v1, Math.abs(d), t0, t1, d>0));
     }
     
@@ -361,10 +361,10 @@ public abstract class Polyline2DUtils {
         
         // iterate on edge couples
         Point2D point;
-        for (LineSegment2D edge1 : poly1.getEdges()) {
-            for (LineSegment2D edge2 : poly2.getEdges()) {
+        for (LineSegment2D edge1 : poly1.edges()) {
+            for (LineSegment2D edge2 : poly2.edges()) {
             	// if the intersection is not empty, add it to the set
-                point = edge1.getIntersection(edge2);
+                point = edge1.intersection(edge2);
                 if (point != null) {
                 	// we keep only one intersection by couple
                 	if (!points.contains(point))

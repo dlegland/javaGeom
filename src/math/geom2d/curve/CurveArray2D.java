@@ -134,12 +134,12 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * the t1 of the child curve.
      * 
      * @see #getGlobalPosition(int, double)
-     * @see #getCurveIndex(double)
+     * @see #curveIndex(double)
      * @param t the position on the curve set
      * @return the position on the subcurve
      */
     public double getLocalPosition(double t) {
-        int i = this.getCurveIndex(t);
+        int i = this.curveIndex(t);
         T curve = curves.get(i);
         double t0 = curve.getT0();
         double t1 = curve.getT1();
@@ -151,7 +151,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * position on the curve set (between 0 and 2*Nc-1).
      * 
      * @see #getLocalPosition(double)
-     * @see #getCurveIndex(double)
+     * @see #curveIndex(double)
      * @param i the index of the curve to consider
      * @param t the position on the curve
      * @return the position on the curve set, between 0 and 2*Nc-1
@@ -170,7 +170,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      *            number of curves minus 1
      * @return the index of the curve which contains position t
      */
-    public int getCurveIndex(double t) {
+    public int curveIndex(double t) {
 
         // check bounds
         if (curves.size()==0)
@@ -231,7 +231,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the inner collection of curves
      */
-	public Collection<T> getCurves() {
+	public Collection<T> curves() {
         return curves;
     }
 
@@ -242,7 +242,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * @return the i-th inner curve
      * @since 0.6.3
      */
-	public T getCurve(int index) {
+	public T curve(int index) {
         return curves.get(index);
     }
 
@@ -254,10 +254,10 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * @return the curve corresponding to the position.
      * @since 0.6.3
      */
-    public T getChildCurve(double t) {
+    public T childCurve(double t) {
         if (curves.size()==0)
             return null;
-        return curves.get(getCurveIndex(t));
+        return curves.get(curveIndex(t));
     }
 
     /**
@@ -265,7 +265,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the first curve of the collection
      */
-    public T getFirstCurve() {
+    public T firstCurve() {
         if (curves.size()==0)
             return null;
         return curves.get(0);
@@ -276,7 +276,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the last curve of the collection
      */
-    public T getLastCurve() {
+    public T lastCurve() {
         if (curves.size()==0)
             return null;
         return curves.get(curves.size()-1);
@@ -287,7 +287,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the number of curves in the collection
      */
-    public int getCurveNumber() {
+    public int curveNumber() {
         return curves.size();
     }
 
@@ -301,12 +301,12 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     // ===================================================================
     // methods inherited from interface Curve2D
 
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
         ArrayList<Point2D> intersect = new ArrayList<Point2D>();
 
         // add intersections with each curve
         for (Curve2D curve : curves)
-            intersect.addAll(curve.getIntersections(line));
+            intersect.addAll(curve.intersections(line));
 
         return intersect;
     }
@@ -324,13 +324,13 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPoint(double)
      */
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         if (curves.size()==0)
             return null;
         if (t<getT0())
-            return this.getFirstCurve().getFirstPoint();
+            return this.firstCurve().firstPoint();
         if (t>getT1())
-            return this.getLastCurve().getLastPoint();
+            return this.lastCurve().lastPoint();
 
         // curve index
         int nc = (int) Math.floor(t);
@@ -341,14 +341,14 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
             Curve2D curve = curves.get(indc);
             double pos = Curve2DUtils.fromUnitSegment(t-nc, 
             		curve.getT0(), curve.getT1());
-            return curve.getPoint(pos);
+            return curve.point(pos);
         } else {
             // return either last point of preceding curve,
             // or first point of next curve
             if (t-nc<.5)
-                return curves.get(indc).getLastPoint();
+                return curves.get(indc).lastPoint();
             else
-                return curves.get(indc+1).getFirstPoint();
+                return curves.get(indc+1).firstPoint();
         }
     }
 
@@ -357,10 +357,10 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the first point of the curve
      */
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         if (curves.size()==0)
             return null;
-        return getFirstCurve().getFirstPoint();
+        return firstCurve().firstPoint();
     }
 
     /**
@@ -368,19 +368,19 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * 
      * @return the last point of the curve.
      */
-    public Point2D getLastPoint() {
+    public Point2D lastPoint() {
         if (curves.size()==0)
             return null;
-        return getLastCurve().getLastPoint();
+        return lastCurve().lastPoint();
     }
 
     /**
      * Computes the set of singular points as the set of singular points
      * of each curve, plus the extremities of each curve.
      * Each point is referenced only once.
-     * @see #getVertices()
+     * @see #vertices()
      */
-    public Collection<Point2D> getSingularPoints() {
+    public Collection<Point2D> singularPoints() {
     	// create array for result
     	ArrayList<Point2D> points = new ArrayList<Point2D>();
     	double eps = Shape2D.ACCURACY;
@@ -388,16 +388,16 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     	// iterate on curves composing the array
         for (Curve2D curve : curves){
         	// Add singular points inside curve
-            for (Point2D point : curve.getSingularPoints())
+            for (Point2D point : curve.singularPoints())
             	addPointWithGuardDistance(points, point, eps);
             
             // add first extremity
             if(!Curve2DUtils.isLeftInfinite(curve))
-            	addPointWithGuardDistance(points, curve.getFirstPoint(), eps);
+            	addPointWithGuardDistance(points, curve.firstPoint(), eps);
             
             // add last extremity
             if(!Curve2DUtils.isRightInfinite(curve))
-            	addPointWithGuardDistance(points, curve.getLastPoint(), eps);
+            	addPointWithGuardDistance(points, curve.lastPoint(), eps);
         }
         // return the set of singular points
         return points;
@@ -422,17 +422,17 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     /**
      * Implementation of getVertices() for curve returns the same result as 
      * the method getSingularPoints().
-     * @see #getSingularPoints()
+     * @see #singularPoints()
      */
-	public Collection<Point2D> getVertices() {
-		return this.getSingularPoints();
+	public Collection<Point2D> vertices() {
+		return this.singularPoints();
 	}
 
     public boolean isSingular(double pos) {
         if (Math.abs(pos-Math.round(pos))<Shape2D.ACCURACY)
             return true;
 
-        int nc = this.getCurveIndex(pos);
+        int nc = this.curveIndex(pos);
         // int nc = (int) Math.floor(pos);
         if (nc-Math.floor(pos/2.0)>0)
             return true; // if is between 2
@@ -444,17 +444,17 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return curve.isSingular(this.getLocalPosition(pos));
     }
 
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
         double x = point.getX(), y = point.getY();
         double pos = 0, t0, t1;
 
         int i = 0;
         for (Curve2D curve : curves) {
-            dist = curve.getDistance(x, y);
+            dist = curve.distance(x, y);
             if (dist<minDist) {
                 minDist = dist;
-                pos = curve.getPosition(point);
+                pos = curve.position(point);
                 // format position
                 t0 = curve.getT0();
                 t1 = curve.getT1();
@@ -472,7 +472,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
         int i = 0;
         for (Curve2D curve : curves) {
-            dist = curve.getDistance(x, y);
+            dist = curve.distance(x, y);
             if (dist < minDist) {
                 minDist = dist;
                 pos = curve.project(point);
@@ -486,14 +486,14 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return pos;
     }
 
-    public Curve2D getReverseCurve() {
+    public Curve2D reverse() {
         // create array of reversed curves
     	int n = curves.size();
         Curve2D[] curves2 = new Curve2D[n];
         
         // reverse each curve
         for (int i = 0; i < n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the reversed final curve
         return new CurveArray2D<Curve2D>(curves2);
@@ -502,7 +502,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     /**
      * Return an instance of CurveArray2D.
      */
-    public CurveSet2D<? extends Curve2D> getSubCurve(double t0, double t1) {
+    public CurveSet2D<? extends Curve2D> subCurve(double t0, double t1) {
         // number of curves in the set
         int nc = curves.size();
 
@@ -541,7 +541,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
             		curve.getT0(), curve.getT1());
             pos1 = Curve2DUtils.fromUnitSegment(t1-t1f, 
             		curve.getT0(), curve.getT1());
-            res.addCurve(curve.getSubCurve(pos0, pos1));
+            res.addCurve(curve.subCurve(pos0, pos1));
             return res;
         }
 
@@ -549,7 +549,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         curve = curves.get(ind0);
         pos0 = Curve2DUtils.fromUnitSegment(t0-t0f, 
         		curve.getT0(), curve.getT1());
-        res.addCurve(curve.getSubCurve(pos0, curve.getT1()));
+        res.addCurve(curve.subCurve(pos0, curve.getT1()));
 
         if (ind1>ind0) {
             // add all the whole curves between the 2 cuts
@@ -569,7 +569,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         curve = curves.get(ind1);
         pos1 = Curve2DUtils.fromUnitSegment(t1-t1f, 
         		curve.getT0(), curve.getT1());
-        res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
+        res.addCurve(curve.subCurve(curve.getT0(), pos1));
 
         // return the curve set
         return res;
@@ -578,14 +578,14 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     // ===================================================================
     // methods inherited from interface Shape2D
 
-    public double getDistance(Point2D p) {
-        return getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return distance(p.getX(), p.getY());
     }
 
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         double dist = Double.POSITIVE_INFINITY;
         for (Curve2D curve : curves)
-            dist = Math.min(dist, curve.getDistance(x, y));
+            dist = Math.min(dist, curve.distance(x, y));
         return dist;
     }
 
@@ -613,7 +613,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     /**
      * Returns bounding box for the CurveArray2D.
      */
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double xmax = Double.MIN_VALUE;
@@ -621,7 +621,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
         Box2D box;
         for (Curve2D curve : curves) {
-            box = curve.getBoundingBox();
+            box = curve.boundingBox();
             xmin = Math.min(xmin, box.getMinX());
             ymin = Math.min(ymin, box.getMinY());
             xmax = Math.max(xmax, box.getMaxX());
@@ -645,7 +645,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return result;
     }
 
-    public Collection<? extends ContinuousCurve2D> getContinuousCurves() {
+    public Collection<? extends ContinuousCurve2D> continuousCurves() {
     	// create array for storing result
         ArrayList<ContinuousCurve2D> continuousCurves = 
         	new ArrayList<ContinuousCurve2D>();
@@ -656,7 +656,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
             if (curve instanceof ContinuousCurve2D) {
                 continuousCurves.add((ContinuousCurve2D) curve);
             } else {
-                continuousCurves.addAll(curve.getContinuousCurves());
+                continuousCurves.addAll(curve.continuousCurves());
             }
         }
 
@@ -690,8 +690,8 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
         // move to the first point of the first curves
         Point2D point;
-        for (ContinuousCurve2D curve : this.getContinuousCurves()) {
-            point = curve.getFirstPoint();
+        for (ContinuousCurve2D curve : this.continuousCurves()) {
+            point = curve.firstPoint();
             path.moveTo((float) point.getX(), (float) point.getY());
             path = curve.appendPath(path);
         }
@@ -703,7 +703,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     /* (non-Javadoc)
      * @see math.geom2d.curve.Curve2D#getAsAWTShape()
      */
-    public Shape getAsAWTShape() {
+    public Shape asAwtShape() {
         return this.getGeneralPath();
     }
 
@@ -756,7 +756,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         CurveArray2D<?> curveSet = (CurveArray2D<?>) obj;
 
         // check the number of curves in each set
-        if (this.getCurveNumber()!=curveSet.getCurveNumber())
+        if (this.curveNumber()!=curveSet.curveNumber())
             return false;
 
         // return false if at least one couple of curves does not match

@@ -171,14 +171,14 @@ public abstract class Curve2DUtils {
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 
 		// add all the intersections with edges of the box boundary
-		for (LinearShape2D edge : box.getEdges())
-			points.addAll(curve.getIntersections(edge));
+		for (LinearShape2D edge : box.edges())
+			points.addAll(curve.intersections(edge));
 
 		// convert list to point array, sorted wrt to their position on the
 		// curve
 		SortedSet<Double> set = new TreeSet<Double>();
 		for (Point2D p : points)
-			set.add(new Double(curve.getPosition(p)));
+			set.add(new Double(curve.position(p)));
 
 		// iterator on the intersection positions
 		Iterator<Double> iter = set.iterator();
@@ -206,8 +206,8 @@ public abstract class Curve2DUtils {
 		// remove an intersection point if the curve portions before and after
 		// are both either inside or outside of the box.
 		for (int i = 0; i < nInter; i++) {
-			Point2D p1 = curve.getPoint(between[i]);
-			Point2D p2 = curve.getPoint(between[i + 1]);
+			Point2D p1 = curve.point(between[i]);
+			Point2D p2 = curve.point(between[i + 1]);
 			boolean b1 = box.contains(p1);
 			boolean b2 = box.contains(p2);
 			if (b1 == b2)
@@ -228,10 +228,10 @@ public abstract class Curve2DUtils {
 			// compute position of an arbitrary point on the curve
 			Point2D point;
 			if (curve.isBounded()) {
-				point = curve.getFirstPoint();
+				point = curve.firstPoint();
 			} else {
 				double pos = choosePosition(curve.getT0(), curve.getT1());
-				point = curve.getPoint(pos);
+				point = curve.point(pos);
 			}
 
 			// if the box contains a point, it contains the whole curve
@@ -251,15 +251,15 @@ public abstract class Curve2DUtils {
 		if (isLeftInfinite(curve)) {
 			// choose point between -infinite and first intersection
 			double pos = choosePosition(t0, set.iterator().next());
-			inside = box.contains(curve.getPoint(pos));
+			inside = box.contains(curve.point(pos));
 		} else {
 			// extract first point of the curve
-			Point2D point = curve.getFirstPoint();
+			Point2D point = curve.firstPoint();
 			inside = box.contains(point);
 
 			// if first point is on the boundary, then choose another point
 			// located between first point and first intersection
-			if (box.getBoundary().contains(point)) {
+			if (box.boundary().contains(point)) {
 				touch = true;
 
 				double pos = choosePosition(t0, iter.next());
@@ -267,7 +267,7 @@ public abstract class Curve2DUtils {
 					pos = choosePosition(t0, iter.next());
 				if (Math.abs(pos - t0) < Shape2D.ACCURACY)
 					pos = choosePosition(t0, curve.getT1());
-				point = curve.getPoint(pos);
+				point = curve.point(pos);
 
 				// remove the first point from the list of intersections
 				set.remove(t0);
@@ -276,7 +276,7 @@ public abstract class Curve2DUtils {
 				// and remove next intersection
 				if (box.contains(point)) {
 					pos = set.iterator().next();
-					res.addCurve(curve.getSubCurve(t0, pos));
+					res.addCurve(curve.subCurve(t0, pos));
 					set.remove(pos);
 				}
 
@@ -293,7 +293,7 @@ public abstract class Curve2DUtils {
 			if (curve.isClosed())
 				pos0 = iter.next();
 			else
-				res.addCurve(curve.getSubCurve(curve.getT0(), iter.next()));
+				res.addCurve(curve.subCurve(curve.getT0(), iter.next()));
 
 		// ----- add portions of curve between each couple of intersections
 
@@ -304,7 +304,7 @@ public abstract class Curve2DUtils {
 				pos2 = iter.next().doubleValue();
 			else
 				pos2 = curve.isClosed() && !touch ? pos0 : curve.getT1();
-			res.addCurve(curve.getSubCurve(pos1, pos2));
+			res.addCurve(curve.subCurve(pos1, pos2));
 		}
 
 		return res;
@@ -334,24 +334,24 @@ public abstract class Curve2DUtils {
 
 		// get the list of intersections with the line
 		ArrayList<Point2D> list = new ArrayList<Point2D>();
-		list.addAll(curve.getIntersections(line));
+		list.addAll(curve.intersections(line));
 
 		// convert list to point array, sorted with respect to their position
 		// on the curve, but do not add tangent points with curvature greater
 		// than 0
 		SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
 		double position;
-		Vector2D vector = line.getVector();
+		Vector2D vector = line.direction();
 		for (Point2D point : list) {
 			// get position of intersection on the curve (use project to avoid
 			// round-off problems)
 			position = curve.project(point);
 
 			// Condition of colinearity with direction vector of line
-			Vector2D tangent = curve.getTangent(position);
+			Vector2D tangent = curve.tangent(position);
 			if (Vector2D.isColinear(tangent, vector)) {
 				// condition on the curvature (close to zero = cusp point)
-				double curv = curve.getCurvature(position);
+				double curv = curve.curvature(position);
 				if (Math.abs(curv) > Shape2D.ACCURACY)
 					continue;
 			}
@@ -364,9 +364,9 @@ public abstract class Curve2DUtils {
 		// extract first point of the curve, or a point arbitrarily far
 		Point2D point1;
 		if (Double.isInfinite(curve.getT0()))
-			point1 = curve.getPoint(-1000);
+			point1 = curve.point(-1000);
 		else
-			point1 = curve.getFirstPoint();
+			point1 = curve.firstPoint();
 
 		// Extract first valid intersection point, if it exists
 		double pos1, pos2;
@@ -385,17 +385,17 @@ public abstract class Curve2DUtils {
 				if (t1 == POSITIVE_INFINITY)
 					t1 = +100;
 				t0 = (t0 + t1) / 2;
-				point1 = curve.getPoint(t0);
+				point1 = curve.point(t0);
 			}
-			if (line.getSignedDistance(point1) < 0)
+			if (line.distanceSigned(point1) < 0)
 				res.addCurve(curve);
 			return res;
 		}
 
 		// different behavior depending if first point lies inside the box
-		if (line.getSignedDistance(point1) < 0 && !line.contains(point1)) {
+		if (line.distanceSigned(point1) < 0 && !line.contains(point1)) {
 			pos1 = iter.next().doubleValue();
-			res.addCurve(curve.getSubCurve(curve.getT0(), pos1));
+			res.addCurve(curve.subCurve(curve.getT0(), pos1));
 		}
 
 		// add the portions of curve between couples of intersections
@@ -405,7 +405,7 @@ public abstract class Curve2DUtils {
 				pos2 = iter.next().doubleValue();
 			else
 				pos2 = curve.getT1();
-			res.addCurve(curve.getSubCurve(pos1, pos2));
+			res.addCurve(curve.subCurve(pos1, pos2));
 		}
 
 		return res;
@@ -475,9 +475,9 @@ public abstract class Curve2DUtils {
 
 		// extract the first smooth curve
 		ContinuousCurve2D cont = 
-			curve.getContinuousCurves().iterator().next();
+			curve.continuousCurves().iterator().next();
 		SmoothCurve2D smooth = 
-			cont.getSmoothPieces().iterator().next();
+			cont.smoothPieces().iterator().next();
 
 		// check first position of first curve
 		return Double.isInfinite(smooth.getT0());
@@ -490,8 +490,8 @@ public abstract class Curve2DUtils {
 
 		// extract the first smooth curve
 		SmoothCurve2D lastCurve = null;
-		for (ContinuousCurve2D cont : curve.getContinuousCurves())
-			for (SmoothCurve2D smooth : cont.getSmoothPieces())
+		for (ContinuousCurve2D cont : curve.continuousCurves())
+			for (SmoothCurve2D smooth : cont.smoothPieces())
 				lastCurve = smooth;
 
 		// check last position of last curve
@@ -503,7 +503,7 @@ public abstract class Curve2DUtils {
     		return (ContinuousCurve2D) curve;
     	
     	Collection<? extends ContinuousCurve2D> curves = 
-    		curve.getContinuousCurves();
+    		curve.continuousCurves();
     	if (curves.size() == 0)
     		return null;
     	
@@ -514,7 +514,7 @@ public abstract class Curve2DUtils {
     	if (curve instanceof ContinuousCurve2D)
     		return (ContinuousCurve2D) curve;
     	ContinuousCurve2D res = null;
-    	for (ContinuousCurve2D continuous : curve.getContinuousCurves())
+    	for (ContinuousCurve2D continuous : curve.continuousCurves())
     		res = continuous;
     	return res;
     }
@@ -529,7 +529,7 @@ public abstract class Curve2DUtils {
     		return null;
     	
     	Collection<? extends SmoothCurve2D> curves = 
-    		continuous.getSmoothPieces();
+    		continuous.smoothPieces();
     	if (curves.size() == 0)
     		return null;
     	
@@ -543,7 +543,7 @@ public abstract class Curve2DUtils {
     	// Extract last continuous piece of the last continuous curve
     	ContinuousCurve2D continuous = getLastContinuousCurve(curve);
     	SmoothCurve2D res = null;
-    	for (SmoothCurve2D smooth : continuous.getSmoothPieces())
+    	for (SmoothCurve2D smooth : continuous.smoothPieces())
     		res = smooth;
     	return res;
     }
@@ -567,7 +567,7 @@ public abstract class Curve2DUtils {
         Vector2D v2 = computeTangent(smoothNext, smoothNext.getT0());
 
         // check if angle between vectors is acute or obtuse
-        double diff = Angle2D.getAngle(v1, v2);
+        double diff = Angle2D.angle(v1, v2);
         double eps = 1e-12;
         if (diff < eps || diff > (2*PI-eps)) {
         	return JunctionType.FLAT;
@@ -584,8 +584,8 @@ public abstract class Curve2DUtils {
         }
         
         // Extract curvatures of both curves around singular point
-        double kappaPrev = smoothPrev.getCurvature(smoothPrev.getT1());
-        double kappaNext = smoothNext.getCurvature(smoothNext.getT0());
+        double kappaPrev = smoothPrev.curvature(smoothPrev.getT1());
+        double kappaNext = smoothNext.curvature(smoothNext.getT0());
         
         // get curvature signs
         double sp = Math.signum(kappaPrev);
@@ -636,13 +636,13 @@ public abstract class Curve2DUtils {
     private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
         // For smooth curves, simply call the getTangent() method
         if (curve instanceof SmoothCurve2D)
-            return ((SmoothCurve2D) curve).getTangent(pos);
+            return ((SmoothCurve2D) curve).tangent(pos);
 
         // Extract sub curve and recursively call this method on the sub curve
         if (curve instanceof CurveSet2D<?>) {
             CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
             double pos2 = curveSet.getLocalPosition(pos);
-            Curve2D subCurve = curveSet.getChildCurve(pos);
+            Curve2D subCurve = curveSet.childCurve(pos);
             return computeTangent((ContinuousCurve2D) subCurve, pos2);
         }
 

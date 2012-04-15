@@ -95,7 +95,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
      * 
      * @return the number of points
      */
-    public int getPointsNumber() {
+    public int pointNumber() {
         return points.size();
     }
 
@@ -118,7 +118,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
         return res;
     }
 
-    public Box3D getBoundingBox() {
+    public Box3D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double zmin = Double.MAX_VALUE;
@@ -142,18 +142,18 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
-    public double getDistance(Point3D p) {
+    public double distance(Point3D p) {
         if (points.isEmpty())
             return Double.POSITIVE_INFINITY;
         double dist = Double.POSITIVE_INFINITY;
         for (Point3D point : points)
-            dist = Math.min(dist, point.getDistance(p));
+            dist = Math.min(dist, point.distance(p));
         return dist;
     }
 
     public boolean contains(Point3D point) {
         for (Point3D p : points)
-            if (point.getDistance(p)<Shape3D.ACCURACY)
+            if (point.distance(p)<Shape3D.ACCURACY)
                 return true;
         return false;
     }

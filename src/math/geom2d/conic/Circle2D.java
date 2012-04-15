@@ -103,10 +103,10 @@ CircularShape2D, CircleLine2D {
         ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
 
         // extract center and radius of each circle
-        Point2D center1 = circle1.getCenter();
-        Point2D center2 = circle2.getCenter();
-        double r1 = circle1.getRadius();
-        double r2 = circle2.getRadius();
+        Point2D center1 = circle1.center();
+        Point2D center2 = circle2.center();
+        double r1 = circle1.radius();
+        double r2 = circle2.radius();
 
         double d = Point2D.getDistance(center1, center2);
 
@@ -115,7 +115,7 @@ CircularShape2D, CircleLine2D {
 			return intersections;
 
         // Angle of line from center1 to center2
-        double angle = Angle2D.getHorizontalAngle(center1, center2);
+        double angle = Angle2D.horizontalAngle(center1, center2);
 
         // position of intermediate point
 		double d1 = d / 2 + (r1 * r1 - r2 * r2) / (2 * d);
@@ -142,18 +142,18 @@ CircularShape2D, CircleLine2D {
     	ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
 
     	// extract parameters of the circle
-    	Circle2D parent = circle.getSupportingCircle();
-    	Point2D center 	= parent.getCenter();
-    	double radius 	= parent.getRadius();
+    	Circle2D parent = circle.supportingCircle();
+    	Point2D center 	= parent.center();
+    	double radius 	= parent.radius();
     	
     	// Compute line perpendicular to the test line, and going through the
     	// circle center
     	StraightLine2D perp = StraightLine2D.createPerpendicular(line, center);
 
     	// Compute distance between line and circle center
-    	Point2D inter 	= perp.getIntersection(new StraightLine2D(line));
+    	Point2D inter 	= perp.intersection(new StraightLine2D(line));
 		assert (inter != null);
-		double dist 	= inter.getDistance(center);
+		double dist 	= inter.distance(center);
 
     	// if the distance is the radius of the circle, return the
     	// intersection point
@@ -165,7 +165,7 @@ CircularShape2D, CircleLine2D {
 
     	// compute angle of the line, and distance between 'inter' point and
     	// each intersection point
-    	double angle 	= line.getHorizontalAngle();
+    	double angle 	= line.horizontalAngle();
 		double d2 = sqrt(radius * radius - dist * dist);
 
     	// Compute position and angle of intersection points
@@ -224,7 +224,7 @@ CircularShape2D, CircleLine2D {
     // ===================================================================
     // methods specific to class Circle2D
 
-    public double getRadius() {
+    public double radius() {
         return r;
     }
 
@@ -232,7 +232,7 @@ CircularShape2D, CircleLine2D {
      * Returns the intersection points with another circle. The result is a
      * collection with 0, 1 or 2 points. 
      */
-    public Collection<Point2D> getIntersections(Circle2D circle) {
+    public Collection<Point2D> intersections(Circle2D circle) {
     	return Circle2D.getIntersections(this, circle);
     }
 
@@ -242,7 +242,7 @@ CircularShape2D, CircleLine2D {
     /**
      * Returns the circle itself.
      */
-    public Circle2D getSupportingCircle() {
+    public Circle2D supportingCircle() {
         return this;
     }
 
@@ -251,7 +251,7 @@ CircularShape2D, CircleLine2D {
     // methods implementing the Conic2D interface
 
     @Override
-    public Type getConicType() {
+    public Type conicType() {
         return Conic2D.Type.CIRCLE;
     }
 
@@ -268,7 +268,7 @@ CircularShape2D, CircleLine2D {
      * <code>x^2 + 0*x*y + y^2 -2*xc*x -2*yc*y + xc*xc+yc*yc-r*r = 0</code>.
      */
     @Override
-    public double[] getConicCoefficients() {
+    public double[] conicCoefficients() {
 		return new double[] { 
 				1, 0, 1, -2 * xc, -2 * yc,
 				xc * xc + yc * yc - r * r };
@@ -278,7 +278,7 @@ CircularShape2D, CircleLine2D {
      * Return 0, which is the eccentricity of a circle by definition.
      */
     @Override
-    public double getEccentricity() {
+    public double eccentricity() {
         return 0;
     }
 
@@ -287,7 +287,7 @@ CircularShape2D, CircleLine2D {
      * center.
      */
     @Override
-    public Point2D getFocus1() {
+    public Point2D focus1() {
         return new Point2D(xc, yc);
     }
 
@@ -296,7 +296,7 @@ CircularShape2D, CircleLine2D {
      * center.
      */
     @Override
-    public Point2D getFocus2() {
+    public Point2D focus2() {
         return new Point2D(xc, yc);
     }
 
@@ -306,7 +306,7 @@ CircularShape2D, CircleLine2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
@@ -317,27 +317,27 @@ CircularShape2D, CircleLine2D {
      * and negative inside. This is the contrary for indirect circles.
      */
     @Override
-    public Circle2D getParallel(double d) {
+    public Circle2D parallel(double d) {
     	double rp = max(direct ? r+d : r-d, 0);
         return new Circle2D(xc, yc, rp, direct);
     }
 
     /** Returns perimeter of the circle (equal to 2*PI*radius). */
-    public double getLength() {
+    public double length() {
 		return PI * 2 * r;
     }
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
+	public double length(double pos) {
 		return pos * this.r;
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
+	public double position(double length) {
 		return length / this.r;
 	}
 
@@ -347,10 +347,10 @@ CircularShape2D, CircleLine2D {
 	public CircleLine2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
 		Point2D center = inv.getCenter();
-		Point2D c1 = this.getCenter();
+		Point2D c1 = this.center();
 
 		// If circles are concentric, creates directly the new circle
-		if (center.getDistance(c1) < Shape2D.ACCURACY) {
+		if (center.distance(c1) < Shape2D.ACCURACY) {
 			double r0 = inv.getRadius();
 			double r2 = r0 * r0 / this.r;
 			return new Circle2D(center, r2, this.direct);
@@ -360,17 +360,17 @@ CircularShape2D, CircleLine2D {
         StraightLine2D centersLine = new StraightLine2D(center, c1);
 
 		// get the two points intersection the line joining the circle centers
-        Collection<Point2D> points = this.getIntersections(centersLine);
+        Collection<Point2D> points = this.intersections(centersLine);
         Iterator<Point2D> iter = points.iterator();
         Point2D p1 = iter.next();
         Point2D p2 = iter.next();
 
         // If the circle contains the inversion center, it transforms into a
         // straight line
-		if (this.getDistance(center) < Shape2D.ACCURACY) {
+		if (this.distance(center) < Shape2D.ACCURACY) {
 			// choose the intersection point that is not the center
-			double dist1 = center.getDistance(p1);
-			double dist2 = center.getDistance(p2);
+			double dist1 = center.distance(p1);
+			double dist2 = center.distance(p2);
 			Point2D p0 = dist1 < dist2 ? p2 : p1;
 			
 			// transform the point, and return the perpendicular
@@ -386,7 +386,7 @@ CircularShape2D, CircleLine2D {
         p2 = p2.transform(inv);
         
         // compute center and diameter of transformed circle
-        double diam = p1.getDistance(p2);
+        double diam = p1.distance(p2);
         c1 = Point2D.midPoint(p1, p2);
 
         // create the transformed circle, 
@@ -398,7 +398,7 @@ CircularShape2D, CircleLine2D {
     // methods of SmoothCurve2D interface
 
     @Override
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
         if (!direct)
             t = -t;
         double cot  = cos(theta);
@@ -423,7 +423,7 @@ CircularShape2D, CircleLine2D {
      * Returns a set of smooth curves, which contains only the circle.
      */
 	@Override
-    public Collection<? extends Circle2D> getSmoothPieces() {
+    public Collection<? extends Circle2D> smoothPieces() {
 		return wrapCurve(this);
     }
 
@@ -443,12 +443,12 @@ CircularShape2D, CircleLine2D {
     }
 
     @Override
-    public double getSignedDistance(Point2D point) {
-        return getSignedDistance(point.getX(), point.getY());
+    public double distanceSigned(Point2D point) {
+        return distanceSigned(point.getX(), point.getY());
     }
 
     @Override
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         if (direct)
 			return Point2D.getDistance(xc, yc, x, y) - r;
 		else
@@ -464,7 +464,7 @@ CircularShape2D, CircleLine2D {
      * and 2*Math.PI.
      */
     @Override
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
 		double angle = theta + t;
 		if (!direct)
 			angle = theta - t;
@@ -477,7 +477,7 @@ CircularShape2D, CircleLine2D {
      * @return the first point of the curve
      */
     @Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
 		return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
     }
 
@@ -487,13 +487,13 @@ CircularShape2D, CircleLine2D {
      * @return the last point of the curve.
      */
     @Override
-	public Point2D getLastPoint() {
+	public Point2D lastPoint() {
 		return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
 	}
 
 	@Override
-	public double getPosition(Point2D point) {
-		double angle = Angle2D.getHorizontalAngle(xc, yc, point.getX(), point.getY());
+	public double position(Point2D point) {
+		double angle = Angle2D.horizontalAngle(xc, yc, point.getX(), point.getY());
 		if (direct)
 			return Angle2D.formatAngle(angle - theta);
 		else
@@ -505,16 +505,16 @@ CircularShape2D, CircleLine2D {
      * orientation.
      */
     @Override
-    public Circle2D getReverseCurve() {
-        return new Circle2D(this.getCenter().getX(), this.getCenter().getY(),
-                this.getRadius(), !this.direct);
+    public Circle2D reverse() {
+        return new Circle2D(this.center().getX(), this.center().getY(),
+                this.radius(), !this.direct);
     }
 
     /**
      * Returns a new CircleArc2D. t0 and t1 are position on circle.
      */
     @Override
-    public CircleArc2D getSubCurve(double t0, double t1) {
+    public CircleArc2D subCurve(double t0, double t1) {
         double startAngle, extent;
         if (this.direct) {
             startAngle = t0;
@@ -527,7 +527,7 @@ CircularShape2D, CircleLine2D {
     }
 
     @Override
-    public Collection<? extends Circle2D> getContinuousCurves() {
+    public Collection<? extends Circle2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -535,14 +535,14 @@ CircularShape2D, CircleLine2D {
     // methods of Shape2D interface
 
     @Override
-    public double getDistance(Point2D point) {
+    public double distance(Point2D point) {
         return abs(Point2D.getDistance(xc, yc, point.getX(),
                 point.getY())
                 -r);
     }
 
     @Override
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
 		return abs(Point2D.getDistance(xc, yc, x, y) - r);
     }
 
@@ -553,7 +553,7 @@ CircularShape2D, CircleLine2D {
      * the first one on the line.
      */
     @Override
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
     	return Circle2D.getIntersections(this, line);
     }
 
@@ -571,10 +571,10 @@ CircularShape2D, CircleLine2D {
 
         // Stores the result in appropriate structure
         CurveArray2D<CircularShape2D> result = 
-        	new CurveArray2D<CircularShape2D>(set.getCurveNumber());
+        	new CurveArray2D<CircularShape2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CircleArc2D)
                 result.addCurve((CircleArc2D) curve);
             if (curve instanceof Circle2D)
@@ -591,7 +591,7 @@ CircularShape2D, CircleLine2D {
      */
     @Override
     public boolean contains(double x, double y) {
-		return abs(getDistance(x, y)) <= Shape2D.ACCURACY;
+		return abs(distance(x, y)) <= Shape2D.ACCURACY;
     }
 
     @Override

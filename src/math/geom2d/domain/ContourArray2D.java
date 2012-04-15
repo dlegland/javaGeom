@@ -100,15 +100,15 @@ implements Boundary2D {
      * @deprecated replaced by getContinuousCurves
      */
     @Deprecated
-    public Collection<? extends Contour2D> getBoundaryCurves() {
-    	return this.getContinuousCurves();
+    public Collection<? extends Contour2D> boundaryCurves() {
+    	return this.continuousCurves();
     }
 
-    public Collection<? extends T> getContinuousCurves() {
+    public Collection<? extends T> continuousCurves() {
     	return Collections.unmodifiableCollection(this.curves);
     }
 
-    public Domain2D getDomain() {
+    public Domain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -119,15 +119,15 @@ implements Boundary2D {
     // ===================================================================
     // Methods implementing OrientedCurve2D interface
 
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
         double angle = 0;
-        for (OrientedCurve2D curve : this.getCurves())
-            angle += curve.getWindingAngle(point);
+        for (OrientedCurve2D curve : this.curves())
+            angle += curve.windingAngle(point);
         return angle;
     }
 
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
+    public double distanceSigned(Point2D p) {
+        return distanceSigned(p.getX(), p.getY());
     }
 
     /*
@@ -135,12 +135,12 @@ implements Boundary2D {
      * 
      * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
      */
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         double minDist = Double.POSITIVE_INFINITY;
         double dist = Double.POSITIVE_INFINITY;
 
-        for (OrientedCurve2D curve : this.getCurves()) {
-            dist = Math.min(dist, curve.getSignedDistance(x, y));
+        for (OrientedCurve2D curve : this.curves()) {
+            dist = Math.min(dist, curve.distanceSigned(x, y));
             if (Math.abs(dist)<Math.abs(minDist))
                 minDist = dist;
         }
@@ -148,31 +148,31 @@ implements Boundary2D {
     }
 
     public boolean isInside(Point2D point) {
-        return this.getSignedDistance(point.getX(), point.getY())<0;
+        return this.distanceSigned(point.getX(), point.getY())<0;
     }
 
     // ===================================================================
     // Methods implementing Curve2D interface
 
     @Override
-    public ContourArray2D<? extends Contour2D> getReverseCurve() {
+    public ContourArray2D<? extends Contour2D> reverse() {
         Contour2D[] curves2 = new Contour2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         return new ContourArray2D<Contour2D>(curves2);
     }
 
     @Override
-    public CurveSet2D<? extends ContinuousOrientedCurve2D> getSubCurve(
+    public CurveSet2D<? extends ContinuousOrientedCurve2D> subCurve(
             double t0, double t1) {
         // get the subcurve
-        CurveSet2D<? extends Curve2D> curveSet = super.getSubCurve(t0, t1);
+        CurveSet2D<? extends Curve2D> curveSet = super.subCurve(t0, t1);
 
         // create subcurve array
         ArrayList<ContinuousOrientedCurve2D> curves = 
         	new ArrayList<ContinuousOrientedCurve2D>();
-        for (Curve2D curve : curveSet.getCurves())
+        for (Curve2D curve : curveSet.curves())
             curves.add((ContinuousOrientedCurve2D) curve);
 
         // Create CurveSet for the result
@@ -196,10 +196,10 @@ implements Boundary2D {
 
         // Stores the result in appropriate structure
         CurveArray2D<ContinuousOrientedCurve2D> result = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>(set.getCurveNumber());
+        	new CurveArray2D<ContinuousOrientedCurve2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof ContinuousOrientedCurve2D)
                 result.addCurve((ContinuousOrientedCurve2D) curve);
         }

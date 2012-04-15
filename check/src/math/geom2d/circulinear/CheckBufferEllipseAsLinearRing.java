@@ -31,14 +31,14 @@ public class CheckBufferEllipseAsLinearRing extends JPanel{
 	public CheckBufferEllipseAsLinearRing(){
 		
 		ellipse = new Ellipse2D(300, 200, 200, 100, Math.PI/6);
-		ring = ellipse.getAsPolyline(60);
+		ring = ellipse.asPolyline(60);
 	}
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		
 		// compute buffer
-		Domain2D buffer = ring.getBuffer(dist);
+		Domain2D buffer = ring.buffer(dist);
 		
 		// fill the buffer
 		g2.setColor(Color.CYAN);
@@ -54,7 +54,7 @@ public class CheckBufferEllipseAsLinearRing extends JPanel{
 		ellipse.draw(g2);
 			
 		g2.setColor(Color.BLUE);
-		buffer.getBoundary().draw(g2);
+		buffer.boundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

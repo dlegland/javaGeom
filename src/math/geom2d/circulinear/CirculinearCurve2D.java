@@ -33,18 +33,18 @@ public interface CirculinearCurve2D extends CirculinearShape2D, Curve2D {
 	/**
 	 * @return the length of the curve
 	 */
-	public double getLength();
+	public double length();
 	
 	/**
 	 * @return the length from the beginning to the position given by pos
 	 */
-	public double getLength(double pos);
+	public double length(double pos);
 	
 	/**
 	 * @return the position located at a given geodesic distance from the
 	 * origin
 	 */
-	public double getPosition(double distance);
+	public double position(double distance);
 	
 	
 	/**
@@ -58,7 +58,7 @@ public interface CirculinearCurve2D extends CirculinearShape2D, Curve2D {
 	 * @param d the distance between the original curve and he parallel curve.
 	 * @return the parallel curve
 	 */
-	public CirculinearCurve2D getParallel(double d);
+	public CirculinearCurve2D parallel(double d);
 	
     // ===================================================================
     // redefines declaration of some parent interfaces
@@ -71,9 +71,9 @@ public interface CirculinearCurve2D extends CirculinearShape2D, Curve2D {
      * 
      * @return a collection of continuous circulinear curves.
      */
-    public Collection<? extends CirculinearContinuousCurve2D> getContinuousCurves();
+    public Collection<? extends CirculinearContinuousCurve2D> continuousCurves();
 
     public CurveSet2D<? extends CirculinearCurve2D> clip(Box2D box);
-    public CirculinearCurve2D getSubCurve(double t0, double t1);
-	public CirculinearCurve2D getReverseCurve();
+    public CirculinearCurve2D subCurve(double t0, double t1);
+	public CirculinearCurve2D reverse();
 }

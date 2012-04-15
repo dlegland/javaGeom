@@ -38,13 +38,13 @@ import math.geom2d.Vector2D;
  */
 public interface SmoothCurve2D extends ContinuousCurve2D {
 
-    public abstract Vector2D getTangent(double t);
+    public abstract Vector2D tangent(double t);
 
-    public abstract Vector2D getNormal(double t);
+    public abstract Vector2D normal(double t);
 
-    public abstract SmoothCurve2D getReverseCurve();
+    public abstract SmoothCurve2D reverse();
 
-    public abstract SmoothCurve2D getSubCurve(double t0, double t1);
+    public abstract SmoothCurve2D subCurve(double t0, double t1);
 
     public abstract CurveSet2D<? extends SmoothCurve2D> clip(Box2D box);
 

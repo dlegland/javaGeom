@@ -61,15 +61,15 @@ public interface ContinuousCurve2D extends Curve2D {
      */
     public abstract boolean isClosed();
 
-    public Vector2D getLeftTangent(double t);
-    public Vector2D getRightTangent(double t);
-    public abstract double getCurvature(double t);
+    public Vector2D leftTangent(double t);
+    public Vector2D rightTangent(double t);
+    public abstract double curvature(double t);
 
    
     /**
      * Returns a set of smooth curves.
      */
-    public abstract Collection<? extends SmoothCurve2D> getSmoothPieces();
+    public abstract Collection<? extends SmoothCurve2D> smoothPieces();
 
     /**
      * Returns an approximation of the curve as a polyline with <code>n</code>
@@ -79,7 +79,7 @@ public interface ContinuousCurve2D extends Curve2D {
      * @param n the number of line segments
      * @return a polyline with <code>n</code> line segments.
      */
-    public abstract Polyline2D getAsPolyline(int n);
+    public abstract Polyline2D asPolyline(int n);
 
     /**
      * Append the path of the curve to the given path.
@@ -93,9 +93,9 @@ public interface ContinuousCurve2D extends Curve2D {
     // ===================================================================
     // Curvr2D methods
 
-    public abstract ContinuousCurve2D getReverseCurve();
+    public abstract ContinuousCurve2D reverse();
 
-    public abstract ContinuousCurve2D getSubCurve(double t0, double t1);
+    public abstract ContinuousCurve2D subCurve(double t0, double t1);
 
     // ===================================================================
     // Shape2D methods

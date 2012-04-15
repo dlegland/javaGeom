@@ -51,8 +51,8 @@ public class Vector3D {
      * @return true if the vectors are colinear
      */
     public final static boolean isColinear(Vector3D v1, Vector3D v2) {
-        return Vector3D.crossProduct(v1.getNormalizedVector(),
-                v2.getNormalizedVector()).getNorm()<Shape3D.ACCURACY;
+        return Vector3D.crossProduct(v1.normalize(),
+                v2.normalize()).norm()<Shape3D.ACCURACY;
     }
 
     /**
@@ -61,8 +61,8 @@ public class Vector3D {
      * @return true if the vectors are orthogonal
      */
     public final static boolean isOrthogonal(Vector3D v1, Vector3D v2) {
-        return Vector3D.dotProduct(v1.getNormalizedVector(), v2
-                .getNormalizedVector())<Shape3D.ACCURACY;
+        return Vector3D.dotProduct(v1.normalize(), v2
+                .normalize())<Shape3D.ACCURACY;
     }
 
     // ===================================================================
@@ -97,36 +97,18 @@ public class Vector3D {
     }
 
     // ===================================================================
-    // inner fields management
+    // accessors
 
     public double getX() {
         return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
     }
 
     public double getY() {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public double getZ() {
         return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
-
-    public void setVector(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
     }
 
     // ===================================================================
@@ -164,7 +146,7 @@ public class Vector3D {
      * 
      * @return the vector opposite to <code>this</code>.
      */
-    public Vector3D getOpposite() {
+    public Vector3D opposite() {
         return new Vector3D(-x, -y, -z);
     }
 
@@ -173,7 +155,7 @@ public class Vector3D {
      * 
      * @return the euclidean norm of the vector
      */
-    public double getNorm() {
+    public double norm() {
         return Math.hypot(Math.hypot(x, y), z);
     }
 
@@ -183,26 +165,26 @@ public class Vector3D {
      * 
      * @return the euclidean norm of the vector
      */
-    public double getNormSq() {
-        return x*x+y*y+z*z;
+    public double normSq() {
+		return x * x + y * y + z * z;
     }
 
-    /**
-     * Normalizes the vector, such that its norms becomes 1.
-     */
-    public void normalize() {
-        double r = this.getNorm();
-        this.x = this.x/r;
-        this.y = this.y/r;
-        this.z = this.z/r;
-    }
+//    /**
+//     * Normalizes the vector, such that its norms becomes 1.
+//     */
+//    public void normalize() {
+//        double r = this.norm();
+//        this.x = this.x/r;
+//        this.y = this.y/r;
+//        this.z = this.z/r;
+//    }
 
     /**
      * Returns the vector with same direction as this one, but with norm equal
      * to 1.
      */
-    public Vector3D getNormalizedVector() {
-        double r = this.getNorm();
+    public Vector3D normalize() {
+        double r = this.norm();
         return new Vector3D(this.x/r, this.y/r, this.z/r);
     }
 
@@ -215,9 +197,11 @@ public class Vector3D {
      */
     public Vector3D transform(AffineTransform3D trans) {
         double[] tab = trans.getCoefficients();
-        return new Vector3D(x*tab[0]+y*tab[1]+z*tab[2], x*tab[4]+y*tab[5]+z
-                *tab[6], x*tab[8]+y*tab[9]+z*tab[10]);
-    }
+		return new Vector3D(
+				x * tab[0] + y * tab[1] + z * tab[2], 
+				x * tab[4] + y * tab[5] + z * tab[6], 
+				x * tab[8] + y * tab[9] + z * tab[10]);
+	}
 
     // ===================================================================
     // methods implementing Object interface

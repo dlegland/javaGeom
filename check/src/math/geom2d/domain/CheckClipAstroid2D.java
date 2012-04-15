@@ -75,7 +75,7 @@ public class CheckClipAstroid2D extends JPanel{
 		Box2D box = new Box2D(50, 350, 50, 350);
 		
 		g2.setColor(Color.CYAN);
-		ring.getDomain().clip(box).fill(g2);
+		ring.domain().clip(box).fill(g2);
 		
 
 		g2.setColor(Color.BLACK);

@@ -61,7 +61,7 @@ public class Vector3DTest extends TestCase {
 
 	public void testGetNorm() {
 		Vector3D v1 = new Vector3D(1, 2, 3);
-		assertEquals(v1.getNorm(), Math.sqrt(14), 1e-14);
+		assertEquals(v1.norm(), Math.sqrt(14), 1e-14);
 	}
 
 }

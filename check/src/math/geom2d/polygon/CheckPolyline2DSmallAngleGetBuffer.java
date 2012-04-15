@@ -38,7 +38,7 @@ public class CheckPolyline2DSmallAngleGetBuffer extends JPanel{
 		g2.setColor(Color.BLACK);
 		polyline.draw(g2);
 		
-		buffer = polyline.getBuffer(30);
+		buffer = polyline.buffer(30);
 		
 		g2.setColor(Color.CYAN);
 		buffer.fill(g2);

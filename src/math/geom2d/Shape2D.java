@@ -47,8 +47,8 @@ import math.geom2d.AffineTransform2D;
  * Shape2D interface provide convenient method to check if the shape
  * {@link #isEmpty() is empty}, to {@link #transform(AffineTransform2D) 
  * transform} or to {@link #clip(Box2D) clip} the shape, get its
- * {@link #getBoundingBox() bounding box}, or its
- * {@link #getDistance(Point2D) distance} to a given point.</p>
+ * {@link #boundingBox() bounding box}, or its
+ * {@link #distance(Point2D) distance} to a given point.</p>
  */
 public interface Shape2D extends GeometricObject2D {
 
@@ -74,14 +74,14 @@ public interface Shape2D extends GeometricObject2D {
      * get the distance of the shape to the given point, or the distance of
      * point to the frontier of the shape in the case of a plain shape.
      */
-    public abstract double getDistance(Point2D p);
+    public abstract double distance(Point2D p);
 
     /**
      * get the distance of the shape to the given point, specified by x and y,
      * or the distance of point to the frontier of the shape in the case of a
      * plain (i.e. fillable) shape.
      */
-    public abstract double getDistance(double x, double y);
+    public abstract double distance(double x, double y);
 
     /**
      * Returns true if the shape is bounded, that is if we can draw a finite
@@ -103,7 +103,7 @@ public interface Shape2D extends GeometricObject2D {
      * 
      * @return the bounding box of the shape.
      */
-    public abstract Box2D getBoundingBox();
+    public abstract Box2D boundingBox();
 
     /**
      * Clip the shape with the given box, and returns a new shape. The box must

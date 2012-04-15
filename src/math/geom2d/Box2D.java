@@ -217,7 +217,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     public boolean containsBounds(Shape2D shape) {
         if (!shape.isBounded())
             return false;
-        for (Point2D point : shape.getBoundingBox().getVertices())
+        for (Point2D point : shape.boundingBox().vertices())
             if (!contains(point))
                 return false;
 
@@ -252,7 +252,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * Returns the set of linear shapes that constitutes the boundary of this
      * box.
      */
-    public Collection<LinearShape2D> getEdges() {
+    public Collection<LinearShape2D> edges() {
         ArrayList<LinearShape2D> edges = new ArrayList<LinearShape2D>(4);
 
         if (isBounded()) {
@@ -287,7 +287,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
 			else if (!isInfinite(xmin) && !isInfinite(xmax))
 				edges.add(new LineSegment2D(xmax, ymax, xmin, ymax));
 			else
-				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax).getReverseCurve());
+				edges.add(new LineArc2D(0, ymin, 1, 0, xmin, xmax).reverse());
 		}
 
 		if (!isInfinite(xmin)) {
@@ -296,7 +296,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
 			else if (!isInfinite(ymin) && !isInfinite(ymax))
 				edges.add(new LineSegment2D(xmin, ymax, xmin, ymin));
 			else
-				edges.add(new LineArc2D(xmin, 0, 0, 1, ymin, ymax).getReverseCurve());
+				edges.add(new LineArc2D(xmin, 0, 0, 1, ymin, ymax).reverse());
         }
 
         return edges;
@@ -309,7 +309,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * boundary is constituted from 2 straight lines.
      * @return the box boundary
      */
-    public Boundary2D getBoundary() {
+    public Boundary2D boundary() {
 
         // First case of totally bounded box
         if (isBounded()) {
@@ -404,7 +404,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
         return null;
     }
 
-    public Collection<Point2D> getVertices() {
+    public Collection<Point2D> vertices() {
         ArrayList<Point2D> points = new ArrayList<Point2D>(4);
         boolean bx0 = isFinite(xmin);
         boolean bx1 = isFinite(xmax);
@@ -431,7 +431,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     
     /** Returns the number of vertices of the box. */
     public int getVertexNumber() {
-        return this.getVertices().size();
+        return this.vertices().size();
     }
 
     // ===================================================================
@@ -502,7 +502,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
         if (this.isBounded()) {
             // Extract the 4 vertices, transform them, and compute
             // the new bounding box.
-            Collection<Point2D> points = this.getVertices();
+            Collection<Point2D> points = this.vertices();
             double xmin = POSITIVE_INFINITY;
             double xmax = NEGATIVE_INFINITY;
             double ymin = POSITIVE_INFINITY;
@@ -528,7 +528,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * 
      * @return an instance of java.awt.geom.Rectangle2D
      */
-    public java.awt.Rectangle getAsAWTRectangle() {
+    public java.awt.Rectangle asAwtRectangle() {
         int xr = (int) floor(this.xmin);
         int yr = (int) floor(this.ymin);
         int wr = (int) ceil(this.xmax-xr);
@@ -537,12 +537,12 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
 
     /**
-     * convert to AWT Rectangle2D. Result is an instance of HRectangle, which
-     * extends java.awt.geom.Rectangle2D.Double.
+     * convert to AWT Rectangle2D. Result is an instance of 
+     * java.awt.geom.Rectangle2D.Double.
      * 
      * @return an instance of java.awt.geom.Rectangle2D
      */
-    public java.awt.geom.Rectangle2D getAsAWTRectangle2D() {
+    public java.awt.geom.Rectangle2D asAwtRectangle2D() {
 		return new java.awt.geom.Rectangle2D.Double(xmin, ymin, xmax - xmin, ymax - ymin);
 	}
 
@@ -558,13 +558,13 @@ public class Box2D implements GeometricObject2D, Cloneable {
     public void draw(Graphics2D g2) {
         if (!isBounded())
             throw new UnboundedBox2DException(this);
-        this.getBoundary().draw(g2);
+        this.boundary().draw(g2);
     }
 
     public void fill(Graphics2D g2) {
         if (!isBounded())
             throw new UnboundedBox2DException(this);
-        this.getBoundary().fill(g2);
+        this.boundary().fill(g2);
     }
 
     public Box2D getBoundingBox() {

@@ -65,7 +65,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @since 0.8.1
 	 */
 	public static AffineTransform2D create(AffineTransform2D trans) {
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		return new AffineTransform2D(mat[0][0], mat[0][1], mat[0][2],
 				mat[1][0], mat[1][1], mat[1][2]);
 	}
@@ -96,8 +96,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	public static AffineTransform2D createGlideReflection(LinearShape2D line,
 			double distance) {
 		// get origin and vector of line
-		Vector2D vector = line.getVector().getNormalizedVector();
-		Point2D origin = line.getOrigin();
+		Vector2D vector = line.direction().normalize();
+		Point2D origin = line.origin();
 
 		// extract origin and vector coordinates
 		double dx = vector.getX();
@@ -128,8 +128,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 
 	public static AffineTransform2D createLineReflection(LinearShape2D line) {
-		Vector2D vector = line.getVector();
-		Point2D origin = line.getOrigin();
+		Vector2D vector = line.direction();
+		Point2D origin = line.origin();
 		double dx = vector.getX();
 		double dy = vector.getY();
 		double x0 = origin.getX();
@@ -283,7 +283,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * Checks if the given transform is the identity transform.
 	 */
 	public static boolean isIdentity(AffineTransform2D trans) {
-		double[] coefs = trans.getCoefficients();
+		double[] coefs = trans.coefficients();
 		if (Math.abs(coefs[0] - 1) > Shape2D.ACCURACY)
 			return false;
 		if (Math.abs(coefs[1]) > Shape2D.ACCURACY)
@@ -306,7 +306,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @return true if transform is direct.
 	 */
 	public static boolean isDirect(AffineTransform2D trans) {
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0] > 0;
 	}
 
@@ -319,7 +319,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 */
 	public static boolean isIsometry(AffineTransform2D trans) {
 		// extract matrix coefficients
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		double a = mat[0][0];
 		double b = mat[0][1];
 		double d = mat[1][0];
@@ -345,7 +345,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @return true in case of motion.
 	 */
 	public static boolean isMotion(AffineTransform2D trans) {
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		double det = mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
 		return Math.abs(det - 1) < Shape2D.ACCURACY;
 	}
@@ -357,7 +357,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @return true in case of similarity.
 	 */
 	public static boolean isSimilarity(AffineTransform2D trans) {
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		// isolate linear part of the transform
 		double a = mat[0][0];
 		double b = mat[1][0];
@@ -394,7 +394,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 
 	/** constructor by copy of an existing transform */
 	public AffineTransform2D(AffineTransform2D trans) {
-		double[][] mat = trans.getAffineMatrix();
+		double[][] mat = trans.affineMatrix();
 		this.m00 = mat[0][0];
 		this.m01 = mat[0][1];
 		this.m02 = mat[0][2];
@@ -435,7 +435,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	/**
 	 * Returns coefficients of the transform in a linear array of 6 double.
 	 */
-	public double[] getCoefficients() {
+	public double[] coefficients() {
 		double[] tab = { m00, m01, m02, m10, m11, m12 };
 		return tab;
 	}
@@ -445,7 +445,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * 
 	 * @return the 3x3 affine transform representing the matrix
 	 */
-	public double[][] getAffineMatrix() {
+	public double[][] affineMatrix() {
 		double[][] tab = new double[][] { new double[] { m00, m01, m02 },
 				new double[] { m10, m11, m12 }, new double[] { 0, 0, 1 } };
 		return tab;
@@ -477,7 +477,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @since 0.6.3
 	 */
 	public AffineTransform2D concatenate(AffineTransform2D that) {
-		double[][] m2 = that.getAffineMatrix();
+		double[][] m2 = that.affineMatrix();
 		double n00 = this.m00 * m2[0][0] + this.m01 * m2[1][0];
 		double n01 = this.m00 * m2[0][1] + this.m01 * m2[1][1];
 		double n02 = this.m00 * m2[0][2] + this.m01 * m2[1][2] + this.m02;
@@ -505,7 +505,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * @since 0.6.3
 	 */
 	public AffineTransform2D chain(AffineTransform2D that) {
-		double[][] m2 = that.getAffineMatrix();
+		double[][] m2 = that.affineMatrix();
 		return new AffineTransform2D(m2[0][0] * this.m00 + m2[0][1] * this.m10,
 				m2[0][0] * this.m01 + m2[0][1] * this.m11, m2[0][0] * this.m02
 						+ m2[0][1] * this.m12 + m2[0][2], m2[1][0] * this.m00
@@ -582,7 +582,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 			for (int i = 0; i < src.length; i++)
 				dst[i] = new Point2D();
 
-		double coef[] = getCoefficients();
+		double coef[] = coefficients();
 
 		for (int i = 0; i < src.length; i++)
 			dst[i] = new Point2D(src[i].getX() * coef[0]
@@ -592,7 +592,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 
 	public Point2D transform(Point2D src) {
-		double coef[] = this.getCoefficients();
+		double coef[] = this.coefficients();
 		Point2D dst = new Point2D(src.getX() * coef[0] + src.getY() * coef[1]
 				+ coef[2], src.getX() * coef[3] + src.getY() * coef[4]
 				+ coef[5]);
@@ -606,8 +606,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		if (!(obj instanceof AffineTransform2D))
 			return false;
 
-		double[] tab1 = this.getCoefficients();
-		double[] tab2 = ((AffineTransform2D) obj).getCoefficients();
+		double[] tab1 = this.coefficients();
+		double[] tab2 = ((AffineTransform2D) obj).coefficients();
 
 		for (int i = 0; i < 6; i++)
 			if (Math.abs(tab1[i] - tab2[i]) > eps)
@@ -636,8 +636,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		if (!(obj instanceof AffineTransform2D))
 			return false;
 
-		double[] tab1 = this.getCoefficients();
-		double[] tab2 = ((AffineTransform2D) obj).getCoefficients();
+		double[] tab1 = this.coefficients();
+		double[] tab2 = ((AffineTransform2D) obj).coefficients();
 
 		for (int i = 0; i < 6; i++)
 			if (Double.doubleToLongBits(tab1[i]) != Double

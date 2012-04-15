@@ -79,18 +79,18 @@ public class CheckAsymptotesHyperbola2D extends JPanel{
 
 		// Draw the hyperbola and its domain
 		g2.setColor(Color.CYAN);
-		rotated.getDomain().clip(box).fill(g2);
+		rotated.domain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
 		rotated.clip(box).draw(g2);
 		
 		// extract the asymptotes, and draw them
 		g2.setColor(new Color(0, 127, 0));
-		for(StraightLine2D asymptote : rotated.getAsymptotes())
+		for(StraightLine2D asymptote : rotated.asymptotes())
 			asymptote.clip(box).draw(g2);
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		// Draw the origin point
 		Point2D p1 = new Point2D(x0, y0);

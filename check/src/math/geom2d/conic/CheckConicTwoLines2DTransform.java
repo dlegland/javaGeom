@@ -83,7 +83,7 @@ public class CheckConicTwoLines2DTransform extends JPanel{
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

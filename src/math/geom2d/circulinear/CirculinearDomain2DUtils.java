@@ -29,13 +29,13 @@ public class CirculinearDomain2DUtils {
 		
 		// iterate on all continuous curves
 		for(CirculinearContour2D contour : 
-			domain.getBoundary().getContinuousCurves()) {
+			domain.boundary().continuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
 			for(CirculinearContinuousCurve2D simpleCurve : 
 				CirculinearCurve2DUtils.splitContinuousCurve(contour)) {
 				CirculinearContour2D boundary = 
 					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
-							simpleCurve.getSmoothPieces(), contour.isClosed());
+							simpleCurve.smoothPieces(), contour.isClosed());
 				// compute the rings composing the simple curve buffer
 				rings.addAll(computeBufferSimpleRing(boundary, dist));
 			}
@@ -59,7 +59,7 @@ public class CirculinearDomain2DUtils {
 			new ArrayList<CirculinearContour2D>();
 		
 		// the parallel in the positive side
-		CirculinearContinuousCurve2D parallel1 = curve.getParallel(d);
+		CirculinearContinuousCurve2D parallel1 = curve.parallel(d);
 		
 		// split each parallel into continuous curves
 		CirculinearCurveArray2D<CirculinearContinuousCurve2D> curves =
@@ -76,7 +76,7 @@ public class CirculinearDomain2DUtils {
 		for(CirculinearContinuousCurve2D split : curves) {
 			rings.add(
 					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
-							split.getSmoothPieces(), split.isClosed()));
+							split.smoothPieces(), split.isClosed()));
 		}
 		
 		// prepare an array to store the set of rings
@@ -93,7 +93,7 @@ public class CirculinearDomain2DUtils {
 				// (assuming it is sufficient to compute distance to vertices
 				// of the reference curve).
 				double dist = CirculinearCurve2DUtils.getDistanceCurvePoints(
-						curve, split.getSingularPoints());
+						curve, split.singularPoints());
 				
 				// check if distance condition is verified
 				if(dist-d<-Shape2D.ACCURACY)
@@ -102,7 +102,7 @@ public class CirculinearDomain2DUtils {
 				// convert the set of elements to a Circulinear ring
 				rings2.add(
 						new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
-								split.getSmoothPieces(), split.isClosed()));
+								split.smoothPieces(), split.isClosed()));
 		}
 		
 		// return the set of created rings

@@ -60,7 +60,7 @@ public class JarvisMarch2D implements ConvexHull2D {
         do {
             hullPoints.add(currentPoint);
             nextPoint = findNextPoint(currentPoint, angle, points);
-            angle = Angle2D.getHorizontalAngle(currentPoint, nextPoint);
+            angle = Angle2D.horizontalAngle(currentPoint, nextPoint);
             currentPoint = nextPoint;
         } while (currentPoint!=lowestPoint);
 
@@ -81,7 +81,7 @@ public class JarvisMarch2D implements ConvexHull2D {
                 continue;
 
             // Compute angle between current direction and next point
-            angle = Angle2D.getHorizontalAngle(basePoint, point);
+            angle = Angle2D.horizontalAngle(basePoint, point);
             angle = Angle2D.formatAngle(angle-startAngle);
 
             // Keep current point if angle is minimal

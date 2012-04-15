@@ -74,7 +74,7 @@ public class CheckHyperbola2DTransform extends JPanel{
 		Hyperbola2D rotated = hyperbola.transform(rot);
 
 		g2.setColor(Color.CYAN);
-		rotated.getDomain().clip(box).fill(g2);
+		rotated.domain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
 		rotated.clip(box).draw(g2);
 
@@ -96,7 +96,7 @@ public class CheckHyperbola2DTransform extends JPanel{
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		// Draw transform origin
 		Point2D p1 = new Point2D(x0, y0);

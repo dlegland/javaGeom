@@ -64,9 +64,9 @@ public class Ellipse2DTest extends TestCase {
 
 	public void testCreatePointPointDouble(){
 		Ellipse2D base = new Ellipse2D(20, 30, 10, 4, Math.PI/3);
-		Point2D focus1 = base.getFocus1();
-		Point2D focus2 = base.getFocus2();
-		double chord = base.getSemiMajorAxisLength()*2;
+		Point2D focus1 = base.focus1();
+		Point2D focus2 = base.focus2();
+		double chord = base.semiMajorAxisLength()*2;
 		Ellipse2D created = Ellipse2D.create(focus1, focus2, chord);
 		
 		assertTrue(base.equals(created));
@@ -118,48 +118,48 @@ public class Ellipse2DTest extends TestCase {
 		double eps = Shape2D.ACCURACY;
 		
 		assertPointAlmostEquals(new Point2D(10, 0), 
-				el1.getProjectedPoint(new Point2D(20, 0)), eps);
+				el1.projectedPoint(new Point2D(20, 0)), eps);
 		assertPointAlmostEquals(new Point2D(0, 10), 
-				el1.getProjectedPoint(new Point2D(0, 30)), eps);
+				el1.projectedPoint(new Point2D(0, 30)), eps);
 		assertPointAlmostEquals(Point2D.createPolar(10, Math.PI/4), 
-				el1.getProjectedPoint(new Point2D(30, 30)), eps);
+				el1.projectedPoint(new Point2D(30, 30)), eps);
 	}
 	
 	public void testGetTangent() {
 		double eps = Shape2D.ACCURACY;
 		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertVectorAlmostEquals(new Vector2D(0, 10), el1.getTangent(0), eps);
-		assertVectorAlmostEquals(new Vector2D(-20, 0), el1.getTangent(Math.PI/2), eps);
+		assertVectorAlmostEquals(new Vector2D(0, 10), el1.tangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(-20, 0), el1.tangent(Math.PI/2), eps);
 
 		Ellipse2D el2 = new Ellipse2D(0, 0, 20, 10, Math.PI/2);
-		assertVectorAlmostEquals(new Vector2D(-10, 0), el2.getTangent(0), eps);
-		assertVectorAlmostEquals(new Vector2D(0, -20), el2.getTangent(Math.PI/2), eps);
+		assertVectorAlmostEquals(new Vector2D(-10, 0), el2.tangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(0, -20), el2.tangent(Math.PI/2), eps);
 
 		Ellipse2D el3 = new Ellipse2D(0, 0, 20, 10, 0, false);
-		assertVectorAlmostEquals(new Vector2D(0, -10), el3.getTangent(0), eps);
-		assertVectorAlmostEquals(new Vector2D(-20, 0), el3.getTangent(Math.PI/2), eps);
+		assertVectorAlmostEquals(new Vector2D(0, -10), el3.tangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(-20, 0), el3.tangent(Math.PI/2), eps);
 
 		Ellipse2D el4 = new Ellipse2D(0, 0, 20, 10, Math.PI/2, false);
-		assertVectorAlmostEquals(new Vector2D(10, 0), el4.getTangent(0), eps);
-		assertVectorAlmostEquals(new Vector2D(0, -20), el4.getTangent(Math.PI/2), eps);
+		assertVectorAlmostEquals(new Vector2D(10, 0), el4.tangent(0), eps);
+		assertVectorAlmostEquals(new Vector2D(0, -20), el4.tangent(Math.PI/2), eps);
 	}
 	
 	public void testGetCurvature() {
 		double a = 20;
 		double b = 10;
 		Ellipse2D el1 = new Ellipse2D(0, 0, a, b);
-		double k1 = el1.getCurvature(0);
+		double k1 = el1.curvature(0);
 		assertEquals(k1, a/b/b, Shape2D.ACCURACY);
-		double k2 = el1.getCurvature(Math.PI/2);
+		double k2 = el1.curvature(Math.PI/2);
 		assertEquals(k2, b/a/a, Shape2D.ACCURACY);
 	}
 	
 	public void testGetType() {
 		Ellipse2D el1 = new Ellipse2D(20, 30, 20, 30, Math.PI/3);
 		Ellipse2D el2 = new Ellipse2D(20, 30, 20, 20, Math.PI/3);
-		assertEquals(el1.getConicType(), Conic2D.Type.ELLIPSE);
-		assertEquals(el2.getConicType(), Conic2D.Type.CIRCLE);
+		assertEquals(el1.conicType(), Conic2D.Type.ELLIPSE);
+		assertEquals(el2.conicType(), Conic2D.Type.CIRCLE);
 	}
 
 	public void testGetConicCoefficients() {
@@ -170,7 +170,7 @@ public class Ellipse2DTest extends TestCase {
 		int Npts = 13;
 		
 		Ellipse2D ellipse = new Ellipse2D(0, 0, a1, 1, 0);
-		double[] coefs = ellipse.getConicCoefficients();
+		double[] coefs = ellipse.conicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], 1, 1e-14);
@@ -179,7 +179,7 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(coefs[5], -1, 1e-14);
 		
 		ellipse = new Ellipse2D(xc, yc, a1, b1, 0);
-		coefs = ellipse.getConicCoefficients();
+		coefs = ellipse.conicCoefficients();
 		assertEquals(coefs[0], 1, 1e-14);
 		assertEquals(coefs[1], 0, 1e-14);
 		assertEquals(coefs[2], 1, 1e-14);
@@ -188,10 +188,10 @@ public class Ellipse2DTest extends TestCase {
 		assertEquals(coefs[5], 1299, 1e-14);
 		
 		ellipse = new Ellipse2D(xc, yc, a2, b2, 0);
-		coefs = ellipse.getConicCoefficients();
+		coefs = ellipse.conicCoefficients();
 		for(int i=0; i<Npts; i++){
 			double pos =((double)i)*2*Math.PI/Npts;
-			Point2D point = ellipse.getPoint(pos);
+			Point2D point = ellipse.point(pos);
 			double x = point.getX();
 			double y = point.getY();
 			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
@@ -200,10 +200,10 @@ public class Ellipse2DTest extends TestCase {
 		}
 		
 		ellipse = new Ellipse2D(xc, yc, a2, b2, theta);
-		coefs = ellipse.getConicCoefficients();
+		coefs = ellipse.conicCoefficients();
 		for(int i=0; i<Npts; i++){
 			double pos =((double)i)*2*Math.PI/Npts;
-			Point2D point = ellipse.getPoint(pos);
+			Point2D point = ellipse.point(pos);
 			double x = point.getX();
 			double y = point.getY();
 			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
@@ -224,8 +224,8 @@ public class Ellipse2DTest extends TestCase {
 
 	public void testGetSignedDistance(){
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.getSignedDistance(new Point2D(25, 0)), 5, Shape2D.ACCURACY);
-		assertEquals(el1.getSignedDistance(new Point2D(0, 15)), 5, Shape2D.ACCURACY);
+		assertEquals(el1.distanceSigned(new Point2D(25, 0)), 5, Shape2D.ACCURACY);
+		assertEquals(el1.distanceSigned(new Point2D(0, 15)), 5, Shape2D.ACCURACY);
 //		assertEquals(el1.getSignedDistance(new Point2D(15, 0)), -5, Shape2D.ACCURACY);
 //		assertEquals(el1.getSignedDistance(new Point2D(0, 5)), -5, Shape2D.ACCURACY);
 	}
@@ -248,16 +248,16 @@ public class Ellipse2DTest extends TestCase {
 
 	public void testGetDistance(){
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.getDistance(new Point2D(30, 0)), 10, Shape2D.ACCURACY);
-		assertEquals(el1.getDistance(new Point2D(0, 20)), 10, Shape2D.ACCURACY);
+		assertEquals(el1.distance(new Point2D(30, 0)), 10, Shape2D.ACCURACY);
+		assertEquals(el1.distance(new Point2D(0, 20)), 10, Shape2D.ACCURACY);
 		
 		double pos = .3;
-		Point2D p0 = el1.getPoint(pos);
-		Vector2D v0 = el1.getNormal(pos);
+		Point2D p0 = el1.point(pos);
+		Vector2D v0 = el1.normal(pos);
 		
 		double d = 6;
-		Point2D p1 = p0.plus(v0.getNormalizedVector().times(d));
-		double dist = p1.getDistance(p0);
+		Point2D p1 = p0.plus(v0.normalize().times(d));
+		double dist = p1.distance(p0);
 		assertEquals(d, dist, 1e-6);
 	}
 	
@@ -269,22 +269,22 @@ public class Ellipse2DTest extends TestCase {
 		double eps = Shape2D.ACCURACY;
 		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.getPosition(el1.getPoint(.4)), .4, eps);
+		assertEquals(el1.position(el1.point(.4)), .4, eps);
 		
 		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
-		assertEquals(el2.getPosition(el2.getPoint(.4)), .4, eps);
+		assertEquals(el2.position(el2.point(.4)), .4, eps);
 		
 		Ellipse2D el3 = new Ellipse2D(10, 5, 20, 10, Math.PI/3);
-		assertEquals(el3.getPosition(el3.getPoint(.4)), .4, eps);
+		assertEquals(el3.position(el3.point(.4)), .4, eps);
 		
 		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
-		assertEquals(el1i.getPosition(el1i.getPoint(.4)), .4, eps);
+		assertEquals(el1i.position(el1i.point(.4)), .4, eps);
 		
 		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
-		assertEquals(el2i.getPosition(el2i.getPoint(.4)), .4, eps);
+		assertEquals(el2i.position(el2i.point(.4)), .4, eps);
 		
 		Ellipse2D el3i = new Ellipse2D(10, 5, 20, 10, Math.PI/3, false);
-		assertEquals(el3i.getPosition(el3i.getPoint(.4)), .4, eps);
+		assertEquals(el3i.position(el3i.point(.4)), .4, eps);
 	}
 	
 	/**
@@ -295,22 +295,22 @@ public class Ellipse2DTest extends TestCase {
 		double eps = Shape2D.ACCURACY;
 		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.project(el1.getPoint(.4)), .4, eps);
+		assertEquals(el1.project(el1.point(.4)), .4, eps);
 		
 		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
-		assertEquals(el2.project(el2.getPoint(.4)), .4, eps);
+		assertEquals(el2.project(el2.point(.4)), .4, eps);
 		
 		Ellipse2D el3 = new Ellipse2D(10, 5, 20, 10, Math.PI/3);
-		assertEquals(el3.project(el3.getPoint(.4)), .4, eps);
+		assertEquals(el3.project(el3.point(.4)), .4, eps);
 		
 		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
-		assertEquals(el1i.project(el1i.getPoint(.4)), .4, eps);
+		assertEquals(el1i.project(el1i.point(.4)), .4, eps);
 		
 		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
-		assertEquals(el2i.project(el2i.getPoint(.4)), .4, eps);
+		assertEquals(el2i.project(el2i.point(.4)), .4, eps);
 		
 		Ellipse2D el3i = new Ellipse2D(10, 5, 20, 10, Math.PI/3, false);
-		assertEquals(el3i.project(el3i.getPoint(.4)), .4, eps);
+		assertEquals(el3i.project(el3i.point(.4)), .4, eps);
 	}
 	
 	/**
@@ -321,22 +321,22 @@ public class Ellipse2DTest extends TestCase {
 		double eps = Shape2D.ACCURACY;
 		
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		Point2D point = el1.getPoint(Math.PI/2);
+		Point2D point = el1.point(Math.PI/2);
 		Point2D expected = new Point2D(0, 10);
 		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el2 = new Ellipse2D(10, 5, 20, 10);
-		point = el2.getPoint(Math.PI/2);
+		point = el2.point(Math.PI/2);
 		expected = new Point2D(10, 15);
 		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el1i = new Ellipse2D(0, 0, 20, 10, 0, false);
-		point = el1i.getPoint(Math.PI/2);
+		point = el1i.point(Math.PI/2);
 		expected = new Point2D(0, -10);
 		assertPointAlmostEquals(expected, point, eps);
 		
 		Ellipse2D el2i = new Ellipse2D(10, 5, 20, 10, 0, false);
-		point = el2i.getPoint(Math.PI/2);
+		point = el2i.point(Math.PI/2);
 		expected = new Point2D(10, -5);
 		assertPointAlmostEquals(expected, point, eps);
 	}
@@ -352,7 +352,7 @@ public class Ellipse2DTest extends TestCase {
 		StraightLine2D line = new StraightLine2D(10, 0, 0, 1);
 		Point2D point1 = new Point2D(10, -Math.sqrt(3)*5);
 		Point2D point2 = new Point2D(10, Math.sqrt(3)*5);
-		Collection<Point2D> points = el1.getIntersections(line);
+		Collection<Point2D> points = el1.intersections(line);
 		Iterator<Point2D> iter = points.iterator();
 		
 		double eps = Shape2D.ACCURACY;
@@ -367,13 +367,13 @@ public class Ellipse2DTest extends TestCase {
 		// try with a direct ellipse 
 		ellipse = new Ellipse2D(0, 0, 20, 10, 0, true);
 		arc1 = new EllipseArc2D(ellipse, Math.PI/2, Math.PI/2);		
-		arc2 = ellipse.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = ellipse.subCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 		
 		// try again with an indirect ellipse
 		ellipse = new Ellipse2D(0, 0, 20, 10, 0, false);
 		arc1 = new EllipseArc2D(ellipse, 3*Math.PI/2, -Math.PI/2);
-		arc2 = ellipse.getSubCurve(Math.PI/2, Math.PI);
+		arc2 = ellipse.subCurve(Math.PI/2, Math.PI);
 		assertTrue(arc1.equals(arc2));
 	}
 

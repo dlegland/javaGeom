@@ -30,7 +30,7 @@ public class CheckGetBufferCircles extends JPanel{
 		curve = CirculinearCurveArray2D.create(
 				new Circle2D[]{circle1, circle2});
 		
-		domain = curve.getBuffer(30);
+		domain = curve.buffer(30);
 	}
 	
 	public void paintComponent(Graphics g){

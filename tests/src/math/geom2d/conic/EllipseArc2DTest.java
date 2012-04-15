@@ -136,13 +136,13 @@ public class EllipseArc2DTest extends TestCase {
         
         // Direct arc
         EllipseArc2D arc1 = new EllipseArc2D(ellipse, 0, Math.PI/2);        
-        assertVectorAlmostEquals(new Vector2D(0, 20), arc1.getTangent(0), eps);
-        assertVectorAlmostEquals(new Vector2D(-50, 0), arc1.getTangent(Math.PI/2), eps);
+        assertVectorAlmostEquals(new Vector2D(0, 20), arc1.tangent(0), eps);
+        assertVectorAlmostEquals(new Vector2D(-50, 0), arc1.tangent(Math.PI/2), eps);
 		
         // Inverse arc
         EllipseArc2D arc2 = new EllipseArc2D(ellipse, 0, -Math.PI/2);        
-        assertVectorAlmostEquals(new Vector2D(0, -20), arc2.getTangent(0), eps);
-        assertVectorAlmostEquals(new Vector2D(-50, 0), arc2.getTangent(Math.PI/2), eps);
+        assertVectorAlmostEquals(new Vector2D(0, -20), arc2.tangent(0), eps);
+        assertVectorAlmostEquals(new Vector2D(-50, 0), arc2.tangent(Math.PI/2), eps);
 		
 	}
 	

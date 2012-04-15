@@ -25,7 +25,7 @@ public class ButtCapFactory implements CapFactory {
 	 */
 	public CirculinearContinuousCurve2D createCap(Point2D center,
 			Vector2D direction, double dist) {
-		double theta = direction.getAngle();
+		double theta = direction.angle();
 		Point2D p1 = Point2D.createPolar(center, dist/2, theta-Math.PI/2);
 		Point2D p2 = Point2D.createPolar(center, dist/2, theta+Math.PI/2);
 		return LineSegment2D.create(p1, p2);

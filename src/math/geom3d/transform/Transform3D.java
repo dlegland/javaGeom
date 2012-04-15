@@ -35,5 +35,5 @@ public interface Transform3D {
 
     public abstract Point3D[] transformPoints(Point3D[] src, Point3D[] dst);
 
-    public abstract Point3D transformPoint(Point3D src, Point3D dst);
+    public abstract Point3D transformPoint(Point3D src);
 }

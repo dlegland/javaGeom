@@ -37,9 +37,9 @@ import math.geom2d.curve.SmoothCurve2D;
 public interface SmoothOrientedCurve2D extends SmoothCurve2D,
         ContinuousOrientedCurve2D {
 
-    public abstract SmoothOrientedCurve2D getReverseCurve();
+    public abstract SmoothOrientedCurve2D reverse();
 
-    public abstract SmoothOrientedCurve2D getSubCurve(double t0, double t1);
+    public abstract SmoothOrientedCurve2D subCurve(double t0, double t1);
 
     public abstract CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box);
 

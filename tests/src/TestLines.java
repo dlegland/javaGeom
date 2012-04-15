@@ -24,7 +24,7 @@ public class TestLines{
 		
 		StraightLine2D line1 = new StraightLine2D(p1, p2);
 
-		theta = line1.getHorizontalAngle();
+		theta = line1.horizontalAngle();
 		System.out.println("angle : " + theta);
 
 		Point2D p3 = new Point2D(0, -1);
@@ -32,10 +32,10 @@ public class TestLines{
 		
 		StraightLine2D line2 = new StraightLine2D(p3, p4);
 
-		theta = line2.getHorizontalAngle();
+		theta = line2.horizontalAngle();
 		System.out.println("angle : " + theta);
 		
-		Point2D p0 = line1.getIntersection(line2);
+		Point2D p0 = line1.intersection(line2);
 		System.out.println("point intersection : " + p0.getX() + " " + p0.getY());
 
 		
@@ -47,7 +47,7 @@ public class TestLines{
 		
 		line1 = new StraightLine2D(p1, p2);
 
-		theta = line1.getHorizontalAngle();
+		theta = line1.horizontalAngle();
 		System.out.println("angle : " + theta);
 
 		p3 = new Point2D(5, 0);
@@ -55,33 +55,33 @@ public class TestLines{
 		
 		line2 = new StraightLine2D(p3, p4);
 
-		theta = line2.getHorizontalAngle();
+		theta = line2.horizontalAngle();
 		System.out.println("angle : " + theta);
 		
-		p0 = line1.getIntersection(line2);
+		p0 = line1.intersection(line2);
 		System.out.println("point intersection : " + p0.getX() + " " + p0.getY());
 
 		line1 = new StraightLine2D(-1, 1, 0);
-		System.out.println("angle (abc) : " + line1.getHorizontalAngle());
+		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
 		line1 = new StraightLine2D(-1, 2, 0);
-		System.out.println("angle (abc) : " + line1.getHorizontalAngle());
+		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
 		line1 = new StraightLine2D(-1, 1, -1);
-		System.out.println("angle (abc) : " + line1.getHorizontalAngle());
+		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
 		line1 = new StraightLine2D(-1, 2, -2);
-		System.out.println("angle (abc) : " + line1.getHorizontalAngle());
+		System.out.println("angle (abc) : " + line1.horizontalAngle());
 		
 		System.out.println("distances --------");
 		p1 = new Point2D(0, 0);
 		p2 = new Point2D(1, 1);				
 		line1 = new StraightLine2D(p1, p2);
 		
-		System.out.println("point (0,0) :" + line1.getSignedDistance(0,0));
-		System.out.println("point (1,0) :" + line1.getSignedDistance(1,0));
-		System.out.println("point (4,0) :" + line1.getSignedDistance(4, 0));
-		System.out.println("point (0,4) :" + line1.getSignedDistance(0, 4));
-		System.out.println("point (10, 0) :" + line1.getSignedDistance(10, 0));
+		System.out.println("point (0,0) :" + line1.distanceSigned(0,0));
+		System.out.println("point (1,0) :" + line1.distanceSigned(1,0));
+		System.out.println("point (4,0) :" + line1.distanceSigned(4, 0));
+		System.out.println("point (0,4) :" + line1.distanceSigned(0, 4));
+		System.out.println("point (10, 0) :" + line1.distanceSigned(10, 0));
 	}
 }

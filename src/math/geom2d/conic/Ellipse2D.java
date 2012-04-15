@@ -73,9 +73,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         double xc = (x1 + x2) / 2;
         double yc = (y1 + y2) / 2;
-        double theta = Angle2D.getHorizontalAngle(x1, y1, x2, y2);
+        double theta = Angle2D.horizontalAngle(x1, y1, x2, y2);
 
-        double dist = focus1.getDistance(focus2);
+        double dist = focus1.distance(focus2);
         if (dist < Shape2D.ACCURACY)
             return new Circle2D(xc, yc, chord / 2);
 
@@ -311,8 +311,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		return r1 * r2 / hypot(r2 * cot, r1 * sit);
     }
 
-    public Point2D getProjectedPoint(Point2D point) {
-		Vector2D polar = this.getProjectedVector(point, Shape2D.ACCURACY);
+    public Point2D projectedPoint(Point2D point) {
+		Vector2D polar = this.projectedVector(point, Shape2D.ACCURACY);
 		return new Point2D(point.getX() + polar.getX(), point.getY() + polar.getY());
     }
 
@@ -329,7 +329,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @param eMax
      * @return the projection vector
      */
-    public Vector2D getProjectedVector(Point2D point, double eMax) {
+    public Vector2D projectedVector(Point2D point, double eMax) {
 
 		double ot = 1.0 / 3.0;
 
@@ -499,7 +499,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * For direct ellipse, distance is positive outside of the ellipse, and
      * negative inside
      */
-    public Ellipse2D getParallel(double d) {
+    public Ellipse2D parallel(double d) {
 		return new Ellipse2D(xc, yc, abs(r1 + d), abs(r2 + d), theta, direct);
     }
 
@@ -521,21 +521,21 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Returns the length of the major semi-axis of the ellipse.
      */
-    public double getSemiMajorAxisLength() {
+    public double semiMajorAxisLength() {
         return r1;
     }
 
     /**
      * Returns the length of the minor semi-axis of the ellipse.
      */
-    public double getSemiMinorAxisLength() {
+    public double semiMinorAxisLength() {
         return r2;
     }
 
     /**
      * Returns center of the ellipse.
      */
-    public Point2D getCenter() {
+    public Point2D center() {
         return new Point2D(xc, yc);
     }
 
@@ -543,7 +543,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Return the first focus. It is defined as the first focus on the Major
      * axis, in the direction given by angle theta.
      */
-    public Point2D getFocus1() {
+    public Point2D focus1() {
 		double a, b, theta;
 		if (r1 > r2) {
 			a = r1;
@@ -561,7 +561,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Returns the second focus. It is defined as the second focus on the Major
      * axis, in the direction given by angle theta.
      */
-    public Point2D getFocus2() {
+    public Point2D focus2() {
         double a, b, theta;
 		if (r1 > r2) {
             a = r1;
@@ -575,11 +575,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta);
     }
 
-    public Vector2D getVector1() {
+    public Vector2D vector1() {
         return new Vector2D(cos(theta), sin(theta));
     }
 
-    public Vector2D getVector2() {
+    public Vector2D vector2() {
         if (direct)
             return new Vector2D(-sin(theta), cos(theta));
         else
@@ -589,14 +589,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * return the angle of the ellipse first axis with the Ox axis.
      */
-    public double getAngle() {
+    public double angle() {
         return theta;
     }
 
     // ===================================================================
     // methods implementing Conic2D interface
 
-    public Conic2D.Type getConicType() {
+    public Conic2D.Type conicType() {
 		if (abs(r1 - r2) < Shape2D.ACCURACY)
 			return Conic2D.Type.CIRCLE;
 		else
@@ -607,7 +607,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Returns the conic coefficients of the ellipse. Algorithm taken from
      * http://tog.acm.org/GraphicsGems/gemsv/ch2-6/conmat.c
      */
-    public double[] getConicCoefficients() {
+    public double[] conicCoefficients() {
 
         // common coefficients
 		double r1Sq = this.r1 * this.r1;
@@ -649,7 +649,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * semi-axes. Eccentricity is 0 for a circle (r1==r2), and tends to 1 when
      * ellipse elongates.
      */
-    public double getEccentricity() {
+    public double eccentricity() {
 		double a = max(r1, r2);
 		double b = min(r1, r2);
 		double r = b / a;
@@ -660,11 +660,11 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // ===================================================================
     // methods implementing the Boundary2D interface
 
-    public Collection<? extends Ellipse2D> getBoundaryCurves() {
+    public Collection<? extends Ellipse2D> boundaryCurves() {
     	return wrapCurve(this);
     }
 
-    public Domain2D getDomain() {
+    public Domain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -689,8 +689,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Return either 0, 2*PI or -2*PI, depending whether the point is located
      * inside the interior of the ellipse or not.
      */
-    public double getWindingAngle(Point2D point) {
-		if (this.getSignedDistance(point) > 0)
+    public double windingAngle(Point2D point) {
+		if (this.distanceSigned(point) > 0)
 			return 0;
 		else
 			return direct ? PI * 2 : -PI * 2;
@@ -710,24 +710,24 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
-    public double getSignedDistance(Point2D point) {
+    public double distanceSigned(Point2D point) {
 //        Vector2D vector = this.getProjectedVector(point, 1e-10);
 //        if (isInside(point))
 //            return -vector.getNorm();
 //        else
 //            return vector.getNorm();
-    	double dist = this.getAsPolyline(180).getDistance(point);
+    	double dist = this.asPolyline(180).distance(point);
     	return isInside(point) ? -dist : dist;
     }
 
-    public double getSignedDistance(double x, double y) {
-        return getSignedDistance(new Point2D(x, y));
+    public double distanceSigned(double x, double y) {
+        return distanceSigned(new Point2D(x, y));
     }
 
     // ===================================================================
     // methods of SmoothCurve2D interface
 
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
         if (!direct)
             t = -t;
         double cot = cos(theta);
@@ -746,7 +746,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Returns the curvature of the ellipse.
      */
-    public double getCurvature(double t) {
+    public double curvature(double t) {
         if (!direct)
             t = -t;
 		double cot = cos(t);
@@ -768,7 +768,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
 	 */
-	public LinearRing2D getAsPolyline(int n) {
+	public LinearRing2D asPolyline(int n) {
 
         // compute start and increment values
 		double t0 = this.getT0();
@@ -778,7 +778,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         // which is included by default with linear rings
         Point2D[] points = new Point2D[n];
 		for (int i = 0; i < n; i++)
-			points[i] = this.getPoint(t0 + i * dt);
+			points[i] = this.point(t0 + i * dt);
 
         return new LinearRing2D(points);
 	}
@@ -806,7 +806,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * depending on the parameter t. This parameter is between the two limits 0
      * and 2*PI.
      */
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         if (!direct)
             t = -t;
         double cot = cos(theta);
@@ -823,7 +823,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @return the first point of the ellipse
      */
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
 		return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
     }
 
@@ -834,7 +834,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * @return the last point of the ellipse.
      */
 	@Override
-    public Point2D getLastPoint() {
+    public Point2D lastPoint() {
 		return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
     }
 
@@ -866,13 +866,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return new Point2D(xp, yp);
 	}
 	
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
         Point2D p2 = toUnitCircle(point);
         double xp = p2.getX();
         double yp = p2.getY();
 
         // compute angle
-        double angle = Angle2D.getHorizontalAngle(xp, yp);
+        double angle = Angle2D.horizontalAngle(xp, yp);
 
 		if (abs(hypot(xp, yp) - 1) < Shape2D.ACCURACY)
 			return angle;
@@ -891,7 +891,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double yp = p2.getY();
 
         // compute angle
-        double angle = Angle2D.getHorizontalAngle(xp, yp);
+        double angle = Angle2D.horizontalAngle(xp, yp);
 
         return angle;
     }
@@ -900,19 +900,19 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Returns the ellipse with same center and same radius, but with the other
      * orientation.
      */
-    public Ellipse2D getReverseCurve() {
+    public Ellipse2D reverse() {
         return new Ellipse2D(xc, yc, r1, r2, theta, !direct);
     }
 
 	@Override
-    public Collection<? extends Ellipse2D> getContinuousCurves() {
+    public Collection<? extends Ellipse2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
     /**
      * return a new EllipseArc2D.
      */
-    public EllipseArc2D getSubCurve(double t0, double t1) {
+    public EllipseArc2D subCurve(double t0, double t1) {
         double startAngle, extent;
         if (this.direct) {
             startAngle = t0;
@@ -939,14 +939,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Computes distance using a polyline approximation.
      */
-    public double getDistance(Point2D point) {
+    public double distance(Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
         // return abs(vector.getRho());
-        return this.getAsPolyline(180).getDistance(point);
+        return this.asPolyline(180).distance(point);
     }
 
-    public double getDistance(double x, double y) {
-        return getDistance(new Point2D(x, y));
+    public double distance(double x, double y) {
+        return distance(new Point2D(x, y));
     }
 
     /**
@@ -961,10 +961,10 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<SmoothOrientedCurve2D> result = 
-        	new CurveArray2D<SmoothOrientedCurve2D>(set.getCurveNumber());
+        	new CurveArray2D<SmoothOrientedCurve2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof EllipseArc2D)
                 result.addCurve((EllipseArc2D) curve);
             if (curve instanceof Ellipse2D)
@@ -976,7 +976,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Return more precise bounds for the ellipse. Return an instance of Box2D.
      */
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         // we consider the two parametric equations x(t) and y(t). From the
         // ellipse
         // definition, x(t)=r1*cos(t), y(t)=r2*sin(t), and the result is moved
@@ -999,7 +999,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * ellipse becomes a circle, then using the intersections computation from
      * circle.
      */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
         // Compute the transform2D which transforms ellipse into unit circle
         AffineTransform2D sca, rot, tra;
         sca = AffineTransform2D.createScaling(r1, r2);
@@ -1015,14 +1015,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         // Compute intersection points with circle
         Circle2D circle = new Circle2D(0, 0, 1);
-        points = circle.getIntersections(line2);
+        points = circle.intersections(line2);
 		if (points.size() == 0)
             return points;
 
         // convert points on circle as angles
         ArrayList<Point2D> res = new ArrayList<Point2D>(points.size());
         for (Point2D point : points)
-            res.add(this.getPoint(circle.getPosition(point)));
+            res.add(this.point(circle.position(point)));
 
         // return the result
         return res;
@@ -1036,7 +1036,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public Ellipse2D transform(AffineTransform2D trans) {
         Ellipse2D result = Ellipse2D.transformCentered(this, trans);
-        Point2D center = this.getCenter().transform(trans);
+        Point2D center = this.center().transform(trans);
         result.xc = center.getX();
         result.yc = center.getY();
 		result.direct = !(this.direct ^ trans.isDirect());
@@ -1059,7 +1059,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
-        return this.getDistance(x, y)<Shape2D.ACCURACY;
+        return this.distance(x, y)<Shape2D.ACCURACY;
     }
 
     public java.awt.geom.GeneralPath getGeneralPath() {
@@ -1130,13 +1130,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         Ellipse2D ell = (Ellipse2D) obj;
 
-        if (!ell.getCenter().almostEquals(this.getCenter(), eps))
+        if (!ell.center().almostEquals(this.center(), eps))
             return false;
         if (abs(ell.r1-this.r1)>eps)
             return false;
         if (abs(ell.r2-this.r2)>eps)
             return false;
-        if (!Angle2D.almostEquals(ell.getAngle(), this.getAngle(), eps))
+        if (!Angle2D.almostEquals(ell.angle(), this.angle(), eps))
             return false;
         if (ell.isDirect()!=this.isDirect())
             return false;
@@ -1157,13 +1157,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         Ellipse2D ell = (Ellipse2D) obj;
 
-        if (!ell.getCenter().equals(this.getCenter()))
+        if (!ell.center().equals(this.center()))
             return false;
         if (abs(ell.r1-this.r1)>Shape2D.ACCURACY)
             return false;
         if (abs(ell.r2-this.r2)>Shape2D.ACCURACY)
             return false;
-        if (abs(Angle2D.formatAngle(ell.getAngle()-this.getAngle()))>Shape2D.ACCURACY)
+        if (abs(Angle2D.formatAngle(ell.angle()-this.angle()))>Shape2D.ACCURACY)
             return false;
         if (ell.isDirect()!=this.isDirect())
             return false;

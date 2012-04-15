@@ -25,7 +25,7 @@ public class CheckClipCircle2D  extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		Box2D box = new Box2D(100, 300, 100, 300);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 		
 		
 		Circle2D circle0 = new Circle2D(200, 200, 80);

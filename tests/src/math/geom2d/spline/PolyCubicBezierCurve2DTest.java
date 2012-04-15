@@ -30,7 +30,7 @@ public class PolyCubicBezierCurve2DTest extends TestCase {
 
 		PolyCubicBezierCurve2D curve = new PolyCubicBezierCurve2D(sub1, sub2);
 		
-		assertEquals(2, curve.getCurveNumber());
+		assertEquals(2, curve.curveNumber());
 	}
 
 }

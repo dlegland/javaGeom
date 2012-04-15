@@ -268,8 +268,8 @@ public class KDTree2D {
     private Node nearestNeighbor(Point2D point, Node candidate, Node node, 
             int depth) {
         // Check if the current node is closest that current candidate
-        double distCand = candidate.point.getDistance(point);
-        double dist     = node.point.getDistance(point);
+        double distCand = candidate.point.distance(point);
+        double dist     = node.point.distance(point);
         if(dist<distCand){
             candidate = node;
         }
@@ -300,12 +300,12 @@ public class KDTree2D {
             candidate = nearestNeighbor(point, candidate, node1, depth+1);
 
             // recomputes distance to the (possibly new) candidate
-            distCand = candidate.getPoint().getDistance(point);
+            distCand = candidate.getPoint().distance(point);
         }
         
         // If line is close enough, there can be closer points to the other
         // side of the line
-        if(line.getDistance(point)<distCand && node2!=null) {
+        if(line.distance(point)<distCand && node2!=null) {
             candidate = nearestNeighbor(point, candidate, node2, depth+1);
         }
         

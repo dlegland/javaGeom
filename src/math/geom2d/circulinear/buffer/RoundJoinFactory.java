@@ -35,17 +35,17 @@ public class RoundJoinFactory implements JoinFactory {
 			CirculinearElement2D curve2, double dist) {
 		
 		// center of circle arc
-		Point2D center = curve2.getFirstPoint();
+		Point2D center = curve2.firstPoint();
 		Curve2DUtils.JunctionType junctionType = 
 			Curve2DUtils.getJunctionType(curve1, curve2);
 		
 		// compute tangents to each portion
-		Vector2D direction1 = curve1.getTangent(curve1.getT1());
-		Vector2D direction2 = curve2.getTangent(curve2.getT0());
+		Vector2D direction1 = curve1.tangent(curve1.getT1());
+		Vector2D direction2 = curve2.tangent(curve2.getT0());
 
 		// angle of each edge
-		double angle1 = direction1.getAngle();
-		double angle2 = direction2.getAngle();
+		double angle1 = direction1.angle();
+		double angle2 = direction2.angle();
 				
 		// Special cases of direct join between the two parallels
 		if ((dist > 0 && junctionType == REENTRANT) || (dist <= 0 && junctionType == SALIENT)) {

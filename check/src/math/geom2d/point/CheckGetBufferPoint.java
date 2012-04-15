@@ -28,8 +28,8 @@ public class CheckGetBufferPoint extends JPanel{
 	
 	public CheckGetBufferPoint(){
 		point = new Point2D(150, 150);
-		domain1 = point.getBuffer(20);
-		domain2 = point.getBuffer(-50);
+		domain1 = point.buffer(20);
+		domain2 = point.buffer(-50);
 	}
 	
 	public void paintComponent(Graphics g){

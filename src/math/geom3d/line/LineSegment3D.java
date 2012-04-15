@@ -44,7 +44,7 @@ public class LineSegment3D implements ContinuousCurve3D {
     // ===================================================================
     // methods specific to StraightLine3D
 
-    public StraightLine3D getSupportingLine() {
+    public StraightLine3D supportingLine() {
         return new StraightLine3D(x1, y1, z1, x2-x1, y2-y1, z2-z1);
     }
 
@@ -56,7 +56,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getContinuousCurves()
      */
-    public Collection<LineSegment3D> getContinuousCurves() {
+    public Collection<LineSegment3D> continuousCurves() {
         ArrayList<LineSegment3D> array = new ArrayList<LineSegment3D>(1);
         array.add(this);
         return array;
@@ -67,7 +67,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getFirstPoint()
      */
-    public Point3D getFirstPoint() {
+    public Point3D firstPoint() {
         return new Point3D(x1, y1, z1);
     }
 
@@ -76,7 +76,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getLastPoint()
      */
-    public Point3D getLastPoint() {
+    public Point3D lastPoint() {
         return new Point3D(x2, y2, z2);
     }
 
@@ -85,30 +85,21 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getPoint(double)
      */
-    public Point3D getPoint(double t) {
-        return getPoint(t, new Point3D());
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom3d.curve.Curve3D#getPoint(double, math.geom3d.Point3D)
-     */
-    public Point3D getPoint(double t, Point3D point) {
-        if (point==null)
-            point = new Point3D();
+    public Point3D point(double t) {
         t = Math.max(Math.min(t, 1), 0);
-        point.setLocation(x1+(x2-x1)*t, y1+(y2-y1)*t, z1+(z2-z1)*t);
-        return point;
+		return new Point3D(
+				x1 + (x2 - x1) * t, 
+				y1 + (y2 - y1) * t, 
+				z1 + (z2 - z1) * t);
     }
 
     /**
      * If point does not project on the line segment, return Double.NaN.
      * 
-     * @see math.geom3d.curve.Curve3D#getPosition(math.geom3d.Point3D)
+     * @see math.geom3d.curve.Curve3D#position(math.geom3d.Point3D)
      */
-    public double getPosition(Point3D point) {
-        double t = this.getSupportingLine().getPosition(point);
+    public double position(Point3D point) {
+        double t = this.supportingLine().position(point);
         if (t>1)
             return Double.NaN;
         if (t<0)
@@ -121,19 +112,19 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getReverseCurve()
      */
-    public Curve3D getReverseCurve() {
-        return new StraightLine3D(getLastPoint(), getFirstPoint());
+    public Curve3D reverseCurve() {
+        return new StraightLine3D(lastPoint(), firstPoint());
     }
 
     /**
      * Returns the2 end points.
      * 
-     * @see math.geom3d.curve.Curve3D#getSingularPoints()
+     * @see math.geom3d.curve.Curve3D#singularPoints()
      */
-    public Collection<Point3D> getSingularPoints() {
+    public Collection<Point3D> singularPoints() {
         ArrayList<Point3D> points = new ArrayList<Point3D>(2);
-        points.add(getFirstPoint());
-        points.add(getLastPoint());
+        points.add(firstPoint());
+        points.add(lastPoint());
         return points;
     }
 
@@ -142,10 +133,10 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.curve.Curve3D#getSubCurve(double, double)
      */
-    public LineSegment3D getSubCurve(double t0, double t1) {
+    public LineSegment3D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
-        return new LineSegment3D(getPoint(t0), getPoint(t1));
+        return new LineSegment3D(point(t0), point(t1));
     }
 
     /**
@@ -172,7 +163,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * @see math.geom3d.curve.Curve3D#project(math.geom3d.Point3D)
      */
     public double project(Point3D point) {
-        double t = getSupportingLine().project(point);
+        double t = supportingLine().project(point);
         return Math.min(Math.max(t, 0), 1);
     }
 
@@ -205,10 +196,10 @@ public class LineSegment3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
     public boolean contains(Point3D point) {
-        StraightLine3D line = this.getSupportingLine();
+        StraightLine3D line = this.supportingLine();
         if (!line.contains(point))
             return false;
-        double t = line.getPosition(point);
+        double t = line.position(point);
         if (t<-Shape3D.ACCURACY)
             return false;
         if (t>1+Shape3D.ACCURACY)
@@ -221,7 +212,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.Shape3D#getBoundingBox()
      */
-    public Box3D getBoundingBox() {
+    public Box3D boundingBox() {
         return new Box3D(x1, x2, y1, y2, z1, z2);
     }
 
@@ -230,9 +221,9 @@ public class LineSegment3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
-    public double getDistance(Point3D point) {
+    public double distance(Point3D point) {
         double t = this.project(point);
-        return getPoint(t).getDistance(point);
+        return point(t).distance(point);
     }
 
     /**

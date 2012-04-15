@@ -66,13 +66,13 @@ public class DrawOblicParabolaDemo extends JPanel{
 	
 		ParabolaArc2D arc = new ParabolaArc2D(parabola, -30, 30);
 		
-		Polyline2D polyline = arc.getAsPolyline(10);
+		Polyline2D polyline = arc.asPolyline(10);
 		
 		g2.setColor(Color.YELLOW);
-		new GenericDomain2D(new LinearRing2D(polyline.getVertices())).fill(g2);
+		new GenericDomain2D(new LinearRing2D(polyline.vertices())).fill(g2);
 
 		g2.setColor(Color.BLUE);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		// Draw the clipped parabola
 		CurveSet2D<?> clipped = parabola.clip(box);
@@ -83,12 +83,12 @@ public class DrawOblicParabolaDemo extends JPanel{
 		}
 		
 		// Draw parabola origin
-		Point2D p1 = parabola.getPoint(0);
+		Point2D p1 = parabola.point(0);
 		p1.draw(g2, 4);
 		
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
-		parabola.getDomain().clip(box).fill(g2);
+		parabola.domain().clip(box).fill(g2);
 //		g2.setColor(Color.BLUE);
 //		g2.draw(clipped);
 	}

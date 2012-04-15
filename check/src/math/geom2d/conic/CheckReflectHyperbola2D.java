@@ -92,7 +92,7 @@ public class CheckReflectHyperbola2D extends JPanel{
 					new StraightLine2D(center, Ox));
 		
 		g2.setColor(Color.CYAN);
-		rotated.getDomain().clip(box).fill(g2);
+		rotated.domain().clip(box).fill(g2);
 		g2.setColor(Color.BLUE);
 		rotated.clip(box).draw(g2);
 		
@@ -110,8 +110,8 @@ public class CheckReflectHyperbola2D extends JPanel{
 		Curve2D clipped = rotated.clip(box).transform(refOy);
 		g2.setColor(Color.RED);
 		clipped.draw(g2);
-		for(ContinuousCurve2D cont : clipped.getContinuousCurves()){
-			cont.getAsPolyline(30).draw(g2);
+		for(ContinuousCurve2D cont : clipped.continuousCurves()){
+			cont.asPolyline(30).draw(g2);
 //			System.out.println(cont.getFirstPoint());
 //			System.out.println(cont.getLastPoint());
 		}
@@ -122,7 +122,7 @@ public class CheckReflectHyperbola2D extends JPanel{
 		
 		// draw the bounding box
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		// Draw the origin point
 		Point2D p1 = new Point2D(x0, y0);

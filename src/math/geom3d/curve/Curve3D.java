@@ -38,13 +38,7 @@ public interface Curve3D extends Shape3D {
      * approximated outline of a curve, by selecting multiple values for t and
      * drawing lines between them.
      */
-    public abstract Point3D getPoint(double t);
-
-    /**
-     * Same as getPoint(t), but gives the point as a parameter. This avoids
-     * repetitive memory allocations.
-     */
-    public abstract Point3D getPoint(double t, Point3D point);
+    public abstract Point3D point(double t);
 
     /**
      * Get the first point of the curve. It must returns the same result as
@@ -52,7 +46,7 @@ public interface Curve3D extends Shape3D {
      * 
      * @return the first point of the curve
      */
-    public abstract Point3D getFirstPoint();
+    public abstract Point3D firstPoint();
 
     /**
      * Get the last point of the curve. It must returns the same result as
@@ -60,7 +54,7 @@ public interface Curve3D extends Shape3D {
      * 
      * @return the last point of the curve.
      */
-    public abstract Point3D getLastPoint();
+    public abstract Point3D lastPoint();
 
     /**
      * Returns a set of singular points, i. e. which do not locally admit
@@ -68,7 +62,7 @@ public interface Curve3D extends Shape3D {
      * 
      * @return a collection of Point3D.
      */
-    public abstract Collection<Point3D> getSingularPoints();
+    public abstract Collection<Point3D> singularPoints();
 
     /**
      * Get position of the point on the curve. If the point does not belong to
@@ -77,7 +71,7 @@ public interface Curve3D extends Shape3D {
      * @param point a point belonging to the curve
      * @return the position of the point on the curve
      */
-    public abstract double getPosition(Point3D point);
+    public abstract double position(Point3D point);
 
     /**
      * Returns the position of the closest orthogonal projection of the point on
@@ -93,14 +87,14 @@ public interface Curve3D extends Shape3D {
      * Returns the curve with same trace on the plane with parametrization in
      * reverse order.
      */
-    public abstract Curve3D getReverseCurve();
+    public abstract Curve3D reverseCurve();
 
     /**
      * Returns the collection of continuous curves which constitute this curve.
      * 
      * @return a collection of continuous curves.
      */
-    public abstract Collection<? extends ContinuousCurve3D> getContinuousCurves();
+    public abstract Collection<? extends ContinuousCurve3D> continuousCurves();
 
     /**
      * Returns a portion of the original curve, delimited by two positions on
@@ -110,7 +104,7 @@ public interface Curve3D extends Shape3D {
      * @param t1 position of the end of the sub-curve
      * @return the portion of original curve comprised between t0 and t1.
      */
-    public abstract Curve3D getSubCurve(double t0, double t1);
+    public abstract Curve3D subCurve(double t0, double t1);
 
     /**
      * Transforms the curve by an affine transform. The result is an instance of

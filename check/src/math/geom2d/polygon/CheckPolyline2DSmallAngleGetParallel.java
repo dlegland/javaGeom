@@ -39,11 +39,11 @@ public class CheckPolyline2DSmallAngleGetParallel extends JPanel{
 		polyline.draw(g2);
 		
 		g2.setColor(Color.BLUE);
-		parallel = polyline.getParallel(30);
+		parallel = polyline.parallel(30);
 		parallel.draw(g2);
 		
 		g2.setColor(Color.RED);
-		parallel = polyline.getParallel(-30);
+		parallel = polyline.parallel(-30);
 		parallel.draw(g2);
 	}
 	

@@ -37,7 +37,7 @@ public class CheckLinearRing2D_getBuffer extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		//TODO: wrong for dist=51, wrong for dist=52
-		buffer = ring.getBuffer(51);
+		buffer = ring.buffer(51);
 		
 		g2.setColor(Color.CYAN);
 		buffer.fill(g2);

@@ -28,7 +28,7 @@ public class CheckGetBufferCircle extends JPanel{
 		
 		circle = new Circle2D(new Point2D(100, 100), 50);
 		
-		domain = circle.getBuffer(20);
+		domain = circle.buffer(20);
 	}
 	
 	public void paintComponent(Graphics g){

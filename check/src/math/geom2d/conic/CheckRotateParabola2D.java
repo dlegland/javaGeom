@@ -71,13 +71,13 @@ public class CheckRotateParabola2D extends JPanel{
 			Parabola2D rotated = parabola.transform(rot);
 
 			g2.setColor(Color.CYAN);
-			rotated.getDomain().clip(box).fill(g2);
+			rotated.domain().clip(box).fill(g2);
 			g2.setColor(Color.BLUE);
 			rotated.clip(box).draw(g2);
 		}
 		
 		// Draw parabola origin
-		Point2D p1 = parabola.getPoint(0);
+		Point2D p1 = parabola.point(0);
 		p1.draw(g2, 4);
 	}
 

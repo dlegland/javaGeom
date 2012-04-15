@@ -86,8 +86,8 @@ public class GrahamScan2D implements ConvexHull2D {
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Point2D point1, Point2D point2) {
-            double angle1 = Angle2D.getPseudoAngle(basePoint, point1);
-            double angle2 = Angle2D.getPseudoAngle(basePoint, point2);
+            double angle1 = Angle2D.pseudoAngle(basePoint, point1);
+            double angle2 = Angle2D.pseudoAngle(basePoint, point2);
             
             if(angle1<angle2) return -1;
             if(angle1>angle2) return +1;

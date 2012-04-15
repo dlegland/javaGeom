@@ -426,7 +426,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		return new GenericCirculinearDomain2D(
 				new Circle2D(this, Math.abs(dist), dist > 0));
 	}
@@ -443,7 +443,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 		// compute distance and angle of transformed point
 		double d = r * r / Point2D.getDistance(this, center);
-		double theta = Angle2D.getHorizontalAngle(center, this);
+		double theta = Angle2D.horizontalAngle(center, this);
 
 		// create the new point
 		return Point2D.createPolar(center, d, theta);
@@ -457,7 +457,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * (non-Javadoc)
 	 * @see math.geom2d.point.PointShape2D#getPointNumber()
 	 */
-	public int getPointNumber() {
+	public int pointNumber() {
 		return 1;
 	}
 
@@ -465,7 +465,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * (non-Javadoc)
 	 * @see math.geom2d.point.PointShape2D#getPoints()
 	 */
-	public Collection<Point2D> getPoints() {
+	public Collection<Point2D> points() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(1);
 		array.add(this);
 		return array;
@@ -478,8 +478,8 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	/**
 	 * Computes the distance between this and the point <code>point</code>.
 	 */
-	public double getDistance(Point2D point) {
-		return getDistance(point.x, point.y);
+	public double distance(Point2D point) {
+		return distance(point.x, point.y);
 	}
 
 	/**
@@ -487,7 +487,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for
 	 * better robustness than simple square root.
 	 */
-	public double getDistance(double x, double y) {
+	public double distance(double x, double y) {
 		return hypot(this.x - x, this.y - y);
 	}
 
@@ -554,7 +554,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Returns a bounding box with zero width and zero height, whose coordinates
 	 * limits are point coordinates.
 	 */
-	public Box2D getBoundingBox() {
+	public Box2D boundingBox() {
 		return new Box2D(x, x, y, y);
 	}
 
@@ -562,7 +562,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Returns the transformed point.
 	 */
 	public Point2D transform(AffineTransform2D trans) {
-		double[] tab = trans.getCoefficients();
+		double[] tab = trans.coefficients();
 		return new Point2D(
 				x * tab[0] + y * tab[1] + tab[2], 
 				x * tab[3] + y * tab[4] + tab[5]);
@@ -622,7 +622,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator<Point2D> iterator() {
-		return this.getPoints().iterator();
+		return this.points().iterator();
 	}
 
 	// ===================================================================

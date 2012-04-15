@@ -97,31 +97,31 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
 	 */
-	public double getLength() {
+	public double length() {
 		double sum = 0;
-		for(CirculinearCurve2D curve : this.getCurves())
-			sum += curve.getLength();
+		for(CirculinearCurve2D curve : this.curves())
+			sum += curve.length();
 		return sum;
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
+	public double length(double pos) {
 		return CirculinearCurve2DUtils.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
+	public double position(double length) {
 		return CirculinearCurve2DUtils.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.computeBuffer(this, dist);
 	}
@@ -129,7 +129,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
 	 */
-	public CirculinearCurve2D getParallel(double d) {
+	public CirculinearCurve2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.createParallel(this, d);
 	}
@@ -153,14 +153,14 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 
     @Override
     public Collection<? extends CirculinearContinuousCurve2D>
-    getContinuousCurves() {
+    continuousCurves() {
     	// create array for storing result
         ArrayList<CirculinearContinuousCurve2D> result = 
         	new ArrayList<CirculinearContinuousCurve2D>();
         
         // iterate on curves, and extract each set of continuous curves
         for(CirculinearCurve2D curve : curves)
-        	result.addAll(curve.getContinuousCurves());
+        	result.addAll(curve.continuousCurves());
         
         // return the set of curves
         return result;
@@ -172,12 +172,12 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.getCurveNumber();
+        int n = set.curveNumber();
         CirculinearCurveArray2D<CirculinearCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearCurve2D>(n);
 
         // convert the result, class cast each curve
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearCurve2D)
                 result.addCurve((CirculinearCurve2D) curve);
         }
@@ -188,13 +188,13 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
     
 	@Override
 	public CirculinearCurveArray2D<? extends CirculinearCurve2D> 
-	getSubCurve(double t0, double t1) {
+	subCurve(double t0, double t1) {
 		// Call the superclass method
-		CurveSet2D<? extends Curve2D> subcurve = super.getSubCurve(t0, t1);
+		CurveSet2D<? extends Curve2D> subcurve = super.subCurve(t0, t1);
 		
 		// prepare result
 		CirculinearCurveArray2D<CirculinearCurve2D> result = new 
-		CirculinearCurveArray2D<CirculinearCurve2D>(subcurve.getCurveNumber());
+		CirculinearCurveArray2D<CirculinearCurve2D>(subcurve.curveNumber());
 		
 		// add each curve after class,cast
 		for(Curve2D curve : subcurve) {
@@ -210,14 +210,14 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	
 	@Override
 	public CirculinearCurveArray2D<? extends CirculinearCurve2D> 
-	getReverseCurve(){
+	reverse(){
     	int n = curves.size();
         // create array of reversed curves
     	CirculinearCurve2D[] curves2 = new CirculinearCurve2D[n];
         
         // reverse each curve
         for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).getReverseCurve();
+            curves2[i] = curves.get(n-1-i).reverse();
         
         // create the reversed final curve
         return new CirculinearCurveArray2D<CirculinearCurve2D>(curves2);

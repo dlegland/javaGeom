@@ -75,7 +75,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// isolate first branch 
 		// isolate second branch and an arc
-		HyperbolaBranch2D branch2 = hyperbola.getLastCurve();
+		HyperbolaBranch2D branch2 = hyperbola.lastCurve();
 
 		g2.setColor(Color.BLUE);
 		//g2.fill(Boundary2DUtil.clipBoundary(branch1, box));
@@ -86,7 +86,7 @@ public class DrawHyperbolaDemo extends JPanel{
 //		g2.setColor(Color.BLUE);
 //		g2.draw(clippedBoundary);
 		g2.setColor(Color.CYAN);
-		clippedBoundary.getDomain().fill(g2);
+		clippedBoundary.domain().fill(g2);
 		
 //		// Draw the arcs
 //		g2.setColor(Color.BLACK);
@@ -104,13 +104,13 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		// Get intersections with some lines
 		StraightLine2D line1 = new StraightLine2D(50, 50, 10, 0);
-		Collection<Point2D> points1 = hyperbola.getIntersections(line1);
+		Collection<Point2D> points1 = hyperbola.intersections(line1);
 		StraightLine2D line2 = new StraightLine2D(50, 50, 0, 10);
-		Collection<Point2D> points2 = hyperbola.getIntersections(line2);
+		Collection<Point2D> points2 = hyperbola.intersections(line2);
 		StraightLine2D line3 = new StraightLine2D(50, 250, 10, 0);
-		Collection<Point2D> points3 = hyperbola.getIntersections(line3);
+		Collection<Point2D> points3 = hyperbola.intersections(line3);
 		StraightLine2D line4 = new StraightLine2D(250, 250, 0, 10);
-		Collection<Point2D> points4 = hyperbola.getIntersections(line4);
+		Collection<Point2D> points4 = hyperbola.intersections(line4);
 		
 		// Draw point sets
 		g2.setColor(Color.RED);
@@ -125,8 +125,8 @@ public class DrawHyperbolaDemo extends JPanel{
 		
 		
 		// Compute intersections of branches with lines
-		points2 = hyperbola.getIntersections(line2);
-		points4 = hyperbola.getIntersections(line4);
+		points2 = hyperbola.intersections(line2);
+		points4 = hyperbola.intersections(line4);
 		
 		for(Point2D point : points2)
 			point.draw(g2, 4);
@@ -138,10 +138,10 @@ public class DrawHyperbolaDemo extends JPanel{
 		CurveSet2D<SmoothCurve2D> clipped = 
 			Curve2DUtils.clipSmoothCurve(branch2, line4);
 		if (clipped!=null){
-			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
+			SmoothCurve2D clippedCurve = clipped.firstCurve();
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
-			clippedCurve.getAsPolyline(4).draw(g2);
+			clippedCurve.asPolyline(4).draw(g2);
 		}
 				
 		// Draw the clipped hyperbola
@@ -155,10 +155,10 @@ public class DrawHyperbolaDemo extends JPanel{
 		// The clipping of first branch
 		clipped = Curve2DUtils.clipSmoothCurve(branch2, line4);
 		if (clipped!=null){
-			SmoothCurve2D clippedCurve = clipped.getFirstCurve();
+			SmoothCurve2D clippedCurve = clipped.firstCurve();
 			g2.setStroke(new BasicStroke(1.0f));
 			g2.setColor(Color.RED);
-			clippedCurve.getAsPolyline(4).draw(g2);
+			clippedCurve.asPolyline(4).draw(g2);
 		}
 			
 		// Draw parabola origin
@@ -168,7 +168,7 @@ public class DrawHyperbolaDemo extends JPanel{
 		// Draw the bounding box
 		g2.setStroke(new BasicStroke(1.0f));
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 
 	public final static void main(String[] args){

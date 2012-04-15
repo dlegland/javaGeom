@@ -14,9 +14,9 @@ public class PointArray2DTest extends TestCase {
 		Point2D p3 = new Point2D(30, 20);
 		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
 		
-		Domain2D buffer = set.getBuffer(5);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(3, boundary.getContinuousCurves().size());
+		Domain2D buffer = set.buffer(5);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(3, boundary.continuousCurves().size());
 	}
 	
 	public void testGetBuffer_Merge() {
@@ -25,9 +25,9 @@ public class PointArray2DTest extends TestCase {
 		Point2D p3 = new Point2D(20, 0);
 		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
 		
-		Domain2D buffer = set.getBuffer(10);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Domain2D buffer = set.buffer(10);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 	
 	/**
@@ -39,9 +39,9 @@ public class PointArray2DTest extends TestCase {
 		Point2D p3 = new Point2D(10, 20);
 		PointSet2D set = PointArray2D.create(new Point2D[]{p1, p2, p3});
 		
-		Domain2D buffer = set.getBuffer(10);
-		Boundary2D boundary = buffer.getBoundary();
-		assertEquals(1, boundary.getContinuousCurves().size());
+		Domain2D buffer = set.buffer(10);
+		Boundary2D boundary = buffer.boundary();
+		assertEquals(1, boundary.continuousCurves().size());
 	}
 	
 	public void testGetDistancePoint2D() {
@@ -52,16 +52,16 @@ public class PointArray2DTest extends TestCase {
 				new Point2D(10, 10)});
 		
 		// test distance with points contained in the set
-		assertEquals(set.getDistance(new Point2D(0, 0)), 0, 1e-14);
-		assertEquals(set.getDistance(new Point2D(10, 0)), 0, 1e-14);
-		assertEquals(set.getDistance(new Point2D(0, 10)), 0, 1e-14);
-		assertEquals(set.getDistance(new Point2D(10, 10)), 0, 1e-14);
+		assertEquals(set.distance(new Point2D(0, 0)), 0, 1e-14);
+		assertEquals(set.distance(new Point2D(10, 0)), 0, 1e-14);
+		assertEquals(set.distance(new Point2D(0, 10)), 0, 1e-14);
+		assertEquals(set.distance(new Point2D(10, 10)), 0, 1e-14);
 		
 		// test distance with points outside of the set
-		assertEquals(set.getDistance(new Point2D(20, 0)), 10, 1e-14);
-		assertEquals(set.getDistance(new Point2D(0, 20)), 10, 1e-14);
-		assertEquals(set.getDistance(new Point2D(20, 20)), 10*Math.sqrt(2), 1e-14);
-		assertEquals(set.getDistance(new Point2D(5, 5)), 5*Math.sqrt(2), 1e-14);
+		assertEquals(set.distance(new Point2D(20, 0)), 10, 1e-14);
+		assertEquals(set.distance(new Point2D(0, 20)), 10, 1e-14);
+		assertEquals(set.distance(new Point2D(20, 20)), 10*Math.sqrt(2), 1e-14);
+		assertEquals(set.distance(new Point2D(5, 5)), 5*Math.sqrt(2), 1e-14);
 	}
 
 	public void testIsEmpty() {
@@ -90,7 +90,7 @@ public class PointArray2DTest extends TestCase {
 		Box2D box = new Box2D(-5, 5, -5, 5);
 		
 		PointArray2D clipped = set.clip(box);
-		assertTrue(clipped.getPointNumber()==1);
+		assertTrue(clipped.pointNumber()==1);
 	}
 
 	public void testGetBoundingBox() {
@@ -100,7 +100,7 @@ public class PointArray2DTest extends TestCase {
 				new Point2D(0, 10),
 				new Point2D(10, 10)});
 		Box2D box = new Box2D(0, 10, 0, 10);
-		assertTrue(set.getBoundingBox().equals(box));
+		assertTrue(set.boundingBox().equals(box));
 	}
 
 	public void testContainsPoint2D() {

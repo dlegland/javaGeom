@@ -46,10 +46,10 @@ public class CheckPolyCirculinearCurve2DGetParallel2 extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 
-		parallel = curve.getParallel(30);
+		parallel = curve.parallel(30);
 		parallel.draw(g2);
 		
-		parallel = curve.getParallel(-20);
+		parallel = curve.parallel(-20);
 		parallel.draw(g2);
 	}
 	

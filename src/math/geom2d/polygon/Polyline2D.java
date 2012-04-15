@@ -216,7 +216,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /**
      * Returns the vertices of the polyline.
      */
-    public Collection<Point2D> getVertices() {
+    public Collection<Point2D> vertices() {
         return vertices;
     }
 
@@ -225,7 +225,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @param i index of the vertex, between 0 and the number of vertices
      */
-    public Point2D getVertex(int i) {
+    public Point2D vertex(int i) {
         return vertices.get(i);
     }
 
@@ -234,7 +234,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @return the number of vertices
      */
-    public int getVertexNumber() {
+    public int vertexNumber() {
         return vertices.size();
     }
 
@@ -244,7 +244,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @return the edges of the polyline
      */
-    public Collection<LineSegment2D> getEdges() {
+    public Collection<LineSegment2D> edges() {
         int n = vertices.size();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
 
@@ -257,19 +257,19 @@ implements CirculinearContinuousCurve2D, Cloneable {
         return edges;
     }
     
-    public LineSegment2D getEdge(int index) {
+    public LineSegment2D edge(int index) {
     	return new LineSegment2D(vertices.get(index), vertices.get(index+1));
     }
 
-    public LineSegment2D getFirstEdge() {
-        if (vertices.size()<2)
+    public LineSegment2D firstEdge() {
+        if (vertices.size() < 2)
             return null;
         return new LineSegment2D(vertices.get(0), vertices.get(1));
     }
 
-    public LineSegment2D getLastEdge() {
+    public LineSegment2D lastEdge() {
         int n = vertices.size();
-        if (n<2)
+        if (n < 2)
             return null;
         return new LineSegment2D(vertices.get(n-2), vertices.get(n-1));
     }
@@ -280,29 +280,29 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
 	 */
-	public double getLength() {
+	public double length() {
 		double sum = 0;
-		for(LineSegment2D edge : this.getEdges())
-			sum += edge.getLength();
+		for(LineSegment2D edge : this.edges())
+			sum += edge.length();
 		return sum;
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
-	public double getLength(double pos) {
+	public double length(double pos) {
 		//init
 		double length = 0;
 		
 		// add length of each curve before current curve
 		int index = (int) Math.floor(pos);
 		for(int i=0; i<index; i++)
-			length += this.getEdge(i).getLength();
+			length += this.edge(i).length();
 		
 		// add portion of length for last curve
 		if(index < vertices.size()-1) {
 			double pos2 = pos-index;
-			length += this.getEdge(index).getLength(pos2);
+			length += this.edge(index).length(pos2);
 		}
 		
 		// return computed length
@@ -312,7 +312,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
-	public double getPosition(double length) {
+	public double position(double length) {
 		
 		// position to compute
 		double pos = 0;
@@ -321,12 +321,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
 		int index = 0;
 		
 		// cumulative length
-		double cumLength = this.getLength(this.getT0());
+		double cumLength = this.length(this.getT0());
 		
 		// iterate on all curves
-		for(LineSegment2D edge : getEdges()) {
+		for(LineSegment2D edge : edges()) {
 			// length of current curve
-			double edgeLength = edge.getLength();
+			double edgeLength = edge.length();
 			
 			// add either 2, or fraction of length
 			if(cumLength + edgeLength < length) {
@@ -334,7 +334,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 				index ++;
 			} else {
 				// add local position on current curve
-				double pos2 = edge.getPosition(length - cumLength);
+				double pos2 = edge.position(length - cumLength);
 				pos = index + pos2;
 				break;
 			}			
@@ -347,7 +347,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
-	public CirculinearDomain2D getBuffer(double dist) {
+	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
 		// basic check to avoid degenerate cases
@@ -363,7 +363,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
-	public CirculinearContinuousCurve2D getParallel(double d) {
+	public CirculinearContinuousCurve2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.createContinuousParallel(this, d);
 	}
@@ -374,7 +374,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	public CirculinearContinuousCurve2D transform(CircleInversion2D inv) {
 		
 		// Create array for storing transformed arcs
-		Collection<LineSegment2D> edges = this.getEdges();
+		Collection<LineSegment2D> edges = this.edges();
 		ArrayList<CirculinearContinuousCurve2D> arcs = 
 			new ArrayList<CirculinearContinuousCurve2D>(edges.size());
 		
@@ -393,25 +393,25 @@ implements CirculinearContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
-	public Vector2D getLeftTangent(double t) {
+	public Vector2D leftTangent(double t) {
 		int index = (int) Math.floor(t);
 		if(Math.abs(t-index)<Shape2D.ACCURACY)
 			index--;
-		return this.getEdge(index).getTangent(0);
+		return this.edge(index).tangent(0);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
 	 */
-	public Vector2D getRightTangent(double t) {
+	public Vector2D rightTangent(double t) {
 		int index = (int) Math.ceil(t);
-		return this.getEdge(index).getTangent(0);
+		return this.edge(index).tangent(0);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getCurvature(double)
 	 */
-	public double getCurvature(double t) {
+	public double curvature(double t) {
 		double index = Math.round(t);
 		if (Math.abs(index - t) > Shape2D.ACCURACY)
 			return 0;
@@ -428,8 +428,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.OrientedCurve2D#getSignedDistance(double, double)
      */
-    public double getSignedDistance(double x, double y) {
-        double dist = this.getDistance(x, y);
+    public double distanceSigned(double x, double y) {
+        double dist = this.distance(x, y);
         if (isInside(new Point2D(x, y)))
             return -dist;
         else
@@ -441,8 +441,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.OrientedCurve2D#getSignedDistance(Point2D)
      */
-    public double getSignedDistance(Point2D point) {
-        double dist = this.getDistance(point.getX(), point.getY());
+    public double distanceSigned(Point2D point) {
+        double dist = this.distance(point.getX(), point.getY());
         if (isInside(point))
             return -dist;
         else
@@ -454,12 +454,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
      */
-    public double getWindingAngle(Point2D point) {
+    public double windingAngle(Point2D point) {
         double angle = 0;
         int n = vertices.size();
         for (int i = 0; i<n-1; i++)
             angle += new LineSegment2D(vertices.get(i), vertices.get(i+1))
-                    .getWindingAngle(point);
+                    .windingAngle(point);
 
         return angle;
     }
@@ -476,12 +476,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
         if (this.vertices.size()<3)
             return false;
 
-        Point2D p0 = this.getFirstPoint();
+        Point2D p0 = this.firstPoint();
         Point2D q0 = this.vertices.get(1);
         if (new StraightLine2D(q0, p0).isInside(pt))
             return false;
 
-        Point2D p1 = this.getLastPoint();
+        Point2D p1 = this.lastPoint();
         Point2D q1 = this.vertices.get(vertices.size()-2);
         if (new StraightLine2D(p1, q1).isInside(pt))
             return false;
@@ -507,8 +507,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.ContinuousCurve2D#getSmoothPieces()
      */
-    public Collection<? extends LineSegment2D> getSmoothPieces() {
-        return getEdges();
+    public Collection<? extends LineSegment2D> smoothPieces() {
+        return edges();
     }
 
     // ===================================================================
@@ -519,17 +519,17 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
      */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(LinearShape2D line) {
         ArrayList<Point2D> list = new ArrayList<Point2D>();
 
         // extract intersections with each edge, and add to a list
         Point2D point;
-        for (LineSegment2D edge : this.getEdges()) {
+        for (LineSegment2D edge : this.edges()) {
         	// do not process edges parallel to intersection line
         	if (edge.isParallel(line))
         		continue;
         	
-			point = edge.getIntersection(line);
+			point = edge.intersection(line);
 			if (point != null)
 				if (!list.contains(point))
 					list.add(point);
@@ -544,7 +544,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
      */
-    public math.geom2d.Point2D getPoint(double t) {
+    public math.geom2d.Point2D point(double t) {
         // format position to stay between limits
         double t0 = this.getT0();
         double t1 = this.getT1();
@@ -578,7 +578,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
      */
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
         int ind = 0;
         double dist, minDist = Double.POSITIVE_INFINITY;
         double x = point.getX();
@@ -586,8 +586,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         int i = 0;
         LineSegment2D closest = null;
-        for (LineSegment2D edge : this.getEdges()) {
-            dist = edge.getDistance(x, y);
+        for (LineSegment2D edge : this.edges()) {
+            dist = edge.distance(x, y);
             if (dist<minDist) {
                 minDist = dist;
                 ind = i;
@@ -596,7 +596,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
             i++;
         }
 
-        return closest.getPosition(point)+ind;
+        return closest.position(point)+ind;
     }
 
     /*
@@ -611,8 +611,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
         double pos = Double.NaN;
 
         int i = 0;
-        for (LineSegment2D edge : this.getEdges()) {
-            dist = edge.getDistance(x, y);
+        for (LineSegment2D edge : this.edges()) {
+            dist = edge.distance(x, y);
             if (dist<minDist) {
                 minDist = dist;
                 pos = edge.project(point)+i;
@@ -638,7 +638,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     }
 
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         if (vertices.size()==0)
             return null;
         return vertices.get(0);
@@ -648,13 +648,13 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * if polyline is closed, return the first point.
      */
 	@Override
-    public Point2D getLastPoint() {
+    public Point2D lastPoint() {
         if (vertices.size()==0)
             return null;
         return vertices.get(vertices.size()-1);
     }
 
-    public Collection<Point2D> getSingularPoints() {
+    public Collection<Point2D> singularPoints() {
         return vertices;
     }
 
@@ -668,7 +668,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * Returns the polyline with same points considered in reverse order.
      * Reversed polyline keep same references as original polyline.
      */
-    public Polyline2D getReverseCurve() {
+    public Polyline2D reverse() {
         Point2D[] points2 = new Point2D[vertices.size()];
         int n = vertices.size();
         if (n>0) {
@@ -679,7 +679,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     }
 
 	@Override
-    public Collection<? extends Polyline2D> getContinuousCurves() {
+    public Collection<? extends Polyline2D> continuousCurves() {
     	return wrapCurve(this);
     }
 
@@ -688,7 +688,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * Return an instance of Polyline2D. If t1 is lower than t0, return an
      * instance of Polyline2D with zero points.
      */
-    public Polyline2D getSubCurve(double t0, double t1) {
+    public Polyline2D subCurve(double t0, double t1) {
         // code adapted from CurveSet2D
 
         Polyline2D res = new Polyline2D();
@@ -710,21 +710,21 @@ implements CirculinearContinuousCurve2D, Cloneable {
         // need to subdivide only one line segment
         if (ind0==ind1) {
             // extract limit points
-            res.addPoint(this.getPoint(t0));
-            res.addPoint(this.getPoint(t1));
+            res.addPoint(this.point(t0));
+            res.addPoint(this.point(t1));
             // return result
             return res;
         }
 
         // add the point corresponding to t0
-        res.addPoint(this.getPoint(t0));
+        res.addPoint(this.point(t0));
 
         // add all the whole points between the 2 cuts
         for (int n = ind0+1; n<=ind1; n++)
             res.addPoint(vertices.get(n));
 
         // add the last point
-        res.addPoint(this.getPoint(t1));
+        res.addPoint(this.point(t1));
 
         // return the polyline
         return res;
@@ -757,17 +757,17 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<Polyline2D> result =
-        	new CurveArray2D<Polyline2D>(set.getCurveNumber());
+        	new CurveArray2D<Polyline2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof Polyline2D)
                 result.addCurve((Polyline2D) curve);
         }
         return result;
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double xmax = Double.MIN_VALUE;
@@ -794,12 +794,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
-    public double getDistance(double x, double y) {
+    public double distance(double x, double y) {
         double dist = Double.MAX_VALUE;
-        for (LineSegment2D edge : this.getEdges()) {
-        	if (edge.getLength()==0)
+        for (LineSegment2D edge : this.edges()) {
+        	if (edge.length()==0)
         		continue;
-            dist = Math.min(dist, edge.getDistance(x, y));
+            dist = Math.min(dist, edge.distance(x, y));
         }
         return dist;
     }
@@ -809,8 +809,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getDistance(Point2D)
      */
-    public double getDistance(Point2D point) {
-        return getDistance(point.getX(), point.getY());
+    public double distance(Point2D point) {
+        return distance(point.getX(), point.getY());
     }
 
     /*
@@ -834,8 +834,8 @@ implements CirculinearContinuousCurve2D, Cloneable {
      * @see java.awt.Shape#contains(double, double)
      */
     public boolean contains(double x, double y) {
-        for (LineSegment2D edge : this.getEdges()) {
-        	if (edge.getLength()==0)
+        for (LineSegment2D edge : this.edges()) {
+        	if (edge.length()==0)
         		continue;
             if (edge.contains(x, y))
                 return true;
@@ -880,7 +880,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /**
      * Return a general path iterator.
      */
-    public java.awt.geom.GeneralPath getGeneralPath() {
+    public java.awt.geom.GeneralPath asGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         if (vertices.size()<2)
             return path;
@@ -903,7 +903,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
     @Override
     public void draw(Graphics2D g2) {
-    	g2.draw(this.getGeneralPath());
+    	g2.draw(this.asGeneralPath());
     }
 
 

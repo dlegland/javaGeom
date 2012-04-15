@@ -59,13 +59,13 @@ public class DrawClippedCircleDemo extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 	
 		g2.setColor(Color.YELLOW);
-		circle.getDomain().fill(g2);
+		circle.domain().fill(g2);
 		
 		g2.setColor(Color.BLUE);
 		circle.draw(g2);
 
 		g2.setColor(Color.BLUE);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 
 		Curve2D clipped = circle.clip(box);
 		g2.setStroke(new BasicStroke(4.0f));
@@ -75,7 +75,7 @@ public class DrawClippedCircleDemo extends JPanel{
 		Boundary2D boundary = Boundary2DUtils.clipBoundary(circle, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
-		boundary.getDomain().fill(g2);
+		boundary.domain().fill(g2);
 		g2.setColor(Color.BLUE);
 		boundary.draw(g2);
 	}

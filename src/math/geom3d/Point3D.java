@@ -62,31 +62,7 @@ public class Point3D implements Shape3D {
         return z;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
-
-    public void setLocation(Point3D point) {
-        x = point.getX();
-        y = point.getY();
-        z = point.getZ();
-    }
-
-    public void setLocation(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public double getDistance(Point3D point) {
+    public double distance(Point3D point) {
         double dx = point.x-x;
         double dy = point.y-y;
         double dz = point.z-z;
@@ -99,7 +75,7 @@ public class Point3D implements Shape3D {
      * the accuracy.
      */
     public boolean contains(Point3D point) {
-        if (getDistance(point)>ACCURACY)
+        if (distance(point) > ACCURACY)
             return false;
         return true;
     }
@@ -112,7 +88,7 @@ public class Point3D implements Shape3D {
         return true;
     }
 
-    public Box3D getBoundingBox() {
+    public Box3D boundingBox() {
         return new Box3D(x, x, y, y, z, z);
     }
 
@@ -130,9 +106,13 @@ public class Point3D implements Shape3D {
     }
 
     public Point3D transform(AffineTransform3D trans) {
-        Point3D res = new Point3D();
-        trans.transformPoint(this, res);
-        return res;
+		double coef[] = trans.getCoefficients();
+		return new Point3D(
+				x * coef[0] + y * coef[1] + z * coef[2] + coef[3], 
+				x * coef[4] + y * coef[5] + z * coef[6] + coef[7],
+				x * coef[8] + y * coef[9] + z * coef[10] + coef[12]);
+        
+
     }
 
     // ===================================================================

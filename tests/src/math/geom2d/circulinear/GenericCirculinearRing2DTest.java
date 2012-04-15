@@ -31,7 +31,7 @@ public class GenericCirculinearRing2DTest extends TestCase {
 		Box2D box = new Box2D(50, 350, 50, 350);
 		Curve2D clipped = ring.clip(box);
 		
-		assertEquals(1, clipped.getContinuousCurves().size());	
+		assertEquals(1, clipped.continuousCurves().size());	
 	}
 
 	public void testIsInsidePoint2D_Astroid() {
@@ -199,8 +199,8 @@ public class GenericCirculinearRing2DTest extends TestCase {
 		// create a poly circulinear curve
 		GenericCirculinearRing2D ring = new GenericCirculinearRing2D(arc1, arc2, arc3, arc4);
 
-		Domain2D buffer = ring.getBuffer(20);
+		Domain2D buffer = ring.buffer(20);
 		
-		assertEquals(2, buffer.getBoundary().getContinuousCurves().size());
+		assertEquals(2, buffer.boundary().continuousCurves().size());
 	}
 }

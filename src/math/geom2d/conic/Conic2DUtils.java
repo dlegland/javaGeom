@@ -220,7 +220,7 @@ public class Conic2DUtils {
     public final static double[] transformCentered(double[] coefs,
             AffineTransform2D trans) {
         // Extract transform coefficients
-        double[][] mat = trans.getAffineMatrix();
+        double[][] mat = trans.affineMatrix();
         double a = mat[0][0];
         double b = mat[1][0];
         double c = mat[0][1];
@@ -262,7 +262,7 @@ public class Conic2DUtils {
     public final static double[] transform(double[] coefs,
             AffineTransform2D trans) {
         // Extract coefficients of the inverse transform
-        double[][] mat = trans.invert().getAffineMatrix();
+        double[][] mat = trans.invert().affineMatrix();
         double a = mat[0][0];
         double b = mat[1][0];
         double c = mat[0][1];
@@ -307,22 +307,22 @@ public class Conic2DUtils {
             coefs = new double[] { 0, 0, 0, a, b, c };
         }
 
-        public double[] getConicCoefficients() {
+        public double[] conicCoefficients() {
             return coefs;
         }
 
-        public Type getConicType() {
+        public Type conicType() {
             return Conic2D.Type.STRAIGHT_LINE;
         }
 
         /** Return NaN. */
-        public double getEccentricity() {
+        public double eccentricity() {
             return Double.NaN;
         }
 
         @Override
-        public ConicStraightLine2D getReverseCurve() {
-            return new ConicStraightLine2D(super.getReverseCurve());
+        public ConicStraightLine2D reverse() {
+            return new ConicStraightLine2D(super.reverse());
         }
 
         @Override
@@ -351,11 +351,11 @@ public class Conic2DUtils {
 
             StraightLine2D baseLine = StraightLine2D.create(
                     new Point2D(xc, yc), theta);
-            this.addCurve(baseLine.getParallel(d));
-            this.addCurve(baseLine.getParallel(-d).getReverseCurve());
+            this.addCurve(baseLine.parallel(d));
+            this.addCurve(baseLine.parallel(-d).reverse());
         }
 
-        public double[] getConicCoefficients() {
+        public double[] conicCoefficients() {
             double[] coefs = { 0, 0, 1, 0, 0, -1 };
             AffineTransform2D sca = AffineTransform2D.createScaling(0, d), rot = AffineTransform2D
                     .createRotation(theta), tra = AffineTransform2D
@@ -365,25 +365,25 @@ public class Conic2DUtils {
             return Conic2DUtils.transform(coefs, trans);
         }
 
-        public Type getConicType() {
+        public Type conicType() {
             return Conic2D.Type.TWO_LINES;
         }
 
-        public double getEccentricity() {
+        public double eccentricity() {
             return Double.NaN;
         }
 
         @Override
         public ConicTwoLines2D transform(AffineTransform2D trans) {
             Point2D center = new Point2D(xc, yc).transform(trans);
-            StraightLine2D line = this.getFirstCurve().transform(trans);
+            StraightLine2D line = this.firstCurve().transform(trans);
 
-            return new ConicTwoLines2D(center, line.getDistance(center), line
-                    .getHorizontalAngle());
+            return new ConicTwoLines2D(center, line.distance(center), line
+                    .horizontalAngle());
         }
 
         @Override
-        public ConicTwoLines2D getReverseCurve() {
+        public ConicTwoLines2D reverse() {
             return new ConicTwoLines2D(xc, yc, -d, theta);
         }
     }

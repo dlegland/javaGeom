@@ -39,7 +39,7 @@ import math.geom2d.AffineTransform2D;
 public interface Contour2D extends ContinuousBoundary2D,
         ContinuousOrientedCurve2D {
 
-    public abstract Contour2D getReverseCurve();
+    public abstract Contour2D reverse();
 
     public abstract Contour2D transform(AffineTransform2D trans);
 }

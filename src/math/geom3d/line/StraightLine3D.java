@@ -70,16 +70,17 @@ public class StraightLine3D implements ContinuousCurve3D {
     // ===================================================================
     // methods specific to StraightLine3D
 
-    public Point3D getOrigin() {
+    public Point3D origin() {
         return new Point3D(x0, y0, z0);
     }
 
-    public Vector3D getDirection() {
+    public Vector3D direction() {
         return new Vector3D(dx, dy, dz);
     }
 
     public StraightLine2D project(Plane3D plane) {
-        return null;// TODO complete me
+    	// TODO Auto-generated method stub
+        return null;
     }
 
     // ===================================================================
@@ -101,7 +102,7 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
     public boolean contains(Point3D point) {
-        return this.getDistance(point)<Shape3D.ACCURACY;
+        return this.distance(point)<Shape3D.ACCURACY;
     }
 
     public boolean isEmpty() {
@@ -117,8 +118,8 @@ public class StraightLine3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.Shape3D#getBoundingBox()
      */
-    public Box3D getBoundingBox() {
-        Vector3D v = this.getDirection();
+    public Box3D boundingBox() {
+        Vector3D v = this.direction();
 
         // line parallel to (Ox) axis
         if (Math.hypot(v.getY(), v.getZ())<Shape3D.ACCURACY)
@@ -148,10 +149,10 @@ public class StraightLine3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
-    public double getDistance(Point3D p) {
-        Vector3D vl = this.getDirection();
-        Vector3D vp = new Vector3D(this.getOrigin(), p);
-        return Vector3D.crossProduct(vl, vp).getNorm()/vl.getNorm();
+    public double distance(Point3D p) {
+        Vector3D vl = this.direction();
+        Vector3D vp = new Vector3D(this.origin(), p);
+        return Vector3D.crossProduct(vl, vp).norm()/vl.norm();
     }
 
     /*
@@ -160,49 +161,40 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
     public StraightLine3D transform(AffineTransform3D trans) {
-        return new StraightLine3D(getOrigin().transform(trans), getDirection()
+        return new StraightLine3D(origin().transform(trans), direction()
                 .transform(trans));
     }
 
-    public Point3D getFirstPoint() {
+    public Point3D firstPoint() {
         return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.POSITIVE_INFINITY);
     }
 
-    public Point3D getLastPoint() {
+    public Point3D lastPoint() {
         return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.POSITIVE_INFINITY);
     }
 
-    public Point3D getPoint(double t) {
-        return getPoint(t, new Point3D());
+    public Point3D point(double t) {
+        return point(t);
     }
 
-    public Point3D getPoint(double t, Point3D point) {
-        if (point==null)
-            point = new Point3D();
-        point.setX(x0+t*dx);
-        point.setY(y0+t*dy);
-        point.setZ(z0+t*dz);
-        return point;
-    }
-
-    public double getPosition(Point3D point) {
+    public double position(Point3D point) {
         return project(point);
     }
 
-    public StraightLine3D getReverseCurve() {
-        return new StraightLine3D(getOrigin(), getDirection().getOpposite());
+    public StraightLine3D reverseCurve() {
+        return new StraightLine3D(origin(), direction().opposite());
     }
 
     /**
      * Returns an empty array of Point3D.
      */
-    public Collection<Point3D> getSingularPoints() {
+    public Collection<Point3D> singularPoints() {
         return new ArrayList<Point3D>(0);
     }
 
-    public Curve3D getSubCurve(double t0, double t1) {
+    public Curve3D subCurve(double t0, double t1) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -226,12 +218,12 @@ public class StraightLine3D implements ContinuousCurve3D {
      * this line.
      */
     public double project(Point3D point) {
-        Vector3D vl = this.getDirection();
-        Vector3D vp = new Vector3D(this.getOrigin(), point);
-        return Vector3D.dotProduct(vl, vp)/vl.getNormSq();
+        Vector3D vl = this.direction();
+        Vector3D vp = new Vector3D(this.origin(), point);
+        return Vector3D.dotProduct(vl, vp)/vl.normSq();
     }
 
-    public Collection<StraightLine3D> getContinuousCurves() {
+    public Collection<StraightLine3D> continuousCurves() {
         ArrayList<StraightLine3D> array = new ArrayList<StraightLine3D>(1);
         array.add(this);
         return array;

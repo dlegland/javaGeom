@@ -43,7 +43,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 		Point2D intersection;
 		for(LineSegment2D line1 : lines)
 			for(LineSegment2D line2 : lines){
-				intersection = line1.getIntersection(line2);
+				intersection = line1.intersection(line2);
 				if(intersection!=null)
 					points.addPoint(intersection);
 			}
@@ -67,7 +67,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 		
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke(1.0f));
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

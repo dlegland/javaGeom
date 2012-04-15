@@ -69,16 +69,16 @@ implements DomainSet2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
-	public Polygon2D getAsPolygon(int n) {
+	public Polygon2D asPolygon(int n) {
 		// Compute number of contours
 		int nContours = 0;
 		for (Domain2D domain : this.shapes)
-			nContours += domain.getBoundary().getContinuousCurves().size();
+			nContours += domain.boundary().continuousCurves().size();
 
 		// concatenate the set of linear rings
 		ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(nContours);
 		for (Domain2D domain : this.shapes) {
-			for (Contour2D contour : domain.getBoundary().getContinuousCurves()) {
+			for (Contour2D contour : domain.boundary().continuousCurves()) {
 				// Check that the curve is bounded
 		        if (!contour.isBounded())
 		            throw new UnboundedShape2DException(this);
@@ -87,7 +87,7 @@ implements DomainSet2D<T> {
 		        if (!contour.isClosed())
 		        	throw new IllegalArgumentException("Can not transform open curve to linear ring");
 
-		        Polyline2D poly = contour.getAsPolyline(n);
+		        Polyline2D poly = contour.asPolyline(n);
 		        assert poly instanceof LinearRing2D : "expected result as a linear ring";
 		        
 				rings.add((LinearRing2D) poly);
@@ -119,12 +119,12 @@ implements DomainSet2D<T> {
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getBoundary()
 	 */
-	public Boundary2D getBoundary() {
+	public Boundary2D boundary() {
 		int n = this.shapes.size();
 		ArrayList<Contour2D> boundaries = 
 			new ArrayList<Contour2D> (n);
 		for(Domain2D domain : this)
-			boundaries.addAll(domain.getBoundary().getContinuousCurves());
+			boundaries.addAll(domain.boundary().continuousCurves());
 		return new ContourArray2D<Contour2D>(boundaries);
 	}
 

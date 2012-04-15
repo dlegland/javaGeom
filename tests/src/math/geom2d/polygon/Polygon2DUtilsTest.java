@@ -43,7 +43,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(12, union.getVertexNumber());
+        assertEquals(12, union.vertexNumber());
     }
 
     public void testUnion_BInsideA() {
@@ -64,7 +64,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(4, union.getVertexNumber());
+        assertEquals(4, union.vertexNumber());
         //assertTrue(union.getBoundary().equals(poly1.getBoundary()));
     }
 
@@ -86,7 +86,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(union.getVertexNumber(), 4);
+        assertEquals(union.vertexNumber(), 4);
         //assertTrue(union.getBoundary().equals(poly2.getBoundary()));
     }
     
@@ -108,7 +108,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(union.getVertexNumber(), 8);
+        assertEquals(union.vertexNumber(), 8);
     }
 
     /**
@@ -147,7 +147,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(16, union.getVertexNumber());
+        assertEquals(16, union.vertexNumber());
     }
 
     /**
@@ -186,9 +186,9 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.union(poly1, poly2);
         assertNotNull(union);
-        assertEquals(24, union.getVertexNumber());
+        assertEquals(24, union.vertexNumber());
         
-        assertEquals(4, union.getRings().size());
+        assertEquals(4, union.rings().size());
     }
 
     /**
@@ -212,7 +212,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
         assertNotNull(inter);
-        assertEquals(4, inter.getVertexNumber());
+        assertEquals(4, inter.vertexNumber());
     }
     
     /**
@@ -236,7 +236,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
         assertNotNull(inter);
-        assertEquals(0, inter.getVertexNumber());
+        assertEquals(0, inter.vertexNumber());
     }
     
     /**
@@ -275,7 +275,7 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
         assertNotNull(union);
-        assertEquals(0, union.getVertexNumber());
+        assertEquals(0, union.vertexNumber());
     }
 
     /**
@@ -314,9 +314,9 @@ public class Polygon2DUtilsTest extends TestCase {
        
         Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
         assertNotNull(union);
-        assertEquals(8, union.getVertexNumber());
+        assertEquals(8, union.vertexNumber());
         
-        assertEquals(2, union.getRings().size());
+        assertEquals(2, union.rings().size());
     }
 
     /**
@@ -343,10 +343,10 @@ public class Polygon2DUtilsTest extends TestCase {
         // compute difference
         Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
         assertNotNull(diff);
-        assertEquals(6, diff.getVertexNumber());
+        assertEquals(6, diff.vertexNumber());
         
         // Check if vertices are the good ones
-        Collection<Point2D> vertices = diff.getVertices();
+        Collection<Point2D> vertices = diff.vertices();
         assertTrue(vertices.contains(new Point2D(50, 50)));
         assertTrue(vertices.contains(new Point2D(150, 50)));
         assertTrue(vertices.contains(new Point2D(150, 100)));
@@ -379,12 +379,12 @@ public class Polygon2DUtilsTest extends TestCase {
         // compute difference
         Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
         assertNotNull(diff);
-        assertEquals(8, diff.getVertexNumber());
+        assertEquals(8, diff.vertexNumber());
         
-        assertEquals(2, diff.getRings().size());
+        assertEquals(2, diff.rings().size());
         
         // Check if vertices are the good ones
-        Collection<Point2D> vertices = diff.getVertices();
+        Collection<Point2D> vertices = diff.vertices();
         assertTrue(vertices.contains(new Point2D(100, 100)));
         assertTrue(vertices.contains(new Point2D(400, 100)));
         assertTrue(vertices.contains(new Point2D(400, 400)));
@@ -418,13 +418,13 @@ public class Polygon2DUtilsTest extends TestCase {
         // compute exclusive or
         Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
         assertNotNull(xor);
-        assertEquals(12, xor.getVertexNumber());
+        assertEquals(12, xor.vertexNumber());
         
         // resulting polygon should contain all vertices of input polygons
-        Collection<Point2D> vertices = xor.getVertices();
-        for (Point2D vertex : poly1.getVertices())
+        Collection<Point2D> vertices = xor.vertices();
+        for (Point2D vertex : poly1.vertices())
         	assertTrue(vertices.contains(vertex));
-        for (Point2D vertex : poly2.getVertices())
+        for (Point2D vertex : poly2.vertices())
         	assertTrue(vertices.contains(vertex));
     }
     
@@ -452,13 +452,13 @@ public class Polygon2DUtilsTest extends TestCase {
         // compute exclusive or
         Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
         assertNotNull(xor);
-        assertEquals(8, xor.getVertexNumber());
+        assertEquals(8, xor.vertexNumber());
         
         // resulting polygon should contain all vertices of input polygons
-        Collection<Point2D> vertices = xor.getVertices();
-        for (Point2D vertex : poly1.getVertices())
+        Collection<Point2D> vertices = xor.vertices();
+        for (Point2D vertex : poly1.vertices())
         	assertTrue(vertices.contains(vertex));
-        for (Point2D vertex : poly2.getVertices())
+        for (Point2D vertex : poly2.vertices())
         	assertTrue(vertices.contains(vertex));
     }
     
@@ -484,10 +484,10 @@ public class Polygon2DUtilsTest extends TestCase {
     	
     	Domain2D domain = Polygon2DUtils.createBuffer(polygon, 30);
     	assertNotNull(domain);
-    	Boundary2D boundary = domain.getBoundary();
+    	Boundary2D boundary = domain.boundary();
     	assertNotNull(boundary);
     	
-    	assertEquals(1, boundary.getContinuousCurves().size());
+    	assertEquals(1, boundary.continuousCurves().size());
     }
     	
 }

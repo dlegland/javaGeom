@@ -59,12 +59,12 @@ public class Point2DTest extends TestCase {
 		Point2D p2 = new Point2D(1, 4);
 		Point2D p3 = new Point2D(2, 4);
 		
-		assertEquals(p1.getDistance(p1), 0, Shape2D.ACCURACY);
-		assertEquals(p2.getDistance(p1), Math.sqrt(2), Shape2D.ACCURACY);
-		assertEquals(p3.getDistance(p1), 1, Shape2D.ACCURACY);
-		assertEquals(p2.getDistance(p2), 0, Shape2D.ACCURACY);
-		assertEquals(p3.getDistance(p2), 1, Shape2D.ACCURACY);
-		assertEquals(p3.getDistance(p3), 0, Shape2D.ACCURACY);
+		assertEquals(p1.distance(p1), 0, Shape2D.ACCURACY);
+		assertEquals(p2.distance(p1), Math.sqrt(2), Shape2D.ACCURACY);
+		assertEquals(p3.distance(p1), 1, Shape2D.ACCURACY);
+		assertEquals(p2.distance(p2), 0, Shape2D.ACCURACY);
+		assertEquals(p3.distance(p2), 1, Shape2D.ACCURACY);
+		assertEquals(p3.distance(p3), 0, Shape2D.ACCURACY);
 		
 	}
 
@@ -73,12 +73,12 @@ public class Point2DTest extends TestCase {
 	 */
 	public void testGetDistancedoubledouble() {
 		Point2D p1 = new Point2D(2, 3);
-		assertEquals(p1.getDistance(2, 3), 0, Shape2D.ACCURACY);
-		assertEquals(p1.getDistance(1, 3), 1, Shape2D.ACCURACY);
-		assertEquals(p1.getDistance(2, 4), 1, Shape2D.ACCURACY);
-		assertEquals(p1.getDistance(2, 2), 1, Shape2D.ACCURACY);
-		assertEquals(p1.getDistance(1, 2), Math.sqrt(2), Shape2D.ACCURACY);
-		assertEquals(p1.getDistance(0, 0), Math.sqrt(13), Shape2D.ACCURACY);
+		assertEquals(p1.distance(2, 3), 0, Shape2D.ACCURACY);
+		assertEquals(p1.distance(1, 3), 1, Shape2D.ACCURACY);
+		assertEquals(p1.distance(2, 4), 1, Shape2D.ACCURACY);
+		assertEquals(p1.distance(2, 2), 1, Shape2D.ACCURACY);
+		assertEquals(p1.distance(1, 2), Math.sqrt(2), Shape2D.ACCURACY);
+		assertEquals(p1.distance(0, 0), Math.sqrt(13), Shape2D.ACCURACY);
 	}
 
 	public void testCentroid_Collection() {
@@ -135,21 +135,21 @@ public class Point2DTest extends TestCase {
 	public void testCreatePolar() {
 		Point2D p1 = new Point2D(0, 20);
 		Point2D p2 = Point2D.createPolar(20, Math.PI/2);
-		assertTrue(p1.getDistance(p2) < Shape2D.ACCURACY);
+		assertTrue(p1.distance(p2) < Shape2D.ACCURACY);
 	}
 	
 	public void testCreatePolar_Point2D() {
 		Point2D base = new Point2D(10, 20);
 		Point2D p1 = new Point2D(10, 40);
 		Point2D p2 = Point2D.createPolar(base, 20, Math.PI/2);
-		assertTrue(p1.getDistance(p2) < Shape2D.ACCURACY);
+		assertTrue(p1.distance(p2) < Shape2D.ACCURACY);
 	}
 	
 	public void testGetBuffer() {
 		Point2D pt = new Point2D(10, 20);
-		Domain2D buffer = pt.getBuffer(30);
+		Domain2D buffer = pt.buffer(30);
 		Circle2D circle = new Circle2D(10, 20, 30);
-		assertTrue(circle.equals(buffer.getBoundary()));
+		assertTrue(circle.equals(buffer.boundary()));
 	}
 	
 	public void testTranslate() {
@@ -198,12 +198,12 @@ public class Point2DTest extends TestCase {
         // test with basic angle
         Point2D p2 = new Point2D(-20, 10);
         Point2D p1r = p1.rotate(Math.PI/2);
-        assertTrue(p1r.getDistance(p2) < Shape2D.ACCURACY);
+        assertTrue(p1r.distance(p2) < Shape2D.ACCURACY);
         
         // test with center
         Point2D p3 = new Point2D(0, 10);
         Point2D p1rc = p1.rotate(new Point2D(10, 10), Math.PI/2);
-        assertTrue(p1rc.getDistance(p3) < Shape2D.ACCURACY);
+        assertTrue(p1rc.distance(p3) < Shape2D.ACCURACY);
 	}
 	
 	public void testPlusVector() {

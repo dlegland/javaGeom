@@ -14,10 +14,10 @@ public class GrahamScan2DTest extends TestCase {
 				new Point2D(1, 2),
 				new Point2D(0, 1)});
 		
-		Polygon2D hull = new GrahamScan2D().convexHull(pointSet.getPoints());
+		Polygon2D hull = new GrahamScan2D().convexHull(pointSet.points());
 		
 		assertTrue(hull!=null);
-		assertTrue(hull.getVertices().size()==4);
+		assertTrue(hull.vertices().size()==4);
 	}
 
 	public void testConvexHull_Square() {
@@ -32,9 +32,9 @@ public class GrahamScan2DTest extends TestCase {
 				new Point2D(1, 1),
 				new Point2D(0, 1)});
 		
-		Polygon2D hull = new GrahamScan2D().convexHull(pointSet.getPoints());
+		Polygon2D hull = new GrahamScan2D().convexHull(pointSet.points());
 		
 		assertTrue(hull!=null);
-		assertTrue(hull.getVertices().size()==4);		
+		assertTrue(hull.vertices().size()==4);		
 	}	
 }

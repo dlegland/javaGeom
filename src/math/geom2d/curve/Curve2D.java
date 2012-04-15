@@ -82,7 +82,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * approximated outline of a curve, by selecting multiple values for t and
      * drawing lines between them.
      */
-    public abstract Point2D getPoint(double t);
+    public abstract Point2D point(double t);
 
     /**
      * Get the first point of the curve. It must returns the same result as
@@ -90,7 +90,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * 
      * @return the first point of the curve
      */
-    public abstract Point2D getFirstPoint();
+    public abstract Point2D firstPoint();
 
     /**
      * Get the last point of the curve. It must returns the same result as
@@ -98,25 +98,25 @@ public interface Curve2D extends Shape2D, Cloneable {
      * 
      * @return the last point of the curve.
      */
-    public abstract Point2D getLastPoint();
+    public abstract Point2D lastPoint();
 
     /**
      * Returns a set of singular points, i. e. which do not locally admit
      * derivative.
      * 
-     * @see #getVertices
+     * @see #vertices
      * @return a collection of Point2D.
      */
-    public abstract Collection<Point2D> getSingularPoints();
+    public abstract Collection<Point2D> singularPoints();
 
     /**
      * Returns the set of vertices for this curve. Vertices can be either 
      * singular points, or extremities.
      * 
-     * @see #getSingularPoints
+     * @see #singularPoints
      * @return a collection of Point2D.
      */
-    public abstract Collection<Point2D> getVertices();
+    public abstract Collection<Point2D> vertices();
 
     /**
      * Checks if a point is singular.
@@ -133,7 +133,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @param point a point belonging to the curve
      * @return the position of the point on the curve
      */
-    public abstract double getPosition(Point2D point);
+    public abstract double position(Point2D point);
 
     /**
      * Returns the position of the closest orthogonal projection of the point on
@@ -149,20 +149,20 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns the intersection points of the curve with the specified line. The
      * length of the result array is the number of intersection points.
      */
-    public abstract Collection<Point2D> getIntersections(LinearShape2D line);
+    public abstract Collection<Point2D> intersections(LinearShape2D line);
 
     /**
      * Returns the curve with same trace on the plane with parameterization in
      * reverse order.
      */
-    public abstract Curve2D getReverseCurve();
+    public abstract Curve2D reverse();
 
     /**
      * Returns the collection of continuous curves which constitute this curve.
      * 
      * @return a collection of continuous curves.
      */
-    public abstract Collection<? extends ContinuousCurve2D> getContinuousCurves();
+    public abstract Collection<? extends ContinuousCurve2D> continuousCurves();
 
     /**
      * Returns a portion of the original curve, delimited by two positions on
@@ -172,7 +172,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @param t1 position of the end of the sub-curve
      * @return the portion of original curve comprised between t0 and t1.
      */
-    public abstract Curve2D getSubCurve(double t0, double t1);
+    public abstract Curve2D subCurve(double t0, double t1);
 
     /**
      * Transforms the curve by an affine transform. The result is an instance of
@@ -189,7 +189,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * @since 0.7.1
      * @return the shape corresponding to this curve
      */
-    public java.awt.Shape getAsAWTShape() ;
+    public java.awt.Shape asAwtShape() ;
     
     /**
      * Draws the curve on the given Graphics2D object.

@@ -39,14 +39,14 @@ public class CheckClipBand2D extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setColor(Color.CYAN);
-		band.getDomain().clip(box).fill(g2);	
+		band.domain().clip(box).fill(g2);	
 		
 		g2.setColor(Color.BLUE);
 		line1.clip(box).draw(g2);
 		line2.clip(box).draw(g2);
 		
 		g2.setColor(Color.BLACK);
-		box.getBoundary().draw(g2);
+		box.boundary().draw(g2);
 	}
 	
 	public final static void main(String[] args){

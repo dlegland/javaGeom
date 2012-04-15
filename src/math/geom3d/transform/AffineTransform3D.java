@@ -212,60 +212,6 @@ public class AffineTransform3D implements Bijection3D {
     }
 
     // ===================================================================
-    // mutators
-
-    /**
-     * @deprecated AffineTransform3d is immutable (0.6.3)
-     */
-    @Deprecated
-    public void setTransform(double n00, double n01, double n02, double n03,
-            double n10, double n11, double n12, double n13, double n20,
-            double n21, double n22, double n23) {
-        m00 = n00;
-        m01 = n01;
-        m02 = n02;
-        m03 = n03;
-        m10 = n10;
-        m11 = n11;
-        m12 = n12;
-        m13 = n13;
-        m20 = n20;
-        m21 = n21;
-        m22 = n22;
-        m23 = n23;
-    }
-
-    /**
-     * @deprecated AffineTransform3d is immutable (0.6.3)
-     */
-    @Deprecated
-    public void setTransform(AffineTransform3D trans) {
-        m00 = trans.m00;
-        m01 = trans.m01;
-        m02 = trans.m02;
-        m03 = trans.m03;
-        m10 = trans.m10;
-        m11 = trans.m11;
-        m12 = trans.m12;
-        m13 = trans.m13;
-        m20 = trans.m20;
-        m21 = trans.m21;
-        m22 = trans.m22;
-        m23 = trans.m23;
-    }
-
-    /**
-     * @deprecated AffineTransform3d is immutable (0.6.3)
-     */
-    @Deprecated
-    public void setToIdentity() {
-        m00 = m11 = m22 = 1;
-        m01 = m02 = m03 = 0;
-        m10 = m12 = m13 = 0;
-        m20 = m21 = m23 = 0;
-    }
-
-    // ===================================================================
     // general methods
 
     // TODO: add methods to concatenate affine transforms.
@@ -306,14 +252,6 @@ public class AffineTransform3D implements Bijection3D {
         m12 = n12;
     }
 
-    /**
-     * @deprecated shapes are responsible of their transform (0.6.3)
-     */
-    @Deprecated
-    public Shape3D transform(Shape3D shape) {
-        return shape.transform(this);
-    }
-
     public Point3D[] transformPoints(Point3D[] src, Point3D[] dst) {
         if (dst==null)
             dst = new Point3D[src.length];
@@ -323,26 +261,23 @@ public class AffineTransform3D implements Bijection3D {
 
         double coef[] = getCoefficients();
 
-        for (int i = 0; i<src.length; i++)
-            dst[i].setLocation(new Point3D(src[i].getX()*coef[0]+src[i].getY()
-                    *coef[1]+src[i].getZ()*coef[2]+coef[3], src[i].getX()
-                    *coef[4]+src[i].getY()*coef[5]+src[i].getZ()*coef[6]
-                    +coef[7], src[i].getX()*coef[8]+src[i].getY()*coef[9]
-                    +src[i].getZ()*coef[10]+coef[12]));
+		for (int i = 0; i < src.length; i++) {
+			dst[i] = new Point3D(
+					src[i].getX() * coef[0] + src[i].getY() * coef[1] + src[i].getZ() * coef[2] + coef[3],
+					src[i].getX() * coef[4] + src[i].getY() * coef[5] + src[i].getZ() * coef[6] + coef[7], 
+					src[i].getX() * coef[8] + src[i].getY() * coef[9] + src[i].getZ() * coef[10] + coef[12]);
+		}
         return dst;
     }
 
-    public Point3D transformPoint(Point3D src, Point3D dst) {
+    public Point3D transformPoint(Point3D src) {
         double coef[] = getCoefficients();
-        if (dst==null)
-            dst = new Point3D();
-        dst.setLocation(new Point3D(src.getX()*coef[0]+src.getY()*coef[1]
+        return new Point3D(src.getX()*coef[0]+src.getY()*coef[1]
                 +src.getZ()*coef[2]+coef[3], src.getX()*coef[4]+src.getY()
                 *coef[5]+src.getZ()*coef[6]+coef[7], src.getX()*coef[8]
-                +src.getY()*coef[9]+src.getZ()*coef[10]+coef[12]));
-        return dst;
+                +src.getY()*coef[9]+src.getZ()*coef[10]+coef[12]);
     }
-
+    
     /**
      * Compares two transforms. Returns true if all inner fields are equal up to
      * the precision given by Shape3D.ACCURACY.

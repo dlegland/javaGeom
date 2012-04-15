@@ -42,10 +42,10 @@ public class CheckLinearRing2DGetParallel extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 
-		parallel = ring.getParallel(30);
+		parallel = ring.parallel(30);
 		parallel.draw(g2);
 		
-		parallel = ring.getParallel(-10);
+		parallel = ring.parallel(-10);
 		parallel.draw(g2);
 	}
 	

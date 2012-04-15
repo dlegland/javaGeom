@@ -21,7 +21,7 @@ import static java.lang.Math.*;
 public class PolyOrientedCurve2DTest extends TestCase {
 
 	/**
-	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#getWindingAngle(java.awt.geom.Point2D)}.
+	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#windingAngle(java.awt.geom.Point2D)}.
 	 * Use a curve set formed by two circle arcs.
 	 */
 	public void testGetWindingAnglePoint() {
@@ -43,22 +43,22 @@ public class PolyOrientedCurve2DTest extends TestCase {
 				new CircleArc2D[]{arc1, arc2});
 		
 		double eps = 1e-14;
-		assertEquals(2*PI, curve.getWindingAngle(c0), eps);
-		assertEquals(2*PI, curve.getWindingAngle(c1), eps);
-		assertEquals(2*PI, curve.getWindingAngle(c2), eps);
+		assertEquals(2*PI, curve.windingAngle(c0), eps);
+		assertEquals(2*PI, curve.windingAngle(c1), eps);
+		assertEquals(2*PI, curve.windingAngle(c2), eps);
 		
-		assertEquals(0, curve.getWindingAngle(new Point2D(0, 0)), eps);
-		assertEquals(0, curve.getWindingAngle(new Point2D(150, 200)), eps);
-		assertEquals(0, curve.getWindingAngle(new Point2D(250, 200)), eps);
+		assertEquals(0, curve.windingAngle(new Point2D(0, 0)), eps);
+		assertEquals(0, curve.windingAngle(new Point2D(150, 200)), eps);
+		assertEquals(0, curve.windingAngle(new Point2D(250, 200)), eps);
 		
-		OrientedCurve2D reverse = curve.getReverseCurve();
-		assertEquals(-2*PI, reverse.getWindingAngle(c0), eps);
-		assertEquals(-2*PI, reverse.getWindingAngle(c1), eps);
-		assertEquals(-2*PI, reverse.getWindingAngle(c2), eps);
+		OrientedCurve2D reverse = curve.reverse();
+		assertEquals(-2*PI, reverse.windingAngle(c0), eps);
+		assertEquals(-2*PI, reverse.windingAngle(c1), eps);
+		assertEquals(-2*PI, reverse.windingAngle(c2), eps);
 		
-		assertEquals(0, reverse.getWindingAngle(new Point2D(0, 0)), eps);
-		assertEquals(0, reverse.getWindingAngle(new Point2D(150, 200)), eps);
-		assertEquals(0, reverse.getWindingAngle(new Point2D(250, 200)), eps);
+		assertEquals(0, reverse.windingAngle(new Point2D(0, 0)), eps);
+		assertEquals(0, reverse.windingAngle(new Point2D(150, 200)), eps);
+		assertEquals(0, reverse.windingAngle(new Point2D(250, 200)), eps);
 	}
 	
 	public void testEquals() {

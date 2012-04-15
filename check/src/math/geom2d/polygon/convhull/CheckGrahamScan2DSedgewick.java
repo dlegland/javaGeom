@@ -79,7 +79,7 @@ public class CheckGrahamScan2DSedgewick extends JPanel{
 			point.draw(g2, 2);
 		}
 		
-		Polygon2D hull = new GrahamScan2D().convexHull(points.getPoints());
+		Polygon2D hull = new GrahamScan2D().convexHull(points.points());
 		g2.setColor(Color.BLUE);
 		hull.draw(g2);
 	}

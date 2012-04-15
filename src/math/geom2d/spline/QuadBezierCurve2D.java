@@ -122,11 +122,11 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     public Point2D getP1() {
-    	return this.getFirstPoint();
+    	return this.firstPoint();
     }
     
     public Point2D getP2() {
-    	return this.getLastPoint();
+    	return this.lastPoint();
     }
     
     public Point2D getCtrl() {
@@ -164,10 +164,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Use winding angle of approximated polyline
      * 
-     * @see math.geom2d.domain.OrientedCurve2D#getWindingAngle(Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#windingAngle(Point2D)
      */
-    public double getWindingAngle(Point2D point) {
-        return this.getAsPolyline(100).getWindingAngle(point);
+    public double windingAngle(Point2D point) {
+        return this.asPolyline(100).windingAngle(point);
     }
 
     /**
@@ -178,30 +178,30 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @return true if the point is on the left side of the curve.
      */
     public boolean isInside(Point2D pt) {
-        return this.getAsPolyline(100).isInside(pt);
+        return this.asPolyline(100).isInside(pt);
     }
 
-    public double getSignedDistance(Point2D point) {
+    public double distanceSigned(Point2D point) {
         if (isInside(point))
-            return -getDistance(point.getX(), point.getY());
+            return -distance(point.getX(), point.getY());
         else
-            return getDistance(point.getX(), point.getY());
+            return distance(point.getX(), point.getY());
     }
 
     /**
-     * @see math.geom2d.domain.OrientedCurve2D#getSignedDistance(Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#distanceSigned(Point2D)
      */
-    public double getSignedDistance(double x, double y) {
+    public double distanceSigned(double x, double y) {
         if (isInside(new Point2D(x, y)))
-            return -getDistance(x, y);
+            return -distance(x, y);
         else
-            return getDistance(x, y);
+            return distance(x, y);
     }
 
     // ===================================================================
     // methods from SmoothCurve2D interface
 
-    public Vector2D getTangent(double t) {
+    public Vector2D tangent(double t) {
         double[][] c = getParametric();
         double dx = c[0][1]+2*c[0][2]*t;
         double dy = c[1][1]+2*c[1][2]*t;
@@ -211,7 +211,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * returns the curvature of the Curve.
      */
-    public double getCurvature(double t) {
+    public double curvature(double t) {
         double[][] c = getParametric();
         double xp = c[0][1]+2*c[0][2]*t;
         double yp = c[1][1]+2*c[1][2]*t;
@@ -251,16 +251,16 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Use approximation, by replacing Bezier curve with a polyline.
      * 
-     * @see math.geom2d.curve.Curve2D#getIntersections(math.geom2d.line.LinearShape2D)
+     * @see math.geom2d.curve.Curve2D#intersections(math.geom2d.line.LinearShape2D)
      */
-    public Collection<Point2D> getIntersections(LinearShape2D line) {
-        return this.getAsPolyline(100).getIntersections(line);
+    public Collection<Point2D> intersections(LinearShape2D line) {
+        return this.asPolyline(100).intersections(line);
     }
 
     /**
-     * @see math.geom2d.curve.Curve2D#getPoint(double)
+     * @see math.geom2d.curve.Curve2D#point(double)
      */
-    public Point2D getPoint(double t) {
+    public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
         double[][] c = getParametric();
         double x = c[0][0]+(c[0][1]+c[0][2]*t)*t;
@@ -274,7 +274,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @return the first point of the curve
      */
 	@Override
-    public Point2D getFirstPoint() {
+    public Point2D firstPoint() {
         return new Point2D(this.x1, this.y1);
     }
 
@@ -284,16 +284,16 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @return the last point of the curve.
      */
 	@Override
-    public Point2D getLastPoint() {
+    public Point2D lastPoint() {
         return new Point2D(this.x2, this.y2);
     }
 
     /**
      * Compute position by approximating cubic spline with a polyline.
      */
-    public double getPosition(Point2D point) {
+    public double position(Point2D point) {
         int N = 100;
-        return this.getAsPolyline(N).getPosition(point)/(N);
+        return this.asPolyline(N).position(point)/(N);
     }
 
     /**
@@ -301,38 +301,38 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public double project(Point2D point) {
         int N = 100;
-        return this.getAsPolyline(N).project(point)/(N);
+        return this.asPolyline(N).project(point)/(N);
     }
 
     /**
      * Returns the bezier curve given by control points taken in reverse order.
      */
-    public QuadBezierCurve2D getReverseCurve() {
+    public QuadBezierCurve2D reverse() {
         return new QuadBezierCurve2D(
-        		this.getLastPoint(), this.getControl(), this.getFirstPoint());
+        		this.lastPoint(), this.getControl(), this.firstPoint());
     }
 
     /**
      * Computes portion of BezierCurve. If t1<t0, returns null.
      */
-    public QuadBezierCurve2D getSubCurve(double t0, double t1) {
+    public QuadBezierCurve2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
         if (t0>t1)
             return null;
 
         // Extreme points
-        Point2D p0 = getPoint(t0);
-        Point2D p1 = getPoint(t1);
+        Point2D p0 = point(t0);
+        Point2D p1 = point(t1);
 
         // tangent vectors at extreme points
-        Vector2D v0 = getTangent(t0);
-        Vector2D v1 = getTangent(t1);
+        Vector2D v0 = tangent(t0);
+        Vector2D v1 = tangent(t1);
 
         // compute position of control point as intersection of tangent lines
         StraightLine2D tan0 = new StraightLine2D(p0, v0);
         StraightLine2D tan1 = new StraightLine2D(p1, v1);
-        Point2D control = tan0.getIntersection(tan1);
+        Point2D control = tan0.intersection(tan1);
 
         // build the new quad curve
         return new QuadBezierCurve2D(p0, control, p1);
@@ -357,19 +357,19 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	}
 
 	/**
-     * @see math.geom2d.Shape2D#getDistance(Point2D)
+     * @see math.geom2d.Shape2D#distance(Point2D)
      */
-    public double getDistance(Point2D p) {
-        return this.getDistance(p.getX(), p.getY());
+    public double distance(Point2D p) {
+        return this.distance(p.getX(), p.getY());
     }
 
     /**
      * Compute approximated distance, computed on a polyline.
      * 
-     * @see math.geom2d.Shape2D#getDistance(double, double)
+     * @see math.geom2d.Shape2D#distance(double, double)
      */
-    public double getDistance(double x, double y) {
-        return this.getAsPolyline(100).getDistance(x, y);
+    public double distance(double x, double y) {
+        return this.asPolyline(100).distance(x, y);
     }
 
     /**
@@ -396,20 +396,20 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<QuadBezierCurve2D> result = 
-        	new CurveArray2D<QuadBezierCurve2D>(set.getCurveNumber());
+        	new CurveArray2D<QuadBezierCurve2D>(set.curveNumber());
 
         // convert the result
-        for (Curve2D curve : set.getCurves()) {
+        for (Curve2D curve : set.curves()) {
             if (curve instanceof QuadBezierCurve2D)
                 result.addCurve((QuadBezierCurve2D) curve);
         }
         return result;
     }
 
-    public Box2D getBoundingBox() {
-    	Point2D p1 = this.getFirstPoint();
+    public Box2D boundingBox() {
+    	Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();
-        Point2D p3 = this.getLastPoint();
+        Point2D p3 = this.lastPoint();
         double xmin = Math.min(Math.min(p1.getX(), p2.getX()), p3.getX());
         double xmax = Math.max(Math.max(p1.getX(), p2.getX()), p3.getX());
         double ymin = Math.min(Math.min(p1.getY(), p2.getY()), p3.getY());
@@ -423,23 +423,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public QuadBezierCurve2D transform(AffineTransform2D trans) {
         return new QuadBezierCurve2D(
-                trans.transform(this.getFirstPoint()), 
+                trans.transform(this.firstPoint()), 
                 trans.transform(this.getControl()),
-                trans.transform(this.getLastPoint()));
+                trans.transform(this.lastPoint()));
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         Point2D p2 = this.getControl();
-        Point2D p3 = this.getLastPoint();
+        Point2D p3 = this.lastPoint();
         path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
         return path;
     }
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        Point2D p1 = this.getFirstPoint();
+        Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();
-        Point2D p3 = this.getLastPoint();
+        Point2D p3 = this.lastPoint();
         path.moveTo(p1.getX(), p1.getY());
         path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
         return path;
