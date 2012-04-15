@@ -196,7 +196,7 @@ public class Vector3D {
      * @return the transformed vector.
      */
     public Vector3D transform(AffineTransform3D trans) {
-        double[] tab = trans.getCoefficients();
+        double[] tab = trans.coefficients();
 		return new Vector3D(
 				x * tab[0] + y * tab[1] + z * tab[2], 
 				x * tab[4] + y * tab[5] + z * tab[6], 

@@ -69,7 +69,7 @@ implements Contour2D, Conic2D, Cloneable {
      * @return the parabola with given vertex and focus
      */
     public final static Parabola2D create(Point2D vertex, Point2D focus) {
-		double p = Point2D.getDistance(vertex, focus);
+		double p = Point2D.distance(vertex, focus);
 		double theta = Angle2D.horizontalAngle(vertex, focus) - PI / 2;
 		return new Parabola2D(vertex, 1 / (4 * p), theta);
 	}
@@ -516,7 +516,7 @@ implements Contour2D, Conic2D, Cloneable {
     	//TODO: check if transform work also for non-motion transforms...
         Point2D vertex = this.getVertex().transform(trans);
         Point2D focus = this.getFocus().transform(trans);
-		double a = 1 / (4.0 * Point2D.getDistance(vertex, focus));
+		double a = 1 / (4.0 * Point2D.distance(vertex, focus));
 		double theta = Angle2D.horizontalAngle(vertex, focus) - PI / 2;
 
         // check orientation of resulting parabola

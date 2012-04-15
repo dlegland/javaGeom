@@ -106,7 +106,7 @@ public class Point3D implements Shape3D {
     }
 
     public Point3D transform(AffineTransform3D trans) {
-		double coef[] = trans.getCoefficients();
+		double coef[] = trans.coefficients();
 		return new Point3D(
 				x * coef[0] + y * coef[1] + z * coef[2] + coef[3], 
 				x * coef[4] + y * coef[5] + z * coef[6] + coef[7],

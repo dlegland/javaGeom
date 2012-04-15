@@ -229,7 +229,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 	 */
 	public CirculinearElement2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
-        Point2D center = inv.getCenter();        
+        Point2D center = inv.center();        
         
         // transform the extremities
         Point2D p1 = this.firstPoint().transform(inv);
@@ -467,7 +467,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         double angle = Angle2D.horizontalAngle(circle.xc, circle.yc, x, y);
 
         if (containsAngle(angle))
-            return abs(Point2D.getDistance(circle.xc, circle.yc, x, y)
+            return abs(Point2D.distance(circle.xc, circle.yc, x, y)
                     -circle.r);
         else
             return min(firstPoint().distance(x, y), lastPoint()
@@ -598,7 +598,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     public boolean contains(double x, double y) {
         // Check if radius is correct
     	double r = circle.radius();
-		if (abs(Point2D.getDistance(circle.xc, circle.yc, x, y) - r) > Shape2D.ACCURACY)
+		if (abs(Point2D.distance(circle.xc, circle.yc, x, y) - r) > Shape2D.ACCURACY)
             return false;
 
         // angle from circle center to point

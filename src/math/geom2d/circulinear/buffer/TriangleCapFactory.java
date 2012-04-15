@@ -38,7 +38,7 @@ public class TriangleCapFactory implements CapFactory {
 	 */
 	public CirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
 		Point2D mid = Point2D.midPoint(p1, p2);
-		double rho = Point2D.getDistance(p1, p2)/2;
+		double rho = Point2D.distance(p1, p2)/2;
 		double theta = Angle2D.horizontalAngle(p1, p2) - Math.PI/2;
 		Point2D pt = Point2D.createPolar(mid, rho, theta);
 		return new Polyline2D(new Point2D[]{p1, pt, p2});

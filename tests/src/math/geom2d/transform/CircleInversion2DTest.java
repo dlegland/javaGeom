@@ -19,20 +19,20 @@ import junit.framework.TestCase;
 public class CircleInversion2DTest extends TestCase {
 
 	/**
-	 * Test method for {@link math.geom2d.transform.CircleInversion2D#getCenter()}.
+	 * Test method for {@link math.geom2d.transform.CircleInversion2D#center()}.
 	 */
 	public void testGetCenter() {
 		CircleInversion2D inv = CircleInversion2D.create(new Point2D(10, 20), 30);
 		Point2D center = Point2D.create(10, 20);
-		assertEquals(center, inv.getCenter());
+		assertEquals(center, inv.center());
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.transform.CircleInversion2D#getRadius()}.
+	 * Test method for {@link math.geom2d.transform.CircleInversion2D#radius()}.
 	 */
 	public void testGetRadius() {
 		CircleInversion2D inv = new CircleInversion2D(10, 20, 30);
-		assertEquals(30., inv.getRadius());
+		assertEquals(30., inv.radius());
 	}
 
 	/**

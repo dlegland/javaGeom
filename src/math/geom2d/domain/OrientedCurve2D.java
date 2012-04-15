@@ -63,7 +63,7 @@ public interface OrientedCurve2D extends Curve2D {
     public abstract double distanceSigned(Point2D point);
 
     /**
-     * The same as getSignedDistance(Point2D), but by passing 2 double as
+     * The same as distanceSigned(Point2D), but by passing 2 double as
      * arguments.
      * 
      * @param x x-coord of a point
@@ -78,7 +78,6 @@ public interface OrientedCurve2D extends Curve2D {
      * @param pt a point in the plane
      * @return true if the point is on the left side of the curve.
      */
-    // TODO: think about either deprecate or better define
     public abstract boolean isInside(Point2D pt);
 
     public abstract OrientedCurve2D reverse();
@@ -88,7 +87,11 @@ public interface OrientedCurve2D extends Curve2D {
 
     public abstract CurveSet2D<? extends OrientedCurve2D> clip(Box2D box);
 
-    //TODO: specifies orientation of transformed curve. Should we invert curve
-    // when transform is not direct ?
+    /**
+     * Transforms the oriented curve, and returns another oriented curve. 
+     * If transform is not direct, the domains bounded by the transformed
+     * curve should be complemented to have same orientation as the original
+     * domain.    
+     */
     public abstract OrientedCurve2D transform(AffineTransform2D trans);
 }

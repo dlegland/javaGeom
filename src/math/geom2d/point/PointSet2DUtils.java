@@ -50,7 +50,7 @@ public class PointSet2DUtils {
     	// iterate over couple of points
     	while (iter.hasNext()) {
     		current = iter.next();
-    		if (Point2D.getDistance(current, previous) < Shape2D.ACCURACY)
+    		if (Point2D.distance(current, previous) < Shape2D.ACCURACY)
     			return true;
     		previous = current;
     	}
@@ -89,7 +89,7 @@ public class PointSet2DUtils {
     	// iterate over couple of points
     	while (iter.hasNext()) {
     		current = iter.next();
-    		if (Point2D.getDistance(current, previous) < Shape2D.ACCURACY)
+    		if (Point2D.distance(current, previous) < Shape2D.ACCURACY)
     			count++;
     		previous = current;
     	}
@@ -131,7 +131,7 @@ public class PointSet2DUtils {
     	// compare each couple of contiguous vertex
     	while (iter.hasNext()) {
     		current = iter.next();
-    		if (Point2D.getDistance(current, previous) > Shape2D.ACCURACY) {
+    		if (Point2D.distance(current, previous) > Shape2D.ACCURACY) {
     			result.add(current);
     		}
     		previous = current;

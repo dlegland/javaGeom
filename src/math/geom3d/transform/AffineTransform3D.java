@@ -35,8 +35,6 @@ import math.geom3d.Vector3D;
  */
 public class AffineTransform3D implements Bijection3D {
 
-    // TODO make the class immutable
-
     // coefficients for x coordinate.
     protected double m00, m01, m02, m03;
 
@@ -79,11 +77,11 @@ public class AffineTransform3D implements Bijection3D {
                 0);
     }
 
-    AffineTransform3D createScaling(double s) {
+    public final static AffineTransform3D createScaling(double s) {
         return createScaling(s, s, s);
     }
 
-    AffineTransform3D createScaling(double sx, double sy, double sz) {
+    public final static AffineTransform3D createScaling(double sx, double sy, double sz) {
         return new AffineTransform3D(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0);
     }
 
@@ -178,9 +176,8 @@ public class AffineTransform3D implements Bijection3D {
      * Returns the affine coefficients of the transform. Result is an array of
      * 12 double.
      */
-    public double[] getCoefficients() {
-        double[] tab = { m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22,
-                m23 };
+    public double[] coefficients() {
+		double[] tab = { m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22,	m23 };
         return tab;
     }
 
@@ -189,26 +186,32 @@ public class AffineTransform3D implements Bijection3D {
      * 
      * @return the determinant of the transform.
      */
-    private double getDeterminant() {
-        return +m00*(m11*m22-m12*m21)-m01*(m10*m22-m20*m12)+m02
-                *(m10*m21-m20*m11);
-    }
+    private double determinant() {
+		return m00 * (m11 * m22 - m12 * m21) - m01 * (m10 * m22 - m20 * m12)
+				+ m02 * (m10 * m21 - m20 * m11);
+	}
 
     /**
      * Computes the inverse affine transform.
      */
-    public AffineTransform3D getInverseTransform() {
-        double det = this.getDeterminant();
-        return new AffineTransform3D((m11*m22-m21*m12)/det, (m21*m01-m01*m22)
-                /det, (m01*m12-m11*m02)/det, (m01*(m22*m13-m12*m23)+m02
-                *(m11*m23-m21*m13)-m03*(m11*m22-m21*m12))
-                /det, (m20*m12-m10*m22)/det, (m00*m22-m20*m02)/det,
-                (m10*m02-m00*m12)/det, (m00*(m12*m23-m22*m13)-m02
-                        *(m10*m23-m20*m13)+m03*(m10*m22-m20*m12))
-                        /det, (m10*m21-m20*m11)/det, (m20*m01-m00*m21)/det,
-                (m00*m11-m10*m01)/det, (m00*(m21*m13-m11*m23)+m01
-                        *(m10*m23-m20*m13)-m03*(m10*m21-m20*m11))
-                        /det);
+    public AffineTransform3D inverse() {
+        double det = this.determinant();
+		return new AffineTransform3D(
+				(m11 * m22 - m21 * m12) / det,
+				(m21 * m01 - m01 * m22) / det,
+				(m01 * m12 - m11 * m02) / det,
+				(m01 * (m22 * m13 - m12 * m23) + m02 * (m11 * m23 - m21 * m13) 
+						- m03 * (m11 * m22 - m21 * m12)) / det, 
+				(m20 * m12 - m10 * m22) / det, 
+				(m00 * m22 - m20 * m02) / det, 
+				(m10 * m02 - m00 * m12) / det, 
+				(m00 * (m12 * m23 - m22 * m13) - m02 * (m10 * m23 - m20 * m13) 
+						+ m03 * (m10 * m22 - m20 * m12)) / det, 
+				(m10 * m21 - m20 * m11) / det, 
+				(m20 * m01 - m00 * m21) / det,
+				(m00 * m11 - m10 * m01) / det, 
+				(m00 * (m21 * m13 - m11 * m23) + m01 * (m10 * m23 - m20 * m13) 
+						- m03 * (m10 * m21 - m20 * m11))	/ det);
     }
 
     // ===================================================================
@@ -259,7 +262,7 @@ public class AffineTransform3D implements Bijection3D {
             for (int i = 0; i<src.length; i++)
                 dst[i] = new Point3D();
 
-        double coef[] = getCoefficients();
+        double coef[] = coefficients();
 
 		for (int i = 0; i < src.length; i++) {
 			dst[i] = new Point3D(
@@ -271,7 +274,7 @@ public class AffineTransform3D implements Bijection3D {
     }
 
     public Point3D transformPoint(Point3D src) {
-        double coef[] = getCoefficients();
+        double coef[] = coefficients();
         return new Point3D(src.getX()*coef[0]+src.getY()*coef[1]
                 +src.getZ()*coef[2]+coef[3], src.getX()*coef[4]+src.getY()
                 *coef[5]+src.getZ()*coef[6]+coef[7], src.getX()*coef[8]
@@ -287,7 +290,7 @@ public class AffineTransform3D implements Bijection3D {
         if (!(obj instanceof AffineTransform3D))
             return false;
 
-        double tab[] = ((AffineTransform3D) obj).getCoefficients();
+        double tab[] = ((AffineTransform3D) obj).coefficients();
 
         if (Math.abs(tab[0]-m00)>Shape3D.ACCURACY)
             return false;

@@ -58,7 +58,7 @@ public interface Boundary2D extends OrientedCurve2D {
     public Collection<? extends Contour2D> boundaryCurves();
 
     /**
-     * Overloads the declaration of getContinuousCurves to return a collection
+     * Overloads the declaration of continuousCurves to return a collection
      * of contours (instances of Contour2D).
      */
     public Collection<? extends Contour2D> continuousCurves();

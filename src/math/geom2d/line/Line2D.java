@@ -268,8 +268,8 @@ implements LinearElement2D, Cloneable {
 	 */
 	public CirculinearElement2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
-        Point2D center 	= inv.getCenter();
-        double r 		= inv.getRadius();
+        Point2D center 	= inv.center();
+        double r 		= inv.radius();
         
         // compute distance of line to inversion center
         Point2D po 	= new StraightLine2D(this).projectedPoint(center);
