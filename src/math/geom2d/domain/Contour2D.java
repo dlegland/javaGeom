@@ -35,9 +35,7 @@ import math.geom2d.AffineTransform2D;
  * @author dlegland
  * @since 0.9.0
  */
-@SuppressWarnings("deprecation")
-public interface Contour2D extends ContinuousBoundary2D,
-        ContinuousOrientedCurve2D {
+public interface Contour2D extends Boundary2D, ContinuousOrientedCurve2D {
 
     public abstract Contour2D reverse();
 
