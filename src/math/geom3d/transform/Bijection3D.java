@@ -33,6 +33,6 @@ package math.geom3d.transform;
  */
 public interface Bijection3D extends Transform3D {
 
-    public abstract Bijection3D getInverseTransform();
+    public abstract Bijection3D inverse();
 
 }

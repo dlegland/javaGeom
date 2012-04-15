@@ -303,8 +303,8 @@ public class StraightLine2D extends AbstractLine2D implements
 	@Override
 	public CircleLine2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
-        Point2D center 	= inv.getCenter();
-        double r 		= inv.getRadius();
+        Point2D center 	= inv.center();
+        double r 		= inv.radius();
         
         // projection of inversion center on the line
         Point2D po 	= this.projectedPoint(center);

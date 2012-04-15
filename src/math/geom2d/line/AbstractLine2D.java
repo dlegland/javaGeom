@@ -445,8 +445,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	 */
 	public CirculinearElement2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
-        Point2D center 	= inv.getCenter();
-        double r 		= inv.getRadius();
+        Point2D center 	= inv.center();
+        double r 		= inv.radius();
         
         // compute distance of line to inversion center
         StraightLine2D line = this.supportingLine();

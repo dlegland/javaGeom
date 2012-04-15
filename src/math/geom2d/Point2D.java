@@ -121,7 +121,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * 
 	 * @return the Euclidean distance between p1 and p2.
 	 */
-	public static double getDistance(double x1, double y1, double x2, double y2) {
+	public static double distance(double x1, double y1, double x2, double y2) {
 		return hypot(x2 - x1, y2 - y1);
 	}
 
@@ -133,7 +133,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * @param p2 the second point
 	 * @return the Euclidean distance between p1 and p2.
 	 */
-	public static double getDistance(Point2D p1, Point2D p2) {
+	public static double distance(Point2D p1, Point2D p2) {
 		return hypot(p1.x - p2.x, p1.y - p2.y); 
 	}
 
@@ -438,11 +438,11 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public Point2D transform(CircleInversion2D inv) {
 		// get inversion parameters
-		Point2D center = inv.getCenter();
-		double r = inv.getRadius();
+		Point2D center = inv.center();
+		double r = inv.radius();
 
 		// compute distance and angle of transformed point
-		double d = r * r / Point2D.getDistance(this, center);
+		double d = r * r / Point2D.distance(this, center);
 		double theta = Angle2D.horizontalAngle(center, this);
 
 		// create the new point

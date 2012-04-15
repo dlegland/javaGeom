@@ -92,7 +92,7 @@ CircularShape2D, CircleLine2D {
 
         // Compute intersection of the medians, and circle radius
         Point2D center = AbstractLine2D.getIntersection(line12, line23);
-        double radius = Point2D.getDistance(center, p2);
+        double radius = Point2D.distance(center, p2);
 
         // return the created circle
         return new Circle2D(center, radius);
@@ -108,7 +108,7 @@ CircularShape2D, CircleLine2D {
         double r1 = circle1.radius();
         double r2 = circle2.radius();
 
-        double d = Point2D.getDistance(center1, center2);
+        double d = Point2D.distance(center1, center2);
 
         // case of no intersection
 		if (d < abs(r1 - r2) | d > (r1 + r2))
@@ -346,12 +346,12 @@ CircularShape2D, CircleLine2D {
 	 */
 	public CircleLine2D transform(CircleInversion2D inv) {
 		// Extract inversion parameters
-		Point2D center = inv.getCenter();
+		Point2D center = inv.center();
 		Point2D c1 = this.center();
 
 		// If circles are concentric, creates directly the new circle
 		if (center.distance(c1) < Shape2D.ACCURACY) {
-			double r0 = inv.getRadius();
+			double r0 = inv.radius();
 			double r2 = r0 * r0 / this.r;
 			return new Circle2D(center, r2, this.direct);
 		}
@@ -450,9 +450,9 @@ CircularShape2D, CircleLine2D {
     @Override
     public double distanceSigned(double x, double y) {
         if (direct)
-			return Point2D.getDistance(xc, yc, x, y) - r;
+			return Point2D.distance(xc, yc, x, y) - r;
 		else
-			return r - Point2D.getDistance(xc, yc, x, y);
+			return r - Point2D.distance(xc, yc, x, y);
     }
 
     // ===================================================================
@@ -536,14 +536,14 @@ CircularShape2D, CircleLine2D {
 
     @Override
     public double distance(Point2D point) {
-        return abs(Point2D.getDistance(xc, yc, point.getX(),
+        return abs(Point2D.distance(xc, yc, point.getX(),
                 point.getY())
                 -r);
     }
 
     @Override
     public double distance(double x, double y) {
-		return abs(Point2D.getDistance(xc, yc, x, y) - r);
+		return abs(Point2D.distance(xc, yc, x, y) - r);
     }
 
     /**
