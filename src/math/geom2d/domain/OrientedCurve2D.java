@@ -35,8 +35,7 @@ import math.geom2d.curve.CurveSet2D;
 /**
  * An OrientedCurve2D defines an 'inside' and an 'outside'. It is typically a
  * part of the boundary of a domain. Several OrientedCurve2D form a
- * ContinuousBoundary2D, and one or several ContinousBoundary2D form a
- * Boundary2D.
+ * Contour2D, and one or several Contour2D form a Boundary2D.
  * 
  * @author dlegland
  */

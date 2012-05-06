@@ -1,5 +1,9 @@
 Changes in javaGeom library
 
+* lots of changes in method names
+* fixed AffineTransform2D.isMotion(), and cleanup code
+
+
 javaGeom-0.10.2   (2012.03.11, rev. 315)
 =====
 

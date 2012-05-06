@@ -43,7 +43,6 @@ import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CircleLine2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.polygon.Polyline2D;
@@ -333,12 +332,6 @@ public class StraightLine2D extends AbstractLine2D implements
 
     // ===================================================================
     // methods specific to Boundary2D interface
-
-    public Collection<Contour2D> boundaryCurves() {
-        ArrayList<Contour2D> list = new ArrayList<Contour2D>(1);
-        list.add(this);
-        return list;
-    }
 
     public Domain2D domain() {
         return new GenericCirculinearDomain2D(this);

@@ -51,13 +51,6 @@ public interface Boundary2D extends OrientedCurve2D {
     public boolean isInside(Point2D pt);
 
     /**
-     * Returns the different continuous curves composing the boundary
-     * @deprecated replaced by getContinuousCurves (0.9.1)
-     */
-    @Deprecated
-    public Collection<? extends Contour2D> boundaryCurves();
-
-    /**
      * Overloads the declaration of continuousCurves to return a collection
      * of contours (instances of Contour2D).
      */
