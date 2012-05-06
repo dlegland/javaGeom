@@ -71,31 +71,13 @@ implements CirculinearRing2D {
         this.closed = true;
     }
 
-    /**
-     * @deprecated, as a ring is closed by definition (0.8.1)
-     */
-    @Deprecated
-    public GenericCirculinearRing2D(CirculinearElement2D[] curves, 
-    		boolean closed) {
-        super(curves, closed);
-    }
-
     public GenericCirculinearRing2D(
     		Collection<? extends CirculinearElement2D> curves) {
         super(curves);
         this.closed = true;
     }
 
-    /**
-     * @deprecated, as a ring is closed by definition (0.8.1)
-     */
-    @Deprecated
-    public GenericCirculinearRing2D(
-    		Collection<? extends CirculinearElement2D> curves, 
-    		boolean closed) {
-        super(curves, closed);
-    }
-
+    
     // ===================================================================
     // methods specific to GenericCirculinearRing2D
 
@@ -128,13 +110,6 @@ implements CirculinearRing2D {
 	 */
 	public void fill(Graphics2D g2) {
 		g2.fill(this.getGeneralPath());
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
-	 */
-	public Collection<? extends CirculinearContour2D> boundaryCurves() {
-        return wrapCurve(this);
 	}
 
 	/* (non-Javadoc)

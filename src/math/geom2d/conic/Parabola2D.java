@@ -237,12 +237,6 @@ implements Contour2D, Conic2D, Cloneable {
     // ==========================================================
     // methods implementing the Boundary2D interface
 
-    public Collection<Contour2D> boundaryCurves() {
-		ArrayList<Contour2D> list = new ArrayList<Contour2D>(1);
-        list.add(this);
-        return list;
-    }
-
     public Domain2D domain() {
         return new GenericDomain2D(this);
     }

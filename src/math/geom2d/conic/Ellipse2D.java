@@ -660,10 +660,6 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // ===================================================================
     // methods implementing the Boundary2D interface
 
-    public Collection<? extends Ellipse2D> boundaryCurves() {
-    	return wrapCurve(this);
-    }
-
     public Domain2D domain() {
         return new GenericDomain2D(this);
     }

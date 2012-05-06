@@ -190,16 +190,6 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Boundary2D#getBoundaryCurves()
-	 */
-	public Collection<BoundaryPolyCirculinearCurve2D<T>> boundaryCurves() {
-        ArrayList<BoundaryPolyCirculinearCurve2D<T>> list = 
-            new ArrayList<BoundaryPolyCirculinearCurve2D<T>>(1);
-        list.add(this);
-        return list;
-	}
-
-	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Boundary2D#getDomain()
 	 */
 	public CirculinearDomain2D domain() {

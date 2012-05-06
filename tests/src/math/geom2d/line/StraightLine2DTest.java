@@ -110,7 +110,7 @@ public class StraightLine2DTest extends TestCase {
 		Vector2D v0 = new Vector2D(10, 20);
 		StraightLine2D line = new StraightLine2D(p0, v0);
 	
-		assertEquals(1, line.boundaryCurves().size());
+		assertEquals(1, line.continuousCurves().size());
 	}
 	
 	public void testIsBounded() {

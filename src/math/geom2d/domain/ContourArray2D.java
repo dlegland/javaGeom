@@ -96,14 +96,6 @@ implements Boundary2D {
     // ===================================================================
     // Methods implementing Boundary2D interface
 
-    /**
-     * @deprecated replaced by getContinuousCurves
-     */
-    @Deprecated
-    public Collection<? extends Contour2D> boundaryCurves() {
-    	return this.continuousCurves();
-    }
-
     public Collection<? extends T> continuousCurves() {
     	return Collections.unmodifiableCollection(this.curves);
     }

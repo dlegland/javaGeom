@@ -8,7 +8,6 @@ import java.util.Collection;
 
 import math.geom2d.*;
 import math.geom2d.curve.*;
-import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.SmoothContour2D;
@@ -115,16 +114,6 @@ implements SmoothContour2D, Cloneable {
 
     // ===================================================================
     // methods inherited from Boundary2D interface
-
-    /**
-     * Returns an instance of ArrayList<Contour2D> containing only
-     * <code>this</code>.
-     */
-    public Collection<Contour2D> boundaryCurves() {
-        ArrayList<Contour2D> list = new ArrayList<Contour2D>();
-        list.add(this);
-        return list;
-    }
 
     public Domain2D domain() {
         return new GenericDomain2D(this);
