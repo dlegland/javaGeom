@@ -33,10 +33,6 @@ import math.geom2d.line.StraightLine2D;
 
 public class EllipseArc2DTest extends TestCase {
 
-	private void assertVectorAlmostEquals(Vector2D v1, Vector2D v2, double eps) {
-		assertTrue(v1.almostEquals(v2, eps));
-	}
-
 	/**
 	 * Create ellipse arcs with various constructors, and test if they are
 	 * equal between them.
@@ -93,41 +89,49 @@ public class EllipseArc2DTest extends TestCase {
 		
 		// translation
 		AffineTransform2D tra = AffineTransform2D.createTranslation(tx, ty);
-		assertTrue(arc.transform(tra).equals(
-				new EllipseArc2D(tx, ty, a, b, 0, 0, Math.PI/2)));
+		assertTrue(arc.transform(tra).almostEquals(
+				new EllipseArc2D(tx, ty, a, b, 0, 0, Math.PI/2),
+				Shape2D.ACCURACY));
 		
 		// rotation
 		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
-		assertTrue(arc.transform(rot).equals(
-				new EllipseArc2D(x0, y0, a, b, theta, 0, Math.PI/2)));
+		assertTrue(arc.transform(rot).almostEquals(
+				new EllipseArc2D(x0, y0, a, b, theta, 0, Math.PI/2), 
+				Shape2D.ACCURACY));
 		
 		// scaling with unequal factors
 		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
-		assertTrue(arc.transform(sca).equals(
-				new EllipseArc2D(x0, y0, a*sx, b*sy, 0, 0, Math.PI/2)));
+		assertTrue(arc.transform(sca).almostEquals(
+				new EllipseArc2D(x0, y0, a*sx, b*sy, 0, 0, Math.PI/2), 
+				Shape2D.ACCURACY));
 		
 		// line reflections
 		AffineTransform2D refOx = AffineTransform2D.createLineReflection(
 				new StraightLine2D(0, 0, 1, 0));
-		assertTrue(arc.transform(refOx).equals(
-				new EllipseArc2D(x0, y0, a, b, 0, 0, -Math.PI/2)));
+		assertTrue(arc.transform(refOx).almostEquals(
+				new EllipseArc2D(x0, y0, a, b, 0, 0, -Math.PI/2), 
+				Shape2D.ACCURACY));
 		AffineTransform2D refOy = AffineTransform2D.createLineReflection(
 				new StraightLine2D(0, 0, 0, 1));
-		assertTrue(arc.transform(refOy).equals(
-				new EllipseArc2D(x0, y0, a, b, 0, Math.PI, -Math.PI/2)));
+		assertTrue(arc.transform(refOy).almostEquals(
+				new EllipseArc2D(x0, y0, a, b, 0, Math.PI, -Math.PI/2), 
+				Shape2D.ACCURACY));
 		
 		// Rotated ellipse
 		arc = new EllipseArc2D(x0, y0, a, b, Math.PI/3, 0, Math.PI/2);
 		transformed = arc.transform(refOy);
-		assertTrue(transformed.equals(
-				new EllipseArc2D(x0, y0, a, b, 2*Math.PI/3, 0, -Math.PI/2)));
+		assertTrue(transformed.almostEquals(
+				new EllipseArc2D(x0, y0, a, b, 2*Math.PI/3, 0, -Math.PI/2),
+				Shape2D.ACCURACY));
 		
 		// Rotated ellipse, from indirect ellipse
 		Ellipse2D ell = new Ellipse2D(x0, y0, a, b, Math.PI/3, true);
 		Ellipse2D ell2 = new Ellipse2D(x0, y0, a, b, 2*Math.PI/3, false);
 		arc = new EllipseArc2D(ell, 0, Math.PI/2);
 		transformed = arc.transform(refOy);
-		assertTrue(transformed.equals(new EllipseArc2D(ell2, 0, -Math.PI/2)));
+		assertTrue(transformed.almostEquals(
+				new EllipseArc2D(ell2, 0, -Math.PI/2), 
+				Shape2D.ACCURACY));
 	}
 	
 	public void testGetTangent() {
@@ -136,13 +140,13 @@ public class EllipseArc2DTest extends TestCase {
         
         // Direct arc
         EllipseArc2D arc1 = new EllipseArc2D(ellipse, 0, Math.PI/2);        
-        assertVectorAlmostEquals(new Vector2D(0, 20), arc1.tangent(0), eps);
-        assertVectorAlmostEquals(new Vector2D(-50, 0), arc1.tangent(Math.PI/2), eps);
+        assertAlmostEquals(new Vector2D(0, 20), arc1.tangent(0), eps);
+        assertAlmostEquals(new Vector2D(-50, 0), arc1.tangent(Math.PI/2), eps);
 		
         // Inverse arc
         EllipseArc2D arc2 = new EllipseArc2D(ellipse, 0, -Math.PI/2);        
-        assertVectorAlmostEquals(new Vector2D(0, -20), arc2.tangent(0), eps);
-        assertVectorAlmostEquals(new Vector2D(-50, 0), arc2.tangent(Math.PI/2), eps);
+        assertAlmostEquals(new Vector2D(0, -20), arc2.tangent(0), eps);
+        assertAlmostEquals(new Vector2D(-50, 0), arc2.tangent(Math.PI/2), eps);
 		
 	}
 	
@@ -154,4 +158,8 @@ public class EllipseArc2DTest extends TestCase {
         arc = new EllipseArc2D(ellipse, Math.PI/2, -Math.PI);
         assertTrue(arc.equals(arc.clone()));
     }
+    
+	private void assertAlmostEquals(Vector2D v1, Vector2D v2, double eps) {
+		assertTrue(v1.almostEquals(v2, eps));
+	}
 }

@@ -44,6 +44,7 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.Polygon2DUtils;
+import math.utils.EqualUtils;
 
 import static java.lang.Math.*;
 
@@ -615,16 +616,17 @@ public class Box2D implements GeometricObject2D, Cloneable {
         // check class, and cast type
         if (!(obj instanceof Box2D))
             return false;
-        Box2D box = (Box2D) obj;
+        Box2D that = (Box2D) obj;
 
-        if (doubleToLongBits(this.xmin) != doubleToLongBits(box.xmin))
-        	return false;
-        if (doubleToLongBits(this.xmax) != doubleToLongBits(box.xmax))
-        	return false;
-        if (doubleToLongBits(this.ymin) != doubleToLongBits(box.ymin))
-        	return false;
-        if (doubleToLongBits(this.ymax) != doubleToLongBits(box.ymax))
-        	return false;
+        // Compare each field
+		if (!EqualUtils.areEqual(this.xmin, that.xmin)) 
+			return false;
+		if (!EqualUtils.areEqual(this.xmax, that.xmax)) 
+			return false;
+		if (!EqualUtils.areEqual(this.ymin, that.ymin)) 
+			return false;
+		if (!EqualUtils.areEqual(this.ymax, that.ymax)) 
+			return false;
         
         return true;
     }

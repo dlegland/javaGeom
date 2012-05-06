@@ -10,6 +10,7 @@ import math.geom2d.*;
 import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
+import math.utils.EqualUtils;
 
 /**
  * An arc of hyperbola, defined from the parent hyperbola branch, and two
@@ -278,9 +279,11 @@ implements SmoothOrientedCurve2D, Cloneable {
         HyperbolaBranchArc2D arc = (HyperbolaBranchArc2D) obj;
         
         if(!branch.almostEquals(arc.branch, eps)) return false;
-        if(Math.abs(t0-arc.t0)>eps) return false;
-        if(Math.abs(t1-arc.t1)>eps) return false;
-        return true;
+		if (Math.abs(t0 - arc.t0) > eps)
+			return false;
+		if (Math.abs(t1 - arc.t1) > eps)
+			return false;
+     return true;
     }
 
     // ===================================================================
@@ -290,11 +293,13 @@ implements SmoothOrientedCurve2D, Cloneable {
     public boolean equals(Object obj) {
         if (!(obj instanceof HyperbolaBranchArc2D))
             return false;
-        HyperbolaBranchArc2D arc = (HyperbolaBranchArc2D) obj;
+        HyperbolaBranchArc2D that = (HyperbolaBranchArc2D) obj;
         
-        if(!branch.equals(arc.branch)) return false;
-        if(Math.abs(t0-arc.t0)>Shape2D.ACCURACY) return false;
-        if(Math.abs(t1-arc.t1)>Shape2D.ACCURACY) return false;
+        if(!branch.equals(that.branch)) return false;
+		if (!EqualUtils.areEqual(this.t0, that.t0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.t1, that.t1)) 
+			return false;
         return true;
     }
 

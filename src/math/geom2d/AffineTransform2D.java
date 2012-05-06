@@ -32,8 +32,8 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.Bijection2D;
+import math.utils.EqualUtils;
 
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.Math.*;
 import static math.geom2d.Shape2D.ACCURACY;
 
@@ -672,19 +672,19 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		if (!(obj instanceof AffineTransform2D))
 			return false;
 
-		AffineTransform2D trans = (AffineTransform2D) obj;
+		AffineTransform2D that = (AffineTransform2D) obj;
 
-		if (doubleToLongBits(this.m00) != doubleToLongBits(trans.m00))
+		if (!EqualUtils.areEqual(this.m00, that.m00)) 
 			return false;
-		if (doubleToLongBits(this.m01) != doubleToLongBits(trans.m01))
+		if (!EqualUtils.areEqual(this.m01, that.m01)) 
 			return false;
-		if (doubleToLongBits(this.m02) != doubleToLongBits(trans.m02))
+		if (!EqualUtils.areEqual(this.m02, that.m02)) 
 			return false;
-		if (doubleToLongBits(this.m10) != doubleToLongBits(trans.m10))
+		if (!EqualUtils.areEqual(this.m00, that.m00)) 
 			return false;
-		if (doubleToLongBits(this.m11) != doubleToLongBits(trans.m11))
+		if (!EqualUtils.areEqual(this.m01, that.m01)) 
 			return false;
-		if (doubleToLongBits(this.m12) != doubleToLongBits(trans.m12))
+		if (!EqualUtils.areEqual(this.m02, that.m02)) 
 			return false;
 
 		return true;

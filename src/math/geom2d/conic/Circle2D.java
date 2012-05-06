@@ -45,6 +45,7 @@ import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
+import math.utils.EqualUtils;
 
 /**
  * A circle in the plane, defined as the set of points located at an equal
@@ -643,14 +644,14 @@ CircularShape2D, CircleLine2D {
         if (obj instanceof Circle2D) {
             Circle2D circle = (Circle2D) obj;
 
-            if (abs(circle.xc-xc)>eps)
-                return false;
-            if (abs(circle.yc-yc)>eps)
-                return false;
-            if (abs(circle.r-r)>eps)
-                return false;
-            if (circle.direct!=direct)
-                return false;
+			if (abs(circle.xc - xc) > eps)
+				return false;
+			if (abs(circle.yc - yc) > eps)
+				return false;
+			if (abs(circle.r - r) > eps)
+				return false;
+			if (circle.direct != direct)
+				return false;
             return true;
         }
         return super.almostEquals(obj, eps);
@@ -669,20 +670,24 @@ CircularShape2D, CircleLine2D {
 
     @Override
     public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
         if (!(obj instanceof Ellipse2D))
             return false;
 
         if (obj instanceof Circle2D) {
-            Circle2D circle = (Circle2D) obj;
+            Circle2D that = (Circle2D) obj;
 
-            if (abs(circle.xc-xc)>Shape2D.ACCURACY)
-                return false;
-            if (abs(circle.yc-yc)>Shape2D.ACCURACY)
-                return false;
-            if (abs(circle.r-r)>Shape2D.ACCURACY)
-                return false;
-            if (circle.direct!=direct)
-                return false;
+			// Compare each field
+			if (!EqualUtils.areEqual(this.xc, that.xc))
+				return false;
+			if (!EqualUtils.areEqual(this.yc, that.yc))
+				return false;
+			if (!EqualUtils.areEqual(this.r, that.r))
+				return false;
+			if (this.direct != that.direct)
+				return false;
+            
             return true;
         }
         return super.equals(obj);

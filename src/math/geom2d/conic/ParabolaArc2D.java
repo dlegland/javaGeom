@@ -37,6 +37,7 @@ import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.utils.EqualUtils;
 
 /**
  * An arc of parabola, defined by a parent parabola, and two limits for the
@@ -380,10 +381,10 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         if (!this.parabola.almostEquals(arc.parabola, eps))
             return false;
-        if (Math.abs(this.t0-arc.t0)>eps)
-            return false;
-        if (Math.abs(this.t1-arc.t1)>eps)
-            return false;
+		if (Math.abs(this.t0 - arc.t0) > eps)
+			return false;
+		if (Math.abs(this.t1 - arc.t1) > eps)
+         return false;
 
         return true;
     }
@@ -401,14 +402,14 @@ implements SmoothOrientedCurve2D, Cloneable {
     public boolean equals(Object obj) {
         if (!(obj instanceof ParabolaArc2D))
             return false;
-        ParabolaArc2D arc = (ParabolaArc2D) obj;
+        ParabolaArc2D that = (ParabolaArc2D) obj;
 
-        if (!this.parabola.equals(arc.parabola))
+        if (!this.parabola.equals(that.parabola))
             return false;
-        if (Math.abs(this.t0-arc.t0)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(this.t1-arc.t1)>Shape2D.ACCURACY)
-            return false;
+		if (!EqualUtils.areEqual(this.t0, that.t0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.t1, that.t1)) 
+			return false;
 
         return true;
     }

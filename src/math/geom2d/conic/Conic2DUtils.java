@@ -357,9 +357,10 @@ public class Conic2DUtils {
 
         public double[] conicCoefficients() {
             double[] coefs = { 0, 0, 1, 0, 0, -1 };
-            AffineTransform2D sca = AffineTransform2D.createScaling(0, d), rot = AffineTransform2D
-                    .createRotation(theta), tra = AffineTransform2D
-                    .createTranslation(xc, yc);
+            AffineTransform2D sca = AffineTransform2D.createScaling(0, d);
+            AffineTransform2D rot = AffineTransform2D.createRotation(theta);
+            AffineTransform2D tra = AffineTransform2D.createTranslation(xc, yc);
+            
             // AffineTransform2D trans = tra.compose(rot).compose(sca);
             AffineTransform2D trans = sca.chain(rot).chain(tra);
             return Conic2DUtils.transform(coefs, trans);
@@ -378,8 +379,9 @@ public class Conic2DUtils {
             Point2D center = new Point2D(xc, yc).transform(trans);
             StraightLine2D line = this.firstCurve().transform(trans);
 
-            return new ConicTwoLines2D(center, line.distance(center), line
-                    .horizontalAngle());
+            double dist = line.distance(center);
+            double angle = line.horizontalAngle();
+            return new ConicTwoLines2D(center, dist, angle);
         }
 
         @Override

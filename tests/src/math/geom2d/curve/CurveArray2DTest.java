@@ -141,9 +141,9 @@ public class CurveArray2DTest extends TestCase {
 		assertEquals(subset.size(), 2);
 		Iterator<?> iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
-		assertTrue(arc1h1.equals(sub1));
+		assertTrue(arc1h1.almostEquals(sub1, Shape2D.ACCURACY));
 		sub1 = (Curve2D) iter.next();
-		assertTrue(arc2h1.equals(sub1));
+		assertTrue(arc2h1.almostEquals(sub1, Shape2D.ACCURACY));
 		
 		sub1 = set.subCurve(pos1, pos0);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
@@ -151,9 +151,9 @@ public class CurveArray2DTest extends TestCase {
 		assertEquals(subset.size(), 2);
 		iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
-		assertTrue(arc2h2.equals(sub1));
+		assertTrue(arc2h2.almostEquals(sub1, Shape2D.ACCURACY));
 		sub1 = (Curve2D) iter.next();
-		assertTrue(arc1h2.equals(sub1));
+		assertTrue(arc1h2.almostEquals(sub1, Shape2D.ACCURACY));
 	}
 	
 	public void testIsSingular() {

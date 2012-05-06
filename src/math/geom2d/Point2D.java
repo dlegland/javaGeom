@@ -35,8 +35,10 @@ import math.geom2d.circulinear.CirculinearShape2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.point.PointArray2D;
+import math.geom2d.point.PointSet2D;
 import math.geom2d.point.PointShape2D;
 import math.geom2d.transform.CircleInversion2D;
+import math.utils.EqualUtils;
 
 import static java.lang.Math.*;
 
@@ -531,9 +533,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Returns a PointSet2D, containing 0 or 1 point, depending on whether the
 	 * point lies inside the specified box.
 	 */
-	public math.geom2d.point.PointSet2D clip(Box2D box) {
+	public PointSet2D clip(Box2D box) {
 		// init result array
-		math.geom2d.point.PointSet2D set = new PointArray2D(0);
+		PointSet2D set = new PointArray2D(0);
 
 		// return empty array if point is clipped
 		if (x < box.getMinX())
@@ -639,20 +641,18 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
 		if (!(obj instanceof Point2D))
 			return false;
-		Point2D p = (Point2D) obj;
+		Point2D that = (Point2D) obj;
 		
-        // Code that should be used:
-        if (java.lang.Double.doubleToLongBits(this.x) != 
-        	java.lang.Double.doubleToLongBits(p.x))
-        	return false;
-        if (java.lang.Double.doubleToLongBits(this.y) != 
-        	java.lang.Double.doubleToLongBits(p.y))
-        	return false;
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x, that.x)) 
+			return false;
+		if (!EqualUtils.areEqual(this.y, that.y)) 
+			return false;
 
         return true;
 	}

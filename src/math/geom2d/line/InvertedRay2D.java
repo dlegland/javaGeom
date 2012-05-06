@@ -28,6 +28,7 @@ package math.geom2d.line;
 import java.awt.geom.GeneralPath;
 
 import math.geom2d.*;
+import math.utils.EqualUtils;
 
 // Imports
 
@@ -241,17 +242,22 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     
     @Override
 	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
 		if (!(obj instanceof InvertedRay2D))
 			return false;
-		InvertedRay2D ray = (InvertedRay2D) obj;
-		if (Math.abs(x0 - ray.x0) > Shape2D.ACCURACY)
+		InvertedRay2D that = (InvertedRay2D) obj;
+		
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x0, that.x0)) 
 			return false;
-		if (Math.abs(y0 - ray.y0) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.y0, that.y0)) 
 			return false;
-		if (Math.abs(dx - ray.dx) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.dx, that.dx)) 
 			return false;
-		if (Math.abs(dy - ray.dy) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.dy, that.dy)) 
 			return false;
+
 		return true;
     }
 

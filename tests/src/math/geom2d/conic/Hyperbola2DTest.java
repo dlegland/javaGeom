@@ -28,15 +28,15 @@ public class Hyperbola2DTest extends TestCase {
 	public void testReduceCentered(){
 		double[] coefs = {1./400., 0, -1./100.};
 		Hyperbola2D hyp0 = Hyperbola2D.reduceCentered(coefs);
-		assertTrue(hyp0.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+		assertTrue(hyp0.almostEquals(new Hyperbola2D(0, 0, 20, 10, 0, true), Shape2D.ACCURACY));
 		
 		double[] coefs2 = {1./400., 0, -1./100., 0, 0, -1};
 		Hyperbola2D hyp2 = Hyperbola2D.reduceCentered(coefs2);
-		assertTrue(hyp2.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+		assertTrue(hyp2.almostEquals(new Hyperbola2D(0, 0, 20, 10, 0, true), Shape2D.ACCURACY));
 		
 		double[] coefs3 = {1., 0, -4., 0, 0, -400};
 		Hyperbola2D hyp3 = Hyperbola2D.reduceCentered(coefs3);
-		assertTrue(hyp3.equals(new Hyperbola2D(0, 0, 20, 10, 0, true)));
+		assertTrue(hyp3.almostEquals(new Hyperbola2D(0, 0, 20, 10, 0, true), Shape2D.ACCURACY));
 //		double theta = Math.PI/3;
 //		double[] rotCoefs = Conic2DUtils.transformCentered(coefs,
 //				AffineTransform2D.createRotation(theta));
@@ -51,17 +51,20 @@ public class Hyperbola2DTest extends TestCase {
 		double theta = Math.PI/3;
 		AffineTransform2D rot60 = AffineTransform2D.createRotation(Math.PI/3);
 		Hyperbola2D hypRot = Hyperbola2D.transformCentered(hyp0, rot60);
-		assertTrue(hypRot.equals(new Hyperbola2D(0, 0, 20, 10, theta, true)));
+		Hyperbola2D expRot = new Hyperbola2D(0, 0, 20, 10, theta, true);
+		assertTrue(hypRot.almostEquals(expRot, Shape2D.ACCURACY));
 		
 		// Check scaling of an ellipse
 		double sx = 2.5; double sy = 3;
 		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
 		Hyperbola2D hypSca = Hyperbola2D.transformCentered(hyp0, sca);
-		assertTrue(hypSca.equals(new Hyperbola2D(0, 0, 20.*sx, 10.*sy, 0, true)));
+		Hyperbola2D expSca = new Hyperbola2D(0, 0, 20.*sx, 10.*sy, 0, true);
+		assertTrue(hypSca.almostEquals(expSca, Shape2D.ACCURACY));
 
 		// Check scaling and rotation
 		Hyperbola2D hypBoth = Hyperbola2D.transformCentered(hypSca, rot60);
-		assertTrue(hypBoth.equals(new Hyperbola2D(0, 0, 20.*sx, 10.*sy, theta, true)));
+		Hyperbola2D expBoth = new Hyperbola2D(0, 0, 20.*sx, 10.*sy, theta, true);
+		assertTrue(hypBoth.almostEquals(expBoth, Shape2D.ACCURACY));
 
 	}
 	

@@ -251,7 +251,7 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(clippedCurve.size()==1);
 		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
-		assertTrue(new ParabolaArc2D(parabola, -2, 2).equals(curve));
+		assertTrue(new ParabolaArc2D(parabola, -2, 2).almostEquals(curve, Shape2D.ACCURACY));
 		
 		
 		// Oblic line
@@ -261,7 +261,7 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(clippedCurve.size()==1);
 		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
-		assertTrue(new ParabolaArc2D(parabola, 0, 2).equals(curve));
+		assertTrue(new ParabolaArc2D(parabola, 0, 2).almostEquals(curve, Shape2D.ACCURACY));
 		
 		// Oblic line 2
 		parabola = new Parabola2D(0, 0, 1, 0);
@@ -270,7 +270,7 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(clippedCurve.size()==1);
 		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
-		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
+		assertTrue(new ParabolaArc2D(parabola, -2, 4).almostEquals(curve, Shape2D.ACCURACY));
 		
 		// Oblic parabola with horizontal line
 		double theta = Angle2D.formatAngle(-Math.atan(2));
@@ -282,7 +282,7 @@ public class Parabola2DTest extends TestCase {
 		assertTrue(clippedCurve.size()==1);
 		curve = clippedCurve.firstCurve();
 		assertTrue(curve instanceof ParabolaArc2D);
-		assertTrue(new ParabolaArc2D(parabola, -2, 4).equals(curve));
+		assertTrue(new ParabolaArc2D(parabola, -2, 4).almostEquals(curve, Shape2D.ACCURACY));
 	}
 	
 	public void testClipBox2D(){
@@ -328,7 +328,7 @@ public class Parabola2DTest extends TestCase {
 		assertEquals(parabola.curvature(t0), 2*a, 1e-12);
 		
 		double t1 = 1;
-		double k1 = 2*a/Math.pow(Math.hypot(1, 2*a*t1), 3);		
+		double k1 = 2 * a / Math.pow(Math.hypot(1, 2 * a * t1), 3);
 		assertEquals(parabola.curvature(t1), k1, 1e-12);
 	}
 
@@ -338,21 +338,21 @@ public class Parabola2DTest extends TestCase {
 		
 		double s = 3;
 		Parabola2D scaled = base.transform(AffineTransform2D.createScaling(1, 3));
-		assertTrue(scaled.equals(new Parabola2D(0, 0, a*s, 0)));
+		assertTrue(scaled.almostEquals(new Parabola2D(0, 0, a*s, 0), Shape2D.ACCURACY));
 		
 		double theta = Math.PI/3;
 		Parabola2D rotated = base.transform(AffineTransform2D.createRotation(theta));
-		assertTrue(rotated.equals(new Parabola2D(0, 0, a, theta)));
+		assertTrue(rotated.almostEquals(new Parabola2D(0, 0, a, theta), Shape2D.ACCURACY));
 		
 		double dx=2, dy=3;
 		Parabola2D translated = base.transform(AffineTransform2D.createTranslation(dx, dy));
-		assertTrue(translated.equals(new Parabola2D(dx, dy, a, 0)));
+		assertTrue(translated.almostEquals(new Parabola2D(dx, dy, a, 0), Shape2D.ACCURACY));
 		
 		
 		Parabola2D reflected = base.transform(
 				AffineTransform2D.createLineReflection(new StraightLine2D(
 						new Point2D(0, 0), new Vector2D(1, 0))));
-		assertTrue(reflected.equals(new Parabola2D(0, 0, -a, 0)));
+		assertTrue(reflected.almostEquals(new Parabola2D(0, 0, -a, 0), Shape2D.ACCURACY));
 	}
 	
 	public void testIsInsidePoint2D_Direct(){
