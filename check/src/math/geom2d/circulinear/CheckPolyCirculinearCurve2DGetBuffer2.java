@@ -47,8 +47,8 @@ public class CheckPolyCirculinearCurve2DGetBuffer2 extends JPanel{
 		
 		// create the curve
 		curve =	new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
+		curve.add(ray1);
+		curve.add(ray2);
 		
 		parallel1 = curve.parallel(100);
 		parallel2 = curve.parallel(-100);

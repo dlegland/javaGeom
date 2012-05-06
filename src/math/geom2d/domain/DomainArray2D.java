@@ -142,7 +142,7 @@ implements DomainSet2D<T> {
         
         // add each transformed curve
         for (Domain2D domain : this)
-            result.addShape(domain.transform(trans));
+            result.add(domain.transform(trans));
         return result;
 	}
 

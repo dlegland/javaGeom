@@ -449,12 +449,12 @@ implements LinearElement2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<Line2D> result = 
-        	new CurveArray2D<Line2D>(set.curveNumber());
+        	new CurveArray2D<Line2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof Line2D)
-                result.addCurve((Line2D) curve);
+                result.add((Line2D) curve);
         }
         return result;
     }

@@ -69,7 +69,7 @@ public class CirculinearDomain2DUtils {
 		for(CirculinearContinuousCurve2D split : 
 				CirculinearCurve2DUtils.splitContinuousCurve(parallel1)) {
 			if(CirculinearCurve2DUtils.findIntersections(curve, split).size()==0)
-				curves.addCurve(split);
+				curves.add(split);
 		}
 		
 		// create a new boundary for each parallel curve

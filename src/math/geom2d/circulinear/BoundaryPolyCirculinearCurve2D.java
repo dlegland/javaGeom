@@ -175,7 +175,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
         
         // add each transformed curve
         for (CirculinearContinuousCurve2D curve : curves)
-            result.addCurve(curve.transform(inv));
+            result.add(curve.transform(inv));
         return result;
 	}
 
@@ -251,14 +251,14 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 			super.subCurve(t0, t1);
 		
 		// prepare result
-		int n = subcurve.curveNumber();
+		int n = subcurve.size();
 		PolyCirculinearCurve2D<CirculinearContinuousCurve2D> result = 
 			new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(n);
 		
 		// add each curve after class cast
 		for(Curve2D curve : subcurve) {
 			if(curve instanceof CirculinearContinuousCurve2D)
-				result.addCurve((CirculinearContinuousCurve2D) curve);
+				result.add((CirculinearContinuousCurve2D) curve);
 		}
 		
 		// return the result
@@ -275,14 +275,14 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.curveNumber();
+        int n = set.size();
         CirculinearCurveArray2D<CirculinearContinuousCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearContinuousCurve2D)
-                result.addCurve((CirculinearContinuousCurve2D) curve);
+                result.add((CirculinearContinuousCurve2D) curve);
         }
         
         // return the new set of curves
@@ -293,7 +293,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> 
 	transform(AffineTransform2D trans) {
 		// number of curves
-		int n = this.curveNumber();
+		int n = this.size();
 		
 		// create result curve
 		BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
@@ -301,7 +301,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
         
         // add each curve after class cast
         for (ContinuousOrientedCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         
         result.setClosed(this.isClosed());
         return result;

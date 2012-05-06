@@ -43,8 +43,8 @@ public class CheckBiRayGetBuffer extends JPanel{
 		
 		// create the curve
 		curve = new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
+		curve.add(ray1);
+		curve.add(ray2);
 	}
 	
 	public void paintComponent(Graphics g){

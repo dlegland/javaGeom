@@ -571,14 +571,14 @@ CircularShape2D, CircleLine2D {
 
         // Stores the result in appropriate structure
         CurveArray2D<CircularShape2D> result = 
-        	new CurveArray2D<CircularShape2D>(set.curveNumber());
+        	new CurveArray2D<CircularShape2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CircleArc2D)
-                result.addCurve((CircleArc2D) curve);
+                result.add((CircleArc2D) curve);
             if (curve instanceof Circle2D)
-                result.addCurve((Circle2D) curve);
+                result.add((Circle2D) curve);
         }
         return result;
     }

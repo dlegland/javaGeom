@@ -182,7 +182,7 @@ public class ParabolaArc2DTest extends TestCase {
 		CurveSet2D<?> clippedCurve = Curve2DUtils.clipSmoothCurve(arc, line);
 		Curve2D curve = clippedCurve.firstCurve();
 		
-		assertTrue(clippedCurve.curveNumber()==1);
+		assertTrue(clippedCurve.size()==1);
 		assertTrue(curve instanceof ParabolaArc2D);
 		assertTrue(clippedArc.equals(curve));		
 	}

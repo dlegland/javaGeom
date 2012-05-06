@@ -102,7 +102,7 @@ public class BufferCalculator {
 			CirculinearContinuousCurve2D contParallel = 
 				createContinuousParallel(continuous, dist);
 			if (contParallel != null)
-				parallels.addCurve(contParallel);
+				parallels.add(contParallel);
 		}
 		
 		// return the set of parallel curves
@@ -305,7 +305,7 @@ public class BufferCalculator {
 			double dist) {
 		// create array for storing result
 		Collection<CirculinearContour2D> contours = 
-			new ArrayList<CirculinearContour2D>(set.pointNumber());
+			new ArrayList<CirculinearContour2D>(set.size());
 		
 		// for each point, add a new circle
 		for (Point2D point : set) {

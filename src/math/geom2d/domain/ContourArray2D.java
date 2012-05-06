@@ -89,7 +89,7 @@ implements Boundary2D {
 
     public ContourArray2D(T curve) {
         super();
-        this.addCurve(curve);
+        this.add(curve);
     }
 
     
@@ -188,12 +188,12 @@ implements Boundary2D {
 
         // Stores the result in appropriate structure
         CurveArray2D<ContinuousOrientedCurve2D> result = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>(set.curveNumber());
+        	new CurveArray2D<ContinuousOrientedCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof ContinuousOrientedCurve2D)
-                result.addCurve((ContinuousOrientedCurve2D) curve);
+                result.add((ContinuousOrientedCurve2D) curve);
         }
         return result;
     }
@@ -204,7 +204,7 @@ implements Boundary2D {
         ContourArray2D<Contour2D> result = 
         	new ContourArray2D<Contour2D>(curves.size());
         for (Curve2D curve : curves)
-            result.addCurve((Contour2D) curve.transform(trans));
+            result.add((Contour2D) curve.transform(trans));
         return result;
     }
     

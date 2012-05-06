@@ -136,7 +136,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
         	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves.size());
         for (ContinuousOrientedCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         return result;
     }
 }

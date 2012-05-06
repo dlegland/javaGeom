@@ -756,12 +756,12 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
         // Stores the result in appropriate structure
         CurveArray2D<AbstractLine2D> result = 
-        	new CurveArray2D<AbstractLine2D>(set.curveNumber());
+        	new CurveArray2D<AbstractLine2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof AbstractLine2D)
-                result.addCurve((AbstractLine2D) curve);
+                result.add((AbstractLine2D) curve);
         }
         return result;
     }

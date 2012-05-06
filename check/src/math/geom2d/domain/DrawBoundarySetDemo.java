@@ -51,8 +51,8 @@ public class DrawBoundarySetDemo extends JPanel{
 		CircleArc2D arc2 = new CircleArc2D(x0+r, y0, r, 2*Math.PI/3, 2*Math.PI/3);
 		
 		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
 		Box2D box = new Box2D(0, 400, 0, 400);
 				

@@ -47,7 +47,7 @@ extends Curve2D, ShapeSet2D<T> {
     /**
      * Checks if the curve set contains the given curve.
      */
-    public boolean containsCurve(Curve2D curve) ;
+    public boolean contains(T curve) ;
   
     /**
      * Returns the collection of curves
@@ -63,7 +63,7 @@ extends Curve2D, ShapeSet2D<T> {
      * @return the i-th inner curve
      * @since 0.6.3
      */
-	public T curve(int index) ;
+	public T get(int index) ;
 
     /**
      * Returns the child curve corresponding to a given position.
@@ -88,37 +88,31 @@ extends Curve2D, ShapeSet2D<T> {
      * @return the last curve of the collection
      */
     public T lastCurve();
-
-    /**
-     * Returns the number of curves in the collection
-     * 
-     * @return the number of curves in the collection
-     */
-    public int curveNumber();
+   
     /**
      * Converts the position on the curve set, which is comprised between 0 and
      * 2*Nc-1 with Nc being the number of curves, to the position on the curve
      * which contains the position. The result is comprised between the t0 and
      * the t1 of the child curve.
      * 
-     * @see #getGlobalPosition(int, double)
+     * @see #globalPosition(int, double)
      * @see #curveIndex(double)
      * @param t the position on the curve set
      * @return the position on the subcurve
      */
-    public double getLocalPosition(double t);
+    public double localPosition(double t);
 
     /**
      * Converts a position on a curve (between t0 and t1 of the curve) to the
      * position on the curve set (between 0 and 2*Nc-1).
      * 
-     * @see #getLocalPosition(double)
+     * @see #localPosition(double)
      * @see #curveIndex(double)
      * @param i the index of the curve to consider
      * @param t the position on the curve
      * @return the position on the curve set, between 0 and 2*Nc-1
      */
-    public double getGlobalPosition(int i, double t);
+    public double globalPosition(int i, double t);
 
     /**
      * Returns the index of the curve corresponding to a given position.

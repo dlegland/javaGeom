@@ -396,12 +396,12 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<QuadBezierCurve2D> result = 
-        	new CurveArray2D<QuadBezierCurve2D>(set.curveNumber());
+        	new CurveArray2D<QuadBezierCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof QuadBezierCurve2D)
-                result.addCurve((QuadBezierCurve2D) curve);
+                result.add((QuadBezierCurve2D) curve);
         }
         return result;
     }

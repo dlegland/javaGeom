@@ -165,21 +165,21 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
 	public Vector2D leftTangent(double t) {
-		return this.childCurve(t).leftTangent(this.getLocalPosition(t));
+		return this.childCurve(t).leftTangent(this.localPosition(t));
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
 	 */
 	public Vector2D rightTangent(double t) {
-		return this.childCurve(t).rightTangent(this.getLocalPosition(t));
+		return this.childCurve(t).rightTangent(this.localPosition(t));
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
 	 */
 	public double curvature(double t) {
-		return this.childCurve(t).curvature(this.getLocalPosition(t));
+		return this.childCurve(t).curvature(this.localPosition(t));
 	}
 
 	/**
@@ -280,14 +280,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         
         // create result object, with appropriate numbe of curves
         PolyCurve2D<ContinuousCurve2D> subCurve = 
-        	new PolyCurve2D<ContinuousCurve2D>(set.curveNumber());
+        	new PolyCurve2D<ContinuousCurve2D>(set.size());
 
         // If a part is selected, the result is obviously open
         subCurve.setClosed(false);
 
         // convert to PolySmoothCurve by adding curves, after class cast
         for (Curve2D curve : set.curves())
-            subCurve.addCurve((ContinuousCurve2D) curve);
+            subCurve.add((ContinuousCurve2D) curve);
 
         // return the resulting portion of curve
         return subCurve;
@@ -306,12 +306,12 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
         // Stores the result in appropriate structure
         CurveArray2D<ContinuousCurve2D> result = 
-        	new CurveArray2D<ContinuousCurve2D>(set.curveNumber());
+        	new CurveArray2D<ContinuousCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof ContinuousCurve2D)
-                result.addCurve((ContinuousCurve2D) curve);
+                result.add((ContinuousCurve2D) curve);
         }
         return result;
     }
@@ -321,7 +321,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
             AffineTransform2D trans) {
         PolyCurve2D<ContinuousCurve2D> result = new PolyCurve2D<ContinuousCurve2D>();
         for (ContinuousCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         result.setClosed(this.isClosed());
         return result;
     }
@@ -389,7 +389,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         PolyCurve2D<?> curveSet = (PolyCurve2D<?>) obj;
 
         // check the number of curves in each set
-        if (this.curveNumber()!=curveSet.curveNumber())
+        if (this.size()!=curveSet.size())
             return false;
 
         // return false if at least one couple of curves does not match

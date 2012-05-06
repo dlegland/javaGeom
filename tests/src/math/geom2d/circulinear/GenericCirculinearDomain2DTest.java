@@ -9,13 +9,16 @@
 package math.geom2d.circulinear;
 
 import static java.lang.Math.PI;
+
+import java.util.Collection;
+
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.ContourArray2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -80,9 +83,13 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		// compare with the theoretical circle
 		Circle2D circle2 = Circle2D.create(center, 30+15, true);
-		assertTrue(boundary instanceof ContourArray2D<?>);
-		ContourArray2D<?> array = (ContourArray2D<?>) boundary;
-		assertTrue(array.containsCurve(circle2));
+//		assertTrue(boundary instanceof ContourArray2D<?>);
+//		@SuppressWarnings("unchecked")
+//		ContourArray2D<? extends Contour2D> array = 
+//			(ContourArray2D<? extends Contour2D>) boundary;
+		
+		Collection<? extends Contour2D> contours = boundary.continuousCurves();
+		assertTrue(contours.contains(circle2));
 	}
 
 	public void testClip_Astroid() {

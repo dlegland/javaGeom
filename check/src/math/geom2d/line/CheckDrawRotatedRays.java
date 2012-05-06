@@ -34,7 +34,7 @@ public class CheckDrawRotatedRays extends JPanel{
 		for(int i=0; i<N; i++){
 			double theta = 2*Math.PI*i/N;
 			AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
-			rays.addCurve(ray0.transform(rot));
+			rays.add(ray0.transform(rot));
 		}
 	}
 	

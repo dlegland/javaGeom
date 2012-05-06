@@ -457,7 +457,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * (non-Javadoc)
 	 * @see math.geom2d.point.PointShape2D#getPointNumber()
 	 */
-	public int pointNumber() {
+	public int size() {
 		return 1;
 	}
 
@@ -546,7 +546,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 			return set;
 
 		// return an array with the point
-		set.addPoint(this);
+		set.add(this);
 		return set;
 	}
 

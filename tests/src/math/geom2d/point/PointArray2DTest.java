@@ -77,7 +77,7 @@ public class PointArray2DTest extends TestCase {
 				new Point2D(10, 10)});
 		assertTrue(!set.isEmpty());
 		
-		set.clearPoints();
+		set.clear();
 		assertTrue(set.isEmpty());
 	}
 
@@ -90,7 +90,7 @@ public class PointArray2DTest extends TestCase {
 		Box2D box = new Box2D(-5, 5, -5, 5);
 		
 		PointArray2D clipped = set.clip(box);
-		assertTrue(clipped.pointNumber()==1);
+		assertTrue(clipped.size()==1);
 	}
 
 	public void testGetBoundingBox() {

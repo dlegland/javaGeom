@@ -757,12 +757,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<Polyline2D> result =
-        	new CurveArray2D<Polyline2D>(set.curveNumber());
+        	new CurveArray2D<Polyline2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof Polyline2D)
-                result.addCurve((Polyline2D) curve);
+                result.add((Polyline2D) curve);
         }
         return result;
     }

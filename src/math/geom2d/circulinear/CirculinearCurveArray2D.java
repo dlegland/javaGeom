@@ -76,7 +76,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
     public CirculinearCurveArray2D(T... curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
-            this.addCurve(element);
+            this.add(element);
     }
 
     /**
@@ -144,7 +144,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
         
         // add each transformed curve
         for (CirculinearCurve2D curve : curves)
-            result.addCurve(curve.transform(inv));
+            result.add(curve.transform(inv));
         return result;
 	}
 	
@@ -172,14 +172,14 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.curveNumber();
+        int n = set.size();
         CirculinearCurveArray2D<CirculinearCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearCurve2D>(n);
 
         // convert the result, class cast each curve
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearCurve2D)
-                result.addCurve((CirculinearCurve2D) curve);
+                result.add((CirculinearCurve2D) curve);
         }
         
         // return the new set of curves
@@ -194,12 +194,12 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 		
 		// prepare result
 		CirculinearCurveArray2D<CirculinearCurve2D> result = new 
-		CirculinearCurveArray2D<CirculinearCurve2D>(subcurve.curveNumber());
+		CirculinearCurveArray2D<CirculinearCurve2D>(subcurve.size());
 		
 		// add each curve after class,cast
 		for(Curve2D curve : subcurve) {
 			if(curve instanceof CirculinearCurve2D)
-				result.addCurve((CirculinearCurve2D) curve);
+				result.add((CirculinearCurve2D) curve);
 			else
 				System.err.println("CirculinearCurveArray2D.getSubCurve: error in class cast");
 		}

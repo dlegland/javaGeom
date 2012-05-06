@@ -136,7 +136,7 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// test number of intersections
 		CurveSet2D<?> clipped = hyperbola.clip(box);
-		assertTrue(clipped.curveNumber()==2);
+		assertTrue(clipped.size()==2);
 		
 		// test class of curve portions
 		Curve2D curve1 = clipped.firstCurve();
@@ -159,7 +159,7 @@ public class Hyperbola2DTest extends TestCase {
 		
 		// test number of intersections
 		clipped = hyperbola.clip(box);
-		assertTrue(clipped.curveNumber()==2);
+		assertTrue(clipped.size()==2);
 		
 		// test class of curve portions
 		curve1 = clipped.firstCurve();

@@ -154,12 +154,12 @@ public abstract class Polyline2DUtils {
                 // truncated at corner
                 p2 = line.intersection(line0);
                 // TODO: need mode precise control
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 addCircleArc(result, v1, p2, p1, d);
             }
 
@@ -183,20 +183,20 @@ public abstract class Polyline2DUtils {
                 // truncated at corner
                 p2 = line.intersection(line0);
                 // TODO: need mode precise control
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 addCircleArc(result, v1, p2, p1, d);
             }
 
             // Add the last line segment
-            result.addCurve(new LineSegment2D(p1, p0));
+            result.add(new LineSegment2D(p1, p0));
         } else {
             // Add the last line segment
-            result.addCurve(new LineSegment2D(p1, p2));
+            result.add(new LineSegment2D(p1, p2));
         }
 
         // Return the resulting curve
@@ -287,12 +287,12 @@ public abstract class Polyline2DUtils {
                 // truncated at corner
                 p2 = line.intersection(line0);
                 // TODO: need mode precise control
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 p1 = p2;
             } else {
                 // line is going to the left -> add the complete line segment
                 // and a circle arc
-                result.addCurve(new LineSegment2D(p1, p2));
+                result.add(new LineSegment2D(p1, p2));
                 addCircleArc(result, v1, p2, p1, d);
             }
 
@@ -315,17 +315,17 @@ public abstract class Polyline2DUtils {
             // truncated at corner
             p2 = line.intersection(line0);
             // TODO: need mode precise control
-            result.addCurve(new LineSegment2D(p1, p2));
+            result.add(new LineSegment2D(p1, p2));
             p1 = p2;
         } else {
             // line is going to the left -> add the complete line segment
             // and a circle arc
-            result.addCurve(new LineSegment2D(p1, p2));
+            result.add(new LineSegment2D(p1, p2));
             addCircleArc(result, v1, p2, p1, d);
         }
 
         // Add the last line segment
-        result.addCurve(new LineSegment2D(p1, p0));
+        result.add(new LineSegment2D(p1, p0));
 
         // Return the resulting curve
         return result;
@@ -342,7 +342,7 @@ public abstract class Polyline2DUtils {
         Circle2D circle = new Circle2D(v1, Math.abs(d));
         double t0 = circle.position(p1);
         double t1 = circle.position(p2);
-        result.addCurve(new CircleArc2D(v1, Math.abs(d), t0, t1, d>0));
+        result.add(new CircleArc2D(v1, Math.abs(d), t0, t1, d>0));
     }
     
     /**

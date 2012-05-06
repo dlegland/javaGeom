@@ -130,25 +130,41 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @param point
      */
-    public void addPoint(Point2D point) {
-        this.points.add(point);
+    public boolean add(Point2D point) {
+        return this.points.add(point);
     }
+
+	public void add(int index, Point2D point) {
+		this.points.add(index, point);
+	}
 
     /**
      * Add a series of points
      * 
      * @param points an array of points
      */
-    public void addPoints(Point2D[] points) {
+    public void addAll(Point2D[] points) {
         for (Point2D element : points)
-            this.addPoint(element);
+            this.add(element);
     }
 
-    public void addPoints(Collection<? extends Point2D> points) {
+    public void addAll(Collection<? extends Point2D> points) {
         this.points.addAll(points);
     }
 
-    /**
+	public boolean remove(Point2D point) {
+		return this.points.remove(point);
+	}
+	
+	public Point2D remove(int index) {
+		return this.points.remove(index);
+	}
+
+	public int indexOf(Point2D point) {
+		return this.points.indexOf(point);
+	}
+
+	/**
      * return an iterator on the internal point collection.
      * 
      * @return the collection of points
@@ -160,7 +176,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     /**
      * remove all points of the set.
      */
-    public void clearPoints() {
+    public void clear() {
         this.points.clear();
     }
 
@@ -169,7 +185,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * 
      * @return the number of points
      */
-    public int pointNumber() {
+    public int size() {
         return points.size();
     }
 
@@ -190,7 +206,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     	PointArray2D array = new PointArray2D(points.size());
     	
     	for (Point2D point : points) 
-    		array.addPoint(point.transform(inv));
+    		array.add(point.transform(inv));
     	
     	return array;
     }
@@ -247,7 +263,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         // select only points inside of box
         for (Point2D point : points) {
         	if (box.contains(point)) {
-        		res.addPoint(point);
+        		res.add(point);
         	}
         }
         
@@ -286,7 +302,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         PointArray2D res = new PointArray2D(points.size());
 
         for (Point2D point : points)
-            res.addPoint(point.transform(trans));
+            res.add(point.transform(trans));
 
         return res;
     }
@@ -361,7 +377,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if (this.points.size() != set.pointNumber())
+        if (this.points.size() != set.size())
         	return false;
 
         Iterator<Point2D> iter = set.iterator();
@@ -391,7 +407,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             return false;
         
         PointSet2D set = (PointSet2D) obj;
-        if (this.points.size() != set.pointNumber())
+        if (this.points.size() != set.size())
         	return false;
         
         Iterator<Point2D> iter = set.iterator();
@@ -405,9 +421,10 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     
     @Override
     public PointArray2D clone() {
-        PointArray2D set = new PointArray2D(this.pointNumber());
+        PointArray2D set = new PointArray2D(this.size());
         for (Point2D point : this)
-            set.addPoint(point.clone());
+            set.add(point.clone());
         return set;
     }
+
 }

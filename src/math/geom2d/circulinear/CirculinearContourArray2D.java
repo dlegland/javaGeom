@@ -89,7 +89,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
     public CirculinearContourArray2D(T... curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)
-            this.addCurve(element);
+            this.add(element);
     }
 
     /**
@@ -170,7 +170,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
         
         // add each transformed curve
         for (CirculinearContour2D curve : curves)
-            result.addCurve(curve.transform(inv));
+            result.add(curve.transform(inv));
         return result;
 	}
 	
@@ -189,14 +189,14 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.curveNumber();
+        int n = set.size();
         CirculinearCurveArray2D<CirculinearContinuousCurve2D> result = 
         	new CirculinearCurveArray2D<CirculinearContinuousCurve2D>(n);
 
         // convert the result, class cast each curve
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CirculinearContinuousCurve2D)
-                result.addCurve((CirculinearContinuousCurve2D) curve);
+                result.add((CirculinearContinuousCurve2D) curve);
         }
         
         // return the new set of curves
@@ -228,7 +228,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
         // create subcurve array
         ArrayList<CirculinearContinuousCurve2D> curves = 
         	new ArrayList<CirculinearContinuousCurve2D>(
-        			curveSet.curveNumber());
+        			curveSet.size());
         
         // class cast each curve
         for (Curve2D curve : curveSet.curves())

@@ -101,7 +101,7 @@ implements CirculinearRing2D {
         
         // add each transformed element
         for (CirculinearElement2D element : curves)
-            result.addCurve(element.transform(inv));
+            result.add(element.transform(inv));
         return result;
 	}
 	
@@ -137,7 +137,7 @@ implements CirculinearRing2D {
 	public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> 
 	transform(AffineTransform2D trans) {
 		// number of curves
-		int n = this.curveNumber();
+		int n = this.size();
 		
 		// create result curve
         BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
@@ -145,7 +145,7 @@ implements CirculinearRing2D {
         
         // add each curve after class cast
         for (ContinuousOrientedCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         return result;
 	}
 

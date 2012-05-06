@@ -440,12 +440,12 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<CubicBezierCurve2D> result = 
-        	new CurveArray2D<CubicBezierCurve2D>(set.curveNumber());
+        	new CurveArray2D<CubicBezierCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CubicBezierCurve2D)
-                result.addCurve((CubicBezierCurve2D) curve);
+                result.add((CubicBezierCurve2D) curve);
         }
         return result;
     }

@@ -351,8 +351,8 @@ public class Conic2DUtils {
 
             StraightLine2D baseLine = StraightLine2D.create(
                     new Point2D(xc, yc), theta);
-            this.addCurve(baseLine.parallel(d));
-            this.addCurve(baseLine.parallel(-d).reverse());
+            this.add(baseLine.parallel(d));
+            this.add(baseLine.parallel(-d).reverse());
         }
 
         public double[] conicCoefficients() {

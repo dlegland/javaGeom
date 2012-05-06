@@ -37,7 +37,7 @@ public interface PointShape2D extends CirculinearShape2D, Iterable<Point2D> {
      * 
      * @return the number of points
      */
-    public int pointNumber();
+    public int size();
     
     /**
      * Transforms the point shape by an affine transform. 

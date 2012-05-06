@@ -534,12 +534,12 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         // create a new structure for storing result
         CurveArray2D<CircleArc2D> result = 
-        	new CurveArray2D<CircleArc2D>(set.curveNumber());
+        	new CurveArray2D<CircleArc2D>(set.size());
 
         // convert result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CircleArc2D)
-                result.addCurve((CircleArc2D) curve);
+                result.add((CircleArc2D) curve);
         }
         return result;
     }
