@@ -130,7 +130,7 @@ public abstract class Curve2DUtils {
 		for (Curve2D curve : curveSet) {
 			clipped = Curve2DUtils.clipCurve(curve, box);
 			for (Curve2D clippedPart : clipped)
-				result.addCurve(clippedPart);
+				result.add(clippedPart);
 		}
 
 		// return a set of curves
@@ -236,7 +236,7 @@ public abstract class Curve2DUtils {
 
 			// if the box contains a point, it contains the whole curve
 			if (box.contains(point))
-				res.addCurve(curve);
+				res.add(curve);
 			return res;
 		}
 
@@ -276,7 +276,7 @@ public abstract class Curve2DUtils {
 				// and remove next intersection
 				if (box.contains(point)) {
 					pos = set.iterator().next();
-					res.addCurve(curve.subCurve(t0, pos));
+					res.add(curve.subCurve(t0, pos));
 					set.remove(pos);
 				}
 
@@ -293,7 +293,7 @@ public abstract class Curve2DUtils {
 			if (curve.isClosed())
 				pos0 = iter.next();
 			else
-				res.addCurve(curve.subCurve(curve.getT0(), iter.next()));
+				res.add(curve.subCurve(curve.getT0(), iter.next()));
 
 		// ----- add portions of curve between each couple of intersections
 
@@ -304,7 +304,7 @@ public abstract class Curve2DUtils {
 				pos2 = iter.next().doubleValue();
 			else
 				pos2 = curve.isClosed() && !touch ? pos0 : curve.getT1();
-			res.addCurve(curve.subCurve(pos1, pos2));
+			res.add(curve.subCurve(pos1, pos2));
 		}
 
 		return res;
@@ -320,7 +320,7 @@ public abstract class Curve2DUtils {
 		for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve,
 				box))
 			if (cont instanceof SmoothCurve2D)
-				result.addCurve((SmoothCurve2D) cont);
+				result.add((SmoothCurve2D) cont);
 
 		return result;
 	}
@@ -388,14 +388,14 @@ public abstract class Curve2DUtils {
 				point1 = curve.point(t0);
 			}
 			if (line.distanceSigned(point1) < 0)
-				res.addCurve(curve);
+				res.add(curve);
 			return res;
 		}
 
 		// different behavior depending if first point lies inside the box
 		if (line.distanceSigned(point1) < 0 && !line.contains(point1)) {
 			pos1 = iter.next().doubleValue();
-			res.addCurve(curve.subCurve(curve.getT0(), pos1));
+			res.add(curve.subCurve(curve.getT0(), pos1));
 		}
 
 		// add the portions of curve between couples of intersections
@@ -405,7 +405,7 @@ public abstract class Curve2DUtils {
 				pos2 = iter.next().doubleValue();
 			else
 				pos2 = curve.getT1();
-			res.addCurve(curve.subCurve(pos1, pos2));
+			res.add(curve.subCurve(pos1, pos2));
 		}
 
 		return res;
@@ -641,7 +641,7 @@ public abstract class Curve2DUtils {
         // Extract sub curve and recursively call this method on the sub curve
         if (curve instanceof CurveSet2D<?>) {
             CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
-            double pos2 = curveSet.getLocalPosition(pos);
+            double pos2 = curveSet.localPosition(pos);
             Curve2D subCurve = curveSet.childCurve(pos);
             return computeTangent((ContinuousCurve2D) subCurve, pos2);
         }

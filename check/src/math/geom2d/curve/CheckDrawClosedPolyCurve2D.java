@@ -43,9 +43,9 @@ public class CheckDrawClosedPolyCurve2D extends JPanel{
 		
 		// create the polycurve
 		polycurve = new PolyCurve2D<LineSegment2D> (3);
-		polycurve.addCurve(line1);
-		polycurve.addCurve(line2);
-		polycurve.addCurve(line3);
+		polycurve.add(line1);
+		polycurve.add(line2);
+		polycurve.add(line3);
 		polycurve.setClosed(true);
 	}
 	

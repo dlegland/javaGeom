@@ -107,12 +107,12 @@ public class CirculinearCurve2DUtils {
 		// add length of each curve before current curve
 		int index = curve.curveIndex(pos);
 		for (int i = 0; i < index; i++)
-			length += curve.curve(i).length();
+			length += curve.get(i).length();
 
 		// add portion of length for last curve
-		if (index < curve.curveNumber()) {
-			double pos2 = curve.getLocalPosition(pos - 2 * index);
-			length += curve.curve(index).length(pos2);
+		if (index < curve.size()) {
+			double pos2 = curve.localPosition(pos - 2 * index);
+			length += curve.get(index).length(pos2);
 		}
 
 		// return result
@@ -148,7 +148,7 @@ public class CirculinearCurve2DUtils {
 			} else {
 				// add local position on current curve
 				double pos2 = curve.position(length - cumLength);
-				pos = curveSet.getGlobalPosition(index, pos2);
+				pos = curveSet.globalPosition(index, pos2);
 				break;
 			}
 		}
@@ -206,11 +206,11 @@ public class CirculinearCurve2DUtils {
 		double dt;
 
 		// iterate on each couple of elements
-		int n = curve.curveNumber();
+		int n = curve.size();
 		for (int i = 0; i < n - 1; i++) {
-			CirculinearElement2D elem1 = curve.curve(i);
+			CirculinearElement2D elem1 = curve.get(i);
 			for (int j = i + 1; j < n; j++) {
-				CirculinearElement2D elem2 = curve.curve(j);
+				CirculinearElement2D elem2 = curve.get(j);
 				// iterate on intersection between consecutive elements
 				for (Point2D inter : findIntersections(elem1, elem2)) {
 					// do not keep extremities

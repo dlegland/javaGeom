@@ -47,10 +47,10 @@ public class CurveArray2DTest extends TestCase {
 		LineSegment2D seg3 = LineSegment2D.create(p3, p4);
 		CurveArray2D<LineSegment2D> set = 
 			CurveArray2D.create(new LineSegment2D[]{seg1, seg2, seg3});
-		assertEquals(3, set.curveNumber());
-		assertTrue(set.containsCurve(seg1));
-		assertTrue(set.containsCurve(seg2));
-		assertTrue(set.containsCurve(seg3));
+		assertEquals(3, set.size());
+		assertTrue(set.contains(seg1));
+		assertTrue(set.contains(seg2));
+		assertTrue(set.contains(seg3));
 	}
 	
 	public void testGetPosition() {
@@ -58,10 +58,10 @@ public class CurveArray2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
-		assertEquals(set.curveNumber(), 2);
+		assertEquals(set.size(), 2);
 		assertEquals(set.getT0(), 0, 1e-14);
 		assertEquals(set.getT1(), 3, 1e-14);
 		
@@ -88,13 +88,13 @@ public class CurveArray2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, extent);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, extent);	
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
-		assertEquals(set.getLocalPosition(0), 0, Shape2D.ACCURACY);
-		assertEquals(set.getLocalPosition(1), extent, Shape2D.ACCURACY);
-		assertEquals(set.getLocalPosition(2), 0, Shape2D.ACCURACY);
-		assertEquals(set.getLocalPosition(3), extent, Shape2D.ACCURACY);
+		assertEquals(set.localPosition(0), 0, Shape2D.ACCURACY);
+		assertEquals(set.localPosition(1), extent, Shape2D.ACCURACY);
+		assertEquals(set.localPosition(2), 0, Shape2D.ACCURACY);
+		assertEquals(set.localPosition(3), extent, Shape2D.ACCURACY);
 	}
 
 	public void testGetGlobalPosition() {
@@ -103,13 +103,13 @@ public class CurveArray2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, extent);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, extent);	
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
-		assertEquals(set.getGlobalPosition(0, 0), 0, Shape2D.ACCURACY);
-		assertEquals(set.getGlobalPosition(0, extent), 1, Shape2D.ACCURACY);
-		assertEquals(set.getGlobalPosition(1, 0), 2, Shape2D.ACCURACY);
-		assertEquals(set.getGlobalPosition(1, extent), 3, Shape2D.ACCURACY);
+		assertEquals(set.globalPosition(0, 0), 0, Shape2D.ACCURACY);
+		assertEquals(set.globalPosition(0, extent), 1, Shape2D.ACCURACY);
+		assertEquals(set.globalPosition(1, 0), 2, Shape2D.ACCURACY);
+		assertEquals(set.globalPosition(1, extent), 3, Shape2D.ACCURACY);
 	}
 	
 	/*
@@ -125,20 +125,20 @@ public class CurveArray2DTest extends TestCase {
 		CircleArc2D arc2h2 	= new CircleArc2D(r, 0, r, Math.PI, 	Math.PI/3);
 		
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
 		Curve2D sub1 = set.subCurve(0, 2);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		CurveSet2D<?> subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.curveNumber(), 2);
+		assertEquals(subset.size(), 2);
 		
 		double pos0 = set.position(new Point2D(r, 0));
 		double pos1 = set.position(new Point2D(0, 0));
 		sub1 = set.subCurve(pos0, pos1);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.curveNumber(), 2);
+		assertEquals(subset.size(), 2);
 		Iterator<?> iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc1h1.equals(sub1));
@@ -148,7 +148,7 @@ public class CurveArray2DTest extends TestCase {
 		sub1 = set.subCurve(pos1, pos0);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		subset = (CurveSet2D<?>) sub1;
-		assertEquals(subset.curveNumber(), 2);
+		assertEquals(subset.size(), 2);
 		iter = subset.curves().iterator();
 		sub1 = (Curve2D) iter.next();
 		assertTrue(arc2h2.equals(sub1));

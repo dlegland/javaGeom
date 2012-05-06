@@ -41,7 +41,7 @@ public abstract class Boundary2DUtils {
     	// for each clipped curve, add its pieces
         for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve, box))
             if (cont instanceof ContinuousOrientedCurve2D)
-                result.addCurve((ContinuousOrientedCurve2D) cont);
+                result.add((ContinuousOrientedCurve2D) cont);
 
         return result;
 
@@ -132,11 +132,11 @@ public abstract class Boundary2DUtils {
             clipped = Boundary2DUtils.clipContinuousOrientedCurve(contour, box);
 
             for (ContinuousOrientedCurve2D clip : clipped)
-                curveSet.addCurve(clip);
+                curveSet.add(clip);
         }
 
         // array of position on the box for first and last point of each curve
-        int nc = curveSet.curveNumber();
+        int nc = curveSet.size();
         double[] startPositions = new double[nc];
         double[] endPositions = new double[nc];
 
@@ -193,12 +193,12 @@ public abstract class Boundary2DUtils {
             if (curve.isClosed()) {
                 // Add current boundary to the set of boundary curves
                 if (curve instanceof Contour2D) {
-                    res.addCurve((Contour2D) curve);
+                    res.add((Contour2D) curve);
                 } else {
                     BoundaryPolyCurve2D<ContinuousOrientedCurve2D> bnd = 
                     	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
-                    bnd.addCurve(curve);
-                    res.addCurve(bnd);
+                    bnd.add(curve);
+                    res.add(bnd);
                 }
                 curves[ind] = null;
 
@@ -212,7 +212,7 @@ public abstract class Boundary2DUtils {
             	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
 
             // add current curve to boundary curve
-            boundary0.addCurve(curve);
+            boundary0.add(curve);
 
             // get last points (to add a line with next curve)
             Point2D p0 = curve.firstPoint();
@@ -236,10 +236,10 @@ public abstract class Boundary2DUtils {
 
                 // add a link between previous curve and current curve
                 Point2D p0i = curve.firstPoint();
-				boundary0.addCurve(getBoundaryPortion(box, p1, p0i));
+				boundary0.add(getBoundaryPortion(box, p1, p0i));
 
                 // add to current boundary
-                boundary0.addCurve(curve);
+                boundary0.add(curve);
 
                 indices.add(new Integer(ind));
 
@@ -254,10 +254,10 @@ public abstract class Boundary2DUtils {
             }
 
             // add a line from last point to first point
-            boundary0.addCurve(getBoundaryPortion(box, p1, p0));
+            boundary0.add(getBoundaryPortion(box, p1, p0));
 
             // Add current boundary to the set of boundary curves
-            res.addCurve(boundary0);
+            res.add(boundary0);
 
             // remove curves from array
             Iterator<Integer> iter2 = indices.iterator();
@@ -274,7 +274,7 @@ public abstract class Boundary2DUtils {
         if (!intersect) {
             Point2D vertex = box.vertices().iterator().next();
             if (boundary.isInside(vertex))
-                res.addCurve(box.getAsRectangle().boundary().firstCurve());
+                res.add(box.getAsRectangle().boundary().firstCurve());
         }
 
         // return the result

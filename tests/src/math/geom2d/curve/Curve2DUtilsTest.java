@@ -101,8 +101,8 @@ public class Curve2DUtilsTest extends TestCase {
 		CircleArc2D arc1 	= new CircleArc2D(0, 0, r, 5*PI/3, 2*PI/3);
 		CircleArc2D arc2 	= new CircleArc2D(r, 0, r, 2*PI/3, 2*PI/3);		
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
 		CurveSet2D<? extends Curve2D> clippedSet = 
 			Curve2DUtils.clipCurve(set, box);
@@ -142,10 +142,10 @@ public class Curve2DUtilsTest extends TestCase {
 		Polyline2D sub4 = new Polyline2D(
 				new Point2D[]{new Point2D(0, 5), new Point2D(5, 0)});
 		CurveArray2D<Curve2D> set1 = new CurveArray2D<Curve2D>(4);
-		set1.addCurve(sub1);
-		set1.addCurve(sub2);
-		set1.addCurve(sub3);
-		set1.addCurve(sub4);
+		set1.add(sub1);
+		set1.add(sub2);
+		set1.add(sub3);
+		set1.add(sub4);
 		assertTrue(set1.almostEquals(clip1, Shape2D.ACCURACY));
 	}
 	

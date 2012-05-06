@@ -38,7 +38,7 @@ public class DrawClippedLinesDemo extends JPanel {
 		for(int i=0; i<50; i++){
 			point = new Point2D(Math.random()*600, Math.random()*500);
 			angle = Math.random()*2*Math.PI;
-			lines.addCurve(new StraightLine2D(point, angle));
+			lines.add(new StraightLine2D(point, angle));
 		}
 	}
 	

@@ -36,7 +36,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 		for(int i=0; i<30; i++){
 			point1 = new Point2D(Math.random()*400+100, Math.random()*300+100);
 			point2 = new Point2D(Math.random()*400+100, Math.random()*300+100);
-			lines.addCurve(new LineSegment2D(point1, point2));
+			lines.add(new LineSegment2D(point1, point2));
 		}
 		
 		// compute line intersections
@@ -45,7 +45,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 			for(LineSegment2D line2 : lines){
 				intersection = line1.intersection(line2);
 				if(intersection!=null)
-					points.addPoint(intersection);
+					points.add(intersection);
 			}
 	}
 	

@@ -179,7 +179,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         }
         
         // number of curves
-        int n = this.curveNumber();
+        int n = this.size();
 
         // vertex index and position
         int i = this.curveIndex(pos);
@@ -271,7 +271,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         // Extract sub curve and recursively call this method on the sub curve
         if (curve instanceof CurveSet2D<?>) {
             CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
-            double pos2 = curveSet.getLocalPosition(pos);
+            double pos2 = curveSet.localPosition(pos);
             Curve2D subCurve = curveSet.childCurve(pos);
             return computeTangent((ContinuousCurve2D) subCurve, pos2);
         }
@@ -303,7 +303,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
 
         // convert to PolySmoothCurve by adding curves.
         for (Curve2D curve : set.curves())
-            subCurve.addCurve((ContinuousOrientedCurve2D) curve);
+            subCurve.add((ContinuousOrientedCurve2D) curve);
 
         return subCurve;
     }
@@ -320,14 +320,14 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        int n = set.curveNumber();
+        int n = set.size();
         CurveArray2D<ContinuousOrientedCurve2D> result = 
         	new CurveArray2D<ContinuousOrientedCurve2D>(n);
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof ContinuousOrientedCurve2D)
-                result.addCurve((ContinuousOrientedCurve2D) curve);
+                result.add((ContinuousOrientedCurve2D) curve);
         }
         return result;
     }
@@ -337,7 +337,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = 
         	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
         for (ContinuousOrientedCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         return result;
     }
     

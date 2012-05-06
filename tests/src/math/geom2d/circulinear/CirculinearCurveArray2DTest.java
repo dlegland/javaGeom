@@ -79,7 +79,7 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		CircleInversion2D inv = new CircleInversion2D(circle);
 		
 		CirculinearCurveArray2D<? extends CirculinearCurve2D> res = set.transform(inv);
-		assertEquals(2, res.curveNumber());
+		assertEquals(2, res.size());
 		
 		for (CirculinearCurve2D curve : res.curves())
 			assertTrue(curve instanceof CircleArc2D);
@@ -100,7 +100,7 @@ public class CirculinearCurveArray2DTest extends TestCase {
 		Box2D box = new Box2D(0, 200, 0, 200);
 		
 		CirculinearCurveArray2D<? extends CirculinearCurve2D> res = set.clip(box);
-		assertEquals(2, res.curveNumber());
+		assertEquals(2, res.size());
 		
 		for (CirculinearCurve2D curve : res.curves())
 			assertTrue(curve instanceof LineSegment2D);

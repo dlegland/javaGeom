@@ -39,15 +39,15 @@ public class PolyCurve2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 		PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
 		Curve2D sub1 = set.subCurve(0, 2);
 		assertTrue(sub1 instanceof CurveSet2D<?>);
 		assertTrue(sub1 instanceof PolyCurve2D<?>);
 		
 		CurveSet2D<?> subset = (PolyCurve2D<?>) sub1;
-		assertEquals(subset.curveNumber(), 2);
+		assertEquals(subset.size(), 2);
 	}
 	
 	/*
@@ -61,8 +61,8 @@ public class PolyCurve2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 		PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		
 		CurveSet2D<?> clipped = set.clip(box1);
 		Curve2D curve1 = clipped.firstCurve();

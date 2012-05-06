@@ -64,7 +64,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     	
     	// build each curve
     	for(int i=0; i<nc; i++)
-    		polyBezier.addCurve(new CubicBezierCurve2D(
+    		polyBezier.add(new CubicBezierCurve2D(
     				points[i*3], points[i*3+1], points[i*3+2], points[i*3+3]));
     	
     	// return the curve
@@ -90,7 +90,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
 		// build each curve
 		for (int i = 0; i < nc; i++)
-			polyBezier.addCurve(new CubicBezierCurve2D(
+			polyBezier.add(new CubicBezierCurve2D(
 					points[i * 2], vectors[i*2], points[i*2+1], vectors[i*2+1]));
     	
     	// return the curve
@@ -131,12 +131,12 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 
         // Stores the result in appropriate structure
         PolyCubicBezierCurve2D result = new PolyCubicBezierCurve2D(
-        		set.curveNumber());
+        		set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof CubicBezierCurve2D)
-                result.addCurve((CubicBezierCurve2D) curve);
+                result.add((CubicBezierCurve2D) curve);
         }
         return result;
     }
@@ -145,7 +145,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     public PolyCubicBezierCurve2D transform(AffineTransform2D trans) {
         PolyCubicBezierCurve2D result = new PolyCubicBezierCurve2D(this.curves.size());
         for (CubicBezierCurve2D curve : curves)
-            result.addCurve(curve.transform(trans));
+            result.add(curve.transform(trans));
         return result;
     }
 

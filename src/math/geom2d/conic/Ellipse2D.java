@@ -957,14 +957,14 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<SmoothOrientedCurve2D> result = 
-        	new CurveArray2D<SmoothOrientedCurve2D>(set.curveNumber());
+        	new CurveArray2D<SmoothOrientedCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof EllipseArc2D)
-                result.addCurve((EllipseArc2D) curve);
+                result.add((EllipseArc2D) curve);
             if (curve instanceof Ellipse2D)
-                result.addCurve((Ellipse2D) curve);
+                result.add((Ellipse2D) curve);
         }
         return result;
     }

@@ -28,9 +28,9 @@ public class CheckClipBoundaryPolyCircleArc2D extends JPanel{
 	ContourArray2D<Circle2D> circleSet = new ContourArray2D<Circle2D>();
 	
 	public CheckClipBoundaryPolyCircleArc2D(){
-		circleSet.addCurve(new Circle2D(50, 50, 40));
-		circleSet.addCurve(new Circle2D(150, 50, 40));
-		circleSet.addCurve(new Circle2D(100, 140, 50));
+		circleSet.add(new Circle2D(50, 50, 40));
+		circleSet.add(new Circle2D(150, 50, 40));
+		circleSet.add(new Circle2D(100, 140, 50));
 	}
 	
 	public void paintComponent(Graphics g){

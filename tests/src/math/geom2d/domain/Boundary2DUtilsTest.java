@@ -76,10 +76,10 @@ public class Boundary2DUtilsTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
 		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
 		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
-		set.addCurve(arc1);
-		set.addCurve(arc2);
+		set.add(arc1);
+		set.add(arc2);
 		boundary = new ContourArray2D<Contour2D>();
-		boundary.addCurve(set);
+		boundary.add(set);
 		double L = 40;
 		double l = 10;
 		box = new Box2D(-L/2, L/2, -l/2, l/2);

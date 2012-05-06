@@ -190,12 +190,12 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<HyperbolaBranchArc2D> result = 
-        	new CurveArray2D<HyperbolaBranchArc2D>(set.curveNumber());
+        	new CurveArray2D<HyperbolaBranchArc2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof HyperbolaBranchArc2D)
-                result.addCurve((HyperbolaBranchArc2D) curve);
+                result.add((HyperbolaBranchArc2D) curve);
         }
         return result;
     }

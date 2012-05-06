@@ -309,8 +309,8 @@ public class BufferCalculatorTest extends TestCase {
 		// create the curve
 		PolyCirculinearCurve2D<CirculinearElement2D> curve = 
 			new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
+		curve.add(ray1);
+		curve.add(ray2);
 
 		// computes the parallel
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -422,8 +422,8 @@ public class BufferCalculatorTest extends TestCase {
 		// create the curve
 		PolyCirculinearCurve2D<CirculinearElement2D> curve =
 			new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
+		curve.add(ray1);
+		curve.add(ray2);
 		assertEquals(2, curve.smoothPieces().size());
 
 		// computes the buffer

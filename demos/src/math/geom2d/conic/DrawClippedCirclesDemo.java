@@ -36,7 +36,7 @@ public class DrawClippedCirclesDemo extends JPanel {
 		for(int i=0; i<50; i++){
 			point = new Point2D(Math.random()*600, Math.random()*500);
 			radius = Math.random()*100+20;
-			circles.addCurve(new Circle2D(point, radius));
+			circles.add(new Circle2D(point, radius));
 		}
 	}
 	

@@ -295,7 +295,7 @@ public class LinearRing2DTest extends TestCase {
 		});
 		
 		CurveSet2D<? extends Polyline2D> clipped = polyline1.clip(box);
-		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.size()==1);
 		assertTrue(clipped.firstCurve().equals(line1));
 		
 		
@@ -314,7 +314,7 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(30, -10) });
 		clipped = polyline1.clip(box);
 		
-		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.size()==1);
 		assertTrue(clipped.firstCurve().equals(line1));
 	}
 
@@ -328,7 +328,7 @@ public class LinearRing2DTest extends TestCase {
 		Box2D box = new Box2D(0, 10, 0, 10);
 		
 		CurveSet2D<?> clipped = polyline.clip(box);
-		assertEquals(1, clipped.curveNumber());
+		assertEquals(1, clipped.size());
 	}
 
 	public void testGetSignedArea(){

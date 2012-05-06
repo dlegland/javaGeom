@@ -11,13 +11,13 @@ public class ShapeArray2DTest extends TestCase {
 		Circle2D c1 = new Circle2D(new Point2D(10, 20), 30);
 		ShapeArray2D<Shape2D> set = ShapeArray2D.<Shape2D>create(p1, c1);
 		
-		assertEquals(2, set.getShapes().size());
+		assertEquals(2, set.shapes().size());
 		
-		set.addShape(new LineSegment2D(new Point2D(10, 20), new Point2D(30, 50)));
-		assertEquals(3, set.getShapes().size());
+		set.add(new LineSegment2D(new Point2D(10, 20), new Point2D(30, 50)));
+		assertEquals(3, set.shapes().size());
 
-		set.removeShape(c1);
-		assertEquals(2, set.getShapes().size());
+		set.remove(c1);
+		assertEquals(2, set.shapes().size());
 	}
 
 

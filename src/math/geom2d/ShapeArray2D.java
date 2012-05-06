@@ -72,40 +72,57 @@ implements ShapeSet2D<T>, Cloneable {
      * 
      * @param shape the shape to add
      */
-    public void addShape(T shape) {
-        if (!shapes.contains(shape))
-        	shapes.add(shape);
+    public boolean add(T shape) {
+        if(shapes.contains(shape))
+        	return false;
+        return shapes.add(shape);
     }
+
+	public void add(int index, T shape) {
+		this.shapes.add(index, shape);
+	}
 
     /**
      * Removes the specified shape from the shape set.
      * 
      * @param shape the shape to remove
      */
-    public void removeShape(T shape) {
-    	shapes.remove(shape);
+    public boolean remove(T shape) {
+    	return shapes.remove(shape);
     }
+
+	public T remove(int index) {
+		return this.shapes.remove(index);
+	}
 
     /**
      * Checks if the shape set contains the given shape.
      */
-    public boolean containsShape(T shape) {
+    public boolean contains(T shape) {
     	return shapes.contains(shape);
     }
+
+	public int indexOf(T shape) {
+		return shapes.indexOf(shape);
+	}
 
     /**
      * Clears the inner shape collection.
      */
-    public void clearShapes() {
+    public void clear() {
     	shapes.clear();
     }
 
+	public int size() {
+		return shapes.size();
+	}
+    
     /**
      * Returns the collection of shapes
      * 
      * @return the inner collection of shapes
      */
-    public Collection<T> getShapes() {
+    public Collection<T> shapes() {
         return shapes;
     }
 
@@ -115,7 +132,7 @@ implements ShapeSet2D<T>, Cloneable {
      * @param index index of the shape
      * @return the i-th inner curve
      */
-    public T getShape(int index) {
+    public T get(int index) {
         return shapes.get(index);
     }
 
@@ -225,7 +242,7 @@ implements ShapeSet2D<T>, Cloneable {
         
         // add each transformed curve
         for (Shape2D shape : this.shapes)
-            result.addShape(shape.transform(trans));
+            result.add(shape.transform(trans));
         return result;
 	}
 
@@ -308,5 +325,5 @@ implements ShapeSet2D<T>, Cloneable {
             array.add(shape);
         return new ShapeArray2D<Shape2D>(array);
     }
-    
+
 }

@@ -35,6 +35,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
@@ -55,9 +56,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		assertTrue(seg.equals(conv));
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void testConvert_PolyCurve() {
-		CirculinearCurve2D conv;
+		CirculinearCurve2D converted;
 		Point2D p1 = new Point2D(0, 10);
 		Point2D p2 = new Point2D(10, 20);
 		Point2D p3 = new Point2D(0, 30);
@@ -66,14 +66,15 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		PolyCurve2D<LineSegment2D> curve = 
 			PolyCurve2D.create(new LineSegment2D[]{seg1, seg2});
 		
-		conv = CirculinearCurve2DUtils.convert(curve);
-		assertTrue(conv instanceof PolyCirculinearCurve2D);
-		// unchecked class cast
-		PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D> poly = 
-			(PolyCirculinearCurve2D<? extends CirculinearContinuousCurve2D>) conv;
-		assertEquals(2, poly.curveNumber());
-		assertTrue(poly.containsCurve(seg1));
-		assertTrue(poly.containsCurve(seg2));
+		converted = CirculinearCurve2DUtils.convert(curve);
+		assertTrue(converted instanceof PolyCirculinearCurve2D);
+		
+		Collection<? extends SmoothCurve2D> smoothCurves = 
+			converted.continuousCurves().iterator().next().smoothPieces();
+		
+		assertEquals(2, smoothCurves.size());
+		assertTrue(smoothCurves.contains(seg1));
+		assertTrue(smoothCurves.contains(seg2));
 	}
 	
 	public void testConvert_PolyCurveWithSpline() {
@@ -95,9 +96,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testConvert_CurveSet() {
-		CirculinearCurve2D conv;
+		CirculinearCurve2D res;
 		Point2D p1 = new Point2D(0, 10);
 		Point2D p2 = new Point2D(10, 20);
 		Point2D p3 = new Point2D(0, 30);
@@ -108,14 +108,15 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		CurveArray2D<LineSegment2D> curve = 
 			CurveArray2D.create(new LineSegment2D[]{seg1, seg2});
 		
-		conv = CirculinearCurve2DUtils.convert(curve);
-		assertTrue(conv instanceof CirculinearCurveSet2D);
-		// unchecked class cast
-		CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> set = 
-			(CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D>) conv;
-		assertEquals(2, set.curveNumber());
-		assertTrue(set.containsCurve(seg1));
-		assertTrue(set.containsCurve(seg2));
+		res = CirculinearCurve2DUtils.convert(curve);
+		assertTrue(res instanceof CirculinearCurveSet2D);
+		
+		Collection<? extends ContinuousCurve2D> smoothCurves = 
+			res.continuousCurves();
+
+		assertEquals(2, smoothCurves.size());
+		assertTrue(smoothCurves.contains(seg1));
+		assertTrue(smoothCurves.contains(seg2));
 	}
 
 	public void testConvert_CurveSetWithSpline() {
@@ -256,8 +257,8 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// create the curve
 		PolyCirculinearCurve2D<CirculinearElement2D> curve =
 			new PolyCirculinearCurve2D<CirculinearElement2D>();
-		curve.addCurve(ray1);
-		curve.addCurve(ray2);
+		curve.add(ray1);
+		curve.add(ray2);
 		assertEquals(2, curve.smoothPieces().size());
 
 		// computes the positive parallel

@@ -74,7 +74,7 @@ public class HyperbolaBranch2DTest extends TestCase {
 		
 		CurveSet2D<?> clipped = Curve2DUtils.clipSmoothCurve(branch, line);
 		
-		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.size()==1);
 		Curve2D curve = clipped.firstCurve();
 		
 		Point2D p1 = new Point2D(x0+2*a, y0-b*Math.sqrt(3));
@@ -91,7 +91,7 @@ public class HyperbolaBranch2DTest extends TestCase {
 		line = new StraightLine2D(x0+2*a, y0, 0, 1);
 		
 		clipped = Curve2DUtils.clipSmoothCurve(branch, line);
-		assertTrue(clipped.curveNumber()==1);
+		assertTrue(clipped.size()==1);
 
 		curve = clipped.firstCurve();
 		

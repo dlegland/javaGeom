@@ -30,17 +30,17 @@ public interface PointSet2D extends PointShape2D, ShapeSet2D<Point2D> {
      * 
      * @param point the initial point in the set
      */
-    public void addPoint(Point2D point);
+    public boolean add(Point2D point);
 
     /**
      * Add a series of points
      * 
      * @param points an array of points
      */
-    public void addPoints(Collection<? extends Point2D> points);
+    public void addAll(Collection<? extends Point2D> points);
 
     /**
-     * Returns an iterator on the internal point collection.
+     * Returns the collection of points contained in this set.
      * 
      * @return the collection of points
      */
@@ -51,7 +51,7 @@ public interface PointSet2D extends PointShape2D, ShapeSet2D<Point2D> {
      * 
      * @return the number of points
      */
-    public int pointNumber();
+    public int size();
     
     /**
      * Transforms the point set by returning a new point set containing each 

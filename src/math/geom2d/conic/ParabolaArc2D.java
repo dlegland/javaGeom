@@ -281,12 +281,12 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // Stores the result in appropriate structure
         CurveArray2D<ParabolaArc2D> result = 
-        	new CurveArray2D<ParabolaArc2D>(set.curveNumber());
+        	new CurveArray2D<ParabolaArc2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
             if (curve instanceof ParabolaArc2D)
-                result.addCurve((ParabolaArc2D) curve);
+                result.add((ParabolaArc2D) curve);
         }
         return result;
     }

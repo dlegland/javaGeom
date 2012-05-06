@@ -379,17 +379,17 @@ public class CircleArc2DTest extends TestCase {
 		// a rectangle totally outside the arc
 		clip1 = arc1.clip(new Box2D(15, 25, 15, 25)); 
 		assertTrue(clip1 instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clip1).curveNumber(), 0);
+		assertEquals(((CurveSet2D<?>) clip1).size(), 0);
 
 		// an rectangle totally inside a circle arc
 		clip1 = arc1.clip(new Box2D(0, 7, 0, 7));
 		assertTrue(clip1 instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clip1).curveNumber(), 0);
+		assertEquals(((CurveSet2D<?>) clip1).size(), 0);
 
 		// a circle arc totally inside the rectangle
 		clip1 = arc1.clip(new Box2D(-20, 20, -20, 20));
 		assertTrue(clip1 instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clip1).curveNumber(), 1);
+		assertEquals(((CurveSet2D<?>) clip1).size(), 1);
 		Curve2D clip1c1 = ((CurveSet2D<?>) clip1).firstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
 
@@ -433,19 +433,19 @@ public class CircleArc2DTest extends TestCase {
 		// a box totally outside the arc
 		clipped = arc1.clip(boxOut); 
 		assertTrue(clipped instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clipped).curveNumber(), 0);
+		assertEquals(((CurveSet2D<?>) clipped).size(), 0);
 		assertTrue(clipped.isEmpty());
 
 		// an box totally inside a circle arc
 		clipped = arc1.clip(boxIn);
 		assertTrue(clipped instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clipped).curveNumber(), 0);
+		assertEquals(((CurveSet2D<?>) clipped).size(), 0);
 		assertTrue(clipped.isEmpty());
 
 		// a circle arc totally inside the box
 		clipped = arc1.clip(boxFull);
 		assertTrue(clipped instanceof CurveSet2D<?>);
-		assertEquals(((CurveSet2D<?>) clipped).curveNumber(), 1);
+		assertEquals(((CurveSet2D<?>) clipped).size(), 1);
 		Curve2D clip1c1 = ((CurveSet2D<?>) clipped).firstCurve();
 		assertTrue(clip1c1 instanceof CircleArc2D);
 		assertTrue(arc1.equals(clip1c1));
@@ -470,7 +470,7 @@ public class CircleArc2DTest extends TestCase {
 		arc1 = new CircleArc2D(p0, r, 7*PI/6, -PI/6);
 		arc2 = new CircleArc2D(p0, r, 3*PI/2, -PI/6);
 		curves = arc0.clip(new Box2D(x0-20, x0, y0-20, y0));
-		assertEquals(curves.curveNumber(), 2);
+		assertEquals(curves.size(), 2);
 		Iterator<CircleArc2D> iter = curves.iterator();
 		assertTrue(iter.next().equals(arc1));
 		assertTrue(iter.next().equals(arc2));

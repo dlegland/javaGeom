@@ -219,8 +219,8 @@ implements Conic2D, Cloneable {
 
         branch1 = new HyperbolaBranch2D(this, false);
         branch2 = new HyperbolaBranch2D(this, true);
-        this.addCurve(branch1);
-        this.addCurve(branch2);
+        this.add(branch1);
+        this.add(branch2);
     }
 
     
