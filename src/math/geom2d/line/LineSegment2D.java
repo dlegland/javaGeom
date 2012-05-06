@@ -27,6 +27,7 @@ package math.geom2d.line;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearElement2D;
+import math.utils.EqualUtils;
 
 
 /**
@@ -373,18 +374,22 @@ implements Cloneable, CirculinearElement2D {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
 		if (!(obj instanceof LineSegment2D))
 			return false;
-		LineSegment2D edge = (LineSegment2D) obj;
+		LineSegment2D that = (LineSegment2D) obj;
 
-		if (Math.abs(x0 - edge.x0) > Shape2D.ACCURACY)
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x0, that.x0)) 
 			return false;
-		if (Math.abs(y0 - edge.y0) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.y0, that.y0)) 
 			return false;
-		if (Math.abs(dx - edge.dx) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.dx, that.dx)) 
 			return false;
-		if (Math.abs(dy - edge.dy) > Shape2D.ACCURACY)
+		if (!EqualUtils.areEqual(this.dy, that.dy)) 
 			return false;
+
 		return true;
 	}
 

@@ -26,6 +26,7 @@
 package math.geom2d;
 
 import math.geom2d.AffineTransform2D;
+import math.utils.EqualUtils;
 import static java.lang.Math.*;
 
 // Imports
@@ -337,12 +338,12 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 
 		if (!(obj instanceof Vector2D))
 			return false;
-		Vector2D v = (Vector2D) obj;
+		Vector2D that = (Vector2D) obj;
 
-		// Code that should be used:
-		if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(v.x))
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x, that.x)) 
 			return false;
-		if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(v.y))
+		if (!EqualUtils.areEqual(this.y, that.y)) 
 			return false;
 
 		return true;

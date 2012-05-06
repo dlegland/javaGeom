@@ -259,9 +259,7 @@ implements SmoothContour2D, Cloneable {
 
     /** Returns a bounding box with infinite bounds in every direction */
     public Box2D boundingBox() {
-        return new Box2D(
-        		Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        return Box2D.INFINITE_BOX;
     }
 
     /**
@@ -318,7 +316,7 @@ implements SmoothContour2D, Cloneable {
     	double d2 = hyperbola.negativeBranch().distance(base);
     	
     	// choose the 'positivity' of the branch from the closest branch
-        return new HyperbolaBranch2D(hyperbola, d1<d2);
+        return new HyperbolaBranch2D(hyperbola, d1 < d2);
     }
 
     public boolean contains(Point2D point) {
@@ -329,7 +327,7 @@ implements SmoothContour2D, Cloneable {
         if (!hyperbola.contains(x, y))
             return false;
         Point2D point = hyperbola.toLocal(new Point2D(x, y));
-        return point.getX()>0;
+        return point.getX() > 0;
     }
 
 	// ===================================================================
@@ -339,7 +337,7 @@ implements SmoothContour2D, Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
     public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         if(!(obj instanceof HyperbolaBranch2D))
@@ -347,7 +345,7 @@ implements SmoothContour2D, Cloneable {
         HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
         
         if(!hyperbola.almostEquals(branch.hyperbola, eps)) return false;
-        return positive==branch.positive;
+        return positive == branch.positive;
     }
 
     // ===================================================================
@@ -355,7 +353,7 @@ implements SmoothContour2D, Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         if(!(obj instanceof HyperbolaBranch2D))
@@ -363,7 +361,7 @@ implements SmoothContour2D, Cloneable {
         HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
         
         if(!hyperbola.equals(branch.hyperbola)) return false;
-        return positive==branch.positive;
+        return positive == branch.positive;
     }
     
     @Override

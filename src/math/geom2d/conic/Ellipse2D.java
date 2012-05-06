@@ -40,6 +40,7 @@ import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.LinearRing2D;
+import math.utils.EqualUtils;
 
 // Imports
 
@@ -1118,7 +1119,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
 	public boolean almostEquals(GeometricObject2D obj, double eps) {
-		if (this==obj)
+		if (this == obj)
 			return true;
 		
         if (!(obj instanceof Ellipse2D))
@@ -1126,16 +1127,16 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
         Ellipse2D ell = (Ellipse2D) obj;
 
-        if (!ell.center().almostEquals(this.center(), eps))
-            return false;
-        if (abs(ell.r1-this.r1)>eps)
-            return false;
-        if (abs(ell.r2-this.r2)>eps)
-            return false;
-        if (!Angle2D.almostEquals(ell.angle(), this.angle(), eps))
-            return false;
-        if (ell.isDirect()!=this.isDirect())
-            return false;
+		if (!ell.center().almostEquals(this.center(), eps))
+			return false;
+		if (abs(ell.r1 - this.r1) > eps)
+			return false;
+		if (abs(ell.r2 - this.r2) > eps)
+			return false;
+		if (!Angle2D.almostEquals(ell.angle(), this.angle(), eps))
+			return false;
+		if (ell.isDirect() != this.isDirect())
+			return false;
         return true;
 	}
 	
@@ -1145,24 +1146,28 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-		if (this==obj)
+		if (this == obj)
 			return true;
 		
         if (!(obj instanceof Ellipse2D))
             return false;
 
-        Ellipse2D ell = (Ellipse2D) obj;
+        Ellipse2D that = (Ellipse2D) obj;
 
-        if (!ell.center().equals(this.center()))
+        // Compare each field
+		if (!EqualUtils.areEqual(this.xc, that.xc)) 
+			return false;
+		if (!EqualUtils.areEqual(this.yc, that.yc)) 
+			return false;
+		if (!EqualUtils.areEqual(this.r1, that.r1)) 
+			return false;
+		if (!EqualUtils.areEqual(this.r2, that.r2)) 
+			return false;
+		if (!EqualUtils.areEqual(this.theta, that.theta)) 
+			return false;
+        if (this.direct!=that.direct)
             return false;
-        if (abs(ell.r1-this.r1)>Shape2D.ACCURACY)
-            return false;
-        if (abs(ell.r2-this.r2)>Shape2D.ACCURACY)
-            return false;
-        if (abs(Angle2D.formatAngle(ell.angle()-this.angle()))>Shape2D.ACCURACY)
-            return false;
-        if (ell.isDirect()!=this.isDirect())
-            return false;
+        
         return true;
     }
 

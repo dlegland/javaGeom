@@ -472,32 +472,32 @@ public class CircleArc2DTest extends TestCase {
 		curves = arc0.clip(new Box2D(x0-20, x0, y0-20, y0));
 		assertEquals(curves.size(), 2);
 		Iterator<CircleArc2D> iter = curves.iterator();
-		assertTrue(iter.next().equals(arc1));
-		assertTrue(iter.next().equals(arc2));
+		assertTrue(iter.next().almostEquals(arc1, Shape2D.ACCURACY));
+		assertTrue(iter.next().almostEquals(arc2, Shape2D.ACCURACY));
 	}
 
 	public void testGetReverseCurve(){
 		// direct arc, direct circle
 		Circle2D circle1 = new Circle2D(0, 0, 10);
 		CircleArc2D arc1 = new CircleArc2D(circle1, 0, PI/2);
-		assertTrue(arc1.reverse().equals(
-				new CircleArc2D(circle1, PI/2, -PI/2)));
+		assertTrue(arc1.reverse().almostEquals(
+				new CircleArc2D(circle1, PI/2, -PI/2), Shape2D.ACCURACY));
 		
 		// inverse circle arc, inverse circle
 		Circle2D circle2 = new Circle2D(0, 0, 10, false);
 		CircleArc2D arc2 = new CircleArc2D(circle2, PI, -PI/2);
-		assertTrue(arc2.reverse().equals(
-				new CircleArc2D(circle2, PI/2, PI/2)));
+		assertTrue(arc2.reverse().almostEquals(
+				new CircleArc2D(circle2, PI/2, PI/2), Shape2D.ACCURACY));
 		
 		// direct arc, indirect circle
 		CircleArc2D arc3 = new CircleArc2D(circle2, 0, PI/2);
-		assertTrue(arc3.reverse().equals(
-				new CircleArc2D(circle2, PI/2, -PI/2)));
+		assertTrue(arc3.reverse().almostEquals(
+				new CircleArc2D(circle2, PI/2, -PI/2), Shape2D.ACCURACY));
 		
 		// inverse circle arc, direct circle
 		CircleArc2D arc4 = new CircleArc2D(circle1, PI, -PI/2);
-		assertTrue(arc4.reverse().equals(
-				new CircleArc2D(circle1, PI/2, PI/2)));
+		assertTrue(arc4.reverse().almostEquals(
+				new CircleArc2D(circle1, PI/2, PI/2), Shape2D.ACCURACY));
 	}
 	
 	public void testClass(){
@@ -520,28 +520,28 @@ public class CircleArc2DTest extends TestCase {
 		
 		// translation
 		AffineTransform2D tra = AffineTransform2D.createTranslation(tx, ty);
-		assertTrue(arc.transform(tra).equals(
-				new CircleArc2D(tx, ty, 10, 0, PI/2)));
+		assertTrue(arc.transform(tra).almostEquals(
+				new CircleArc2D(tx, ty, 10, 0, PI/2), Shape2D.ACCURACY));
 		
 		// rotation
 		AffineTransform2D rot = AffineTransform2D.createRotation(theta);
-		assertTrue(arc.transform(rot).equals(
-				new CircleArc2D(0, 0, 10, theta, PI/2)));
+		assertTrue(arc.transform(rot).almostEquals(
+				new CircleArc2D(0, 0, 10, theta, PI/2), Shape2D.ACCURACY));
 		
 		// scaling with unequal factors
 		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
-		assertTrue(arc.transform(sca).equals(
-				new EllipseArc2D(0, 0, 30, 20, 0, 0, PI/2)));
+		assertTrue(arc.transform(sca).almostEquals(
+				new EllipseArc2D(0, 0, 30, 20, 0, 0, PI/2), Shape2D.ACCURACY));
 		
 		// line reflections
 		AffineTransform2D refOx = AffineTransform2D.createLineReflection(
 				new StraightLine2D(0, 0, 1, 0));
-		assertTrue(arc.transform(refOx).equals(
-				new CircleArc2D(0, 0, 10, 0, -PI/2)));
+		assertTrue(arc.transform(refOx).almostEquals(
+				new CircleArc2D(0, 0, 10, 0, -PI/2), Shape2D.ACCURACY));
 		AffineTransform2D refOy = AffineTransform2D.createLineReflection(
 				new StraightLine2D(0, 0, 0, 1));
-		assertTrue(arc.transform(refOy).equals(
-				new CircleArc2D(0, 0, 10, PI, -PI/2)));	
+		assertTrue(arc.transform(refOy).almostEquals(
+				new CircleArc2D(0, 0, 10, PI, -PI/2), Shape2D.ACCURACY));	
 	}
 	
 	public void testTransformAffineTransform2DInv(){
@@ -562,13 +562,13 @@ public class CircleArc2DTest extends TestCase {
 		
 		// translation
 		AffineTransform2D tra = AffineTransform2D.createTranslation(tx, ty);
-		assertTrue(arc.transform(tra).equals(
-				new CircleArc2D(x0+tx, y0+ty, r, PI/2, -PI/2)));
+		assertTrue(arc.transform(tra).almostEquals(
+				new CircleArc2D(x0+tx, y0+ty, r, PI/2, -PI/2), Shape2D.ACCURACY));
 		
 		// rotation
 		AffineTransform2D rot = AffineTransform2D.createRotation(p0, theta);
-		assertTrue(arc.transform(rot).equals(
-				new CircleArc2D(x0, y0, r, theta+PI/2, -PI/2)));
+		assertTrue(arc.transform(rot).almostEquals(
+				new CircleArc2D(x0, y0, r, theta+PI/2, -PI/2), Shape2D.ACCURACY));
 		
 		// scaling with unequal factors
 		AffineTransform2D sca = AffineTransform2D.createScaling(p0, sx, sy);
@@ -579,12 +579,12 @@ public class CircleArc2DTest extends TestCase {
 		AffineTransform2D refOx = AffineTransform2D.createLineReflection(
 				new StraightLine2D(x0, y0, 1, 0));
 		EllipseArc2D transformed = arc.transform(refOx);
-		assertTrue(transformed.equals(
-				new CircleArc2D(x0, y0, r, 3*PI/2, PI/2)));
+		assertTrue(transformed.almostEquals(
+				new CircleArc2D(x0, y0, r, 3*PI/2, PI/2), Shape2D.ACCURACY));
 		AffineTransform2D refOy = AffineTransform2D.createLineReflection(
 				new StraightLine2D(x0, y0, 0, 1));
-		assertTrue(arc.transform(refOy).equals(
-				new CircleArc2D(x0, y0, r, PI/2, PI/2)));	
+		assertTrue(arc.transform(refOy).almostEquals(
+				new CircleArc2D(x0, y0, r, PI/2, PI/2), Shape2D.ACCURACY));	
 	}
 	
 	/*

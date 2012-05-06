@@ -39,6 +39,7 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.utils.EqualUtils;
 
 /**
  * An arc of ellipse. It is defined by a supporting ellipse, a starting angle,
@@ -770,29 +771,21 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         if (!(obj instanceof EllipseArc2D))
             return false;
-        EllipseArc2D arc = (EllipseArc2D) obj;
+        EllipseArc2D that = (EllipseArc2D) obj;
 
         // test whether supporting ellipses have same support
-        if (abs(ellipse.xc-arc.ellipse.xc)>Shape2D.ACCURACY)
-            return false;
-        if (abs(ellipse.yc-arc.ellipse.yc)>Shape2D.ACCURACY)
-            return false;
-        if (abs(ellipse.r1-arc.ellipse.r1)>Shape2D.ACCURACY)
-            return false;
-        if (abs(ellipse.r2-arc.ellipse.r2)>Shape2D.ACCURACY)
-            return false;
-        if (abs(ellipse.theta-arc.ellipse.theta)>Shape2D.ACCURACY)
-            return false;
+        if (!this.ellipse.equals(that.ellipse))
+        	return false;
 
         // test if angles are the same
-        if (!Angle2D.equals(startAngle, arc.startAngle))
+        if (!EqualUtils.areEqual(startAngle, that.startAngle))
             return false;
-        if (!Angle2D.equals(angleExtent, arc.angleExtent))
+        if (!EqualUtils.areEqual(angleExtent, that.angleExtent))
             return false;
 
         return true;

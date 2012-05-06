@@ -38,6 +38,7 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.utils.EqualUtils;
 
 /**
  * A parabola, defined by its vertex, its orientation, and its pedal.
@@ -580,17 +581,18 @@ implements Contour2D, Conic2D, Cloneable {
     public boolean equals(Object obj) {
         if (!(obj instanceof Parabola2D))
             return false;
-        Parabola2D parabola = (Parabola2D) obj;
+        Parabola2D that = (Parabola2D) obj;
 
-        if ((this.xv-parabola.xv)>Shape2D.ACCURACY) 
-            return false;
-        if ((this.yv-parabola.yv)>Shape2D.ACCURACY) 
-            return false;
-        if ((this.a-parabola.a)>Shape2D.ACCURACY)
-            return false;
-        if (!Angle2D.equals(this.theta, parabola.theta))
-            return false;
-
+        // Compare each field
+		if (!EqualUtils.areEqual(this.xv, that.xv)) 
+			return false;
+		if (!EqualUtils.areEqual(this.yv, that.yv)) 
+			return false;
+		if (!EqualUtils.areEqual(this.a, that.a)) 
+			return false;
+		if (!EqualUtils.areEqual(this.theta, that.theta)) 
+			return false;
+        
         return true;
     }
     

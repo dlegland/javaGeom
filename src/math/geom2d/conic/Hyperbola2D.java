@@ -35,6 +35,7 @@ import math.geom2d.*;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.utils.EqualUtils;
 
 // Imports
 
@@ -241,7 +242,7 @@ implements Conic2D, Cloneable {
     public Point2D toLocal(Point2D point) {
 		point = point.transform(AffineTransform2D.createTranslation(-xc, -yc));
 		point = point.transform(AffineTransform2D.createRotation(-theta));
-		point = point.transform(AffineTransform2D.createScaling(1 / a, 1 / b));
+		point = point.transform(AffineTransform2D.createScaling(1.0 / a, 1.0 / b));
         return point;
     }
 
@@ -447,8 +448,7 @@ implements Conic2D, Cloneable {
 
 			double delta = b * b - 4 * a * c;
 			if (delta <= 0) {
-				System.out
-						.println("Intersection with horizontal line should alays give positive delta");
+				System.out.println("Intersection with horizontal line should alays give positive delta");
 				return points;
 			}
 
@@ -539,6 +539,12 @@ implements Conic2D, Cloneable {
         return result;
     }
 
+    /** Returns a bounding box with infinite bounds in every direction */
+    @Override
+    public Box2D boundingBox() {
+        return Box2D.INFINITE_BOX;
+    }
+
     /** Throws an UnboundedShapeException */
     @Override
     public void draw(Graphics2D g) {
@@ -561,19 +567,19 @@ implements Conic2D, Cloneable {
         // Cast to hyperbola
         Hyperbola2D that = (Hyperbola2D) obj;
 
-        // check if each parameter is the same
-        if (abs(that.xc-this.xc)>eps)
-            return false;
-        if (abs(that.yc-this.yc)>eps)
-            return false;
-        if (abs(that.a-this.a)>eps)
-            return false;
-        if (abs(that.b-this.b)>eps)
-            return false;
-        if (abs(that.theta-this.theta)>eps)
-            return false;
-        if (this.direct!=that.direct)
-            return false;
+		// check if each parameter is the same
+		if (abs(that.xc - this.xc) > eps)
+			return false;
+		if (abs(that.yc - this.yc) > eps)
+			return false;
+		if (abs(that.a - this.a) > eps)
+			return false;
+		if (abs(that.b - this.b) > eps)
+			return false;
+		if (abs(that.theta - this.theta) > eps)
+			return false;
+		if (this.direct != that.direct)
+			return false;
 
         // same parameters, then same parabola
         return true;
@@ -594,17 +600,16 @@ implements Conic2D, Cloneable {
         Hyperbola2D that = (Hyperbola2D) obj;
 
         // check if each parameter is the same
-        double eps = 1e-6;
-        if (abs(that.xc-this.xc)>eps)
-            return false;
-        if (abs(that.yc-this.yc)>eps)
-            return false;
-        if (abs(that.a-this.a)>eps)
-            return false;
-        if (abs(that.b-this.b)>eps)
-            return false;
-        if (abs(that.theta-this.theta)>eps)
-            return false;
+        if (!EqualUtils.areEqual(this.xc, that.xc)) 
+			return false;
+		if (!EqualUtils.areEqual(this.yc, that.yc)) 
+			return false;
+		if (!EqualUtils.areEqual(this.a, that.a)) 
+			return false;
+		if (!EqualUtils.areEqual(this.b, that.b)) 
+			return false;
+		if (!EqualUtils.areEqual(this.theta, that.theta)) 
+			return false;
         if (this.direct!=that.direct)
             return false;
 

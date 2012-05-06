@@ -44,6 +44,7 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
+import math.utils.EqualUtils;
 import static java.lang.Math.*;
 
 /**
@@ -674,29 +675,17 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
         if (!(obj instanceof CircleArc2D))
             return super.equals(obj);
+        CircleArc2D that = (CircleArc2D) obj;
+        
+        // test whether supporting circles have same support
+        if (!this.circle.equals(that.circle))
+        	return false;
 
-        CircleArc2D arc = (CircleArc2D) obj;
-        // test whether supporting ellipses have same support
-        if (abs(circle.xc-arc.circle.xc)>Shape2D.ACCURACY)
+        // test if angles are the same
+        if (!EqualUtils.areEqual(startAngle, that.startAngle))
             return false;
-        if (abs(circle.yc-arc.circle.yc)>Shape2D.ACCURACY)
+        if (!EqualUtils.areEqual(angleExtent, that.angleExtent))
             return false;
-        if (abs(circle.r-arc.circle.r)>Shape2D.ACCURACY)
-            return false;
-        if (abs(circle.r1-arc.circle.r1)>Shape2D.ACCURACY)
-            return false;
-        if (abs(circle.r2-arc.circle.r2)>Shape2D.ACCURACY)
-            return false;
-        if (abs(circle.theta-arc.circle.theta)>Shape2D.ACCURACY)
-            return false;
-
-		// test is angles are the same
-		if (abs(Angle2D.formatAngle(startAngle)
-				- Angle2D.formatAngle(arc.startAngle)) > Shape2D.ACCURACY)
-			return false;
-		if (abs(Angle2D.formatAngle(angleExtent)
-				- Angle2D.formatAngle(arc.angleExtent)) > Shape2D.ACCURACY)
-			return false;
 
         // if no difference, this is the same
         return true;

@@ -57,7 +57,7 @@ public class Curve2DUtilsTest extends TestCase {
 	public void testClipCurve_Circle2D() {
 		Box2D box = new Box2D(0, 10, 0, 10);
 		Circle2D 	line1 = new Circle2D(0, 0, 5, true);
-		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, PI/2);
+		CircleArc2D clip1 = new CircleArc2D(0, 0, 5, 0, PI / 2);
 		
 		CurveSet2D<? extends Curve2D> curveSet = 
 			Curve2DUtils.clipCurve(line1, box);
@@ -70,8 +70,8 @@ public class Curve2DUtilsTest extends TestCase {
 		double L = 40;
 		double l = 10;
 		Box2D box = new Box2D(-L/2, L/2, -l/2, l/2);
-		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*PI/3, 2*PI/3);
-		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*PI/3, 2*PI/3);		
+		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * PI / 3, 2 * PI / 3);
+		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * PI / 3, 2 * PI / 3);
 
 		CurveSet2D<? extends Curve2D> clipped1 = 
 			Curve2DUtils.clipCurve(arc1, box);
@@ -83,12 +83,12 @@ public class Curve2DUtilsTest extends TestCase {
 
 		double alpha = Math.asin(l/2/r);
 		CircleArc2D arc1c = new CircleArc2D(0, 0, r, 
-				Angle2D.formatAngle(PI*2-alpha), 2*alpha);
+				Angle2D.formatAngle(PI * 2 - alpha), 2 * alpha);
 		CircleArc2D arc2c = new CircleArc2D(r, 0, r,
-				Angle2D.formatAngle(PI-alpha), 2*alpha);
+				Angle2D.formatAngle(PI - alpha), 2 * alpha);
 
-		assertTrue(arc1c.equals(curve1));
-		assertTrue(arc2c.equals(curve2));
+		assertTrue(arc1c.almostEquals(curve1, Shape2D.ACCURACY));
+		assertTrue(arc2c.almostEquals(curve2, Shape2D.ACCURACY));
 	}
 
 	public void testClipCurve_CurveSet2D() {
@@ -96,10 +96,10 @@ public class Curve2DUtilsTest extends TestCase {
 		double L = 40;
 		double l = 10;
 
-		Box2D box = new Box2D(-L/2, L/2, -l/2, l/2);
-		
-		CircleArc2D arc1 	= new CircleArc2D(0, 0, r, 5*PI/3, 2*PI/3);
-		CircleArc2D arc2 	= new CircleArc2D(r, 0, r, 2*PI/3, 2*PI/3);		
+		Box2D box = new Box2D(-L / 2, L / 2, -l / 2, l / 2);
+
+		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * PI / 3, 2 * PI / 3);
+		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * PI / 3, 2 * PI / 3);
 		CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
 		set.add(arc1);
 		set.add(arc2);
@@ -112,12 +112,12 @@ public class Curve2DUtilsTest extends TestCase {
 		
 		double alpha 	= Math.asin(l/2/r);
 		CircleArc2D arc1c = new CircleArc2D(0, 0, r, 
-				Angle2D.formatAngle(PI*2-alpha), 2*alpha);
-		CircleArc2D arc2c = new CircleArc2D(r, 0, r,
-				Angle2D.formatAngle(PI-alpha), 2*alpha);
+				Angle2D.formatAngle(PI * 2 - alpha), 2 * alpha);
+		CircleArc2D arc2c = new CircleArc2D(r, 0, r, 
+				Angle2D.formatAngle(PI - alpha), 2 * alpha);
 		
-		assertTrue(arc1c.equals(curve1));
-		assertTrue(arc2c.equals(curve2));
+		assertTrue(arc1c.almostEquals(curve1, Shape2D.ACCURACY));
+		assertTrue(arc2c.almostEquals(curve2, Shape2D.ACCURACY));
 		
 	}
 	

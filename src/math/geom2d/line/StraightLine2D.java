@@ -47,6 +47,7 @@ import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
+import math.utils.EqualUtils;
 
 /**
  * Implementation of a straight line. Such a line can be constructed using two
@@ -558,17 +559,22 @@ public class StraightLine2D extends AbstractLine2D implements
     
     @Override
     public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
         if (!(obj instanceof StraightLine2D))
             return false;
-        StraightLine2D line = (StraightLine2D) obj;
-        if (Math.abs(x0-line.x0)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(y0-line.y0)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(dx-line.dx)>Shape2D.ACCURACY)
-            return false;
-        if (Math.abs(dy-line.dy)>Shape2D.ACCURACY)
-            return false;
+        StraightLine2D that = (StraightLine2D) obj;
+        
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x0, that.x0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.y0, that.y0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.dx, that.dx)) 
+			return false;
+		if (!EqualUtils.areEqual(this.dy, that.dy)) 
+			return false;
+
         return true;
     }
     

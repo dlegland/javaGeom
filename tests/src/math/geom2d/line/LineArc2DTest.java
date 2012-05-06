@@ -232,15 +232,15 @@ public class LineArc2DTest extends TestCase {
 	public void testGetReverseCurve() {
 		LineArc2D arc = new LineArc2D(1, 2, 3, 4, 0, 1);
 		LineArc2D rev = new LineArc2D(1, 2, -3, -4, -1, 0);
-		assertEquals(rev, arc.reverse());
+		assertTrue(rev.almostEquals(arc.reverse(), Shape2D.ACCURACY));
 	}
 	
     public void testEqualsLineArc2D(){
         LineArc2D edge1 = new LineArc2D(1, 2, 2, 2, 0, 1);
         assertTrue(edge1.equals(edge1));
         LineArc2D edge2 = new LineArc2D(3, 4, -2, -2, 0, 1);
-        assertTrue(edge1.equals(edge2));
-        assertTrue(edge2.equals(edge1));
+        assertTrue(!edge1.equals(edge2));
+        assertTrue(!edge2.equals(edge1));
         
         LineArc2D edge3 = new LineArc2D(1, 4, 2, -2, 0, 1);
         assertTrue(!edge1.equals(edge3));

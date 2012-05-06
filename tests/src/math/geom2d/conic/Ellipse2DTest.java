@@ -69,7 +69,7 @@ public class Ellipse2DTest extends TestCase {
 		double chord = base.semiMajorAxisLength()*2;
 		Ellipse2D created = Ellipse2D.create(focus1, focus2, chord);
 		
-		assertTrue(base.equals(created));
+		assertTrue(base.almostEquals(created, Shape2D.ACCURACY));
 	}
 	
 	public void testReduceCentered(){
@@ -85,11 +85,12 @@ public class Ellipse2DTest extends TestCase {
 		Ellipse2D ell3 = Ellipse2D.reduceCentered(coefs3);
 		assertTrue(ell3.equals(new Ellipse2D(0, 0, 20, 10, 0)));
 
-		double theta = Math.PI/3;
+		double theta = Math.PI / 3;
 		double[] rotCoefs = Conic2DUtils.transformCentered(coefs,
 				AffineTransform2D.createRotation(theta));
 		Ellipse2D ellRot = Ellipse2D.reduceCentered(rotCoefs);
-		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
+		Ellipse2D expected = new Ellipse2D(0, 0, 20, 10, theta);
+		assertTrue(ellRot.almostEquals(expected, Shape2D.ACCURACY));
 	}
 	
 	public void testTransformCentered(){
@@ -97,20 +98,22 @@ public class Ellipse2DTest extends TestCase {
 		
 		// Check rotation of an ellipse
 		double theta = Math.PI/3;
-		AffineTransform2D rot60 = AffineTransform2D.createRotation(Math.PI/3);
-		Ellipse2D ellRot = Ellipse2D.transformCentered(ell0, rot60);
-		assertTrue(ellRot.equals(new Ellipse2D(0, 0, 20, 10, theta)));
+		AffineTransform2D rot60 = AffineTransform2D.createRotation(theta);
+		Ellipse2D resRot = Ellipse2D.transformCentered(ell0, rot60);
+		Ellipse2D expRot = new Ellipse2D(0, 0, 20, 10, theta);
+		assertTrue(resRot.almostEquals(expRot, Shape2D.ACCURACY));
 		
 		// Check scaling of an ellipse
 		double sx = 2.5; double sy = 3;
 		AffineTransform2D sca = AffineTransform2D.createScaling(sx, sy);
-		Ellipse2D ellSca = Ellipse2D.transformCentered(ell0, sca);
-		assertTrue(ellSca.equals(new Ellipse2D(0, 0, 20.*sx, 10.*sy, 0)));
+		Ellipse2D resSca = Ellipse2D.transformCentered(ell0, sca);
+		Ellipse2D expSca = new Ellipse2D(0, 0, 20.*sx, 10.*sy, 0);
+		assertTrue(resSca.almostEquals(expSca, Shape2D.ACCURACY));
 
 		// Check scaling and rotation
-		Ellipse2D ellBoth = Ellipse2D.transformCentered(ellSca, rot60);
-		assertTrue(ellBoth.equals(new Ellipse2D(0, 0, 20.*sx, 10.*sy, theta)));
-
+		Ellipse2D resBoth = Ellipse2D.transformCentered(resSca, rot60);
+		Ellipse2D expBoth = new Ellipse2D(0, 0, 20.*sx, 10.*sy, theta);
+		assertTrue(resBoth.almostEquals(expBoth, Shape2D.ACCURACY));
 	}
 	
 	public void testGetProjectedPoint(){
@@ -404,13 +407,13 @@ public class Ellipse2DTest extends TestCase {
 		AffineTransform2D aff2 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
 		Ellipse2D ell2 = ellipse.transform(aff2);
 		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
-		assertTrue(ell2.equals(ell2th));
+		assertTrue(ell2.almostEquals(ell2th, Shape2D.ACCURACY));
 		
 		// Try with a rotated base ellipse
 		ellipse = new Ellipse2D(100, 100, 50, 30, Math.PI/3);
 		AffineTransform2D aff3 = new AffineTransform2D(1, 0, 0, 0, 1, 0);
 		Ellipse2D ell3 = ellipse.transform(aff3);
-		assertTrue(ell3.equals(ellipse));
+		assertTrue(ell3.almostEquals(ellipse, Shape2D.ACCURACY));
 		
 		// At the moment, I do not how to compute parameters of transformed ellipse,
 		// so I can only check results visually.

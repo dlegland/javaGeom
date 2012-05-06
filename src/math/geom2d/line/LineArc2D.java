@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import math.geom2d.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
+import math.utils.EqualUtils;
 
 /**
  * LineArc2D is a generic class to represent edges, straight lines, and rays.
@@ -127,62 +128,36 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
 	@Override
     public double length() {
-        if (t0!=Double.NEGATIVE_INFINITY&&t1!=Double.POSITIVE_INFINITY)
-            return getPoint1().distance(getPoint2());
-        else
+		if (this.isBounded())
+			return firstPoint().distance(lastPoint());
+		else
             return Double.POSITIVE_INFINITY;
     }
 
-    /**
-     * Return the first point of the line arc. In the case of a line arc
-     * starting from -infinity, throws an UnboundedShape2DException.
-     * 
-     * @return the first point of the arc
-     */
-    public Point2D getPoint1() {
-        if (t0!=Double.NEGATIVE_INFINITY)
-            return new Point2D(x0+t0*dx, y0+t0*dy);
-        else
-            throw new UnboundedShape2DException(this);
-    }
+	public double getX1() {
+		if (t0 != Double.NEGATIVE_INFINITY)
+			return x0 + t0 * dx;
+		else
+			return Double.NEGATIVE_INFINITY;
+	}
 
-    /**
-     * Return the last point of the line arc. In the case of a line arc ending
-     * at infinity, throws an UnboundedShape2DException.
-     * 
-     * @return the last point of the arc.
-     */
-    public Point2D getPoint2() {
-        if (t1!=Double.POSITIVE_INFINITY)
-            return new Point2D(x0+t1*dx, y0+t1*dy);
-        else
-            throw new UnboundedShape2DException(this);
-    }
-
-    public double getX1() {
-        if (t0!=Double.NEGATIVE_INFINITY)
-            return x0+t0*dx;
-        else
-            return Double.NEGATIVE_INFINITY;
-    }
-
-    public double getY1() {
-        if (t0!=Double.NEGATIVE_INFINITY)
-            return y0+t0*dy;
-        else
-            return Double.NEGATIVE_INFINITY;
-    }
+	public double getY1() {
+		if (t0 != Double.NEGATIVE_INFINITY)
+			return y0 + t0 * dy;
+		else
+			return Double.NEGATIVE_INFINITY;
+	}
 
     public double getX2() {
-        if (t1!=Double.POSITIVE_INFINITY)
-            return x0+t1*dx;
+		if (t1 != Double.POSITIVE_INFINITY)
+			return x0 + t1 * dx;
         else
             return Double.POSITIVE_INFINITY;
     }
 
     public double getY2() {
-        if (t1!=Double.POSITIVE_INFINITY)
-            return y0+t1*dy;
+		if (t1 != Double.POSITIVE_INFINITY)
+			return y0 + t1 * dy;
         else
             return Double.POSITIVE_INFINITY;
     }
@@ -194,8 +169,8 @@ implements SmoothOrientedCurve2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
 	 */
 	public LineArc2D parallel(double d) {
-        double dd = Math.hypot(dx, dy);
-        return new LineArc2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy, t0, t1);
+		double d2 = d / Math.hypot(dx, dy);
+		return new LineArc2D(x0 + dy * d2, y0 - dx * d2, dx, dy, t0, t1);
 	}
 
 
@@ -219,53 +194,53 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public Point2D point(double t) {
-        if (t<t0)
-            t = t0;
-        if (t>t1)
+		if (t < t0)
+			t = t0;
+		if (t > t1)
             t = t1;
 
         if (Double.isInfinite(t))
             throw new UnboundedShape2DException(this);
         else
-            return new Point2D(x0+dx*t, y0+dy*t);
+			return new Point2D(x0 + dx * t, y0 + dy * t);
     }
 
     /**
      * Return the first point of the edge. In the case of a line, or a ray
-     * starting from -infinity, returns Point2D.INFINITY_POINT.
+     * starting from -infinity, throws an UnboundedShape2DException.
      * 
      * @return the last point of the arc
      */
 	@Override
     public Point2D firstPoint() {
         if (!Double.isInfinite(t0))
-            return new Point2D(x0+t0*dx, y0+t0*dy);
+			return new Point2D(x0 + t0 * dx, y0 + t0 * dy);
         else
             throw new UnboundedShape2DException(this);
     }
 
     /**
      * Return the last point of the edge. In the case of a line, or a ray ending
-     * at infinity, returns Point2D.INFINITY_POINT.
+     * at infinity, throws an UnboundedShape2DException.
      * 
      * @return the last point of the arc
      */
 	@Override
     public Point2D lastPoint() {
         if (!Double.isInfinite(t1))
-            return new Point2D(x0+t1*dx, y0+t1*dy);
+			return new Point2D(x0 + t1 * dx, y0 + t1 * dy);
         else
             throw new UnboundedShape2DException(this);
     }
 
 	@Override
     public Collection<Point2D> singularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
-        if (t0!=Double.NEGATIVE_INFINITY)
-            list.add(this.firstPoint());
-        if (t1!=Double.POSITIVE_INFINITY)
-            list.add(this.lastPoint());
-        return list;
+		ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+		if (t0 != Double.NEGATIVE_INFINITY)
+			list.add(this.firstPoint());
+		if (t1 != Double.POSITIVE_INFINITY)
+			list.add(this.lastPoint());
+		return list;
     }
 
 	@Override
@@ -304,18 +279,14 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods of Shape2D interface
 
-    /** return true if both t0 and t1 are different from infinity. */
+    /** Returns true if both t0 and t1 are different from infinity. */
     public boolean isBounded() {
-        if (t1==Double.POSITIVE_INFINITY)
-            return false;
-        if (t0==Double.NEGATIVE_INFINITY)
-            return false;
-        return true;
+    	return t0 != Double.NEGATIVE_INFINITY && t1 != Double.POSITIVE_INFINITY;
     }
 
     public Box2D boundingBox() {
-        return new Box2D(x0+t0*dx, x0+t1*dx, y0+t0*dy, y0+t1*dy);
-    }
+		return new Box2D(x0 + t0 * dx, x0 + t1 * dx, y0 + t0 * dy, y0 + t1 * dy);
+  }
 
     // ===================================================================
     // methods of Shape interface
@@ -332,10 +303,10 @@ implements SmoothOrientedCurve2D, Cloneable {
         // compute position on the line
         double t = positionOnLine(xp, yp);
 
-        if (t-t0<-ACCURACY)
-            return false;
-        if (t-t1>ACCURACY)
-            return false;
+		if (t - t0 < -ACCURACY)
+			return false;
+		if (t - t1 > ACCURACY)
+			return false;
 
         return true;
     }
@@ -344,9 +315,9 @@ implements SmoothOrientedCurve2D, Cloneable {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        path.moveTo((float) (x0+t0*dx), (float) (y0+t0*dy));
-        path.lineTo((float) (x0+t1*dx), (float) (y0+t1*dy));
-        return path;
+		path.moveTo((float) (x0 + t0 * dx), (float) (y0 + t0 * dy));
+		path.lineTo((float) (x0 + t1 * dx), (float) (y0 + t1 * dy));
+   return path;
     }
 
     /**
@@ -370,11 +341,11 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public LineArc2D transform(AffineTransform2D trans) {
-        double[] tab = trans.coefficients();
-        double x1 = x0*tab[0]+y0*tab[1]+tab[2];
-        double y1 = x0*tab[3]+y0*tab[4]+tab[5];
-        return new LineArc2D(x1, y1, dx*tab[0]+dy*tab[1], dx*tab[3]+dy*tab[4],
-                t0, t1);
+		double[] tab = trans.coefficients();
+		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
+		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
+		return new LineArc2D(x1, y1, 
+				dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4], t0, t1);
     }
 
     @Override
@@ -391,119 +362,68 @@ implements SmoothOrientedCurve2D, Cloneable {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
     public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
+    	if (this == obj)
     		return true;
     	
         if (!(obj instanceof LineArc2D))
             return false;
-        LineArc2D arc = (LineArc2D) obj;
+        LineArc2D that = (LineArc2D) obj;
 
-        // First check if two arcs lie on the same line
-        if (!this.isColinear(arc))
-            return false;
+        // Compare each field
+		if (!almostEquals(this.x0, that.x0, eps)) 
+			return false;
+		if (!almostEquals(this.y0, that.y0, eps)) 
+			return false;
+		if (!almostEquals(this.dx, that.dx, eps)) 
+			return false;
+		if (!almostEquals(this.dy, that.dy, eps)) 
+			return false;
+		if (!almostEquals(this.t0, that.t0, eps)) 
+			return false;
+		if (!almostEquals(this.t1, that.t1, eps)) 
+			return false;
 
-        // Check limits for straight lines
-        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY) {
-            // Check limits
-            if (arc.t0!=Double.NEGATIVE_INFINITY)
-                return false;
-            if (arc.t1!=Double.POSITIVE_INFINITY)
-                return false;
-            return true;
-        }
-
-        // Check limits for rays
-        if (t0==Double.NEGATIVE_INFINITY) {
-            // Check limits
-            if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint2().distance(arc.getPoint2())<eps;
-            if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint2().distance(arc.getPoint1())<eps;
-            return false;
-        }
-        if (t1==Double.POSITIVE_INFINITY) {
-            // Check limits
-            if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint1().distance(arc.getPoint2())<eps;
-            if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint1().distance(arc.getPoint1())<eps;
-            return false;
-        }
-
-        // current line arc is neither a line nor an arc, check that arc is an
-        // edge
-        if (arc.t0==Double.NEGATIVE_INFINITY||arc.t0==Double.POSITIVE_INFINITY)
-            return false;
-        if (arc.t1==Double.NEGATIVE_INFINITY||arc.t1==Double.POSITIVE_INFINITY)
-            return false;
-
-        // We still have to test the case of edges
-        if (getPoint1().distance(arc.getPoint1())<eps)
-            return getPoint2().distance(arc.getPoint2())<eps;
-
-        if (getPoint1().distance(arc.getPoint2())>eps)
-            return false;
-        if (getPoint2().distance(arc.getPoint1())>eps)
-            return false;
-        return true;
+		return true;
     }
 
+    /**
+     * Compares two double values with a given accuracy, with correct result
+     * for infinite values. Undefined results for NaNs.
+     */
+    private static boolean almostEquals(double d1, double d2, double eps) {
+		if (d1 == Double.POSITIVE_INFINITY && d2 == Double.POSITIVE_INFINITY)
+    		return true;
+		if (d1 == Double.NEGATIVE_INFINITY && d2 == Double.NEGATIVE_INFINITY)
+    		return true;
+		
+		return Math.abs(d1 - d2) < eps;
+    }    
+    
     // ===================================================================
     // methods of Object interface
 
     @Override
     public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
         if (!(obj instanceof LineArc2D))
             return false;
-        LineArc2D arc = (LineArc2D) obj;
+        LineArc2D that = (LineArc2D) obj;
 
-        // First check if two arcs lie on the same line
-        if (!this.isColinear(arc))
-            return false;
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x0, that.x0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.y0, that.y0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.dx, that.dx)) 
+			return false;
+		if (!EqualUtils.areEqual(this.dy, that.dy)) 
+			return false;
+		if (!EqualUtils.areEqual(this.t0, that.t0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.t1, that.t1)) 
+			return false;
 
-        // Check limits for straight lines
-        if (t0==Double.NEGATIVE_INFINITY&&t1==Double.POSITIVE_INFINITY) {
-            // Check limits
-            if (arc.t0!=Double.NEGATIVE_INFINITY)
-                return false;
-            if (arc.t1!=Double.POSITIVE_INFINITY)
-                return false;
-            return true;
-        }
-
-        // Check limits for rays
-        if (t0==Double.NEGATIVE_INFINITY) {
-            // Check limits
-            if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint2().distance(arc.getPoint2())<Shape2D.ACCURACY;
-            if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint2().distance(arc.getPoint1())<Shape2D.ACCURACY;
-            return false;
-        }
-        if (t1==Double.POSITIVE_INFINITY) {
-            // Check limits
-            if (arc.t0==Double.NEGATIVE_INFINITY)
-                return this.getPoint1().distance(arc.getPoint2())<Shape2D.ACCURACY;
-            if (arc.t1==Double.POSITIVE_INFINITY)
-                return this.getPoint1().distance(arc.getPoint1())<Shape2D.ACCURACY;
-            return false;
-        }
-
-        // current line arc is neither a line nor an arc, check that arc is an
-        // edge
-        if (arc.t0==Double.NEGATIVE_INFINITY||arc.t0==Double.POSITIVE_INFINITY)
-            return false;
-        if (arc.t1==Double.NEGATIVE_INFINITY||arc.t1==Double.POSITIVE_INFINITY)
-            return false;
-
-        // We still have to test the case of edges
-        if (getPoint1().distance(arc.getPoint1())<ACCURACY)
-            return getPoint2().distance(arc.getPoint2())<ACCURACY;
-
-        if (getPoint1().distance(arc.getPoint2())>ACCURACY)
-            return false;
-        if (getPoint2().distance(arc.getPoint1())>ACCURACY)
-            return false;
         return true;
     }
     

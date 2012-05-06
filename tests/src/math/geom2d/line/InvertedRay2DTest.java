@@ -138,7 +138,7 @@ public class InvertedRay2DTest extends TestCase {
 		Ray2D inv1 = new Ray2D(2, 2, -1, 0);
 
 		Curve2D inverted = ray1.reverse();
-		assertTrue(inverted.equals(inv1));
+		assertTrue(inverted.almostEquals(inv1, Shape2D.ACCURACY));
 		
 	}
 	

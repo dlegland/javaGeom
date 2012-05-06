@@ -25,7 +25,6 @@
 
 package math.geom2d.line;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.*;
@@ -33,11 +32,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
-import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.*;
 import math.geom2d.transform.CircleInversion2D;
 
 // Imports
@@ -104,11 +99,11 @@ implements LinearElement2D, Cloneable {
         Point2D e2p1 = line2.firstPoint();
         Point2D e2p2 = line2.lastPoint();
 
-        boolean b1 = Point2D.ccw(e1p1, e1p2, e2p1)
-                *Point2D.ccw(e1p1, e1p2, e2p2)<=0;
-        boolean b2 = Point2D.ccw(e2p1, e2p2, e1p1)
-                *Point2D.ccw(e2p1, e2p2, e1p2)<=0;
-        return b1&&b2;
+		boolean b1 = Point2D.ccw(e1p1, e1p2, e2p1)
+				* Point2D.ccw(e1p1, e1p2, e2p2) <= 0;
+		boolean b2 = Point2D.ccw(e2p1, e2p2, e1p1)
+				* Point2D.ccw(e2p1, e2p2, e1p2) <= 0;
+		return b1 && b2;
     }
 
     // ===================================================================
@@ -232,10 +227,10 @@ implements LinearElement2D, Cloneable {
 		double y0 = getY1();
 		double dx = getX2()-x0;
 		double dy = getY2()-y0;
-        double dd = Math.sqrt(dx*dx+dy*dy);
-        return new Line2D(
-        		x0+dy*d/dd, y0-dx*d/dd, 
-        		x0+dx+dy*d/dd, y0+dy-dx*d/dd);
+        double d2 = d / Math.hypot(dx, dy);
+		return new Line2D(
+				x0 + dy * d2, y0 - dx * d2, 
+				x0 + dx + dy * d2, y0 + dy - dx * d2);
 	}
 
 	/* (non-Javadoc)
@@ -249,18 +244,18 @@ implements LinearElement2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
 	public double length(double pos) {
-		double dx = p2.getX()-p1.getX();
-		double dy = p2.getY()-p1.getY();
-		return pos*Math.hypot(dx, dy);
+		double dx = p2.getX() - p1.getX();
+		double dy = p2.getY() - p1.getY();
+		return pos * Math.hypot(dx, dy);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
 	public double position(double length) {
-		double dx = p2.getX()-p1.getX();
-		double dy = p2.getY()-p1.getY();
-		return length/Math.hypot(dx, dy);
+		double dx = p2.getX() - p1.getX();
+		double dy = p2.getY() - p1.getY();
+		return length / Math.hypot(dx, dy);
 	}
 
 	/* (non-Javadoc)
@@ -277,7 +272,7 @@ implements LinearElement2D, Cloneable {
         
         // Degenerate case of a line passing through the center.
         // returns the line itself.
-        if (Math.abs(d)<Shape2D.ACCURACY){
+        if (Math.abs(d) < Shape2D.ACCURACY){
         	Point2D p1 = this.firstPoint().transform(inv);
         	Point2D p2 = this.lastPoint().transform(inv);
         	return new LineSegment2D(p1, p2);
@@ -287,7 +282,7 @@ implements LinearElement2D, Cloneable {
         double angle = Angle2D.horizontalAngle(center, po);
 
         // center of transformed circle
-        double r2 	= r*r/d/2;
+        double r2 	= r * r / d / 2;
         Point2D c2 	= Point2D.createPolar(center, r2, angle);
 
         // choose direction of circle arc
@@ -378,9 +373,7 @@ implements LinearElement2D, Cloneable {
      */
     @Override
 	public Collection<? extends Line2D> smoothPieces() {
-        ArrayList<Line2D> array = new ArrayList<Line2D>(1);
-        array.add(this);
-        return array;
+    	return wrapCurve(this);
     }
 
     /**
@@ -409,9 +402,9 @@ implements LinearElement2D, Cloneable {
         Point2D proj = support.projectedPoint(x, y);
         if (contains(proj))
             return proj.distance(x, y);
-        double d1 = Math.hypot(p1.getX()-x, p1.getY()-y);
-        double d2 = Math.hypot(p2.getX()-x, p2.getY()-y);
-        // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
+		double d1 = Math.hypot(p1.getX() - x, p1.getY() - y);
+		double d2 = Math.hypot(p2.getX() - x, p2.getY() - y);
+    // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
         return Math.min(d1, d2);
     }
 
@@ -509,13 +502,10 @@ implements LinearElement2D, Cloneable {
     }
 
     public Point2D point(double t) {
-        if (t<0)
-            return null;
-        if (t>1)
-            return null;
-        double x = p1.getX()*(1-t) + p2.getX()*t;
-        double y = p1.getY()*(1-t) + p2.getY()*t;
-        return new Point2D(x, y);
+    	t = Math.min(Math.max(t, 0), 1);
+		double x = p1.getX() * (1 - t) + p2.getX() * t;
+		double y = p1.getY() * (1 - t) + p2.getY() * t;
+		return new Point2D(x, y);
     }
 
     /**
@@ -679,7 +669,8 @@ implements LinearElement2D, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-        // check class
+		if (this == obj)
+			return true;
         if(!(obj instanceof Line2D))
             return false;
         
