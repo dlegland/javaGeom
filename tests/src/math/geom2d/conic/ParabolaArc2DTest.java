@@ -35,7 +35,7 @@ import math.geom2d.curve.Curve2D;
 import math.geom2d.curve.Curve2DUtils;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.Polyline2D;
+import math.geom2d.polygon.LinearCurve2D;
 
 public class ParabolaArc2DTest extends TestCase {
 
@@ -119,8 +119,8 @@ public class ParabolaArc2DTest extends TestCase {
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 		ParabolaArc2D parabolaArc = new ParabolaArc2D(parabola, -10, 10);
 		
-		Polyline2D polyline = parabolaArc.asPolyline(4);
-		assertTrue(polyline.getPointArray().length==5);
+		LinearCurve2D polyline = parabolaArc.asPolyline(4);
+		assertTrue(polyline.vertexArray().length==5);
 	}
 	
 	public void testContainsPoint2D(){

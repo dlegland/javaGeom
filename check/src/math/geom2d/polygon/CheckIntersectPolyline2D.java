@@ -22,7 +22,7 @@ public class CheckIntersectPolyline2D extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	Polyline2D polyline1;
-	Polyline2D polyline2;
+	LinearRing2D polyline2;
 	
 	Collection<Point2D> points;
 

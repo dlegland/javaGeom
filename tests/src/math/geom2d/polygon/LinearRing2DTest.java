@@ -294,7 +294,7 @@ public class LinearRing2DTest extends TestCase {
 				new Point2D(0, 5)
 		});
 		
-		CurveSet2D<? extends Polyline2D> clipped = polyline1.clip(box);
+		CurveSet2D<? extends LinearCurve2D> clipped = polyline1.clip(box);
 		assertTrue(clipped.size()==1);
 		assertTrue(clipped.firstCurve().equals(line1));
 		

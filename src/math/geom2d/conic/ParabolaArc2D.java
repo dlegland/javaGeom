@@ -37,6 +37,7 @@ import math.geom2d.curve.*;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polyline2D;
 import math.utils.EqualUtils;
 
 /**
@@ -174,7 +175,24 @@ implements SmoothOrientedCurve2D, Cloneable {
         return false;
     }
 
-    // ====================================================================
+	public Polyline2D asPolyline(int n) {
+		// Check that the curve is bounded
+        if (!this.isBounded())
+            throw new UnboundedShape2DException(this);
+
+        // compute start and increment values
+        double t0 = this.getT0();
+        double dt = (this.getT1() - t0) / n;
+
+        // allocate array of points, and compute each value.
+        Point2D[] points = new Point2D[n+1];
+        for(int i = 0; i < n+1;i++)
+        	points[i] = this.point(t0 + i*dt);
+
+        return new Polyline2D(points);
+	}
+
+	// ====================================================================
     // methods implementing the Curve2D interface
 
     /**
