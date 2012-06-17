@@ -31,7 +31,7 @@ import java.util.*;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Vector2D;
-import math.geom2d.polygon.Polyline2D;
+import math.geom2d.polygon.LinearCurve2D;
 
 /**
  * Interface for all curves which can be drawn with one stroke. This includes
@@ -74,12 +74,13 @@ public interface ContinuousCurve2D extends Curve2D {
     /**
      * Returns an approximation of the curve as a polyline with <code>n</code>
      * line segments. If the curve is closed, the method should return an
-     * instance of Ring2D.
+     * instance of LinearRing2D. Otherwise, it returns an instance of
+     * Polyline2D.
      * 
      * @param n the number of line segments
      * @return a polyline with <code>n</code> line segments.
      */
-    public abstract Polyline2D asPolyline(int n);
+    public abstract LinearCurve2D asPolyline(int n);
 
     /**
      * Append the path of the curve to the given path.

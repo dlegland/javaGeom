@@ -31,14 +31,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
+import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
-import math.geom2d.circulinear.CirculinearElement2D;
-import math.geom2d.circulinear.CirculinearRing2D;
-import math.geom2d.circulinear.GenericCirculinearRing2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.domain.Domain2D;
-import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -53,7 +50,7 @@ import math.geom2d.transform.CircleInversion2D;
  * </p>
  * @author dlegland
  */
-public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
+public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 
     // ===================================================================
     // Static methods
@@ -166,6 +163,11 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 		return edges;
 	}
 
+    public LineSegment2D edge(int index) {
+    	int i2 = (index + 1) % vertices.size();
+    	return new LineSegment2D(vertices.get(index), vertices.get(i2));
+    }
+
     @Override
 	public LineSegment2D lastEdge() {
 		int n = vertices.size();
@@ -177,7 +179,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 	// ===================================================================
     // Methods inherited from CirculinearCurve2D
 
-	@Override
     public CirculinearRing2D parallel(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return GenericCirculinearRing2D.create(
@@ -187,7 +188,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
-	@Override
 	public CirculinearRing2D transform(CircleInversion2D inv) {
 		
 		// Create array for storing transformed arcs
@@ -207,8 +207,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 	// ===================================================================
     // Methods inherited from Boundary2D
 
-    public Domain2D domain() {
-        return new GenericDomain2D(this);
+    public CirculinearDomain2D domain() {
+        return new GenericCirculinearDomain2D(this);
     }
 
     public void fill(Graphics2D g2) {
@@ -221,30 +221,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(double, double)
-     */
-    @Override
-    public double distanceSigned(double x, double y) {
-    	double dist = this.distance(x, y);
-        return this.isInside(x, y) ? -dist : dist;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(Point2D)
-     */
-    @Override
-    public double distanceSigned(Point2D point) {
-        return distanceSigned(point.getX(), point.getY());
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
      */
-    @Override
     public double windingAngle(Point2D point) {
         int wn = Polygon2DUtils.windingNumber(this.vertices, point);
         return wn * 2 * Math.PI;
@@ -259,7 +237,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * 
      * @see math.geom2d.OrientedCurve2D#isInside(Point2D)
      */
-    @Override
     public boolean isInside(Point2D point) {
         // TODO: choose convention for points on the boundary
     	if (this.contains(point))
@@ -279,9 +256,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     // Methods inherited from interface ContinuousCurve2D
 
     /**
-     * return true, by definition.
+     * Returns true, by definition of linear ring.
      */
-    @Override
     public boolean isClosed() {
         return true;
     }
@@ -291,9 +267,8 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 
     /**
      * Returns point from position as double. Position t can be from 0 to n,
-     * with n equal to the number of vertices of the polyline.
+     * with n equal to the number of vertices of the linear ring.
      */
-    @Override
     public math.geom2d.Point2D point(double t) {
 		// format position to stay between limits
 		double t0 = this.getT0();
@@ -330,33 +305,14 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     }
 
     /**
-     * returns 0.
+     * Returns the number of points in the linear ring.
      */
-    @Override
-    public double getT0() {
-        return 0;
-    }
-
-    /**
-     * return the number of points in the polyline.
-     */
-    @Override
     public double getT1() {
         return vertices.size();
     }
 
     /**
-     * return the first point of the polyline.
-     */
-    @Override
-    public Point2D firstPoint() {
-        if (vertices.size()==0)
-            return null;
-        return vertices.get(0);
-    }
-
-    /**
-     * return the first point, as this is the same as the last point.
+     * Returns the first point, as this is the same as the last point.
      */
     @Override
 	public Point2D lastPoint() {
@@ -371,19 +327,19 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     }
 
     /**
-     * Returns the closed polyline with same points taken in reverse order. The
+     * Returns the linear ring with same points taken in reverse order. The
      * first points is still the same. Points of reverse curve are the same as
-     * the original curve (same pointers).
+     * the original curve (same references).
      */
-    @Override
-	public LinearRing2D reverse() {
+    public LinearRing2D reverse() {
 		Point2D[] points2 = new Point2D[vertices.size()];
 		int n = vertices.size();
-		if (n > 0) {
+		if (n > 0)
 			points2[0] = vertices.get(0);
-			for (int i = 1; i < n; i++)
-				points2[i] = vertices.get(n - i);
-		}
+		
+		for (int i = 1; i < n; i++)
+			points2[i] = vertices.get(n - i);
+
 		return new LinearRing2D(points2);
     }
 
@@ -391,7 +347,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * Return an instance of Polyline2D. If t1 is lower than t0, the returned
      * Polyline contains the origin of the curve.
      */
-    @Override
     public Polyline2D subCurve(double t0, double t1) {
         // code adapted from CurveSet2D
 
@@ -447,8 +402,7 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
     /**
      * Return the transformed shape, as a ClosePolyline2D.
      */
-    @Override
-	public LinearRing2D transform(AffineTransform2D trans) {
+    public LinearRing2D transform(AffineTransform2D trans) {
 		Point2D[] pts = new Point2D[vertices.size()];
 		for (int i = 0; i < vertices.size(); i++)
 			pts[i] = trans.transform(vertices.get(i));
@@ -460,7 +414,6 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
      * 
      * @see math.geom2d.ContinuousCurve2D#appendPath(java.awt.geom.GeneralPath)
      */
-    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
         if (vertices.size()<2)
@@ -481,17 +434,30 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
         return path;
     }
 
-    /**
-     * Return a general path iterator.
-     */
-    @Override
-    public java.awt.geom.GeneralPath asGeneralPath() {
-        java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (vertices.size() < 2)
-            return path;
-        return this.appendPath(path);
+
+    // ===================================================================
+	// methods implementing the GeometricObject2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+	 */
+    public boolean almostEquals(GeometricObject2D obj, double eps) {
+    	if (this==obj)
+    		return true;
+    	
+        if (!(obj instanceof LinearRing2D))
+            return false;
+        LinearRing2D ring = (LinearRing2D) obj;
+
+        if (vertices.size() != ring.vertices.size())
+            return false;
+        
+        for (int i = 0; i < vertices.size(); i++)
+            if (!(vertices.get(i)).almostEquals(ring.vertices.get(i), eps))
+                return false;
+        return true;
     }
-    
+
     @Override
 	public boolean equals(Object object) {
 		if (!(object instanceof LinearRing2D))
@@ -506,6 +472,10 @@ public class LinearRing2D extends Polyline2D implements CirculinearRing2D {
 		return true;
     }
     
+    
+    // ===================================================================
+	// methods implementing the Object interface
+
     @Override
 	public LinearRing2D clone() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());

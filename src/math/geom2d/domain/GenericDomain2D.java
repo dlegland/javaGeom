@@ -35,10 +35,7 @@ import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.UnboundedShape2DException;
-import math.geom2d.polygon.LinearRing2D;
-import math.geom2d.polygon.MultiPolygon2D;
-import math.geom2d.polygon.Polygon2D;
-import math.geom2d.polygon.Polyline2D;
+import math.geom2d.polygon.*;
 
 /**
  * A domain defined from its boundary. The boundary curve must be correctly
@@ -90,7 +87,7 @@ public class GenericDomain2D implements Domain2D {
 	        if (!contour.isClosed())
 	        	throw new IllegalArgumentException("Can not transform open curve to linear ring");
 
-	        Polyline2D poly = contour.asPolyline(n);
+	        LinearCurve2D poly = contour.asPolyline(n);
 	        assert poly instanceof LinearRing2D : "expected result as a linear ring";
 	        
 			rings.add((LinearRing2D) poly);

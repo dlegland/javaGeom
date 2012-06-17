@@ -16,10 +16,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.ShapeArray2D;
 import math.geom2d.UnboundedShape2DException;
-import math.geom2d.polygon.LinearRing2D;
-import math.geom2d.polygon.MultiPolygon2D;
-import math.geom2d.polygon.Polygon2D;
-import math.geom2d.polygon.Polyline2D;
+import math.geom2d.polygon.*;
 
 
 /**
@@ -87,7 +84,7 @@ implements DomainSet2D<T> {
 		        if (!contour.isClosed())
 		        	throw new IllegalArgumentException("Can not transform open curve to linear ring");
 
-		        Polyline2D poly = contour.asPolyline(n);
+		        LinearCurve2D poly = contour.asPolyline(n);
 		        assert poly instanceof LinearRing2D : "expected result as a linear ring";
 		        
 				rings.add((LinearRing2D) poly);

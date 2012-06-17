@@ -15,12 +15,13 @@ import java.util.Collection;
 
 import math.geom2d.Point2D;
 import math.geom2d.UnboundedShape2DException;
+import math.geom2d.polygon.LinearCurve2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 
 
 /**
- * Provides a base implementation for smooth curves.
+ * Provides a base implementation for continuous curves.
  * @author dlegland
  */
 public abstract class AbstractContinuousCurve2D 
@@ -38,7 +39,7 @@ implements ContinuousCurve2D, Cloneable {
 	/* (non-Javadoc)
 	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
 	 */
-	public Polyline2D asPolyline(int n) {
+	public LinearCurve2D asPolyline(int n) {
 		// Check that the curve is bounded
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);

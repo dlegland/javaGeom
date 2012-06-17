@@ -33,7 +33,7 @@ public abstract class Polyline2DUtils {
 	 * Checks if the open polyline has multiple vertices. Polyline extremities
 	 * are not tested for equality.
 	 */
-    public final static boolean hasMultipleVertices(Polyline2D polyline) {
+    public final static boolean hasMultipleVertices(LinearCurve2D polyline) {
     	return hasMultipleVertices(polyline, false);
     }
     
@@ -41,7 +41,7 @@ public abstract class Polyline2DUtils {
 	 * Checks if the input polyline has multiple vertices. Extremities are
 	 * tested if the polyline is closed (second argument is true).
 	 */
-    public final static boolean hasMultipleVertices(Polyline2D polyline, 
+    public final static boolean hasMultipleVertices(LinearCurve2D polyline, 
     		boolean closed) {
     	// Test vertices within polyline
     	if(PointSet2DUtils.hasAdjacentMultipleVertices(polyline.vertices))
@@ -70,7 +70,7 @@ public abstract class Polyline2DUtils {
      */
     @Deprecated
     public static PolyOrientedCurve2D<SmoothOrientedCurve2D> 
-    createParallel(Polyline2D polyline, double d) {
+    createParallel(LinearCurve2D polyline, double d) {
 
         // Collection of parallel curves
         PolyOrientedCurve2D<SmoothOrientedCurve2D> result = 
@@ -355,7 +355,7 @@ public abstract class Polyline2DUtils {
      * @return the set of intersection points
      */
     public static Collection<Point2D> intersect(
-            Polyline2D poly1, Polyline2D poly2) {
+    		LinearCurve2D poly1, LinearCurve2D poly2) {
     	// array for storing intersections
         ArrayList<Point2D> points = new ArrayList<Point2D>();
         
