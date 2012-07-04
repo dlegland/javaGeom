@@ -152,53 +152,7 @@ public class Rectangle2D implements Polygon2D {
     
     
     // ===================================================================
-    // mutators
-
-    /**
-     * Apply the characteristics of the given Rectangle to this object.
-     * @deprecated simple shapes should be immutable (0.9.1)
-     */
-    @Deprecated
-    public void setRectangle(Rectangle2D rect) {
-        this.x0 = rect.x0;
-        this.y0 = rect.y0;
-        this.w = rect.w;
-        this.h = rect.h;
-        this.theta = rect.theta;
-    }
-
-    /**
-     * Apply the characteristics of the given Rectangle to this object.
-     * @deprecated simple shapes should be immutable (0.9.1)
-     */
-    @Deprecated
-    public void setRectangle(java.awt.geom.Rectangle2D rect) {
-        this.x0 = rect.getX();
-        this.y0 = rect.getY();
-        this.w = rect.getWidth();
-        this.h = rect.getHeight();
-        this.theta = 0;
-    }
-
-    /**
-     * Apply the characteristics of the given Rectangle to this object.
-     * @deprecated simple shapes should be immutable (0.9.1)
-     */
-    @Deprecated
-    public void setRectangle(double x, double y, double width, double height,
-            double theta) {
-        this.x0 = x;
-        this.y0 = y;
-        this.w = width;
-        this.h = height;
-        this.theta = theta;
-    }
-
-    // ===================================================================
-    // methods inherited from interface AbstractPolygon2D
-
-    // ===================================================================
-	// methods inherited from interface AbstractPolygon2D
+	// methods inherited from interface Polygon2D
 	
 	/**
 	 * Returns the vertices of the rectangle as a collection of points.
@@ -279,23 +233,13 @@ public class Rectangle2D implements Polygon2D {
         return rings;
     }
 
-    // Centroid and area
-    /**
-     * Computes area of the polygon, by returning the absolute value of the
-     * signed area.
-     * @since 0.9.1
-     */
-    public double area() {
-        return Math.abs(this.areaSigned());
-    }
-
     /**
      * Computes the signed area of the polygon. 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double areaSigned() {
-    	return Polygon2DUtils.computeSignedArea(this);
+    public double area() {
+    	return Polygon2DUtils.computeArea(this);
     }
 
     /**

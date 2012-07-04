@@ -142,7 +142,7 @@ public final class Polygon2DUtils {
     	Point2D centroid;
     	
     	for (LinearRing2D ring : polygon.rings()) {
-    		area = computeSignedArea(ring);
+    		area = computeArea(ring);
     		centroid = computeCentroid(ring);
     		xc += centroid.getX() * area;
     		yc += centroid.getY() * area;
@@ -187,7 +187,7 @@ public final class Polygon2DUtils {
             yp = y;
         }
         
-        double denom = computeSignedArea(ring) * 6;
+        double denom = computeArea(ring) * 6;
         return new Point2D(xc / denom, yc / denom);
 	}
 
@@ -202,15 +202,10 @@ public final class Polygon2DUtils {
      * @return the signed area of the polygon.
 	 * @since 0.9.1
      */
-    public final static double computeSignedArea(Polygon2D polygon) {
-    	if (polygon instanceof SimplePolygon2D) {
-    		LinearRing2D ring = ((SimplePolygon2D) polygon).getRing();
-    		return computeSignedArea(ring);
-    	}
-    	
+    public final static double computeArea(Polygon2D polygon) {
     	double area = 0;
     	for (LinearRing2D ring : polygon.rings()) {
-    		area += computeSignedArea(ring);
+    		area += computeArea(ring);
     	}
     	return area;
     }
@@ -225,7 +220,7 @@ public final class Polygon2DUtils {
      * @return the signed area of the polygon.
 	 * @since 0.9.1
      */
-    public final static double computeSignedArea(LinearRing2D ring) {
+    public final static double computeArea(LinearRing2D ring) {
         double area = 0;
         
         // number of vertices
@@ -451,7 +446,7 @@ public final class Polygon2DUtils {
     	
     	// if the result is single, create a SimplePolygon
     	if (n == 1) {
-    		Point2D[] points = extractPolyVertices(poly.getInnerPoly(0));
+    		Point2D[] points = extractVertices(poly.getInnerPoly(0));
     		return SimplePolygon2D.create(points);
     	}
     	
@@ -466,10 +461,10 @@ public final class Polygon2DUtils {
     
     private final static LinearRing2D convertFromGpcjSimplePolygon(
     		Poly poly) {
-    	return LinearRing2D.create(extractPolyVertices(poly));
+    	return LinearRing2D.create(extractVertices(poly));
     }
     
-    private final static Point2D[] extractPolyVertices(Poly poly) {
+    private final static Point2D[] extractVertices(Poly poly) {
     	int n = poly.getNumPoints();
     	Point2D[] points = new Point2D[n];
     	for (int i = 0; i < n; i++)
