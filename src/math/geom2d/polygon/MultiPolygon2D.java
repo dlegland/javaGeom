@@ -126,23 +126,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return rings.size();
     }
 
-    // Centroid and area
-    /**
-     * Computes area of the polygon, by returning the absolute value of the
-     * signed area.
-     * @since 0.9.1
-     */
-    public double area() {
-        return Math.abs(this.areaSigned());
-    }
-
     /**
      * Computes the signed area of the polygon. 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double areaSigned() {
-    	return Polygon2DUtils.computeSignedArea(this);
+    public double area() {
+    	return Polygon2DUtils.computeArea(this);
     }
 
     /**
@@ -345,7 +335,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         for (LinearRing2D ring : this.rings)
             angle += ring.windingAngle(point);
       
-        double area = this.areaSigned();
+        double area = this.area();
     	if (area > 0) {
     		return angle > Math.PI;
     	} else {
@@ -381,11 +371,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         MultiPolygon2D polygon = (MultiPolygon2D) obj;
 
         // check if the two objects have same number of rings
-        if (polygon.rings.size()!=this.rings.size()) 
+        if (polygon.rings.size() != this.rings.size()) 
             return false;
         
         // check each couple of ring
-        for (int i=0; i < rings.size(); i++)
+        for (int i = 0; i < rings.size(); i++)
             if(!this.rings.get(i).almostEquals(polygon.rings.get(i), eps))
                 return false;
         

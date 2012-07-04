@@ -69,7 +69,7 @@ public class SimplePolygon2DTest extends TestCase {
 		SimplePolygon2D poly = new SimplePolygon2D(points);
 		
 		SimplePolygon2D poly2 = poly.complement();
-		assertEquals(poly2.areaSigned(), -poly.areaSigned());
+		assertEquals(poly2.area(), -poly.area());
 	}
 	
 	public void testTransform_Inversion(){

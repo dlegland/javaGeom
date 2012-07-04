@@ -149,23 +149,13 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return rings;
     }
 
-    // Centroid and area
-    /**
-     * Computes area of the polygon, by returning the absolute value of the
-     * signed area.
-     * @since 0.9.1
-     */
-    public double area() {
-        return Math.abs(this.areaSigned());
-    }
-
     /**
      * Computes the signed area of the polygon. 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
-    public double areaSigned() {
-    	return Polygon2DUtils.computeSignedArea(this);
+    public double area() {
+    	return Polygon2DUtils.computeArea(this);
     }
 
     /**

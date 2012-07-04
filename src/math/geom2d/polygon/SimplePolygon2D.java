@@ -218,14 +218,6 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Polygon2D interface
 
     /**
-     * Computes area of the polygon, by returning the absolute value of the
-     * signed area.
-     */
-    public double area() {
-        return Math.abs(this.areaSigned());
-    }
-
-    /**
      * Computes the signed area of the polygon. Algorithm is taken from page: <a
      * href="http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/">
      * http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/</a>. Signed are
@@ -234,8 +226,8 @@ public class SimplePolygon2D implements Polygon2D {
      * 
      * @return the signed area of the polygon.
      */
-    public double areaSigned() {
-    	return Polygon2DUtils.computeSignedArea(this);
+    public double area() {
+    	return Polygon2DUtils.computeArea(this);
     }
 
     /**
@@ -446,7 +438,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns true if polygon is oriented counter-clockwise, false otherwise.
      */
     public boolean isBounded() {
-        return this.areaSigned()>0;
+        return this.area()>0;
     }
 
     public boolean isEmpty() {
@@ -495,7 +487,7 @@ public class SimplePolygon2D implements Polygon2D {
     	if (this.boundary().contains(x, y))
     		return true;
     	
-    	double area = this.areaSigned();
+    	double area = this.area();
     	int winding = this.getWindingNumber(x, y);
     	if (area > 0) {
     		return winding == 1;

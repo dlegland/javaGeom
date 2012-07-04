@@ -72,9 +72,16 @@ public interface Polygon2D extends CirculinearDomain2D {
      */
     public Collection<? extends LinearRing2D> rings();
 
+    /** 
+     * Returns the centroid (center of mass) of the polygon.
+     */
     public Point2D centroid();
+
+    /** 
+     * Returns the signed area of the polygon.
+     */
     public double area();
-    public double areaSigned();
+
     
     // ===================================================================
     // methods inherited from the Domain2D interface
