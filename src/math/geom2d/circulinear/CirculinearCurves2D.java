@@ -20,7 +20,7 @@ import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircularShape2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.LinearShape2D;
@@ -31,7 +31,7 @@ import math.geom2d.line.LinearShape2D;
  * @author dlegland
  * 
  */
-public class CirculinearCurve2DUtils {
+public class CirculinearCurves2D {
 
 	/**
 	 * Converts a curve to a circulinear curve, by concatenating all elements of
@@ -218,11 +218,11 @@ public class CirculinearCurve2DUtils {
 						continue;
 
 					// add the intersection if we keep it
-					dt = Curve2DUtils.toUnitSegment(elem1.position(inter),
+					dt = Curves2D.toUnitSegment(elem1.position(inter),
 							elem1.getT0(), elem1.getT1());
 					list1.add(2 * i + dt);
 
-					dt = Curve2DUtils.toUnitSegment(elem2.position(inter),
+					dt = Curves2D.toUnitSegment(elem2.position(inter),
 							elem2.getT0(), elem2.getT1());
 					list2.add(2 * j + dt);
 				}

@@ -42,7 +42,7 @@ public class CheckIntersectPolyline2D extends JPanel{
                 new Point2D(120, 200),
                 new Point2D(80, 200) });
         
-        points = Polyline2DUtils.intersect(polyline1, polyline2);
+        points = Polylines2D.intersect(polyline1, polyline2);
 	}
 	
 	public void paintComponent(Graphics g){

@@ -54,7 +54,7 @@ public class CheckFindSelfIntersections extends JPanel{
 		
 		g2.setColor(Color.BLUE);
 		for(Point2D point : 
-			CirculinearCurve2DUtils.findSelfIntersections(curve)) {
+			CirculinearCurves2D.findSelfIntersections(curve)) {
 			point.draw(g2, 3);
 		}
 	}

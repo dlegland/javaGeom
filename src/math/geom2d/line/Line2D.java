@@ -438,7 +438,7 @@ implements LinearElement2D, Cloneable {
      */
     public CurveSet2D<? extends Line2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<Line2D> result = 

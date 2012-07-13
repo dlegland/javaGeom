@@ -239,7 +239,7 @@ public class Rectangle2D implements Polygon2D {
      * @since 0.9.1
      */
     public double area() {
-    	return Polygon2DUtils.computeArea(this);
+    	return Polygons2D.computeArea(this);
     }
 
     /**
@@ -248,7 +248,7 @@ public class Rectangle2D implements Polygon2D {
      * @since 0.9.1
      */
     public Point2D centroid() {
-    	return Polygon2DUtils.computeCentroid(this);
+    	return Polygons2D.computeCentroid(this);
     }
     
     // ===================================================================
@@ -357,7 +357,7 @@ public class Rectangle2D implements Polygon2D {
      * Return the clipped polygon.
      */
     public Polygon2D clip(Box2D box) {
-    	return Polygon2DUtils.clipPolygon(this, box);
+    	return Polygons2D.clipPolygon(this, box);
     }
 
     /**

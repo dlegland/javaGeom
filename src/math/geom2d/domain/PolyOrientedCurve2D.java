@@ -36,7 +36,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
@@ -224,8 +224,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         }
         
         // Extract curvatures of both curves around singular point
-        SmoothCurve2D smoothPrev = Curve2DUtils.getLastSmoothCurve(prev);
-        SmoothCurve2D smoothNext = Curve2DUtils.getFirstSmoothCurve(next);
+        SmoothCurve2D smoothPrev = Curves2D.getLastSmoothCurve(prev);
+        SmoothCurve2D smoothNext = Curves2D.getFirstSmoothCurve(next);
         double kappaPrev = smoothPrev.curvature(smoothPrev.getT1());
         double kappaNext = smoothNext.curvature(smoothNext.getT0());
         
@@ -317,7 +317,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     @Override
     public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

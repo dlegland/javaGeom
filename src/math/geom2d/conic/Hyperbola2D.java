@@ -89,7 +89,7 @@ implements Conic2D, Cloneable {
         }
 
         // compute ellipse in isothetic basis
-        double[] coefs2 = Conic2DUtils.transformCentered(coefs,
+        double[] coefs2 = Conics2D.transformCentered(coefs,
                 AffineTransform2D.createRotation(-theta));
 
         // extract coefficient f if present
@@ -152,7 +152,7 @@ implements Conic2D, Cloneable {
 		double[] coefs = new double[] { A, B, C };
 
         // Compute coefficients of the transformed conic, still centered
-        double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
+        double[] coefs2 = Conics2D.transformCentered(coefs, trans);
 
         // reduce conic coefficients to an hyperbola
         return Hyperbola2D.reduceCentered(coefs2);

@@ -20,10 +20,10 @@ import junit.framework.TestCase;
  * @author dlegland
  *
  */
-public class Polygon2DUtilsTest extends TestCase {
+public class Polygons2DTest extends TestCase {
 
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testUnion_Intersecting() {
         // points of the first polygon
@@ -41,7 +41,7 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(12, union.vertexNumber());
     }
@@ -62,7 +62,7 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(4, union.vertexNumber());
         //assertTrue(union.getBoundary().equals(poly1.getBoundary()));
@@ -84,7 +84,7 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(union.vertexNumber(), 4);
         //assertTrue(union.getBoundary().equals(poly2.getBoundary()));
@@ -106,13 +106,13 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(union.vertexNumber(), 8);
     }
 
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testUnion_TwoConcentricRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
@@ -145,13 +145,13 @@ public class Polygon2DUtilsTest extends TestCase {
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(16, union.vertexNumber());
     }
 
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testUnion_TwoIntersectingRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
@@ -184,7 +184,7 @@ public class Polygon2DUtilsTest extends TestCase {
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
        
-        Polygon2D union = Polygon2DUtils.union(poly1, poly2);
+        Polygon2D union = Polygons2D.union(poly1, poly2);
         assertNotNull(union);
         assertEquals(24, union.vertexNumber());
         
@@ -192,7 +192,7 @@ public class Polygon2DUtilsTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testIntersection_Intersecting() {
         // points of the first polygon
@@ -210,13 +210,13 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
+        Polygon2D inter = Polygons2D.intersection(poly1, poly2);
         assertNotNull(inter);
         assertEquals(4, inter.vertexNumber());
     }
     
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testIntersection_Disjoint() {
         // points of the first polygon
@@ -234,13 +234,13 @@ public class Polygon2DUtilsTest extends TestCase {
         Polygon2D poly2 = new SimplePolygon2D(new Point2D[]{
                 pb1, pb2, pb3, pb4});
        
-        Polygon2D inter = Polygon2DUtils.intersection(poly1, poly2);
+        Polygon2D inter = Polygons2D.intersection(poly1, poly2);
         assertNotNull(inter);
         assertEquals(0, inter.vertexNumber());
     }
     
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testIntersection_TwoConcentricRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
@@ -273,13 +273,13 @@ public class Polygon2DUtilsTest extends TestCase {
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
        
-        Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
+        Polygon2D union = Polygons2D.intersection(poly1, poly2);
         assertNotNull(union);
         assertEquals(0, union.vertexNumber());
     }
 
     /**
-     * Test method for {@link math.geom2d.polygon.Polygon2DUtils#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
+     * Test method for {@link math.geom2d.polygon.Polygons2D#union(math.geom2d.polygon.Polygon2D, math.geom2d.polygon.Polygon2D)}.
      */
     public void testIntersection_TwoIntersectingRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
@@ -312,7 +312,7 @@ public class Polygon2DUtilsTest extends TestCase {
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
        
-        Polygon2D union = Polygon2DUtils.intersection(poly1, poly2);
+        Polygon2D union = Polygons2D.intersection(poly1, poly2);
         assertNotNull(union);
         assertEquals(8, union.vertexNumber());
         
@@ -341,7 +341,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         // compute difference
-        Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
+        Polygon2D diff = Polygons2D.difference(poly1, poly2);
         assertNotNull(diff);
         assertEquals(6, diff.vertexNumber());
         
@@ -377,7 +377,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
     	
         // compute difference
-        Polygon2D diff = Polygon2DUtils.difference(poly1, poly2);
+        Polygon2D diff = Polygons2D.difference(poly1, poly2);
         assertNotNull(diff);
         assertEquals(8, diff.vertexNumber());
         
@@ -416,7 +416,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         // compute exclusive or
-        Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
+        Polygon2D xor = Polygons2D.exclusiveOr(poly1, poly2);
         assertNotNull(xor);
         assertEquals(12, xor.vertexNumber());
         
@@ -450,7 +450,7 @@ public class Polygon2DUtilsTest extends TestCase {
                 pb1, pb2, pb3, pb4});
        
         // compute exclusive or
-        Polygon2D xor = Polygon2DUtils.exclusiveOr(poly1, poly2);
+        Polygon2D xor = Polygons2D.exclusiveOr(poly1, poly2);
         assertNotNull(xor);
         assertEquals(8, xor.vertexNumber());
         
@@ -482,7 +482,7 @@ public class Polygon2DUtilsTest extends TestCase {
     	Polygon2D polygon = new MultiPolygon2D(
     			new LinearRing2D[]{ring1, ring2});
     	
-    	Domain2D domain = Polygon2DUtils.createBuffer(polygon, 30);
+    	Domain2D domain = Polygons2D.createBuffer(polygon, 30);
     	assertNotNull(domain);
     	Boundary2D boundary = domain.boundary();
     	assertNotNull(boundary);

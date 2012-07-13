@@ -19,7 +19,7 @@ import math.geom2d.Shape2D;
  * @author dlegland
  *
  */
-public class CirculinearDomain2DUtils {
+public class CirculinearDomains2D {
 	
 	public final static CirculinearDomain2D computeBuffer(
 			CirculinearDomain2D domain, double dist) {
@@ -32,7 +32,7 @@ public class CirculinearDomain2DUtils {
 			domain.boundary().continuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
 			for(CirculinearContinuousCurve2D simpleCurve : 
-				CirculinearCurve2DUtils.splitContinuousCurve(contour)) {
+				CirculinearCurves2D.splitContinuousCurve(contour)) {
 				CirculinearContour2D boundary = 
 					new BoundaryPolyCirculinearCurve2D<CirculinearContinuousCurve2D>(
 							simpleCurve.smoothPieces(), contour.isClosed());
@@ -67,8 +67,8 @@ public class CirculinearDomain2DUtils {
 		
 		// select only curve parts which do not cross original curve
 		for(CirculinearContinuousCurve2D split : 
-				CirculinearCurve2DUtils.splitContinuousCurve(parallel1)) {
-			if(CirculinearCurve2DUtils.findIntersections(curve, split).size()==0)
+				CirculinearCurves2D.splitContinuousCurve(parallel1)) {
+			if(CirculinearCurves2D.findIntersections(curve, split).size()==0)
 				curves.add(split);
 		}
 		
@@ -87,12 +87,12 @@ public class CirculinearDomain2DUtils {
 		for(CirculinearContour2D ring : rings)
 			// split rings into curves which do not self-intersect
 			for(CirculinearContinuousCurve2D split : 
-				CirculinearCurve2DUtils.splitContinuousCurve(ring)) {
+				CirculinearCurves2D.splitContinuousCurve(ring)) {
 				
 				// compute distance to original curve
 				// (assuming it is sufficient to compute distance to vertices
 				// of the reference curve).
-				double dist = CirculinearCurve2DUtils.getDistanceCurvePoints(
+				double dist = CirculinearCurves2D.getDistanceCurvePoints(
 						curve, split.singularPoints());
 				
 				// check if distance condition is verified

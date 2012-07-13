@@ -45,7 +45,7 @@ public class CheckSplit2Circles extends JPanel{
 
 		g2.setColor(Color.BLUE);
 		for(CirculinearContinuousCurve2D cont :
-			CirculinearCurve2DUtils.splitIntersectingContours(ring1, ring2)){
+			CirculinearCurves2D.splitIntersectingContours(ring1, ring2)){
 			g2.setColor(colors[i++]);
 			cont.draw(g2);
 		}

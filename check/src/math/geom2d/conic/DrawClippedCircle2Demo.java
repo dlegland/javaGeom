@@ -33,7 +33,7 @@ import math.geom2d.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.Curve2D;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtils;
+import math.geom2d.domain.Boundaries2D;
 
 
 public class DrawClippedCircle2Demo extends JPanel{
@@ -72,7 +72,7 @@ public class DrawClippedCircle2Demo extends JPanel{
 		g2.setColor(Color.RED);
 		clipped.draw(g2);
 
-		Boundary2D boundary = Boundary2DUtils.clipBoundary(circle, box);
+		Boundary2D boundary = Boundaries2D.clipBoundary(circle, box);
 		g2.setStroke(new BasicStroke(2.0f));
 		g2.setColor(Color.CYAN);
 		boundary.domain().fill(g2);

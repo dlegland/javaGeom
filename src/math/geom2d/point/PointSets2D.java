@@ -12,7 +12,7 @@ import math.geom2d.Shape2D;
  * @author dlegland
  * @since 0.9.1
  */
-public class PointSet2DUtils {
+public class PointSets2D {
 
 	/**
 	 * Tests if the given list of points contains multiple vertices. This
@@ -62,7 +62,7 @@ public class PointSet2DUtils {
      */
     public static<T extends Point2D> int countAdjacentMultipleVertices(
     		List<T> points) {
-    	return PointSet2DUtils.countAdjacentMultipleVertices(points, false);
+    	return PointSets2D.countAdjacentMultipleVertices(points, false);
     }
     
     /**

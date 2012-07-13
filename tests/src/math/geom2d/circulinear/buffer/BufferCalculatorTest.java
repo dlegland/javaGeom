@@ -12,7 +12,7 @@ import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearContour2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearCurve2D;
-import math.geom2d.circulinear.CirculinearCurve2DUtils;
+import math.geom2d.circulinear.CirculinearCurves2D;
 import math.geom2d.circulinear.CirculinearCurveArray2D;
 import math.geom2d.circulinear.CirculinearCurveSet2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
@@ -328,7 +328,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertEquals(3, parallel2.smoothPieces().size());
 
 		Collection<CirculinearContinuousCurve2D> splittedCurves = 
-			CirculinearCurve2DUtils.splitContinuousCurve(parallel2);
+			CirculinearCurves2D.splitContinuousCurve(parallel2);
 		assertEquals(2, splittedCurves.size());
 	}
 

@@ -15,7 +15,7 @@ import java.util.Collections;
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.domain.ContourArray2D;
@@ -132,14 +132,14 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
 	public double length(double pos) {
-		return CirculinearCurve2DUtils.getLength(this, pos);
+		return CirculinearCurves2D.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
 	public double position(double length) {
-		return CirculinearCurve2DUtils.getPosition(this, length);
+		return CirculinearCurves2D.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
@@ -186,7 +186,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
 	@Override
 	public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

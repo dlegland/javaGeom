@@ -35,7 +35,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
@@ -531,7 +531,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     @Override
     public CurveSet2D<CircleArc2D> clip(Box2D box) {
         // Clip he curve
-        CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
+        CurveSet2D<SmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // create a new structure for storing result
         CurveArray2D<CircleArc2D> result = 

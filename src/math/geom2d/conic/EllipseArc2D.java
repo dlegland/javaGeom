@@ -490,7 +490,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
     public CurveSet2D<? extends EllipseArc2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
+        CurveSet2D<SmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<EllipseArc2D> result = 

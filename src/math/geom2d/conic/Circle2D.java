@@ -568,7 +568,7 @@ CircularShape2D, CircleLine2D {
     public CurveSet2D<? extends CircularShape2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = 
-        	Curve2DUtils.clipSmoothCurve(this, box);
+        	Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<CircularShape2D> result = 

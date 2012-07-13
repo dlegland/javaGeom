@@ -37,7 +37,7 @@ import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 
-public class Boundary2DUtilsTest extends TestCase {
+public class Boundaries2DTest extends TestCase {
 
 
 	public void testClipBoundary_Circle2D() {
@@ -47,7 +47,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		ContourArray2D<Contour2D> boundary = 
 			new ContourArray2D<Contour2D>(circle1);		
 		ContourArray2D<Contour2D> clipped =
-			Boundary2DUtils.clipBoundary(boundary, box);
+			Boundaries2D.clipBoundary(boundary, box);
 		 
 		Collection<? extends Contour2D> curves = clipped.continuousCurves();
 		Contour2D curve = curves.iterator().next();
@@ -59,7 +59,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		CircleArc2D circlearc2 = new CircleArc2D(5, 0, 2, 0, Math.PI);
 		//BoundarySet2D boundary2 = new BoundarySet2D(circle2);		
 		ContourArray2D<Contour2D> clipped2 =
-			Boundary2DUtils.clipBoundary(circle2, box);
+			Boundaries2D.clipBoundary(circle2, box);
 		 
 		Collection<? extends Contour2D> curves2 = clipped2.continuousCurves();
 		Contour2D curve2 = curves2.iterator().next();
@@ -83,7 +83,7 @@ public class Boundary2DUtilsTest extends TestCase {
 		double L = 40;
 		double l = 10;
 		box = new Box2D(-L/2, L/2, -l/2, l/2);
-		clipped = Boundary2DUtils.clipBoundary(boundary, box);
+		clipped = Boundaries2D.clipBoundary(boundary, box);
 		curves = clipped.continuousCurves();
 		assertTrue(curves.size()==1);
 		curve = curves.iterator().next();	

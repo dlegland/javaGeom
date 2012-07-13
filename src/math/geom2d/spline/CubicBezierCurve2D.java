@@ -436,7 +436,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public CurveSet2D<? extends CubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = 
-            Curve2DUtils.clipSmoothCurve(this, box);
+            Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<CubicBezierCurve2D> result = 

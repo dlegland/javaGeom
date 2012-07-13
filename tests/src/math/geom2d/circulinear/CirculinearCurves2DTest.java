@@ -47,12 +47,12 @@ import math.geom2d.point.PointArray2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.spline.CubicBezierCurve2D;
 
-public class CirculinearCurve2DUtilsTest extends TestCase {
+public class CirculinearCurves2DTest extends TestCase {
 
 	public void testConvert_Element() {
 		CirculinearCurve2D conv;
 		LineSegment2D seg = new LineSegment2D(new Point2D(0, 10), new Point2D(10, 20));
-		conv = CirculinearCurve2DUtils.convert(seg);
+		conv = CirculinearCurves2D.convert(seg);
 		assertTrue(seg.equals(conv));
 	}
 	
@@ -66,7 +66,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		PolyCurve2D<LineSegment2D> curve = 
 			PolyCurve2D.create(new LineSegment2D[]{seg1, seg2});
 		
-		converted = CirculinearCurve2DUtils.convert(curve);
+		converted = CirculinearCurves2D.convert(curve);
 		assertTrue(converted instanceof PolyCirculinearCurve2D);
 		
 		Collection<? extends SmoothCurve2D> smoothCurves = 
@@ -89,7 +89,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			PolyCurve2D.create(new SmoothCurve2D[]{seg1, seg2, bezier});
 		
 		try {
-			CirculinearCurve2DUtils.convert(curve);
+			CirculinearCurves2D.convert(curve);
 			Assert.fail("should have thrown an exception");
 		} catch (NonCirculinearClassException ex) {
 			// should go here
@@ -108,7 +108,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		CurveArray2D<LineSegment2D> curve = 
 			CurveArray2D.create(new LineSegment2D[]{seg1, seg2});
 		
-		res = CirculinearCurve2DUtils.convert(curve);
+		res = CirculinearCurves2D.convert(curve);
 		assertTrue(res instanceof CirculinearCurveSet2D);
 		
 		Collection<? extends ContinuousCurve2D> smoothCurves = 
@@ -133,7 +133,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 			CurveArray2D.create(new SmoothCurve2D[]{seg1, seg2, bezier});
 		
 		try {
-			CirculinearCurve2DUtils.convert(curve);
+			CirculinearCurves2D.convert(curve);
 			Assert.fail("should have thrown an exception");
 		} catch (NonCirculinearClassException ex) {
 			// should go here
@@ -154,7 +154,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		
 		// split the curve
 		Collection<CirculinearContinuousCurve2D> set = 
-			CirculinearCurve2DUtils.splitContinuousCurve(curve);
+			CirculinearCurves2D.splitContinuousCurve(curve);
 		
 		// should be two parts
 		assertEquals(2, set.size());
@@ -164,7 +164,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		Circle2D circle1 = new Circle2D(0, 0, 10);
 		Circle2D circle2 = new Circle2D(10, 0, 10);
 		Collection<? extends CirculinearContour2D> contours = 
-			CirculinearCurve2DUtils.splitIntersectingContours(circle1, circle2);
+			CirculinearCurves2D.splitIntersectingContours(circle1, circle2);
 		assertEquals(contours.size(), 2);
 	}
 	
@@ -177,7 +177,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 				new Point2D(40, 30), new Point2D(10, 30) });
 		
 		Collection<CirculinearContour2D> contours = 
-			CirculinearCurve2DUtils.splitIntersectingContours(poly1, poly2);
+			CirculinearCurves2D.splitIntersectingContours(poly1, poly2);
 		assertEquals(contours.size(), 2);
 	}
 	
@@ -193,7 +193,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		rings.add(ring3);
 
 		Collection<CirculinearContour2D> result = 
-			CirculinearCurve2DUtils.splitIntersectingContours(rings);
+			CirculinearCurves2D.splitIntersectingContours(rings);
 		assertTrue(result.size()==3);
 	}
 	
@@ -221,7 +221,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		
 		Collection<StraightLine2D> curves = set.curves();
 		Collection<CirculinearContour2D> contours = 
-			CirculinearCurve2DUtils.splitIntersectingContours(curves);
+			CirculinearCurves2D.splitIntersectingContours(curves);
 		assertEquals(5, contours.size());
 	}
 
@@ -237,7 +237,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		
 		// detection of intersections
 		Collection<Point2D> points = 
-			CirculinearCurve2DUtils.findSelfIntersections(line);
+			CirculinearCurves2D.findSelfIntersections(line);
 
 		assertEquals(points.size(), 1);
 		
@@ -264,7 +264,7 @@ public class CirculinearCurve2DUtilsTest extends TestCase {
 		// computes the positive parallel
 		CirculinearContinuousCurve2D parallel = curve.parallel(10);
 		Collection<CirculinearContinuousCurve2D> splittedCurves =
-			CirculinearCurve2DUtils.splitContinuousCurve(parallel);
+			CirculinearCurves2D.splitContinuousCurve(parallel);
 		
 		assertFalse(splittedCurves.isEmpty());
 		assertEquals(1, splittedCurves.size());

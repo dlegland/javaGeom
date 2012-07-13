@@ -37,10 +37,10 @@ public class CheckDrawRectangles2D extends JPanel{
 		double length = 180;
 		double width = 80;
 		
-	    rect1 = Polygon2DUtils.createCenteredRectangle(new Point2D(200, 150), length, width);
-	    rect2 = Polygon2DUtils.createOrientedRectangle(new Point2D(400, 150), length, width, 0);
-	    rect3 = Polygon2DUtils.createOrientedRectangle(new Point2D(200, 350), length, width, Math.PI/2);
-	    rect4 = Polygon2DUtils.createOrientedRectangle(new Point2D(400, 350), length, width, Math.PI/6);
+	    rect1 = Polygons2D.createCenteredRectangle(new Point2D(200, 150), length, width);
+	    rect2 = Polygons2D.createOrientedRectangle(new Point2D(400, 150), length, width, 0);
+	    rect3 = Polygons2D.createOrientedRectangle(new Point2D(200, 350), length, width, Math.PI/2);
+	    rect4 = Polygons2D.createOrientedRectangle(new Point2D(400, 350), length, width, Math.PI/6);
 	}
 	
 	public void paintComponent(Graphics g){

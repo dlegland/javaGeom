@@ -150,12 +150,14 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     }
 
     /**
+
+    /**
      * Computes the signed area of the polygon. 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
     public double area() {
-    	return Polygon2DUtils.computeArea(this);
+    	return Polygons2D.computeArea(this);
     }
 
     /**
@@ -164,7 +166,7 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
      * @since 0.9.1
      */
     public Point2D centroid() {
-    	return Polygon2DUtils.computeCentroid(this);
+    	return Polygons2D.computeCentroid(this);
     }
     
     

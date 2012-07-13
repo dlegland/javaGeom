@@ -224,7 +224,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
      * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
      */
     public double windingAngle(Point2D point) {
-        int wn = Polygon2DUtils.windingNumber(this.vertices, point);
+        int wn = Polygons2D.windingNumber(this.vertices, point);
         return wn * 2 * Math.PI;
     }
 
@@ -243,7 +243,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     		return true;
     	
     	double area = this.areaSigned();
-    	int winding = Polygon2DUtils.windingNumber(this.vertices, point);
+    	int winding = Polygons2D.windingNumber(this.vertices, point);
     	if (area > 0) {
     		return winding == 1;
     	} else {

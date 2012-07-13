@@ -60,7 +60,7 @@ public class CheckConicTwoLines2DTransform extends JPanel{
 		super();
 		
 		double y1=y0+d, y2=y0-d;
-		conic = Conic2DUtils.reduceConic(
+		conic = Conics2D.reduceConic(
 				new double[]{0, 0, 1/(y1*y2), 0, -(y1+y2)/y1/y2, 1});
 		
 		box = new Box2D(50, 250, 50, 250);
