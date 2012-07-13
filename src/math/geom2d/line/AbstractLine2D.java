@@ -751,7 +751,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
     public CurveSet2D<? extends AbstractLine2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<ContinuousCurve2D> set = Curve2DUtils.clipContinuousCurve(
+        CurveSet2D<ContinuousCurve2D> set = Curves2D.clipContinuousCurve(
                 this, box);
 
         // Stores the result in appropriate structure

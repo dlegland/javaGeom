@@ -57,7 +57,7 @@ public class CheckSplitContinuousClosed extends JPanel{
 
 		g2.setColor(Color.BLUE);
 		for(CirculinearContinuousCurve2D cont :
-			CirculinearCurve2DUtils.splitContinuousCurve(curve)){
+			CirculinearCurves2D.splitContinuousCurve(curve)){
 			g2.setColor(colors[i++]);
 			cont.draw(g2);
 		}

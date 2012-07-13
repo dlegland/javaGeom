@@ -108,14 +108,14 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
 	public double length(double pos) {
-		return CirculinearCurve2DUtils.getLength(this, pos);
+		return CirculinearCurves2D.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
 	public double position(double length) {
-		return CirculinearCurve2DUtils.getPosition(this, length);
+		return CirculinearCurves2D.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
@@ -169,7 +169,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	@Override
 	public CirculinearCurveArray2D<? extends CirculinearCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

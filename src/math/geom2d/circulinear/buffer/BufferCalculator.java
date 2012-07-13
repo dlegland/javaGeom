@@ -16,7 +16,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.PointSet2D;
 
@@ -252,7 +252,7 @@ public class BufferCalculator {
 		for (CirculinearContinuousCurve2D cont : curve.continuousCurves()) {
 			// split the curve into a set of non self-intersecting curves
 			for (CirculinearContinuousCurve2D splitted : 
-				CirculinearCurve2DUtils.splitContinuousCurve(cont)) {
+				CirculinearCurves2D.splitContinuousCurve(cont)) {
 				// compute the rings composing the simple curve buffer
 				contours.addAll(computeBufferSimpleCurve(splitted, dist));
 			}
@@ -260,7 +260,7 @@ public class BufferCalculator {
 		
 		// split contours which intersect each others
 		contours = new ArrayList<CirculinearContour2D>(
-				CirculinearCurve2DUtils.splitIntersectingContours(contours));		
+				CirculinearCurves2D.splitIntersectingContours(contours));		
 		
 		// Remove contours that cross or that are too close from base curve
 		ArrayList<CirculinearContour2D> contours2 = 
@@ -271,7 +271,7 @@ public class BufferCalculator {
 		for (CirculinearContour2D contour : contours) {
 			
 			// do not keep contours which cross original curve
-			intersects = CirculinearCurve2DUtils.findIntersections(curve, contour);
+			intersects = CirculinearCurves2D.findIntersections(curve, contour);
 			
 			// remove intersection points that are vertices of the reference curve
 			vertices = curve.singularPoints();
@@ -313,7 +313,7 @@ public class BufferCalculator {
 		}
 		
 		// process circles to remove intersections
-		contours = CirculinearCurve2DUtils.splitIntersectingContours(contours);
+		contours = CirculinearCurves2D.splitIntersectingContours(contours);
 		
 		// Remove contours that cross or that are too close from base curve
 		ArrayList<CirculinearContour2D> contours2 = 
@@ -322,7 +322,7 @@ public class BufferCalculator {
 			
 			// check that vertices of contour are not too close from original
 			// curve
-			double minDist = CirculinearCurve2DUtils.getDistanceCurvePoints(
+			double minDist = CirculinearCurves2D.getDistanceCurvePoints(
 					ring, set.points());
 			if(minDist < dist-Shape2D.ACCURACY)
 				continue;
@@ -389,8 +389,8 @@ public class BufferCalculator {
 				new ArrayList<CirculinearElement2D>();
 
 			// some shortcuts for computing infinity of curve
-			boolean b0 = !Curve2DUtils.isLeftInfinite(curve1);
-			boolean b1 = !Curve2DUtils.isRightInfinite(curve1);
+			boolean b0 = !Curves2D.isLeftInfinite(curve1);
+			boolean b1 = !Curves2D.isRightInfinite(curve1);
 
 			if (b0 && b1) {
 					// case of a curve finite at each extremity
@@ -470,12 +470,12 @@ public class BufferCalculator {
 		for (CirculinearContour2D contour : contours)
 			// split rings into curves which do not self-intersect
 			for (CirculinearContinuousCurve2D splitted : 
-				CirculinearCurve2DUtils.splitContinuousCurve(contour)) {
+				CirculinearCurves2D.splitContinuousCurve(contour)) {
 				
 				// compute distance to original curve
 				// (assuming it is sufficient to compute distance to vertices
 				// of the reference curve).
-				double dist = CirculinearCurve2DUtils.getDistanceCurvePoints(
+				double dist = CirculinearCurves2D.getDistanceCurvePoints(
 						curve, splitted.singularPoints());
 				
 				// check if distance condition is verified
@@ -517,7 +517,7 @@ public class BufferCalculator {
 		// If no singular point, choose an arbitrary point on the curve
 		if (points.isEmpty()) {
 			points = new ArrayList<Point2D>();
-			double t = Curve2DUtils.choosePosition(curve.getT0(), curve.getT1());
+			double t = Curves2D.choosePosition(curve.getT0(), curve.getT1());
 			points.add(curve.point(t));
 		}
 		

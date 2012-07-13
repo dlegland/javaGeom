@@ -302,7 +302,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     @Override
     public CurveSet2D<? extends ContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<ContinuousCurve2D> result = 

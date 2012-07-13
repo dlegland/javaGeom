@@ -92,7 +92,7 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[4], 0, 1e-14);
 		assertEquals(coefs[5], -1, 1e-14);
 		
-		conic = Conic2DUtils.reduceConic(coefs);
+		conic = Conics2D.reduceConic(coefs);
 		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.almostEquals(hyperbola, eps));
@@ -107,7 +107,7 @@ public class Hyperbola2DTest extends TestCase {
 		assertEquals(coefs[4], 60, 1e-14);
 		assertEquals(coefs[5], -501, 1e-14);
 		
-		conic = Conic2DUtils.reduceConic(coefs);
+		conic = Conics2D.reduceConic(coefs);
 		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
@@ -117,7 +117,7 @@ public class Hyperbola2DTest extends TestCase {
 		// hyperbola not reduced, not at origin, but oriented east-west
 		hyperbola = new Hyperbola2D(center, a2, b2, 0);
 		coefs = hyperbola.conicCoefficients();
-		conic = Conic2DUtils.reduceConic(coefs);
+		conic = Conics2D.reduceConic(coefs);
 		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));
@@ -126,7 +126,7 @@ public class Hyperbola2DTest extends TestCase {
 		// hyperbola centered, scaled, rotated
 		hyperbola = new Hyperbola2D(center, a2, b2, theta);
 		coefs = hyperbola.conicCoefficients();
-		conic = Conic2DUtils.reduceConic(coefs);
+		conic = Conics2D.reduceConic(coefs);
 		assertTrue(conic.conicType()==Conic2D.Type.HYPERBOLA);
 		hyperbola2 = (Hyperbola2D) conic;
 		assertTrue(hyperbola2.getCenter().almostEquals(center, eps));

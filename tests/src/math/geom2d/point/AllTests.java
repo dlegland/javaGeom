@@ -23,7 +23,7 @@ public class AllTests {
         //$JUnit-BEGIN$
         suite.addTest(new TestSuite(KDTree2DTest.class));
         suite.addTest(new TestSuite(PointArray2DTest.class));
-        suite.addTest(new TestSuite(PointSet2DUtilsTest.class));
+        suite.addTest(new TestSuite(PointSets2DTest.class));
         //$JUnit-END$
         return suite;
     }

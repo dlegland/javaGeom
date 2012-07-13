@@ -147,7 +147,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         }
 
         // compute ellipse in isothetic basis
-        double[] coefs2 = Conic2DUtils.transformCentered(coefs,
+        double[] coefs2 = Conics2D.transformCentered(coefs,
                 AffineTransform2D.createRotation(-theta));
 
         // extract coefficients f if present
@@ -208,7 +208,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double[] coefs = new double[] { A, B, C };
 
         // Compute coefficients of the transformed conic
-        double[] coefs2 = Conic2DUtils.transformCentered(coefs, trans);
+        double[] coefs2 = Conics2D.transformCentered(coefs, trans);
 
         // reduce conic coefficients to Ellipse
         return Ellipse2D.reduceCentered(coefs2);
@@ -954,7 +954,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<SmoothCurve2D> set = Curve2DUtils.clipSmoothCurve(this, box);
+        CurveSet2D<SmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<SmoothOrientedCurve2D> result = 

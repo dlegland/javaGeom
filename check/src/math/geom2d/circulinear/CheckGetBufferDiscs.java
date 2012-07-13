@@ -31,7 +31,7 @@ public class CheckGetBufferDiscs extends JPanel{
 				new CirculinearContourArray2D<Circle2D>(
 						new Circle2D[]{circle1, circle2}));
 		
-		buffer = CirculinearDomain2DUtils.computeBuffer(domain, 30);
+		buffer = CirculinearDomains2D.computeBuffer(domain, 30);
 	}
 	
 	public void paintComponent(Graphics g){

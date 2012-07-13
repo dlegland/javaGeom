@@ -18,7 +18,7 @@ import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
-import math.geom2d.point.PointSet2DUtils;
+import math.geom2d.point.PointSets2D;
 
 /**
  * @author dlegland
@@ -303,9 +303,9 @@ implements CirculinearContinuousCurve2D {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
 		// basic check to avoid degenerate cases
-		if (PointSet2DUtils.hasAdjacentMultipleVertices(this.vertices)) {
+		if (PointSets2D.hasAdjacentMultipleVertices(this.vertices)) {
 			Polyline2D poly2 = Polyline2D.create(
-					PointSet2DUtils.filterAdjacentMultipleVertices(this.vertices));
+					PointSets2D.filterAdjacentMultipleVertices(this.vertices));
 			return bc.computeBuffer(poly2, dist);			
 		}
 		
@@ -565,7 +565,7 @@ implements CirculinearContinuousCurve2D {
      */
     public CurveSet2D<? extends LinearCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curve2DUtils.clipCurve(this, box);
+        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<LinearCurve2D> result =

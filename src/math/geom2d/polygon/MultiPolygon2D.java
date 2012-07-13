@@ -132,7 +132,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * @since 0.9.1
      */
     public double area() {
-    	return Polygon2DUtils.computeArea(this);
+    	return Polygons2D.computeArea(this);
     }
 
     /**
@@ -141,7 +141,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * @since 0.9.1
      */
     public Point2D centroid() {
-    	return Polygon2DUtils.computeCentroid(this);
+    	return Polygons2D.computeCentroid(this);
     }
 
     // ===================================================================
@@ -170,7 +170,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
-		return Polygon2DUtils.createBuffer(this, dist);
+		return Polygons2D.createBuffer(this, dist);
 	}
 
 	
@@ -279,7 +279,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * Clips the polygon with the specified box.
      */
     public Polygon2D clip(Box2D box) {
-    	return Polygon2DUtils.clipPolygon(this, box);
+    	return Polygons2D.clipPolygon(this, box);
     }
 
     public double distance(Point2D p) {

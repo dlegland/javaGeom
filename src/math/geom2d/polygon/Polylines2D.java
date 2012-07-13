@@ -19,7 +19,7 @@ import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.point.PointSet2DUtils;
+import math.geom2d.point.PointSets2D;
 
 /**
  * Some utility functions for manipulating Polyline2D.
@@ -27,7 +27,7 @@ import math.geom2d.point.PointSet2DUtils;
  * @author dlegland
  * @since 0.6.3
  */
-public abstract class Polyline2DUtils {
+public abstract class Polylines2D {
 
 	/**
 	 * Checks if the open polyline has multiple vertices. Polyline extremities
@@ -44,7 +44,7 @@ public abstract class Polyline2DUtils {
     public final static boolean hasMultipleVertices(LinearCurve2D polyline, 
     		boolean closed) {
     	// Test vertices within polyline
-    	if(PointSet2DUtils.hasAdjacentMultipleVertices(polyline.vertices))
+    	if(PointSets2D.hasAdjacentMultipleVertices(polyline.vertices))
     		return true;
     	
     	// Eventually tests extremities

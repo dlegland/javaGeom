@@ -15,9 +15,9 @@ import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.line.LineSegment2D;
-import static math.geom2d.curve.Curve2DUtils.JunctionType.*;
+import static math.geom2d.curve.Curves2D.JunctionType.*;
 
 /**
  * @author dlegland
@@ -36,8 +36,8 @@ public class RoundJoinFactory implements JoinFactory {
 		
 		// center of circle arc
 		Point2D center = curve2.firstPoint();
-		Curve2DUtils.JunctionType junctionType = 
-			Curve2DUtils.getJunctionType(curve1, curve2);
+		Curves2D.JunctionType junctionType = 
+			Curves2D.getJunctionType(curve1, curve2);
 		
 		// compute tangents to each portion
 		Vector2D direction1 = curve1.tangent(curve1.getT1());

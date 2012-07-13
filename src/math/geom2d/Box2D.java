@@ -43,7 +43,7 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polygon2D;
-import math.geom2d.polygon.Polygon2DUtils;
+import math.geom2d.polygon.Polygons2D;
 import math.utils.EqualUtils;
 
 import static java.lang.Math.*;
@@ -553,7 +553,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return an instance of HRectangle2D
      */
     public Polygon2D getAsRectangle() {
-        return Polygon2DUtils.createRectangle(xmin, ymin, xmax, ymax);
+        return Polygons2D.createRectangle(xmin, ymin, xmax, ymax);
     }
 
     public void draw(Graphics2D g2) {

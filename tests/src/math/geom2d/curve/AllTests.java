@@ -38,7 +38,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for math.geom2d.curve");
 		//$JUnit-BEGIN$
 		suite.addTest(new TestSuite(CurveArray2DTest.class));
-		suite.addTest(new TestSuite(Curve2DUtilsTest.class));
+		suite.addTest(new TestSuite(Curves2DTest.class));
 		suite.addTest(new TestSuite(PolyCurve2DTest.class));
 		//$JUnit-END$
 		return suite;

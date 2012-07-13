@@ -15,10 +15,10 @@ import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Boundary2DUtils;
+import math.geom2d.domain.Boundaries2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.ContourArray2D;
-import math.geom2d.point.PointSet2DUtils;
+import math.geom2d.point.PointSets2D;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
@@ -30,7 +30,7 @@ import com.seisw.util.geom.PolySimple;
  * I
  * @author dlegland
  */
-public final class Polygon2DUtils {
+public final class Polygons2D {
 
 	/**
 	 * Creates a new polygon representing a rectangle with edges parallel to
@@ -323,7 +323,7 @@ public final class Polygon2DUtils {
     	// Clip the boundary using generic method
     	Boundary2D boundary = polygon.boundary();
         ContourArray2D<Contour2D> contours = 
-            Boundary2DUtils.clipBoundary(boundary, box);
+            Boundaries2D.clipBoundary(boundary, box);
 
         // convert boundaries to linear rings
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>();
@@ -350,7 +350,7 @@ public final class Polygon2DUtils {
     		vertices.add(v);
 
     	// remove adjacent multiple vertices
-    	vertices = PointSet2DUtils.filterAdjacentMultipleVertices(vertices, true);
+    	vertices = PointSets2D.filterAdjacentMultipleVertices(vertices, true);
  	
     	// Create new ring with vertices
     	return LinearRing2D.create(vertices);
@@ -446,7 +446,7 @@ public final class Polygon2DUtils {
     	
     	// if the result is single, create a SimplePolygon
     	if (n == 1) {
-    		Point2D[] points = extractVertices(poly.getInnerPoly(0));
+    		Point2D[] points = extractPolyVertices(poly.getInnerPoly(0));
     		return SimplePolygon2D.create(points);
     	}
     	
@@ -461,10 +461,10 @@ public final class Polygon2DUtils {
     
     private final static LinearRing2D convertFromGpcjSimplePolygon(
     		Poly poly) {
-    	return LinearRing2D.create(extractVertices(poly));
+    	return LinearRing2D.create(extractPolyVertices(poly));
     }
     
-    private final static Point2D[] extractVertices(Poly poly) {
+    private final static Point2D[] extractPolyVertices(Poly poly) {
     	int n = poly.getNumPoints();
     	Point2D[] points = new Point2D[n];
     	for (int i = 0; i < n; i++)

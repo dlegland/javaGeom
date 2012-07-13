@@ -19,7 +19,7 @@ import math.geom2d.line.StraightLine2D;
  * 
  * @author dlegland
  */
-public class Conic2DUtils {
+public class Conics2D {
 
     public final static Conic2D reduceConic(double[] coefs) {
 		if (coefs.length < 6) {
@@ -363,7 +363,7 @@ public class Conic2DUtils {
             
             // AffineTransform2D trans = tra.compose(rot).compose(sca);
             AffineTransform2D trans = sca.chain(rot).chain(tra);
-            return Conic2DUtils.transform(coefs, trans);
+            return Conics2D.transform(coefs, trans);
         }
 
         public Type conicType() {

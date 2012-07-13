@@ -143,7 +143,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         T curve = curves.get(i);
         double t0 = curve.getT0();
         double t1 = curve.getT1();
-        return Curve2DUtils.fromUnitSegment(t-2*i, t0, t1);
+        return Curves2D.fromUnitSegment(t-2*i, t0, t1);
     }
 
     /**
@@ -160,7 +160,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         T curve = curves.get(i);
         double t0 = curve.getT0();
         double t1 = curve.getT1();
-        return Curve2DUtils.toUnitSegment(t, t0, t1)+i*2;
+        return Curves2D.toUnitSegment(t, t0, t1)+i*2;
     }
 
     /**
@@ -352,7 +352,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         int indc = (int) Math.floor(nc/2);
         if (indc*2==nc) {
             Curve2D curve = curves.get(indc);
-            double pos = Curve2DUtils.fromUnitSegment(t-nc, 
+            double pos = Curves2D.fromUnitSegment(t-nc, 
             		curve.getT0(), curve.getT1());
             return curve.point(pos);
         } else {
@@ -405,11 +405,11 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
             	addPointWithGuardDistance(points, point, eps);
             
             // add first extremity
-            if(!Curve2DUtils.isLeftInfinite(curve))
+            if(!Curves2D.isLeftInfinite(curve))
             	addPointWithGuardDistance(points, curve.firstPoint(), eps);
             
             // add last extremity
-            if(!Curve2DUtils.isRightInfinite(curve))
+            if(!Curves2D.isRightInfinite(curve))
             	addPointWithGuardDistance(points, curve.lastPoint(), eps);
         }
         // return the set of singular points
@@ -471,7 +471,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
                 // format position
                 t0 = curve.getT0();
                 t1 = curve.getT1();
-                pos = Curve2DUtils.toUnitSegment(pos, t0, t1)+i*2;
+                pos = Curves2D.toUnitSegment(pos, t0, t1)+i*2;
             }
             i++;
         }
@@ -492,7 +492,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
                 // format position
                 t0 = curve.getT0();
                 t1 = curve.getT1();
-                pos = Curve2DUtils.toUnitSegment(pos, t0, t1)+i*2;
+                pos = Curves2D.toUnitSegment(pos, t0, t1)+i*2;
             }
             i++;
         }
@@ -550,9 +550,9 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         // need to subdivide only one curve
         if (ind0==ind1&&t0<t1) {
             curve = curves.get(ind0);
-            pos0 = Curve2DUtils.fromUnitSegment(t0-t0f, 
+            pos0 = Curves2D.fromUnitSegment(t0-t0f, 
             		curve.getT0(), curve.getT1());
-            pos1 = Curve2DUtils.fromUnitSegment(t1-t1f, 
+            pos1 = Curves2D.fromUnitSegment(t1-t1f, 
             		curve.getT0(), curve.getT1());
             res.add(curve.subCurve(pos0, pos1));
             return res;
@@ -560,7 +560,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
         // add the end of the curve containing first cut
         curve = curves.get(ind0);
-        pos0 = Curve2DUtils.fromUnitSegment(t0-t0f, 
+        pos0 = Curves2D.fromUnitSegment(t0-t0f, 
         		curve.getT0(), curve.getT1());
         res.add(curve.subCurve(pos0, curve.getT1()));
 
@@ -580,7 +580,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
         // add the beginning of the last cut curve
         curve = curves.get(ind1);
-        pos1 = Curve2DUtils.fromUnitSegment(t1-t1f, 
+        pos1 = Curves2D.fromUnitSegment(t1-t1f, 
         		curve.getT0(), curve.getT1());
         res.add(curve.subCurve(curve.getT0(), pos1));
 
@@ -620,7 +620,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      */
     public CurveSet2D<? extends Curve2D> clip(Box2D box) {
     	// Simply calls the generic method in Curve2DUtils
-    	return Curve2DUtils.clipCurveSet(this, box);
+    	return Curves2D.clipCurveSet(this, box);
     }
 
     /**

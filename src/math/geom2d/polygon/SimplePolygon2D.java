@@ -38,10 +38,10 @@ import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearBoundary2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearDomain2DUtils;
+import math.geom2d.circulinear.CirculinearDomains2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.point.PointSet2DUtils;
+import math.geom2d.point.PointSets2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -143,7 +143,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @return the number of windings of the curve around the point
      */
     public int getWindingNumber(double x, double y) {
-        return Polygon2DUtils.windingNumber(vertices, new Point2D(x, y));
+        return Polygons2D.windingNumber(vertices, new Point2D(x, y));
     }
     
     /**
@@ -227,7 +227,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @return the signed area of the polygon.
      */
     public double area() {
-    	return Polygon2DUtils.computeArea(this);
+    	return Polygons2D.computeArea(this);
     }
 
     /**
@@ -239,7 +239,7 @@ public class SimplePolygon2D implements Polygon2D {
      * @return the centroid of the polygon
      */
     public Point2D centroid() {
-    	return Polygon2DUtils.computeCentroid(this);
+    	return Polygons2D.computeCentroid(this);
     }
 
     /**
@@ -322,15 +322,15 @@ public class SimplePolygon2D implements Polygon2D {
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		// check for multiple vertices
-		if (PointSet2DUtils.hasAdjacentMultipleVertices(this.vertices, true)) {
+		if (PointSets2D.hasAdjacentMultipleVertices(this.vertices, true)) {
 			List<Point2D> pts2 = 
-				PointSet2DUtils.filterAdjacentMultipleVertices(this.vertices, true);
+				PointSets2D.filterAdjacentMultipleVertices(this.vertices, true);
 			SimplePolygon2D poly2 = new SimplePolygon2D(pts2);
-	    	return CirculinearDomain2DUtils.computeBuffer(poly2, dist);
+	    	return CirculinearDomains2D.computeBuffer(poly2, dist);
 		}
 		
 		// 
-		return CirculinearDomain2DUtils.computeBuffer(this, dist);
+		return CirculinearDomains2D.computeBuffer(this, dist);
 	}
 
 	// ===================================================================
@@ -424,7 +424,7 @@ public class SimplePolygon2D implements Polygon2D {
      * Returns the shape formed by the polygon clipped by the given box.
      */
     public Polygon2D clip(Box2D box) {
-        return Polygon2DUtils.clipPolygon(this, box);
+        return Polygons2D.clipPolygon(this, box);
     }
 
     /**

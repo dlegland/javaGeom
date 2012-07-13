@@ -3,7 +3,7 @@ package math.geom2d.point;
 import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
-public class PointSet2DUtilsTest extends TestCase {
+public class PointSets2DTest extends TestCase {
 
 	public void testHasMultipleVertices_True() {
 		PointArray2D pointSet = new PointArray2D(new Point2D[] {
@@ -13,7 +13,7 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(10, 30), 
 				new Point2D(10, 30), 
 				new Point2D(10, 10)	});
-		boolean res = PointSet2DUtils.hasAdjacentMultipleVertices(pointSet.points);
+		boolean res = PointSets2D.hasAdjacentMultipleVertices(pointSet.points);
 		assertTrue(res);
 	}
 
@@ -24,7 +24,7 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(20, 30), 
 				new Point2D(10, 30), 
 				new Point2D(10, 10)	});
-		boolean res = PointSet2DUtils.hasAdjacentMultipleVertices(pointSet.points);
+		boolean res = PointSets2D.hasAdjacentMultipleVertices(pointSet.points);
 		assertFalse(res);
 	}
 
@@ -38,13 +38,13 @@ public class PointSet2DUtilsTest extends TestCase {
 				new Point2D(10, 10)	});
 		int count;
 		
-		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points);
+		count = PointSets2D.countAdjacentMultipleVertices(pointSet.points);
 		assertEquals(1, count);
 		
-		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points, false);
+		count = PointSets2D.countAdjacentMultipleVertices(pointSet.points, false);
 		assertEquals(1, count);
 		
-		count = PointSet2DUtils.countAdjacentMultipleVertices(pointSet.points, true);
+		count = PointSets2D.countAdjacentMultipleVertices(pointSet.points, true);
 		assertEquals(2, count);
 	}
 }

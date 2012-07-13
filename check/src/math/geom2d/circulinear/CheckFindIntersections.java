@@ -59,8 +59,8 @@ public class CheckFindIntersections extends JPanel{
 		Collection<Point2D> points;
 		
 		for(CirculinearContinuousCurve2D cont : 
-			CirculinearCurve2DUtils.splitContinuousCurve(parallel2)) {
-			points = CirculinearCurve2DUtils.findIntersections(curve, cont);
+			CirculinearCurves2D.splitContinuousCurve(parallel2)) {
+			points = CirculinearCurves2D.findIntersections(curve, cont);
 			if(points.size()==0) {
 				cont.draw(g2);
 			}

@@ -13,7 +13,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.UnboundedBox2DException;
 import math.geom2d.curve.ContinuousCurve2D;
 import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curve2DUtils;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.polygon.Polyline2D;
@@ -23,7 +23,7 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public abstract class Boundary2DUtils {
+public abstract class Boundaries2D {
 
     /**
      * Clip a curve, and return a CurveSet2D. If the curve is totally outside
@@ -39,7 +39,7 @@ public abstract class Boundary2DUtils {
         	new CurveArray2D<ContinuousOrientedCurve2D>();
     	
     	// for each clipped curve, add its pieces
-        for (ContinuousCurve2D cont : Curve2DUtils.clipContinuousCurve(curve, box))
+        for (ContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
             if (cont instanceof ContinuousOrientedCurve2D)
                 result.add((ContinuousOrientedCurve2D) cont);
 
@@ -129,7 +129,7 @@ public abstract class Boundary2DUtils {
         // Iterate on contours: clip each contour with box, 
         // and add clipped curves to the array 'curveSet'
         for (Contour2D contour : boundary.continuousCurves()) {
-            clipped = Boundary2DUtils.clipContinuousOrientedCurve(contour, box);
+            clipped = Boundaries2D.clipContinuousOrientedCurve(contour, box);
 
             for (ContinuousOrientedCurve2D clip : clipped)
                 curveSet.add(clip);

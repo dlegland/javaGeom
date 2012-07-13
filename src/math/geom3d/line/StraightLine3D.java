@@ -102,7 +102,7 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
     public boolean contains(Point3D point) {
-        return this.distance(point)<Shape3D.ACCURACY;
+        return this.distance(point) < Shape3D.ACCURACY;
     }
 
     public boolean isEmpty() {
@@ -161,8 +161,9 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
     public StraightLine3D transform(AffineTransform3D trans) {
-        return new StraightLine3D(origin().transform(trans), direction()
-                .transform(trans));
+        return new StraightLine3D(
+        		origin().transform(trans), 
+        		direction().transform(trans));
     }
 
     public Point3D firstPoint() {
@@ -176,7 +177,7 @@ public class StraightLine3D implements ContinuousCurve3D {
     }
 
     public Point3D point(double t) {
-        return point(t);
+        return new Point3D(x0 + t * dx, y0 + t * dy, z0 + t * dz);
     }
 
     public double position(Point3D point) {
