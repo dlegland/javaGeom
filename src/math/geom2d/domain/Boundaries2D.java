@@ -274,7 +274,7 @@ public abstract class Boundaries2D {
         if (!intersect) {
             Point2D vertex = box.vertices().iterator().next();
             if (boundary.isInside(vertex))
-                res.add(box.getAsRectangle().boundary().firstCurve());
+                res.add(box.asRectangle().boundary().firstCurve());
         }
 
         // return the result

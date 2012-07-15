@@ -100,6 +100,13 @@ public class GenericDomain2D implements Domain2D {
         return boundary;
     }
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<? extends Contour2D> contours() {
+		return this.boundary.continuousCurves();
+	}
+
     public Domain2D complement() {
         return new GenericDomain2D(boundary.reverse());
     }

@@ -8,6 +8,8 @@
  */
 package math.geom2d.circulinear;
 
+import java.util.Collection;
+
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -38,6 +40,13 @@ implements CirculinearDomain2D {
 	@Override
 	public CirculinearBoundary2D boundary() {
 		return (CirculinearBoundary2D) boundary;
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<? extends CirculinearContour2D> contours() {
+		return ((CirculinearBoundary2D) this.boundary).continuousCurves();
 	}
 
 	@Override

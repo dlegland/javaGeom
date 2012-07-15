@@ -200,15 +200,28 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
 	}
 
     public CirculinearContourArray2D<LinearRing2D> boundary() {
+        return new CirculinearContourArray2D<LinearRing2D>(this.asRing());
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<LinearRing2D> contours() {
+       ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+       rings.add(this.asRing());
+       return rings;
+	}
+
+	private LinearRing2D asRing() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);
         pts[1] = new Point2D(width+x, y);
         pts[2] = new Point2D(width+x, y+height);
         pts[3] = new Point2D(x, y+height);
-        return new CirculinearContourArray2D<LinearRing2D>(
-        		new LinearRing2D(pts));
-    }
-
+		
+        return new LinearRing2D(pts);
+	}
+	
     public Polygon2D complement() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x, y);

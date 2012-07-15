@@ -31,7 +31,7 @@ public class DrawClosestPointTriangleGrid2D  extends JPanel{
 		
 		// draw the box in blue
 		g2.setColor(Color.BLUE);
-		box.getAsRectangle().boundary().draw(g2);
+		box.asRectangle().boundary().draw(g2);
 		
 		// the the edges of the grid
 		g2.setColor(Color.BLACK);

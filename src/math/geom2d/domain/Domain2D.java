@@ -26,6 +26,7 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
+import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -57,6 +58,14 @@ public interface Domain2D extends Shape2D {
      */
     public abstract Boundary2D boundary();
 
+    /**
+     * Returns the set of contours that enclose this domain. 
+     * The result is a collection of shapes that implement the Contour2D
+     * interface. 
+     * @see math.geom2d.domain.Contour2D
+     */
+    public abstract Collection<? extends Contour2D> contours();
+    
     /**
      * Returns the domain which complements this domain in the plane.
      * 

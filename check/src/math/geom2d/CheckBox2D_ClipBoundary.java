@@ -98,14 +98,14 @@ public class CheckBox2D_ClipBoundary extends JPanel{
 			for(int x=0; x<4; x++){
 				box = boxes[y][x];
 				clip = box.intersection(clippingBox);
-				rect = clip.getAsRectangle();
+				rect = clip.asRectangle();
 				tra = AffineTransform2D.createTranslation(x*w, y*h);
 				g2.setColor(Color.CYAN);
 				rect.transform(tra).transform(user2Display).fill(g2);
 				g2.setColor(Color.BLUE);
 				rect.transform(tra).transform(user2Display).draw(g2);
 				g2.setColor(Color.LIGHT_GRAY);
-				clippingBox.getAsRectangle().transform(tra).transform(user2Display).draw(g2);
+				clippingBox.asRectangle().transform(tra).transform(user2Display).draw(g2);
 			}
 		
 //		Shape2D bnd;
