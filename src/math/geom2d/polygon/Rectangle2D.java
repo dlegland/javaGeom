@@ -206,12 +206,12 @@ public class Rectangle2D implements Polygon2D {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
 
-        double x1 = w*cot+x0;
-        double y1 = w*sit+y0;
-        double x2 = w*cot-h*sit+x0;
-        double y2 = w*sit+h*cot+y0;
-        double x3 = -h*sit+x0;
-        double y3 = h*cot+y0;
+		double x1 = w * cot + x0;
+		double y1 = w * sit + y0;
+		double x2 = w * cot - h * sit + x0;
+		double y2 = w * sit + h * cot + y0;
+		double x3 = -h * sit + x0;
+		double y3 = h * cot + y0;
 
         edges.add(new LineSegment2D(x0, y0, x1, y1));
         edges.add(new LineSegment2D(x1, y1, x2, y2));
@@ -222,15 +222,6 @@ public class Rectangle2D implements Polygon2D {
 
     public int edgeNumber() {
         return 4;
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.polygon.Polygon2D#getRings()
-     */
-    public Collection<LinearRing2D> rings() {
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(this.asRing());
-        return rings;
     }
 
     /**
@@ -333,47 +324,34 @@ public class Rectangle2D implements Polygon2D {
         return false;
     }
 
+    /**
+     * Returns the distance of the point to the polygon. The result is the
+     * minimal distance computed for each edge if the polygon, or ZERO if the
+     * point lies inside the polygon.
+     */
     public double distance(Point2D p) {
-        return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
+        return distance(p.getX(), p.getY());
     }
 
+    /**
+     * Returns the distance of the point to the polygon. The result is the
+     * minimal distance computed for each edge if the polygon, or ZERO if the
+     * point lies inside the polygon.
+     */
     public double distance(double x, double y) {
-        return Math.max(getSignedDistance(x, y), 0);
+        double dist = boundary().signedDistance(x, y);
+        return Math.max(dist, 0);
     }
 
     /**
-     * Get the signed distance of the shape to the given point : this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
-     */
-    public double getSignedDistance(Point2D p) {
-        return getSignedDistance(p.getX(), p.getY());
-    }
-
-    /**
-     * Get the signed distance of the shape to the given point : this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
-     */
-    public double getSignedDistance(double x, double y) {
-        double dist = boundary().distance(x, y);
-        if (contains(x, y))
-            return -dist;
-        else
-            return dist;
-    }
-
-    /**
-     * Return the clipped polygon.
+     * Returns the clipped polygon.
      */
     public Polygon2D clip(Box2D box) {
     	return Polygons2D.clipPolygon(this, box);
     }
 
     /**
-     * Return bounding box of the rectangle.
+     * Returns the bounding box of the rectangle.
      */
     public Box2D boundingBox() {
         double xmin = x0;
@@ -460,18 +438,18 @@ public class Rectangle2D implements Polygon2D {
         double y3 = h*cot+y0;
 
         StraightLine2D line = new StraightLine2D(x0, y0, x1-x0, y1-y0);
-        if (line.distanceSigned(x, y)>0)
+        if (line.signedDistance(x, y)>0)
             return false;
         line = new StraightLine2D(x1, y1, x2-x1, y2-y1);
-        if (line.distanceSigned(x, y)>0)
+        if (line.signedDistance(x, y)>0)
             return false;
         line = new StraightLine2D(x2, y2, x3-x2, y3-y2);
         // line.setPoints(x2, y2, x3, y3);
-        if (line.distanceSigned(x, y)>0)
+        if (line.signedDistance(x, y)>0)
             return false;
         line = new StraightLine2D(x3, y3, x0-x3, y0-y3);
         // line.setPoints(x3, y3, x0, y0);
-        if (line.distanceSigned(x, y)>0)
+        if (line.signedDistance(x, y)>0)
             return false;
         return true;
     }

@@ -256,34 +256,34 @@ public class StraightLine2DTest extends TestCase {
 		StraightLine2D line;
 		
 		line = new StraightLine2D(1, 2, 1, 1);
-		assertEquals(line.distanceSigned(2, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(1, 3), -Math.sqrt(2)/2, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), -Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), Math.sqrt(2)/2, Shape2D.ACCURACY);
 		
 		line = new StraightLine2D(1, 2, -1, -1);
-		assertEquals(line.distanceSigned(2, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(1, 3), Math.sqrt(2)/2, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), -Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), Math.sqrt(2)/2, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), -Math.sqrt(2)/2, Shape2D.ACCURACY);
 		
 		line = new StraightLine2D(1, 2, 1, 0);
-		assertEquals(line.distanceSigned(1, 3), -1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(1, 1), 1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), -1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 1), 1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), 0, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, -1, 0);
-		assertEquals(line.distanceSigned(1, 3), 1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(1, 1), -1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), 1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 1), -1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), 0, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, 1);
-		assertEquals(line.distanceSigned(1, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(0, 2), -1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), 1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(0, 2), -1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), 1, Shape2D.ACCURACY);
 
 		line = new StraightLine2D(1, 2, 0, -1);
-		assertEquals(line.distanceSigned(1, 3), 0, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(0, 2), 1, Shape2D.ACCURACY);
-		assertEquals(line.distanceSigned(2, 2), -1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(1, 3), 0, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(0, 2), 1, Shape2D.ACCURACY);
+		assertEquals(line.signedDistance(2, 2), -1, Shape2D.ACCURACY);
 	}
 
 	/*

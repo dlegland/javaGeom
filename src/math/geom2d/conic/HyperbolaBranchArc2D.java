@@ -69,11 +69,11 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double distanceSigned(Point2D point) {
-        return this.distanceSigned(point.getX(), point.getY());
+    public double signedDistance(Point2D point) {
+        return this.signedDistance(point.getX(), point.getY());
     }
 
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         // TODO Auto-generated method stub
         return 0;
     }

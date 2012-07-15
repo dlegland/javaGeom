@@ -106,7 +106,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#distanceSigned(double, double)}.
+	 * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#signedDistance(double, double)}.
 	 * Test the method getSignedDistance. Use a clinical case based on line
 	 * segments. The test point is outside the curve, but inside the domain
 	 * bounded by the 'closest' curve. Actually, 2 curves are closest.

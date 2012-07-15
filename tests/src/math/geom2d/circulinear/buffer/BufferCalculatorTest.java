@@ -7,21 +7,9 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.circulinear.CirculinearBoundary2D;
-import math.geom2d.circulinear.CirculinearContinuousCurve2D;
-import math.geom2d.circulinear.CirculinearContour2D;
-import math.geom2d.circulinear.CirculinearContourArray2D;
-import math.geom2d.circulinear.CirculinearCurve2D;
-import math.geom2d.circulinear.CirculinearCurves2D;
-import math.geom2d.circulinear.CirculinearCurveArray2D;
-import math.geom2d.circulinear.CirculinearCurveSet2D;
-import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearElement2D;
-import math.geom2d.circulinear.GenericCirculinearRing2D;
-import math.geom2d.circulinear.PolyCirculinearCurve2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
@@ -375,27 +363,30 @@ public class BufferCalculatorTest extends TestCase {
 		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
 
-		Boundary2D boundary = buffer.boundary();
-		assertEquals(1, boundary.continuousCurves().size());
+		assertEquals(1, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_ColinearPolyline() {
 		// polyline with two edges that are colinear
-		Polyline2D curve = Polyline2D.create(new Point2D[] {
-				new Point2D(100, 100), new Point2D(150, 100),
-				new Point2D(200, 100) });
+		Polyline2D curve = new Polyline2D(
+				new Point2D(100, 100), 
+				new Point2D(150, 100), 
+				new Point2D(200, 100));
 
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		CirculinearDomain2D buffer = bc.computeBuffer(curve, 20);
 
 		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
+		
+		assertEquals(1, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_StraightLine() {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
-		CirculinearCurve2D curve = new StraightLine2D(new Point2D(10, 20),
+		CirculinearCurve2D curve = new StraightLine2D(
+				new Point2D(10, 20),
 				new Point2D(30, 50));
 		double dist = 30;
 
@@ -404,9 +395,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.boundary();
-
-		assertEquals(2, boundary.continuousCurves().size());
+		assertEquals(2, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_BiRay() {
@@ -432,9 +421,8 @@ public class BufferCalculatorTest extends TestCase {
 		assertNotNull(buffer);
 		assertFalse(buffer.isEmpty());
 
-		// Extract boundary of buffer
-		Boundary2D boundary = buffer.boundary();
-		assertEquals(2, boundary.continuousCurves().size());
+		// check number of contours
+		assertEquals(2, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_TwoLines() {
@@ -444,29 +432,27 @@ public class BufferCalculatorTest extends TestCase {
 		Vector2D v2 = new Vector2D(0, 10);
 
 		// create two orthogonal lines
-		StraightLine2D line1 = StraightLine2D.create(origin, v1);
-		StraightLine2D line2 = StraightLine2D.create(origin, v2);
+		StraightLine2D line1 = new StraightLine2D(origin, v1);
+		StraightLine2D line2 = new StraightLine2D(origin, v2);
 
 		// put lines in a set
 		CirculinearCurveSet2D<StraightLine2D> set = 
-			CirculinearCurveArray2D.create(new StraightLine2D[] {line1, line2});
+			CirculinearCurveArray2D.create(line1, line2);
 
 		// compute set buffer and buffer boundary
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		CirculinearDomain2D buffer = bc.computeBuffer(set, 10);
-		CirculinearBoundary2D boundary = buffer.boundary();
-		assertEquals(4, boundary.continuousCurves().size());
+		assertEquals(4, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingLines() {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
-		StraightLine2D line1 = new StraightLine2D(new Point2D(10, 20),
-				new Point2D(10, 0));
-		StraightLine2D line2 = new StraightLine2D(new Point2D(20, 10),
-				new Point2D(0, 10));
-		CirculinearCurve2D curve = 
-			CirculinearCurveArray2D.create(new StraightLine2D[] {line1, line2});
+		StraightLine2D line1 = new StraightLine2D(
+				new Point2D(10, 20), new Point2D(10, 0));
+		StraightLine2D line2 = new StraightLine2D(
+				new Point2D(20, 10), new Point2D(0, 10));
+		CirculinearCurve2D curve = CirculinearCurveArray2D.create(line1, line2);
 		double dist = 3;
 
 		Domain2D buffer = bc.computeBuffer(curve, dist);
@@ -474,9 +460,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.boundary();
-
-		assertEquals(4, boundary.continuousCurves().size());
+		assertEquals(4, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_TwoCrossingRays() {
@@ -484,8 +468,7 @@ public class BufferCalculatorTest extends TestCase {
 
 		Ray2D ray1 = new Ray2D(new Point2D(20, 0), new Point2D(0, 10));
 		Ray2D ray2 = new Ray2D(new Point2D(0, 20), new Point2D(10, 0));
-		CirculinearCurve2D curve = CirculinearCurveArray2D.create(new Ray2D[] {
-				ray1, ray2 });
+		CirculinearCurve2D curve = CirculinearCurveArray2D.create(ray1, ray2);
 		double dist = 3;
 
 		Domain2D buffer = bc.computeBuffer(curve, dist);
@@ -493,9 +476,7 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.boundary();
-
-		assertEquals(2, boundary.continuousCurves().size());
+		assertEquals(2, buffer.contours().size());
 	}
 
 	public void testComputeBuffer_PolyRay() {
@@ -511,8 +492,7 @@ public class BufferCalculatorTest extends TestCase {
 		Ray2D ray2 = new Ray2D(p2, new Point2D(30, 0));
 		
 		// create the curve
-		CirculinearCurve2D curve = PolyCirculinearCurve2D.create(
-				new CirculinearElement2D[] {ray1, edge, ray2 });
+		CirculinearCurve2D curve = PolyCirculinearCurve2D.create(ray1, edge, ray2);
 		
 		// compute buffer
 		double dist = 3;
@@ -521,8 +501,6 @@ public class BufferCalculatorTest extends TestCase {
 		assertFalse(buffer.isEmpty());
 		assertFalse(buffer.isBounded());
 
-		Boundary2D boundary = buffer.boundary();
-
-		assertEquals(2, boundary.continuousCurves().size());
+		assertEquals(2, buffer.contours().size());
 	}
 }

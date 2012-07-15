@@ -356,12 +356,12 @@ implements LinearElement2D, Cloneable {
     // ===================================================================
     // methods implementing the OrientedCurve2D interface
     
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
-    public double distanceSigned(double x, double y) {
-        return new LineSegment2D(p1, p2).distanceSigned(x, y);
+    public double signedDistance(double x, double y) {
+        return new LineSegment2D(p1, p2).signedDistance(x, y);
     }
 
     
@@ -481,7 +481,7 @@ implements LinearElement2D, Cloneable {
     }
 
     public boolean isInside(Point2D point) {
-        return new LineSegment2D(p1, p2).distanceSigned(point)<0;
+        return new LineSegment2D(p1, p2).signedDistance(point)<0;
     }
 
     // ===================================================================

@@ -20,6 +20,18 @@ import math.geom2d.transform.CircleInversion2D;
 /**
  * A specialization of CurveArray2D that accepts only instances of
  * CirculinearCurve2D.
+ * 
+ * <blockquote><pre>
+ * {@code 
+ * // create two orthogonal lines
+ * StraightLine2D line1 = new StraightLine2D(origin, v1);
+ * StraightLine2D line2 = new StraightLine2D(origin, v2);
+ *	
+ * // put lines in a set
+ * CirculinearCurveSet2D<StraightLine2D> set = 
+ *     CirculinearCurveArray2D.create(line1, line2);
+ * }
+ * </pre></blockquote>
  * @author dlegland
  *
  */

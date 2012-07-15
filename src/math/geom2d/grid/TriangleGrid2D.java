@@ -156,7 +156,7 @@ public class TriangleGrid2D implements Grid2D {
 
         // compute distance to line, and deduces indices of surrounding lines
         double s2 = s*Math.sqrt(3)/2;
-        double d = baseLine.distanceSigned(point);
+        double d = baseLine.signedDistance(point);
         int n1 = (int) Math.floor(d/s2);
         int n2 = (int) Math.ceil(d/s2);
 
@@ -219,7 +219,7 @@ public class TriangleGrid2D implements Grid2D {
             dmin = Double.POSITIVE_INFINITY;
             dmax = Double.NEGATIVE_INFINITY;
             for (Point2D point : box.vertices()) {
-                double dist = baseLine.distanceSigned(point);
+                double dist = baseLine.signedDistance(point);
                 dmin = Math.min(dmin, dist);
                 dmax = Math.max(dmax, dist);
             }
@@ -263,7 +263,7 @@ public class TriangleGrid2D implements Grid2D {
         dmin = Double.POSITIVE_INFINITY;
         dmax = Double.NEGATIVE_INFINITY;
         for (Point2D point : box.vertices()) {
-            double dist = baseLine.distanceSigned(point);
+            double dist = baseLine.signedDistance(point);
             dmin = Math.min(dmin, dist);
             dmax = Math.max(dmax, dist);
         }

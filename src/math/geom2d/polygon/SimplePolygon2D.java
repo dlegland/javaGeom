@@ -141,17 +141,7 @@ public class SimplePolygon2D implements Polygon2D {
     public int getWindingNumber(double x, double y) {
         return Polygons2D.windingNumber(vertices, new Point2D(x, y));
     }
-    
-    /**
-     * Returns the linear ring that composes the boundary of this polygon.
-     * @since 0.9.1
-     * @deprecated use getRing instead 
-     */
-    @Deprecated
-    public LinearRing2D getLinearRing() {
-    	return new LinearRing2D(this.vertices);
-    }
-    
+        
     /**
      * Returns the linear ring that composes the boundary of this polygon.
      * @since 0.9.3
@@ -179,6 +169,13 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     /**
+	 * Changes the position of the i-th vertex.
+	 */
+	public void setVertex(int index, Point2D position) {
+	    this.vertices.set(index, position);
+	}
+
+	/**
      * Removes a vertex of the polygon.
      * 
      * @param point the vertex to be removed.
@@ -202,17 +199,6 @@ public class SimplePolygon2D implements Polygon2D {
         this.vertices.clear();
     }
     
-    /**
-     * Changes the position of the i-th vertex.
-     */
-    public void setVertex(int index, Point2D position) {
-        this.vertices.set(index, position);
-    }
-
-    
-    // ===================================================================
-    // methods inherited from Polygon2D interface
-
     /**
      * Computes the signed area of the polygon. Algorithm is taken from page: <a
      * href="http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/">
@@ -289,15 +275,6 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public int edgeNumber() {
         return vertices.size();
-    }
-
-    /* (non-Javadoc)
-     * @see math.geom2d.polygon.Polygon2D#getRings()
-     */
-    public Collection<LinearRing2D> rings() {
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(vertices));
-        return rings;
     }
 
     
@@ -382,47 +359,22 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Shape2D interface
 
     /**
-     * Returns the distance of the point to the polygon. This is actually the
+     * Returns the distance of the point to the polygon. The result is the
      * minimal distance computed for each edge if the polygon, or ZERO if the
-     * point belong to the polygon.
+     * point lies inside the polygon.
      */
     public double distance(Point2D p) {
         return distance(p.getX(), p.getY());
     }
 
     /**
-     * Returns the distance of the point to the polygon. This is actually the
+     * Returns the distance of the point to the polygon. The result is the
      * minimal distance computed for each edge if the polygon, or ZERO if the
-     * point belong to the polygon.
+     * point lies inside the polygon.
      */
     public double distance(double x, double y) {
-        if (contains(x, y))
-            return 0;
-        return boundary().distance(x, y);
-    }
-
-    /**
-     * Returns the signed distance of the shape to the given point: this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
-     */
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
-    }
-
-    /**
-     * Returns the signed distance of the shape to the given point: this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
-     */
-    public double distanceSigned(double x, double y) {
-        double dist = boundary().distance(x, y);
-        if (contains(x, y))
-            return -dist;
-        else
-            return dist;
+        double dist = boundary().signedDistance(x, y);
+        return Math.max(dist, 0);
     }
 
     /**

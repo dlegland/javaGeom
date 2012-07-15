@@ -197,36 +197,6 @@ implements CirculinearContinuousCurve2D {
 
     
     // ===================================================================
-    // Methods implementing OrientedCurve2D interface
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(double, double)
-     */
-    public double distanceSigned(double x, double y) {
-        double dist = this.distance(x, y);
-        if (isInside(new Point2D(x, y)))
-            return -dist;
-        else
-            return dist;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom2d.OrientedCurve2D#getSignedDistance(Point2D)
-     */
-    public double distanceSigned(Point2D point) {
-        double dist = this.distance(point.getX(), point.getY());
-        if (isInside(point))
-            return -dist;
-        else
-            return dist;
-    }
-    
-
-    // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
@@ -319,6 +289,36 @@ implements CirculinearContinuousCurve2D {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return bc.createContinuousParallel(this, d);
 	}
+
+
+    // ===================================================================
+    // Methods implementing OrientedCurve2D interface
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.OrientedCurve2D#signedDistance(Point2D)
+     */
+    public double signedDistance(Point2D point) {
+        double dist = this.distance(point.getX(), point.getY());
+        if (isInside(point))
+            return -dist;
+        else
+            return dist;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.OrientedCurve2D#signedDistance(double, double)
+     */
+    public double signedDistance(double x, double y) {
+        double dist = this.distance(x, y);
+        if (isInside(new Point2D(x, y)))
+            return -dist;
+        else
+            return dist;
+    }
 
 
 	// ===================================================================
@@ -443,7 +443,7 @@ implements CirculinearContinuousCurve2D {
         return list;
     }
 
-    public Collection<? extends CirculinearContinuousCurve2D> continuousCurves() {
+    public Collection<? extends LinearCurve2D> continuousCurves() {
 		return wrapCurve(this);
 	}
     

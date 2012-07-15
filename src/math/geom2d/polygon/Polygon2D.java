@@ -66,12 +66,6 @@ public interface Polygon2D extends CirculinearDomain2D {
     /** Returns the number of edges of the polygon */
     public int edgeNumber();
     
-    /**
-     * Returns the set of rings comprising the boundary of this polygon.
-     * @return the set of boundary rings.
-     */
-    public Collection<? extends LinearRing2D> rings();
-
     /** 
      * Returns the centroid (center of mass) of the polygon.
      */

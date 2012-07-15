@@ -39,7 +39,7 @@ public class MultiPolygon2DTest extends TestCase {
 		assertTrue(poly2.isBounded());
 	}
 
-	public void testGetCentroid() {
+	public void testCentroid() {
 		LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
 				new Point2D(10, 10), 
 				new Point2D(20, 10),
@@ -61,7 +61,7 @@ public class MultiPolygon2DTest extends TestCase {
 		assertTrue(expected.equals(centroid));
 	}
 	
-	public void testGetArea() {
+	public void testArea() {
 		LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
 				new Point2D(10, 10), 
 				new Point2D(20, 10),
@@ -83,7 +83,7 @@ public class MultiPolygon2DTest extends TestCase {
 		assertEquals(expected, area);
 	}
 	
-	public void testGetAreaWithHole() {
+	public void testArea_WithHole() {
 		// create ring in CCW orientation
 		LinearRing2D ring1 = new LinearRing2D(new Point2D[]{
 				new Point2D(10, 10), 
@@ -107,7 +107,7 @@ public class MultiPolygon2DTest extends TestCase {
 		assertEquals(expected, area);
 	}
 	
-	public void testGetVertices() {
+	public void testVertices() {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0), 
 				new Point2D(10, 0),
@@ -134,7 +134,7 @@ public class MultiPolygon2DTest extends TestCase {
 			assertTrue(vertices.contains(pts2[i]));
 	}
 
-	public void testGetVerticesNumber() {
+	public void testVertexNumber() {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0), 
 				new Point2D(10, 0),
@@ -155,7 +155,7 @@ public class MultiPolygon2DTest extends TestCase {
 		assertEquals(8, polygon.vertexNumber());
 	}
 	
-	public void testGetVertex(){
+	public void testVertex(){
 	    LinearRing2D tri1 = new LinearRing2D(new Point2D[]{
 				new Point2D(0, 0), 
 				new Point2D(10, 0), 
@@ -197,7 +197,7 @@ public class MultiPolygon2DTest extends TestCase {
 
 		Polygon2D complement = polygon.complement();
 		
-		assertEquals(2, complement.rings().size());
+		assertEquals(2, complement.contours().size());
 		
 		Point2D pIn1 = new Point2D(14, 16);
 		assertTrue(complement.contains(pIn1));
@@ -210,7 +210,7 @@ public class MultiPolygon2DTest extends TestCase {
 		
 	}
 	
-	public void testGetBoundingBox2D() {
+	public void testBoundingBox2D() {
 		Point2D[] pts1 = new Point2D[]{
 				new Point2D(0, 0),
 				new Point2D(10, 0),

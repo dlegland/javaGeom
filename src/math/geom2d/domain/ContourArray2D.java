@@ -118,8 +118,8 @@ implements Boundary2D {
         return angle;
     }
 
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
     /*
@@ -127,12 +127,12 @@ implements Boundary2D {
      * 
      * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
      */
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         double minDist = Double.POSITIVE_INFINITY;
         double dist = Double.POSITIVE_INFINITY;
 
         for (OrientedCurve2D curve : this.curves()) {
-            dist = Math.min(dist, curve.distanceSigned(x, y));
+            dist = Math.min(dist, curve.signedDistance(x, y));
             if (Math.abs(dist)<Math.abs(minDist))
                 minDist = dist;
         }
@@ -140,7 +140,7 @@ implements Boundary2D {
     }
 
     public boolean isInside(Point2D point) {
-        return this.distanceSigned(point.getX(), point.getY())<0;
+        return this.signedDistance(point.getX(), point.getY())<0;
     }
 
     // ===================================================================

@@ -79,12 +79,13 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param coefs the coefficients of the CubicBezierCurve2D.
      */
     public CubicBezierCurve2D(double[][] coefs) {
-        this(coefs[0][0], coefs[1][0], coefs[0][0]+coefs[0][1]/3.0, coefs[1][0]
-                +coefs[1][1]/3.0,
-                coefs[0][0]+2*coefs[0][1]/3.0+coefs[0][2]/3.0, coefs[1][0]+2
-                        *coefs[1][1]/3.0+coefs[1][2]/3.0, coefs[0][0]
-                        +coefs[0][1]+coefs[0][2]+coefs[0][3], coefs[1][0]
-                        +coefs[1][1]+coefs[1][2]+coefs[1][3]);
+		this(coefs[0][0], coefs[1][0], 
+				coefs[0][0] + coefs[0][1] / 3.0, 
+				coefs[1][0] + coefs[1][1] / 3.0, 
+				coefs[0][0] + 2 * coefs[0][1] / 3.0 + coefs[0][2] / 3.0, 
+				coefs[1][0] + 2 * coefs[1][1] / 3.0 + coefs[1][2] / 3.0, 
+				coefs[0][0] + coefs[0][1] + coefs[0][2] + coefs[0][3], 
+				coefs[1][0] + coefs[1][1] + coefs[1][2] + coefs[1][3]);
     }
 
     /**
@@ -99,8 +100,8 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
 	public CubicBezierCurve2D(Point2D p1, Point2D ctrl1, Point2D ctrl2,
 			Point2D p2) {
-		this(p1.getX(), p1.getY(), ctrl1.getX(), ctrl1.getY(), ctrl2.getX(),
-				ctrl2.getY(), p2.getX(), p2.getY());
+		this(p1.getX(), p1.getY(), ctrl1.getX(), ctrl1.getY(), 
+				ctrl2.getX(), ctrl2.getY(), p2.getX(), p2.getY());
     }
 
     /**
@@ -113,10 +114,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param v2 last tangent vector
      */
 	public CubicBezierCurve2D(Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
-        this(	p1.getX(), p1.getY(), 
-        		p1.getX()+v1.getX()/3, p1.getY()+v1.getY()/3,
-        		p2.getX()-v2.getX()/3, p2.getY()-v2.getY()/3,
-        		p2.getX(), p2.getY());
+		this(p1.getX(), p1.getY(), 
+				p1.getX() + v1.getX() / 3, p1.getY() + v1.getY() / 3, 
+				p2.getX() - v2.getX() / 3, p2.getY() - v2.getY() / 3, 
+				p2.getX(), p2.getY());
     }
 
     /**
@@ -176,43 +177,19 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * dx2*t^2 + dx3*t^3 y(t) = y0 + dy*t + dy2*t^2 + dy3*t^3
      */
     public double[][] getParametric() {
-        double[][] tab = new double[2][4];
-        tab[0][0] = x1;
-        tab[0][1] = 3*ctrlx1-3*x1;
-        tab[0][2] = 3*x1-6*ctrlx1+3*ctrlx2;
-        tab[0][3] = x2-3*ctrlx2+3*ctrlx1-x1;
+		double[][] tab = new double[2][4];
+		tab[0][0] = x1;
+		tab[0][1] = 3 * ctrlx1 - 3 * x1;
+		tab[0][2] = 3 * x1 - 6 * ctrlx1 + 3 * ctrlx2;
+		tab[0][3] = x2 - 3 * ctrlx2 + 3 * ctrlx1 - x1;
 
-        tab[1][0] = y1;
-        tab[1][1] = 3*ctrly1-3*y1;
-        tab[1][2] = 3*y1-6*ctrly1+3*ctrly2;
-        tab[1][3] = y2-3*ctrly2+3*ctrly1-y1;
+		tab[1][0] = y1;
+		tab[1][1] = 3 * ctrly1 - 3 * y1;
+		tab[1][2] = 3 * y1 - 6 * ctrly1 + 3 * ctrly2;
+		tab[1][3] = y2 - 3 * ctrly2 + 3 * ctrly1 - y1;
         return tab;
     }
 
-    // /**
-    // * Return the parallel curve located at a distance d from this Bezier
-    // * curve.
-    // */
-    // public CubicBezierCurve2D getParallel(double d){
-    // double[][] tab = this.getParametric();
-    // double[][] tab2 = new double[2][4];
-    //		
-    // d = d/Math.hypot(tab[0][1], tab[1][1]);
-    //		
-    // tab2[0][0] = tab[0][0] + d*tab[1][1];
-    // tab2[1][0] = tab[1][0] - d*tab[0][1];
-    //		
-    // tab2[0][1] = tab[0][1] + 2*d*tab[1][2];
-    // tab2[1][1] = tab[1][1] - 2*d*tab[0][2];
-    //		
-    // tab2[0][2] = tab[0][2] + 3*d*tab[1][3];
-    // tab2[1][2] = tab[1][2] - 3*d*tab[0][3];
-    //
-    // tab2[0][3] = tab[0][3];
-    // tab2[1][3] = tab[1][3];
-    //
-    // return new CubicBezierCurve2D(tab2);
-    // }
 
     // ===================================================================
     // methods from OrientedCurve2D interface
@@ -237,7 +214,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return this.asPolyline(100).isInside(pt);
     }
 
-    public double distanceSigned(Point2D point) {
+    public double signedDistance(Point2D point) {
         if (isInside(point))
             return -distance(point.getX(), point.getY());
         else
@@ -245,9 +222,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * @see math.geom2d.domain.OrientedCurve2D#distanceSigned(Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#signedDistance(Point2D)
      */
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
             return -distance(x, y);
         else
@@ -258,23 +235,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // methods from SmoothCurve2D interface
 
     public Vector2D tangent(double t) {
-        double[][] c = getParametric();
-        double dx = c[0][1]+(2*c[0][2]+3*c[0][3]*t)*t;
-        double dy = c[1][1]+(2*c[1][2]+3*c[1][3]*t)*t;
-        return new Vector2D(dx, dy);
+		double[][] c = getParametric();
+		double dx = c[0][1] + (2 * c[0][2] + 3 * c[0][3] * t) * t;
+		double dy = c[1][1] + (2 * c[1][2] + 3 * c[1][3] * t) * t;
+		return new Vector2D(dx, dy);
     }
 
     /**
-     * returns the curvature of the Curve.
+     * Returns the curvature of the Curve.
      */
     public double curvature(double t) {
-        double[][] c = getParametric();
-        double xp = c[0][1]+(2*c[0][2]+3*c[0][3]*t)*t;
-        double yp = c[1][1]+(2*c[1][2]+3*c[1][3]*t)*t;
-        double xs = 2*c[0][2]+6*c[0][3]*t;
-        double ys = 2*c[1][2]+6*c[1][3]*t;
+		double[][] c = getParametric();
+		double xp = c[0][1] + (2 * c[0][2] + 3 * c[0][3] * t) * t;
+		double yp = c[1][1] + (2 * c[1][2] + 3 * c[1][3] * t) * t;
+		double xs = 2 * c[0][2] + 6 * c[0][3] * t;
+		double ys = 2 * c[1][2] + 6 * c[1][3] * t;
 
-        return (xp*ys-yp*xs)/Math.pow(Math.hypot(xp, yp), 3);
+		return (xp * ys - yp * xs) / Math.pow(Math.hypot(xp, yp), 3);
     }
 
     // ===================================================================
@@ -317,11 +294,11 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @see math.geom2d.curve.Curve2D#point(double)
      */
     public Point2D point(double t) {
-        t = Math.min(Math.max(t, 0), 1);
-        double[][] c = getParametric();
-        double x = c[0][0]+(c[0][1]+(c[0][2]+c[0][3]*t)*t)*t;
-        double y = c[1][0]+(c[1][1]+(c[1][2]+c[1][3]*t)*t)*t;
-        return new Point2D(x, y);
+		t = Math.min(Math.max(t, 0), 1);
+		double[][] c = getParametric();
+		double x = c[0][0] + (c[0][1] + (c[0][2] + c[0][3] * t) * t) * t;
+		double y = c[1][0] + (c[1][1] + (c[1][2] + c[1][3] * t) * t) * t;
+		return new Point2D(x, y);
     }
 
     /**
@@ -357,7 +334,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public double project(Point2D point) {
         int N = 100;
-        return this.asPolyline(N).project(point)/(N);
+		return this.asPolyline(N).project(point) / (N);
     }
 
     /**
@@ -376,10 +353,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public CubicBezierCurve2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
-        if (t0>t1)
+        if (t0 > t1)
             return null;
 
-        double dt = t1-t0;
+        double dt = t1 - t0;
         Vector2D v0 = tangent(t0).times(dt);
         Vector2D v1 = tangent(t1).times(dt);
         return new CubicBezierCurve2D(point(t0), v0, point(t1), v1);
@@ -455,15 +432,15 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         Point2D p2 = this.getControl1();
         Point2D p3 = this.getControl2();
         Point2D p4 = this.lastPoint();
-        double xmin = Math.min(Math.min(p1.getX(), p2.getX()), 
-        		Math.min(p3.getX(), p4.getX()));
-        double xmax = Math.max(Math.max(p1.getX(), p2.getX()), 
-        		Math.max(p3.getX(), p4.getX()));
-        double ymin = Math.min(Math.min(p1.getY(), p2.getY()), 
-        		Math.min(p3.getY(), p4.getY()));
-        double ymax = Math.max(Math.max(p1.getY(), p2.getY()), 
-        		Math.max(p3.getY(), p4.getY()));
-        return new Box2D(xmin, xmax, ymin, ymax);
+		double xmin = Math.min(Math.min(p1.getX(), p2.getX()),
+				Math.min(p3.getX(), p4.getX()));
+		double xmax = Math.max(Math.max(p1.getX(), p2.getX()),
+				Math.max(p3.getX(), p4.getX()));
+		double ymin = Math.min(Math.min(p1.getY(), p2.getY()),
+				Math.min(p3.getY(), p4.getY()));
+		double ymax = Math.max(Math.max(p1.getY(), p2.getY()),
+				Math.max(p3.getY(), p4.getY()));
+		return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     /**
@@ -520,15 +497,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         // class cast
         CubicBezierCurve2D bezier = (CubicBezierCurve2D) obj;
         
-        // compare each field
-        if(Math.abs(this.x1-bezier.x1)>eps) return false;
-        if(Math.abs(this.y1-bezier.y1)>eps) return false;
-        if(Math.abs(this.ctrlx1-bezier.ctrlx1)>eps) return false;
-        if(Math.abs(this.ctrly1-bezier.ctrly1)>eps) return false;
-        if(Math.abs(this.ctrlx2-bezier.ctrlx2)>eps) return false;
-        if(Math.abs(this.ctrly2-bezier.ctrly2)>eps) return false;
-        if(Math.abs(this.x2-bezier.x2)>eps) return false;
-        if(Math.abs(this.y2-bezier.y2)>eps) return false;
+		// compare each field
+		if (Math.abs(this.x1 - bezier.x1) > eps)
+			return false;
+		if (Math.abs(this.y1 - bezier.y1) > eps)
+			return false;
+		if (Math.abs(this.ctrlx1 - bezier.ctrlx1) > eps)
+			return false;
+		if (Math.abs(this.ctrly1 - bezier.ctrly1) > eps)
+			return false;
+		if (Math.abs(this.ctrlx2 - bezier.ctrlx2) > eps)
+			return false;
+		if (Math.abs(this.ctrly2 - bezier.ctrly2) > eps)
+			return false;
+		if (Math.abs(this.x2 - bezier.x2) > eps)
+			return false;
+		if (Math.abs(this.y2 - bezier.y2) > eps)
+			return false;
         
         return true;
     }

@@ -444,12 +444,12 @@ CircularShape2D, CircleLine2D {
     }
 
     @Override
-    public double distanceSigned(Point2D point) {
-        return distanceSigned(point.getX(), point.getY());
+    public double signedDistance(Point2D point) {
+        return signedDistance(point.getX(), point.getY());
     }
 
     @Override
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         if (direct)
 			return Point2D.distance(xc, yc, x, y) - r;
 		else

@@ -141,7 +141,7 @@ public final class Polygons2D {
     	double cumArea = 0;
     	Point2D centroid;
     	
-    	for (LinearRing2D ring : polygon.rings()) {
+    	for (LinearRing2D ring : polygon.contours()) {
     		area = computeArea(ring);
     		centroid = computeCentroid(ring);
     		xc += centroid.getX() * area;
@@ -204,7 +204,7 @@ public final class Polygons2D {
      */
     public final static double computeArea(Polygon2D polygon) {
     	double area = 0;
-    	for (LinearRing2D ring : polygon.rings()) {
+    	for (LinearRing2D ring : polygon.contours()) {
     		area += computeArea(ring);
     	}
     	return area;
@@ -427,7 +427,7 @@ public final class Polygons2D {
     
     private final static Poly convertToGpcjPolygon(Polygon2D polygon) {
     	PolyDefault result = new PolyDefault();
-    	for (LinearRing2D ring : polygon.rings())
+    	for (LinearRing2D ring : polygon.contours())
     		result.add(convertToGpcjSimplePolygon(ring));
     	return result;
     }

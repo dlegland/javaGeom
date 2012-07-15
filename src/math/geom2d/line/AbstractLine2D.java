@@ -222,7 +222,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	 */
 	public double[] polarCoefficients() {
 		double tab[] = new double[2];
-		double d = distanceSigned(0, 0);
+		double d = signedDistance(0, 0);
 		tab[0] = Math.abs(d);
 		if (d > 0)
 			tab[1] = (horizontalAngle() + Math.PI) % (2 * Math.PI);
@@ -241,7 +241,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      */
     public double[] polarCoefficientsSigned() {
         double tab[] = new double[2];
-        tab[0] = distanceSigned(0, 0);
+        tab[0] = signedDistance(0, 0);
         tab[1] = horizontalAngle();
         return tab;
     }
@@ -553,8 +553,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * not designed to be used directly, because AbstractLine2D is an abstract
      * class, but it can be used by subclasses to help computations.
      */
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
     /**
@@ -564,7 +564,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * not designed to be used directly, because AbstractLine2D is an abstract
      * class, but it can be used by subclasses to help computations.
      */
-	public double distanceSigned(double x, double y) {
+	public double signedDistance(double x, double y) {
 		double delta = Math.hypot(dx, dy);
 		if (delta < Shape2D.ACCURACY)
 			throw new DegeneratedLine2DException(this);
