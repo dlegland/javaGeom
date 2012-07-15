@@ -93,6 +93,10 @@ public interface Polygon2D extends CirculinearDomain2D {
     public CirculinearContourArray2D<? extends LinearRing2D> 
     boundary();
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<? extends LinearRing2D> contours();
     
     /**
      * Returns the complementary polygon.

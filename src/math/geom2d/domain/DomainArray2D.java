@@ -64,6 +64,36 @@ implements DomainSet2D<T> {
 	}
 
 	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#getBoundary()
+	 */
+	public Boundary2D boundary() {
+		int n = this.shapes.size();
+		ArrayList<Contour2D> boundaries = 
+			new ArrayList<Contour2D> (n);
+		for(Domain2D domain : this)
+			boundaries.addAll(domain.boundary().continuousCurves());
+		return new ContourArray2D<Contour2D>(boundaries);
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<? extends Contour2D> contours() {
+		return this.boundary().continuousCurves();
+	}
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#complement()
+	 */
+	public DomainSet2D<? extends Domain2D> complement() {
+		int n = this.shapes.size();
+		ArrayList<Domain2D> complements = new ArrayList<Domain2D> (n);
+		for(Domain2D domain : this)
+			complements.add(domain.complement());
+		return new DomainArray2D<Domain2D>(complements);
+	}
+
+	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
@@ -95,17 +125,6 @@ implements DomainSet2D<T> {
 	}
 	
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#complement()
-	 */
-	public DomainSet2D<? extends Domain2D> complement() {
-		int n = this.shapes.size();
-		ArrayList<Domain2D> complements = new ArrayList<Domain2D> (n);
-		for(Domain2D domain : this)
-			complements.add(domain.complement());
-		return new DomainArray2D<Domain2D>(complements);
-	}
-
-	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#fill(java.awt.Graphics2D)
 	 */
 	public void fill(Graphics2D g2) {
@@ -113,19 +132,6 @@ implements DomainSet2D<T> {
 			domain.fill(g2);
 	}
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getBoundary()
-	 */
-	public Boundary2D boundary() {
-		int n = this.shapes.size();
-		ArrayList<Contour2D> boundaries = 
-			new ArrayList<Contour2D> (n);
-		for(Domain2D domain : this)
-			boundaries.addAll(domain.boundary().continuousCurves());
-		return new ContourArray2D<Contour2D>(boundaries);
-	}
-
-	
     // ===================================================================
     // methods implementing the Shape2D interface
 

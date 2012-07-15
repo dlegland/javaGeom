@@ -229,7 +229,7 @@ public class Rectangle2D implements Polygon2D {
      */
     public Collection<LinearRing2D> rings() {
         ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(this.vertices()));
+        rings.add(this.asRing());
         return rings;
     }
 
@@ -285,6 +285,19 @@ public class Rectangle2D implements Polygon2D {
     // methods inherited from interface Domain2D
 
    public CirculinearContourArray2D<LinearRing2D> boundary() {
+        return new CirculinearContourArray2D<LinearRing2D>(asRing());
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<LinearRing2D> contours() {
+       ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+       rings.add(this.asRing());
+       return rings;
+	}
+
+	private LinearRing2D asRing() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
@@ -292,12 +305,11 @@ public class Rectangle2D implements Polygon2D {
         pts[1] = new Point2D(w*cot+x0, w*sit+y0);
         pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
         pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
-
-        return new CirculinearContourArray2D<LinearRing2D>(
-        		new LinearRing2D(pts));
-    }
-
-    public Polygon2D complement() {
+		
+        return new LinearRing2D(pts);
+	}
+	
+	public Polygon2D complement() {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];

@@ -188,6 +188,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return CirculinearContourArray2D.create(rings);
     }
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<LinearRing2D> contours() {
+		return Collections.unmodifiableList(rings);
+	}
+
     public Polygon2D complement() {
         // allocate memory for array of reversed rings
         ArrayList<LinearRing2D> reverseLines = 

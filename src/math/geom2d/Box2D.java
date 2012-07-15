@@ -235,7 +235,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * 
      * @return a set of straight lines
      */
-    public Collection<StraightLine2D> getClippingLines() {
+    public Collection<StraightLine2D> clippingLines() {
         ArrayList<StraightLine2D> lines = new ArrayList<StraightLine2D>(4);
 
 		if (!(isInfinite(ymin) || isNaN(ymin)))
@@ -431,7 +431,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
     
     /** Returns the number of vertices of the box. */
-    public int getVertexNumber() {
+    public int vertexNumber() {
         return this.vertices().size();
     }
 
@@ -552,7 +552,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * 
      * @return an instance of HRectangle2D
      */
-    public Polygon2D getAsRectangle() {
+    public Polygon2D asRectangle() {
         return Polygons2D.createRectangle(xmin, ymin, xmax, ymax);
     }
 
@@ -568,7 +568,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
         this.boundary().fill(g2);
     }
 
-    public Box2D getBoundingBox() {
+    public Box2D boundingBox() {
         return new Box2D(xmin, xmax, ymin, ymax);
     }
     /**

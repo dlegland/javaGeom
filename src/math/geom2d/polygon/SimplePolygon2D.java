@@ -35,11 +35,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearBoundary2D;
-import math.geom2d.circulinear.CirculinearContourArray2D;
-import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearDomains2D;
-import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.PointSets2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -354,6 +350,15 @@ public class SimplePolygon2D implements Polygon2D {
         return new CirculinearContourArray2D<LinearRing2D>(
         		new LinearRing2D(array));
     }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Domain2D#contours()
+	 */
+	public Collection<LinearRing2D> contours() {
+        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        rings.add(new LinearRing2D(vertices));
+        return rings;
+	}
 
     /**
      * Returns the polygon created by reversing the order of the vertices.
