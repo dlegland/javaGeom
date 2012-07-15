@@ -244,11 +244,11 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean isInside(Point2D p) {
-		return distanceSigned(p.getX(), p.getY()) < 0;
+		return signedDistance(p.getX(), p.getY()) < 0;
     }
 
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
     /*
@@ -256,7 +256,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * 
      * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
      */
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         boolean direct = angleExtent>0;
 
         double dist = distance(x, y);

@@ -127,13 +127,13 @@ implements SmoothContour2D, Cloneable {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
-    public double distanceSigned(Point2D point) {
+    public double signedDistance(Point2D point) {
         double dist = this.distance(point);
         return this.isInside(point) ? -dist : dist;
     }
 
-    public double distanceSigned(double x, double y) {
-        return this.distanceSigned(new Point2D(x, y));
+    public double signedDistance(double x, double y) {
+        return this.signedDistance(new Point2D(x, y));
     }
 
     public double windingAngle(Point2D point) {

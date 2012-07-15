@@ -357,7 +357,7 @@ public class SimplePolygon2DTest extends TestCase {
         });
     	Box2D box = new Box2D(0, 500, 0, 500);
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(1, clipped.rings().size());
+    	assertEquals(1, clipped.contours().size());
     }
     
     public void testClipBox2D_intersect() {
@@ -369,7 +369,7 @@ public class SimplePolygon2DTest extends TestCase {
         });
     	Box2D box = new Box2D(0, 200, 0, 200);
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(1, clipped.rings().size());
+    	assertEquals(1, clipped.contours().size());
     }
     
     public void testClipBox2D_intersectMulti() {
@@ -387,7 +387,7 @@ public class SimplePolygon2DTest extends TestCase {
     	Box2D box = new Box2D(100, 200, 100, 200);
     	
     	Polygon2D clipped = polygon.clip(box);
-    	assertEquals(2, clipped.rings().size());
+    	assertEquals(2, clipped.contours().size());
     }
     
     public void testClipBox2D_CWPolygon() {
@@ -412,7 +412,7 @@ public class SimplePolygon2DTest extends TestCase {
                 new Point2D(-4, 4) });
     	Point2D p0 = new Point2D(6, 4);
     	
-    	double dist = polygon.distanceSigned(p0);
+    	double dist = polygon.boundary().signedDistance(p0);
     	
     	assertEquals(-2, dist, Shape2D.ACCURACY);
     }

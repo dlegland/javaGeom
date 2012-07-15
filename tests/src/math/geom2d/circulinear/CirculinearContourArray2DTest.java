@@ -1,9 +1,12 @@
 package math.geom2d.circulinear;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.domain.Contour2D;
 import math.geom2d.transform.CircleInversion2D;
 
 public class CirculinearContourArray2DTest extends TestCase {
@@ -18,9 +21,9 @@ public class CirculinearContourArray2DTest extends TestCase {
 		CirculinearDomain2D buffer = array.buffer(10);
 		assertFalse(buffer.isEmpty());
 		
-		CirculinearBoundary2D boundary = buffer.boundary();
-		assertEquals(4, boundary.continuousCurves().size());
-		for (CirculinearContour2D contour : boundary.continuousCurves())
+		Collection<? extends Contour2D> contours = buffer.contours();
+		assertEquals(4, contours.size());
+		for (Contour2D contour : contours)
 			assertTrue(contour instanceof Circle2D);
 	}
 

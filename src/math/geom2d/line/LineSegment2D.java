@@ -195,13 +195,13 @@ implements Cloneable, CirculinearElement2D {
     // Methods implementing the OrientedCurve2D interface
 
     @Override
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         Point2D proj = super.projectedPoint(x, y);
         if (contains(proj))
-            return super.distanceSigned(x, y);
+            return super.signedDistance(x, y);
 
 		double d = this.distance(x, y);
-		return super.distanceSigned(x, y) > 0 ? d : -d;
+		return super.signedDistance(x, y) > 0 ? d : -d;
 	}
     
     

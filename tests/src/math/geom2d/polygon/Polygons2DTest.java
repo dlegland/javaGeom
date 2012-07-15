@@ -188,7 +188,7 @@ public class Polygons2DTest extends TestCase {
         assertNotNull(union);
         assertEquals(24, union.vertexNumber());
         
-        assertEquals(4, union.rings().size());
+        assertEquals(4, union.contours().size());
     }
 
     /**
@@ -316,7 +316,7 @@ public class Polygons2DTest extends TestCase {
         assertNotNull(union);
         assertEquals(8, union.vertexNumber());
         
-        assertEquals(2, union.rings().size());
+        assertEquals(2, union.contours().size());
     }
 
     /**
@@ -381,7 +381,7 @@ public class Polygons2DTest extends TestCase {
         assertNotNull(diff);
         assertEquals(8, diff.vertexNumber());
         
-        assertEquals(2, diff.rings().size());
+        assertEquals(2, diff.contours().size());
         
         // Check if vertices are the good ones
         Collection<Point2D> vertices = diff.vertices();

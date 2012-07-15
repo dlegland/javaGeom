@@ -149,8 +149,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         return angle;
     }
 
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
     /*
@@ -158,7 +158,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * 
      * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
      */
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         double dist = this.distance(x, y);
 
         if (this.isInside(new Point2D(x, y)))

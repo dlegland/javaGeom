@@ -117,11 +117,11 @@ implements SmoothOrientedCurve2D, Cloneable {
 		}
 	}
 
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
             return -distance(x, y);
         return -distance(x, y);

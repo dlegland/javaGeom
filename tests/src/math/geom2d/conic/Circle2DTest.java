@@ -236,13 +236,13 @@ public class Circle2DTest extends TestCase {
      */
     public void testGetSignedDistancePoint2D() {
         Circle2D circle = new Circle2D(0, 0, 10);
-        assertEquals(circle.distanceSigned(new Point2D(10, 0)), 0, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(10, 0)), 0, 1e-14);
         
-        assertEquals(circle.distanceSigned(new Point2D(0, 0)), -10, 1e-14);
-        assertEquals(circle.distanceSigned(new Point2D(6, 0)), -4, 1e-14);
-        assertEquals(circle.distanceSigned(new Point2D(0, 6)), -4, 1e-14);
-        assertEquals(circle.distanceSigned(new Point2D(-6, 0)), -4, 1e-14);
-        assertEquals(circle.distanceSigned(new Point2D(0, -6)), -4, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(0, 0)), -10, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(6, 0)), -4, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(0, 6)), -4, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(-6, 0)), -4, 1e-14);
+        assertEquals(circle.signedDistance(new Point2D(0, -6)), -4, 1e-14);
     }
     
 	/*

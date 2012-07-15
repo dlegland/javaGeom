@@ -68,40 +68,16 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     // ===================================================================
-    // methods specific to MultiPolygon2D
-
-    /**
-    * @deprecated use addRing instead (0.9.1)
-    */
-   @Deprecated
-    public void addPolygon(SimplePolygon2D polygon) {
-        rings.addAll(polygon.rings());
-    }
-
-    /**
-     * Return the set of (oriented) polygons forming this MultiPolygon2D.
-     * 
-     * @return a set of Polygon2D.
-     * @deprecated use getRings instead (0.9.1)
-     */
-    @Deprecated
-    public Collection<SimplePolygon2D> getPolygons() {
-        // allocate memory for polygon array
-        ArrayList<SimplePolygon2D> polygons = new ArrayList<SimplePolygon2D>();
-        
-        // create a new SimplePolygon with each ring
-        for (LinearRing2D ring : rings)
-            polygons.add(new SimplePolygon2D(ring.vertices()));
-        return polygons;
-    }
-    
-    // ===================================================================
     // Management of rings
 
     public void addRing(LinearRing2D ring) {
         rings.add(ring);
     }
 
+    public void insertRing(int index, LinearRing2D ring) {
+    	rings.add(index, ring);
+    }
+    
     public void removeRing(LinearRing2D ring) {
         rings.remove(ring);
     }
@@ -114,17 +90,17 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return rings.get(index);
     }
 
-    public void insertRing(int index, LinearRing2D ring) {
-    	rings.add(index, ring);
-    }
-    
     public void setRing(int index, LinearRing2D ring) {
         rings.set(index, ring);
     }
 
-    public int getRingNumber() {
+    public int ringNumber() {
         return rings.size();
     }
+
+    
+    // ===================================================================
+    // methods implementing the Polygon2D interface
 
     /**
      * Computes the signed area of the polygon. 
@@ -144,16 +120,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     	return Polygons2D.computeCentroid(this);
     }
 
-    // ===================================================================
-    // methods implementing the Polygon2D interface
-
-  
-    /* (non-Javadoc)
-     * @see math.geom2d.polygon.Polygon2D#getRings()
-     */
-    public Collection<LinearRing2D> rings() {
-        return Collections.unmodifiableList(rings);
-    }
 
 	// ===================================================================
     // methods inherited from Domain2D interface
@@ -290,11 +256,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     public double distance(Point2D p) {
-        return Math.max(this.boundary().distanceSigned(p), 0);
+        return Math.max(this.boundary().signedDistance(p), 0);
     }
 
     public double distance(double x, double y) {
-        return Math.max(this.boundary().distanceSigned(x, y), 0);
+        return Math.max(this.boundary().signedDistance(x, y), 0);
     }
 
     public boolean isBounded() {
@@ -306,7 +272,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         // Computes the signed area
         double area = 0;
         for (LinearRing2D ring : rings)
-            area += ring.areaSigned();
+            area += ring.area();
 
         // bounded if positive area
         return area>0;

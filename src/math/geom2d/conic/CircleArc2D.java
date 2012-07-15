@@ -299,16 +299,16 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public boolean isInside(Point2D point) {
-		return distanceSigned(point.getX(), point.getY()) < 0;
+		return signedDistance(point.getX(), point.getY()) < 0;
     }
 
     @Override
-    public double distanceSigned(Point2D p) {
-        return distanceSigned(p.getX(), p.getY());
+    public double signedDistance(Point2D p) {
+        return signedDistance(p.getX(), p.getY());
     }
 
     @Override
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         double dist = distance(x, y);
         Point2D point = new Point2D(x, y);
 

@@ -78,10 +78,10 @@ public class TestLines{
 		p2 = new Point2D(1, 1);				
 		line1 = new StraightLine2D(p1, p2);
 		
-		System.out.println("point (0,0) :" + line1.distanceSigned(0,0));
-		System.out.println("point (1,0) :" + line1.distanceSigned(1,0));
-		System.out.println("point (4,0) :" + line1.distanceSigned(4, 0));
-		System.out.println("point (0,4) :" + line1.distanceSigned(0, 4));
-		System.out.println("point (10, 0) :" + line1.distanceSigned(10, 0));
+		System.out.println("point (0,0) :" + line1.signedDistance(0,0));
+		System.out.println("point (1,0) :" + line1.signedDistance(1,0));
+		System.out.println("point (4,0) :" + line1.signedDistance(4, 0));
+		System.out.println("point (0,4) :" + line1.signedDistance(0, 4));
+		System.out.println("point (10, 0) :" + line1.signedDistance(10, 0));
 	}
 }

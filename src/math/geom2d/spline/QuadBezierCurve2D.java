@@ -76,9 +76,11 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param coefs the coefficients of the QuadBezierCurve2D.
      */
     public QuadBezierCurve2D(double[][] coefs) {
-        this(coefs[0][0], coefs[1][0], coefs[0][0]+coefs[0][1]/2.0, coefs[1][0]
-                +coefs[1][1]/2.0, coefs[0][0]+coefs[0][1]+coefs[0][2],
-                coefs[1][0]+coefs[1][1]+coefs[1][2]);
+		this(coefs[0][0], coefs[1][0], 
+				coefs[0][0] + coefs[0][1] / 2.0,
+				coefs[1][0] + coefs[1][1] / 2.0, 
+				coefs[0][0] + coefs[0][1] + coefs[0][2], 
+				coefs[1][0] + coefs[1][1] + coefs[1][2]);
     }
 
     /**
@@ -148,13 +150,13 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public double[][] getParametric() {
         double[][] tab = new double[2][3];
-        tab[0][0] = x1;
-        tab[0][1] = 2*ctrlx-2*x1;
-        tab[0][2] = x2-2*ctrlx+x1;
+		tab[0][0] = x1;
+		tab[0][1] = 2 * ctrlx - 2 * x1;
+		tab[0][2] = x2 - 2 * ctrlx + x1;
 
-        tab[1][0] = y1;
-        tab[1][1] = 2*ctrly-2*y1;
-        tab[1][2] = y2-2*ctrly+y1;
+		tab[1][0] = y1;
+		tab[1][1] = 2 * ctrly - 2 * y1;
+		tab[1][2] = y2 - 2 * ctrly + y1;
         return tab;
     }
 
@@ -181,7 +183,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return this.asPolyline(100).isInside(pt);
     }
 
-    public double distanceSigned(Point2D point) {
+    public double signedDistance(Point2D point) {
         if (isInside(point))
             return -distance(point.getX(), point.getY());
         else
@@ -189,9 +191,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * @see math.geom2d.domain.OrientedCurve2D#distanceSigned(Point2D)
+     * @see math.geom2d.domain.OrientedCurve2D#signedDistance(Point2D)
      */
-    public double distanceSigned(double x, double y) {
+    public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
             return -distance(x, y);
         else
@@ -202,23 +204,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // methods from SmoothCurve2D interface
 
     public Vector2D tangent(double t) {
-        double[][] c = getParametric();
-        double dx = c[0][1]+2*c[0][2]*t;
-        double dy = c[1][1]+2*c[1][2]*t;
-        return new Vector2D(dx, dy);
-    }
+		double[][] c = getParametric();
+		double dx = c[0][1] + 2 * c[0][2] * t;
+		double dy = c[1][1] + 2 * c[1][2] * t;
+		return new Vector2D(dx, dy);
+	}
 
     /**
      * returns the curvature of the Curve.
      */
     public double curvature(double t) {
         double[][] c = getParametric();
-        double xp = c[0][1]+2*c[0][2]*t;
-        double yp = c[1][1]+2*c[1][2]*t;
-        double xs = 2*c[0][2];
-        double ys = 2*c[1][2];
+		double xp = c[0][1] + 2 * c[0][2] * t;
+		double yp = c[1][1] + 2 * c[1][2] * t;
+		double xs = 2 * c[0][2];
+		double ys = 2 * c[1][2];
 
-        return (xp*ys-yp*xs)/Math.pow(Math.hypot(xp, yp), 3);
+		return (xp * ys - yp * xs) / Math.pow(Math.hypot(xp, yp), 3);
     }
 
     // ===================================================================
@@ -262,10 +264,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
-        double[][] c = getParametric();
-        double x = c[0][0]+(c[0][1]+c[0][2]*t)*t;
-        double y = c[1][0]+(c[1][1]+c[1][2]*t)*t;
-        return new Point2D(x, y);
+		double[][] c = getParametric();
+		double x = c[0][0] + (c[0][1] + c[0][2] * t) * t;
+		double y = c[1][0] + (c[1][1] + c[1][2] * t) * t;
+		return new Point2D(x, y);
     }
 
     /**
@@ -292,9 +294,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * Compute position by approximating cubic spline with a polyline.
      */
     public double position(Point2D point) {
-        int N = 100;
-        return this.asPolyline(N).position(point)/(N);
-    }
+		int N = 100;
+		return this.asPolyline(N).position(point) / (N);
+   }
 
     /**
      * Compute position by approximating cubic spline with a polyline.
@@ -318,7 +320,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public QuadBezierCurve2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
-        if (t0>t1)
+		if (t0 > t1)
             return null;
 
         // Extreme points

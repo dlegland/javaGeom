@@ -59,7 +59,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param point a point of the plane
      * @return the signed distance to the curve
      */
-    public abstract double distanceSigned(Point2D point);
+    public abstract double signedDistance(Point2D point);
 
     /**
      * The same as distanceSigned(Point2D), but by passing 2 double as
@@ -69,7 +69,7 @@ public interface OrientedCurve2D extends Curve2D {
      * @param y y-coord of a point
      * @return the signed distance of the point (x,y) to the curve
      */
-    public abstract double distanceSigned(double x, double y);
+    public abstract double signedDistance(double x, double y);
 
     /**
      * Returns true if the point is 'inside' the domain bounded by the curve.

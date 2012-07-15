@@ -687,7 +687,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * inside the interior of the ellipse or not.
      */
     public double windingAngle(Point2D point) {
-		if (this.distanceSigned(point) > 0)
+		if (this.signedDistance(point) > 0)
 			return 0;
 		else
 			return direct ? PI * 2 : -PI * 2;
@@ -707,18 +707,17 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
-    public double distanceSigned(Point2D point) {
-//        Vector2D vector = this.getProjectedVector(point, 1e-10);
-//        if (isInside(point))
-//            return -vector.getNorm();
-//        else
-//            return vector.getNorm();
+    /**
+     * Returns an approximation of the signed distance to the ellipse.
+     * In the current implementation, the ellipse is converted to a polyline.
+     */
+    public double signedDistance(Point2D point) {
     	double dist = this.asPolyline(180).distance(point);
     	return isInside(point) ? -dist : dist;
     }
 
-    public double distanceSigned(double x, double y) {
-        return distanceSigned(new Point2D(x, y));
+    public double signedDistance(double x, double y) {
+        return signedDistance(new Point2D(x, y));
     }
 
     // ===================================================================

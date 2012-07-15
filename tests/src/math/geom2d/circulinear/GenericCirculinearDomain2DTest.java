@@ -79,17 +79,10 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		// extract boundary, and compare to base circle
 		Domain2D buffer = domain.buffer(15);
-		Boundary2D boundary = buffer.boundary();
 		
 		// compare with the theoretical circle
 		Circle2D circle2 = Circle2D.create(center, 30+15, true);
-//		assertTrue(boundary instanceof ContourArray2D<?>);
-//		@SuppressWarnings("unchecked")
-//		ContourArray2D<? extends Contour2D> array = 
-//			(ContourArray2D<? extends Contour2D>) boundary;
-		
-		Collection<? extends Contour2D> contours = boundary.continuousCurves();
-		assertTrue(contours.contains(circle2));
+		assertTrue(buffer.contours().contains(circle2));
 	}
 
 	public void testClip_Astroid() {
@@ -114,7 +107,6 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		Boundary2D boundary = clipped.boundary();
 		assertEquals(1, boundary.continuousCurves().size());
-		
 	}
 
 	public void testContains_Astroid() {
@@ -149,9 +141,9 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		
 		assertFalse(res.isEmpty());
 		
-		CirculinearBoundary2D boundary = res.boundary();
-		assertEquals(2, boundary.continuousCurves().size());
-		for (CirculinearContour2D contour : boundary.continuousCurves())
+		Collection<? extends Contour2D> contours = res.contours();
+		assertEquals(2, contours.size());
+		for (Contour2D contour : contours)
 			assertTrue(contour instanceof Circle2D);
 	}
 }

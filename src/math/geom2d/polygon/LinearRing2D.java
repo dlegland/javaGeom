@@ -102,15 +102,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     // Methods specific to ClosedPolyline2D
 
     /**
-     * Computes area of the polyline, by returning the absolute value of the
-     * signed area.
-     */
-    public double area() {
-        return Math.abs(this.areaSigned());
-    }
-
-    /**
-     * Computes the signed area of the polyline. Algorithm is taken from page:
+     * Computes the signed area of the linear ring. Algorithm is taken from page:
      * <a href="http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/">
      * http://local.wasp.uwa.edu.au/~pbourke/geometry/polyarea/</a>. Signed are
      * is positive if polyline is oriented counter-clockwise, and negative
@@ -118,7 +110,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
      * 
      * @return the signed area of the polyline.
      */
-	public double areaSigned() {
+	public double area() {
 		double area = 0;
 		Point2D prev = this.vertices.get(this.vertices.size() - 1);
 		Point2D point;
@@ -242,7 +234,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     	if (this.contains(point))
     		return true;
     	
-    	double area = this.areaSigned();
+    	double area = this.area();
     	int winding = Polygons2D.windingNumber(this.vertices, point);
     	if (area > 0) {
     		return winding == 1;

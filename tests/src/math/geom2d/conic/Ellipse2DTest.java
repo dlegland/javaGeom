@@ -227,8 +227,8 @@ public class Ellipse2DTest extends TestCase {
 
 	public void testGetSignedDistance(){
 		Ellipse2D el1 = new Ellipse2D(0, 0, 20, 10);
-		assertEquals(el1.distanceSigned(new Point2D(25, 0)), 5, Shape2D.ACCURACY);
-		assertEquals(el1.distanceSigned(new Point2D(0, 15)), 5, Shape2D.ACCURACY);
+		assertEquals(el1.signedDistance(new Point2D(25, 0)), 5, Shape2D.ACCURACY);
+		assertEquals(el1.signedDistance(new Point2D(0, 15)), 5, Shape2D.ACCURACY);
 //		assertEquals(el1.getSignedDistance(new Point2D(15, 0)), -5, Shape2D.ACCURACY);
 //		assertEquals(el1.getSignedDistance(new Point2D(0, 5)), -5, Shape2D.ACCURACY);
 	}

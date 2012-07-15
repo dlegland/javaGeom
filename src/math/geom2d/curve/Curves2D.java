@@ -387,13 +387,13 @@ public abstract class Curves2D {
 				t0 = (t0 + t1) / 2;
 				point1 = curve.point(t0);
 			}
-			if (line.distanceSigned(point1) < 0)
+			if (line.signedDistance(point1) < 0)
 				res.add(curve);
 			return res;
 		}
 
 		// different behavior depending if first point lies inside the box
-		if (line.distanceSigned(point1) < 0 && !line.contains(point1)) {
+		if (line.signedDistance(point1) < 0 && !line.contains(point1)) {
 			pos1 = iter.next().doubleValue();
 			res.add(curve.subCurve(curve.getT0(), pos1));
 		}

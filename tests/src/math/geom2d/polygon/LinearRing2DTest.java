@@ -331,35 +331,33 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(1, clipped.size());
 	}
 
-	public void testGetSignedArea(){
-		LinearRing2D polyline = new LinearRing2D(new Point2D[]{
+	public void testArea_CCW(){
+		LinearRing2D polyline = new LinearRing2D(
 				new Point2D(20, 10),
 				new Point2D(20, 20),
 				new Point2D(10, 20),
-				new Point2D(10, 10)
-		});
-		assertEquals(polyline.areaSigned(), 100, 1e-10);
-		assertEquals(polyline.area(), 100, 1e-10);
-
-		LinearRing2D invert = new LinearRing2D(new Point2D[]{
+				new Point2D(10, 10));
+		assertEquals(100, polyline.area(), 1e-10);
+	}		
+	
+	public void testArea_CW(){
+		LinearRing2D invert = new LinearRing2D(
 				new Point2D(20, 10),
 				new Point2D(10, 10),
 				new Point2D(10, 20),
-				new Point2D(20, 20)
-		});
-		assertEquals(invert.areaSigned(), -100, 1e-10);
-		assertEquals(invert.area(), 100, 1e-10);
+				new Point2D(20, 20));
+		assertEquals(-100, invert.area(), 1e-10);
 	}
 	
-    public void testGetSignedDistance_CW() {
-    	LinearRing2D ring = LinearRing2D.create(new Point2D[]{
+    public void testSignedDistance_CW() {
+    	LinearRing2D ring = new LinearRing2D(
                 new Point2D(4, 4),
                 new Point2D(4, -4),
                 new Point2D(-4, -4),
-                new Point2D(-4, 4) });
+                new Point2D(-4, 4));
     	Point2D p0 = new Point2D(6, 4);
     	
-    	double dist = ring.distanceSigned(p0);
+    	double dist = ring.signedDistance(p0);
     	
     	assertEquals(-2, dist, Shape2D.ACCURACY);
     }

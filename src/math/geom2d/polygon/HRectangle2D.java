@@ -48,7 +48,7 @@ import math.geom2d.transform.CircleInversion2D;
  * can not be rotated, contrary to Rectangle2D. This class is actually simply a
  * wrapper of class <code>java.awt.geom.Rectangle2D.Double</code> with
  * interface <code>AbstractPolygon</code>.
- * @deprecated since 0.10.3
+ * @deprecated since 0.11.0
  */
 @Deprecated
 public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
@@ -140,17 +140,6 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return 4;
     }
 
-    /* (non-Javadoc)
-     * @see math.geom2d.polygon.Polygon2D#getRings()
-     */
-    public Collection<LinearRing2D> rings() {
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
-        rings.add(new LinearRing2D(this.vertices()));
-        return rings;
-    }
-
-    /**
-
     /**
      * Computes the signed area of the polygon. 
      * @return the signed area of the polygon.
@@ -234,26 +223,23 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
     // ===================================================================
     // methods overriding the Shape2D interface
 
+    /**
+     * Returns the distance of the point to the polygon. The result is the
+     * minimal distance computed for each edge if the polygon, or ZERO if the
+     * point lies inside the polygon.
+     */
     public double distance(Point2D p) {
-    	return Math.max(getSignedDistance(p.getX(), p.getY()), 0);
-    }
-
-    public double distance(double x, double y) {
-        return Math.max(getSignedDistance(x, y), 0);
+        return distance(p.getX(), p.getY());
     }
 
     /**
-     * Get the signed distance of the shape to the given point : this distance
-     * is positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
+     * Returns the distance of the point to the polygon. The result is the
+     * minimal distance computed for each edge if the polygon, or ZERO if the
+     * point lies inside the polygon.
      */
-    private double getSignedDistance(double x, double y) {
-        double dist = boundary().distance(x, y);
-        if (contains(x, y))
-            return -dist;
-        else
-            return dist;
+    public double distance(double x, double y) {
+        double dist = boundary().signedDistance(x, y);
+        return Math.max(dist, 0);
     }
 
     /**

@@ -28,8 +28,7 @@ public class CirculinearDomains2D {
 			new ArrayList<CirculinearContour2D>();
 		
 		// iterate on all continuous curves
-		for(CirculinearContour2D contour : 
-			domain.boundary().continuousCurves()) {
+		for(CirculinearContour2D contour : domain.contours()) {
 			// split the curve into a set of non self-intersecting curves
 			for(CirculinearContinuousCurve2D simpleCurve : 
 				CirculinearCurves2D.splitContinuousCurve(contour)) {
