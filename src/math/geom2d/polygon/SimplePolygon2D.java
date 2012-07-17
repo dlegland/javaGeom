@@ -364,7 +364,7 @@ public class SimplePolygon2D implements Polygon2D {
      * point lies inside the polygon.
      */
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     /**
@@ -412,8 +412,8 @@ public class SimplePolygon2D implements Polygon2D {
         Point2D[] array = new Point2D[nPoints];
         Point2D[] res = new Point2D[nPoints];
 
-        for (int i = 0; i<nPoints; i++) {
-            array[i] = this.vertices.get(i);
+		for (int i = 0; i < nPoints; i++) {
+			array[i] = this.vertices.get(i);
             res[i] = new Point2D();
         }
         trans.transform(array, res);
@@ -433,7 +433,7 @@ public class SimplePolygon2D implements Polygon2D {
      * by Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     /**
@@ -458,22 +458,22 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        if (vertices.size()<2)
-            return path;
+		if (vertices.size() < 2)
+			return path;
 
         // move to first point
         Point2D point = vertices.get(0);
-        path.moveTo((float) (point.getX()), (float) (point.getY()));
+        path.moveTo((float) (point.x()), (float) (point.y()));
 
         // line to each point
         for (int i = 0; i<vertices.size(); i++) {
             point = vertices.get(i);
-            path.lineTo((float) (point.getX()), (float) (point.getY()));
+            path.lineTo((float) (point.x()), (float) (point.y()));
         }
 
         // close polygon
         point = vertices.get(0);
-        path.lineTo((float) (point.getX()), (float) (point.getY()));
+        path.lineTo((float) (point.x()), (float) (point.y()));
         path.closePath();
 
         return path;

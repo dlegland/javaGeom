@@ -126,7 +126,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     /** Create a new circle arc with specified point center and radius */
     public CircleArc2D(Point2D center, double radius, double startAngle,
             double angleExtent) {
-        this(center.getX(), center.getY(), radius, startAngle, angleExtent);
+        this(center.x(), center.y(), radius, startAngle, angleExtent);
     }
 
     /**
@@ -135,7 +135,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
      */
     public CircleArc2D(Point2D center, double radius, double start, double end,
             boolean direct) {
-        this(center.getX(), center.getY(), radius, start, end, direct);
+        this(center.x(), center.y(), radius, start, end, direct);
     }
 
     // Constructors based on doubles
@@ -299,12 +299,12 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public boolean isInside(Point2D point) {
-		return signedDistance(point.getX(), point.getY()) < 0;
+		return signedDistance(point.x(), point.y()) < 0;
     }
 
     @Override
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     @Override
@@ -460,7 +460,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     @Override
@@ -575,7 +575,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
         double factor = Math.sqrt(coefs[0]*coefs[0]+coefs[3]*coefs[3]);
 
         // compute parameters of new circle arc
-        double xc = center.getX(), yc = center.getY();
+        double xc = center.x(), yc = center.y();
         double r2 = circle.radius()*factor;
         double startAngle = angle1;
         double angleExtent = Angle2D.formatAngle(angle2-angle1);
@@ -592,7 +592,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
 
     @Override
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     @Override
@@ -660,7 +660,7 @@ implements Cloneable, CircularShape2D, CirculinearElement2D {
     	Point2D center = circle.center();
         return String.format(Locale.US, 
                 "CircleArc2D(%7.2f,%7.2f,%7.2f,%7.5f,%7.5f)", 
-                center.getX(), center.getY(), circle.radius(),
+                center.x(), center.y(), circle.radius(),
                 getStartAngle(), getAngleExtent());
     }
 

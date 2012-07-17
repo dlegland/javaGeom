@@ -43,7 +43,7 @@ public class GrahamScan2D implements ConvexHull2D {
         Point2D lowestPoint = null;
         double lowestY = Double.MAX_VALUE;
         for(Point2D point : points){
-            double y = point.getY();
+            double y = point.y();
             if(y<lowestY){
                 lowestPoint = point;
                 lowestY = y;

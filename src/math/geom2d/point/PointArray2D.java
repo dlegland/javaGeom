@@ -215,7 +215,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * Return distance to the closest point of the collection
      */
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     /*
@@ -283,10 +283,10 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 
         // update max values with each point
         for (Point2D point : points) {
-            xmin = Math.min(xmin, point.getX());
-            ymin = Math.min(ymin, point.getY());
-            xmax = Math.max(xmax, point.getX());
-            ymax = Math.max(ymax, point.getY());
+            xmin = Math.min(xmin, point.x());
+            ymin = Math.min(ymin, point.y());
+            xmax = Math.max(xmax, point.x());
+            ymax = Math.max(ymax, point.y());
         }
         
         // create the bounding box
@@ -325,7 +325,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * @see java.awt.Shape#contains(java.awt.geom.Point2D)
      */
     public boolean contains(Point2D point) {
-        return contains(point.getX(), point.getY());
+        return contains(point.x(), point.y());
     }
 
     /**
@@ -348,8 +348,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     	double x, y;
     	double w = 2 * r;
         for (Point2D point : points) {
-        	x = point.getX();
-        	y = point.getY();
+        	x = point.x();
+        	y = point.y();
             g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, w, w));
         }
     }

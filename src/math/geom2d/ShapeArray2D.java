@@ -165,7 +165,7 @@ implements ShapeSet2D<T>, Cloneable {
 	 * @see math.geom2d.Shape2D#contains(java.awt.geom.Point2D)
 	 */
 	public boolean contains(Point2D p) {
-		return contains(p.getX(), p.getY());
+		return contains(p.x(), p.y());
 	}
 
 	/* (non-Javadoc)
@@ -202,7 +202,7 @@ implements ShapeSet2D<T>, Cloneable {
 	 * @see math.geom2d.Shape2D#getDistance(Point2D)
 	 */
 	public double distance(Point2D p) {
-		return this.distance(p.getX(), p.getY());
+		return this.distance(p.x(), p.y());
 	}
 
 	/* (non-Javadoc)

@@ -129,7 +129,7 @@ implements Cloneable, CirculinearElement2D {
 
     /** Define a new Edge with two extremities. */
     public LineSegment2D(Point2D point1, Point2D point2) {
-        this(point1.getX(), point1.getY(), point2.getX(), point2.getY());
+        this(point1.x(), point1.y(), point2.x(), point2.y());
     }
 
     /** Define a new Edge with two extremities. */

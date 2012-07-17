@@ -73,8 +73,8 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @param t1 the upper bound of line arc parameterization
      */
     public LineArc2D(Point2D point1, Point2D point2, double t0, double t1) {
-        this(point1.getX(), point1.getY(), 
-        		point2.getX()-point1.getX(), point2.getY()-point1.getY(), 
+        this(point1.x(), point1.y(), 
+        		point2.x()-point1.x(), point2.y()-point1.y(), 
         		t0, t1);
     }
 
@@ -293,7 +293,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public boolean contains(Point2D pt) {
-        return contains(pt.getX(), pt.getY());
+        return contains(pt.x(), pt.y());
     }
 
     public boolean contains(double xp, double yp) {

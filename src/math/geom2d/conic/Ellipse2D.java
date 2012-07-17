@@ -67,10 +67,10 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public static Ellipse2D create(Point2D focus1, Point2D focus2, 
     		double chord) {
-        double x1 = focus1.getX();
-        double y1 = focus1.getY();
-        double x2 = focus2.getX();
-        double y2 = focus2.getY();
+        double x1 = focus1.x();
+        double y1 = focus1.y();
+        double x2 = focus2.x();
+        double y2 = focus2.y();
 
         double xc = (x1 + x2) / 2;
         double yc = (y1 + y2) / 2;
@@ -88,7 +88,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     /** Main constructor: define center by a point plus major and minor semi axis */
     public static Ellipse2D create(Point2D center, double l1, double l2) {
-        return new Ellipse2D(center.getX(), center.getY(), l1, l2, 0, true);
+        return new Ellipse2D(center.x(), center.y(), l1, l2, 0, true);
     }
 
     /**
@@ -97,7 +97,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public static Ellipse2D create(Point2D center, double l1, double l2, 
     		double theta) {
-    	return new Ellipse2D(center.getX(), center.getY(), l1, l2, theta, true);
+    	return new Ellipse2D(center.x(), center.y(), l1, l2, theta, true);
     }
 
     /**
@@ -106,7 +106,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public static Ellipse2D create(Point2D center, double l1, double l2, 
     		double theta, boolean direct) {
-    	return new Ellipse2D(center.getX(), center.getY(), l1, l2, theta, direct);
+    	return new Ellipse2D(center.x(), center.y(), l1, l2, theta, direct);
     }
 
     /**
@@ -247,7 +247,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     /** Main constructor: define center by a point plus major and minor semi axis */
     public Ellipse2D(Point2D center, double l1, double l2) {
-        this(center.getX(), center.getY(), l1, l2, 0, true);
+        this(center.x(), center.y(), l1, l2, 0, true);
     }
 
     /** Define center by coordinate, plus major and minor semi axis */
@@ -260,7 +260,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * orientation angle.
      */
     public Ellipse2D(Point2D center, double l1, double l2, double theta) {
-        this(center.getX(), center.getY(), l1, l2, theta, true);
+        this(center.x(), center.y(), l1, l2, theta, true);
     }
 
     /**
@@ -314,7 +314,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
     public Point2D projectedPoint(Point2D point) {
 		Vector2D polar = this.projectedVector(point, Shape2D.ACCURACY);
-		return new Point2D(point.getX() + polar.getX(), point.getY() + polar.getY());
+		return new Point2D(point.x() + polar.x(), point.y() + polar.y());
     }
 
     /**
@@ -335,8 +335,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		double ot = 1.0 / 3.0;
 
 		// center the ellipse
-		double x = point.getX() - xc;
-		double y = point.getY() - yc;
+		double x = point.x() - xc;
+		double y = point.y() - yc;
 
 		double la, lb, theta;
 		if (r1 >= r2) {
@@ -702,8 +702,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		AffineTransform2D rot = AffineTransform2D.createRotation(this.xc,
 				this.yc, -this.theta);
 		Point2D pt = rot.transform(point);
-		double xp = (pt.getX() - this.xc) / this.r1;
-		double yp = (pt.getY() - this.yc) / this.r2;
+		double xp = (pt.x() - this.xc) / this.r1;
+		double yp = (pt.y() - this.yc) / this.r2;
 		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
@@ -836,8 +836,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
 
 	private Point2D toUnitCircle(Point2D point) {
 		// extract coordinates
-    	double xp = point.getX();
-        double yp = point.getY();
+    	double xp = point.x();
+        double yp = point.y();
 
 		// translate
 		xp = xp - this.xc;
@@ -864,8 +864,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
 	
     public double position(Point2D point) {
         Point2D p2 = toUnitCircle(point);
-        double xp = p2.getX();
-        double yp = p2.getY();
+        double xp = p2.x();
+        double yp = p2.y();
 
         // compute angle
         double angle = Angle2D.horizontalAngle(xp, yp);
@@ -883,8 +883,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
      */
     public double project(Point2D point) {
         Point2D p2 = toUnitCircle(point);
-        double xp = p2.getX();
-        double yp = p2.getY();
+        double xp = p2.x();
+        double yp = p2.y();
 
         // compute angle
         double angle = Angle2D.horizontalAngle(xp, yp);
@@ -1033,8 +1033,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
     public Ellipse2D transform(AffineTransform2D trans) {
         Ellipse2D result = Ellipse2D.transformCentered(this, trans);
         Point2D center = this.center().transform(trans);
-        result.xc = center.getX();
-        result.yc = center.getY();
+        result.xc = center.x();
+        result.yc = center.y();
 		result.direct = !(this.direct ^ trans.isDirect());
         return result;
     }
@@ -1047,7 +1047,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
      * Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     /**

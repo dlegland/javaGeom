@@ -116,7 +116,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 		Point2D point;
 		for (int i = 0; i < vertices.size(); i++) {
 			point = this.vertices.get(i);
-			area += prev.getX() * point.getY() - prev.getY() * point.getX();
+			area += prev.x() * point.y() - prev.y() * point.x();
 			prev = point;
 		}
 		return area /= 2;
@@ -288,10 +288,10 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 		Point2D p1 = vertices.get(ind1);
 
 		// position on line;
-		double x0 = p0.getX();
-		double y0 = p0.getY();
-		double dx = p1.getX() - x0;
-		double dy = p1.getY() - y0;
+		double x0 = p0.x();
+		double y0 = p0.y();
+		double dx = p1.x() - x0;
+		double dy = p1.y() - y0;
 
 		return new Point2D(x0 + tl * dx, y0 + tl *dy);
     }
@@ -414,11 +414,11 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
         // move to last first point of the curve (then a line will be drawn to
         // the first point)
         Point2D p0 = this.lastPoint();
-        path.moveTo((float) p0.getX(), (float) p0.getY());
+        path.moveTo((float) p0.x(), (float) p0.y());
         
         // process each point
         for(Point2D point : vertices)
-            path.lineTo((float) point.getX(), (float) point.getY());
+            path.lineTo((float) point.x(), (float) point.y());
         
         // close the path, even if the path is already at the right position
         path.closePath();

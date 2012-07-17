@@ -115,7 +115,7 @@ public class GenericDomain2D implements Domain2D {
     // methods implementing the Shape2D interface
 
     public double distance(Point2D p) {
-        return Math.max(boundary.signedDistance(p.getX(), p.getY()), 0);
+        return Math.max(boundary.signedDistance(p.x(), p.y()), 0);
     }
 
     public double distance(double x, double y) {
@@ -171,14 +171,14 @@ public class GenericDomain2D implements Domain2D {
     }
 
     public boolean contains(double x, double y) {
-        return boundary.signedDistance(x, y)<=0;
+		return boundary.signedDistance(x, y) <= 0;
     }
 
     // ===================================================================
     // methods implementing the Shape interface
 
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     public void draw(Graphics2D g2) {

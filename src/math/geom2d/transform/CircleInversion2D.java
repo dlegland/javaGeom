@@ -129,15 +129,15 @@ public class CircleInversion2D implements Bijection2D {
             for (int i = 0; i<dst.length; i++)
                 dst[i] = new Point2D();
 
-        xc = center.getX();
-        yc = center.getY();
+        xc = center.x();
+        yc = center.y();
         r  = radius;
 
         // transform each point
         for (int i = 0; i<src.length; i++) {
-            d = Point2D.distance(src[i].getX(), src[i].getY(), xc, yc);
+            d = Point2D.distance(src[i].x(), src[i].y(), xc, yc);
             d = r*r/d;
-            theta = Math.atan2(src[i].getY()-yc, src[i].getX()-xc);
+            theta = Math.atan2(src[i].y()-yc, src[i].x()-xc);
             dst[i] = new Point2D(d*Math.cos(theta), d*Math.sin(theta));
         }
 

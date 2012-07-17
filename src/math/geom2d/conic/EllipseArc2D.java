@@ -244,11 +244,11 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean isInside(Point2D p) {
-		return signedDistance(p.getX(), p.getY()) < 0;
+		return signedDistance(p.x(), p.y()) < 0;
     }
 
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     /*
@@ -284,7 +284,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 		if (!direct && left1)
 			return -dist;
 
-		ray = new Ray2D(p2, -sin(endAngle),cos(endAngle));
+		ray = new Ray2D(p2, -sin(endAngle), cos(endAngle));
         boolean left2 = ray.isInside(point);
 		if (direct && !left2)
 			return dist;
@@ -460,7 +460,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @see math.geom2d.Shape2D#getDistance(math.geom2d.Point2D)
      */
     public double distance(Point2D point) {
-        return distance(point.getX(), point.getY());
+        return distance(point.x(), point.y());
     }
 
     /*
@@ -511,10 +511,10 @@ implements SmoothOrientedCurve2D, Cloneable {
         Point2D p1 = lastPoint();
 
         // get coordinate of ending points
-        double x0 = p0.getX();
-        double y0 = p0.getY();
-        double x1 = p1.getX();
-        double y1 = p1.getY();
+        double x0 = p0.x();
+        double y0 = p0.y();
+        double x1 = p1.x();
+        double y1 = p1.y();
 
         // intialize min and max coords
         double xmin = min(x0, x1);
@@ -524,8 +524,8 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // check cases arc contains one maximum
         Point2D center = ellipse.center();
-        double xc = center.getX();
-		double yc = center.getY();
+        double xc = center.x();
+		double yc = center.y();
 		double endAngle = startAngle + angleExtent;
 		boolean direct = angleExtent >= 0;
 		if (Angle2D.containsAngle(startAngle, endAngle, PI / 2 + ellipse.theta, direct))
@@ -581,7 +581,7 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @see java.awt.Shape#contains(Point2D)
      */
     public boolean contains(Point2D point) {
-        return contains(point.getX(), point.getY());
+        return contains(point.x(), point.y());
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
@@ -610,9 +610,9 @@ implements SmoothOrientedCurve2D, Cloneable {
     		
     		// append a cubic curve to the path
     		path.curveTo(
-    				p1.getX() + v1.getX(), p1.getY() + v1.getY(),
-					p2.getX() - v2.getX(), p2.getY() - v2.getY(), 
-					p2.getX(), p2.getY());
+    				p1.x() + v1.x(), p1.y() + v1.y(),
+					p2.x() - v2.x(), p2.y() - v2.y(), 
+					p2.x(), p2.y());
     	}
 		return path;    		
     }
@@ -623,7 +623,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
         // move to the first point
         Point2D point = this.firstPoint();
-        path.moveTo((float) point.getX(), (float) point.getY());
+        path.moveTo((float) point.x(), (float) point.y());
 
         // append the curve
         path = this.appendPath(path);
@@ -764,7 +764,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     	Point2D center = ellipse.center();
         return String.format(Locale.US, 
                 "EllipseArc2D(%7.2f,%7.2f,%7.2f,%7.2f,%7.5f,%7.5f,%7.5f)", 
-                center.getX(), center.getY(), 
+                center.x(), center.y(), 
                 ellipse.r1, ellipse.r2, ellipse.theta,
                 startAngle, angleExtent);
     }

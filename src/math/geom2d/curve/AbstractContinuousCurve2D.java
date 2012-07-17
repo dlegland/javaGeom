@@ -114,7 +114,7 @@ implements ContinuousCurve2D, Cloneable {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         
 		Point2D point = this.firstPoint();
-        path.moveTo((float) point.getX(), (float)  point.getY());
+        path.moveTo((float) point.x(), (float)  point.y());
         path = this.appendPath(path);
         return path;
 	}

@@ -119,7 +119,7 @@ implements Boundary2D {
     }
 
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     /*
@@ -140,7 +140,7 @@ implements Boundary2D {
     }
 
     public boolean isInside(Point2D point) {
-        return this.signedDistance(point.getX(), point.getY())<0;
+        return this.signedDistance(point.x(), point.y()) < 0;
     }
 
     // ===================================================================

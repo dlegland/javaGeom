@@ -211,14 +211,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
         Point2D p1 = vertices.get(ind1);
 
         // position on line;
-
-        double x0 = p0.getX();
-        double y0 = p0.getY();
-        double dx = p1.getX()-x0;
-        double dy = p1.getY()-y0;
-
-        return new Point2D(x0+tl*dx, y0+tl*dy);
-    }
+		double x0 = p0.x();
+		double y0 = p0.y();
+		double dx = p1.x() - x0;
+		double dy = p1.y() - y0;
+		return new Point2D(x0 + tl * dx, y0 + tl * dy);
+	}
 
     /**
      * Returns the number of points in the polyline, minus one.
@@ -246,7 +244,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
         Point2D[] points2 = new Point2D[vertices.size()];
         int n = vertices.size();
         for (int i = 0; i < n; i++)
-        	points2[i] = vertices.get(n-1-i);
+			points2[i] = vertices.get(n - 1 - i);
         return new Polyline2D(points2);
     }
 
@@ -312,7 +310,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public Polyline2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[vertices.size()];
-        for (int i = 0; i<vertices.size(); i++)
+		for (int i = 0; i < vertices.size(); i++)
             pts[i] = trans.transform(vertices.get(i));
         return new Polyline2D(pts);
     }
@@ -336,7 +334,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
         // line to each other point
         while (iter.hasNext()) {
             point = iter.next();
-            path.lineTo((float) (point.getX()), (float) (point.getY()));
+            path.lineTo((float) (point.x()), (float) (point.y()));
         }
 
         return path;
@@ -355,12 +353,12 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         // move to first point
         Point2D point = iter.next();
-        path.moveTo((float) (point.getX()), (float) (point.getY()));
+        path.moveTo((float) (point.x()), (float) (point.y()));
 
         // line to each other point
         while (iter.hasNext()) {
             point = iter.next();
-            path.lineTo((float) (point.getX()), (float) (point.getY()));
+            path.lineTo((float) (point.x()), (float) (point.y()));
         }
 
         return path;

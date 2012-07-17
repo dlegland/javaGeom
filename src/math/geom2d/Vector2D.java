@@ -159,13 +159,29 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     // ===================================================================
     // accessors
 
-    public double getX() {
+    public double x() {
         return this.x;
     }
 
-    public double getY() {
+	/**
+	 * @deprecated replaces by x() (since 0.11.1) 
+	 */
+	@Deprecated
+	public double getX() {
+		return x;
+	}
+
+    public double y() {
         return this.y;
     }
+
+	/**
+	 * @deprecated replaces by y() (since 0.11.1) 
+	 */
+	@Deprecated
+	public double getY() {
+		return y;
+	}
 
     /**
      * Returns the opposite vector v2 of this, such that the sum of this and v2

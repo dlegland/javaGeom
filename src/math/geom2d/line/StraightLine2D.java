@@ -70,7 +70,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * Creates a straight line going through a point and with a given angle.
      */
     public static StraightLine2D create(Point2D point, double angle) {
-        return new StraightLine2D(point.getX(), point.getY(), Math.cos(angle),
+        return new StraightLine2D(point.x(), point.y(), Math.cos(angle),
                 Math.sin(angle));
     }
 
@@ -199,7 +199,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * specified direction vector.
      */
     public StraightLine2D(Point2D point, Vector2D direction) {
-        this(point.getX(), point.getY(), direction.getX(), direction.getY());
+        this(point.x(), point.y(), direction.x(), direction.y());
     }
 
     /**
@@ -207,7 +207,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * specified direction vector.
      */
     public StraightLine2D(Point2D point, double dx, double dy) {
-        this(point.getX(), point.getY(), dx, dy);
+        this(point.x(), point.y(), dx, dy);
     }
 
     /**
@@ -215,7 +215,7 @@ public class StraightLine2D extends AbstractLine2D implements
      * specified direction given by angle.
      */
     public StraightLine2D(Point2D point, double angle) {
-        this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
+        this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
     }
 
     /**
@@ -513,7 +513,7 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     @Override
     public boolean contains(Point2D p) {
-        return super.supportContains(p.getX(), p.getY());
+        return super.supportContains(p.x(), p.y());
     }
 
     /** Throws an infiniteShapeException */

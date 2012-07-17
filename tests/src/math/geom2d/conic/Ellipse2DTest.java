@@ -195,8 +195,8 @@ public class Ellipse2DTest extends TestCase {
 		for(int i=0; i<Npts; i++){
 			double pos =((double)i)*2*Math.PI/Npts;
 			Point2D point = ellipse.point(pos);
-			double x = point.getX();
-			double y = point.getY();
+			double x = point.x();
+			double y = point.y();
 			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
 				coefs[3]*x + coefs[4]*y + coefs[5];
 			assertTrue(Math.abs(sum)<1e-12);			
@@ -207,11 +207,11 @@ public class Ellipse2DTest extends TestCase {
 		for(int i=0; i<Npts; i++){
 			double pos =((double)i)*2*Math.PI/Npts;
 			Point2D point = ellipse.point(pos);
-			double x = point.getX();
-			double y = point.getY();
-			double sum = coefs[0]*x*x + coefs[1]*x*y + coefs[2]*y*y +
-				coefs[3]*x + coefs[4]*y + coefs[5];
-			assertTrue(Math.abs(sum)<1e-12);			
+			double x = point.x();
+			double y = point.y();
+			double sum = coefs[0] * x * x + coefs[1] * x * y + coefs[2] * y * y
+					+ coefs[3] * x + coefs[4] * y + coefs[5];
+			assertTrue(Math.abs(sum) < 1e-12);	
 		}
 	}
 	

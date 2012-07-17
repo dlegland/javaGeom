@@ -86,7 +86,7 @@ public class TriangleGrid2D implements Grid2D {
      * @param point the grid origin
      */
     public TriangleGrid2D(Point2D point) {
-        this(point.getX(), point.getY(), 1, 0);
+        this(point.x(), point.y(), 1, 0);
     }
 
     /**
@@ -94,7 +94,7 @@ public class TriangleGrid2D implements Grid2D {
      * @param s size of the triangle tile
      */
     public TriangleGrid2D(Point2D point, double s) {
-        this(point.getX(), point.getY(), s, 0);
+        this(point.x(), point.y(), s, 0);
     }
 
     /**
@@ -103,7 +103,7 @@ public class TriangleGrid2D implements Grid2D {
      * @param theta orientation of the grid with horizontal
      */
     public TriangleGrid2D(Point2D point, double s, double theta) {
-        this(point.getX(), point.getY(), s, theta);
+        this(point.x(), point.y(), s, theta);
     }
 
     /**
