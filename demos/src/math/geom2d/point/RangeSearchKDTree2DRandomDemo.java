@@ -90,8 +90,8 @@ public class RangeSearchKDTree2DRandomDemo extends JPanel{
 	    
 	    int dir = step%2;
 	    Point2D point = node.getPoint();
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
         
 	    if(dir==0){
 	        // Draw vertical line
@@ -99,10 +99,8 @@ public class RangeSearchKDTree2DRandomDemo extends JPanel{
             new LineSegment2D(x, ymin, x, ymax).draw(g2);
 	        
 	        // reduce x range for each sub tree
-	        drawTree(g2, node.getLeftChild(), step+1, 
-	                xmin, x, ymin, ymax);
-	        drawTree(g2, node.getRightChild(), step+1, 
-	                x, xmax, ymin, ymax);
+	        drawTree(g2, node.getLeftChild(), step+1, xmin, x, ymin, ymax);
+	        drawTree(g2, node.getRightChild(), step+1, x, xmax, ymin, ymax);
 	    } else {
 	        // Draw horizontal line
 	        g2.setColor(Color.BLUE);

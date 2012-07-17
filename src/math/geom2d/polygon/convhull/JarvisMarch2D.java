@@ -40,7 +40,7 @@ public class JarvisMarch2D implements ConvexHull2D {
 
         // Iteration on the set of points to find point with lowest y-coord
         for (Point2D point : points) {
-            y = point.getY();
+            y = point.y();
             if (y<ymin) {
                 ymin = y;
                 lowestPoint = point;

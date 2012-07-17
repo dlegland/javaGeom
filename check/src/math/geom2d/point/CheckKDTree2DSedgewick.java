@@ -86,8 +86,8 @@ public class CheckKDTree2DSedgewick extends JPanel{
 	    
 	    int dir = step%2;
 	    Point2D point = node.getPoint();
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
         
 	    if(dir==0){
 	        // Draw vertical line

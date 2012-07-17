@@ -99,7 +99,7 @@ implements Contour2D, Conic2D, Cloneable {
     }
 
     public Parabola2D(Point2D vertex, double a, double theta) {
-        this(vertex.getX(), vertex.getY(), a, theta);
+        this(vertex.x(), vertex.y(), a, theta);
     }
 
     public Parabola2D(double xv, double yv, double a, double theta) {
@@ -260,7 +260,7 @@ implements Contour2D, Conic2D, Cloneable {
     }
 
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     public double signedDistance(double x, double y) {
@@ -275,8 +275,8 @@ implements Contour2D, Conic2D, Cloneable {
         Point2D p2 = formatPoint(point);
 
         // get coordinate of transformed point
-        double x = p2.getX();
-        double y = p2.getY();
+        double x = p2.x();
+        double y = p2.y();
 
         // check condition of parabola
 		return y > x * x ^ a < 0;
@@ -347,7 +347,7 @@ implements Contour2D, Conic2D, Cloneable {
      */
     public double position(Point2D point) {
         // t parameter is x-coordinate of point
-        return formatPoint(point).getX();
+        return formatPoint(point).x();
     }
 
     /**
@@ -357,14 +357,14 @@ implements Contour2D, Conic2D, Cloneable {
      */
     public double project(Point2D point) {
         // t parameter is x-coordinate of point
-        return formatPoint(point).getX();
+        return formatPoint(point).x();
     }
 
     public Collection<Point2D> intersections(LinearShape2D line) {
         // Computes the lines which corresponds to a "Unit" parabola.
         LinearShape2D line2 = this.formatLine(line);
-        double dx = line2.direction().getX();
-        double dy = line2.direction().getY();
+        double dx = line2.direction().x();
+        double dy = line2.direction().y();
 
         ArrayList<Point2D> points = new ArrayList<Point2D>();
 
@@ -372,7 +372,7 @@ implements Contour2D, Conic2D, Cloneable {
         if (Math.abs(dx)<Shape2D.ACCURACY) {
             if (debug)
                 System.out.println("intersect parabola with vertical line ");
-            double x = line2.origin().getX();
+            double x = line2.origin().x();
 			Point2D point = new Point2D(x, x * x);
             if (line2.contains(point))
                 points.add(line.point(line2.position(point)));
@@ -381,8 +381,8 @@ implements Contour2D, Conic2D, Cloneable {
 
         // Extract formatted line parameters
         Point2D origin = line2.origin();
-        double x0 = origin.getX();
-        double y0 = origin.getY();
+        double x0 = origin.x();
+        double y0 = origin.y();
 
         // Solve second order equation
 		double k = dy / dx; // slope of the line
@@ -435,7 +435,7 @@ implements Contour2D, Conic2D, Cloneable {
     }
 
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     public double distance(double x, double y) {
@@ -531,15 +531,15 @@ implements Contour2D, Conic2D, Cloneable {
         Point2D p2 = formatPoint(new Point2D(x, y));
 
         // get coordinate of transformed point
-        double xp = p2.getX();
-        double yp = p2.getY();
+        double xp = p2.x();
+        double yp = p2.y();
 
         // check condition of parabola
 		return abs(yp - xp * xp) < Shape2D.ACCURACY;
     }
 
     public boolean contains(Point2D point) {
-        return contains(point.getX(), point.getY());
+        return contains(point.x(), point.y());
     }
 
 	// ===================================================================

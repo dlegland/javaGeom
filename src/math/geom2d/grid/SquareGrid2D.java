@@ -33,15 +33,15 @@ public class SquareGrid2D implements Grid2D {
     }
 
     public SquareGrid2D(Point2D origin) {
-        this(origin.getX(), origin.getY(), 1, 1);
+        this(origin.x(), origin.y(), 1, 1);
     }
 
     public SquareGrid2D(Point2D origin, double s) {
-        this(origin.getX(), origin.getY(), s, s);
+        this(origin.x(), origin.y(), s, s);
     }
 
     public SquareGrid2D(Point2D origin, double sx, double sy) {
-        this(origin.getX(), origin.getY(), sx, sy);
+        this(origin.x(), origin.y(), sx, sy);
     }
 
     public SquareGrid2D(double x0, double y0, double s) {
@@ -68,8 +68,8 @@ public class SquareGrid2D implements Grid2D {
      */
     @Deprecated
     public void setOrigin(Point2D point) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
+        this.x0 = point.x();
+        this.y0 = point.y();
     }
 
     public Point2D getOrigin() {
@@ -107,11 +107,11 @@ public class SquareGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getClosestVertex(math.geom2d.Point2D)
      */
-    public Point2D getClosestVertex(Point2D point) {
-        double nx = Math.round((point.getX()-x0)/sx);
-        double ny = Math.round((point.getY()-y0)/sy);
-        return new Point2D(nx*sx+x0, ny*sy+y0);
-    }
+	public Point2D getClosestVertex(Point2D point) {
+		double nx = Math.round((point.x() - x0) / sx);
+		double ny = Math.round((point.y() - y0) / sy);
+		return new Point2D(nx * sx + x0, ny * sy + y0);
+	}
 
     /*
      * (non-Javadoc)
@@ -130,17 +130,17 @@ public class SquareGrid2D implements Grid2D {
         ymax = box.getMaxY();
 
         // coordinates of first vertex in the box
-        xi = Math.ceil((xmin-x0)/sx)*sx+x0;
-        yi = Math.ceil((ymin-y0)/sy)*sy+y0;
+		xi = Math.ceil((xmin - x0) / sx) * sx + x0;
+		yi = Math.ceil((ymin - y0) / sy) * sy + y0;
 
-        ArrayList<LineSegment2D> array = new ArrayList<LineSegment2D>();
+    ArrayList<LineSegment2D> array = new ArrayList<LineSegment2D>();
 
         // add horizontal lines
-        for (y = yi; y-ymax<Shape2D.ACCURACY; y += sy)
+		for (y = yi; y - ymax < Shape2D.ACCURACY; y += sy)
             array.add(new LineSegment2D(xmin, y, xmax, y));
 
         // add vertical lines
-        for (x = xi; x-xmax<Shape2D.ACCURACY; x += sx)
+		for (x = xi; x - xmax < Shape2D.ACCURACY; x += sx)
             array.add(new LineSegment2D(x, ymin, x, ymax));
 
         // return the set of lines

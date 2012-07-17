@@ -330,14 +330,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         Point2D point;
         for (ContinuousCurve2D curve : curves()) {
             point = curve.point(curve.getT0());
-            path.lineTo((float) point.getX(), (float) point.getY());
+            path.lineTo((float) point.x(), (float) point.y());
             curve.appendPath(path);
         }
 
         // eventually close the curve
         if (closed) {
             point = this.firstPoint();
-            path.lineTo((float) point.getX(), (float) point.getY());
+            path.lineTo((float) point.x(), (float) point.y());
         }
 
         return path;
@@ -355,14 +355,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         // move to the first point
         Point2D start, current;
         start = this.firstPoint();
-        path.moveTo((float) start.getX(), (float) start.getY());
+        path.moveTo((float) start.x(), (float) start.y());
         current = start;
 
         // add the path of the first curve
         for(ContinuousCurve2D curve : curves) {
         	start = curve.firstPoint();
 			if (start.distance(current) > Shape2D.ACCURACY)
-				path.lineTo((float) start.getX(), (float) start.getY());
+				path.lineTo((float) start.x(), (float) start.y());
         	path = curve.appendPath(path);
         	current = start;
         }

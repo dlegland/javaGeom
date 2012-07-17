@@ -124,10 +124,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * Constructor from 2 points, giving extreme coordinates of the box.
      */
     public Box2D(Point2D p1, Point2D p2) {
-    	double x1 = p1.getX();
-    	double y1 = p1.getY();
-    	double x2 = p2.getX();
-    	double y2 = p2.getY();
+    	double x1 = p1.x();
+    	double y1 = p1.y();
+    	double x2 = p2.x();
+    	double y2 = p2.y();
         this.xmin = min(x1, x2);
         this.xmax = max(x1, x2);
         this.ymin = min(y1, y2);
@@ -136,7 +136,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
 
     /** Constructor from a point, a width and an height */
     public Box2D(Point2D point, double w, double h) {
-		this(point.getX(), point.getX() + w, point.getY(), point.getY() + h);
+		this(point.x(), point.x() + w, point.y(), point.y() + h);
     }
 
     // ===================================================================
@@ -183,8 +183,8 @@ public class Box2D implements GeometricObject2D, Cloneable {
     // tests of inclusion
 
     public boolean contains(Point2D point) {
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
 		if (x < xmin)
 			return false;
 		if (y < ymin)
@@ -510,10 +510,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
             double ymax = NEGATIVE_INFINITY;
             for (Point2D point : points) {
                 point = point.transform(trans);
-                xmin = min(xmin, point.getX());
-                ymin = min(ymin, point.getY());
-                xmax = max(xmax, point.getX());
-                ymax = max(ymax, point.getY());
+                xmin = min(xmin, point.x());
+                ymin = min(ymin, point.y());
+                xmax = max(xmax, point.x());
+                ymax = max(ymax, point.y());
             }
             return new Box2D(xmin, xmax, ymin, ymax);
         }

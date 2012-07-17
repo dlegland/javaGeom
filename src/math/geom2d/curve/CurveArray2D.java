@@ -459,7 +459,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
     public double position(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
-        double x = point.getX(), y = point.getY();
+        double x = point.x(), y = point.y();
         double pos = 0, t0, t1;
 
         int i = 0;
@@ -480,7 +480,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
     public double project(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
-        double x = point.getX(), y = point.getY();
+        double x = point.x(), y = point.y();
         double pos = 0, t0, t1;
 
         int i = 0;
@@ -592,7 +592,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     // methods inherited from interface Shape2D
 
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     public double distance(double x, double y) {
@@ -681,7 +681,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
 
     /** Returns true if one of the curves contains the point */
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     /** Returns true if one of the curves contains the point */
@@ -705,7 +705,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         Point2D point;
         for (ContinuousCurve2D curve : this.continuousCurves()) {
             point = curve.firstPoint();
-            path.moveTo((float) point.getX(), (float) point.getY());
+            path.moveTo((float) point.x(), (float) point.y());
             path = curve.appendPath(path);
         }
 

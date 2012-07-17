@@ -54,19 +54,19 @@ public class NearestNeighborKDTree2DRandomDemo extends JPanel{
 		
 		// Point coordinate are multiplied by 10 for better drawing
 		points = new ArrayList<Point2D>(nbPoints);
-		for(int i=0; i<nbPoints; i++){
+		for (int i = 0; i < nbPoints; i++) {
 		    points.add(new Point2D(
-		            Math.random()*300+50,
-		            Math.random()*300+50));
+		    		Math.random() * 300 + 50,
+					Math.random() * 300 + 50));
 		}
 		
 		tree = new KDTree2D(points);
 		
 		probes = new ArrayList<Point2D>(9);
-        for(double x=100; x<=300; x+=100)
-            for(double y=100; y<=300; y+=100)
-                probes.add(new Point2D(x, y));
-        
+		for (double x = 100; x <= 300; x += 100)
+			for (double y = 100; y <= 300; y += 100)
+				probes.add(new Point2D(x, y));
+
         this.setBackground(Color.WHITE);
 	}
 	
@@ -94,8 +94,8 @@ public class NearestNeighborKDTree2DRandomDemo extends JPanel{
 	    
 	    int dir = step%2;
 	    Point2D point = node.getPoint();
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
         
 	    if(dir==0){
 	        // Draw vertical line
@@ -103,20 +103,16 @@ public class NearestNeighborKDTree2DRandomDemo extends JPanel{
             new LineSegment2D(x, ymin, x, ymax).draw(g2);
 	        
 	        // reduce x range for each sub tree
-	        drawTree(g2, node.getLeftChild(), step+1, 
-	                xmin, x, ymin, ymax);
-	        drawTree(g2, node.getRightChild(), step+1, 
-	                x, xmax, ymin, ymax);
+	        drawTree(g2, node.getLeftChild(), step+1, xmin, x, ymin, ymax);
+	        drawTree(g2, node.getRightChild(), step+1, x, xmax, ymin, ymax);
 	    } else {
 	        // Draw horizontal line
 	        g2.setColor(Color.BLUE);
 	        new LineSegment2D(xmin, y, xmax, y).draw(g2);
 	        
 	        // reduce y range for each sub tree
-	        drawTree(g2, node.getLeftChild(), step+1, 
-	                xmin, xmax, ymin, y);
-	        drawTree(g2, node.getRightChild(), step+1, 
-	                xmin, xmax, y, ymax);
+	        drawTree(g2, node.getLeftChild(), step+1, xmin, xmax, ymin, y);
+	        drawTree(g2, node.getRightChild(), step+1, xmin, xmax, y, ymax);
 	    }
 	    
 	    g2.setColor(Color.BLACK);

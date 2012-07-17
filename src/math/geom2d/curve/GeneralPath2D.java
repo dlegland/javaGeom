@@ -120,7 +120,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * @param p the specified point
      */
     public synchronized void moveTo(Point2D p) {
-        path.moveTo((float) p.getX(), (float) p.getY());
+        path.moveTo((float) p.x(), (float) p.y());
     }
 
     /**
@@ -141,7 +141,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * @param p the coordinate of the destionation point
      */
     public synchronized void lineTo(Point2D p) {
-        path.lineTo((float) p.getX(), (float) p.getY());
+        path.lineTo((float) p.x(), (float) p.y());
     }
 
     /**
@@ -169,8 +169,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * @param p2 the end point
      */
     public synchronized void quadTo(Point2D p1, Point2D p2) {
-        path.quadTo((float) p1.getX(), (float) p1.getY(), (float) p2.getX(),
-                (float) p2.getY());
+        path.quadTo((float) p1.x(), (float) p1.y(), (float) p2.x(),
+                (float) p2.y());
     }
 
     /**
@@ -204,8 +204,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
      */
     public synchronized void curveTo(Point2D p1,
             Point2D p2, Point2D p3) {
-        path.curveTo((float) p1.getX(), (float) p1.getY(), (float) p2.getX(),
-                (float) p2.getY(), (float) p3.getX(), (float) p3.getY());
+        path.curveTo((float) p1.x(), (float) p1.y(), (float) p2.x(),
+                (float) p2.y(), (float) p3.x(), (float) p3.y());
     }
 
     /**
@@ -384,7 +384,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
      *         otherwise.
      */
     public boolean contains(Point2D p) {
-        return path.contains(new java.awt.Point.Double(p.getX(), p.getY()));
+        return path.contains(new java.awt.Point.Double(p.x(), p.y()));
     }
 
     /**

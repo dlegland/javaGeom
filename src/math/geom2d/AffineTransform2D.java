@@ -110,10 +110,10 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		Point2D origin = line.origin();
 
 		// extract origin and vector coordinates
-		double dx = vector.getX();
-		double dy = vector.getY();
-		double x0 = origin.getX();
-		double y0 = origin.getY();
+		double dx = vector.x();
+		double dy = vector.y();
+		double x0 = origin.x();
+		double y0 = origin.y();
 
 		// compute translation parameters
 		double tx = dx * distance;
@@ -144,10 +144,10 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	public static AffineTransform2D createLineReflection(LinearShape2D line) {
 		Vector2D vector = line.direction();
 		Point2D origin = line.origin();
-		double dx = vector.getX();
-		double dy = vector.getY();
-		double x0 = origin.getX();
-		double y0 = origin.getY();
+		double dx = vector.x();
+		double dy = vector.y();
+		double x0 = origin.x();
+		double y0 = origin.y();
 		double delta = dx * dx + dy * dy;
 
 		return new AffineTransform2D(
@@ -196,7 +196,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	public static AffineTransform2D createQuadrantRotation(Point2D center, 
 			int numQuadrant) {
 		AffineTransform2D trans = createQuadrantRotation(numQuadrant);
-		trans.recenter(center.getX(), center.getY());
+		trans.recenter(center.x(), center.y());
 		return trans;
 	}
 
@@ -211,7 +211,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * Return a rotation around the specified point, with angle in radians.
 	 */
 	public static AffineTransform2D createRotation(Point2D center, double angle) {
-		return AffineTransform2D.createRotation(center.getX(), center.getY(), angle);
+		return AffineTransform2D.createRotation(center.x(), center.y(), angle);
 	}
 
 	/**
@@ -252,8 +252,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	public static AffineTransform2D createScaling(Point2D center, double sx,
 			double sy) {
 		return new AffineTransform2D(
-				sx, 0, (1 - sx) * center.getX(), 
-				0, sy, (1 - sy) * center.getY());
+				sx, 0, (1 - sx) * center.x(), 
+				0, sy, (1 - sy) * center.y());
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 * Return a translation by the given vector.
 	 */
 	public static AffineTransform2D createTranslation(Vector2D vect) {
-		return new AffineTransform2D(1, 0, vect.getX(), 0, 1, vect.getY());
+		return new AffineTransform2D(1, 0, vect.x(), 0, 1, vect.y());
 	}
 
 	/**
@@ -612,8 +612,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 
 	public Point2D transform(Point2D src) {
 		Point2D dst = new Point2D(
-				src.getX() * m00 + src.getY() * m01 + m02, 
-				src.getX() * m10 + src.getY() * m11 + m12);
+				src.x() * m00 + src.y() * m01 + m02, 
+				src.x() * m10 + src.y() * m11 + m12);
 		return dst;
 	}
 
@@ -623,8 +623,8 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 
 		double x, y;
 		for (int i = 0; i < src.length; i++) {
-			x = src[i].getX();
-			y = src[i].getY();
+			x = src[i].x();
+			y = src[i].y();
 			dst[i] = new Point2D(
 					x * m00	+ y * m01 + m02, 
 					x * m10 + y * m11 + m12);

@@ -51,12 +51,12 @@ implements Conic2D, Cloneable {
     
     public static Hyperbola2D create(Point2D center, double a, double b,
     		double theta) {
-        return new Hyperbola2D(center.getX(), center.getY(), a, b, theta, true);
+        return new Hyperbola2D(center.x(), center.y(), a, b, theta, true);
     }
 
     public static Hyperbola2D create(Point2D center, double a, double b,
     		double theta, boolean d) {
-    	return new Hyperbola2D(center.getX(), center.getY(), a, b, theta, d);
+    	return new Hyperbola2D(center.x(), center.y(), a, b, theta, d);
     }
 
     
@@ -196,12 +196,12 @@ implements Conic2D, Cloneable {
     }
 
     public Hyperbola2D(Point2D center, double a, double b, double theta) {
-        this(center.getX(), center.getY(), a, b, theta, true);
+        this(center.x(), center.y(), a, b, theta, true);
     }
 
     public Hyperbola2D(Point2D center, double a, double b, double theta,
             boolean d) {
-        this(center.getX(), center.getY(), a, b, theta, d);
+        this(center.x(), center.y(), a, b, theta, d);
     }
 
     public Hyperbola2D(double xc, double yc, double a, double b, double theta) {
@@ -428,8 +428,8 @@ implements Conic2D, Cloneable {
 
         // Extract formatted line parameters
         Point2D origin = line2.origin();
-        double dx = line2.direction().getX();
-        double dy = line2.direction().getY();
+        double dx = line2.direction().x();
+        double dy = line2.direction().y();
 
         // extract line parameters
         // different strategy depending if line is more horizontal or more
@@ -439,7 +439,7 @@ implements Conic2D, Cloneable {
 
             // slope and intercept of the line: y(x) = k*x + yi
 			double k = dy / dx;
-			double yi = origin.getY() - k * origin.getX();
+			double yi = origin.y() - k * origin.x();
 
             // compute coefficients of second order equation
 			double a = 1 - k * k;
@@ -474,7 +474,7 @@ implements Conic2D, Cloneable {
 
             // slope and intercept of the line: x(y) = k*y + xi
 			double k = dx / dy;
-			double xi = origin.getX() - k * origin.getY();
+			double xi = origin.x() - k * origin.y();
 
 			// compute coefficients of second order equation
 			double a = k * k - 1;
@@ -513,14 +513,14 @@ implements Conic2D, Cloneable {
 
     @Override
     public boolean contains(Point2D point) {
-        return this.contains(point.getX(), point.getY());
+        return this.contains(point.x(), point.y());
     }
 
     @Override
     public boolean contains(double x, double y) {
 		Point2D point = toLocal(new Point2D(x, y));
-		double xa = point.getX() / a;
-		double yb = point.getY() / b;
+		double xa = point.x() / a;
+		double yb = point.y() / b;
 		double res = xa * xa - yb * yb - 1;
 		return abs(res) < 1e-6;
     }
@@ -532,8 +532,8 @@ implements Conic2D, Cloneable {
     public Hyperbola2D transform(AffineTransform2D trans) {
         Hyperbola2D result = Hyperbola2D.transformCentered(this, trans);
         Point2D center = this.getCenter().transform(trans);
-        result.xc = center.getX();
-        result.yc = center.getY();
+        result.xc = center.x();
+        result.yc = center.y();
         //TODO: check convention for transform with indirect transform, see Curve2D.
 		result.direct = this.direct ^ !trans.isDirect();
         return result;

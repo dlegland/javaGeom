@@ -156,19 +156,19 @@ implements LinearElement2D, Cloneable {
     }
 
     public double getX1() {
-        return p1.getX();
+        return p1.x();
     }
 
     public double getY1() {
-        return p1.getY();
+        return p1.y();
     }
 
     public double getX2() {
-        return p2.getX();
+        return p2.x();
     }
 
     public double getY2() {
-        return p2.getY();
+        return p2.y();
     }
 
     /**
@@ -244,8 +244,8 @@ implements LinearElement2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
 	 */
 	public double length(double pos) {
-		double dx = p2.getX() - p1.getX();
-		double dy = p2.getY() - p1.getY();
+		double dx = p2.x() - p1.x();
+		double dy = p2.y() - p1.y();
 		return pos * Math.hypot(dx, dy);
 	}
 
@@ -253,8 +253,8 @@ implements LinearElement2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
 	 */
 	public double position(double length) {
-		double dx = p2.getX() - p1.getX();
-		double dy = p2.getY() - p1.getY();
+		double dx = p2.x() - p1.x();
+		double dy = p2.y() - p1.y();
 		return length / Math.hypot(dx, dy);
 	}
 
@@ -357,7 +357,7 @@ implements LinearElement2D, Cloneable {
     // methods implementing the OrientedCurve2D interface
     
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     public double signedDistance(double x, double y) {
@@ -391,7 +391,7 @@ implements LinearElement2D, Cloneable {
      * Get the distance of the point (x, y) to this edge.
      */
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     /**
@@ -402,8 +402,8 @@ implements LinearElement2D, Cloneable {
         Point2D proj = support.projectedPoint(x, y);
         if (contains(proj))
             return proj.distance(x, y);
-		double d1 = Math.hypot(p1.getX() - x, p1.getY() - y);
-		double d2 = Math.hypot(p2.getX() - x, p2.getY() - y);
+		double d1 = Math.hypot(p1.x() - x, p1.y() - y);
+		double d2 = Math.hypot(p2.x() - x, p2.y() - y);
     // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
         return Math.min(d1, d2);
     }
@@ -503,8 +503,8 @@ implements LinearElement2D, Cloneable {
 
     public Point2D point(double t) {
     	t = Math.min(Math.max(t, 0), 1);
-		double x = p1.getX() * (1 - t) + p2.getX() * t;
-		double y = p1.getY() * (1 - t) + p2.getY() * t;
+		double x = p1.x() * (1 - t) + p2.x() * t;
+		double y = p1.y() * (1 - t) + p2.y() * t;
 		return new Point2D(x, y);
     }
 
@@ -603,7 +603,7 @@ implements LinearElement2D, Cloneable {
      * Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
-        return contains(p.getX(), p.getY());
+        return contains(p.x(), p.y());
     }
 
     /**
@@ -622,13 +622,13 @@ implements LinearElement2D, Cloneable {
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        path.moveTo((float) p1.getX(), (float) p1.getY());
-        path.lineTo((float) p2.getX(), (float) p2.getY());
+        path.moveTo((float) p1.x(), (float) p1.y());
+        path.lineTo((float) p2.x(), (float) p2.y());
         return path;
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        path.lineTo((float) p2.getX(), (float) p2.getY());
+        path.lineTo((float) p2.x(), (float) p2.y());
         return path;
     }
 

@@ -93,12 +93,12 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * @param p2 last point
      */
     public QuadBezierCurve2D(Point2D p1, Point2D ctrl, Point2D p2) {
-        this(p1.getX(), p1.getY(), ctrl.getX(), ctrl.getY(), p2.getX(), p2.getY());
+        this(p1.x(), p1.y(), ctrl.x(), ctrl.y(), p2.x(), p2.y());
     }
 
     public QuadBezierCurve2D(Point2D[] pts) {
-		this(pts[0].getX(), pts[0].getY(), pts[1].getX(), pts[1].getY(), 
-				pts[2].getX(), pts[2].getY());
+		this(pts[0].x(), pts[0].y(), pts[1].x(), pts[1].y(), 
+				pts[2].x(), pts[2].y());
     }
 
     /**
@@ -185,9 +185,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 
     public double signedDistance(Point2D point) {
         if (isInside(point))
-            return -distance(point.getX(), point.getY());
+            return -distance(point.x(), point.y());
         else
-            return distance(point.getX(), point.getY());
+            return distance(point.x(), point.y());
     }
 
     /**
@@ -355,14 +355,14 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	 * @see math.geom2d.Shape2D#contains(Point2D)
 	 */
 	public boolean contains(Point2D p) {
-		return this.contains(p.getX(), p.getY());
+		return this.contains(p.x(), p.y());
 	}
 
 	/**
      * @see math.geom2d.Shape2D#distance(Point2D)
      */
     public double distance(Point2D p) {
-        return this.distance(p.getX(), p.getY());
+        return this.distance(p.x(), p.y());
     }
 
     /**
@@ -412,10 +412,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     	Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();
         Point2D p3 = this.lastPoint();
-        double xmin = Math.min(Math.min(p1.getX(), p2.getX()), p3.getX());
-        double xmax = Math.max(Math.max(p1.getX(), p2.getX()), p3.getX());
-        double ymin = Math.min(Math.min(p1.getY(), p2.getY()), p3.getY());
-        double ymax = Math.max(Math.max(p1.getY(), p2.getY()), p3.getY());
+        double xmin = Math.min(Math.min(p1.x(), p2.x()), p3.x());
+        double xmax = Math.max(Math.max(p1.x(), p2.x()), p3.x());
+        double ymin = Math.min(Math.min(p1.y(), p2.y()), p3.y());
+        double ymax = Math.max(Math.max(p1.y(), p2.y()), p3.y());
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -433,7 +433,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         Point2D p2 = this.getControl();
         Point2D p3 = this.lastPoint();
-        path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
+        path.quadTo(p2.x(), p2.y(), p3.x(), p3.y());
         return path;
     }
 
@@ -442,8 +442,8 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();
         Point2D p3 = this.lastPoint();
-        path.moveTo(p1.getX(), p1.getY());
-        path.quadTo(p2.getX(), p2.getY(), p3.getX(), p3.getY());
+        path.moveTo(p1.x(), p1.y());
+        path.quadTo(p2.x(), p2.y(), p3.x(), p3.y());
         return path;
     }
 

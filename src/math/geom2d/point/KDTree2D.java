@@ -61,7 +61,7 @@ public class KDTree2D {
         }
         
         public boolean isLeaf() {
-            return left==null && right==null;
+			return left == null && right == null;
         }
     }
         
@@ -70,12 +70,12 @@ public class KDTree2D {
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Point2D p1, Point2D p2){
-            if(p1.getX()<p2.getX())
-                return -1;
-            if(p1.getX()>p2.getX())
-                return +1;
-            return Double.compare(p1.getY(), p2.getY());
-        }
+			if (p1.x() < p2.x())
+				return -1;
+			if (p1.x() > p2.x())
+				return +1;
+			return Double.compare(p1.y(), p2.y());
+   }
     }
     
     private class YComparator implements Comparator<Point2D> {
@@ -83,11 +83,11 @@ public class KDTree2D {
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Point2D p1, Point2D p2){
-            if(p1.getY()<p2.getY())
+            if(p1.y()<p2.y())
                 return -1;
-            if(p1.getY()>p2.getY())
+            if(p1.y()>p2.y())
                 return +1;
-            return Double.compare(p1.getX(), p2.getX());
+            return Double.compare(p1.x(), p2.x());
         }
     }
    
@@ -104,18 +104,18 @@ public class KDTree2D {
         
     private Node makeTree(List<Point2D> points, int depth) {
         // Add a leaf
-        if(points.size()==0)
+        if(points.size() == 0)
             return null;
         
         // select direction
         int dir = depth%2;
         
         // sort points according to i-th dimension
-        if(dir==0){
-            // Compare points based on their x-coordinate
-            Collections.sort(points, xComparator);
-        }else{
-            // Compare points based on their x-coordinate
+		if (dir == 0) {
+			// Compare points based on their x-coordinate
+			Collections.sort(points, xComparator);
+		} else {
+			// Compare points based on their x-coordinate
             Collections.sort(points, yComparator);
         }
         
@@ -234,14 +234,14 @@ public class KDTree2D {
         
         // extract the point
         Point2D point = node.getPoint();
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
         
         // check if point is in range
         boolean tx1 = range.getMinX()<x;
         boolean ty1 = range.getMinY()<y;
-        boolean tx2 = x<=range.getMaxX();
-        boolean ty2 = y<=range.getMaxY();
+		boolean tx2 = x <= range.getMaxX();
+		boolean ty2 = y <= range.getMaxY();
         
         // adds the point if it is present
         if(tx1 && tx2 && ty1 && ty2)
@@ -284,13 +284,13 @@ public class KDTree2D {
         Point2D anchor = node.getPoint();
         StraightLine2D line;
         if(dir==0){
-            boolean b = point.getX()<anchor.getX();
-            node1 = b ? node.left : node.right;
-            node2 = b ? node.right : node.left;
-           line = StraightLine2D.create(anchor, new Vector2D(0, 1)); 
-        } else {
-            boolean b = point.getY()<anchor.getY();
-            node1 = b ? node.left : node.right;
+			boolean b = point.x() < anchor.x();
+			node1 = b ? node.left : node.right;
+			node2 = b ? node.right : node.left;
+			line = StraightLine2D.create(anchor, new Vector2D(0, 1));
+		} else {
+			boolean b = point.y() < anchor.y();
+			node1 = b ? node.left : node.right;
             node2 = b ? node.right : node.left;
             line = StraightLine2D.create(anchor, new Vector2D(1, 0)); 
         }

@@ -86,13 +86,13 @@ public class CheckSortPointsByAngle extends JPanel{
                 new Point2D(12, 10),
 		};
 		for(Point2D point : array)
-		    points.add(new Point2D(point.getX()*10, point.getY()*10));
+		    points.add(new Point2D(point.x()*10, point.y()*10));
 		
 		// Find point with lowest y-coord
 		Point2D lowestPoint = null;
 		double lowestY = Double.MAX_VALUE;
 		for(Point2D point : points){
-		    double y = point.getY();
+		    double y = point.y();
 		    if(y<lowestY){
 		        lowestPoint = point;
 		        lowestY = y;

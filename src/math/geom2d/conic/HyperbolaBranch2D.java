@@ -145,12 +145,12 @@ implements SmoothContour2D, Cloneable {
 		if (hyperbola.isDirect()) {
 			if (hyperbola.isInside(point))
 				return true;
-			double x = hyperbola.toLocal(new Point2D(point)).getX();
+			double x = hyperbola.toLocal(new Point2D(point)).x();
 			return positive ? x < 0 : x > 0;
 		} else {
 			if (!hyperbola.isInside(point))
 				return false;
-			double x = hyperbola.toLocal(new Point2D(point)).getX();
+			double x = hyperbola.toLocal(new Point2D(point)).x();
 			return positive ? x > 0 : x < 0;
 		}
     }
@@ -204,13 +204,13 @@ implements SmoothContour2D, Cloneable {
 
     public double position(Point2D point) {
 		Point2D pt = hyperbola.toLocal(new Point2D(point));
-		double y = this.positive ? pt.getY() : -pt.getY();
+		double y = this.positive ? pt.y() : -pt.y();
 		return log(y + hypot(y, 1));
 	}
 
 	public double project(Point2D point) {
 		Point2D pt = hyperbola.toLocal(new Point2D(point));
-		double y = this.positive ? pt.getY() : -pt.getY();
+		double y = this.positive ? pt.y() : -pt.y();
 		return log(y + hypot(y, 1));
     }
 
@@ -245,7 +245,7 @@ implements SmoothContour2D, Cloneable {
         // check which points belong to this branch
         Collection<Point2D> result = new ArrayList<Point2D>();
         for (Point2D point : inters) {
-			if (!(hyperbola.toLocal(point).getX() > 0 ^ positive))
+			if (!(hyperbola.toLocal(point).x() > 0 ^ positive))
 				result.add(point);
         }
 
@@ -320,14 +320,14 @@ implements SmoothContour2D, Cloneable {
     }
 
     public boolean contains(Point2D point) {
-        return this.contains(point.getX(), point.getY());
+        return this.contains(point.x(), point.y());
     }
 
     public boolean contains(double x, double y) {
         if (!hyperbola.contains(x, y))
             return false;
         Point2D point = hyperbola.toLocal(new Point2D(x, y));
-        return point.getX() > 0;
+        return point.x() > 0;
     }
 
 	// ===================================================================

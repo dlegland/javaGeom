@@ -300,7 +300,7 @@ implements CirculinearContinuousCurve2D {
      * @see math.geom2d.OrientedCurve2D#signedDistance(Point2D)
      */
     public double signedDistance(Point2D point) {
-        double dist = this.distance(point.getX(), point.getY());
+        double dist = this.distance(point.x(), point.y());
         if (isInside(point))
             return -dist;
         else
@@ -400,8 +400,8 @@ implements CirculinearContinuousCurve2D {
     public double position(Point2D point) {
         int ind = 0;
         double dist, minDist = Double.POSITIVE_INFINITY;
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
 
         int i = 0;
         LineSegment2D closest = null;
@@ -454,8 +454,8 @@ implements CirculinearContinuousCurve2D {
      */
     public double project(Point2D point) {
         double dist, minDist = Double.POSITIVE_INFINITY;
-        double x = point.getX();
-        double y = point.getY();
+        double x = point.x();
+        double y = point.y();
         double pos = Double.NaN;
 
         int i = 0;
@@ -496,7 +496,7 @@ implements CirculinearContinuousCurve2D {
      * @see math.geom2d.Shape2D#getDistance(Point2D)
      */
     public double distance(Point2D point) {
-        return distance(point.getX(), point.getY());
+        return distance(point.x(), point.y());
     }
 
     /**
@@ -522,8 +522,8 @@ implements CirculinearContinuousCurve2D {
         double x, y;
         while (iter.hasNext()) {
             point = iter.next();
-            x = point.getX();
-            y = point.getY();
+            x = point.x();
+            y = point.y();
             xmin = Math.min(xmin, x);
             xmax = Math.max(xmax, x);
             ymin = Math.min(ymin, y);
@@ -554,7 +554,7 @@ implements CirculinearContinuousCurve2D {
      * @see java.awt.Shape#contains(Point2D)
      */
     public boolean contains(Point2D point) {
-        return this.contains(point.getX(), point.getY());
+        return this.contains(point.x(), point.y());
     }
 
     /**

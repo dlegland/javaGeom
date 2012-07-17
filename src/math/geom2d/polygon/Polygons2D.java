@@ -39,10 +39,10 @@ public final class Polygons2D {
 	 */
 	public final static SimplePolygon2D createRectangle(Point2D p1, Point2D p2) {
 		// corners coordinates
-    	double x1 = p1.getX();
-    	double y1 = p1.getY();
-    	double x2 = p2.getX();
-    	double y2 = p2.getY();
+    	double x1 = p1.x();
+    	double y1 = p1.y();
+    	double x2 = p2.x();
+    	double y2 = p2.y();
 
     	return createRectangle(x1, y1, x2, y2);
 	}
@@ -77,8 +77,8 @@ public final class Polygons2D {
 	public final static SimplePolygon2D createCenteredRectangle(Point2D center, 
 			double length, double width) {
 		// extract rectangle parameters
-		double xc = center.getX();
-		double yc = center.getY();
+		double xc = center.x();
+		double yc = center.y();
 		double len = length / 2;
 		double wid = width / 2;
 		
@@ -106,8 +106,8 @@ public final class Polygons2D {
 	public final static SimplePolygon2D createOrientedRectangle(Point2D center, 
 			double length, double width, double theta) {
 		// extract rectangle parameters
-		double xc = center.getX();
-		double yc = center.getY();
+		double xc = center.x();
+		double yc = center.y();
 		double len = length / 2;
 		double wid = width / 2;
 		
@@ -144,8 +144,8 @@ public final class Polygons2D {
     	for (LinearRing2D ring : polygon.contours()) {
     		area = computeArea(ring);
     		centroid = computeCentroid(ring);
-    		xc += centroid.getX() * area;
-    		yc += centroid.getY() * area;
+    		xc += centroid.x() * area;
+    		yc += centroid.y() * area;
     		cumArea += area;
     	}
     	
@@ -171,13 +171,13 @@ public final class Polygons2D {
        
         // initialize with the last vertex
         Point2D prev = ring.vertex(n-1);
-        xp = prev.getX();
-        yp = prev.getY();
+        xp = prev.x();
+        yp = prev.y();
 
         // iterate on vertices
         for (Point2D point : ring.vertices()) {
-        	x = point.getX();
-        	y = point.getY();
+        	x = point.x();
+        	y = point.y();
         	tmp = xp * y - yp * x;
             xc += (x + xp) * tmp;
             yc += (y + yp) * tmp;
@@ -231,7 +231,7 @@ public final class Polygons2D {
         
         // iterate on edges
         for (Point2D point : ring.vertices()) {
-            area += prev.getX() * point.getY() - prev.getY() * point.getX();
+            area += prev.x() * point.y() - prev.y() * point.x();
             prev = point;
         }
         
@@ -255,16 +255,16 @@ public final class Polygons2D {
         Point2D previous = null;
         for (Point2D vertex : vertices)
             previous = vertex;
-        double y1 = previous.getY();
+        double y1 = previous.y();
         double y2;
 
         // keep y-coordinate of test point
-        double y = point.getY();
+        double y = point.y();
 
         // Iterate on couple of vertices, starting from couple (last,first)
         for (Point2D current : vertices) {
             // second vertex of current edge
-            y2 = current.getY();
+            y2 = current.y();
             
 			if (y1 <= y) {
 				if (y2 > y) // an upward crossing
@@ -293,11 +293,10 @@ public final class Polygons2D {
      * See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
      */
     private final static int isLeft(Point2D p1, Point2D p2, Point2D pt) {
-    	double x = p1.getX();
-    	double y = p1.getY();
+    	double x = p1.x();
+    	double y = p1.y();
     	return (int) Math.signum(
-    			(p2.getX() - x) * (pt.getY() - y) - 
-    			(pt.getX() - x) * (p2.getY() - y));
+    			(p2.x() - x) * (pt.y() - y) - (pt.x() - x) * (p2.y() - y));
     }
     
     /**
@@ -436,7 +435,7 @@ public final class Polygons2D {
     		LinearRing2D ring) {
     	PolySimple poly = new PolySimple();
     	for (Point2D point : ring.vertices())
-    		poly.add(new com.seisw.util.geom.Point2D(point.getX(), point.getY()));
+    		poly.add(new com.seisw.util.geom.Point2D(point.x(), point.y()));
     	return poly;
     }
     

@@ -413,10 +413,29 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// ===================================================================
 	// Getter and setter
 	
-	public double getX() {
+	public double x() {
 		return x;
 	}
 
+	/**
+	 * @deprecated replaces by x() (since 0.11.1) 
+	 */
+	@Deprecated
+	public double getX() {
+		return this.x;
+	}
+
+	/**
+	 * Returns the y-coordinate of this point
+	 */
+	public double y(){
+		return y;
+	}
+	
+	/**
+	 * @deprecated replaces by y() (since 0.11.1) 
+	 */
+	@Deprecated
 	public double getY() {
 		return y;
 	}

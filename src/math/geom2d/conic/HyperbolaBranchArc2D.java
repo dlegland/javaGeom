@@ -70,7 +70,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods inherited from OrientedCurve2D interface
 
     public double signedDistance(Point2D point) {
-        return this.signedDistance(point.getX(), point.getY());
+        return this.signedDistance(point.x(), point.y());
     }
 
     public double signedDistance(double x, double y) {
@@ -243,7 +243,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean contains(Point2D p) {
-        return this.contains(p.getX(), p.getY());
+        return this.contains(p.x(), p.y());
     }
 
     public boolean contains(double x, double y) {

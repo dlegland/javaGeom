@@ -36,7 +36,7 @@ public class TestLines{
 		System.out.println("angle : " + theta);
 		
 		Point2D p0 = line1.intersection(line2);
-		System.out.println("point intersection : " + p0.getX() + " " + p0.getY());
+		System.out.println("point intersection : " + p0.x() + " " + p0.y());
 
 		
 		System.out.println(line1.contains(0, 0));
@@ -59,7 +59,7 @@ public class TestLines{
 		System.out.println("angle : " + theta);
 		
 		p0 = line1.intersection(line2);
-		System.out.println("point intersection : " + p0.getX() + " " + p0.getY());
+		System.out.println("point intersection : " + p0.x() + " " + p0.y());
 
 		line1 = new StraightLine2D(-1, 1, 0);
 		System.out.println("angle (abc) : " + line1.horizontalAngle());

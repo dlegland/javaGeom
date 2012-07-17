@@ -129,10 +129,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     protected AbstractLine2D(Point2D point, Vector2D vector) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-        this.dx = vector.getX();
-        this.dy = vector.getY();
+        this.x0 = point.x();
+        this.y0 = point.y();
+        this.dx = vector.x();
+        this.dy = vector.y();
     }
 
     protected AbstractLine2D(LinearShape2D line) {
@@ -247,7 +247,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     public double positionOnLine(Point2D point) {
-        return positionOnLine(point.getX(), point.getY());
+        return positionOnLine(point.x(), point.y());
     }
 
 	/**
@@ -273,7 +273,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * @return the projection of the point p on the line
      */
     public Point2D projectedPoint(Point2D p) {
-        return projectedPoint(p.getX(), p.getY());
+        return projectedPoint(p.x(), p.y());
     }
 
 	/**
@@ -305,7 +305,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * @return the projection of the point p on the line
      */
     public Point2D getSymmetric(Point2D p) {
-        return getSymmetric(p.getX(), p.getY());
+        return getSymmetric(p.x(), p.y());
     }
 
     /**
@@ -372,8 +372,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      */
     public Point2D intersection(LinearShape2D line) {
         Vector2D vect = line.direction();
-        double dx2 = vect.getX();
-        double dy2 = vect.getY();
+        double dx2 = vect.x();
+        double dy2 = vect.y();
 
 		// test if two lines are parallel
         double denom = this.dx * dy2 - this.dy * dx2;
@@ -382,8 +382,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
         // compute position on the line
         Point2D origin = line.origin();
-        double x2 = origin.getX();
-        double y2 = origin.getY();
+        double x2 = origin.x();
+        double y2 = origin.y();
 		double t = ((y0 - y2) * dx2 - (x0 - x2) * dy2) / denom;
 
 		// compute position of intersection point
@@ -524,13 +524,13 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         if (t0==Double.NEGATIVE_INFINITY)
             angle1 = Angle2D.horizontalAngle(-dx, -dy);
         else
-			angle1 = Angle2D.horizontalAngle(point.getX(), point.getY(), 
+			angle1 = Angle2D.horizontalAngle(point.x(), point.y(), 
 					x0 + t0 * dx, y0 + t0 * dy);
 
 		if (t1 == Double.POSITIVE_INFINITY)
 			angle2 = Angle2D.horizontalAngle(dx, dy);
 		else
-			angle2 = Angle2D.horizontalAngle(point.getX(), point.getY(), 
+			angle2 = Angle2D.horizontalAngle(point.x(), point.y(), 
 					x0 + t1 * dx, y0 + t1 * dy);
 
 		if (this.isInside(point)) {
@@ -554,7 +554,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * class, but it can be used by subclasses to help computations.
      */
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     /**
@@ -579,7 +579,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * @return true if point p lies on the 'left' of the line.
      */
 	public boolean isInside(Point2D p) {
-		return ((p.getX() - x0) * dy - (p.getY() - y0) * dx < 0);
+		return ((p.x() - x0) * dy - (p.y() - y0) * dx < 0);
 	}
 
     // ===================================================================
@@ -707,7 +707,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * abstract class, but it can be called by subclasses to help computations.
      */
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     /**
@@ -737,7 +737,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     public boolean contains(Point2D p) {
-        return this.contains(p.getX(), p.getY());
+        return this.contains(p.x(), p.y());
     }
 
     /**

@@ -201,12 +201,12 @@ CircularShape2D, CircleLine2D {
 
     /** Create a new circle with specified point center and radius */
     public Circle2D(Point2D center, double radius) {
-        this(center.getX(), center.getY(), radius, true);
+        this(center.x(), center.y(), radius, true);
     }
 
     /** Create a new circle with specified center, radius and orientation */
     public Circle2D(Point2D center, double radius, boolean direct) {
-        this(center.getX(), center.getY(), radius, direct);
+        this(center.x(), center.y(), radius, direct);
     }
 
     /** Create a new circle with specified center and radius */
@@ -438,14 +438,14 @@ CircularShape2D, CircleLine2D {
      */
     @Override
     public boolean isInside(Point2D point) {
-		double xp = (point.getX() - this.xc) / this.r;
-		double yp = (point.getY() - this.yc) / this.r;
+		double xp = (point.x() - this.xc) / this.r;
+		double yp = (point.y() - this.yc) / this.r;
 		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
     @Override
     public double signedDistance(Point2D point) {
-        return signedDistance(point.getX(), point.getY());
+        return signedDistance(point.x(), point.y());
     }
 
     @Override
@@ -494,7 +494,7 @@ CircularShape2D, CircleLine2D {
 
 	@Override
 	public double position(Point2D point) {
-		double angle = Angle2D.horizontalAngle(xc, yc, point.getX(), point.getY());
+		double angle = Angle2D.horizontalAngle(xc, yc, point.x(), point.y());
 		if (direct)
 			return Angle2D.formatAngle(angle - theta);
 		else
@@ -507,7 +507,7 @@ CircularShape2D, CircleLine2D {
      */
     @Override
     public Circle2D reverse() {
-        return new Circle2D(this.center().getX(), this.center().getY(),
+        return new Circle2D(this.center().x(), this.center().y(),
                 this.radius(), !this.direct);
     }
 
@@ -537,10 +537,8 @@ CircularShape2D, CircleLine2D {
 
     @Override
     public double distance(Point2D point) {
-        return abs(Point2D.distance(xc, yc, point.getX(),
-                point.getY())
-                -r);
-    }
+		return abs(Point2D.distance(xc, yc, point.x(), point.y()) - r);
+	}
 
     @Override
     public double distance(double x, double y) {

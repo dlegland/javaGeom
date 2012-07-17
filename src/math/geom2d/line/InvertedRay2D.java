@@ -73,9 +73,9 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * direction of <code>point2<\code>.
      */
     public InvertedRay2D(Point2D point1, Point2D point2) {
-        this(point1.getX(), point1.getY(), 
-        		point2.getX()-point1.getX(), 
-        		point2.getY()-point1.getY());
+        this(point1.x(), point1.y(), 
+        		point2.x()-point1.x(), 
+        		point2.y()-point1.y());
     }
 
     /**
@@ -92,7 +92,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * in the direction defined by vector <code>(dx,dy)<\code>.
      */
     public InvertedRay2D(Point2D point, double dx, double dy) {
-        this(point.getX(), point.getY(), dx, dy);
+        this(point.x(), point.y(), dx, dy);
     }
 
     /**
@@ -100,7 +100,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * in the direction specified by <code>vector<\code>.
      */
     public InvertedRay2D(Point2D point, Vector2D vector) {
-        this(point.getX(), point.getY(), vector.getX(), vector.getY());
+        this(point.x(), point.y(), vector.x(), vector.y());
     }
 
     /**
@@ -108,7 +108,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * in the direction specified by <code>angle<\code> (in radians).
      */
     public InvertedRay2D(Point2D point, double angle) {
-        this(point.getX(), point.getY(), Math.cos(angle), Math.sin(angle));
+        this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
     }
 
     /**

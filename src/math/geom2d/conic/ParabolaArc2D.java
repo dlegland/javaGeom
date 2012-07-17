@@ -118,7 +118,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 	}
 
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     public double signedDistance(double x, double y) {
@@ -262,7 +262,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods implementing the Shape2D interface
 
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     public double distance(double x, double y) {
@@ -347,7 +347,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public boolean contains(Point2D point) {
-        return contains(point.getX(), point.getY());
+        return contains(point.x(), point.y());
     }
 
     // ====================================================================
@@ -372,7 +372,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         Point2D pc = line1.intersection(line2);
         
         // Use quadratic curve to represent (exactly) the parabola arc
-        path.quadTo(pc.getX(), pc.getY(), p2.getX(), p2.getY());
+        path.quadTo(pc.x(), pc.y(), p2.x(), p2.y());
         return path;
     }
 

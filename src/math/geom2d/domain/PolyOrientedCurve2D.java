@@ -150,7 +150,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     public double signedDistance(Point2D p) {
-        return signedDistance(p.getX(), p.getY());
+        return signedDistance(p.x(), p.y());
     }
 
     /*
