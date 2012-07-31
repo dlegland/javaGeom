@@ -198,17 +198,33 @@ implements SmoothOrientedCurve2D, Cloneable {
     /**
      * Returns the position of the first point of the parabola arc.
      */
-    public double getT0() {
+    public double t0() {
         return t0;
     }
 
     /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /**
      * Returns the position of the last point of the parabola arc.
      */
-    public double getT1() {
+    public double t1() {
         return t1;
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     public Point2D point(double t) {
         t = min(max(t, t0), t1);
         return parabola.point(t);

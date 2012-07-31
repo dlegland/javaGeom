@@ -408,23 +408,39 @@ public class StraightLine2D extends AbstractLine2D implements
      * Returns the parameter of the first point of the line, which is always
      * Double.NEGATIVE_INFINITY.
      */
-    public double getT0() {
+    public double t0() {
         return Double.NEGATIVE_INFINITY;
+    }
+
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
     }
 
     /**
      * Returns the parameter of the last point of the line, which is always
      * Double.POSITIVE_INFINITY.
      */
-    public double getT1() {
+    public double t1() {
         return Double.POSITIVE_INFINITY;
     }
 
     /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return this.t1();
+    }
+    
+    /**
      * Gets the point specified with the parametric representation of the line.
      */
     public Point2D point(double t) {
-        return new Point2D(x0+dx*t, y0+dy*t);
+		return new Point2D(x0 + dx * t, y0 + dy * t);
     }
 
     /**
@@ -468,11 +484,11 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     public Box2D boundingBox() {
-        if (Math.abs(dx)<0)
+        if (Math.abs(dx) < Shape2D.ACCURACY)
             return new Box2D(
                     x0, x0, 
                     Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        if (Math.abs(dy)<0)
+        if (Math.abs(dy) < Shape2D.ACCURACY)
             return new Box2D(
                     Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 
                     x0, y0);

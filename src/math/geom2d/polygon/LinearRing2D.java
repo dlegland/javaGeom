@@ -263,8 +263,8 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
      */
     public math.geom2d.Point2D point(double t) {
 		// format position to stay between limits
-		double t0 = this.getT0();
-		double t1 = this.getT1();
+		double t0 = this.t0();
+		double t1 = this.t1();
 		t = Math.max(Math.min(t, t1), t0);
 
 		int n = vertices.size();
@@ -299,8 +299,16 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     /**
      * Returns the number of points in the linear ring.
      */
-    public double getT1() {
+    public double t1() {
         return vertices.size();
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return this.t1();
     }
 
     /**

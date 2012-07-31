@@ -189,17 +189,17 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
+     * @see math.geom2d.Curve2D#point(double, math.geom2d.Point2D)
      */
-    public math.geom2d.Point2D point(double t) {
+    public Point2D point(double t) {
         // format position to stay between limits
-        double t0 = this.getT0();
-        double t1 = this.getT1();
+        double t0 = this.t0();
+        double t1 = this.t1();
         t = Math.max(Math.min(t, t1), t0);
 
         // index of vertex before point
         int ind0 = (int) Math.floor(t+Shape2D.ACCURACY);
-        double tl = t-ind0;
+        double tl = t - ind0;
         Point2D p0 = vertices.get(ind0);
 
 		// check if equal to a vertex
@@ -221,8 +221,16 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /**
      * Returns the number of points in the polyline, minus one.
      */
-    public double getT1() {
+    public double t1() {
         return vertices.size() - 1;
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
     }
 
 	/**

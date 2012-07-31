@@ -67,9 +67,9 @@ implements SmoothCurve2D, Cloneable {
 	 */
 	public Collection<Point2D> vertices() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(2);
-		if (!Double.isInfinite(this.getT0()))
+		if (!Double.isInfinite(this.t0()))
 			array.add(this.firstPoint());
-		if (!Double.isInfinite(this.getT1()))
+		if (!Double.isInfinite(this.t1()))
 			array.add(this.lastPoint());
 		return array;
 	}

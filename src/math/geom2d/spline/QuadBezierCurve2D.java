@@ -239,17 +239,33 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Returns 0, as Bezier curve is parametrized between 0 and 1.
      */
-    public double getT0() {
+    public double t0() {
         return 0;
     }
 
     /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /**
      * Returns 1, as Bezier curve is parametrized between 0 and 1.
      */
-    public double getT1() {
+    public double t1() {
         return 1;
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     /**
      * Use approximation, by replacing Bezier curve with a polyline.
      * 

@@ -67,12 +67,24 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Get value of parameter t for the first point of the curve. It can be
      * -Infinity, in this case the piece of curve is not bounded.
      */
+    public abstract double t0();
+    
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
     public abstract double getT0();
 
     /**
      * Get value of parameter t for the last point of the curve. It can be
      * +Infinity, in this case the piece of curve is not bounded.
      */
+    public abstract double t1();
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
     public abstract double getT1();
 
     /**

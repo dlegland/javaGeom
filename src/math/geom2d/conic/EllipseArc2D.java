@@ -338,15 +338,31 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods from interface Curve2D
 
     /** Always returns 0 */
-    public double getT0() {
+    public double t0() {
         return 0;
     }
 
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
     /** Always returns the absolute value of the angle extent */
-    public double getT1() {
+    public double t1() {
         return abs(angleExtent);
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     /*
      * (non-Javadoc)
      * 
