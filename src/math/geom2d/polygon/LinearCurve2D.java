@@ -369,8 +369,16 @@ implements CirculinearContinuousCurve2D {
     /**
      * Returns 0.
      */
-    public double getT0() {
+    public double t0() {
         return 0;
+    }
+
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
     }
 
     /**

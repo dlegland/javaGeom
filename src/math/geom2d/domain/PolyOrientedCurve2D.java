@@ -203,8 +203,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         T next = this.curves.get(iNext);
 
         // tangent vectors of the 2 neighbor curves
-        Vector2D v1 = computeTangent(prev, prev.getT1());
-        Vector2D v2 = computeTangent(next, next.getT0());
+        Vector2D v1 = computeTangent(prev, prev.t1());
+        Vector2D v2 = computeTangent(next, next.t0());
 
         // compute on which side of each ray the test point lies
         boolean in1 = new StraightLine2D(vertex, v1).isInside(point);
@@ -226,8 +226,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         // Extract curvatures of both curves around singular point
         SmoothCurve2D smoothPrev = Curves2D.getLastSmoothCurve(prev);
         SmoothCurve2D smoothNext = Curves2D.getFirstSmoothCurve(next);
-        double kappaPrev = smoothPrev.curvature(smoothPrev.getT1());
-        double kappaNext = smoothNext.curvature(smoothNext.getT0());
+        double kappaPrev = smoothPrev.curvature(smoothPrev.t1());
+        double kappaNext = smoothNext.curvature(smoothNext.t0());
         
         // get curvature signs
         double sp = Math.signum(kappaPrev);

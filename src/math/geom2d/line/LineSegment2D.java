@@ -232,15 +232,31 @@ implements Cloneable, CirculinearElement2D {
     /**
      * Returns the parameter of the first point of the edge, equals to 0.
      */
-    public double getT0() {
+    public double t0() {
         return 0.0;
+    }
+
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
     }
 
     /**
      * Returns the parameter of the last point of the edge, equals to 1.
      */
-    public double getT1() {
+    public double t1() {
         return 1.0;
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
     }
 
 	public Point2D point(double t) {

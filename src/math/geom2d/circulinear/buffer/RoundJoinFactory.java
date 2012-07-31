@@ -40,8 +40,8 @@ public class RoundJoinFactory implements JoinFactory {
 			Curves2D.getJunctionType(curve1, curve2);
 		
 		// compute tangents to each portion
-		Vector2D direction1 = curve1.tangent(curve1.getT1());
-		Vector2D direction2 = curve2.tangent(curve2.getT0());
+		Vector2D direction1 = curve1.tangent(curve1.t1());
+		Vector2D direction2 = curve2.tangent(curve2.t0());
 
 		// angle of each edge
 		double angle1 = direction1.angle();

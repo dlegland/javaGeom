@@ -36,8 +36,8 @@ public class MiterJoinFactory implements JoinFactory {
 		Point2D pc2 = curve2.firstPoint();
 		
 		// Compute tangent angle of each curve 
-		Vector2D vect1 = curve1.tangent(curve1.getT1());
-		Vector2D vect2 = curve2.tangent(curve2.getT0());
+		Vector2D vect1 = curve1.tangent(curve1.t1());
+		Vector2D vect2 = curve2.tangent(curve2.t0());
 		double theta1 = vect1.angle();
 		double theta2 = vect2.angle();
 //		System.out.println(Math.toDegrees(theta1) + " " + Math.toDegrees(theta2));

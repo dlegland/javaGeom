@@ -171,13 +171,33 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         t = Math.max(t, 0);
         return new Point2D(x0+t*dx, y0+t*dy);
     }
-
-    public double getT0() {
+    
+    public double t0() {
         return 0;
     }
 
-    public double getT1() {
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+
+    /**
+     * Returns the position of the last point of the ray, which is always
+     * Double.POSITIVE_INFINITY.
+     */
+    public double t1() {
         return Double.POSITIVE_INFINITY;
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
     }
 
     public InvertedRay2D reverse() {

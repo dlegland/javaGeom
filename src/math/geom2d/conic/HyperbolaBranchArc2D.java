@@ -162,14 +162,30 @@ implements SmoothOrientedCurve2D, Cloneable {
         return new HyperbolaBranchArc2D(branch, t0, t1);
     }
 
-    public double getT0() {
+    public double t0() {
         return t0;
     }
 
-    public double getT1() {
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    public double t1() {
         return t1;
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     // ===================================================================
     // methods inherited from Shape2D interface
 

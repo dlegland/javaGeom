@@ -156,15 +156,37 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     public Point2D point(double t) {
         t = Math.min(t, 0);
-        return new Point2D(x0+t*dx, y0+t*dy);
+		return new Point2D(x0 + t * dx, y0 + t * dy);
     }
 
-    public double getT0() {
+    /**
+     * Returns Negative infinity.
+     */
+    public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
 
-    public double getT1() {
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+
+    /**
+     * Returns 0.
+     */
+    public double t1() {
         return 0;
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
     }
 
     public Ray2D reverse() {

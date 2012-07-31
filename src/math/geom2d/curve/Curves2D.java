@@ -191,10 +191,10 @@ public abstract class Curves2D {
 		double[] between = new double[nInter + 1];
 
 		// fill up array of positions, with extreme positions of curve
-		positions[0] = curve.getT0();
+		positions[0] = curve.t0();
 		for (int i = 0; i < nInter; i++)
 			positions[i + 1] = iter.next();
-		positions[nInter + 1] = curve.getT1();
+		positions[nInter + 1] = curve.t1();
 
 		// compute positions of points between intersections
 		for (int i = 0; i < nInter + 1; i++)
@@ -230,7 +230,7 @@ public abstract class Curves2D {
 			if (curve.isBounded()) {
 				point = curve.firstPoint();
 			} else {
-				double pos = choosePosition(curve.getT0(), curve.getT1());
+				double pos = choosePosition(curve.t0(), curve.t1());
 				point = curve.point(pos);
 			}
 
@@ -247,7 +247,7 @@ public abstract class Curves2D {
 		boolean touch = false;
 
 		// different behavior if curve is bounded or not
-		double t0 = curve.getT0();
+		double t0 = curve.t0();
 		if (isLeftInfinite(curve)) {
 			// choose point between -infinite and first intersection
 			double pos = choosePosition(t0, set.iterator().next());
@@ -266,7 +266,7 @@ public abstract class Curves2D {
 				while (Math.abs(pos - t0) < Shape2D.ACCURACY && iter.hasNext())
 					pos = choosePosition(t0, iter.next());
 				if (Math.abs(pos - t0) < Shape2D.ACCURACY)
-					pos = choosePosition(t0, curve.getT1());
+					pos = choosePosition(t0, curve.t1());
 				point = curve.point(pos);
 
 				// remove the first point from the list of intersections
@@ -293,7 +293,7 @@ public abstract class Curves2D {
 			if (curve.isClosed())
 				pos0 = iter.next();
 			else
-				res.add(curve.subCurve(curve.getT0(), iter.next()));
+				res.add(curve.subCurve(curve.t0(), iter.next()));
 
 		// ----- add portions of curve between each couple of intersections
 
@@ -303,7 +303,7 @@ public abstract class Curves2D {
 			if (iter.hasNext())
 				pos2 = iter.next().doubleValue();
 			else
-				pos2 = curve.isClosed() && !touch ? pos0 : curve.getT1();
+				pos2 = curve.isClosed() && !touch ? pos0 : curve.t1();
 			res.add(curve.subCurve(pos1, pos2));
 		}
 
@@ -363,7 +363,7 @@ public abstract class Curves2D {
 
 		// extract first point of the curve, or a point arbitrarily far
 		Point2D point1;
-		if (Double.isInfinite(curve.getT0()))
+		if (Double.isInfinite(curve.t0()))
 			point1 = curve.point(-1000);
 		else
 			point1 = curve.firstPoint();
@@ -377,11 +377,11 @@ public abstract class Curves2D {
 		if (!iter.hasNext()) {
 			// Find a point on the curve and not on the line
 			// First tries with first point
-			double t0 = curve.getT0();
+			double t0 = curve.t0();
 			if (t0 == NEGATIVE_INFINITY)
 				t0 = -100;
 			while (line.contains(point1)) {
-				double t1 = curve.getT1();
+				double t1 = curve.t1();
 				if (t1 == POSITIVE_INFINITY)
 					t1 = +100;
 				t0 = (t0 + t1) / 2;
@@ -395,7 +395,7 @@ public abstract class Curves2D {
 		// different behavior depending if first point lies inside the box
 		if (line.signedDistance(point1) < 0 && !line.contains(point1)) {
 			pos1 = iter.next().doubleValue();
-			res.add(curve.subCurve(curve.getT0(), pos1));
+			res.add(curve.subCurve(curve.t0(), pos1));
 		}
 
 		// add the portions of curve between couples of intersections
@@ -404,7 +404,7 @@ public abstract class Curves2D {
 			if (iter.hasNext())
 				pos2 = iter.next().doubleValue();
 			else
-				pos2 = curve.getT1();
+				pos2 = curve.t1();
 			res.add(curve.subCurve(pos1, pos2));
 		}
 
@@ -480,7 +480,7 @@ public abstract class Curves2D {
 			cont.smoothPieces().iterator().next();
 
 		// check first position of first curve
-		return Double.isInfinite(smooth.getT0());
+		return Double.isInfinite(smooth.t0());
 	}
 
 	public static boolean isRightInfinite(Curve2D curve) {
@@ -495,7 +495,7 @@ public abstract class Curves2D {
 				lastCurve = smooth;
 
 		// check last position of last curve
-		return Double.isInfinite(lastCurve.getT1());
+		return Double.isInfinite(lastCurve.t1());
 	}
 	
     public static ContinuousCurve2D getFirstContinuousCurve(Curve2D curve) {
@@ -563,8 +563,8 @@ public abstract class Curves2D {
         SmoothCurve2D smoothNext = getFirstSmoothCurve(next);
     	
         // tangent vectors of the 2 neighbor curves
-        Vector2D v1 = computeTangent(smoothPrev, smoothPrev.getT1());
-        Vector2D v2 = computeTangent(smoothNext, smoothNext.getT0());
+        Vector2D v1 = computeTangent(smoothPrev, smoothPrev.t1());
+        Vector2D v2 = computeTangent(smoothNext, smoothNext.t0());
 
         // check if angle between vectors is acute or obtuse
         double diff = Angle2D.angle(v1, v2);
@@ -584,8 +584,8 @@ public abstract class Curves2D {
         }
         
         // Extract curvatures of both curves around singular point
-        double kappaPrev = smoothPrev.curvature(smoothPrev.getT1());
-        double kappaNext = smoothNext.curvature(smoothNext.getT0());
+        double kappaPrev = smoothPrev.curvature(smoothPrev.t1());
+        double kappaNext = smoothNext.curvature(smoothNext.t0());
         
         // get curvature signs
         double sp = Math.signum(kappaPrev);

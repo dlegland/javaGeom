@@ -169,14 +169,14 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
 	 */
 	public Vector2D rightTangent(double t) {
 		return this.childCurve(t).rightTangent(this.localPosition(t));
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
 	 */
 	public double curvature(double t) {
 		return this.childCurve(t).curvature(this.localPosition(t));
@@ -191,13 +191,13 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     public Polyline2D asPolyline(int n) {
         Point2D[] points = new Point2D[n+1];
-        double t0 = this.getT0();
-        double t1 = this.getT1();
-        double dt = (t1-t0)/n;
-        for (int i = 0; i<n; i++)
-            points[i] = this.point(i*dt+t0);
-        return new Polyline2D(points);
-    }
+        double t0 = this.t0();
+        double t1 = this.t1();
+		double dt = (t1 - t0) / n;
+		for (int i = 0; i < n; i++)
+			points[i] = this.point(i * dt + t0);
+		return new Polyline2D(points);
+	}
 
     /**
      * Returns a collection containing only instances of SmoothCurve2D.
@@ -329,7 +329,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         Point2D point;
         for (ContinuousCurve2D curve : curves()) {
-            point = curve.point(curve.getT0());
+            point = curve.point(curve.t0());
             path.lineTo((float) point.x(), (float) point.y());
             curve.appendPath(path);
         }

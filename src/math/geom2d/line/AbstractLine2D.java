@@ -418,7 +418,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	public double length() {
 		if (!this.isBounded())
 			return Double.POSITIVE_INFINITY;
-		return (getT1() - getT0()) * Math.hypot(dx, dy);
+		return (t1() - t0()) * Math.hypot(dx, dy);
 	}
 
 	/* (non-Javadoc)
@@ -454,8 +454,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         double d 	= line.distance(center);
 
         // flag for indicating if line extremities are finite
-        boolean inf0 = Double.isInfinite(this.getT0());
-        boolean inf1 = Double.isInfinite(this.getT1());
+        boolean inf0 = Double.isInfinite(this.t0());
+        boolean inf1 = Double.isInfinite(this.t1());
 
 		// Degenerate case of a line passing through the center.
 		// returns the line itself.
@@ -517,8 +517,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
     public double windingAngle(Point2D point) {
 
-        double t0 = this.getT0();
-        double t1 = this.getT1();
+        double t0 = this.t0();
+        double t1 = this.t1();
 
         double angle1, angle2;
         if (t0==Double.NEGATIVE_INFINITY)
@@ -648,9 +648,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 		double eps = Math.hypot(dx, dy) * Shape2D.ACCURACY;
 
 		// return either pos or NaN
-		if (pos < this.getT0() - eps)
+		if (pos < this.t0() - eps)
 			return Double.NaN;
-		if (pos > this.getT1() + eps)
+		if (pos > this.t1() + eps)
 			return Double.NaN;
 		return pos;
     }
@@ -668,7 +668,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         double pos = this.positionOnLine(point);
 
         // Bounds between t0 and t1
-        return Math.min(Math.max(pos, this.getT0()), this.getT1());
+        return Math.min(Math.max(pos, this.t0()), this.t1());
     }
 
     /**
@@ -677,8 +677,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * Ray2D or LineSegment2D when appropriate.
      */
     public AbstractLine2D subCurve(double t0, double t1) {
-        t0 = Math.max(t0, this.getT0());
-        t1 = Math.min(t1, this.getT1());
+        t0 = Math.max(t0, this.t0());
+        t1 = Math.min(t1, this.t1());
         if (Double.isInfinite(t1)) {
             if (Double.isInfinite(t0))
                 return new StraightLine2D(this);
@@ -729,9 +729,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         
         // otherwise, returns the distance to the closest singular point
         double dist = Double.POSITIVE_INFINITY;
-        if(!Double.isInfinite(getT0()))
+        if(!Double.isInfinite(t0()))
         	dist = firstPoint().distance(x, y);
-        if(!Double.isInfinite(getT1()))
+        if(!Double.isInfinite(t1()))
         	dist = Math.min(dist, lastPoint().distance(x, y));
        	return dist;
     }
@@ -744,7 +744,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * Returns false, unless both dx and dy equal 0.
      */
     public boolean isEmpty() {
-        return Math.hypot(dx, dy)<Shape2D.ACCURACY;
+		return Math.hypot(dx, dy) < Shape2D.ACCURACY;
     }
 
     public abstract AbstractLine2D transform(AffineTransform2D transform);

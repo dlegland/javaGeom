@@ -45,23 +45,23 @@ implements ContinuousCurve2D, Cloneable {
             throw new UnboundedShape2DException(this);
 
         // compute start and increment values
-        double t0 = this.getT0();
-        double dt = (this.getT1()-t0)/n;
+        double t0 = this.t0();
+        double dt = (this.t1() - t0) / n;
 
 		if(this.isClosed()) {
 			// compute position of points, without the last one, 
 			// which is included by default with linear rings
 	        Point2D[] points = new Point2D[n];
-			for(int i=0; i<n;i++)
-				points[i] = this.point(t0 + i*dt);
+			for (int i = 0; i < n; i++)
+				points[i] = this.point(t0 + i * dt);
 
 			return new LinearRing2D(points);
 		} else {
 			// allocate array of points, and compute each value.
 			// Computes also value for last point.
-	        Point2D[] points = new Point2D[n+1];
-			for(int i=0; i<n+1;i++)
-				points[i] = this.point(t0 + i*dt);
+			Point2D[] points = new Point2D[n + 1];
+			for (int i = 0; i < n + 1; i++)
+				points[i] = this.point(t0 + i * dt);
 
 			return new Polyline2D(points);
 		}
@@ -78,7 +78,7 @@ implements ContinuousCurve2D, Cloneable {
 	 * @see math.geom2d.curve.Curve2D#getFirstPoint()
 	 */
 	public Point2D firstPoint() {
-		double t0 = this.getT0();
+		double t0 = this.t0();
 		if(Double.isInfinite(t0))
 			throw new UnboundedShape2DException(this);
 		return this.point(t0);
@@ -89,7 +89,7 @@ implements ContinuousCurve2D, Cloneable {
 	 * @see math.geom2d.curve.Curve2D#getLastPoint()
 	 */
 	public Point2D lastPoint() {
-		double t1 = this.getT1();
+		double t1 = this.t1();
 		if(Double.isInfinite(t1))
 			throw new UnboundedShape2DException(this);
 		return this.point(t1);

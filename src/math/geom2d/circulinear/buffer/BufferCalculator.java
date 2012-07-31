@@ -517,7 +517,7 @@ public class BufferCalculator {
 		// If no singular point, choose an arbitrary point on the curve
 		if (points.isEmpty()) {
 			points = new ArrayList<Point2D>();
-			double t = Curves2D.choosePosition(curve.getT0(), curve.getT1());
+			double t = Curves2D.choosePosition(curve.t0(), curve.t1());
 			points.add(curve.point(t));
 		}
 		

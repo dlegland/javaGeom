@@ -786,17 +786,33 @@ implements SmoothContour2D, Conic2D, Cloneable {
     /**
      * Returns the parameter of the first point of the ellipse, set to 0.
      */
-    public double getT0() {
+    public double t0() {
         return 0;
     }
 
     /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /**
      * Returns the parameter of the last point of the ellipse, set to 2*PI.
      */
-    public double getT1() {
-        return 2*PI;
+    public double t1() {
+        return 2 * PI;
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     /**
      * get the position of the curve from internal parametric representation,
      * depending on the parameter t. This parameter is between the two limits 0

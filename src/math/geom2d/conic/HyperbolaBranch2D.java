@@ -228,16 +228,36 @@ implements SmoothContour2D, Cloneable {
         return new HyperbolaBranchArc2D(this, t0, t1);
     }
 
-    /** Returns Double.NEGATIVE_INFINITY. */
-    public double getT0() {
+    /** 
+     * Returns Double.NEGATIVE_INFINITY. 
+     */
+    public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
 
-    /** Returns Double.POSITIVE_INFINITY. */
-    public double getT1() {
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /** 
+     * Returns Double.POSITIVE_INFINITY. 
+     */
+    public double t1() {
         return Double.POSITIVE_INFINITY;
     }
 
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     public Collection<Point2D> intersections(LinearShape2D line) {
         // compute intersections with support hyperbola
         Collection<Point2D> inters = hyperbola.intersections(line);

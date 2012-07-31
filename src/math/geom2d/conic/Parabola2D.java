@@ -321,17 +321,34 @@ implements Contour2D, Conic2D, Cloneable {
      * Returns the parameter of the first point of the line, which is always
      * Double.NEGATIVE_INFINITY.
      */
-    public double getT0() {
+    public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
 
     /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /**
      * Returns the parameter of the last point of the line, which is always
      * Double.POSITIVE_INFINITY.
      */
-    public double getT1() {
+    public double t1() {
         return Double.POSITIVE_INFINITY;
     }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
 
     public Point2D point(double t) {
 		Point2D point = new Point2D(t, a * t * t);

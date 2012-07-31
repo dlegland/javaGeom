@@ -134,7 +134,7 @@ public class CirculinearCurves2D {
 		int index = 0;
 
 		// cumulative length
-		double cumLength = getLength(curveSet, curveSet.getT0());
+		double cumLength = getLength(curveSet, curveSet.t0());
 
 		// iterate on all curves
 		for (CirculinearCurve2D curve : curveSet.curves()) {
@@ -219,11 +219,11 @@ public class CirculinearCurves2D {
 
 					// add the intersection if we keep it
 					dt = Curves2D.toUnitSegment(elem1.position(inter),
-							elem1.getT0(), elem1.getT1());
+							elem1.t0(), elem1.t1());
 					list1.add(2 * i + dt);
 
 					dt = Curves2D.toUnitSegment(elem2.position(inter),
-							elem2.getT0(), elem2.getT1());
+							elem2.t0(), elem2.t1());
 					list2.add(2 * j + dt);
 				}
 			}
@@ -250,15 +250,15 @@ public class CirculinearCurves2D {
 		double eps = Shape2D.ACCURACY;
 
 		// Test end of elem1 and start of elem2
-		if (!Double.isInfinite(elem1.getT1())
-				&& !Double.isInfinite(elem2.getT0()))
+		if (!Double.isInfinite(elem1.t1())
+				&& !Double.isInfinite(elem2.t0()))
 			if (inter.almostEquals(elem1.lastPoint(), eps)
 					&& inter.almostEquals(elem2.firstPoint(), eps))
 				return true;
 
 		// Test end of elem2 and start of elem1
-		if (!Double.isInfinite(elem1.getT0())
-				&& !Double.isInfinite(elem2.getT1()))
+		if (!Double.isInfinite(elem1.t0())
+				&& !Double.isInfinite(elem2.t1()))
 			if (inter.almostEquals(elem1.firstPoint(), eps)
 					&& inter.almostEquals(elem2.lastPoint(), eps))
 				return true;
@@ -470,7 +470,7 @@ public class CirculinearCurves2D {
 		elements = new ArrayList<CirculinearElement2D>();
 
 		// get first intersection
-		pos1 = polyCurve.getT0();
+		pos1 = polyCurve.t0();
 		pos2 = twins.firstKey();
 		pos0 = pos2;
 
@@ -492,7 +492,7 @@ public class CirculinearCurves2D {
 		} while (true);
 
 		// add the last portion of curve, going to the end of original curve
-		pos2 = polyCurve.getT1();
+		pos2 = polyCurve.t1();
 		addElements(elements, polyCurve.subCurve(pos1, pos2));
 
 		// add the continuous curve formed only by circulinear elements
@@ -729,7 +729,7 @@ public class CirculinearCurves2D {
 
 			// add portion of curve until intersection
 			CirculinearContour2D curve0 = curveArray[i];
-			addElements(elements, curve0.subCurve(curve0.getT0(), pos0));
+			addElements(elements, curve0.subCurve(curve0.t0(), pos0));
 
 			// init
 			pos1 = twinPositions.get(i).firstEntry().getValue();
@@ -747,7 +747,7 @@ public class CirculinearCurves2D {
 					// That means we just finished the current free contour
 					// and we just need to add elements
 					addElements(elements,
-							curve.subCurve(pos1, curve.getT1()));
+							curve.subCurve(pos1, curve.t1()));
 				} else {
 					// simple case:
 					// add a portion of the current curve to the element list

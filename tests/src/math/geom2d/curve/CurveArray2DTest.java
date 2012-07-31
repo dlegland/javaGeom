@@ -62,8 +62,8 @@ public class CurveArray2DTest extends TestCase {
 		set.add(arc2);
 		
 		assertEquals(set.size(), 2);
-		assertEquals(set.getT0(), 0, 1e-14);
-		assertEquals(set.getT1(), 3, 1e-14);
+		assertEquals(set.t0(), 0, 1e-14);
+		assertEquals(set.t1(), 3, 1e-14);
 		
 		double pos1 = .3;
 		Point2D point1 = set.point(pos1);
