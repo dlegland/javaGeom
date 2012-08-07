@@ -400,28 +400,14 @@ public class Ellipse2DTest extends TestCase {
 		
 		// Identity
 		AffineTransform2D aff = new AffineTransform2D(1, 0, 0, 0, 1, 0);
-		Ellipse2D ell1 = ellipse.transform(aff);
+		EllipseShape2D ell1 = ellipse.transform(aff);
 		assertTrue(ell1.equals(ellipse));
-		
-		// Non uniform scaling
-		AffineTransform2D aff2 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
-		Ellipse2D ell2 = ellipse.transform(aff2);
-		Ellipse2D ell2th = new Circle2D(100./5., 100./3., 10);
-		assertTrue(ell2.almostEquals(ell2th, Shape2D.ACCURACY));
-		
+				
 		// Try with a rotated base ellipse
 		ellipse = new Ellipse2D(100, 100, 50, 30, Math.PI/3);
 		AffineTransform2D aff3 = new AffineTransform2D(1, 0, 0, 0, 1, 0);
-		Ellipse2D ell3 = ellipse.transform(aff3);
+		EllipseShape2D ell3 = ellipse.transform(aff3);
 		assertTrue(ell3.almostEquals(ellipse, Shape2D.ACCURACY));
-		
-		// At the moment, I do not how to compute parameters of transformed ellipse,
-		// so I can only check results visually.
-//		AffineTransform2D aff4 = new AffineTransform2D(1./5., 0, 0, 0, 1./3., 0);
-//		Ellipse2D ell4 = (Ellipse2D) ellipse.transform(aff4);
-//		Ellipse2D ell4th = new Ellipse2D(100./5., 100./3., 10, 10, Math.PI/3);
-//		assertTrue(ell4.isEllipse());
-//		assertTrue(ell4.equals(ell4th));
 	}
 	
 	public void testClone() {

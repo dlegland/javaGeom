@@ -35,8 +35,8 @@ public class CheckDrawCircleArcAsBezier2D  extends JPanel{
 		
 		Point2D p1 = arc.firstPoint();
 		Point2D p2 = arc.lastPoint();
-		Vector2D v1 = arc.tangent(arc.getT0());
-		Vector2D v2 = arc.tangent(arc.getT1());
+		Vector2D v1 = arc.tangent(arc.t0());
+		Vector2D v2 = arc.tangent(arc.t1());
 
 		double k = 0.5522847498307933;
 		Point2D c1 = new Point2D(p1.x() + k * v1.x(), p1.y() + k * v1.y());

@@ -37,7 +37,7 @@ implements ContinuousCurve2D, Cloneable {
 	}
 	
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
+	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
 	 */
 	public LinearCurve2D asPolyline(int n) {
 		// Check that the curve is bounded
@@ -48,7 +48,7 @@ implements ContinuousCurve2D, Cloneable {
         double t0 = this.t0();
         double dt = (this.t1() - t0) / n;
 
-		if(this.isClosed()) {
+		if (this.isClosed()) {
 			// compute position of points, without the last one, 
 			// which is included by default with linear rings
 	        Point2D[] points = new Point2D[n];
@@ -103,10 +103,9 @@ implements ContinuousCurve2D, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.Curve2D#getAsAWTShape()
+	 * @see math.geom2d.curve.Curve2D#asAWTShape()
 	 */
 	public Shape asAwtShape() {
-		//TODO: use getGeneralPath() ?
 		// Check that the curve is bounded
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);

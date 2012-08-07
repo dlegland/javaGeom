@@ -49,7 +49,7 @@ import math.utils.EqualUtils;
  * @author dlegland
  */
 public class EllipseArc2D extends AbstractSmoothCurve2D
-implements SmoothOrientedCurve2D, Cloneable {
+implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
 
     // ====================================================================
     // methods specific to EllipseArc2D
@@ -438,8 +438,8 @@ implements SmoothOrientedCurve2D, Cloneable {
      * same start angle, and with opposite angle extent.
      */
     public EllipseArc2D reverse() {
-		return new EllipseArc2D(ellipse, Angle2D.formatAngle(startAngle
-				+ angleExtent), -angleExtent);
+    	double newStart = Angle2D.formatAngle(startAngle + angleExtent);
+		return new EllipseArc2D(ellipse, newStart, -angleExtent);
     }
 
 	@Override
@@ -494,6 +494,9 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
 
+    /**
+     * Returns false.
+     */
     public boolean isEmpty() {
         return false;
     }

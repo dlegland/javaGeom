@@ -29,21 +29,20 @@ package math.geom2d.conic;
 import static java.lang.Math.*;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
 import math.geom2d.*;
-import math.geom2d.circulinear.CircleLine2D;
-import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearElement2D;
-import math.geom2d.circulinear.CirculinearRing2D;
+import math.geom2d.circulinear.*;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
 import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.transform.CircleInversion2D;
 import math.utils.EqualUtils;
 
@@ -54,9 +53,9 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class Circle2D extends Ellipse2D
-implements Cloneable, CirculinearElement2D, CirculinearRing2D,
-CircularShape2D, CircleLine2D {
+public class Circle2D extends AbstractSmoothCurve2D
+implements EllipseShape2D, CircleLine2D, CircularShape2D, CirculinearRing2D,
+Cloneable {
 
     // ===================================================================
     // Static methods
@@ -112,7 +111,7 @@ CircularShape2D, CircleLine2D {
         double d = Point2D.distance(center1, center2);
 
         // case of no intersection
-		if (d < abs(r1 - r2) | d > (r1 + r2))
+		if (d < abs(r1 - r2) || d > (r1 + r2))
 			return intersections;
 
         // Angle of line from center1 to center2
@@ -187,8 +186,18 @@ CircularShape2D, CircleLine2D {
     // ===================================================================
     // Clas variables
 
+    /** Coordinate of center. */
+    protected double  xc;
+    protected double  yc;
+
     /** the radius of the circle. */
     protected double r = 0;
+
+    /** Directed circle or not */
+    protected boolean direct = true;
+
+    /** Orientation of major semi-axis, in radians, between 0 and 2*PI. */
+    protected double  theta  = 0;
 
 
     // ===================================================================
@@ -217,14 +226,19 @@ CircularShape2D, CircleLine2D {
     /** Create a new circle with specified center, radius and orientation. */
     public Circle2D(double xcenter, double ycenter, double radius,
             boolean direct) {
-        super(xcenter, ycenter, radius, radius, 0, direct);
+        this.xc = xcenter;
+        this.yc = ycenter;
         this.r = radius;
+        this.direct = direct;
     }
 
     
     // ===================================================================
     // methods specific to class Circle2D
 
+    /**
+     * Returns the radius of the circle.
+     */
     public double radius() {
         return r;
     }
@@ -249,16 +263,82 @@ CircularShape2D, CircleLine2D {
 
     
     // ===================================================================
-    // methods implementing the Conic2D interface
+    // Methods implementing the Ellipse2D interface
 
-    @Override
-    public Type conicType() {
-        return Conic2D.Type.CIRCLE;
+    /**
+     * Returns true if circle has a direct orientation.
+     */
+    public boolean isDirect() {
+        return direct;
+    }
+    
+     /**
+      * Returns center of the circle.
+      */
+     public Point2D center() {
+         return new Point2D(xc, yc);
+     }
+
+    /**
+     * Returns the first direction vector of the circle, in the direction of
+     * the major axis.
+     */
+    public Vector2D vector1() {
+        return new Vector2D(cos(theta), sin(theta));
     }
 
-    @Override
+    /**
+     * Returns the second direction vector of the circle, in the direction of
+     * the minor axis.
+     */
+    public Vector2D vector2() {
+        if (direct)
+            return new Vector2D(-sin(theta), cos(theta));
+        else
+            return new Vector2D(sin(theta), -cos(theta));
+    }
+
+    /**
+     * Returns the angle of the circle main axis with the Ox axis.
+     */
+    public double angle() {
+        return theta;
+    }
+    
+    /**
+     * Returns the first focus, which for a circle is the same point as the
+     * center.
+     */
+    public Point2D focus1() {
+        return new Point2D(xc, yc);
+    }
+
+    /**
+     * Returns the second focus, which for a circle is the same point as the
+     * center.
+     */
+    public Point2D focus2() {
+        return new Point2D(xc, yc);
+    }
+
     public boolean isCircle() {
         return true;
+    }
+
+    /**
+     * Converts this circle to an instance of Ellipse2D.
+     * @return a new instance of Ellipse2D that corresponds to this circle
+     */
+    public Ellipse2D asEllipse() {
+    	return new Ellipse2D(this.xc, this.yc, this.r, this.r, this.theta, this.direct);
+    }
+    
+    
+    // ===================================================================
+    // methods implementing the Conic2D interface
+
+    public Type conicType() {
+        return Conic2D.Type.CIRCLE;
     }
 
     /**
@@ -268,7 +348,6 @@ CircularShape2D, CircleLine2D {
      * <p>
      * <code>x^2 + 0*x*y + y^2 -2*xc*x -2*yc*y + xc*xc+yc*yc-r*r = 0</code>.
      */
-    @Override
     public double[] conicCoefficients() {
 		return new double[] { 
 				1, 0, 1, -2 * xc, -2 * yc,
@@ -276,31 +355,13 @@ CircularShape2D, CircleLine2D {
     }
 
     /**
-     * Return 0, which is the eccentricity of a circle by definition.
+     * Returns 0, which is the eccentricity of a circle by definition.
      */
-    @Override
     public double eccentricity() {
         return 0;
     }
 
-    /**
-     * Return the first focus, which for a circle is the same point as the
-     * center.
-     */
-    @Override
-    public Point2D focus1() {
-        return new Point2D(xc, yc);
-    }
-
-    /**
-     * Return the second focus, which for a circle is the same point as the
-     * center.
-     */
-    @Override
-    public Point2D focus2() {
-        return new Point2D(xc, yc);
-    }
-
+    
     // ===================================================================
     // Methods implementing the CirculinearCurve2D interface
 
@@ -317,7 +378,6 @@ CircularShape2D, CircleLine2D {
      * For direct circle, distance is positive outside of the circle,
      * and negative inside. This is the contrary for indirect circles.
      */
-    @Override
     public Circle2D parallel(double d) {
     	double rp = max(direct ? r+d : r-d, 0);
         return new Circle2D(xc, yc, rp, direct);
@@ -395,10 +455,46 @@ CircularShape2D, CircleLine2D {
 	}
 
 	
+    // ===================================================================
+    // methods implementing the Boundary2D interface
+
+    public CirculinearDomain2D domain() {
+    	return new GenericCirculinearDomain2D(this);
+    }
+
+    public void fill(Graphics2D g2) {
+    	// convert ellipse to awt shape
+		java.awt.geom.Ellipse2D.Double ellipse = 
+			new java.awt.geom.Ellipse2D.Double(xc - r, yc - r, 2 * r, 2 * r);
+
+		// need to rotate by angle theta
+		java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform
+				.getRotateInstance(theta, xc, yc);
+		Shape shape = trans.createTransformedShape(ellipse);
+        
+        // draw the awt ellipse
+        g2.fill(shape);
+    }
+
+
+    // ===================================================================
+    // methods implementing OrientedCurve2D interface
+
+    /**
+     * Return either 0, 2*PI or -2*PI, depending whether the point is located
+     * inside the interior of the ellipse or not.
+     */
+    public double windingAngle(Point2D point) {
+		if (this.signedDistance(point) > 0)
+			return 0;
+		else
+			return direct ? PI * 2 : -PI * 2;
+    }
+
+	
 	// ===================================================================
     // methods of SmoothCurve2D interface
 
-    @Override
     public Vector2D tangent(double t) {
         if (!direct)
             t = -t;
@@ -417,6 +513,15 @@ CircularShape2D, CircleLine2D {
             		r * sint * sit - r * cost * cot);
     }
 
+    /**
+     * Returns the inverse of the circle radius. 
+     * If the circle is indirect, the curvature is negative.
+     */
+    public double curvature(double t) {
+		double k = 1 / r;
+		return direct ? k : -k;
+   }
+    
     // ===================================================================
     // methods of ContinuousCurve2D interface
 
@@ -428,7 +533,33 @@ CircularShape2D, CircleLine2D {
 		return wrapCurve(this);
     }
 
-    // ===================================================================
+    /**
+     * Returns true, as an ellipse is always closed.
+     */
+    public boolean isClosed() {
+        return true;
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
+	 */
+	public LinearRing2D asPolyline(int n) {
+
+        // compute start and increment values
+		double t0 = this.t0();
+		double dt = (this.t1() - t0) / n;
+
+        // compute position of points, without the last one, 
+        // which is included by default with linear rings
+        Point2D[] points = new Point2D[n];
+		for (int i = 0; i < n; i++)
+			points[i] = this.point(t0 + i * dt);
+
+        return new LinearRing2D(points);
+	}
+	
+
+	// ===================================================================
     // methods of OrientedCurve2D interface
 
     /**
@@ -436,19 +567,16 @@ CircularShape2D, CircleLine2D {
      * translating the point, and re-scaling it such that its coordinates are
      * expressed in unit circle basis.
      */
-    @Override
     public boolean isInside(Point2D point) {
 		double xp = (point.x() - this.xc) / this.r;
 		double yp = (point.y() - this.yc) / this.r;
 		return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
-    @Override
     public double signedDistance(Point2D point) {
         return signedDistance(point.x(), point.y());
     }
 
-    @Override
     public double signedDistance(double x, double y) {
         if (direct)
 			return Point2D.distance(xc, yc, x, y) - r;
@@ -459,12 +587,51 @@ CircularShape2D, CircleLine2D {
     // ===================================================================
     // methods of Curve2D interface
 
+    /** Always returns true. */
+    public boolean isBounded() {
+        return true;
+    }
+
+    /** Always returns false. */
+    public boolean isEmpty() {
+        return false;
+    }
+
+    /**
+     * Returns the parameter of the first point of the ellipse, set to 0.
+     */
+    public double t0() {
+        return 0;
+    }
+
+    /**
+     * @deprecated replaced by t0() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT0() {
+    	return t0();
+    }
+    
+    /**
+     * Returns the parameter of the last point of the ellipse, set to 2*PI.
+     */
+    public double t1() {
+        return 2 * PI;
+    }
+
+    /**
+     * @deprecated replaced by t1() (since 0.11.1).
+     */
+    @Deprecated
+    public double getT1() {
+    	return t1();
+    }
+    
     /**
      * Get the position of the curve from internal parametric representation,
      * depending on the parameter t. This parameter is between the two limits 0
      * and 2*Math.PI.
      */
-    @Override
     public Point2D point(double t) {
 		double angle = theta + t;
 		if (!direct)
@@ -477,7 +644,6 @@ CircularShape2D, CircleLine2D {
      * 
      * @return the first point of the curve
      */
-    @Override
     public Point2D firstPoint() {
 		return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
     }
@@ -487,12 +653,10 @@ CircularShape2D, CircleLine2D {
      * 
      * @return the last point of the curve.
      */
-    @Override
-	public Point2D lastPoint() {
+    public Point2D lastPoint() {
 		return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
 	}
 
-	@Override
 	public double position(Point2D point) {
 		double angle = Angle2D.horizontalAngle(xc, yc, point.x(), point.y());
 		if (direct)
@@ -502,19 +666,28 @@ CircularShape2D, CircleLine2D {
     }
 
     /**
-     * Returns the circle with same center and same radius, but with the other
-     * orientation.
+     * Computes the projection position of the point on the circle,
+     * by computing angle with horizonrtal
      */
-    @Override
+    public double project(Point2D point) {
+        double xp = point.x() - this.xc;
+        double yp = point.y() - this.yc;
+
+        // compute angle
+        return Angle2D.horizontalAngle(xp, yp);
+    }
+
+    /**
+     * Returns the circle with same center and same radius, but with the 
+     * opposite orientation.
+     */
     public Circle2D reverse() {
-        return new Circle2D(this.center().x(), this.center().y(),
-                this.radius(), !this.direct);
+        return new Circle2D(this.xc, this.yc, this.r, !this.direct);
     }
 
     /**
      * Returns a new CircleArc2D. t0 and t1 are position on circle.
      */
-    @Override
     public CircleArc2D subCurve(double t0, double t1) {
         double startAngle, extent;
         if (this.direct) {
@@ -527,7 +700,6 @@ CircularShape2D, CircleLine2D {
         return new CircleArc2D(this, startAngle, extent);
     }
 
-    @Override
     public Collection<? extends Circle2D> continuousCurves() {
     	return wrapCurve(this);
     }
@@ -535,12 +707,10 @@ CircularShape2D, CircleLine2D {
     // ===================================================================
     // methods of Shape2D interface
 
-    @Override
     public double distance(Point2D point) {
 		return abs(Point2D.distance(xc, yc, point.x(), point.y()) - r);
 	}
 
-    @Override
     public double distance(double x, double y) {
 		return abs(Point2D.distance(xc, yc, x, y) - r);
     }
@@ -551,7 +721,6 @@ CircularShape2D, CircleLine2D {
      * line. If there are 2 intersections points, the first one in the array is
      * the first one on the line.
      */
-    @Override
     public Collection<Point2D> intersections(LinearShape2D line) {
     	return Circle2D.getIntersections(this, line);
     }
@@ -562,7 +731,6 @@ CircularShape2D, CircleLine2D {
      * is not clipped, the result is an instance of CurveSet2D<SmoothOrientedCurve2D>
      * which contains 0 curves.
      */
-    @Override
     public CurveSet2D<? extends CircularShape2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<SmoothCurve2D> set = 
@@ -586,14 +754,20 @@ CircularShape2D, CircleLine2D {
     // methods of Shape interface
 
     /**
+     * Return true if the point p lies on the ellipse, with precision given by
+     * Shape2D.ACCURACY.
+     */
+    public boolean contains(Point2D p) {
+		return contains(p.x(), p.y());
+    }
+
+    /**
      * Return true if the point (x, y) lies exactly on the circle.
      */
-    @Override
     public boolean contains(double x, double y) {
 		return abs(distance(x, y)) <= Shape2D.ACCURACY;
     }
 
-    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         double cot = cos(theta);
         double sit = sin(theta);
@@ -622,7 +796,6 @@ CircularShape2D, CircleLine2D {
         return path;
     }
 
-    @Override
     public void draw(Graphics2D g2) {
         java.awt.geom.Ellipse2D.Double ellipse = 
         	new java.awt.geom.Ellipse2D.Double(xc - r, yc - r, 2 * r, 2 * r);
@@ -636,25 +809,51 @@ CircularShape2D, CircleLine2D {
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
 	public boolean almostEquals(GeometricObject2D obj, double eps) {
-        if (!(obj instanceof Ellipse2D))
-            return false;
+		if (!(obj instanceof Circle2D))
+			return false;
 
-        if (obj instanceof Circle2D) {
-            Circle2D circle = (Circle2D) obj;
+		Circle2D circle = (Circle2D) obj;
 
-			if (abs(circle.xc - xc) > eps)
-				return false;
-			if (abs(circle.yc - yc) > eps)
-				return false;
-			if (abs(circle.r - r) > eps)
-				return false;
-			if (circle.direct != direct)
-				return false;
-            return true;
-        }
-        return super.almostEquals(obj, eps);
+		if (abs(circle.xc - xc) > eps)
+			return false;
+		if (abs(circle.yc - yc) > eps)
+			return false;
+		if (abs(circle.r - r) > eps)
+			return false;
+		if (circle.direct != direct)
+			return false;
+		return true;
 	}
-	
+
+    /**
+     * Returns bounding box of the circle.
+     */
+    public Box2D boundingBox() {
+        return new Box2D(xc - r, xc + r, yc - r, yc + r);
+    }
+    
+    /**
+     * Transforms this circle by an affine transform. If the transformed shape
+     * is a circle (ellipse with equal axis lengths), returns an instance of
+     * Circle2D. The resulting ellipse is direct if this ellipse and the
+     * transform are either both direct or both indirect.
+     */
+    public EllipseShape2D transform(AffineTransform2D trans) {
+    	// When the transform is not a similarity, should switch to EllipseArc
+    	// computation
+        if (!AffineTransform2D.isSimilarity(trans)) {
+	    	return this.asEllipse().transform(trans);
+        }
+        
+        // If transform is a similarity, the result is a circle
+        Point2D center = this.center().transform(trans);
+        Point2D p1 = this.firstPoint().transform(trans);
+
+        boolean direct = !this.direct ^ trans.isDirect();
+        Circle2D result = new Circle2D(center, center.distance(p1), direct);
+        return result;
+    }
+
 
 	// ===================================================================
     // methods of Object interface
@@ -670,9 +869,6 @@ CircularShape2D, CircleLine2D {
     public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-        if (!(obj instanceof Ellipse2D))
-            return false;
-
         if (obj instanceof Circle2D) {
             Circle2D that = (Circle2D) obj;
 
@@ -694,5 +890,6 @@ CircularShape2D, CircleLine2D {
     @Override
     public Circle2D clone() {
         return new Circle2D(xc, yc, r, direct);
-    }    
+    }
+    
 }

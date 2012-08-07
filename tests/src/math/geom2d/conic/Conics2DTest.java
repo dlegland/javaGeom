@@ -319,7 +319,8 @@ public class Conics2DTest extends TestCase {
 		ellipse = new Ellipse2D(xc, yc, a, b, theta);
 		double[] coefsRotTrans = ellipse.conicCoefficients();
 		
-		Ellipse2D rotated = ellipse.transform(AffineTransform2D.createRotation(-theta));
+		EllipseShape2D rotated = 
+			ellipse.transform(AffineTransform2D.createRotation(-theta));
 		double[] coefsRTR = rotated.conicCoefficients();
 		conic = Conics2D.reduceConic(coefsRTR);
 		
