@@ -302,7 +302,7 @@ public final class Polygons2D {
     /**
      * Computes the buffer at a distance d of the input polygon. The result is
      * a domain whose boundary is composed of line segments and circle arcs.  
-     * @see Polygon.getBuffer(double)
+     * @see Polygon2D#buffer(double)
      */
     public final static CirculinearDomain2D createBuffer(Polygon2D polygon, 
     		double dist) {
@@ -316,7 +316,7 @@ public final class Polygons2D {
     /**
      * Clips a polygon by a box. The result is a new polygon, that can be
      * multiple.
-     * @see Polygon.clip(Box2D)
+     * @see Polygon2D#clip(Box2D)
      */
     public final static Polygon2D clipPolygon(Polygon2D polygon, Box2D box) {
     	// Clip the boundary using generic method

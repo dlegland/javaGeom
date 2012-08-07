@@ -159,6 +159,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     // ===================================================================
     // accessors
 
+	/**
+	 * Returns the x coordinates of this vector.
+	 */
     public double x() {
         return this.x;
     }
@@ -171,6 +174,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 		return x;
 	}
 
+	/**
+	 * Returns the y coordinates of this vector.
+	 */
     public double y() {
         return this.y;
     }
@@ -249,7 +255,8 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * by:
      * <p>
      * <code> x1*y2 + x2*y1</code>
-     * <p>
+     * <p>.
+     * 
      * Dot product is zero if the vectors defined by the 2 points are
      * orthogonal. It is positive if vectors are in the same direction, and
      * negative if they are in opposite direction.
@@ -263,8 +270,9 @@ public class Vector2D implements GeometricObject2D, Cloneable {
      * defined by :
      * <p>
      * <code> x1*y2 - x2*y1</code>
-     * <p>
-     * cross product is zero for colinear vector. It is positive if angle
+     * <p>.
+     * 
+     * Cross product is zero for colinear vector. It is positive if angle
      * between vector 1 and vector 2 is comprised between 0 and PI, and negative
      * otherwise.
      */
@@ -345,7 +353,7 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 	/**
 	 * Test whether this object is exactly the same as another vector.
 	 * 
-	 * @see almostEquals
+	 * @see #almostEquals
 	 */
 	@Override
 	public boolean equals(Object obj) {

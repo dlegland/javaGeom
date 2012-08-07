@@ -21,6 +21,7 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.point.PointSets2D;
 
 /**
+ * Abstract class that is the base implementation of Polyline2D and LinearRing2D. 
  * @author dlegland
  *
  */
@@ -95,7 +96,6 @@ implements CirculinearContinuousCurve2D {
     
     /**
      * Insert a vertex at a given position in the polyline.
-     * @return true if the vertex was correctly added
      * @since 0.9.3
      */
     public void insertVertex(int index, Point2D vertex) {

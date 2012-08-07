@@ -208,8 +208,8 @@ public class Angle2D {
 	 *            first angle to compare
 	 * @param angle2
 	 *            second angle to compare
-	 * @param the
-	 *            threshold value for comparison
+	 * @param eps 
+	 *            the threshold value for comparison
 	 * @return true if the two angle are equal modulo 2*PI
 	 */
 	public static boolean almostEquals(double angle1, double angle2, double eps) {

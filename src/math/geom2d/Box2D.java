@@ -568,9 +568,14 @@ public class Box2D implements GeometricObject2D, Cloneable {
         this.boundary().fill(g2);
     }
 
+    /**
+     * @deprecated useless (0.11.1)
+     */
+    @Deprecated
     public Box2D boundingBox() {
         return new Box2D(xmin, xmax, ymin, ymax);
     }
+    
     /**
      * Test if boxes are the same. Two boxes are the same if they have the
      * same bounds, up to the specified threshold value.

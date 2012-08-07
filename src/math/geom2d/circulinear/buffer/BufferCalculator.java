@@ -41,7 +41,6 @@ public class BufferCalculator {
 	
 	/**
 	 * Returns the default instance of bufferCalculator.
-	 * @return
 	 */
 	public static BufferCalculator getDefaultInstance() {
 		if (defaultInstance == null)

@@ -50,14 +50,14 @@ implements DomainSet2D<T> {
 	}
 
 	/**
-	 * @param shapes
+	 * @param domains the initial set of domains that constitutes this array.
 	 */
 	public DomainArray2D(Collection<T> domains) {
 		super(domains);
 	}
 
 	/**
-	 * @param shapes
+	 * @param domains the initial set of domains that constitutes this array.
 	 */
 	public DomainArray2D(T... domains) {
     	super(domains);

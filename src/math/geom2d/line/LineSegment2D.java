@@ -33,7 +33,6 @@ import math.utils.EqualUtils;
 /**
  * Line segment, defined as the set of points located between the two end
  * points.
- * {@See Line2D}
  */
 public class LineSegment2D extends AbstractLine2D
 implements Cloneable, CirculinearElement2D {

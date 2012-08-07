@@ -58,8 +58,7 @@ import math.geom2d.transform.CircleInversion2D;
  * This class may be slower than Edge2D or StraightLine2D, because parameters
  * are updated each time a computation is made, causing lot of additional
  * processing. Moreover, as inner point fields are public, it is not as safe
- * as LineSegment2D.
- * {@See LineSegment2D}
+ * as {@link math.geom2d.line.LineSegment2D}.
  */
 public class Line2D extends AbstractSmoothCurve2D
 implements LinearElement2D, Cloneable {
