@@ -36,7 +36,6 @@ import math.geom2d.*;
 import math.geom2d.curve.*;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.GenericDomain2D;
-import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.polygon.LinearRing2D;
@@ -50,7 +49,7 @@ import math.utils.EqualUtils;
  * semiaxis: the second semi axis can be greater than the first one.
  */
 public class Ellipse2D extends AbstractSmoothCurve2D
-implements SmoothContour2D, Conic2D, Cloneable {
+implements EllipseShape2D, Cloneable {
 
     // ===================================================================
     // Static factories
@@ -77,8 +76,8 @@ implements SmoothContour2D, Conic2D, Cloneable {
         double theta = Angle2D.horizontalAngle(x1, y1, x2, y2);
 
         double dist = focus1.distance(focus2);
-        if (dist < Shape2D.ACCURACY)
-            return new Circle2D(xc, yc, chord / 2);
+//        if (dist < Shape2D.ACCURACY)
+//            return new Circle2D(xc, yc, chord / 2);
 
         double r1 = chord / 2;
         double r2 = sqrt(chord * chord - dist * dist) / 2;
@@ -170,9 +169,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
 			theta = Math.min(theta, Angle2D.formatAngle(theta + PI));
 		}
 
-		// If both semi-axes are equal, return a circle
-		if (abs(r1 - r2) < Shape2D.ACCURACY)
-			return new Circle2D(0, 0, r1);
+//		// If both semi-axes are equal, return a circle
+//		if (abs(r1 - r2) < Shape2D.ACCURACY)
+//			return new Circle2D(0, 0, r1);
 
         // return the reduced ellipse
         return new Ellipse2D(0, 0, r1, r2, theta);
@@ -509,12 +508,16 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // accessors to basic characteristics of Ellipse
 
     /**
-     * return true if ellipse has a direct orientation.
+     * Returns true if ellipse has a direct orientation.
      */
     public boolean isDirect() {
         return direct;
     }
 
+    /**
+     * Returns true if this ellipse is similar to a circle, i.e. has same 
+     * length for both r1 and r2.
+     */
     public boolean isCircle() {
 		return abs(r1 - r2) < Shape2D.ACCURACY;
     }
@@ -576,10 +579,18 @@ implements SmoothContour2D, Conic2D, Cloneable {
 		return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta);
     }
 
+    /**
+     * Returns the first direction vector of the ellipse, in the direction of
+     * the major axis.
+     */
     public Vector2D vector1() {
         return new Vector2D(cos(theta), sin(theta));
     }
 
+    /**
+     * Returns the second direction vector of the ellipse, in the direction of
+     * the minor axis.
+     */
     public Vector2D vector2() {
         if (direct)
             return new Vector2D(-sin(theta), cos(theta));
@@ -588,7 +599,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     }
 
     /**
-     * return the angle of the ellipse first axis with the Ox axis.
+     * Returns the angle of the ellipse first axis with the Ox axis.
      */
     public double angle() {
         return theta;
@@ -598,10 +609,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
     // methods implementing Conic2D interface
 
     public Conic2D.Type conicType() {
-		if (abs(r1 - r2) < Shape2D.ACCURACY)
-			return Conic2D.Type.CIRCLE;
-		else
-			return Conic2D.Type.ELLIPSE;
+    	if (Math.abs(this.r1 - this.r2) < Shape2D.ACCURACY)
+    		return Conic2D.Type.CIRCLE;
+		return Conic2D.Type.ELLIPSE;
     }
 
     /**
@@ -762,13 +772,13 @@ implements SmoothContour2D, Conic2D, Cloneable {
     }
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getAsPolyline(int)
+	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
 	 */
 	public LinearRing2D asPolyline(int n) {
 
         // compute start and increment values
-		double t0 = this.getT0();
-		double dt = (this.getT1() - t0) / n;
+		double t0 = this.t0();
+		double dt = (this.t1() - t0) / n;
 
         // compute position of points, without the last one, 
         // which is included by default with linear rings
@@ -780,8 +790,15 @@ implements SmoothContour2D, Conic2D, Cloneable {
 	}
 	
 	
-    // ===================================================================
-    // methods of Curve2D interface
+    /** Always returns true. */
+    public boolean isBounded() {
+        return true;
+    }
+
+    /** Always returns false. */
+    public boolean isEmpty() {
+        return false;
+    }
 
     /**
      * Returns the parameter of the first point of the ellipse, set to 0.
@@ -813,7 +830,7 @@ implements SmoothContour2D, Conic2D, Cloneable {
     	return t1();
     }
     
-    /**
+   /**
      * get the position of the curve from internal parametric representation,
      * depending on the parameter t. This parameter is between the two limits 0
      * and 2*PI.
@@ -936,17 +953,9 @@ implements SmoothContour2D, Conic2D, Cloneable {
         return new EllipseArc2D(this, startAngle, extent);
     }
 
+    
     // ===================================================================
     // methods of Shape2D interface
-
-    /** Always returns true, because an ellipse is bounded. */
-    public boolean isBounded() {
-        return true;
-    }
-
-    public boolean isEmpty() {
-        return false;
-    }
 
     /**
      * Computes distance using a polyline approximation.
