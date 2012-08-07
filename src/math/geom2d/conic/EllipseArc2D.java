@@ -60,8 +60,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
      * 
      * @param ell the supporting ellipse
      * @param start the starting angle
-     * @param end the ending angle
-     * @param direct flag indicating if the arc is direct
+     * @param extent the (signed) angle extent
      */
     public static EllipseArc2D create(Ellipse2D ell, double start, 
     		double extent) {

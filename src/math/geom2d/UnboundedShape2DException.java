@@ -18,14 +18,6 @@ public class UnboundedShape2DException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @deprecated: use constructor with a shape instead (0.8.1)
-     */
-    @Deprecated
-    public UnboundedShape2DException() {
-    	this.shape = null;
-    }
-    
     public UnboundedShape2DException(Shape2D shape) {
     	this.shape = shape;
     }

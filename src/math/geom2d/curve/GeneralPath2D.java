@@ -342,7 +342,7 @@ public final class GeneralPath2D implements Shape, Cloneable {
     /**
      * Returns the bounding box of the path.
      * 
-     * @return a {@link Rectangle2D} object that bounds the current path.
+     * @return a {@link math.geom2d.polygon.Rectangle2D} object that bounds the current path.
      */
     public synchronized java.awt.geom.Rectangle2D getBounds2D() {
         return path.getBounds2D();

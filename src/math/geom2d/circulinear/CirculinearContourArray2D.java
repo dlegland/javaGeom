@@ -93,10 +93,9 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
     }
 
     /**
-     * Constructor from a collection of curves. The curves are added to the
-     * inner collection of curves.
+     * Constructor from a single curve.
      * 
-     * @param curves the collection of curves to add to the set
+     * @param curve the initial contour contained in the array
      */
     public CirculinearContourArray2D(T curve) {
     	this.curves = new ArrayList<T>();

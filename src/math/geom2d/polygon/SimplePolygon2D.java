@@ -89,7 +89,7 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Constructor from an array of points
      * 
-     * @param tab the vertices stored in an array of Point2D
+     * @param vertices the vertices stored in an array of Point2D
      */
     public SimplePolygon2D(Point2D... vertices) {
         this.vertices = new ArrayList<Point2D>(vertices.length);
