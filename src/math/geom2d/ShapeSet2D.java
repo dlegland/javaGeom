@@ -28,6 +28,13 @@ public interface ShapeSet2D<T extends Shape2D> extends Shape2D, Iterable<T> {
 	public void add(int index, T shape);
 	
 	/**
+	 * Returns the shape at a given position.
+	 * @param index the position of the shape
+	 * @return the shape at the given position
+	 */
+	public T get(int index);
+	
+	/**
 	 * Removes the first occurrence of the specified element from this list, 
 	 * if it is present. If the list does not contain the element, it is
 	 * unchanged. 

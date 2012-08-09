@@ -43,7 +43,7 @@ import math.geom2d.polygon.LinearCurve2D;
  * Such curves accept parametric representation, in the form :
  * <code>p(t)={x(t),y(t)}</code>, with <code>t</code> contained in
  * appropriate domain. Bounds of domain of definition can be obtained by methods
- * <code>getT0()</code> and <code>getT1()</code>.
+ * <code>t0()</code> and <code>t1()</code>.
  * <p>
  */
 
@@ -61,8 +61,37 @@ public interface ContinuousCurve2D extends Curve2D {
      */
     public abstract boolean isClosed();
 
+    /**
+     * Computes the left tangent at the given position. 
+     * If the curve is smooth at position <code>t</code>, the result is the
+     * same as the tangent computed for the corresponding smooth curve, and 
+     * is equal to the result of rightTangent(double).
+     * If the position <code>t</code> corresponds to a singular point, the
+     * tangent of the smooth portion before <code>t</code> is computed.  
+     * @param t the position on the curve
+     * @return the left tangent vector at the curve for position t
+     */
     public Vector2D leftTangent(double t);
+    
+    /**
+     * Computes the right tangent at the given position. 
+     * If the curve is smooth at position <code>t</code>, the result is the
+     * same as the tangent computed for the corresponding smooth curve, and 
+     * is equal to the result of leftTangent(double).
+     * If the position <code>t</code> corresponds to a singular point, the
+     * tangent of the smooth portion after <code>t</code> is computed.  
+     * @param t the position on the curve
+     * @return the right tangent vector at the curve for position t
+     */
     public Vector2D rightTangent(double t);
+    
+    /**
+     * Computes the curvature at the given position. The curvature is finite
+     * for positions <code>t</code> that correspond to smooth parts, and is
+     * infinite for singular points. 
+     * @param t the position on the curve
+     * @return the curvature of the curve for position t
+     */
     public abstract double curvature(double t);
 
    
@@ -92,16 +121,28 @@ public interface ContinuousCurve2D extends Curve2D {
             java.awt.geom.GeneralPath path);
 
     // ===================================================================
-    // Curvr2D methods
+    // Curve2D methods
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#reverse(D)
+	 */
     public abstract ContinuousCurve2D reverse();
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#subCurve(double, double)
+	 */
     public abstract ContinuousCurve2D subCurve(double t0, double t1);
 
     // ===================================================================
     // Shape2D methods
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#clip(Box2D)
+	 */
     public abstract CurveSet2D<? extends ContinuousCurve2D> clip(Box2D box);
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#transform(AffineTransform2D)
+	 */
     public abstract ContinuousCurve2D transform(AffineTransform2D trans);
 }

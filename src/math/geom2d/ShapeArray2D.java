@@ -83,6 +83,16 @@ implements ShapeSet2D<T>, Cloneable {
 	}
 
     /**
+     * Returns the inner shape corresponding to the given index.
+     * 
+     * @param index index of the shape
+     * @return the i-th inner curve
+     */
+    public T get(int index) {
+        return shapes.get(index);
+    }
+
+    /**
      * Removes the specified shape from the shape set.
      * 
      * @param shape the shape to remove
@@ -126,16 +136,6 @@ implements ShapeSet2D<T>, Cloneable {
         return shapes;
     }
 
-    /**
-     * Returns the inner shape corresponding to the given index.
-     * 
-     * @param index index of the shape
-     * @return the i-th inner curve
-     */
-    public T get(int index) {
-        return shapes.get(index);
-    }
-
     
     // ===================================================================
     // Methods implementing the Shape2D interface
@@ -144,7 +144,7 @@ implements ShapeSet2D<T>, Cloneable {
 	 * @see math.geom2d.Shape2D#clip(math.geom2d.Box2D)
 	 */
 	public Shape2D clip(Box2D box) {
-		ArrayList<Shape2D> clippedShapes = new ArrayList<Shape2D>();
+		ArrayList<Shape2D> clippedShapes = new ArrayList<Shape2D>(this.size());
 		for (T shape : shapes)
 			clippedShapes.add(shape.clip(box));
 		return new ShapeArray2D<Shape2D>(clippedShapes);

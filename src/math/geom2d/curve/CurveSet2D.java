@@ -34,10 +34,6 @@ import math.geom2d.ShapeSet2D;
  * A parameterized set of curves. A curve cannot be included twice in a
  * CurveSet2D.
  * </p>
- * <p>
- * Note: this class will be transformed to an interface in a future version.
- * Use the class {@link CurveArray2D} for implementations.
- * </p>
  * 
  * @author Legland
  */
@@ -127,6 +123,9 @@ extends Curve2D, ShapeSet2D<T> {
     // ===================================================================
     // add some class casts
     
-    
+    /**
+     * Transforms each curve in the set and returns a new instance of 
+     * CurveSet2D. 
+     */
     public CurveSet2D<? extends Curve2D> transform(AffineTransform2D trans);
 }

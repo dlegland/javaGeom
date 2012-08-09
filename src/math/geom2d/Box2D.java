@@ -182,6 +182,9 @@ public class Box2D implements GeometricObject2D, Cloneable {
     // ===================================================================
     // tests of inclusion
 
+    /**
+     * Checks if this box contains the given point. 
+     */
     public boolean contains(Point2D point) {
         double x = point.x();
         double y = point.y();
@@ -196,6 +199,9 @@ public class Box2D implements GeometricObject2D, Cloneable {
 		return true;
 	}
 
+    /**
+     * Checks if this box contains the point defined by the given coordinates. 
+     */
 	public boolean contains(double x, double y) {
 		if (x < xmin)
 			return false;
@@ -209,7 +215,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
 	}
 
     /**
-     * Test if the specified Shape is totally contained in this Box2D. Note that
+     * Tests if the specified Shape is totally contained in this Box2D. Note that
      * the test is performed on the bounding box of the shape, then for rotated
      * rectangles, this method can return false with a shape totally contained
      * in the rectangle. The problem does not exist for horizontal rectangle,
@@ -238,13 +244,13 @@ public class Box2D implements GeometricObject2D, Cloneable {
     public Collection<StraightLine2D> clippingLines() {
         ArrayList<StraightLine2D> lines = new ArrayList<StraightLine2D>(4);
 
-		if (!(isInfinite(ymin) || isNaN(ymin)))
+		if (isFinite(ymin))
 			lines.add(new StraightLine2D(0, ymin, 1, 0));
-		if (!(isInfinite(xmax) || isNaN(xmax)))
+		if (isFinite(xmax))
 			lines.add(new StraightLine2D(xmax, 0, 0, 1));
-		if (!(isInfinite(ymax) || isNaN(ymax)))
+		if (isFinite(ymax))
 			lines.add(new StraightLine2D(0, ymax, -1, 0));
-		if (!(isInfinite(xmin) || isNaN(xmin)))
+		if (isFinite(xmin))
 			lines.add(new StraightLine2D(xmin, 0, 0, -1));
         return lines;
     }
@@ -496,36 +502,38 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
 
     /**
-     * Return the new domain created by an affine transform of this box.
+     * Returns the new box created by an affine transform of this box.
      * If the box is unbounded, return an infinite box in all directions.
      */
     public Box2D transform(AffineTransform2D trans) {
-        if (this.isBounded()) {
-            // Extract the 4 vertices, transform them, and compute
-            // the new bounding box.
-            Collection<Point2D> points = this.vertices();
-            double xmin = POSITIVE_INFINITY;
-            double xmax = NEGATIVE_INFINITY;
-            double ymin = POSITIVE_INFINITY;
-            double ymax = NEGATIVE_INFINITY;
-            for (Point2D point : points) {
-                point = point.transform(trans);
-                xmin = min(xmin, point.x());
-                ymin = min(ymin, point.y());
-                xmax = max(xmax, point.x());
-                ymax = max(ymax, point.y());
-            }
-            return new Box2D(xmin, xmax, ymin, ymax);
-        }
+    	// special case of unbounded box
+    	if (!this.isBounded()) 
+    		return Box2D.INFINITE_BOX;
 
-        return Box2D.INFINITE_BOX;
+    	// initialize with extreme values
+    	double xmin = POSITIVE_INFINITY;
+    	double xmax = NEGATIVE_INFINITY;
+    	double ymin = POSITIVE_INFINITY;
+    	double ymax = NEGATIVE_INFINITY;
+
+    	// update bounds with coordinates of transformed box vertices
+    	for (Point2D point : this.vertices()) {
+    		point = point.transform(trans);
+    		xmin = min(xmin, point.x());
+    		ymin = min(ymin, point.y());
+    		xmax = max(xmax, point.x());
+    		ymax = max(ymax, point.y());
+    	}
+    	
+    	// create the resulting box
+    	return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     // ===================================================================
     // conversion methods
 
     /**
-     * convert to AWT rectangle.
+     * Converts to AWT rectangle.
      * 
      * @return an instance of java.awt.geom.Rectangle2D
      */
@@ -538,7 +546,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
 
     /**
-     * convert to AWT Rectangle2D. Result is an instance of 
+     * Converts to AWT Rectangle2D. Result is an instance of 
      * java.awt.geom.Rectangle2D.Double.
      * 
      * @return an instance of java.awt.geom.Rectangle2D
@@ -550,18 +558,28 @@ public class Box2D implements GeometricObject2D, Cloneable {
     /**
      * Converts to a rectangle. 
      * 
-     * @return an instance of HRectangle2D
+     * @return an instance of Polygon2D
      */
     public Polygon2D asRectangle() {
         return Polygons2D.createRectangle(xmin, ymin, xmax, ymax);
     }
 
+    /**
+     * Draws the boundary of the box on the specified graphics.
+     * @param g2 the instance of graphics to draw in.
+     * @throws UnboundedBox2DException if the box is unbounded
+     */
     public void draw(Graphics2D g2) {
         if (!isBounded())
             throw new UnboundedBox2DException(this);
         this.boundary().draw(g2);
     }
 
+    /**
+     * Fills the content of the box on the specified graphics.
+     * @param g2 the instance of graphics to draw in.
+     * @throws UnboundedBox2DException if the box is unbounded
+     */
     public void fill(Graphics2D g2) {
         if (!isBounded())
             throw new UnboundedBox2DException(this);
@@ -577,7 +595,7 @@ public class Box2D implements GeometricObject2D, Cloneable {
     }
     
     /**
-     * Test if boxes are the same. Two boxes are the same if they have the
+     * Tests if boxes are the same. Two boxes are the same if they have the
      * same bounds, up to the specified threshold value.
      */
     public boolean almostEquals(GeometricObject2D obj, double eps) {

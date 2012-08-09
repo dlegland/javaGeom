@@ -36,10 +36,19 @@ import static java.lang.Math.*;
  */
 public class Angle2D {
 
+	/** The constant for PI, equivalent to 180 degrees.*/
 	public final static double M_PI 	= Math.PI;
+	
+	/** The constant for 2*PI, equivalent to 360 degrees.*/
 	public final static double M_2PI 	= Math.PI * 2;
+	
+	/** The constant for PI/2, equivalent to 90 degrees.*/
 	public final static double M_PI_2 	= Math.PI / 2;
+	
+	/** The constant for 3*PI/2, equivalent to 270 degrees.*/
 	public final static double M_3PI_2 	= 3 * Math.PI / 2;
+	
+	/** The constant for 3*PI/4, equivalent to 45 degrees.*/
 	public final static double M_PI_4 	= Math.PI / 4;
 
 	/**
@@ -130,8 +139,8 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets angle between two (directed) straight objects. Result is given in
-	 * radians, between 0 and 2*PI.
+	 * Returns the oriented angle between two (directed) straight objects. 
+	 * Result is given in radians, between 0 and 2*PI.
 	 */
 	public static double angle(LinearShape2D obj1, LinearShape2D obj2) {
 		double angle1 = obj1.horizontalAngle();
@@ -140,8 +149,8 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets angle between two vectors. Result is given in radians, between 0 and
-	 * 2*PI.
+	 * Returns the oriented angle between two vectors. 
+	 * Result is given in radians, between 0 and 2*PI.
 	 */
 	public static double angle(Vector2D vect1, Vector2D vect2) {
 		double angle1 = horizontalAngle(vect1);
@@ -150,8 +159,9 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets the angle between the ray formed by (p2, p1) and the ray formed by
-	 * (p2, p3). Result is given in radians, between 0 and 2*PI.
+	 *  Returns the oriented angle between the ray formed by (p2, p1) 
+	 *  and the ray formed by (p2, p3). 
+	 *  Result is given in radians, between 0 and 2*PI.
 	 */
 	public static double angle(Point2D p1, Point2D p2, Point2D p3) {
 		double angle1 = horizontalAngle(p2, p1);
@@ -160,9 +170,9 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets the angle between the ray formed by (p2, p1) and the ray formed by
-	 * (p2, p3), where pi = (xi,yi), i=1,2,3. Result is given in radians,
-	 * between 0 and 2*PI.
+	 *  Returns the oriented angle between the ray formed by (p2, p1)
+	 *  and the ray formed by (p2, p3), where pi = (xi,yi), i=1,2,3. 
+	 *  Result is given in radians, between 0 and 2*PI.
 	 */
 	public static double angle(double x1, double y1, double x2, double y2,
 			double x3, double y3) {
@@ -172,8 +182,9 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets the absolute angle between the ray formed by (p2, p1) and the ray
-	 * formed by (p2, p3). Result is given in radians, between 0 and PI.
+	 * Returns the absolute angle between the ray formed by (p2, p1) 
+	 * and the ray formed by (p2, p3). 
+	 * Result is given in radians, between 0 and PI.
 	 */
 	public static double absoluteAngle(Point2D p1, Point2D p2, Point2D p3) {
 		double angle1 = horizontalAngle(new Vector2D(p2, p1));
@@ -186,9 +197,9 @@ public class Angle2D {
 	}
 
 	/**
-	 * Gets the absolute angle between the ray formed by (p2, p1) and the ray
-	 * formed by (p2, p3), where pi = (xi,yi), i=1,2,3. Result is given in
-	 * radians, between 0 and PI.
+	 * Returns the absolute angle between the ray formed by (p2, p1) 
+	 * and the ray formed by (p2, p3), where pi = (xi,yi), i=1,2,3. 
+	 * Result is given in radians, between 0 and PI.
 	 */
 	public static double absoluteAngle(double x1, double y1, double x2,
 			double y2, double x3, double y3) {
@@ -202,7 +213,8 @@ public class Angle2D {
 	}
 
 	/**
-	 * Checks whether two angles are equal.
+	 * Checks whether two angles are equal, with respect to the given error
+	 * bound.
 	 * 
 	 * @param angle1
 	 *            first angle to compare
@@ -224,7 +236,7 @@ public class Angle2D {
 	}
 
 	/**
-	 * Checks whether two angles are equal.
+	 * Checks whether two angles are equal, given a default threshold value.
 	 * 
 	 * @param angle1
 	 *            first angle to compare

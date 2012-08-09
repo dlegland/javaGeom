@@ -103,6 +103,11 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		return new AffineTransform2D(xx, yx, tx, xy, yy, ty);
 	}
 
+	/**
+	 * Create a glide reflection, composed of a reflection by the given line, 
+	 * and a translation in the direction of the line by a distance given by
+	 * second parameter.
+	 */
 	public static AffineTransform2D createGlideReflection(LinearShape2D line,
 			double distance) {
 		// get origin and vector of line
@@ -137,30 +142,48 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 				2 * dx * (dxy0 - dyx0) / delta + ty);
 	}
 
+	/**
+	 * @deprecated replaced by scaling (0.11.1)
+	 */
+	@Deprecated
 	public static AffineTransform2D createHomothecy(Point2D center, double k) {
 		return createScaling(center, k, k);
 	}
 
+	/**
+	 * Creates a reflection by the given line. 
+	 * The resulting transform is indirect.
+	 */
 	public static AffineTransform2D createLineReflection(LinearShape2D line) {
-		Vector2D vector = line.direction();
+		// origin and direction of line
 		Point2D origin = line.origin();
+		Vector2D vector = line.direction();
+		
+		// extract direction vector coordinates
 		double dx = vector.x();
 		double dy = vector.y();
 		double x0 = origin.x();
 		double y0 = origin.y();
-		double delta = dx * dx + dy * dy;
 
+		// pre-compute some terms
+		double dx2 = dx * dx;
+		double dy2 = dy * dy;
+		double dxy = dx * dy;		
+		double delta = dx2 + dy2;
+		
+		// creates the new transform
 		return new AffineTransform2D(
-				(dx * dx - dy * dy) / delta, 
-				2 * dx * dy / delta, 
-				2 * dy * (dy * x0 - dx * y0) / delta,
-				2 * dx * dy / delta, 
-				(dy * dy - dx * dx) / delta, 
-				2 * dx * (dx * y0 - dy * x0) / delta);
+				(dx2 - dy2) / delta, 
+				2 * dxy / delta, 
+				2 * (dy2 * x0 - dxy * y0) / delta,
+				2 * dxy / delta, 
+				(dy2 - dx2) / delta, 
+				2 * (dx2 * y0 - dxy * x0) / delta);
 	}
 
 	/**
-	 * Return a point reflection centered on a point.
+	 * Returns a center reflection around a point. The resulting transform is
+	 * equivalent to a rotation by 180 around this point.
 	 * 
 	 * @param center
 	 *            the center of the reflection
@@ -170,6 +193,10 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		return AffineTransform2D.createScaling(center, -1, -1);
 	}
 
+	/**
+	 * Creates a rotation composed of the given number of rotations by 90
+	 * degrees around the origin.
+	 */
 	public static AffineTransform2D createQuadrantRotation(int numQuadrant) {
 		int n = ((numQuadrant % 4) + 4) % 4;
 		switch (n) {
@@ -186,13 +213,10 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		}
 	}
 
-	public static AffineTransform2D createQuadrantRotation(
-			double x0, double y0, int numQuadrant) {
-		AffineTransform2D trans = createQuadrantRotation(numQuadrant);
-		trans.recenter(x0, y0);
-		return trans;
-	}
-
+	/**
+	 * Creates a rotation composed of the given number of rotations by 90
+	 * degrees around the given point.
+	 */
 	public static AffineTransform2D createQuadrantRotation(Point2D center, 
 			int numQuadrant) {
 		AffineTransform2D trans = createQuadrantRotation(numQuadrant);
@@ -201,23 +225,34 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 
 	/**
-	 * Return a rotation around the origin, with angle in radians.
+	 * Creates a rotation composed of the given number of rotations by 90
+	 * degrees around the point given by (x0,y0).
+	 */
+	public static AffineTransform2D createQuadrantRotation(
+			double x0, double y0, int numQuadrant) {
+		AffineTransform2D trans = createQuadrantRotation(numQuadrant);
+		trans.recenter(x0, y0);
+		return trans;
+	}
+
+	/**
+	 * Creates a rotation around the origin, with angle in radians.
 	 */
 	public static AffineTransform2D createRotation(double angle) {
 		return AffineTransform2D.createRotation(0, 0, angle);
 	}
 
 	/**
-	 * Return a rotation around the specified point, with angle in radians.
+	 * Creates a rotation around the specified point, with angle in radians.
 	 */
 	public static AffineTransform2D createRotation(Point2D center, double angle) {
 		return AffineTransform2D.createRotation(center.x(), center.y(), angle);
 	}
 
 	/**
-	 * Return a rotation around the specified point, with angle in radians. If
-	 * the angular distance of the angle with a multiple of PI/2 is lower than
-	 * the threshold Shape2D.ACCURACY, the method assumes equality.
+	 * Creates a rotation around the specified point, with angle in radians. 
+	 * If the angular distance of the angle with a multiple of PI/2 is lower
+	 * than the threshold Shape2D.ACCURACY, the method assumes equality.
 	 */
 	public static AffineTransform2D createRotation(double cx, double cy,
 			double angle) {
@@ -240,14 +275,15 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 
 	/**
-	 * Return a scaling by the given coefficients, centered on the origin.
+	 * Creates a scaling by the given coefficients, centered on the origin.
 	 */
 	public static AffineTransform2D createScaling(double sx, double sy) {
 		return AffineTransform2D.createScaling(new Point2D(0, 0), sx, sy);
 	}
 
 	/**
-	 * Return a scaling by the given coefficients, centered on the given point.
+	 * Creates a scaling by the given coefficients, centered on the point
+	 * given by (x0,y0).
 	 */
 	public static AffineTransform2D createScaling(Point2D center, double sx,
 			double sy) {
@@ -325,7 +361,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	/**
 	 * Checks if the transform is an isometry, i.e. a compound of translation,
 	 * rotation and reflection. Isometry keeps area of shapes unchanged, but can
-	 * change orientation (directed or undirected).
+	 * change orientation (direct or indirect).
 	 * 
 	 * @return true in case of isometry.
 	 */
@@ -502,9 +538,9 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 	
 	/**
-	 * Return the affine transform created by applying first the affine
-	 * transform given by <code>that</code>, then this affine transform. This
-	 * the equivalent method of the 'concatenate' method in
+	 * Returns the affine transform created by applying first the affine
+	 * transform given by <code>that</code>, then this affine transform. 
+	 * This is the equivalent method of the 'concatenate' method in
 	 * java.awt.geom.AffineTransform.
 	 * 
 	 * @param that
@@ -523,7 +559,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	}
 
 	/**
-	 * Return the affine transform created by applying first this affine
+	 * Returns the affine transform created by applying first this affine
 	 * transform, then the affine transform given by <code>that</code>. This the
 	 * equivalent method of the 'preConcatenate' method in
 	 * java.awt.geom.AffineTransform. <code><pre>
@@ -567,22 +603,46 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	// ===================================================================
 	// methods testing type of transform
 
+	/**
+	 * Tests if this affine transform is a similarity.
+	 */
 	public boolean isSimilarity() {
 		return AffineTransform2D.isSimilarity(this);
 	}
 
+	/**
+	 * Tests if this affine transform is a motion, i.e. is composed only of
+	 * rotations and translations.
+	 */
 	public boolean isMotion() {
 		return AffineTransform2D.isMotion(this);
 	}
 
+	/**
+	 * Tests if this affine transform is an isometry, i.e. is equivalent to a
+	 * compound of translations, rotations and reflections. 
+	 * Isometry keeps area of shapes unchanged, but can change orientation 
+	 * (direct or indirect).
+	 * 
+	 * @return true in case of isometry.
+	 */
 	public boolean isIsometry() {
 		return AffineTransform2D.isIsometry(this);
 	}
 
+	/**
+	 * Tests if this affine transform is direct, i.e. the sign of the 
+	 * determinant of the associated matrix is positive. 
+	 * Direct transforms preserve the orientation of transformed shapes.
+	 */
 	public boolean isDirect() {
 		return AffineTransform2D.isDirect(this);
 	}
 
+	/**
+	 * Tests is this affine transform is equal to the identity transform.
+	 * @return
+	 */
 	public boolean isIdentity() {
 		return AffineTransform2D.isIdentity(this);
 	}
@@ -591,7 +651,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	// implementations of Bijection2D methods
 
 	/**
-	 * Return the inverse transform. If the transform is not invertible, throws
+	 * Returns the inverse transform. If the transform is not invertible, throws
 	 * a new NonInvertibleTransform2DException.
 	 * 
 	 * @since 0.6.3
@@ -610,10 +670,13 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	// ===================================================================
 	// implementations of Transform2D methods
 
-	public Point2D transform(Point2D src) {
+	/**
+	 * Computes the coordinates of the transformed point.
+	 */
+	public Point2D transform(Point2D p) {
 		Point2D dst = new Point2D(
-				src.x() * m00 + src.y() * m01 + m02, 
-				src.x() * m10 + src.y() * m11 + m12);
+				p.x() * m00 + p.y() * m01 + m02, 
+				p.x() * m10 + p.y() * m11 + m12);
 		return dst;
 	}
 

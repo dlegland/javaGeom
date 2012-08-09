@@ -71,15 +71,15 @@ public interface Shape2D extends GeometricObject2D {
     public abstract boolean contains(Point2D p);
 
     /**
-     * get the distance of the shape to the given point, or the distance of
+     * Returns the distance of the shape to the given point, or the distance of
      * point to the frontier of the shape in the case of a plain shape.
      */
     public abstract double distance(Point2D p);
 
     /**
-     * get the distance of the shape to the given point, specified by x and y,
-     * or the distance of point to the frontier of the shape in the case of a
-     * plain (i.e. fillable) shape.
+     * Returns the distance of the shape to the given point, specified by x and
+     * y, or the distance of point to the frontier of the shape in the case of
+     * a plain (i.e. fillable) shape.
      */
     public abstract double distance(double x, double y);
 
@@ -124,7 +124,7 @@ public interface Shape2D extends GeometricObject2D {
     public abstract Shape2D transform(AffineTransform2D trans);
 
     /**
-     * Draw the shape on the given graphics. 
+     * Draws the shape on the given graphics. 
      * If the shape is empty, nothing is drawn.
      * If the shape is unbounded, an exception is thrown.
      */

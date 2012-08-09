@@ -121,26 +121,48 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // ===================================================================
     // Constructors
 
+    /**
+     * Empty constructor.
+     */
     public PolyCurve2D() {
     }
     
+    /**
+     * Constructor that reserves space for the specified number of inner curves. 
+     */
     public PolyCurve2D(int n) {
     	super(n);
     }
 
+    /**
+     * Creates a new PolyCurve2D from the specified list of curves.
+     * @param curves the curves that constitutes this PolyCurve2D
+     */
     public PolyCurve2D(T... curves) {
         super(curves);
     }
 
+    /**
+     * Creates a new closed PolyCurve2D from the specified list of curves.
+     * @param curves the curves that constitutes this PolyCurve2D
+     */
     public PolyCurve2D(T[] curves, boolean closed) {
         super(curves);
         this.closed = closed;
     }
 
+    /**
+     * Creates a new PolyCurve2D from the specified collection of curves.
+     * @param curves the curves that constitutes this PolyCurve2D
+     */
     public PolyCurve2D(Collection<? extends T> curves) {
         super(curves);
     }
 
+    /**
+     * Creates a new PolyCurve2D from the specified collection of curves.
+     * @param curves the curves that constitutes this PolyCurve2D
+     */
     public PolyCurve2D(Collection<? extends T> curves, boolean closed) {
         super(curves);
         this.closed = closed;
@@ -151,7 +173,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // Methods specific to PolyCurve2D
 
     /**
-     * Toggle the 'closed' flag of the polycurve.
+     * Toggle the 'closed' flag of this polycurve.
      */
     public void setClosed(boolean b) {
         closed = b;
@@ -162,7 +184,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // Methods implementing the ContinuousCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
 	 */
 	public Vector2D leftTangent(double t) {
 		return this.childCurve(t).leftTangent(this.localPosition(t));
@@ -189,6 +211,11 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         return closed;
     }
 
+    /**
+     * Converts this PolyCurve2D into a polyline with the given number of edges.
+     * @param t the number of edges of the result polyline
+     * @see Polyline2D 
+     */
     public Polyline2D asPolyline(int n) {
         Point2D[] points = new Point2D[n+1];
         double t0 = this.t0();
@@ -245,11 +272,17 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
     // ===================================================================
     // Methods implementing the ContinuousCurve2D interface
 
+    /**
+     * Returns a collection of PolyCurve2D that contains only this instance.
+     */
     @Override
     public Collection<? extends PolyCurve2D<?>> continuousCurves() {
     	return wrapCurve(this);
     }
 
+    /**
+     * Returns the reverse curve of this PolyCurve2D.
+     */
    @Override
     public PolyCurve2D<? extends ContinuousCurve2D> reverse() {
     	// create array for storing reversed curves
@@ -261,7 +294,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
             curves2[i] = curves.get(n-1-i).reverse();
         
         // create the new reversed curve
-        return new PolyCurve2D<ContinuousCurve2D>(curves2);
+        return new PolyCurve2D<ContinuousCurve2D>(curves2, this.closed);
     }
 
     /**
@@ -316,6 +349,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         return result;
     }
 
+    /**
+     * Transforms each smooth piece in this PolyCurve2D and returns a new
+     * instance of PolyCurve2D.
+     */
     @Override
     public PolyCurve2D<? extends ContinuousCurve2D> transform(
             AffineTransform2D trans) {
@@ -343,6 +380,9 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         return path;
     }
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#getGeneralPath()
+	 */
     @Override
     public java.awt.geom.GeneralPath getGeneralPath() {
         // create new path
@@ -376,6 +416,9 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         return path;
     }
     
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.Curve2D#draw(Graphics2D)
+	 */
     @Override
      public void draw(Graphics2D g2) {
     	g2.draw(this.getGeneralPath());
@@ -388,15 +431,15 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
             return false;
         PolyCurve2D<?> curveSet = (PolyCurve2D<?>) obj;
 
-        // check the number of curves in each set
-        if (this.size()!=curveSet.size())
-            return false;
+		// check the number of curves in each set
+		if (this.size() != curveSet.size())
+			return false;
 
-        // return false if at least one couple of curves does not match
-        for(int i=0; i<curves.size(); i++)
-            if(!this.curves.get(i).equals(curveSet.curves.get(i)))
-                return false;
-        
+		// return false if at least one couple of curves does not match
+		for (int i = 0; i < curves.size(); i++)
+			if (!this.curves.get(i).equals(curveSet.curves.get(i)))
+				return false;
+
         // otherwise return true
         return true;
     }

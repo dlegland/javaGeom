@@ -88,7 +88,7 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract double getT1();
 
     /**
-     * Gets the point from a parametric representation of the curve. If the
+     * Returns the point located at the given position on the curve. If the
      * parameter lies outside the definition range, the parameter corresponding
      * to the closest bound is used instead. This method can be used to draw an
      * approximated outline of a curve, by selecting multiple values for t and
@@ -97,17 +97,21 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract Point2D point(double t);
 
     /**
-     * Get the first point of the curve. It must returns the same result as
-     * <code>getPoint(getT0())</code>.
+     * Returns the first point of the curve. It must returns the same result as
+     * <code>point(t0())</code>.
      * 
+     * @see t0()
+     * @see point(double)
      * @return the first point of the curve
      */
     public abstract Point2D firstPoint();
 
     /**
-     * Get the last point of the curve. It must returns the same result as
-     * <code>getPoint(getT1())</code>.
+     * Returns the last point of the curve. It must returns the same result as
+     * <code>this.point(this.t1())</code>.
      * 
+     * @see t1()
+     * @see point(double)
      * @return the last point of the curve.
      */
     public abstract Point2D lastPoint();
@@ -139,11 +143,13 @@ public interface Curve2D extends Shape2D, Cloneable {
     public abstract boolean isSingular(double pos);
 
     /**
-     * Get position of the point on the curve. If the point does not belong to
-     * the curve, return Double.NaN.
+     * Computes the position of the point on the curve. If the point does not
+     * belong to the curve, return Double.NaN. It is complementary to the
+     * <code>point(double)</code> method. 
      * 
      * @param point a point belonging to the curve
      * @return the position of the point on the curve
+     * @see point(double)
      */
     public abstract double position(Point2D point);
 
