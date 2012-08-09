@@ -24,28 +24,28 @@ implements SmoothCurve2D, Cloneable {
 
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
 	 */
     public Vector2D leftTangent(double t){
     	return this.tangent(t);
     }
     
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
 	 */
     public Vector2D rightTangent(double t){
     	return this.tangent(t);
     }
     
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getNormal(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#normal(double)
 	 */
     public Vector2D normal(double t){
     	return this.tangent(t).rotate(-Math.PI / 2);
     }
     
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
+	 * @see math.geom2d.curve.ContinuousCurve2D#smoothPieces()
 	 */
 	public Collection<? extends SmoothCurve2D> smoothPieces() {
 		return wrapCurve(this);

@@ -152,6 +152,10 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         this.points.addAll(points);
     }
 
+    public Point2D get(int index) {
+    	return this.points.get(index);
+    }
+    
 	public boolean remove(Point2D point) {
 		return this.points.remove(point);
 	}

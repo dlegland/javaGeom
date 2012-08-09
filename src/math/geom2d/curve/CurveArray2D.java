@@ -228,6 +228,9 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     	return curves.contains(curve);
     }
 
+    /**
+     * Returns index of the given curve within the inner array.
+     */
 	public int indexOf(T curve) {
 		return this.curves.indexOf(curve);
 	}
@@ -354,7 +357,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPoint(double)
+     * @see math.geom2d.Curve2D#point(double)
      */
     public Point2D point(double t) {
         if (curves.size()==0)
@@ -385,7 +388,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     }
 
     /**
-     * Get the first point of the curve.
+     * Returns the first point of the curve.
      * 
      * @return the first point of the curve
      */
@@ -396,7 +399,7 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
     }
 
     /**
-     * Get the last point of the curve.
+     * Returns the last point of the curve.
      * 
      * @return the last point of the curve.
      */

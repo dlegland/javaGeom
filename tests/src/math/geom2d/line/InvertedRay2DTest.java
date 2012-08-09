@@ -98,7 +98,7 @@ public class InvertedRay2DTest extends TestCase {
 
 	public void testIsBounded(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
-		assertTrue(!ray1.isBounded());
+		assertFalse(ray1.isBounded());
 	}
 	
 	public void testGetFirstPoint(){
@@ -106,7 +106,8 @@ public class InvertedRay2DTest extends TestCase {
 		try {
 		    ray1.firstPoint();
 		    fail("Should throw an InfiniteShapeException");
-		}catch(UnboundedShape2DException ex){		    
+		} catch(UnboundedShape2DException ex) {
+			assertEquals(ex.getShape(), ray1);
 		}
 	}
 	

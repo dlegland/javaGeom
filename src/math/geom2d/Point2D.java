@@ -55,8 +55,10 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// ===================================================================
 	// class variables
 	
+	/** The x coordinate of this point.*/
 	protected double x;
 	
+	/** The y coordinate of this point.*/
 	protected double y;
 	
 
@@ -253,7 +255,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * Compute the centroid of three points.
+	 * Computes the centroid of three points.
 	 * 
 	 * @param pt1 the first point
 	 * @param pt2 the second point
@@ -305,18 +307,34 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// ===================================================================
 	// Methods specific to Point2D
 
+	/**
+	 * Adds the coordinates of the given point to the coordinates of this
+	 * point.
+	 */
 	public Point2D plus(Point2D p) {
 		return new Point2D(this.x + p.x, this.y + p.y);
 	}
 
+	/**
+	 * Adds the coordinates of the given vector to the coordinates of this
+	 * point.
+	 */
 	public Point2D plus(Vector2D v) {
 		return new Point2D(this.x + v.x, this.y + v.y);
 	}
 
+	/**
+	 * Removes the coordinates of the given point from the coordinates of this
+	 * point.
+	 */
 	public Point2D minus(Point2D p) {
 		return new Point2D(this.x - p.x, this. y -p.y);
 	}
 
+	/**
+	 * Removes the coordinates of the given vector from the coordinates of
+	 * this point.
+	 */
 	public Point2D minus(Vector2D v) {
 		return new Point2D(this.x - v.x, this.y - v.y);
 	}
@@ -413,6 +431,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	// ===================================================================
 	// Getter and setter
 	
+	/**
+	 * Returns the x-coordinate of this point.
+	 */
 	public double x() {
 		return x;
 	}
@@ -426,7 +447,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * Returns the y-coordinate of this point
+	 * Returns the y-coordinate of this point.
 	 */
 	public double y(){
 		return y;
@@ -445,7 +466,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/*
 	 * (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		return new GenericCirculinearDomain2D(
@@ -476,7 +497,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/*
 	 * (non-Javadoc)
-	 * @see math.geom2d.point.PointShape2D#getPointNumber()
+	 * @see math.geom2d.point.PointShape2D#size()
 	 */
 	public int size() {
 		return 1;
@@ -484,7 +505,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/*
 	 * (non-Javadoc)
-	 * @see math.geom2d.point.PointShape2D#getPoints()
+	 * @see math.geom2d.point.PointShape2D#points()
 	 */
 	public Collection<Point2D> points() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(1);
@@ -530,6 +551,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		return true;
 	}
 
+	/**
+	 * Returns false, as a point can not be empty.
+	 */
 	public boolean isEmpty() {
 		return false;
 	}
