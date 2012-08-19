@@ -113,7 +113,7 @@ implements CirculinearRing2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Boundary2D#getDomain()
+	 * @see math.geom2d.domain.Boundary2D#domain()
 	 */
 	public CirculinearDomain2D domain() {
 		return new GenericCirculinearDomain2D(this);

@@ -32,18 +32,11 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Box2D;
-import math.geom2d.GeometricObject2D;
-import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedShape2DException;
-import math.geom2d.Vector2D;
+import math.geom2d.*;
 import math.geom2d.circulinear.CircleLine2D;
+import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.Domain2D;
 import math.geom2d.domain.SmoothContour2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -121,7 +114,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
 
     /**
-     * Return a new Straight line, parallel to another straight object (ray,
+     * Returns a new Straight line, parallel to another straight object (ray,
      * straight line or edge), and going through the given point.
      * 
      * @since 0.6.3
@@ -133,7 +126,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
 
     /**
-     * Return a new Straight line, parallel to another straight object (ray,
+     * Returns a new Straight line, parallel to another straight object (ray,
      * straight line or edge), and going through the given point.
      * 
      * @since 0.6.3
@@ -148,7 +141,7 @@ public class StraightLine2D extends AbstractLine2D implements
 	}
 
     /**
-     * Return a new Straight line, perpendicular to a straight object (ray,
+     * Returns a new Straight line, perpendicular to a straight object (ray,
      * straight line or edge), and going through the given point.
      * 
      * @since 0.6.3
@@ -161,7 +154,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
 
     /**
-     * Return a new Straight line, with the given coefficient of the cartesian
+     * Returns a new Straight line, with the given coefficient of the cartesian
      * equation (a*x + b*y + c = 0).
      */
     public static StraightLine2D createCartesian(double a, double b,
@@ -170,7 +163,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Compute the intersection point of the two (infinite) lines going through
+     * Computes the intersection point of the two (infinite) lines going through
      * p1 and p2 for the first one, and p3 and p4 for the second one. Returns
      * null if two lines are parallel.
      */
@@ -189,13 +182,13 @@ public class StraightLine2D extends AbstractLine2D implements
         this(0, 0, 1, 0);
     }
 
-    /** Define a new Straight line going through the two given points. */
+    /** Defines a new Straight line going through the two given points. */
     public StraightLine2D(Point2D point1, Point2D point2) {
         this(point1, new Vector2D(point1, point2));
     }
 
     /**
-     * Define a new Straight line going through the given point, and with the
+     * Defines a new Straight line going through the given point, and with the
      * specified direction vector.
      */
     public StraightLine2D(Point2D point, Vector2D direction) {
@@ -203,7 +196,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Define a new Straight line going through the given point, and with the
+     * Defines a new Straight line going through the given point, and with the
      * specified direction vector.
      */
     public StraightLine2D(Point2D point, double dx, double dy) {
@@ -211,7 +204,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Define a new Straight line going through the given point, and with the
+     * Defines a new Straight line going through the given point, and with the
      * specified direction given by angle.
      */
     public StraightLine2D(Point2D point, double angle) {
@@ -219,7 +212,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Define a new Straight line at the same position and with the same
+     * Defines a new Straight line at the same position and with the same
      * direction than an other straight object (line, edge or ray).
      */
     public StraightLine2D(LinearShape2D line) {
@@ -227,15 +220,15 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Define a new Straight line going through the point (xp, yp) and with the
-     * direction dx, dy.
+     * Defines a new Straight line going through the point (xp, yp) and with
+     * the direction dx, dy.
      */
     public StraightLine2D(double xp, double yp, double dx, double dy) {
         super(xp, yp, dx, dy);
     }
 
     /**
-     * Define a new Straight line, parallel to another straigth object (ray,
+     * Defines a new Straight line, parallel to another straigth object (ray,
      * straight line or edge), and going through the given point.
      */
     public StraightLine2D(LinearShape2D line, Point2D point) {
@@ -243,7 +236,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Define a new straight line, from the coefficients of the cartesian
+     * Defines a new straight line, from the coefficients of the cartesian
      * equation. The starting point of the line is then the point of the line
      * closest to the origin, and the direction vector has unit norm.
      */
@@ -272,9 +265,9 @@ public class StraightLine2D extends AbstractLine2D implements
     // methods implementing the CirculinearCurve2D interface
 
 	/**
-	 * Return the parallel line located at a distance d from the line. Distance
-	 * is positive in the 'right' side of the line (outside of the limiting
-	 * half-plane), and negative in the 'left' of the line.
+	 * Returns the parallel line located at a distance d from the line. 
+	 * Distance is positive in the 'right' side of the line (outside of the
+	 * limiting half-plane), and negative in the 'left' of the line.
 	 * 
 	 * @throws DegeneratedLine2DException
 	 *             if line direction vector is null
@@ -289,7 +282,7 @@ public class StraightLine2D extends AbstractLine2D implements
     }
 
     /**
-     * Return a new Straight line, parallel to another straigth object (ray,
+     * Returns a new Straight line, parallel to another straight object (ray,
      * straight line or edge), and going through the given point.
      */
     @Override
@@ -334,33 +327,43 @@ public class StraightLine2D extends AbstractLine2D implements
     // ===================================================================
     // methods specific to Boundary2D interface
 
-    public Domain2D domain() {
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Boundary2D#domain()
+	 */
+    public CirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Boundary2D#fill()
+	 */
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }
 
+    
     // ===================================================================
     // methods specific to OrientedCurve2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.OrientedCurve2D#windingAngle(Point2D)
+	 */
     @Override
     public double windingAngle(Point2D point) {
 
         double angle1 = Angle2D.horizontalAngle(-dx, -dy);
         double angle2 = Angle2D.horizontalAngle(dx, dy);
 
-        if (this.isInside(point)) {
-            if (angle2>angle1)
-                return angle2-angle1;
-            else
-                return 2*Math.PI-angle1+angle2;
-        } else {
-            if (angle2>angle1)
-                return angle2-angle1-2*Math.PI;
-            else
-                return angle2-angle1;
+		if (this.isInside(point)) {
+			if (angle2 > angle1)
+				return angle2 - angle1;
+			else
+				return 2 * Math.PI - angle1 + angle2;
+		} else {
+			if (angle2 > angle1)
+				return angle2 - angle1 - 2 * Math.PI;
+			else
+				return angle2 - angle1;
         }
     }
 
@@ -437,7 +440,8 @@ public class StraightLine2D extends AbstractLine2D implements
     }
     
     /**
-     * Gets the point specified with the parametric representation of the line.
+     * Returns the point specified with the parametric representation of the
+     * line.
      */
     public Point2D point(double t) {
 		return new Point2D(x0 + dx * t, y0 + dy * t);
@@ -465,6 +469,7 @@ public class StraightLine2D extends AbstractLine2D implements
     public GeneralPath appendPath(GeneralPath path) {
         throw new UnboundedShape2DException(this);
     }
+    
 
     // ===================================================================
     // methods implementing the Shape2D interface
@@ -504,11 +509,11 @@ public class StraightLine2D extends AbstractLine2D implements
     @Override
     public StraightLine2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        return new StraightLine2D(
-                x0*tab[0]+y0*tab[1]+tab[2], 
-                x0*tab[3]+y0*tab[4]+tab[5], 
-                dx*tab[0]+dy*tab[1], 
-                dx*tab[3]+dy*tab[4]);
+		return new StraightLine2D(
+				x0 * tab[0] + y0 * tab[1] + tab[2], 
+				x0 * tab[3] + y0 * tab[4] + tab[5], 
+				dx * tab[0] + dy * tab[1], 
+				dx * tab[3] + dy * tab[4]);
     }
 
     
@@ -544,21 +549,21 @@ public class StraightLine2D extends AbstractLine2D implements
 	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
 	 */
     public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
-    		return true;
-    	
-        if (!(obj instanceof StraightLine2D))
-            return false;
-        StraightLine2D line = (StraightLine2D) obj;
+		if (this == obj)
+			return true;
 
-        if (Math.abs(x0-line.x0)>eps)
-            return false;
-        if (Math.abs(y0-line.y0)>eps)
-            return false;
-        if (Math.abs(dx-line.dx)>eps)
-            return false;
-        if (Math.abs(dy-line.dy)>eps)
-            return false;
+		if (!(obj instanceof StraightLine2D))
+			return false;
+		StraightLine2D line = (StraightLine2D) obj;
+
+		if (Math.abs(x0 - line.x0) > eps)
+			return false;
+		if (Math.abs(y0 - line.y0) > eps)
+			return false;
+		if (Math.abs(dx - line.dx) > eps)
+			return false;
+		if (Math.abs(dy - line.dy) > eps)
+			return false;
         
         return true;
     }

@@ -32,7 +32,10 @@ import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 
 /**
- * A cubic bezier curve, defined by 4 points.
+ * A cubic bezier curve, defined by 4 control points.
+ * The curve passes through the first and the last control points.
+ * The second and the third control points defines the tangents at the
+ * extremities of the curve.
  * 
  * From javaGeom 0.8.0, this shape does not extends
  * java.awt.geom.CubicCurve2D.Double anymore
@@ -204,7 +207,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * return true if the point is 'inside' the domain bounded by the curve.
+     * Returns true if the point is 'inside' the domain bounded by the curve.
      * Uses a polyline approximation.
      * 
      * @param pt a point in the plane
@@ -443,6 +446,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return result;
     }
 
+    /**
+     * Returns the approximate bounding box of this curve. Actually, computes
+     * the bounding box of the set of control points.
+     */
     public Box2D boundingBox() {
     	Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl1();

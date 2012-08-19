@@ -51,10 +51,10 @@ public interface OrientedCurve2D extends Curve2D {
     public abstract double windingAngle(Point2D point);
 
     /**
-     * Get the signed distance of the curve to the given point: this distance is
-     * positive if the point lies outside the shape, and is negative if the
-     * point lies inside the shape. In this case, absolute value of distance is
-     * equals to the distance to the border of the shape.
+     * Returns the signed distance of the curve to the given point. 
+     * The distance is positive if the point lies outside the shape, and 
+     * negative if the point lies inside the shape. In both cases, absolute 
+     * value of distance is equals to the distance to the border of the shape.
      * 
      * @param point a point of the plane
      * @return the signed distance to the curve
@@ -82,7 +82,7 @@ public interface OrientedCurve2D extends Curve2D {
     public abstract OrientedCurve2D reverse();
 
     // TODO: what to do with non-continuous oriented curves ?
-    // public abstract OrientedCurve2D getSubCurve(double t0, double t1);
+    // public abstract OrientedCurve2D subCurve(double t0, double t1);
 
     public abstract CurveSet2D<? extends OrientedCurve2D> clip(Box2D box);
 

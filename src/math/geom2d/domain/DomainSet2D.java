@@ -12,6 +12,7 @@ import math.geom2d.ShapeSet2D;
 
 
 /**
+ * General interface for a set of domains, that is itself a domain.
  * @author dlegland
  *
  */

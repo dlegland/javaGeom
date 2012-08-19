@@ -37,7 +37,13 @@ import math.geom2d.AffineTransform2D;
  */
 public interface Contour2D extends Boundary2D, ContinuousOrientedCurve2D {
 
+	/**
+	 * Computes the reversed contour. 
+	 */
     public abstract Contour2D reverse();
 
+	/**
+	 * Computes the transformed contour. 
+	 */
     public abstract Contour2D transform(AffineTransform2D trans);
 }

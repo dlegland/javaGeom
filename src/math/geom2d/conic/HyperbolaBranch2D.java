@@ -84,15 +84,16 @@ implements SmoothContour2D, Cloneable {
     // methods inherited from SmoothCurve2D interface
 
     /**
-     * Use formula given in <a
-     * href="http://mathworld.wolfram.com/Hyperbola.html">http://mathworld.wolfram.com/Hyperbola.html</a>
+     * Use formula given in 
+     * <a href="http://mathworld.wolfram.com/Hyperbola.html">
+     * http://mathworld.wolfram.com/Hyperbola.html</a>
      */
     public double curvature(double t) {
 		double a = hyperbola.a;
 		double b = hyperbola.b;
 		double asih = a * sinh(t);
 		double bcoh = b * cosh(t);
-		return a * b / pow(hypot(bcoh, asih), 3);
+		return (a * b) / pow(hypot(bcoh, asih), 3);
     }
 
     public Vector2D tangent(double t) {
@@ -159,7 +160,7 @@ implements SmoothContour2D, Cloneable {
     // methods inherited from ContinuousCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
+	 * @see math.geom2d.curve.Curve2D#continuousCurves()
 	 */
 	public Collection<? extends HyperbolaBranch2D> continuousCurves() {
 		return wrapCurve(this);

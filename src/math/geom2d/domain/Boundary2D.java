@@ -73,5 +73,10 @@ public interface Boundary2D extends OrientedCurve2D {
      */
     public Boundary2D transform(AffineTransform2D trans);
 
+    /**
+     * Fills the interior of the boundary, using the Graphics current Paint.
+     * 
+     * @param g2 the Graphics to fill on
+     */
     public void fill(Graphics2D g2);
 }

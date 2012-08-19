@@ -780,12 +780,13 @@ implements EllipseShape2D, Cloneable {
 		double t0 = this.t0();
 		double dt = (this.t1() - t0) / n;
 
-        // compute position of points, without the last one, 
+        // compute position of vertices, without the last one, 
         // which is included by default with linear rings
         Point2D[] points = new Point2D[n];
 		for (int i = 0; i < n; i++)
 			points[i] = this.point(t0 + i * dt);
 
+		// creates a new linear ring with the given vertices
         return new LinearRing2D(points);
 	}
 	
@@ -867,6 +868,12 @@ implements EllipseShape2D, Cloneable {
 		return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
     }
 
+	/**
+	 * Transforms the coordinates of the given point to the coordinate system
+	 * if the ellipse were transformed to a unit circle.
+	 * @param point the point to transform
+	 * @return the coordinates of points in unit circle coordinate system
+	 */
 	private Point2D toUnitCircle(Point2D point) {
 		// extract coordinates
     	double xp = point.x();
@@ -971,9 +978,9 @@ implements EllipseShape2D, Cloneable {
     }
 
     /**
-     * Clip the ellipse by a box. The result is an instance of CurveSet2D<ContinuousOrientedCurve2D>,
+     * Clip the ellipse by a box. The result is an instance of CurveSet2D,
      * which contains only instances of Ellipse2D or EllipseArc2D. If the
-     * ellipse is not clipped, the result is an instance of CurveSet2D<ContinuousOrientedCurve2D>
+     * ellipse is not clipped, the result is an instance of CurveSet2D
      * which contains 0 curves.
      */
     public CurveSet2D<? extends SmoothOrientedCurve2D> clip(Box2D box) {
@@ -1068,16 +1075,16 @@ implements EllipseShape2D, Cloneable {
     // methods implementing the Shape interface
 
     /**
-     * Return true if the point p lies on the ellipse, with precision given by
-     * Shape2D.ACCURACY.
+     * Returns true if the point p lies on the ellipse, with precision given
+     * by Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
 
     /**
-     * Return true if the point (x, y) lies on the ellipse, with precision given
-     * by Shape2D.ACCURACY.
+     * Returns true if the point (x, y) lies on the ellipse, with precision
+     * given by Shape2D.ACCURACY.
      */
     public boolean contains(double x, double y) {
         return this.distance(x, y)<Shape2D.ACCURACY;

@@ -229,7 +229,7 @@ implements Conic2D, Cloneable {
     // methods specific to Hyperbola2D
 
     /**
-     * transform a point in local coordinate (ie orthogonal centered hyberbola
+     * Transforms a point in local coordinate (ie orthogonal centered hyberbola
      * with a=b=1) to global coordinate system.
      */
     public Point2D toGlobal(Point2D point) {
@@ -247,7 +247,7 @@ implements Conic2D, Cloneable {
     }
 
     /**
-     * Change coordinate of the line to correspond to a standard hyperbola.
+     * Changes coordinates of the line to correspond to a standard hyperbola.
      * Standard hyperbola is such that x^2-y^2=1 for every point.
      * 
      * @param point

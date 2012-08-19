@@ -69,18 +69,31 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // ===================================================================
     // Constructors
 
+    /**
+     * Creates an empty BoundaryPolyCurve2D.
+     */
     public BoundaryPolyCurve2D() {
         super();
     }
 
+    /**
+     * Creates a BoundaryPolyCurve2D by reserving space for n curves.
+     * @param n the number of curves to store
+     */
     public BoundaryPolyCurve2D(int n) {
         super(n);
     }
 
+    /**
+     * Creates a BoundaryPolyCurve2D from the specified set of curves.
+     */
     public BoundaryPolyCurve2D(T... curves) {
         super(curves);
     }
 
+    /**
+     * Creates a BoundaryPolyCurve2D from the specified set of curves.
+     */
     public BoundaryPolyCurve2D(Collection<? extends T> curves) {
         super(curves);
     }
@@ -90,7 +103,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods overriding CurveSet2D methods
 
     /**
-     * Override the isClosed() in the following way: return true if all curves
+     * Overrides the isClosed() in the following way: return true if all curves
      * are bounded. If at least one curve is unbounded, return false.
      */
     @Override
@@ -133,8 +146,11 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     @Override
     public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> transform(
             AffineTransform2D trans) {
+    	// create result curve
         BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
         	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves.size());
+        
+        // reverse each curve and add it to result
         for (ContinuousOrientedCurve2D curve : curves)
             result.add(curve.transform(trans));
         return result;

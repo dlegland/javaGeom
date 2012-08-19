@@ -60,10 +60,20 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ==========================================================
     // class variables
 
+    /** 
+     * The parent parabola.
+     */
     protected Parabola2D parabola = new Parabola2D();
 
-    protected double     t0       = -10;
-    protected double     t1       = 10;
+	/**
+	 * The lower bound if the parameterization for this arc.
+	 */
+	double t0 = 0;
+
+	/**
+	 * The upper bound if the parameterization for this arc.
+	 */
+	double t1 = 1;
 
     // ==========================================================
     // constructor
@@ -181,8 +191,8 @@ implements SmoothOrientedCurve2D, Cloneable {
             throw new UnboundedShape2DException(this);
 
         // compute start and increment values
-        double t0 = this.getT0();
-        double dt = (this.getT1() - t0) / n;
+        double t0 = this.t0();
+        double dt = (this.t1() - t0) / n;
 
         // allocate array of points, and compute each value.
         Point2D[] points = new Point2D[n+1];
@@ -260,7 +270,7 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     /**
      * Returns the parabola arc which refers to the reversed parent parabola,
-     * and with inverted parametrization bounds.
+     * and with inverted parameterization bounds.
      */
     public ParabolaArc2D reverse() {
         return new ParabolaArc2D(this.parabola.reverse(), -t1, -t0);
@@ -377,8 +387,8 @@ implements SmoothOrientedCurve2D, Cloneable {
         // Compute position and tangent at extremities
         Point2D p1 = this.firstPoint();
         Point2D p2 = this.lastPoint();
-        Vector2D v1 = this.tangent(this.getT0());
-        Vector2D v2 = this.tangent(this.getT1());
+        Vector2D v1 = this.tangent(this.t0);
+        Vector2D v2 = this.tangent(this.t1);
         
         // Compute tangent lines at extremities
         StraightLine2D line1 = new StraightLine2D(p1, v1);

@@ -173,10 +173,10 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     
     /**
      * Returns true if the ellipse arc is direct, i.e. if the angle extent is
-     * positive.
+     * positive (or zero).
      */
     public boolean isDirect() {
-    	return angleExtent>0;
+    	return angleExtent >= 0;
     }
     
     public boolean containsAngle(double angle) {
@@ -201,7 +201,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getViewAngle(math.geom2d.Point2D)
+     * @see math.geom2d.OrientedCurve2D#windingAngle(math.geom2d.Point2D)
      */
     public double windingAngle(Point2D point) {
         Point2D p1 = point(0);
@@ -253,10 +253,10 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
+     * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
     public double signedDistance(double x, double y) {
-        boolean direct = angleExtent>0;
+        boolean direct = angleExtent >= 0;
 
         double dist = distance(x, y);
         Point2D point = new Point2D(x, y);
@@ -313,7 +313,8 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     }
 
     /**
-     * returns the curvature of the ellipse arc.
+     * Returns the curvature of the ellipse arc. 
+     * Curvature is negative if the arc is indirect.
      */
     public double curvature(double t) {
         // convert position to angle
@@ -365,7 +366,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPoint(double, math.geom2d.Point2D)
+     * @see math.geom2d.Curve2D#point(double, math.geom2d.Point2D)
      */
     public Point2D point(double t) {
         // check bounds
@@ -385,7 +386,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
+     * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
     public double position(Point2D point) {
         double angle = Angle2D.horizontalAngle(ellipse.center(), point);
@@ -419,7 +420,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
+     * @see math.geom2d.Curve2D#intersections(math.geom2d.LinearShape2D)
      */
     public Collection<Point2D> intersections(LinearShape2D line) {
 
@@ -472,7 +473,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(math.geom2d.Point2D)
+     * @see math.geom2d.Shape2D#distance(math.geom2d.Point2D)
      */
     public double distance(Point2D point) {
         return distance(point.x(), point.y());
@@ -481,7 +482,7 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(double, double)
+     * @see math.geom2d.Shape2D#distance(double, double)
      */
     public double distance(double x, double y) {
         Point2D p = point(project(new Point2D(x, y)));
@@ -501,10 +502,10 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
     }
 
     /**
-     * Clip the ellipse arc by a box. The result is an instance of CurveSet2D<EllipseArc2D>,
+     * Clips the ellipse arc by a box. The result is an instance of CurveSet2D,
      * which contains only instances of EllipseArc2D. If the ellipse arc is not
-     * clipped, the result is an instance of CurveSet2D<EllipseArc2D> which
-     * contains 0 curves.
+     * clipped, the result is an instance of CurveSet2D which contains 0
+     * curves.
      */
     public CurveSet2D<? extends EllipseArc2D> clip(Box2D box) {
         // Clip the curve
@@ -534,18 +535,20 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
         double x1 = p1.x();
         double y1 = p1.y();
 
-        // intialize min and max coords
+        // initialize min and max coords
         double xmin = min(x0, x1);
         double xmax = max(x0, x1);
         double ymin = min(y0, y1);
         double ymax = max(y0, y1);
 
-        // check cases arc contains one maximum
+        // precomputes some values
         Point2D center = ellipse.center();
         double xc = center.x();
 		double yc = center.y();
 		double endAngle = startAngle + angleExtent;
 		boolean direct = angleExtent >= 0;
+		
+        // check cases arc contains one maximum
 		if (Angle2D.containsAngle(startAngle, endAngle, PI / 2 + ellipse.theta, direct))
 			ymax = max(ymax, yc + ellipse.r1);
 		if (Angle2D.containsAngle(startAngle, endAngle, 3 * PI / 2

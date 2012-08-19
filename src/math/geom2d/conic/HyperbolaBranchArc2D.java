@@ -36,8 +36,15 @@ implements SmoothOrientedCurve2D, Cloneable {
     /** The supporting hyperbola branch */
     HyperbolaBranch2D branch = null;
 
-    double            t0     = 0;
-    double            t1     = 1;
+	/**
+	 * The lower bound if the parameterization for this arc.
+	 */
+	double t0 = 0;
+
+	/**
+	 * The upper bound if the parameterization for this arc.
+	 */
+	double t1 = 1;
 
     // ===================================================================
     // constructor
@@ -196,7 +203,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Clip the hyperbola branch arc by a box. The result is an instance of
+     * Clips the hyperbola branch arc by a box. The result is an instance of
      * CurveSet2D<HyperbolaBranchArc2D>, which contains only instances of
      * HyperbolaBranchArc2D. If the shape is not clipped, the result is an
      * instance of CurveSet2D<HyperbolaBranchArc2D> which contains 0 curves.

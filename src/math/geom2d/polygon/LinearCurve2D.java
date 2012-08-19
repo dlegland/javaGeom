@@ -70,14 +70,14 @@ implements CirculinearContinuousCurve2D {
     // Methods specific to LinearCurve2D
 
     /**
-     * Return an iterator on the collection of points.
+     * Returns an iterator on the collection of points.
      */
     public Iterator<Point2D> vertexIterator() {
         return vertices.iterator();
     }
     
     /**
-     * Return the collection of vertices as an array of Point2D.
+     * Returns the collection of vertices as an array of Point2D.
      * 
      * @return an array of Point2D
      */
@@ -86,7 +86,7 @@ implements CirculinearContinuousCurve2D {
     }
 
     /**
-     * Add a vertex at the end of this polyline.
+     * Adds a vertex at the end of this polyline.
      * @return true if the vertex was correctly added
      * @since 0.9.3
      */
@@ -95,7 +95,7 @@ implements CirculinearContinuousCurve2D {
     }
     
     /**
-     * Insert a vertex at a given position in the polyline.
+     * Inserts a vertex at a given position in the polyline.
      * @since 0.9.3
      */
     public void insertVertex(int index, Point2D vertex) {
@@ -200,7 +200,7 @@ implements CirculinearContinuousCurve2D {
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	public double length() {
 		double sum = 0;
@@ -210,7 +210,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		//init
@@ -232,7 +232,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double length) {
 		
@@ -243,7 +243,7 @@ implements CirculinearContinuousCurve2D {
 		int index = 0;
 		
 		// cumulative length
-		double cumLength = this.length(this.getT0());
+		double cumLength = this.length(this.t0());
 		
 		// iterate on all curves
 		for(LineSegment2D edge : edges()) {
@@ -267,7 +267,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -283,7 +283,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
 	public CirculinearContinuousCurve2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -325,7 +325,7 @@ implements CirculinearContinuousCurve2D {
     // Methods inherited from ContinuousCurve2D
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getLeftTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
 	 */
 	public Vector2D leftTangent(double t) {
 		int index = (int) Math.floor(t);
@@ -335,7 +335,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getRightTangent(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
 	 */
 	public Vector2D rightTangent(double t) {
 		int index = (int) Math.ceil(t);
@@ -343,7 +343,7 @@ implements CirculinearContinuousCurve2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#getCurvature(double)
+	 * @see math.geom2d.curve.ContinuousCurve2D#curvature(double)
 	 */
 	public double curvature(double t) {
 		double index = Math.round(t);
@@ -356,7 +356,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.ContinuousCurve2D#getSmoothPieces()
+     * @see math.geom2d.ContinuousCurve2D#smoothPieces()
      */
     public Collection<? extends LineSegment2D> smoothPieces() {
         return edges();
@@ -403,7 +403,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
+     * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
     public double position(Point2D point) {
         int ind = 0;
@@ -429,7 +429,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getIntersections(math.geom2d.LinearShape2D)
+     * @see math.geom2d.Curve2D#intersections(math.geom2d.LinearShape2D)
      */
     public Collection<Point2D> intersections(LinearShape2D line) {
         ArrayList<Point2D> list = new ArrayList<Point2D>();
@@ -458,7 +458,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Curve2D#getPosition(math.geom2d.Point2D)
+     * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
     public double project(Point2D point) {
         double dist, minDist = Double.POSITIVE_INFINITY;
@@ -469,7 +469,7 @@ implements CirculinearContinuousCurve2D {
         int i = 0;
         for (LineSegment2D edge : this.edges()) {
             dist = edge.distance(x, y);
-            if (dist<minDist) {
+            if (dist < minDist) {
                 minDist = dist;
                 pos = edge.project(point)+i;
             }
@@ -486,7 +486,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(double, double)
+     * @see math.geom2d.Shape2D#distance(double, double)
      */
     public double distance(double x, double y) {
         double dist = Double.MAX_VALUE;
@@ -501,7 +501,7 @@ implements CirculinearContinuousCurve2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(Point2D)
+     * @see math.geom2d.Shape2D#distance(Point2D)
      */
     public double distance(Point2D point) {
         return distance(point.x(), point.y());
@@ -519,6 +519,9 @@ implements CirculinearContinuousCurve2D {
         return true;
     }
 
+    /**
+     * Returns the bounding box of this linear curve.
+     */
     public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
@@ -566,9 +569,9 @@ implements CirculinearContinuousCurve2D {
     }
 
     /**
-     * Clip the polyline by a box. The result is an instance of CurveSet2D<Polyline2D>,
+     * Clips the polyline by a box. The result is an instance of CurveSet2D,
      * which contains only instances of Polyline2D. If the polyline is not
-     * clipped, the result is an instance of CurveSet2D<Polyline2D> which
+     * clipped, the result is an instance of CurveSet2D which
      * contains 0 curves.
      */
     public CurveSet2D<? extends LinearCurve2D> clip(Box2D box) {
@@ -588,7 +591,7 @@ implements CirculinearContinuousCurve2D {
     }
 
     /**
-     * Return a general path iterator.
+     * Returns a general path iterator.
      */
     public java.awt.geom.GeneralPath asGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

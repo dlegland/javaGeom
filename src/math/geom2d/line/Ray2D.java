@@ -138,12 +138,13 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	/**
+	 * Returns a new ray parallel to this one, at the given relative distance.
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
 	public Ray2D parallel(double d) {
-        double dd = Math.sqrt(dx*dx+dy*dy);
-        return new Ray2D(x0+dy*d/dd, y0-dx*d/dd, dx, dy);
+        double dd = Math.hypot(dx, dy);
+		return new Ray2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
 	}
 
     // ===================================================================
@@ -200,6 +201,11 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
     	return t1();
     }
 
+    /**
+     * Reverses this curve, and return the result as an instance of 
+     * InvertedRay2D.
+     * @see InvertedRay2D#reverse()
+     */
     public InvertedRay2D reverse() {
         return new InvertedRay2D(x0, y0, -dx, -dy);
     }

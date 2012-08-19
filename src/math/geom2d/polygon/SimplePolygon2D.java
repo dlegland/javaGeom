@@ -291,7 +291,7 @@ public class SimplePolygon2D implements Polygon2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		// check for multiple vertices
@@ -310,7 +310,7 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Domain2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
 		return this;
@@ -399,7 +399,7 @@ public class SimplePolygon2D implements Polygon2D {
     }
 
     public boolean isEmpty() {
-        return vertices.size()==0;
+        return vertices.size() == 0;
     }
 
     /**
@@ -429,8 +429,8 @@ public class SimplePolygon2D implements Polygon2D {
     // methods inherited from Shape interface
 
     /**
-     * Return true if the point p lies inside the polygon, with precision given
-     * by Shape2D.ACCURACY.
+     * Returns true if the point p lies inside the polygon, with precision
+     * given by Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());

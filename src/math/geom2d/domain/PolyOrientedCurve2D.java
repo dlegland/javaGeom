@@ -156,7 +156,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
+     * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
     public double signedDistance(double x, double y) {
         double dist = this.distance(x, y);
@@ -168,7 +168,8 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     /**
-     * Determines if the given point lies within the domain bounded by this curve.
+     * Determines if the given point lies within the domain bounded by this
+     * curve.
      */
     public boolean isInside(Point2D point) {
         double pos = this.project(point);
@@ -291,7 +292,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     /**
-     * Return an instance of PolyOrientedCurve2D.
+     * Returns a portion of this curve as an instance of PolyOrientedCurve2D.
      */
     @Override
     public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> subCurve(
@@ -309,10 +310,11 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     /**
-     * Clip the PolyCurve2D by a box. The result is an instance of CurveSet2D<ContinuousOrientedCurve2D>,
+     * Clips the PolyCurve2D by a box. 
+     * The result is an instance of CurveSet2D,
      * which contains only instances of ContinuousOrientedCurve2D. If the
-     * PolyCurve2D is not clipped, the result is an instance of CurveSet2D<ContinuousOrientedCurve2D>
-     * which contains 0 curves.
+     * PolyCurve2D is not clipped, the result is an instance of 
+     * CurveSet2D which contains 0 curves.
      */
     @Override
     public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {

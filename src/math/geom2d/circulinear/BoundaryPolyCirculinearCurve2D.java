@@ -124,7 +124,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	@Override
 	public double length() {
@@ -135,7 +135,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	@Override
 	public double length(double pos) {
@@ -143,7 +143,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	@Override
 	public double position(double length) {
@@ -151,7 +151,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
 	 */
     @Override
 	public CirculinearRing2D parallel(double dist) {
@@ -190,7 +190,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Boundary2D#getDomain()
+	 * @see math.geom2d.domain.Boundary2D#domain()
 	 */
 	public CirculinearDomain2D domain() {
 		return new GenericCirculinearDomain2D(this);
@@ -202,7 +202,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.CirculinearContinuousCurve2D#getSmoothPieces()
+     * @see math.geom2d.CirculinearContinuousCurve2D#smoothPieces()
      */
     @Override
 	public Collection<? extends CirculinearElement2D> smoothPieces() {
