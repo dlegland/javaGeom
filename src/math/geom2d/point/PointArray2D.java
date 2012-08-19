@@ -198,7 +198,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     // Methods implementing CirculinearShape2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -225,7 +225,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getDistance(double, double)
+     * @see math.geom2d.Shape2D#distance(double, double)
      */
     public double distance(double x, double y) {
     	// basic checkup
@@ -258,7 +258,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getClippedShape(java.awt.geom.Rectangle2D)
+     * @see math.geom2d.Shape2D#clip(java.awt.geom.Rectangle2D)
      */
     public PointArray2D clip(Box2D box) {
     	// allocate memory for result

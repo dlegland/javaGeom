@@ -81,7 +81,7 @@ public interface Polygon2D extends CirculinearDomain2D {
     // methods inherited from the Domain2D interface
 
     /**
-     * Overrides the definition of getBoundary() such that the boundary of a 
+     * Overrides the definition of boundary() such that the boundary of a 
      * polygon is defined as a set of LinearRing2D.
      */
     public CirculinearContourArray2D<? extends LinearRing2D> 

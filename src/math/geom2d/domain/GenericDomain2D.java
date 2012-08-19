@@ -60,6 +60,9 @@ public class GenericDomain2D implements Domain2D {
     // ===================================================================
     // Class variables
 
+	/**
+	 * The inner boundary that defines this domain.
+	 */
 	protected Boundary2D boundary = null;
 
     // ===================================================================
@@ -73,7 +76,7 @@ public class GenericDomain2D implements Domain2D {
     // methods implementing the Domain2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
 		Collection<? extends Contour2D> contours = boundary.continuousCurves();

@@ -37,9 +37,13 @@ import math.utils.EqualUtils;
  * LineArc2D is a generic class to represent edges, straight lines, and rays.
  * It is defined like other linear shapes: origin point, and direction vector.
  * Moreover, two internal variables t0 and t1 define the limit of the object
- * (with t0<t1). t0=0 and t1=1: this is an edge. t0=-inf and t1=inf: this is a
- * straight line. t0=0 and t1=inf: this is a ray.
- * 
+ * (with t0<t1).
+ * <ul>
+ * <li> t0=0 and t1=1: this is an edge. </li>
+ * <li> t0=-inf and t1=inf: this is a straight line. </li>
+ * <li> t0=0 and t1=inf: this is a ray.</li>
+ * <li> t0=-inf and 0: this is an inverted ray.</li>
+ * </ul>
  * @author dlegland
  */
 public class LineArc2D extends AbstractLine2D 
@@ -60,7 +64,10 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // class variables
     
+    /** Lower bound of this arc parameterization */
     protected double t0 = 0;
+
+    /** Upper bound of this arc parameterization */
     protected double t1 = 1;
 
     // ===================================================================
@@ -166,7 +173,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
 	public LineArc2D parallel(double d) {
 		double d2 = d / Math.hypot(dx, dy);
@@ -222,7 +229,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Return the first point of the edge. In the case of a line, or a ray
+     * Returns the first point of the edge. In the case of a line, or a ray
      * starting from -infinity, throws an UnboundedShape2DException.
      * 
      * @return the last point of the arc
@@ -236,8 +243,8 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Return the last point of the edge. In the case of a line, or a ray ending
-     * at infinity, throws an UnboundedShape2DException.
+     * Returns the last point of the edge. In the case of a line, or a ray
+     * ending at infinity, throws an UnboundedShape2DException.
      * 
      * @return the last point of the arc
      */
@@ -287,22 +294,27 @@ implements SmoothOrientedCurve2D, Cloneable {
      */
     @Override
     public LineArc2D subCurve(double t0, double t1) {
-        t0 = Math.max(t0, this.getT0());
-        t1 = Math.min(t1, this.getT1());
+        t0 = Math.max(t0, this.t0());
+        t1 = Math.min(t1, this.t1());
         return new LineArc2D(this, t0, t1);
     }
 
     // ===================================================================
     // methods of Shape2D interface
 
-    /** Returns true if both t0 and t1 are different from infinity. */
+    /** 
+     * Returns true if both t0 and t1 are different from infinity. 
+     */
     public boolean isBounded() {
     	return t0 != Double.NEGATIVE_INFINITY && t1 != Double.POSITIVE_INFINITY;
     }
 
+    /**
+     * Returns the bounding box of this line arc.
+     */
     public Box2D boundingBox() {
-		return new Box2D(x0 + t0 * dx, x0 + t1 * dx, y0 + t0 * dy, y0 + t1 * dy);
-  }
+    	return new Box2D(x0 + t0 * dx, x0 + t1 * dx, y0 + t0 * dy, y0 + t1 * dy);
+    }
 
     // ===================================================================
     // methods of Shape interface

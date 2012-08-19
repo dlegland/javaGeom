@@ -38,7 +38,7 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
 
 /**
- * A set of Bezier curves, making a continuous curve.
+ * A set of Bezier curves that forms a continuous curve.
  * 
  * @author dlegland
  */
@@ -57,16 +57,20 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     	int np = points.length;
     	
     	// compute number of curves
-    	int nc = (np-1)/3;
+		int nc = (np - 1) / 3;
     	
     	// create array of curves
     	PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
     	
     	// build each curve
-    	for(int i=0; i<nc; i++)
-    		polyBezier.add(new CubicBezierCurve2D(
-    				points[i*3], points[i*3+1], points[i*3+2], points[i*3+3]));
-    	
+		for (int i = 0; i < np - 3; i += 3) {
+			polyBezier.add(new CubicBezierCurve2D(
+					points[i],
+					points[i + 1], 
+					points[i + 2], 
+					points[i + 3]));
+		}
+		
     	// return the curve
     	return polyBezier;
     }
@@ -89,10 +93,14 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
 		PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
 
 		// build each curve
-		for (int i = 0; i < nc; i++)
+		for (int i = 0; i < nc - 1; i += 2) {
 			polyBezier.add(new CubicBezierCurve2D(
-					points[i * 2], vectors[i*2], points[i*2+1], vectors[i*2+1]));
-    	
+					points[i],
+					vectors[i], 
+					points[i + 1], 
+					vectors[i + 1]));
+		}
+		
     	// return the curve
     	return polyBezier;
     }

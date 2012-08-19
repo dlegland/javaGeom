@@ -211,7 +211,7 @@ implements LinearElement2D, Cloneable {
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -219,7 +219,7 @@ implements LinearElement2D, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
 	public Line2D parallel(double d) {
 		double x0 = getX1();
@@ -233,14 +233,14 @@ implements LinearElement2D, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	public double length() {
 		return p1.distance(p2);
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		double dx = p2.x() - p1.x();
@@ -249,7 +249,7 @@ implements LinearElement2D, Cloneable {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double length) {
 		double dx = p2.x() - p1.x();
@@ -324,28 +324,28 @@ implements LinearElement2D, Cloneable {
     }
   
     /* (non-Javadoc)
-     * @see math.geom2d.line.LinearShape2D#getIntersection(math.geom2d.line.LinearShape2D)
+     * @see math.geom2d.line.LinearShape2D#intersection(math.geom2d.line.LinearShape2D)
      */
     public Point2D intersection(LinearShape2D line) {
         return new LineSegment2D(p1, p2).intersection(line);
     }
 
     /* (non-Javadoc)
-     * @see math.geom2d.line.LinearShape2D#getOrigin()
+     * @see math.geom2d.line.LinearShape2D#origin()
      */
     public Point2D origin() {
         return p1;
     }
 
     /* (non-Javadoc)
-     * @see math.geom2d.line.LinearShape2D#getSupportingLine()
+     * @see math.geom2d.line.LinearShape2D#supportingLine()
      */
     public StraightLine2D supportingLine() {
         return new StraightLine2D(p1, p2);
     }
 
     /* (non-Javadoc)
-     * @see math.geom2d.line.LinearShape2D#getVector()
+     * @see math.geom2d.line.LinearShape2D#direction()
      */
     public Vector2D direction() {
         return new Vector2D(p1, p2);
@@ -368,7 +368,7 @@ implements LinearElement2D, Cloneable {
     // methods implementing the ContinuousCurve2D interface
     
     /* (non-Javadoc)
-     * @see math.geom2d.curve.ContinuousCurve2D#getSmoothPieces()
+     * @see math.geom2d.curve.ContinuousCurve2D#smoothPieces()
      */
     @Override
 	public Collection<? extends Line2D> smoothPieces() {
@@ -387,29 +387,33 @@ implements LinearElement2D, Cloneable {
     // methods implementing the Shape2D interface
 
     /**
-     * Get the distance of the point (x, y) to this edge.
+     * Returns the distance of the point <code>p</code> to this edge.
      */
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
 
     /**
-     * Get the distance of the point (x, y) to this edge.
+     * Returns the distance of the point (x, y) to this edge.
      */
     public double distance(double x, double y) {
+    	// project the point on the support line 
         StraightLine2D support = new StraightLine2D(p1, p2);
         Point2D proj = support.projectedPoint(x, y);
+        
+        // if this line contains the projection, return orthogonal distance
         if (contains(proj))
             return proj.distance(x, y);
+        
+        // return distance to closest extremity
 		double d1 = Math.hypot(p1.x() - x, p1.y() - y);
 		double d2 = Math.hypot(p2.x() - x, p2.y() - y);
-    // System.out.println("dist lineObject2D : " + Math.min(d1, d2));
         return Math.min(d1, d2);
     }
 
     /**
-     * Create a straight line parallel to this object, and going through the
-     * given point.
+     * Creates a straight line parallel to this object, and passing through
+     * the given point.
      * 
      * @param point the point to go through
      * @return the parallel through the point
@@ -419,10 +423,10 @@ implements LinearElement2D, Cloneable {
     }
 
     /**
-     * Create a straight line perpendicular to this object, and going through
-     * the given point.
+     * Creates a straight line perpendicular to this object, and passing
+     * through the given point.
      * 
-     * @param point : the point to go through
+     * @param point the point to go through
      * @return the perpendicular through point
      */
     public StraightLine2D perpendicular(Point2D point) {
@@ -430,9 +434,9 @@ implements LinearElement2D, Cloneable {
     }
 
     /**
-     * Clip the line object by a box. The result is an instance of CurveSet2D<LineArc2D>,
+     * Clips the line object by a box. The result is an instance of CurveSet2D,
      * which contains only instances of LineArc2D. If the line object is not
-     * clipped, the result is an instance of CurveSet2D<LineArc2D> which
+     * clipped, the result is an instance of CurveSet2D which
      * contains 0 curves.
      */
     public CurveSet2D<? extends Line2D> clip(Box2D box) {
@@ -544,8 +548,8 @@ implements LinearElement2D, Cloneable {
     }
 
     /**
-     * Gets position of the point on the line. If point belongs to the line,
-     * this position is defined by the ratio :
+     * Returns the position of the point on the line. If point belongs to the
+     * line, this position is defined by the ratio:
      * <p>
      * <code> t = (xp - x0)/dx <\code>, or equivalently :<p>
      * <code> t = (yp - y0)/dy <\code>.<p>
@@ -562,7 +566,7 @@ implements LinearElement2D, Cloneable {
     }
 
     /**
-     * Returns the line object which starts at <code>point2</code> and ends at
+     * Returns the Line2D object which starts at <code>point2</code> and ends at
      * <code>point1</code>.
      */
     public Line2D reverse() {
@@ -575,19 +579,19 @@ implements LinearElement2D, Cloneable {
     }
 
     /**
-     * Return a new Line2D, which is the portion of the line delimited by
+     * Returns a new Line2D, which is the portion of the line delimited by
      * parameters t0 and t1.
      */
     public Line2D subCurve(double t0, double t1) {
-        if(t0>t1) 
+        if(t0 > t1) 
             return null;
-        t0 = Math.max(t0, getT0());
-        t1 = Math.min(t1, getT1());
+        t0 = Math.max(t0, t0());
+        t1 = Math.min(t1, t1());
         return new Line2D(this.point(t0), this.point(t1));
     }
 
     /* (non-Javadoc)
-     * @see math.geom2d.curve.Curve2D#getIntersections(math.geom2d.line.LinearShape2D)
+     * @see math.geom2d.curve.Curve2D#intersections(math.geom2d.line.LinearShape2D)
      */
     public Collection<Point2D> intersections(LinearShape2D line) {
         return new LineSegment2D(p1, p2).intersections(line);

@@ -33,7 +33,10 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.StraightLine2D;
 
 /**
- * A quadratic bezier curve, defined by 3 points.
+ * A quadratic Bezier curve, defined by 3 control points.
+ * The curve starts at the first control point and finished at the third
+ * control point. The second point is used to defined the curvature of the
+ * curve. 
  * 
  * From javaGeom 0.8.0, this shape does not extends.
  * java.awt.geom.QuadCurve2D.Double anymore
@@ -58,13 +61,27 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // class variables
    
+    /**
+     * Coordinates of the first point of the curve
+     */
 	protected double x1, y1;
+    
+	/**
+     * Coordinates of the control point of the curve
+     */
 	protected double ctrlx, ctrly;
+
+	/**
+     * Coordinates of the last point of the curve
+     */
 	protected double x2, y2;
 
     // ===================================================================
     // constructors
 
+    /**
+     * Creates an empty quadratic bezier curve.
+     */
     public QuadBezierCurve2D() {
         this(0, 0, 0, 0, 0, 0);
     }
@@ -173,7 +190,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * return true if the point is 'inside' the domain bounded by the curve.
+     * Returns true if the point is 'inside' the domain bounded by the curve.
      * Uses a polyline approximation.
      * 
      * @param pt a point in the plane
@@ -211,7 +228,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	}
 
     /**
-     * returns the curvature of the Curve.
+     * Returns the curvature of the Curve.
      */
     public double curvature(double t) {
         double[][] c = getParametric();
@@ -227,7 +244,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // methods from ContinousCurve2D interface
 
     /**
-     * The cubic curve is never closed.
+     * Returns false, as a quadratic curve is never closed.
      */
     public boolean isClosed() {
         return false;
@@ -237,7 +254,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // methods from Curve2D interface
 
     /**
-     * Returns 0, as Bezier curve is parametrized between 0 and 1.
+     * Returns 0, as Bezier curve is parameterized between 0 and 1.
      */
     public double t0() {
         return 0;
@@ -287,7 +304,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Get the first point of the curve.
+     * Returns the first point of the curve, that corresponds to the first control point.
      * 
      * @return the first point of the curve
      */
@@ -297,7 +314,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Get the last point of the curve.
+     * Returns the last point of the curve, that corresponds to the third control point.
      * 
      * @return the last point of the curve.
      */
@@ -307,7 +324,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Compute position by approximating cubic spline with a polyline.
+     * Computes position by approximating cubic spline with a polyline.
      */
     public double position(Point2D point) {
 		int N = 100;
@@ -315,7 +332,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
    }
 
     /**
-     * Compute position by approximating cubic spline with a polyline.
+     * Computes position by approximating cubic spline with a polyline.
      */
     public double project(Point2D point) {
         int N = 100;
@@ -382,7 +399,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Compute approximated distance, computed on a polyline.
+     * Computes approximated distance, computed on a polyline.
      * 
      * @see math.geom2d.Shape2D#distance(double, double)
      */
@@ -391,7 +408,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * return true, a cubic Bezier Curve is always bounded.
+     * Returns true, a cubic Bezier Curve is always bounded.
      */
     public boolean isBounded() {
         return true;
@@ -402,10 +419,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Clip the circle arc by a box. The result is an instance of
-     * ContinuousOrientedCurveSet2D<QuadBezierCurve2D>, which contains only
-     * instances of EllipseArc2D. If the ellipse arc is not clipped, the result
-     * is an instance of ContinuousOrientedCurveSet2D<QuadBezierCurve2D>
+     * Clip the curve by a box. The result is an instance of
+     * CurveSet2D, which contains only instances of QuadBezierCurve2D. 
+     * If the curve is not clipped, the result is an instance of CurveSet2D
      * which contains 0 curves.
      */
     public CurveSet2D<? extends QuadBezierCurve2D> clip(Box2D box) {
@@ -424,6 +440,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return result;
     }
 
+    /**
+     * Returns the approximate bounding box of this curve. Actually, computes
+     * the bounding box of the set of control points.
+     */
     public Box2D boundingBox() {
     	Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();

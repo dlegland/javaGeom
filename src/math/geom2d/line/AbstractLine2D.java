@@ -65,8 +65,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // static methods
 
     /**
-     * Returns the unique intersection of two straight objects. If intersection
-     * doesn't exist (parallel lines, short edge), return null.
+     * Returns the unique intersection of two straight objects. If the 
+     * intersection doesn't exist (parallel lines, short edge), return null.
      */
     public static Point2D getIntersection(AbstractLine2D line1,
             AbstractLine2D line2) {
@@ -82,7 +82,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	}
 
 	/**
-	 * Test if the two linear objects are located on the same straight line.
+	 * Tests if the two linear objects are located on the same straight line.
 	 */
 	public static boolean isColinear(AbstractLine2D line1, AbstractLine2D line2) {
 		// test if the two lines are parallel
@@ -97,7 +97,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	}
 
     /**
-     * Test if the two linear objects are parallel.
+     * Tests if the two linear objects are parallel.
      */
 	public static boolean isParallel(AbstractLine2D line1, AbstractLine2D line2) {
 		return (Math.abs(line1.dx * line2.dy - line1.dy * line2.dx) < Shape2D.ACCURACY);
@@ -142,6 +142,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // ===================================================================
     // Methods specific to Line shapes
 
+    /**
+     * Tests if the given linear shape is parallel to this shape.
+     */
 	public boolean isColinear(LinearShape2D linear) {
 		// test if the two lines are parallel
 		if (!isParallel(linear))
@@ -164,7 +167,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     /**
-     * Test if the this object is parallel to the given one.
+     * Tests if the this object is parallel to the given one.
      */
     public boolean isParallel(LinearShape2D line) {
         return Vector2D.isColinear(this.direction(), line.direction());
@@ -214,7 +217,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
 	/**
-	 * Returns polar coefficients.
+	 * Returns polar coefficients of this linear shape.
 	 * 
 	 * @return an array of 2 elements, the first one is the distance to the
 	 *         origin, the second one is the angle with horizontal, between 0
@@ -251,7 +254,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
 	/**
-	 * Compute position on the line, that is the number t such that if the point
+	 * Computes position on the line of the point given by (x,y). 
+	 * The position is the number t such that if the point
 	 * belong to the line, it location is given by x=x0+t*dx and y=y0+t*dy.
 	 * <p>
 	 * If the point does not belong to the line, the method returns the position
@@ -265,7 +269,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	}
 
     /**
-     * Return the projection of point p on the line. The returned point can be
+     * Returns the projection of point p on the line. The returned point can be
      * used to compute distance from point to line.
      * 
      * @param p a point outside the line (if point p lies on the line, it is
@@ -277,7 +281,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
 	/**
-	 * Return the projection of point p on the line. The returned point can be
+	 * Returns the projection of point p on the line. The returned point can be
 	 * used to compute distance from point to line.
 	 * 
 	 * @param x
@@ -312,8 +316,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * Return the symmetric of point with coordinate (x, y) relative to this
      * straight line.
      * 
-     * @param x : coordinate x of point to be projected
-     * @param y : coordinate y of point to be projected
+     * @param x x-coordinate of point to be projected
+     * @param y y-coordinate of point to be projected
      * @return the projection of the point (x,y) on the line
      */
     public Point2D getSymmetric(double x, double y) {
@@ -325,7 +329,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	}
 
     /**
-     * Create a straight line parallel to this object, and going through the
+     * Creates a straight line parallel to this object, and going through the
      * given point.
      * 
      * @param point the point to go through
@@ -336,7 +340,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     /**
-     * Create a straight line perpendicular to this object, and going through
+     * Creates a straight line perpendicular to this object, and going through
      * the given point.
      * 
      * @param point the point to go through
@@ -350,10 +354,16 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
     // Methods implementing the LinearShape2D interface
 
+    /**
+     * Returns the origin point of this linear shape.
+     */
     public Point2D origin() {
         return new Point2D(x0, y0);
     }
 
+    /**
+     * Returns the direction vector of this linear shape.
+     */
     public Vector2D direction() {
         return new Vector2D(dx, dy);
     }
@@ -396,6 +406,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 		return null;
 	}
 
+    /* (non-Javadoc)
+	 * @see math.geom2d.line.AbstractLine2D#supportingLine()
+	 */
     public StraightLine2D supportingLine() {
         return new StraightLine2D(this);
     }
@@ -405,15 +418,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // methods implementing the CirculinearCurve2D interface
   
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
-	 */
-	public CirculinearDomain2D buffer(double dist) {
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		return bc.computeBuffer(this, dist);
-	}
-
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	public double length() {
 		if (!this.isBounded())
@@ -422,7 +427,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		return pos * Math.hypot(dx, dy);
@@ -431,7 +436,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double distance) {
 		double delta = Math.hypot(dx, dy);
@@ -439,6 +444,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 			throw new DegeneratedLine2DException(this);
 		return distance / delta;
 	}
+
+	
+    // ===================================================================
+    // methods implementing the CirculinearShape2D interface
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
@@ -511,10 +520,21 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         return new CircleArc2D(c2, r2, theta1, theta2, direct);
 	}
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
+	 */
+	public CirculinearDomain2D buffer(double dist) {
+		BufferCalculator bc = BufferCalculator.getDefaultInstance();
+		return bc.computeBuffer(this, dist);
+	}
+
 
     // ===================================================================
     // methods of OrientedCurve2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.OrientedCurve2D#windingAngle(Point2D)
+	 */
     public double windingAngle(Point2D point) {
 
         double t0 = this.t0();
@@ -547,22 +567,23 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     /**
-     * Get the signed distance of the StraightObject2d to the given point. The
-     * signed distance is positive if point lies 'to the right' of the line,
-     * when moving in the direction given by direction vector. This method is
-     * not designed to be used directly, because AbstractLine2D is an abstract
-     * class, but it can be used by subclasses to help computations.
+     * Returns the signed distance of the StraightObject2d to the given point.
+     * The signed distance is positive if point lies 'to the right' of the
+     * line, when moving in the direction given by direction vector. 
+     * This method is not designed to be used directly, because AbstractLine2D
+     * is an abstract class, but it can be used by subclasses to help computations.
      */
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
 
     /**
-     * Get the signed distance of the StraightObject2d to the given point. The
-     * signed distance is positive if point lies 'to the right' of the line,
-     * when moving in the direction given by direction vector. This method is
-     * not designed to be used directly, because AbstractLine2D is an abstract
-     * class, but it can be used by subclasses to help computations.
+     * Returns the signed distance of the StraightObject2d to the given point.
+     * The signed distance is positive if point lies 'to the right' of the
+     * line, when moving in the direction given by direction vector. 
+     * This method is not designed to be used directly, because AbstractLine2D 
+     * is an abstract class, but it can be used by subclasses to help 
+     * computations.
      */
 	public double signedDistance(double x, double y) {
 		double delta = Math.hypot(dx, dy);
@@ -582,20 +603,25 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 		return ((p.x() - x0) * dy - (p.y() - y0) * dx < 0);
 	}
 
+	
     // ===================================================================
-    // methods of SmoothCurve2D interface
+    // methods implementing the SmoothCurve2D interface
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.SmoothCurve2D#tangent(double)
+	 */
     public Vector2D tangent(double t) {
         return new Vector2D(dx, dy);
     }
 
     /**
-     * returns 0 as every straight object.
+     * Returns 0 as for every straight object.
      */
     public double curvature(double t) {
         return 0.0;
     }
 
+    
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 
@@ -607,19 +633,22 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         return false;
     }
 
+    
     // ===================================================================
     // methods implementing the Curve2D interface
 
     /**
-     * Return the intersection points of the curve with the specified line. The
-     * length of the result array is the number of intersection points.
+     * Returns a collection of lines containing only this line.
      */
-	@Override
+    @Override
     public Collection<? extends AbstractLine2D> smoothPieces() {
         return wrapCurve(this);
     }
 
-
+    /**
+     * Returns the intersection points of the curve with the specified line. 
+     * The length of the result array is the number of intersection points.
+     */
     public Collection<Point2D> intersections(LinearShape2D line) {
     	if (this.isParallel(line))
     		return new ArrayList<Point2D>(0);
@@ -634,8 +663,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     /**
-     * Gets the position of the point on the line arc. If point belongs to the
-     * line, this position is defined by the ratio:
+     * Returns the position of the point on the line arc. 
+     * If the point belongs to the line, this position is defined by the ratio:
      * <p>
      * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
      * <code> t = (yp - y0)/dy <\code>.<p>
@@ -656,8 +685,8 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     }
 
     /**
-     * Gets the position of the closest point on the line arc. If point belongs
-     * to the line, this position is defined by the ratio:
+     * Returns the position of the closest point on the line arc. 
+     * If the point belongs to the line, this position is defined by the ratio:
      * <p>
      * <code> t = (xp - x0)/dx <\code>, or equivalently:<p>
      * <code> t = (yp - y0)/dy <\code>.<p>
@@ -677,8 +706,11 @@ implements SmoothOrientedCurve2D, LinearElement2D {
      * Ray2D or LineSegment2D when appropriate.
      */
     public AbstractLine2D subCurve(double t0, double t1) {
+    	// keep min and max of bounds
         t0 = Math.max(t0, this.t0());
         t1 = Math.min(t1, this.t1());
+        
+        // check for special cases
         if (Double.isInfinite(t1)) {
             if (Double.isInfinite(t0))
                 return new StraightLine2D(this);
@@ -693,6 +725,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
     }
 
+    /**
+     * Returns a collection of lines containing only this line.
+     */
 	@Override
 	public Collection<? extends AbstractLine2D> continuousCurves() {
     	return wrapCurve(this);
@@ -702,21 +737,23 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // methods implementing the Shape2D
 
     /**
-     * Gets the distance of the StraightObject2d to the given point. This method
-     * is not designed to be used directly, because AbstractLine2D is an
-     * abstract class, but it can be called by subclasses to help computations.
+     * Returns the distance of the StraightObject2d to the given point. 
+     * This method is not designed to be used directly, because AbstractLine2D
+     * is an abstract class, but it can be called by subclasses to help
+     * computations.
      */
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
 
     /**
-     * Gets the distance of the StraightObject2d to the given point. This method
-     * is not designed to be used directly, because AbstractLine2D is an
-     * abstract class, but it can be used by subclasses to help computations.
+     * Returns the distance of the StraightObject2d to the given point. 
+     * This method is not designed to be used directly, because AbstractLine2D
+     * is an abstract class, but it can be called by subclasses to help
+     * computations.
      * 
-     * @param x x-coordinate of the point
-     * @param y y-coordinate of the point
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
      * @return distance between this object and the point (x,y)
      */
     public double distance(double x, double y) {
@@ -736,7 +773,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
        	return dist;
     }
 
-    public boolean contains(Point2D p) {
+	/* (non-Javadoc)
+	 * @see math.geom2d.Shape2D#contains(Point2D)
+	 */
+   public boolean contains(Point2D p) {
         return this.contains(p.x(), p.y());
     }
 
@@ -747,6 +787,9 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 		return Math.hypot(dx, dy) < Shape2D.ACCURACY;
     }
 
+	/* (non-Javadoc)
+	 * @see math.geom2d.Shape2D#transform(AffineTransform2D)
+	 */
     public abstract AbstractLine2D transform(AffineTransform2D transform);
 
     public CurveSet2D<? extends AbstractLine2D> clip(Box2D box) {

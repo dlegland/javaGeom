@@ -133,7 +133,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		return Polygons2D.createBuffer(this, dist);
@@ -144,7 +144,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     // methods implementing the Domain2D interface 
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
 		return this;

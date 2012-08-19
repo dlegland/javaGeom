@@ -97,7 +97,7 @@ public class CirculinearCurves2D {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public static double getLength(
 			CurveSet2D<? extends CirculinearCurve2D> curve, double pos) {
@@ -122,7 +122,7 @@ public class CirculinearCurves2D {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public static double getPosition(
 			CurveSet2D<? extends CirculinearCurve2D> curveSet, double length) {
@@ -158,7 +158,7 @@ public class CirculinearCurves2D {
 	}
 
 	/**
-	 * Compute intersection point of a single curve, by iterating on pair of
+	 * Computes intersection point of a single curve, by iterating on pair of
 	 * Circulinear elements composing the curve.
 	 * 
 	 * @return the set of self-intersection points
@@ -362,7 +362,7 @@ public class CirculinearCurves2D {
 	}
 
 	/**
-	 * Compute the intersections, if they exist, of two circulinear elements.
+	 * Computes the intersections, if they exist, of two circulinear elements.
 	 */
 	public static Collection<Point2D> findIntersections(
 			CirculinearElement2D elem1, CirculinearElement2D elem2) {
@@ -788,8 +788,7 @@ public class CirculinearCurves2D {
 			}
 
 			if (ind0 == 0) {
-				System.out
-						.println("No more intersections, but was not detected");
+				System.out.println("No more intersections, but was not detected");
 			}
 
 			pos1 = pos0;

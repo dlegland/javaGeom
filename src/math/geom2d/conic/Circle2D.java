@@ -130,7 +130,7 @@ Cloneable {
     }
 
     /**
-     * Compute intersections of a circle with a line. Return an array of
+     * Computes intersections of a circle with a line. Returns an array of
      * Point2D, of size 0, 1 or 2 depending on the distance between circle and
      * line. If there are 2 intersections points, the first one in the array is
      * the first one on the line.
@@ -366,7 +366,7 @@ Cloneable {
     // Methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -388,15 +388,16 @@ Cloneable {
 		return PI * 2 * r;
     }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	/**
+	 * Returns the geodesic leangth until the given position.
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		return pos * this.r;
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double length) {
 		return length / this.r;
@@ -726,9 +727,9 @@ Cloneable {
     }
 
     /**
-     * Clip the circle by a box. The result is an instance of CurveSet2D<SmoothOrientedCurve2D>,
+     * Clip the circle by a box. The result is an instance of CurveSet2D,
      * which contains only instances of CircleArc2D or Circle2D. If the circle
-     * is not clipped, the result is an instance of CurveSet2D<SmoothOrientedCurve2D>
+     * is not clipped, the result is an instance of CurveSet2D
      * which contains 0 curves.
      */
     public CurveSet2D<? extends CircularShape2D> clip(Box2D box) {
@@ -762,7 +763,7 @@ Cloneable {
     }
 
     /**
-     * Return true if the point (x, y) lies exactly on the circle.
+     * Returns true if the point (x, y) lies exactly on the circle.
      */
     public boolean contains(double x, double y) {
 		return abs(distance(x, y)) <= Shape2D.ACCURACY;
@@ -773,7 +774,8 @@ Cloneable {
         double sit = sin(theta);
         double cost, sint;
 
-        if (direct)
+        if (direct) {
+        	// Counter-clockwise circle
 			for (double t = .1; t < PI * 2; t += .1) {
                 cost = cos(t);
                 sint = sin(t);
@@ -781,7 +783,8 @@ Cloneable {
                         (float) (xc + r * cost * cot - r * sint * sit),
                         (float) (yc + r * cost * sit + r * sint * cot));
             }
-        else
+        } else {
+        	// Clockwise circle
 			for (double t = .1; t < PI * 2; t += .1) {
                 cost = cos(t);
                 sint = sin(t);
@@ -789,7 +792,8 @@ Cloneable {
                         (float) (xc + r * cost * cot + r * sint * sit),
                         (float) (yc + r * cost * sit - r * sint * cot));
             }
-
+        }
+        
         // line to first point
         path.lineTo((float) (xc + r * cot), (float) (yc + r * sit));
 

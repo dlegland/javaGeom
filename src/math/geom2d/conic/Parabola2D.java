@@ -301,7 +301,7 @@ implements Contour2D, Conic2D, Cloneable {
     // methods implementing the ContinuousCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.curve.Curve2D#getContinuousCurves()
+	 * @see math.geom2d.curve.Curve2D#continuousCurves()
 	 */
 	public Collection<? extends Parabola2D> continuousCurves() {
 		return wrapCurve(this);
@@ -386,7 +386,7 @@ implements Contour2D, Conic2D, Cloneable {
         ArrayList<Point2D> points = new ArrayList<Point2D>();
 
         // case of vertical or quasi-vertical line
-        if (Math.abs(dx)<Shape2D.ACCURACY) {
+        if (Math.abs(dx) < Shape2D.ACCURACY) {
             if (debug)
                 System.out.println("intersect parabola with vertical line ");
             double x = line2.origin().x();

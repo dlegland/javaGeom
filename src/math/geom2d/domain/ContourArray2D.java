@@ -125,7 +125,7 @@ implements Boundary2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.Shape2D#getSignedDistance(math.geom2d.Point2D)
+     * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
     public double signedDistance(double x, double y) {
         double minDist = Double.POSITIVE_INFINITY;

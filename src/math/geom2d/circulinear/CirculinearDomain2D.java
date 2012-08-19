@@ -31,7 +31,7 @@ public interface CirculinearDomain2D extends CirculinearShape2D, Domain2D {
 	 */
 	public Collection<? extends CirculinearContour2D> contours();
     
-    public abstract CirculinearDomain2D complement();
+    public CirculinearDomain2D complement();
 
     public CirculinearDomain2D transform(CircleInversion2D inv);
 }

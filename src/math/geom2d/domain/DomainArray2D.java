@@ -64,7 +64,7 @@ implements DomainSet2D<T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getBoundary()
+	 * @see math.geom2d.domain.Domain2D#boundary()
 	 */
 	public Boundary2D boundary() {
 		int n = this.shapes.size();
@@ -94,7 +94,7 @@ implements DomainSet2D<T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
 		// Compute number of contours

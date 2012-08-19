@@ -48,6 +48,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @deprecated since 0.10.3
  */
 @Deprecated
+//TODO: reprecate and remove theta
 public class Rectangle2D implements Polygon2D {
 
     // ===================================================================

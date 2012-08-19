@@ -213,7 +213,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
+     * @see math.geom2d.OrientedCurve2D#windingAngle(Point2D)
      */
     public double windingAngle(Point2D point) {
         int wn = Polygons2D.windingNumber(this.vertices, point);
@@ -400,7 +400,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     // Methods inherited from interface Shape2D
 
     /**
-     * Return the transformed shape, as a ClosePolyline2D.
+     * Returns the transformed shape, as a LinerRing2D.
      */
     public LinearRing2D transform(AffineTransform2D trans) {
 		Point2D[] pts = new Point2D[vertices.size()];

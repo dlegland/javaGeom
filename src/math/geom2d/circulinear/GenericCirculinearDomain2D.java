@@ -56,7 +56,7 @@ implements CirculinearDomain2D {
     }
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		

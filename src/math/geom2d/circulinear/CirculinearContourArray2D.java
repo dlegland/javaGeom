@@ -115,10 +115,21 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
 
     
     // ===================================================================
+    // methods specific to Boundary2D interface
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.Boundary2D#domain()
+	 */
+    public CirculinearDomain2D domain() {
+        return new GenericCirculinearDomain2D(this);
+    }
+
+    
+    // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	public double length() {
 		double sum = 0;
@@ -128,21 +139,21 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		return CirculinearCurves2D.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double length) {
 		return CirculinearCurves2D.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -150,7 +161,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
 	 */
 	public CirculinearBoundary2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -183,7 +194,8 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
     }
 
 	@Override
-	public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> clip(Box2D box) {
+	public CirculinearCurveSet2D<? extends CirculinearContinuousCurve2D> clip(
+			Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 

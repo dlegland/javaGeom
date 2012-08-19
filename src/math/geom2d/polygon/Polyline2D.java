@@ -133,7 +133,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom2d.OrientedCurve2D#getWindingAngle(Point2D)
+     * @see math.geom2d.OrientedCurve2D#windingAngle(Point2D)
      */
     public double windingAngle(Point2D point) {
         double angle = 0;
@@ -275,7 +275,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
             return res;
 
         // number of points in the polyline
-        int indMax = (int) this.getT1();
+        int indMax = (int) this.t1();
 
         // format to ensure t is between T0 and T1
         t0 = Math.min(Math.max(t0, 0), indMax);
@@ -349,7 +349,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     }
 
     /**
-     * Return a general path iterator.
+     * Returns a general path iterator.
      */
     public java.awt.geom.GeneralPath asGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();

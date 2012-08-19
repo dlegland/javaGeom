@@ -107,7 +107,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
     // methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength()
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length()
 	 */
 	public double length() {
 		double sum = 0;
@@ -117,21 +117,21 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getLength(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
 	 */
 	public double length(double pos) {
 		return CirculinearCurves2D.getLength(this, pos);
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getPosition(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
 	 */
 	public double position(double length) {
 		return CirculinearCurves2D.getPosition(this, length);
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -139,7 +139,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
 	 */
 	public CirculinearCurve2D parallel(double d) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();

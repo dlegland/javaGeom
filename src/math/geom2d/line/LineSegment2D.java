@@ -48,6 +48,9 @@ implements Cloneable, CirculinearElement2D {
     	return new LineSegment2D(p1, p2);
     }
 
+    /**
+     * Returns the straight line that is the median of the edge extremities.
+     */
 	public static StraightLine2D getMedian(LineSegment2D edge) {
 		return new StraightLine2D(
 				edge.x0 + edge.dx * .5, 
@@ -126,12 +129,12 @@ implements Cloneable, CirculinearElement2D {
     // ===================================================================
     // constructors
 
-    /** Define a new Edge with two extremities. */
+    /** Defines a new Edge with two extremities. */
     public LineSegment2D(Point2D point1, Point2D point2) {
         this(point1.x(), point1.y(), point2.x(), point2.y());
     }
 
-    /** Define a new Edge with two extremities. */
+    /** Defines a new Edge with two extremities. */
     public LineSegment2D(double x1, double y1, double x2, double y2) {
         super(x1, y1, x2-x1, y2-y1);
     }
@@ -141,7 +144,7 @@ implements Cloneable, CirculinearElement2D {
     // Methods specific to LineSegment2D
 
     /**
-     * Return the opposite vertex of the edge.
+     * Returns the opposite vertex of the edge.
      * 
      * @param point one of the vertices of the edge
      * @return the other vertex, or null if point is nor a vertex of the edge
@@ -155,7 +158,7 @@ implements Cloneable, CirculinearElement2D {
 	}
 
 	/**
-	 * Return the median of the edge, that is the locus of points located at
+	 * Returns the median of the edge, that is the locus of points located at
 	 * equal distance of each vertex.
 	 */
 	public StraightLine2D getMedian() {
@@ -177,7 +180,7 @@ implements Cloneable, CirculinearElement2D {
     }
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#getParallel(double)
+	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
 	public LineSegment2D parallel(double d) {
 		double d2 = Math.hypot(dx, dy);
@@ -186,14 +189,18 @@ implements Cloneable, CirculinearElement2D {
 					"Can not compute parallel of degnerated edge", this);
 		d2 = d / d2;
 		return new LineSegment2D(
-				x0 + dy * d2, y0 - dx * d2, x0 + dx + dy * d2, y0 + dy - dx * d2);
+				x0 + dy * d2, y0 - dx * d2, 
+				x0 + dx + dy * d2, y0 + dy - dx * d2);
 	}
 
 	
     // ===================================================================
     // Methods implementing the OrientedCurve2D interface
 
-    @Override
+	/* (non-Javadoc)
+	 * @see math.geom2d.domain.OrientedCurve2D#signedDistance(math.geom2d.Point2D)
+	 */
+	@Override
     public double signedDistance(double x, double y) {
         Point2D proj = super.projectedPoint(x, y);
         if (contains(proj))
@@ -209,7 +216,7 @@ implements Cloneable, CirculinearElement2D {
     // Methods implementing the Curve2D interface
 
     /**
-     * Return the first point of the edge.
+     * Returns the first point of the edge.
      * 
      * @return the first point of the edge
      */
@@ -219,7 +226,7 @@ implements Cloneable, CirculinearElement2D {
     }
 
     /**
-     * Return the last point of the edge.
+     * Returns the last point of the edge.
      * 
      * @return the last point of the edge
      */
@@ -319,6 +326,9 @@ implements Cloneable, CirculinearElement2D {
 		return new LineSegment2D(x1, y1, x2, y2);
 	}
 
+    /**
+     * Returns the bounding box of this line segment.
+     */
     public Box2D boundingBox() {
         return new Box2D(x0, x0+dx, y0, y0+dy);
     }

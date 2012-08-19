@@ -29,7 +29,6 @@ package math.geom2d.conic;
 import static java.lang.Math.*;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -86,9 +85,6 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     
     
     // ====================================================================
-    // class variables
-
-    // ====================================================================
     // Class variables
 
     /** The supporting circle */
@@ -100,6 +96,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     /** The signed angle extent, in radians between -2PI and +2PI. */
     protected double    angleExtent = PI;
 
+    
     // ====================================================================
     // constructors
 
@@ -149,7 +146,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     // Constructors based on doubles
 
     /**
-     * Base constructor, for constructiong arc from circle parameters, start and
+     * Base constructor, for constructing arc from circle parameters, start and
      * end angles, and by specifying whether arc is direct or not.
      */
     public CircleArc2D(double xc, double yc, double r, double startAngle,
@@ -174,11 +171,11 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     // methods specific to CircleArc2D
 
     /**
-     * Returns true if the ellipse arc is direct, i.e. if the angle extent is
+     * Returns true if the circle arc is direct, i.e. if the angle extent is
      * positive.
      */
     public boolean isDirect() {
-    	return angleExtent>0;
+    	return angleExtent >= 0;
     }
     
     public double getStartAngle() {
@@ -191,7 +188,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     
     public boolean containsAngle(double angle) {
         return Angle2D.containsAngle(
-        		startAngle, startAngle+angleExtent, angle, angleExtent>0);
+        		startAngle, startAngle+angleExtent, angle, angleExtent>=0);
     }
 
     /** Returns the angle associated with the given position */
@@ -206,7 +203,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     }
 
     /**
-     * convert position on curve to angle with circle center.
+     * Converts position on curve to angle with circle center.
      */
 	private double positionToAngle(double t) {
 		if (t > abs(angleExtent))
@@ -416,10 +413,11 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 	// ===================================================================
     // methods from interface ContinuousCurve2D
 
+	/**
+	 * Returns a collection of curves containing only this circle arc.
+	 */
     public Collection<? extends CircleArc2D> smoothPieces() {
-        ArrayList<CircleArc2D> list = new ArrayList<CircleArc2D>(1);
-        list.add(this);
-        return list;
+    	return wrapCurve(this);
     }
 
     /**
@@ -552,6 +550,9 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return new CircleArc2D(this.circle, newStart, -angleExtent);
     }
 
+	/**
+	 * Returns a collection of curves containing only this circle arc.
+	 */
     public Collection<? extends CircleArc2D> continuousCurves() {
     	return wrapCurve(this);
     }
