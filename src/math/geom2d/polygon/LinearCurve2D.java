@@ -273,9 +273,9 @@ implements CirculinearContinuousCurve2D {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
 		// basic check to avoid degenerate cases
-		if (PointSets2D.hasAdjacentMultipleVertices(this.vertices)) {
+		if (PointSets2D.hasMultipleVertices(this.vertices)) {
 			Polyline2D poly2 = Polyline2D.create(
-					PointSets2D.filterAdjacentMultipleVertices(this.vertices));
+					PointSets2D.filterMultipleVertices(this.vertices));
 			return bc.computeBuffer(poly2, dist);			
 		}
 		
