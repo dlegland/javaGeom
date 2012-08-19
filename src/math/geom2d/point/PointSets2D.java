@@ -19,8 +19,8 @@ public class PointSets2D {
 	 * function can be used to test presence of multiple vertices in polylines
 	 * and polygons. First and last point are not compared.
 	 */
-	public static <T extends Point2D> boolean hasAdjacentMultipleVertices(List<T> points) {
-		return hasAdjacentMultipleVertices(points, false);
+	public static <T extends Point2D> boolean hasMultipleVertices(List<T> points) {
+		return hasMultipleVertices(points, false);
 	}
     
 	/**
@@ -29,7 +29,7 @@ public class PointSets2D {
 	 * polylines and polygons. First and last point are compared if flag
 	 * 'closed' is set to true.
 	 */
-    public static<T extends Point2D> boolean hasAdjacentMultipleVertices(
+    public static<T extends Point2D> boolean hasMultipleVertices(
     		List<T> points, boolean closed) {
     	// Note: 
     	// it could be possible to use the 'countMultipleVertices' method,
@@ -60,16 +60,16 @@ public class PointSets2D {
     /**
      * Counts the number of multiple vertices in this point list.
      */
-    public static<T extends Point2D> int countAdjacentMultipleVertices(
+    public static<T extends Point2D> int countMultipleVertices(
     		List<T> points) {
-    	return PointSets2D.countAdjacentMultipleVertices(points, false);
+    	return PointSets2D.countMultipleVertices(points, false);
     }
     
     /**
      * Counts the number of multiple vertices in this point list. If flag
      * 'closed' is set to true, extremities are also compared.
      */
-    public static<T extends Point2D> int countAdjacentMultipleVertices(
+    public static<T extends Point2D> int countMultipleVertices(
     		List<T> points, boolean closed) {
     	
     	int count = 0;
@@ -98,17 +98,17 @@ public class PointSets2D {
     	return count;
     }
     
-	public static <T extends Point2D> List<T> filterAdjacentMultipleVertices(
+	public static <T extends Point2D> List<T> filterMultipleVertices(
 			List<T> vertices) {
-		return filterAdjacentMultipleVertices(vertices, false);
+		return filterMultipleVertices(vertices, false);
 	}
 
-    public static<T extends Point2D> List<T> filterAdjacentMultipleVertices(
+    public static<T extends Point2D> List<T> filterMultipleVertices(
     		List<T> vertices, boolean closed) {
     	
     	// Compute number of vertices, and of multiple vertices
     	int size = vertices.size();
-    	int nMulti = countAdjacentMultipleVertices(vertices, closed);
+    	int nMulti = countMultipleVertices(vertices, closed);
     	
     	// create result with the right number of simple vertices
     	ArrayList<T> result = new ArrayList<T>(size - nMulti);

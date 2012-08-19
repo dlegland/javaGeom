@@ -349,7 +349,7 @@ public final class Polygons2D {
     		vertices.add(v);
 
     	// remove adjacent multiple vertices
-    	vertices = PointSets2D.filterAdjacentMultipleVertices(vertices, true);
+    	vertices = PointSets2D.filterMultipleVertices(vertices, true);
  	
     	// Create new ring with vertices
     	return LinearRing2D.create(vertices);

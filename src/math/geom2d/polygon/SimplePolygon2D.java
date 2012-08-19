@@ -295,9 +295,9 @@ public class SimplePolygon2D implements Polygon2D {
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		// check for multiple vertices
-		if (PointSets2D.hasAdjacentMultipleVertices(this.vertices, true)) {
+		if (PointSets2D.hasMultipleVertices(this.vertices, true)) {
 			List<Point2D> pts2 = 
-				PointSets2D.filterAdjacentMultipleVertices(this.vertices, true);
+				PointSets2D.filterMultipleVertices(this.vertices, true);
 			SimplePolygon2D poly2 = new SimplePolygon2D(pts2);
 	    	return CirculinearDomains2D.computeBuffer(poly2, dist);
 		}

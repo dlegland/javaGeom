@@ -35,7 +35,7 @@ public abstract class Polylines2D {
     public final static boolean hasMultipleVertices(LinearCurve2D polyline, 
     		boolean closed) {
     	// Test vertices within polyline
-    	if(PointSets2D.hasAdjacentMultipleVertices(polyline.vertices))
+    	if(PointSets2D.hasMultipleVertices(polyline.vertices))
     		return true;
     	
     	// Eventually tests extremities
