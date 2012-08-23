@@ -40,15 +40,12 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.transform.CircleInversion2D;
+import math.utils.EqualUtils;
 
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
- * @deprecated since 0.10.3
  */
-@Deprecated
-//TODO: reprecate and remove theta
 public class Rectangle2D implements Polygon2D {
 
     // ===================================================================
@@ -61,59 +58,49 @@ public class Rectangle2D implements Polygon2D {
     protected double y0;
     protected double w;
     protected double h;
-    protected double theta;
+    
 
     // ===================================================================
     // constructors
 
-    /** Main constructor */
-    public Rectangle2D(double x0, double y0, double w, double h, double theta) {
-        this.x0 = x0;
-        this.y0 = y0;
-        this.w = w;
-        this.h = h;
-        this.theta = theta;
-    }
-
-    /** Empty contructor (size and position zero) */
-    public Rectangle2D() {
-        this(0, 0, 0, 0, 0);
-    }
-
-    /** Constructor from awt, to allow easy construction from existing apps. */
-    public Rectangle2D(java.awt.geom.Rectangle2D rect) {
-        this.x0 = rect.getX();
-        this.y0 = rect.getY();
-        this.w = rect.getWidth();
-        this.h = rect.getHeight();
-        this.theta = 0;
-    }
-
-    /** Main constructor */
+    /**
+	 * Main constructor, specifying position of reference corner and rectangle
+	 * dimensions.  
+	 */
     public Rectangle2D(double x0, double y0, double w, double h) {
         this.x0 = x0;
         this.y0 = y0;
         this.w = w;
         this.h = h;
-        this.theta = 0;
     }
 
-    /** Main constructor */
-    public Rectangle2D(Point2D point, double w, double h, double theta) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-        this.w = w;
-        this.h = h;
-        this.theta = theta;
+    /** 
+     * Empty constructor (size and position zero) 
+     */
+    public Rectangle2D() {
+        this(0, 0, 0, 0);
     }
 
-    /** Main constructor */
-    public Rectangle2D(Point2D point, double w, double h) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-        this.w = w;
-        this.h = h;
-        this.theta = 0;
+    /**
+     * Constructor from awt, to allow easy construction from existing apps. 
+     */
+    public Rectangle2D(java.awt.geom.Rectangle2D rect) {
+        this.x0 = rect.getX();
+        this.y0 = rect.getY();
+        this.w = rect.getWidth();
+        this.h = rect.getHeight();
+    }
+
+
+    /** 
+     * Creates a rectangle from two corner points. Origin and dimensions are
+     * automatically determined.
+     */
+    public Rectangle2D(Point2D p1, Point2D p2) {
+    	this.x0 = Math.min(p1.x(), p2.x());
+    	this.y0 = Math.min(p1.y(), p2.y());
+    	this.w = Math.max(p1.x(), p2.x()) - this.x0;
+    	this.h = Math.max(p1.y(), p2.y()) - this.y0;
     }
 
     // ===================================================================
@@ -135,23 +122,7 @@ public class Rectangle2D implements Polygon2D {
         return h;
     }
 
-    public double getTheta() {
-        return theta;
-    }
-
-    /**
-     * Returns the center point of the rectangle.
-     * @since 0.9.1
-     */
-    public Point2D getCenter() {
-    	double cot = Math.cos(this.theta);
-    	double sit = Math.sin(this.theta);
-    	double xc = x0 + this.w * cot / 2 - this.h * sit / 2;
-    	double yc = y0 + this.w * sit / 2 + this.h * cot / 2;
-    	return new Point2D(xc, yc);
-    }
-    
-    
+        
     // ===================================================================
 	// methods inherited from interface Polygon2D
 	
@@ -161,19 +132,21 @@ public class Rectangle2D implements Polygon2D {
 	 * @return the vertices of the rectangle.
 	 */
 	public Collection<Point2D> vertices() {
-	    AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
+		// Allocate memory
 	    ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+	    
+	    // add each vertex
+		array.add(new Point2D(x0, y0));
+		array.add(new Point2D(x0 + w, y0));
+		array.add(new Point2D(x0 + w, y0 + h));
+		array.add(new Point2D(x0, y0 + h));
 	
-	    array.add(new Point2D(x0, y0).transform(rot));
-	    array.add(new Point2D(x0+w, y0).transform(rot));
-	    array.add(new Point2D(x0+w, y0+h).transform(rot));
-	    array.add(new Point2D(x0, y0+h).transform(rot));
-	
+		// return result array
 	    return array;
 	}
 
 	/**
-	 * Return the number of vertices of the rectangle, which is 4.
+	 * Returns the number of vertices of the rectangle, which is 4.
 	 * 
 	 * @since 0.6.3
 	 */
@@ -187,72 +160,73 @@ public class Rectangle2D implements Polygon2D {
      * @param i index of the vertex, between 0 and 3
      */
     public Point2D vertex(int i) {
-        AffineTransform2D rot = AffineTransform2D.createRotation(x0, y0, theta);
         switch (i) {
         case 0:
-            return new Point2D(x0, y0).transform(rot);
+            return new Point2D(x0, y0);
         case 1:
-            return new Point2D(x0+w, y0).transform(rot);
+            return new Point2D(x0+w, y0);
         case 2:
-            return new Point2D(x0+w, y0+h).transform(rot);
+            return new Point2D(x0+w, y0+h);
         case 3:
-            return new Point2D(x0, y0+h).transform(rot);
+            return new Point2D(x0, y0+h);
         default:
             throw new IndexOutOfBoundsException();
         }
     }
 
+    /**
+     * Returns the four edges that constitute the boundary of this rectangle.
+     */
     public Collection<LineSegment2D> edges() {
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(4);
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-
-		double x1 = w * cot + x0;
-		double y1 = w * sit + y0;
-		double x2 = w * cot - h * sit + x0;
-		double y2 = w * sit + h * cot + y0;
-		double x3 = -h * sit + x0;
-		double y3 = h * cot + y0;
-
-        edges.add(new LineSegment2D(x0, y0, x1, y1));
-        edges.add(new LineSegment2D(x1, y1, x2, y2));
-        edges.add(new LineSegment2D(x2, y2, x3, y3));
-        edges.add(new LineSegment2D(x3, y3, x0, y0));
+		edges.add(new LineSegment2D(x0, y0, x0 + w, y0));
+		edges.add(new LineSegment2D(x0 + w, y0, x0 + w, y0 + h));
+		edges.add(new LineSegment2D(x0 + w, y0 + h, x0, y0 + h));
+		edges.add(new LineSegment2D(x0, y0 + h, x0, y0));
         return edges;
     }
 
+    /**
+     * Returns 4, as a rectangle has four edges.
+     */
     public int edgeNumber() {
         return 4;
     }
 
     /**
-     * Computes the signed area of the polygon. 
+     * Computes the area of this rectangle, given by the product of width by
+     * height. 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
     public double area() {
-    	return Polygons2D.computeArea(this);
+    	return this.w * this.h;
     }
 
     /**
-     * Computes the centroid (center of mass) of the polygon. 
+     * Computes the centroid (center of mass) of this rectangle.  
      * @return the centroid of the polygon
      * @since 0.9.1
      */
     public Point2D centroid() {
-    	return Polygons2D.computeCentroid(this);
+    	double xc = x0 + this.w  / 2;
+    	double yc = y0 + this.h  / 2;
+    	return new Point2D(xc, yc);
     }
     
     // ===================================================================
     // methods inherited from Domain2D interface
 
 	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#getAsPolygon(int)
+	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
 	 */
 	public Polygon2D asPolygon(int n) {
 		return this;
 	}
 
+	// ===================================================================
+	// methods inherited from interface CirculinearShape2D
+	
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
@@ -261,11 +235,8 @@ public class Rectangle2D implements Polygon2D {
 				this.boundary().transform(inv));
 	}
 
-	// ===================================================================
-	// methods inherited from interface AbstractPolygon2D
-	
 	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#getBuffer(double)
+	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
 	 */
 	public CirculinearDomain2D buffer(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
@@ -289,26 +260,30 @@ public class Rectangle2D implements Polygon2D {
        return rings;
 	}
 
+	/**
+	 * Returns the ring that constitute the boundary of this rectangle.
+	 * @return
+	 */
 	private LinearRing2D asRing() {
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
-        pts[0] = new Point2D(x0, y0);
-        pts[1] = new Point2D(w*cot+x0, w*sit+y0);
-        pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
-        pts[3] = new Point2D(-h*sit+x0, h*cot+y0);
+		pts[0] = new Point2D(x0, y0);
+		pts[1] = new Point2D(x0 + w, y0);
+		pts[2] = new Point2D(x0 + w, y0 + h);
+		pts[3] = new Point2D(x0, y0 + h);
 		
         return new LinearRing2D(pts);
 	}
-	
+
+	/**
+	 * Returns a new simple Polygon whose vertices are in reverse order of
+	 * this rectangle.
+	 */
 	public Polygon2D complement() {
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
         Point2D pts[] = new Point2D[4];
-        pts[0] = new Point2D(x0, y0);
-        pts[1] = new Point2D(-h*sit+x0, h*cot+y0);
-        pts[2] = new Point2D(w*cot-h*sit+x0, w*sit+h*cot+y0);
-        pts[3] = new Point2D(w*cot+x0, w*sit+y0);
+		pts[0] = new Point2D(x0, y0);
+		pts[1] = new Point2D(x0, y0 + h);
+		pts[2] = new Point2D(x0 + w, y0 + h);
+		pts[3] = new Point2D(x0 + w, y0);
 
         return new SimplePolygon2D(pts);
     }
@@ -316,7 +291,9 @@ public class Rectangle2D implements Polygon2D {
     // ===================================================================
     // methods inherited from Shape2D interface
 
-    /** Always returns true, because a rectangle is always bounded. */
+    /** 
+     * Always returns true, because a rectangle is always bounded. 
+     */
     public boolean isBounded() {
         return true;
     }
@@ -331,7 +308,7 @@ public class Rectangle2D implements Polygon2D {
      * point lies inside the polygon.
      */
     public double distance(Point2D p) {
-        return distance(p.getX(), p.getY());
+        return distance(p.x(), p.y());
     }
 
     /**
@@ -355,52 +332,11 @@ public class Rectangle2D implements Polygon2D {
      * Returns the bounding box of the rectangle.
      */
     public Box2D boundingBox() {
-        double xmin = x0;
-        double xmax = x0;
-        double ymin = y0;
-        double ymax = y0;
-        double x, y;
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-
-        x = w*cot+x0;
-        y = w*sit+y0;
-        if (xmin>x)
-            xmin = x;
-        if (ymin>y)
-            ymin = y;
-        if (xmax<x)
-            xmax = x;
-        if (ymax<y)
-            ymax = y;
-
-        x = w*cot-h*sit+x0;
-        y = w*sit+h*cot+y0;
-        if (xmin>x)
-            xmin = x;
-        if (ymin>y)
-            ymin = y;
-        if (xmax<x)
-            xmax = x;
-        if (ymax<y)
-            ymax = y;
-
-        x = h*sit+x0;
-        y = h*cot+y0;
-        if (xmin>x)
-            xmin = x;
-        if (ymin>y)
-            ymin = y;
-        if (xmax<x)
-            xmax = x;
-        if (ymax<y)
-            ymax = y;
-
-        return new Box2D(xmin, xmax, ymin, ymax);
+		return new Box2D(x0, x0 + w, y0, y0 + h);
     }
 
     /**
-     * Return the new Polygon created by an affine transform of this polygon.
+     * Returns the new Polygon created by an affine transform of this polygon.
      */
     public SimplePolygon2D transform(AffineTransform2D trans) {
         int nPoints = 4;
@@ -420,47 +356,33 @@ public class Rectangle2D implements Polygon2D {
     // methods inherited from Shape interface
 
     /**
-     * This method simply invoke ancestor method. It is redefined to avoid
-     * ambiguity with contains(Shape2D).
+     * Checks if this rectangle contains the given point.
      */
     public boolean contains(Point2D point) {
-        return contains(point.getX(), point.getY());
+        return contains(point.x(), point.y());
     }
 
+    /**
+     * Checks if this rectangle contains the point given by (x,y)
+     */
     public boolean contains(double x, double y) {
-        double cot = Math.cos(theta);
-        double sit = Math.sin(theta);
-
-        double x1 = w*cot+x0;
-        double y1 = w*sit+y0;
-        double x2 = w*cot-h*sit+x0;
-        double y2 = w*sit+h*cot+y0;
-        double x3 = -h*sit+x0;
-        double y3 = h*cot+y0;
-
-        StraightLine2D line = new StraightLine2D(x0, y0, x1-x0, y1-y0);
-        if (line.signedDistance(x, y)>0)
-            return false;
-        line = new StraightLine2D(x1, y1, x2-x1, y2-y1);
-        if (line.signedDistance(x, y)>0)
-            return false;
-        line = new StraightLine2D(x2, y2, x3-x2, y3-y2);
-        // line.setPoints(x2, y2, x3, y3);
-        if (line.signedDistance(x, y)>0)
-            return false;
-        line = new StraightLine2D(x3, y3, x0-x3, y0-y3);
-        // line.setPoints(x3, y3, x0, y0);
-        if (line.signedDistance(x, y)>0)
-            return false;
+        if (x < this.x0)
+        	return false;
+        if (x > this.x0 + this.w)
+        	return false;
+        if (y < this.y0)
+        	return false;
+        if (y > this.y0 + this.h)
+        	return false;
         return true;
     }
 
     public void draw(Graphics2D g2) {
-        g2.draw(this.boundary().getGeneralPath());
+    	this.asRing().draw(g2);
     }
 
-    public void fill(Graphics2D g) {
-        g.fill(this.boundary().getGeneralPath());
+    public void fill(Graphics2D g2) {
+    	this.asRing().fill(g2);
     }
 
 
@@ -505,47 +427,28 @@ public class Rectangle2D implements Polygon2D {
     // methods inherited from Object interface
 
     /**
-     * Test if retangles are the same. We consider two rectangles are equals if
-     * their corners are the same. Then, we can have different origin and
-     * different angles, but equal rectangles.
+     * Tests if rectangles are the same.
      */
     @Override
     public boolean equals(Object obj) {
-        // check class, and cast type
+       	if (this == obj)
+    		return true;
+
+       	// check class, and cast type
         if (!(obj instanceof Rectangle2D))
             return false;
-        Rectangle2D rect = (Rectangle2D) obj;
+        Rectangle2D that = (Rectangle2D) obj;
 
-        // first get list of corners of the 2 rectangles.
-        // Iterator<Point2D> iter1 = this.getPoints();
-        // Point2D point;
+        // Compare each field
+		if (!EqualUtils.areEqual(this.x0, that.x0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.y0, that.y0)) 
+			return false;
+		if (!EqualUtils.areEqual(this.w, that.w)) 
+			return false;
+		if (!EqualUtils.areEqual(this.h, that.h)) 
+			return false;
 
-        // check all 4 corners of the first rectangle
-        // while(iter1.hasNext()){
-        // point = (Point2D) iter1.next();
-        boolean ok;
-        for (Point2D point : this.vertices()) {
-            ok = false;
-
-            // compare with all 4 corners of second rectangle
-            // Iterator<Point2D> iter2 = rect.getPoints();
-            // while(iter2.hasNext())
-            // if(point.equals(iter2.next()))
-            // ok = true;
-            for (Point2D point2 : rect.vertices())
-                if (point.equals(point2)) {
-                    ok = true;
-                    break;
-                }
-
-            // if the point does not belong to the corners of the other
-            // rectangle,
-            // then the two rect are different
-            if (!ok)
-                return false;
-        }
-
-        // test ok for 4 corners, then the two rectangles are the same.
         return true;
     }
 
