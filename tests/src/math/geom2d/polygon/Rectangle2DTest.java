@@ -27,12 +27,12 @@
 package math.geom2d.polygon;
 
 import junit.framework.TestCase;
+import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 
 /**
  * @author Legland
  */
-@Deprecated
 public class Rectangle2DTest extends TestCase {
 
 	/**
@@ -47,12 +47,19 @@ public class Rectangle2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Rectangle2DTest.class);
 	}
 
-	public void testGetVerticesNumber() {
+	public void testCentroid() {
+		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
+		Point2D exp = new Point2D(25, 40);
+		Point2D center = rect.centroid();
+		assertTrue(exp.almostEquals(center, Shape2D.ACCURACY));
+	}
+	
+	public void testVertexNumber() {
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
 		assertEquals(rect.vertexNumber(), 4);
 	}
 
-	public void testGetDistance(){
+	public void testDistance(){
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
 		assertEquals(rect.distance(10, 20), 0, Shape2D.ACCURACY);		
 		assertEquals(rect.distance(40, 20), 0, Shape2D.ACCURACY);		
@@ -63,9 +70,12 @@ public class Rectangle2DTest extends TestCase {
 	/*
 	 * Test for boolean equals(Rectangle2D)
 	 */
-	public void testEqualsRectangle2D() {
+	public void testEquals_Rectangle2D() {
 		Rectangle2D rect1 = new Rectangle2D(10, 20, 30, 40);
-		Rectangle2D rect2 = new Rectangle2D(40, 20, 40, 30, Math.PI/2);
+		assertTrue(rect1.equals(rect1));
+		Rectangle2D rect2 = new Rectangle2D(10, 20, 30, 40);
 		assertTrue(rect1.equals(rect2));
+		Rectangle2D rect3 = new Rectangle2D(10, 20, 30, 30);
+		assertFalse(rect1.equals(rect3));
 	}
 }
