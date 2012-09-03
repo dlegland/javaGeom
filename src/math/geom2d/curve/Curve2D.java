@@ -100,8 +100,8 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns the first point of the curve. It must returns the same result as
      * <code>point(t0())</code>.
      * 
-     * @see t0()
-     * @see point(double)
+     * @see #t0()
+     * @see #point(double)
      * @return the first point of the curve
      */
     public abstract Point2D firstPoint();
@@ -110,8 +110,8 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns the last point of the curve. It must returns the same result as
      * <code>this.point(this.t1())</code>.
      * 
-     * @see t1()
-     * @see point(double)
+     * @see #t1()
+     * @see #point(double)
      * @return the last point of the curve.
      */
     public abstract Point2D lastPoint();
@@ -120,7 +120,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns a set of singular points, i. e. which do not locally admit
      * derivative.
      * 
-     * @see #vertices
+     * @see #vertices()
      * @return a collection of Point2D.
      */
     public abstract Collection<Point2D> singularPoints();
@@ -129,7 +129,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * Returns the set of vertices for this curve. Vertices can be either 
      * singular points, or extremities.
      * 
-     * @see #singularPoints
+     * @see #singularPoints()
      * @return a collection of Point2D.
      */
     public abstract Collection<Point2D> vertices();
@@ -149,7 +149,7 @@ public interface Curve2D extends Shape2D, Cloneable {
      * 
      * @param point a point belonging to the curve
      * @return the position of the point on the curve
-     * @see point(double)
+     * @see #point(double)
      */
     public abstract double position(Point2D point);
 

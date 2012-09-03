@@ -641,7 +641,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 
 	/**
 	 * Tests is this affine transform is equal to the identity transform.
-	 * @return
+	 * @return true if this transform is the identity transform
 	 */
 	public boolean isIdentity() {
 		return AffineTransform2D.isIdentity(this);
