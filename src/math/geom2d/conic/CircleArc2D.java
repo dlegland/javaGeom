@@ -63,21 +63,37 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     // ====================================================================
     // static factories
 
+	/**
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static CircleArc2D create(Circle2D support, double startAngle,
     		double angleExtent) {
     	return new CircleArc2D(support, startAngle, angleExtent);
     }
     
-    public static CircleArc2D create(Circle2D support, double startAngle,
+	/**
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
+	public static CircleArc2D create(Circle2D support, double startAngle,
     		double endAngle, boolean direct) {
     	return new CircleArc2D(support, startAngle, endAngle, direct);
     }
     
+	/**
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static CircleArc2D create(Point2D center, double radius,
     		double startAngle, double angleExtent) {
     	return new CircleArc2D(center, radius, startAngle, angleExtent);
     }
     
+	/**
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static CircleArc2D create(Point2D center, double radius,
     		double startAngle, double endAngle, boolean direct) {
     	return new CircleArc2D(center, radius, startAngle, endAngle, direct);

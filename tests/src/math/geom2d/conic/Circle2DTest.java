@@ -160,17 +160,17 @@ public class Circle2DTest extends TestCase {
 	}
 	
 	public void testGetTangent() {
-		Point2D center = Point2D.create(10, 20);
+		Point2D center = new Point2D(10, 20);
 	    double r = 10;
 	    double eps = Shape2D.ACCURACY;
 	    
-	    Circle2D circle = Circle2D.create(center, r);
+	    Circle2D circle = new Circle2D(center, r);
 	    assertVectorEquals(circle.tangent(0), new Vector2D(0, r), eps);
 	    assertVectorEquals(circle.tangent(Math.PI/2), new Vector2D(-r, 0), eps);
 	    assertVectorEquals(circle.tangent(Math.PI), new Vector2D(0, -r), eps);
 	    assertVectorEquals(circle.tangent(3*Math.PI/2), new Vector2D(r, 0), eps);
 	    
-        circle = Circle2D.create(center, r, false);
+        circle = new Circle2D(center, r, false);
         assertVectorEquals(circle.tangent(0), new Vector2D(0, -r), eps);
         assertVectorEquals(circle.tangent(Math.PI/2), new Vector2D(-r, 0), eps);
         assertVectorEquals(circle.tangent(Math.PI), new Vector2D(0, r), eps);

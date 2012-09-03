@@ -61,7 +61,10 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
      * @param ell the supporting ellipse
      * @param start the starting angle
      * @param extent the (signed) angle extent
-     */
+	 *
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static EllipseArc2D create(Ellipse2D ell, double start, 
     		double extent) {
         return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
@@ -76,8 +79,11 @@ implements SmoothOrientedCurve2D, EllipseArcShape2D, Cloneable {
      * @param start the starting angle
      * @param end the ending angle
      * @param direct flag indicating if the arc is direct
-     */
-    public static EllipseArc2D create(Ellipse2D ell, double start, double end,
+     *
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
+public static EllipseArc2D create(Ellipse2D ell, double start, double end,
     		boolean direct) {
     	return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta,
     			start, end, direct);

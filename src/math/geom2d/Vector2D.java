@@ -42,16 +42,18 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 
     /**
      * Static factory for creating a new vector in Cartesian coordinates.
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Vector2D create(double x, double y) {
         return new Vector2D(x, y);
     }
     
     /**
      * Static factory for creating a new vector from the coordinate of a point.
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Vector2D create(Point2D point) {
         return new Vector2D(point.x, point.y);
     }

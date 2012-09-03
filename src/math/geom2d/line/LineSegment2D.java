@@ -42,8 +42,9 @@ implements Cloneable, CirculinearElement2D {
 
     /**
      * Static factory for creating a new line segment between two points.
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static LineSegment2D create(Point2D p1, Point2D p2) {
     	return new LineSegment2D(p1, p2);
     }

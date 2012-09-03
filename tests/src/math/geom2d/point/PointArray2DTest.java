@@ -122,10 +122,10 @@ public class PointArray2DTest extends TestCase {
 	}
 
 	public void testEquals() {
-		Point2D p1 = Point2D.create(1, 2);
-		Point2D p1b = Point2D.create(1, 2);
-		Point2D p2 = Point2D.create(1, 3);
-		Point2D p3 = Point2D.create(2, 3);
+		Point2D p1 = new Point2D(1, 2);
+		Point2D p1b = new Point2D(1, 2);
+		Point2D p2 = new Point2D(1, 3);
+		Point2D p3 = new Point2D(2, 3);
 		
 	    PointArray2D set1 = PointArray2D.create(new Point2D[]{p1, p2});
 	    PointArray2D set2 = PointArray2D.create(new Point2D[]{p1b, p2});

@@ -59,15 +59,17 @@ public class Box2D implements GeometricObject2D, Cloneable {
     // Static factory
         
     /**
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Box2D create(double xmin, double xmax, double ymin, double ymax) {
     	return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     /**
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Box2D create(Point2D p1, Point2D p2) {
     	return new Box2D(p1, p2);
     }

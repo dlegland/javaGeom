@@ -63,8 +63,8 @@ implements EllipseShape2D, Cloneable {
      * @param focus2 the second focus
      * @param chord the sum of distances to focii
      * @return a new instance of Ellipse2D
-     */
-    public static Ellipse2D create(Point2D focus1, Point2D focus2, 
+	 */
+	public static Ellipse2D create(Point2D focus1, Point2D focus2, 
     		double chord) {
         double x1 = focus1.x();
         double y1 = focus1.y();
@@ -85,7 +85,10 @@ implements EllipseShape2D, Cloneable {
         return new Ellipse2D(xc, yc, r1, r2, theta);
     }
 
-    /** Main constructor: define center by a point plus major and minor semi axis */
+    /** Main constructor: define center by a point plus major and minor semi axis 
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Ellipse2D create(Point2D center, double l1, double l2) {
         return new Ellipse2D(center.x(), center.y(), l1, l2, 0, true);
     }
@@ -93,7 +96,9 @@ implements EllipseShape2D, Cloneable {
     /**
      * Define center by point, major and minor semi axis lengths, and
      * orientation angle.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Ellipse2D create(Point2D center, double l1, double l2, 
     		double theta) {
     	return new Ellipse2D(center.x(), center.y(), l1, l2, theta, true);
@@ -110,7 +115,9 @@ implements EllipseShape2D, Cloneable {
 
     /**
      * Constructs an ellipse from the java.awt.geom class for ellipse.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Ellipse2D create(java.awt.geom.Ellipse2D ellipse) {
         return new Ellipse2D(
         		new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), 

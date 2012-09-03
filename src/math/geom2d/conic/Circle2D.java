@@ -62,7 +62,9 @@ Cloneable {
 
     /**
      * Creates a circle from a center and a radius.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Circle2D create(Point2D center, double radius) {
     	return new Circle2D(center, radius);    	
     }
@@ -70,7 +72,9 @@ Cloneable {
     /**
      * Creates a circle from a center, a radius, and a flag indicating
      * orientation.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Circle2D create(Point2D center, double radius, boolean direct) {
     	return new Circle2D(center, radius, direct);    	
     }

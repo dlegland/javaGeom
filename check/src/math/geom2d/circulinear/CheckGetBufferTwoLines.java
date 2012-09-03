@@ -26,14 +26,14 @@ public class CheckGetBufferTwoLines extends JPanel{
 
 	CirculinearCurve2D curve;
 	CirculinearDomain2D domain;
-	Box2D box = Box2D.create(50, 350, 50, 350);
+	Box2D box = new Box2D(50, 350, 50, 350);
 	
 	public CheckGetBufferTwoLines(){
 		Point2D p0 = new Point2D(200, 200);
-		Vector2D v1 = Vector2D.create(1, 0);
-		Vector2D v2 = Vector2D.create(0, 1);
-		StraightLine2D line1 = StraightLine2D.create(p0, v1);
-		StraightLine2D line2 = StraightLine2D.create(p0, v2);
+		Vector2D v1 = new Vector2D(1, 0);
+		Vector2D v2 = new Vector2D(0, 1);
+		StraightLine2D line1 = new StraightLine2D(p0, v1);
+		StraightLine2D line2 = new StraightLine2D(p0, v2);
 		
 		curve = 
 			CirculinearCurveArray2D.create(new StraightLine2D[]{line1, line2});

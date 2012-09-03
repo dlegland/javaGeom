@@ -287,12 +287,12 @@ public class KDTree2D {
 			boolean b = point.x() < anchor.x();
 			node1 = b ? node.left : node.right;
 			node2 = b ? node.right : node.left;
-			line = StraightLine2D.create(anchor, new Vector2D(0, 1));
+			line = new StraightLine2D(anchor, new Vector2D(0, 1));
 		} else {
 			boolean b = point.y() < anchor.y();
 			node1 = b ? node.left : node.right;
             node2 = b ? node.right : node.left;
-            line = StraightLine2D.create(anchor, new Vector2D(1, 0)); 
+            line = new StraightLine2D(anchor, new Vector2D(1, 0)); 
         }
         
         if(node1!=null) {

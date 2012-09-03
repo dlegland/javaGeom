@@ -263,7 +263,7 @@ public class BufferCalculatorTest extends TestCase {
 		// create an infinite curve, here a straight line
 		Point2D p0 = new Point2D(10, 20);
 		Vector2D v0 = new Vector2D(10, 20);
-		StraightLine2D line = StraightLine2D.create(p0, v0);
+		StraightLine2D line = new StraightLine2D(p0, v0);
 
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 

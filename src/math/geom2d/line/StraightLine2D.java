@@ -61,7 +61,9 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /**
      * Creates a straight line going through a point and with a given angle.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static StraightLine2D create(Point2D point, double angle) {
         return new StraightLine2D(point.x(), point.y(), Math.cos(angle),
                 Math.sin(angle));
@@ -69,7 +71,9 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /**
      * Creates a straight line through 2 points.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static StraightLine2D create(Point2D p1, Point2D p2) {
         return new StraightLine2D(p1, p2);
     }
@@ -77,7 +81,9 @@ public class StraightLine2D extends AbstractLine2D implements
     /**
      * Creates a straight line through a point and with a given direction
      * vector.
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static StraightLine2D create(Point2D origin, Vector2D direction) {
         return new StraightLine2D(origin, direction);
     }

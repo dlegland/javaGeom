@@ -33,8 +33,8 @@ public class CheckGenericCirculinearDomain2DGetBuffer extends JPanel{
 		double R 	= 100;
 		
 		// boundary circle 
-		Point2D center 	= Point2D.create(x0, y0);
-		Circle2D circle = Circle2D.create(center, R);
+		Point2D center 	= new Point2D(x0, y0);
+		Circle2D circle = new Circle2D(center, R);
 		
 		// generic domain
 		domain = GenericCirculinearDomain2D.create(circle);

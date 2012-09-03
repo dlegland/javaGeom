@@ -187,14 +187,14 @@ public class CircleArc2DTest extends TestCase {
 		Point2D p0 = new Point2D(y0, x0);
 		double r = 10;
 		
-		CircleArc2D arc = CircleArc2D.create(p0, 10, 0, PI/2);
+		CircleArc2D arc = new CircleArc2D(p0, 10, 0, PI/2);
 		Point2D p1 = new Point2D(10, 0);
 		assertTrue(p1.distance(arc.point(arc.t0()))<Shape2D.ACCURACY);
 		Point2D p2 = new Point2D(0, 10);
 		assertTrue(p2.distance(arc.point(arc.t1()))<Shape2D.ACCURACY);
 		
 		// Check inverted arc
-		arc = CircleArc2D.create(p0, 10, 3*PI/2, -3*PI/2);
+		arc = new CircleArc2D(p0, 10, 3*PI/2, -3*PI/2);
 		double eps = Shape2D.ACCURACY;
 		assertTrue(arc.point(PI/2).almostEquals(new Point2D(x0-r, y0), eps));
 		assertTrue(arc.point(PI).almostEquals(new Point2D(x0, y0+r), eps));
