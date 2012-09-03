@@ -50,7 +50,7 @@ public interface SmoothCurve2D extends ContinuousCurve2D {
 	 * Returns the normal vector of the curve at the given position. 
 	 * @param t a position on the curve
 	 * @return the normal vector computed for position t
-	 * @see tangent(double)
+	 * @see #tangent(double)
 	 */
     public abstract Vector2D normal(double t);
 

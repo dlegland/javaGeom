@@ -213,7 +213,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     /**
      * Converts this PolyCurve2D into a polyline with the given number of edges.
-     * @param t the number of edges of the result polyline
+     * @param n the number of edges of the result polyline
      * @see Polyline2D 
      */
     public Polyline2D asPolyline(int n) {
