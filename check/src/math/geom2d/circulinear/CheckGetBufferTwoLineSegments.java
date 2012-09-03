@@ -25,18 +25,17 @@ public class CheckGetBufferTwoLineSegments extends JPanel{
 
 	CirculinearCurve2D curve;
 	CirculinearDomain2D domain;
-	Box2D box = Box2D.create(50, 350, 50, 350);
+	Box2D box = new Box2D(50, 350, 50, 350);
 	
 	public CheckGetBufferTwoLineSegments(){
-		Point2D p11 = Point2D.create(100, 200);
-		Point2D p12 = Point2D.create(300, 200);
-		Point2D p21 = Point2D.create(200, 100);
-		Point2D p22 = Point2D.create(200, 300);
-		LineSegment2D line1 = LineSegment2D.create(p11, p12);
-		LineSegment2D line2 = LineSegment2D.create(p21, p22);
+		Point2D p11 = new Point2D(100, 200);
+		Point2D p12 = new Point2D(300, 200);
+		Point2D p21 = new Point2D(200, 100);
+		Point2D p22 = new Point2D(200, 300);
+		LineSegment2D line1 = new LineSegment2D(p11, p12);
+		LineSegment2D line2 = new LineSegment2D(p21, p22);
 		
-		curve = CirculinearCurveArray2D.create(
-				new LineSegment2D[]{line1, line2});
+		curve = CirculinearCurveArray2D.create(line1, line2);
 		domain = curve.buffer(30);
 	}
 	

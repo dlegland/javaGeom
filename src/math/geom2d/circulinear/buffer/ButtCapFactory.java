@@ -28,14 +28,14 @@ public class ButtCapFactory implements CapFactory {
 		double theta = direction.angle();
 		Point2D p1 = Point2D.createPolar(center, dist/2, theta-Math.PI/2);
 		Point2D p2 = Point2D.createPolar(center, dist/2, theta+Math.PI/2);
-		return LineSegment2D.create(p1, p2);
+		return new LineSegment2D(p1, p2);
 	}
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.buffer.CapFactory#createCap(math.geom2d.Point2D, math.geom2d.Point2D)
 	 */
 	public CirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
-		return LineSegment2D.create(p1, p2);
+		return new LineSegment2D(p1, p2);
 	}
 
 }

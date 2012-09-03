@@ -68,8 +68,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	/**
 	 * Static factory for creating a new point in cartesian coordinates.
 	 * 
-	 * @since 0.8.1
+	 * @deprecated since 0.11.1
 	 */
+	@Deprecated
 	public static Point2D create(double x, double y) {
 		return new Point2D(x, y);
 	}
@@ -78,8 +79,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 * Static factory for creating a new point from an existing instance of java
 	 * point.
 	 * 
-	 * @since 0.8.1
+	 * @deprecated since 0.11.1
 	 */
+	@Deprecated
 	public static Point2D create(java.awt.geom.Point2D point) {
 		return new Point2D(point.getX(), point.getY());
 	}

@@ -34,8 +34,8 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 	 */
 	public void testGetBoundary() {
 		// create a boundary
-		Point2D center = Point2D.create(10, 20);
-		Circle2D circle = Circle2D.create(center, 30);
+		Point2D center = new Point2D(10, 20);
+		Circle2D circle = new Circle2D(center, 30);
 		
 		// create the domain
 		Domain2D domain = GenericCirculinearDomain2D.create(circle);
@@ -51,8 +51,8 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 	 */
 	public void testComplement() {
 		// create a boundary
-		Point2D center = Point2D.create(10, 20);
-		Circle2D circle = Circle2D.create(center, 30);
+		Point2D center = new Point2D(10, 20);
+		Circle2D circle = new Circle2D(center, 30);
 		
 		// create the domain
 		Domain2D domain = GenericCirculinearDomain2D.create(circle);
@@ -62,7 +62,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		Boundary2D boundary = complement.boundary();
 		
 		assertTrue(boundary instanceof Circle2D);
-		Circle2D circle2 = Circle2D.create(center, 30, false);
+		Circle2D circle2 = new Circle2D(center, 30, false);
 		assertTrue(boundary.equals(circle2));
 	}
 
@@ -71,8 +71,8 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 	 */
 	public void testGetBuffer() {
 		// create a boundary
-		Point2D center = Point2D.create(10, 20);
-		Circle2D circle = Circle2D.create(center, 30);
+		Point2D center = new Point2D(10, 20);
+		Circle2D circle = new Circle2D(center, 30);
 		
 		// create the domain
 		CirculinearDomain2D domain = GenericCirculinearDomain2D.create(circle);
@@ -81,7 +81,7 @@ public class GenericCirculinearDomain2DTest extends TestCase {
 		Domain2D buffer = domain.buffer(15);
 		
 		// compare with the theoretical circle
-		Circle2D circle2 = Circle2D.create(center, 30+15, true);
+		Circle2D circle2 = new Circle2D(center, 30+15, true);
 		assertTrue(buffer.contours().contains(circle2));
 	}
 

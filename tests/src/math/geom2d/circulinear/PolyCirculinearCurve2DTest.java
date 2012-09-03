@@ -26,15 +26,15 @@ import math.geom2d.line.Ray2D;
 public class PolyCirculinearCurve2DTest extends TestCase {
 
 	/*
-	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#getParallel(double)}
+	 * Test method for {@link math.geom2d.circulinear.PolyCirculinearCurve2D#parallel(double)}
 	 */
 	public void testGetParallel_Wedge() {
-		Point2D point = Point2D.create(20, 10);
-		Vector2D v1 = Vector2D.create(-2, 0);
-		Vector2D v2 = Vector2D.create(0, 3);
+		Point2D point = new Point2D(20, 10);
+		Vector2D v1 = new Vector2D(-2, 0);
+		Vector2D v2 = new Vector2D(0, 3);
 		AbstractLine2D[] array = new AbstractLine2D[]{
-				InvertedRay2D.create(point, v1),
-				Ray2D.create(point, v2)
+				new InvertedRay2D(point, v1),
+				new Ray2D(point, v2)
 		};
 		PolyCirculinearCurve2D<AbstractLine2D> curve = 
 			new PolyCirculinearCurve2D<AbstractLine2D>(array);
@@ -107,10 +107,10 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 	}
 	
 	public void testGetReverseCurve() {
-		Point2D p1 = Point2D.create(10, 10);
-		Point2D p2 = Point2D.create(20, 10);
-		Point2D p3 = Point2D.create(20, 20);
-		Point2D p4 = Point2D.create(10, 20);
+		Point2D p1 = new Point2D(10, 10);
+		Point2D p2 = new Point2D(20, 10);
+		Point2D p3 = new Point2D(20, 20);
+		Point2D p4 = new Point2D(10, 20);
 		
 		LineSegment2D[] edges = new LineSegment2D[]{
 				new LineSegment2D(p1, p2),

@@ -47,8 +47,9 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
 
     /**
      * Static factory for creating a new ray.
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Ray2D create(Point2D origin, Vector2D direction) {
     	return new Ray2D(origin, direction);
     }
@@ -57,8 +58,9 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * Static factory for creating a new ray, originating from
      * <code>origin<\code>, and going in the
      * direction of <code>target<\code>.
-     * @since 0.8.1
-     */
+	 * @deprecated since 0.11.1
+	 */
+	@Deprecated
     public static Ray2D create(Point2D origin, Point2D target) {
     	return new Ray2D(origin, target);
     }

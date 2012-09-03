@@ -209,10 +209,10 @@ public class CirculinearCurves2DTest extends TestCase {
 		Vector2D v4 = new Vector2D(10, 0);
 		
 		// create two orthogonal lines
-		StraightLine2D line1 = StraightLine2D.create(p1, v1);
-		StraightLine2D line2 = StraightLine2D.create(p2, v2);
-		StraightLine2D line3 = StraightLine2D.create(p3, v3);
-		StraightLine2D line4 = StraightLine2D.create(p4, v4);
+		StraightLine2D line1 = new StraightLine2D(p1, v1);
+		StraightLine2D line2 = new StraightLine2D(p2, v2);
+		StraightLine2D line3 = new StraightLine2D(p3, v3);
+		StraightLine2D line4 = new StraightLine2D(p4, v4);
 		
 		// put lines in a set
 		CirculinearCurveSet2D<StraightLine2D> set = 

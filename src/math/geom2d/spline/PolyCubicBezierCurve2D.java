@@ -32,10 +32,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.curve.Curves2D;
-import math.geom2d.curve.CurveSet2D;
-import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.curve.*;
 
 /**
  * A set of Bezier curves that forms a continuous curve.
@@ -133,18 +130,18 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
      * Returns a new PolyCubicBezierCurve2D.
      */
     @Override
-    public PolyCubicBezierCurve2D clip(Box2D box) {
+    public CurveSet2D<? extends PolyCubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
         CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        PolyCubicBezierCurve2D result = new PolyCubicBezierCurve2D(
-        		set.size());
+        CurveSet2D<PolyCubicBezierCurve2D> result = 
+        	new CurveArray2D<PolyCubicBezierCurve2D>(set.size());
 
         // convert the result
         for (Curve2D curve : set.curves()) {
-            if (curve instanceof CubicBezierCurve2D)
-                result.add((CubicBezierCurve2D) curve);
+            if (curve instanceof PolyCubicBezierCurve2D)
+                result.add((PolyCubicBezierCurve2D) curve);
         }
         return result;
     }

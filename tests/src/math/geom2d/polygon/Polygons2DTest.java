@@ -116,31 +116,31 @@ public class Polygons2DTest extends TestCase {
      */
     public void testUnion_TwoConcentricRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(50, 50),
-    			Point2D.create(450, 50),
-    			Point2D.create(450, 450),
-    			Point2D.create(50, 450)
+    			new Point2D(50, 50),
+    			new Point2D(450, 50),
+    			new Point2D(450, 450),
+    			new Point2D(50, 450)
     	});
     	LinearRing2D innerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(100, 100),
-    			Point2D.create(100, 400),
-    			Point2D.create(400, 400),
-    			Point2D.create(400, 100)
+    			new Point2D(100, 100),
+    			new Point2D(100, 400),
+    			new Point2D(400, 400),
+    			new Point2D(400, 100)
     	});
     	Polygon2D poly1 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing1, innerRing1});
     	
     	LinearRing2D outerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(150, 150),
-    			Point2D.create(350, 150),
-    			Point2D.create(350, 350),
-    			Point2D.create(150, 350)
+    			new Point2D(150, 150),
+    			new Point2D(350, 150),
+    			new Point2D(350, 350),
+    			new Point2D(150, 350)
     	});
     	LinearRing2D innerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(200, 200),
-    			Point2D.create(200, 300),
-    			Point2D.create(300, 300),
-    			Point2D.create(300, 200)
+    			new Point2D(200, 200),
+    			new Point2D(200, 300),
+    			new Point2D(300, 300),
+    			new Point2D(300, 200)
     	});
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
@@ -155,31 +155,31 @@ public class Polygons2DTest extends TestCase {
      */
     public void testUnion_TwoIntersectingRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(50, 150),
-    			Point2D.create(350, 150),
-    			Point2D.create(350, 450),
-    			Point2D.create(50, 450)
+    			new Point2D(50, 150),
+    			new Point2D(350, 150),
+    			new Point2D(350, 450),
+    			new Point2D(50, 450)
     	});
     	LinearRing2D innerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(100, 200),
-    			Point2D.create(100, 400),
-    			Point2D.create(300, 400),
-    			Point2D.create(300, 200)
+    			new Point2D(100, 200),
+    			new Point2D(100, 400),
+    			new Point2D(300, 400),
+    			new Point2D(300, 200)
     	});
     	Polygon2D poly1 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing1, innerRing1});
     	
     	LinearRing2D outerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(150, 50),
-    			Point2D.create(450, 50),
-    			Point2D.create(450, 350),
-    			Point2D.create(150, 350)
+    			new Point2D(150, 50),
+    			new Point2D(450, 50),
+    			new Point2D(450, 350),
+    			new Point2D(150, 350)
     	});
     	LinearRing2D innerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(200, 100),
-    			Point2D.create(200, 300),
-    			Point2D.create(400, 300),
-    			Point2D.create(400, 100)
+    			new Point2D(200, 100),
+    			new Point2D(200, 300),
+    			new Point2D(400, 300),
+    			new Point2D(400, 100)
     	});
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
@@ -244,31 +244,31 @@ public class Polygons2DTest extends TestCase {
      */
     public void testIntersection_TwoConcentricRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(50, 50),
-    			Point2D.create(450, 50),
-    			Point2D.create(450, 450),
-    			Point2D.create(50, 450)
+    			new Point2D(50, 50),
+    			new Point2D(450, 50),
+    			new Point2D(450, 450),
+    			new Point2D(50, 450)
     	});
     	LinearRing2D innerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(100, 100),
-    			Point2D.create(100, 400),
-    			Point2D.create(400, 400),
-    			Point2D.create(400, 100)
+    			new Point2D(100, 100),
+    			new Point2D(100, 400),
+    			new Point2D(400, 400),
+    			new Point2D(400, 100)
     	});
     	Polygon2D poly1 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing1, innerRing1});
     	
     	LinearRing2D outerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(150, 150),
-    			Point2D.create(350, 150),
-    			Point2D.create(350, 350),
-    			Point2D.create(150, 350)
+    			new Point2D(150, 150),
+    			new Point2D(350, 150),
+    			new Point2D(350, 350),
+    			new Point2D(150, 350)
     	});
     	LinearRing2D innerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(200, 200),
-    			Point2D.create(200, 300),
-    			Point2D.create(300, 300),
-    			Point2D.create(300, 200)
+    			new Point2D(200, 200),
+    			new Point2D(200, 300),
+    			new Point2D(300, 300),
+    			new Point2D(300, 200)
     	});
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});
@@ -283,31 +283,31 @@ public class Polygons2DTest extends TestCase {
      */
     public void testIntersection_TwoIntersectingRings() {
     	LinearRing2D outerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(50, 150),
-    			Point2D.create(350, 150),
-    			Point2D.create(350, 450),
-    			Point2D.create(50, 450)
+    			new Point2D(50, 150),
+    			new Point2D(350, 150),
+    			new Point2D(350, 450),
+    			new Point2D(50, 450)
     	});
     	LinearRing2D innerRing1 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(100, 200),
-    			Point2D.create(100, 400),
-    			Point2D.create(300, 400),
-    			Point2D.create(300, 200)
+    			new Point2D(100, 200),
+    			new Point2D(100, 400),
+    			new Point2D(300, 400),
+    			new Point2D(300, 200)
     	});
     	Polygon2D poly1 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing1, innerRing1});
     	
     	LinearRing2D outerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(150, 50),
-    			Point2D.create(450, 50),
-    			Point2D.create(450, 350),
-    			Point2D.create(150, 350)
+    			new Point2D(150, 50),
+    			new Point2D(450, 50),
+    			new Point2D(450, 350),
+    			new Point2D(150, 350)
     	});
     	LinearRing2D innerRing2 = LinearRing2D.create(new Point2D[]{
-    			Point2D.create(200, 100),
-    			Point2D.create(200, 300),
-    			Point2D.create(400, 300),
-    			Point2D.create(400, 100)
+    			new Point2D(200, 100),
+    			new Point2D(200, 300),
+    			new Point2D(400, 300),
+    			new Point2D(400, 100)
     	});
     	Polygon2D poly2 = MultiPolygon2D.create(new LinearRing2D[]{
     			outerRing2, innerRing2});

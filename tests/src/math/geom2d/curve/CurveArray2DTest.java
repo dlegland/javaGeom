@@ -38,15 +38,15 @@ import math.geom2d.line.LineSegment2D;
 public class CurveArray2DTest extends TestCase {
 
 	public void testCreateArray() {
-		Point2D p1 = Point2D.create(0, 0);
-		Point2D p2 = Point2D.create(10, 0);
-		Point2D p3 = Point2D.create(10, 10);
-		Point2D p4 = Point2D.create(0, 10);
-		LineSegment2D seg1 = LineSegment2D.create(p1, p2);
-		LineSegment2D seg2 = LineSegment2D.create(p2, p3);
-		LineSegment2D seg3 = LineSegment2D.create(p3, p4);
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(10, 0);
+		Point2D p3 = new Point2D(10, 10);
+		Point2D p4 = new Point2D(0, 10);
+		LineSegment2D seg1 = new LineSegment2D(p1, p2);
+		LineSegment2D seg2 = new LineSegment2D(p2, p3);
+		LineSegment2D seg3 = new LineSegment2D(p3, p4);
 		CurveArray2D<LineSegment2D> set = 
-			CurveArray2D.create(new LineSegment2D[]{seg1, seg2, seg3});
+			CurveArray2D.create(seg1, seg2, seg3);
 		assertEquals(3, set.size());
 		assertTrue(set.contains(seg1));
 		assertTrue(set.contains(seg2));

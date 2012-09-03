@@ -467,7 +467,7 @@ public final class Polygons2D {
     	int n = poly.getNumPoints();
     	Point2D[] points = new Point2D[n];
     	for (int i = 0; i < n; i++)
-    		points[i] = Point2D.create(poly.getX(i), poly.getY(i));
+    		points[i] = new Point2D(poly.getX(i), poly.getY(i));
     	return points;
     }
 }

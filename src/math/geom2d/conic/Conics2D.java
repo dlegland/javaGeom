@@ -349,7 +349,7 @@ public class Conics2D {
             this.d = d;
             this.theta = theta;
 
-            StraightLine2D baseLine = StraightLine2D.create(
+            StraightLine2D baseLine = new StraightLine2D(
                     new Point2D(xc, yc), theta);
             this.add(baseLine.parallel(d));
             this.add(baseLine.parallel(-d).reverse());
