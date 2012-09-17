@@ -25,11 +25,13 @@
  */
 package math.geom2d.conic;
 
+import static java.lang.Math.PI;
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polyline2D;
 
 public class EllipseArc2DTest extends TestCase {
 
@@ -132,6 +134,13 @@ public class EllipseArc2DTest extends TestCase {
 		assertTrue(transformed.almostEquals(
 				new EllipseArc2D(ell2, 0, -Math.PI/2), 
 				Shape2D.ACCURACY));
+	}
+	
+	public void testAsPolyline() {
+        Ellipse2D ellipse = new Ellipse2D(0, 0, 50, 20, 0);
+		EllipseArc2D arc = new EllipseArc2D(ellipse, 0, PI/2);
+		Polyline2D poly = arc.asPolyline(4);
+		assertEquals(5, poly.vertexNumber());
 	}
 	
 	public void testGetTangent() {

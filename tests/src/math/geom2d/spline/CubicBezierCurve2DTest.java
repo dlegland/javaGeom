@@ -28,6 +28,7 @@ package math.geom2d.spline;
 
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.polygon.Polyline2D;
 import junit.framework.TestCase;
 
 /**
@@ -43,6 +44,17 @@ public class CubicBezierCurve2DTest extends TestCase {
 		super(arg0);
 	}
 
+	
+	public void testAsPolyline() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(0, 1);
+		Point2D p3 = new Point2D(1, 1);
+		Point2D p4 = new Point2D(1, 0);
+		
+		CubicBezierCurve2D bezier = new CubicBezierCurve2D(p1, p2, p3, p4);
+		Polyline2D poly = bezier.asPolyline(4);
+		assertEquals(5, poly.vertexNumber());
+	}
 	
 	public void testGetParametric() {
 		Point2D p1 = new Point2D(0, 0);

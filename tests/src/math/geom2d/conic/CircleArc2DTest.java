@@ -42,6 +42,7 @@ import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
 
 import static java.lang.Math.PI;
@@ -151,6 +152,12 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(arc.isBounded());
 	}
 
+	public void testAsPolyline() {
+		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
+		Polyline2D poly = arc.asPolyline(4);
+		assertEquals(5, poly.vertexNumber());
+	}
+	
 	public void testIsClosed() {
 		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
 		assertFalse(arc.isClosed());

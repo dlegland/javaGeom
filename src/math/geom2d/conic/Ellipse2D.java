@@ -782,19 +782,7 @@ implements EllipseShape2D, Cloneable {
 	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
 	 */
 	public LinearRing2D asPolyline(int n) {
-
-        // compute start and increment values
-		double t0 = this.t0();
-		double dt = (this.t1() - t0) / n;
-
-        // compute position of vertices, without the last one, 
-        // which is included by default with linear rings
-        Point2D[] points = new Point2D[n];
-		for (int i = 0; i < n; i++)
-			points[i] = this.point(t0 + i * dt);
-
-		// creates a new linear ring with the given vertices
-        return new LinearRing2D(points);
+        return this.asPolylineClosed(n);
 	}
 	
 	

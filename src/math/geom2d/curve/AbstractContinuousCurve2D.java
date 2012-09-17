@@ -36,10 +36,32 @@ implements ContinuousCurve2D, Cloneable {
 		return list;
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * Converts this continuous curve to an instance of LinearCurve2D with
+	 * the given number of edges. Returns either an instance of Polyline2D 
+	 * or LinearRing2D, depending on the curve is closed or not.
+	 * This method can be overridden to return the correct type.
+	 * 
 	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
 	 */
 	public LinearCurve2D asPolyline(int n) {
+		// Check that the curve is bounded
+        if (!this.isBounded())
+            throw new UnboundedShape2DException(this);
+
+		if (this.isClosed()) {
+			return asPolylineClosed(n);
+		} else {
+			return asPolylineOpen(n);
+		}
+	}
+	
+	/**
+	 * Assumes the curve is open, and returns an instance of Polyline2D.
+	 * @param n the number of edges of the resulting polyline
+	 * @return a new Polyline2D approximating the original curve
+	 */
+	protected Polyline2D asPolylineOpen(int n) {
 		// Check that the curve is bounded
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
@@ -48,23 +70,36 @@ implements ContinuousCurve2D, Cloneable {
         double t0 = this.t0();
         double dt = (this.t1() - t0) / n;
 
-		if (this.isClosed()) {
-			// compute position of points, without the last one, 
-			// which is included by default with linear rings
-	        Point2D[] points = new Point2D[n];
-			for (int i = 0; i < n; i++)
-				points[i] = this.point(t0 + i * dt);
+        // allocate array of points, and compute each value.
+        // Computes also value for last point.
+        Point2D[] points = new Point2D[n + 1];
+        for (int i = 0; i < n + 1; i++)
+        	points[i] = this.point(t0 + i * dt);
 
-			return new LinearRing2D(points);
-		} else {
-			// allocate array of points, and compute each value.
-			// Computes also value for last point.
-			Point2D[] points = new Point2D[n + 1];
-			for (int i = 0; i < n + 1; i++)
-				points[i] = this.point(t0 + i * dt);
+        return new Polyline2D(points);
+	}
 
-			return new Polyline2D(points);
-		}
+	/**
+	 * Assumes the curve is closed, and returns an instance of LinearRing2D.
+	 * @param n the number of edges of the resulting linear ring
+	 * @return a new LinearRing2D approximating the original curve
+	 */
+	protected LinearRing2D asPolylineClosed(int n) {
+		// Check that the curve is bounded
+        if (!this.isBounded())
+            throw new UnboundedShape2DException(this);
+
+        // compute start and increment values
+        double t0 = this.t0();
+        double dt = (this.t1() - t0) / n;
+
+		// compute position of points, without the last one, 
+		// which is included by default with linear rings
+        Point2D[] points = new Point2D[n];
+		for (int i = 0; i < n; i++)
+			points[i] = this.point(t0 + i * dt);
+
+		return new LinearRing2D(points);
 	}
 
 	/* (non-Javadoc)

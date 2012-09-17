@@ -39,6 +39,7 @@ import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.polygon.Polyline2D;
 import math.utils.EqualUtils;
 
 /**
@@ -339,6 +340,30 @@ public static EllipseArc2D create(Ellipse2D ell, double start, double end,
     public boolean isClosed() {
         return false;
     }
+
+	/**
+	 * Returns a collection of curves containing only this circle arc.
+	 */
+    public Collection<? extends EllipseArc2D> smoothPieces() {
+    	return wrapCurve(this);
+    }
+
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
+	 */
+	public Polyline2D asPolyline(int n) {
+
+        // compute increment value
+        double dt = Math.abs(this.angleExtent) / n;
+
+        // allocate array of points, and compute each value.
+        // Computes also value for last point.
+        Point2D[] points = new Point2D[n + 1];
+        for (int i = 0; i < n + 1; i++)
+        	points[i] = this.point(i * dt);
+
+        return new Polyline2D(points);
+	}
 
     // ====================================================================
     // methods from interface Curve2D
