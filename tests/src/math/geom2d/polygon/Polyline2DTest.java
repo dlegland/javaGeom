@@ -36,6 +36,7 @@ import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.Boundary2D;
 import math.geom2d.domain.Domain2D;
 import math.geom2d.line.StraightLine2D;
@@ -58,6 +59,11 @@ public class Polyline2DTest extends TestCase {
 		junit.awtui.TestRunner.run(Polyline2DTest.class);
 	}
 
+	public void testSimplify() {
+		CircleArc2D arc = new CircleArc2D(0, 0, 10, 0, Math.PI/2);
+		Polyline2D poly = arc.asPolyline(200); 
+	}
+	
 	public void testGetLength() {
 		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
 				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });

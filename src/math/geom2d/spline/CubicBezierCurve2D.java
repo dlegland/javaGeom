@@ -30,6 +30,7 @@ import math.geom2d.*;
 import math.geom2d.curve.*;
 import math.geom2d.domain.ContinuousOrientedCurve2D;
 import math.geom2d.line.LinearShape2D;
+import math.geom2d.polygon.Polyline2D;
 
 /**
  * A cubic bezier curve, defined by 4 control points.
@@ -275,7 +276,25 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return false;
     }
 
-    // ===================================================================
+	/* (non-Javadoc)
+	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
+	 */
+	public Polyline2D asPolyline(int n) {
+
+        // compute increment value
+        double dt = 1.0 / n;
+
+        // allocate array of points, and compute each value.
+        // Computes also value for last point.
+        Point2D[] points = new Point2D[n + 1];
+        for (int i = 0; i < n + 1; i++)
+        	points[i] = this.point(i * dt);
+
+        return new Polyline2D(points);
+	}
+
+
+	// ===================================================================
     // methods from Curve2D interface
 
     /**

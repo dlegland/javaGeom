@@ -103,9 +103,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
     	super(xcoords, ycoords);
     }
     
-
+    
     // ===================================================================
-    // methods implementing the CirculinearCurve2D interface
+    // Methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
@@ -126,9 +126,9 @@ implements CirculinearContinuousCurve2D, Cloneable {
 		return new PolyCirculinearCurve2D<CirculinearContinuousCurve2D>(arcs);
 	}
 
-    // ===================================================================
-    // Methods inherited from ContinuousCurve2D
 
+	// ===================================================================
+    // Methods implementing the ContinuousCurve2D interface
 
     /*
      * (non-Javadoc)
@@ -154,35 +154,41 @@ implements CirculinearContinuousCurve2D, Cloneable {
         if (new LinearRing2D(this.vertexArray()).isInside(pt))
             return true;
 
-        if (this.vertices.size()<3)
-            return false;
+        // can not compute orientation if number of vertices if too low
+		if (this.vertices.size() < 3)
+			return false;
 
+		// check line corresponding to first edge
         Point2D p0 = this.firstPoint();
-        Point2D q0 = this.vertices.get(1);
+        Point2D q0 = this.vertex(1);
         if (new StraightLine2D(q0, p0).isInside(pt))
             return false;
 
+		// check line corresponding to last edge
         Point2D p1 = this.lastPoint();
-        Point2D q1 = this.vertices.get(vertices.size()-2);
+        Point2D q1 = this.vertex(this.vertexNumber() - 2);
         if (new StraightLine2D(p1, q1).isInside(pt))
             return false;
 
+        // check line joining the two extremities
         if (new StraightLine2D(p0, p1).isInside(pt))
             return true;
 
         return false;
     }
 
+    
     // ===================================================================
     // Methods inherited from ContinuousCurve2D
 
     /**
-     * Returns false, as Polyline2D is not closed by definition.
+     * Returns false, as Polyline2D is open by definition.
      */
     public boolean isClosed() {
         return false;
     }
 
+    
     // ===================================================================
     // Methods inherited from Curve2D interface
 
@@ -271,13 +277,13 @@ implements CirculinearContinuousCurve2D, Cloneable {
 
         Polyline2D res = new Polyline2D();
 
-        if (t1<t0)
-            return res;
+		if (t1 < t0)
+			return res;
 
-        // number of points in the polyline
-        int indMax = (int) this.t1();
+		// number of points in the polyline
+		int indMax = (int) this.t1();
 
-        // format to ensure t is between T0 and T1
+      // format to ensure t is between T0 and T1
         t0 = Math.min(Math.max(t0, 0), indMax);
         t1 = Math.min(Math.max(t1, 0), indMax);
 
@@ -330,7 +336,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
      */
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
-        if (vertices.size()<2)
+        if (vertices.size() < 2)
             return path;
 
         // get point iterator

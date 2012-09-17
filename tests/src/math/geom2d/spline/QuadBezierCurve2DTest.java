@@ -26,8 +26,9 @@
 
 package math.geom2d.spline;
 
-import math.geom2d.Point2D;
 import junit.framework.TestCase;
+import math.geom2d.Point2D;
+import math.geom2d.polygon.Polyline2D;
 
 /**
  * @author Legland
@@ -42,6 +43,16 @@ public class QuadBezierCurve2DTest extends TestCase {
 		super(arg0);
 	}
 
+	public void testAsPolyline() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(0, 1);
+		Point2D p3 = new Point2D(1, 1);
+		
+		QuadBezierCurve2D bezier = new QuadBezierCurve2D(p1, p2, p3);
+		Polyline2D poly = bezier.asPolyline(4);
+		assertEquals(5, poly.vertexNumber());
+	}
+	
 	public void testBezierCurve2D_DoubleArray() {
 		Point2D p1 = new Point2D(0, 0);
 		Point2D p2 = new Point2D(0, 1);
