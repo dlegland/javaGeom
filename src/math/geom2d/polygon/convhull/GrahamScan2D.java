@@ -21,6 +21,10 @@ import math.geom2d.polygon.SimplePolygon2D;
 
 
 /**
+ * Computation of the convex hull using Graham scan algorithm. 
+ * Note that in its current implementation, this algorithms fails when some 
+ * points are colinear.
+ * 
  * @author dlegland
  *
  */
