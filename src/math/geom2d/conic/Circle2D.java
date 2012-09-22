@@ -81,7 +81,9 @@ Cloneable {
     
     /**
      * Creates a circle containing 3 points.
+     * @deprecated replaced by createCircle(Point2D, Point2D, Point2D) (0.11.1)
      */
+	@Deprecated
     public static Circle2D create(Point2D p1, Point2D p2, Point2D p3) {
     	if(Point2D.isColinear(p1, p2, p3))
     		throw new ColinearPoints2DException(p1, p2, p3);
@@ -102,6 +104,10 @@ Cloneable {
         return new Circle2D(center, radius);
     }
 
+	/**
+	 * @deprecated replaced by circlesIntersections(Circle2D, Circle2D) (0.11.1)
+	 */
+	@Deprecated
     public static Collection<Point2D> getIntersections(Circle2D circle1,
             Circle2D circle2) {
         ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
@@ -138,7 +144,9 @@ Cloneable {
      * Point2D, of size 0, 1 or 2 depending on the distance between circle and
      * line. If there are 2 intersections points, the first one in the array is
      * the first one on the line.
+     * @deprecated replaced by lineCircleIntersections(LinearShape2D, CircularShape2D) (0.11.1)
      */
+    @Deprecated
     public static Collection<Point2D> getIntersections(
     		CircularShape2D circle,
     		LinearShape2D line) {
@@ -186,9 +194,192 @@ Cloneable {
     	return intersections;
     }
     
+    /**
+     * Computes the circumscribed circle of the 3 input points.
+     * 
+     * @return the circle that contains the three input points
+     * @throws ColinearPoints2DException if the 3 points are colinear
+     */
+    public static Circle2D circumCircle(Point2D p1, Point2D p2, Point2D p3) {
+    	// Computes circum center, possibly throwing ColinearPoints2DException
+    	Point2D center = circumCenter(p1, p2, p3);
+    	
+    	// compute radius
+        double radius = Point2D.distance(center, p2);
+
+        // return the created circle
+        return new Circle2D(center, radius);
+    }
+
+    /**
+     * Computes the center of the circumscribed circle of the three input points. 
+     * 
+     * @throws ColinearPoints2DException if the 3 points are colinear
+     */
+    public static Point2D circumCenter(Point2D p1, Point2D p2, Point2D p3) {
+    	if(Point2D.isColinear(p1, p2, p3))
+    		throw new ColinearPoints2DException(p1, p2, p3);
+    	
+    	// create two median lines
+        StraightLine2D line12 = StraightLine2D.createMedian(p1, p2);
+        StraightLine2D line23 = StraightLine2D.createMedian(p2, p3);
+
+        // check medians are not parallel
+        assert !AbstractLine2D.isParallel(line12, line23) : 
+        	"If points are not colinear, medians should not be parallel";
+
+        // Compute intersection of the medians, and circle radius
+        Point2D center = AbstractLine2D.getIntersection(line12, line23);
+      
+        // return the center
+        return center;
+    }
+
+	/**
+	 * Computes the intersections points between two circles or circular shapes.
+	 * 
+	 * @param circle1
+	 *            an instance of circle or circle arc
+	 * @param circle2
+	 *            an instance of circle or circle arc
+	 * @return a collection of 0, 1 or 2 intersection points
+	 */
+   public static Collection<Point2D> circlesIntersections(Circle2D circle1,
+		   Circle2D circle2) {
+        // extract center and radius of each circle
+        Point2D center1 = circle1.center();
+        Point2D center2 = circle2.center();
+        double r1 = circle1.radius();
+        double r2 = circle2.radius();
+
+        double d = Point2D.distance(center1, center2);
+
+        // case of no intersection
+		if (d < abs(r1 - r2) || d > (r1 + r2))
+			return new ArrayList<Point2D>(0);
+
+        // Angle of line from center1 to center2
+        double angle = Angle2D.horizontalAngle(center1, center2);
+
+        // position of intermediate point
+		double d1 = d / 2 + (r1 * r1 - r2 * r2) / (2 * d);
+		Point2D tmp = Point2D.createPolar(center1, d1, angle);
+		
+		// distance between intermediate point and each intersection
+		double h = sqrt(r1 * r1 - d1 * d1);
+
+    	// create empty array
+        ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+
+        // Add the 2 intersection points
+		Point2D p1 = Point2D.createPolar(tmp, h, angle + PI / 2);
+    	intersections.add(p1);
+		Point2D p2 = Point2D.createPolar(tmp, h, angle - PI / 2);
+		intersections.add(p2);
+
+        return intersections;
+    }
+
+    /**
+     * Computes intersections of a circle with a line. Returns an array of
+     * Point2D, of size 0, 1 or 2 depending on the distance between circle and
+     * line. If there are 2 intersections points, the first one in the array is
+     * the first one on the line.
+     * 
+     * @return a collection of intersection points
+	 * @since 0.11.1
+     */
+    public static Collection<Point2D> lineCircleIntersections(
+    		LinearShape2D line, CircularShape2D circle) {
+    	// initialize array of points (maximum 2 intersections)
+    	ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+
+    	// extract parameters of the circle
+    	Circle2D parent = circle.supportingCircle();
+    	Point2D center 	= parent.center();
+    	double radius 	= parent.radius();
+    	
+    	// Compute line perpendicular to the test line, and going through the
+    	// circle center
+    	StraightLine2D perp = StraightLine2D.createPerpendicular(line, center);
+
+    	// Compute distance between line and circle center
+    	Point2D inter 	= perp.intersection(new StraightLine2D(line));
+		assert (inter != null);
+		double dist 	= inter.distance(center);
+
+    	// if the distance is the radius of the circle, return the
+    	// intersection point
+		if (abs(dist - radius) < Shape2D.ACCURACY) {
+			if (line.contains(inter) && circle.contains(inter))
+				intersections.add(inter);
+			return intersections;
+    	}
+
+    	// compute angle of the line, and distance between 'inter' point and
+    	// each intersection point
+    	double angle 	= line.horizontalAngle();
+		double d2 = sqrt(radius * radius - dist * dist);
+
+    	// Compute position and angle of intersection points
+		Point2D p1 = Point2D.createPolar(inter, d2, angle + Math.PI);
+    	Point2D p2 = Point2D.createPolar(inter, d2, angle);
+
+    	// add points to the array only if they belong to the line
+    	if (line.contains(p1) && circle.contains(p1))
+    		intersections.add(p1);
+    	if (line.contains(p2) && circle.contains(p2))
+    		intersections.add(p2);
+
+    	// return the result
+    	return intersections;
+    }
+
+	/**
+	 * Computes the radical axis of the two circles.
+	 * 
+	 * @since 0.11.1
+	 * @return the radical axis of the two circles.
+	 * @throws IllegalArgumentException if the two circles have same center
+	 */
+    public static StraightLine2D radicalAxis(Circle2D circle1,
+            Circle2D circle2) {
+    	
+		// extract center and radius of each circle
+		double r1 	= circle1.radius();
+		double r2 	= circle2.radius();
+		Point2D p1 	= circle1.center();
+		Point2D p2 	= circle2.center();
+
+		// compute horizontal angle of joining line
+		double angle = Angle2D.horizontalAngle(p1, p2);
+
+		// distance between centers
+		double dist = p1.distance(p2);
+		if (dist < Shape2D.ACCURACY) {
+			throw new IllegalArgumentException("Input circles must have distinct centers");
+		}
+
+		// position of the radical axis on the joining line
+		double d = (dist * dist + r1 * r1 - r2 * r2) * .5 / dist;
+		
+		// pre-compute trigonometric functions
+		double cot = Math.cos(angle);
+		double sit = Math.sin(angle);
+		
+		// compute parameters of the line
+		double x0 = p1.x() + d * cot;
+		double y0 = p1.y() + d * sit;
+		double dx = -sit;
+		double dy = cot;
+		
+		// update state of current line
+		return new StraightLine2D(x0, y0, dx, dy);
+    }
+    
 
     // ===================================================================
-    // Clas variables
+    // Class variables
 
     /** Coordinate of center. */
     protected double  xc;
@@ -252,7 +443,7 @@ Cloneable {
      * collection with 0, 1 or 2 points. 
      */
     public Collection<Point2D> intersections(Circle2D circle) {
-    	return Circle2D.getIntersections(this, circle);
+    	return Circle2D.circlesIntersections(this, circle);
     }
 
     // ===================================================================
@@ -710,17 +901,17 @@ Cloneable {
     }
 
     /**
-     * Compute intersections of the circle with a line. Return an array of
+     * Computes intersections of the circle with a line. Return an array of
      * Point2D, of size 0, 1 or 2 depending on the distance between circle and
      * line. If there are 2 intersections points, the first one in the array is
      * the first one on the line.
      */
     public Collection<Point2D> intersections(LinearShape2D line) {
-    	return Circle2D.getIntersections(this, line);
+    	return Circle2D.lineCircleIntersections(line, this);
     }
 
     /**
-     * Clip the circle by a box. The result is an instance of CurveSet2D,
+     * Clips the circle by a box. The result is an instance of CurveSet2D,
      * which contains only instances of CircleArc2D or Circle2D. If the circle
      * is not clipped, the result is an instance of CurveSet2D
      * which contains 0 curves.
@@ -748,8 +939,8 @@ Cloneable {
     // methods of Shape interface
 
     /**
-     * Return true if the point p lies on the ellipse, with precision given by
-     * Shape2D.ACCURACY.
+     * Returns true if the point p lies on the ellipse, with precision given
+     * by Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
 		return contains(p.x(), p.y());

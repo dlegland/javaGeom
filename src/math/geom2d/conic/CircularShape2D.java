@@ -26,6 +26,9 @@ extends CirculinearElement2D, SmoothOrientedCurve2D {
     // ===================================================================
     // method specific to CircularShape2D
 
+	/**
+	 * Returns the circle that contains this shape.
+	 */
 	public Circle2D supportingCircle();
 
     // ===================================================================

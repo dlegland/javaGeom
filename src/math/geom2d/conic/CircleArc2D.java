@@ -527,7 +527,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
      * the first one on the line.
      */
     public Collection<Point2D> intersections(LinearShape2D line) {
-    	return Circle2D.getIntersections(this, line);
+    	return Circle2D.lineCircleIntersections(line, this);
     }
 
     public double project(Point2D point) {
