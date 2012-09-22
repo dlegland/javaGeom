@@ -59,15 +59,15 @@ public class Circle2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public void testCreatePoint2DPoint2DPoint2D(){
+	public void testCircumCircle(){
 		Point2D p1 = new Point2D(6, 1);
 		Point2D p2 = new Point2D(4, 3);
 		Point2D p3 = new Point2D(2, 1);
 		Circle2D circle = new Circle2D(4, 1, 2);
 		
-		assertTrue(Circle2D.create(p1, p2, p3).equals(circle));
-		assertTrue(Circle2D.create(p1, p3, p2).equals(circle));
-		assertTrue(Circle2D.create(p3, p2, p1).equals(circle));
+		assertTrue(Circle2D.circumCircle(p1, p2, p3).equals(circle));
+		assertTrue(Circle2D.circumCircle(p1, p3, p2).equals(circle));
+		assertTrue(Circle2D.circumCircle(p3, p2, p1).equals(circle));
 	}
 	
 	public void testGetBuffer() {
@@ -138,7 +138,7 @@ public class Circle2DTest extends TestCase {
 	    assertFalse(res.contains(center));
 	    
 	    // result should contain intersection points of original circles
-	    Collection<Point2D> intersects = Circle2D.getIntersections(base, circle);
+	    Collection<Point2D> intersects = Circle2D.circlesIntersections(base, circle);
 	    for (Point2D p : intersects) {
 	    	assertTrue(res.contains(p));
 	    }
@@ -325,19 +325,19 @@ public class Circle2DTest extends TestCase {
 		// 2 circles one inside another
 		circle1 = new Circle2D(-1, 0, 5);
 		circle2 = new Circle2D(1, 0, 2);
-		inters = Circle2D.getIntersections(circle1, circle2);
+		inters = Circle2D.circlesIntersections(circle1, circle2);
 		assertTrue(inters.size()==0);
 
 		// 2 circles which do not touch
 		circle1 = new Circle2D(-4, 0, 3);
 		circle2 = new Circle2D(4, 0, 3);
-		inters = Circle2D.getIntersections(circle1, circle2);
+		inters = Circle2D.circlesIntersections(circle1, circle2);
 		assertTrue(inters.size()==0);
 
 		// 2 circles with same radius
 		circle1 = new Circle2D(-4, 0, 5);
 		circle2 = new Circle2D(4, 0, 5);
-		inters = Circle2D.getIntersections(circle1, circle2);
+		inters = Circle2D.circlesIntersections(circle1, circle2);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertTrue(iter.next().almostEquals(new Point2D(0, 3), eps));
@@ -346,7 +346,7 @@ public class Circle2DTest extends TestCase {
 		// 2 circles with different radius
 		circle1 = new Circle2D(0, 0, 3);
 		circle2 = new Circle2D(4, 0, 5);
-		inters = Circle2D.getIntersections(circle1, circle2);
+		inters = Circle2D.circlesIntersections(circle1, circle2);
 		assertTrue(inters.size()==2);
 		iter = inters.iterator();
 		assertTrue(iter.next().almostEquals(new Point2D(0, 3), eps));

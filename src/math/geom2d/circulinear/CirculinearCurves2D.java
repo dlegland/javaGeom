@@ -404,7 +404,7 @@ public class CirculinearCurves2D {
 
 		// for each of the circle intersections, check if they belong to
 		// both elements
-		for (Point2D inter : Circle2D.getIntersections(circ1, circ2)) {
+		for (Point2D inter : Circle2D.circlesIntersections(circ1, circ2)) {
 			if (elem1.contains(inter) && elem2.contains(inter))
 				pts.add(inter);
 		}
