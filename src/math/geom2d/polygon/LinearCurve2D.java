@@ -69,6 +69,7 @@ implements CirculinearContinuousCurve2D {
     // ===================================================================
     // Methods specific to LinearCurve2D
 
+    
     /**
      * Returns an iterator on the collection of points.
      */
@@ -159,28 +160,26 @@ implements CirculinearContinuousCurve2D {
         return vertices.size();
     }
 
+    // ===================================================================
+    // Management of edges
+
     /**
-     * Returns an array of LineSegment2D. The number of edges is the number of
-     * vertices minus one.
+     * Returns the i-th edge of this linear curve. 
+     */
+    public abstract LineSegment2D edge(int index);
+    
+    /**
+     * Returns the number of edges of this linear curve.
+     */
+    public abstract int edgeNumber();
+    
+    /**
+     * Returns a collection of LineSegment2D that represent the individual
+     * edges of this linear curve. 
      * 
      * @return the edges of the polyline
      */
-    public Collection<LineSegment2D> edges() {
-        int n = vertices.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
-
-        if (n < 2)
-            return edges;
-
-        for (int i = 0; i < n-1; i++)
-            edges.add(new LineSegment2D(vertices.get(i), vertices.get(i+1)));
-
-        return edges;
-    }
-    
-    public LineSegment2D edge(int index) {
-    	return new LineSegment2D(vertices.get(index), vertices.get(index+1));
-    }
+    public abstract Collection<LineSegment2D> edges();
 
     public LineSegment2D firstEdge() {
         if (vertices.size() < 2)
@@ -188,12 +187,7 @@ implements CirculinearContinuousCurve2D {
         return new LineSegment2D(vertices.get(0), vertices.get(1));
     }
 
-    public LineSegment2D lastEdge() {
-        int n = vertices.size();
-        if (n < 2)
-            return null;
-        return new LineSegment2D(vertices.get(n-2), vertices.get(n-1));
-    }
+    public abstract LineSegment2D lastEdge();
 
     
     // ===================================================================
