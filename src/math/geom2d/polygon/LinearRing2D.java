@@ -148,6 +148,8 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 		// add a supplementary edge at the end, but only if vertices differ
 		Point2D p0 = vertices.get(0);
 		Point2D pn = vertices.get(n - 1);
+		
+		// TODO: should not make the test...
 		if (pn.distance(p0) > Shape2D.ACCURACY)
 			edges.add(new LineSegment2D(pn, p0));
 
