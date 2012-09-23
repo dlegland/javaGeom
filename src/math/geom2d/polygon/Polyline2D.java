@@ -105,6 +105,46 @@ implements CirculinearContinuousCurve2D, Cloneable {
     
     
     // ===================================================================
+    // Methods implementing LinearCurve2D methods
+
+    /**
+     * Returns an array of LineSegment2D. The number of edges is the number of
+     * vertices minus one.
+     * 
+     * @return the edges of the polyline
+     */
+    public Collection<LineSegment2D> edges() {
+        int n = vertices.size();
+        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
+
+        if (n < 2)
+            return edges;
+
+        for (int i = 0; i < n-1; i++)
+            edges.add(new LineSegment2D(vertices.get(i), vertices.get(i+1)));
+
+        return edges;
+    }
+    
+    public int edgeNumber() {
+    	int n = vertices.size(); 
+    	if (n > 1) 
+    		return n - 1;
+    	return 0;
+    }
+    
+    public LineSegment2D edge(int index) {
+    	return new LineSegment2D(vertices.get(index), vertices.get(index+1));
+    }
+
+    public LineSegment2D lastEdge() {
+        int n = vertices.size();
+        if (n < 2)
+            return null;
+        return new LineSegment2D(vertices.get(n-2), vertices.get(n-1));
+    }
+
+    // ===================================================================
     // Methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)

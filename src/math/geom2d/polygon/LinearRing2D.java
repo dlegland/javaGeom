@@ -155,13 +155,23 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 		return edges;
 	}
 
+    public int edgeNumber() {
+    	int n = vertices.size(); 
+    	if (n > 1) 
+    		return n;
+    	return 0;
+    }
+    
     public LineSegment2D edge(int index) {
     	int i2 = (index + 1) % vertices.size();
     	return new LineSegment2D(vertices.get(index), vertices.get(i2));
     }
 
-    @Override
-	public LineSegment2D lastEdge() {
+    /**
+     * Returns the last edge of this linear ring. The last edge connects the
+     * last vertex with the first one.
+     */
+    public LineSegment2D lastEdge() {
 		int n = vertices.size();
 		if (n < 2)
 			return null;
