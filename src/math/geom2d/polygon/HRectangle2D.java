@@ -118,6 +118,22 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         }
     }
 
+	public void setVertex(int i, Point2D point) {
+		throw new UnsupportedOperationException("Vertices of HRectangle objects can not be modified");
+	}
+
+	public void addVertex(Point2D point) {
+		throw new UnsupportedOperationException("Vertices of HRectangle objects can not be modified");
+	}
+
+	public void insertVertex(int i, Point2D point) {
+		throw new UnsupportedOperationException("Vertices of HRectangle objects can not be modified");
+	}
+
+	public void removeVertex(int i) {
+		throw new UnsupportedOperationException("Vertices of HRectangle objects can not be modified");
+	}
+
     /**
      * Returns the number of vertex, which is 4.
      * 
@@ -127,6 +143,26 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return 4;
     }
 
+    /**
+     * Computes the index of the closest vertex to the input point.
+     */
+    public int closestVertexIndex(Point2D point) {
+    	double minDist = java.lang.Double.POSITIVE_INFINITY;
+    	int index = -1;
+    	
+    	int i = 0;
+    	for (Point2D vertex : this.vertices()) {
+    		double dist = vertex.distance(point);
+    		if (dist < minDist) {
+    			index = i;
+    			minDist = dist;
+    		}
+    		i++;
+    	}
+    	
+    	return index;
+    }
+    
     public Collection<LineSegment2D> edges() {
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(4);
         edges.add(new LineSegment2D(x, y, x+width, y));

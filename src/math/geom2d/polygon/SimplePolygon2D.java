@@ -156,8 +156,8 @@ public class SimplePolygon2D implements Polygon2D {
     /**
      * Adds a point as the last vertex.
      */
-    public boolean addVertex(Point2D point) {
-        return this.vertices.add(point);
+    public void addVertex(Point2D point) {
+        this.vertices.add(point);
     }
 
     /**
@@ -197,6 +197,24 @@ public class SimplePolygon2D implements Polygon2D {
      */
     public void clearVertices() {
         this.vertices.clear();
+    }
+    
+    /**
+     * Computes the index of the closest vertex to the input point.
+     */
+    public int closestVertexIndex(Point2D point) {
+    	double minDist = Double.POSITIVE_INFINITY;
+    	int index = -1;
+    	
+    	for (int i = 0; i < vertices.size(); i++) {
+    		double dist = vertices.get(i).distance(point);
+    		if (dist < minDist) {
+    			index = i;
+    			minDist = dist;
+    		}
+    	}
+    	
+    	return index;
     }
     
     /**

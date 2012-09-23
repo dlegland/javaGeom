@@ -106,11 +106,19 @@ public class Circle2DTest extends TestCase {
 		circle = new Circle2D(60, 20, 30);
 	    res = circle.transform(inv);
 	    assertTrue(res instanceof Circle2D);
+	    assertFalse(((Circle2D) res).isDirect());
 	    
 		// Circle outside base circle
 		circle = new Circle2D(160, 20, 30);
 	    res = circle.transform(inv);
 	    assertTrue(res instanceof Circle2D);
+	    assertFalse(((Circle2D) res).isDirect());
+	    
+		// Circle inside base circle, containing center
+		circle = new Circle2D(10, 20, 30);
+	    res = circle.transform(inv);
+	    assertTrue(res instanceof Circle2D);
+	    assertTrue(((Circle2D) res).isDirect());
 	    
 		// Circle touching base circle
 		circle = new Circle2D(100, 10, 30);
@@ -121,6 +129,7 @@ public class Circle2DTest extends TestCase {
 		circle = new Circle2D(0, 0, 30);
 	    res = circle.transform(inv);
 	    assertTrue(res instanceof Circle2D);
+	    assertTrue(((Circle2D) res).isDirect());
 	    
 	}
 	

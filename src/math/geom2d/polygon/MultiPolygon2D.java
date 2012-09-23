@@ -120,9 +120,192 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     	return Polygons2D.computeCentroid(this);
     }
 
+    public Collection<LineSegment2D> edges() {
+    	int nEdges = edgeNumber();
+        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nEdges);
+        for (LinearRing2D ring : rings)
+            edges.addAll(ring.edges());
+        return edges;
+    }
+
+    public int edgeNumber() {
+        int count = 0;
+        for (LinearRing2D ring : rings)
+            count += ring.vertexNumber();
+        return count;
+    }
+
+    public Collection<Point2D> vertices() {
+    	int nv = vertexNumber();
+        ArrayList<Point2D> points = new ArrayList<Point2D>(nv);
+        for (LinearRing2D ring : rings)
+            points.addAll(ring.vertices());
+        return points;
+    }
+
+    /**
+     * Returns the i-th vertex of the polygon.
+     * 
+     * @param i index of the vertex, between 0 and the number of vertices minus one
+     */
+    public Point2D vertex(int i) {
+        int count = 0;
+        LinearRing2D boundary = null;
+
+        for (LinearRing2D ring : rings) {
+            int nv = ring.vertexNumber();
+            if (count + nv > i) {
+                boundary = ring;
+                break;
+            }
+            count += nv;
+        }
+
+        if (boundary == null)
+            throw new IndexOutOfBoundsException();
+
+        return boundary.vertex(i-count);
+    }
+
+    /**
+     * Sets the position of the i-th vertex of this polygon.
+     * 
+     * @param i index of the vertex, between 0 and the number of vertices
+     */
+    public void setVertex(int i, Point2D point) {
+        int count = 0;
+        LinearRing2D boundary = null;
+
+        for (LinearRing2D ring : rings) {
+            int nv = ring.vertexNumber();
+            if (count + nv > i) {
+                boundary = ring;
+                break;
+            }
+            count += nv;
+        }
+
+        if (boundary == null)
+            throw new IndexOutOfBoundsException();
+
+        boundary.setVertex(i-count, point);
+    }
+
+	/**
+	 * Adds a vertex at the end of the last ring of this polygon.
+	 * 
+	 * @throws RuntimeException
+	 *             if this MultiPolygon does not contain any ring
+	 */
+    public void addVertex(Point2D position) {
+    	// get the last ring
+    	if (rings.size() == 0) {
+    		throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
+    	}
+		LinearRing2D ring = rings.get(rings.size() - 1);
+		ring.addVertex(position);
+    }
+    
+    /**
+     * Inserts a vertex at the given position
+     * 
+     * @throw RuntimeException if this polygon has no ring
+     * @throw IllegalArgumentException if index is not smaller than vertex number
+     */
+    public void insertVertex(int index, Point2D point) {
+    	// chck number of rings
+    	if (rings.size() == 0) {
+    		throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
+    	}
+    	
+    	// Check number of vertices
+    	int nv = this.vertexNumber();
+    	if (nv <= index) {
+    		throw new IllegalArgumentException("Can not insert vertex at position " +
+    				index + " (max is " + nv + ")");
+    	}
+    	
+    	// Find the ring that correspond to index
+        int count = 0;
+        LinearRing2D boundary = null;
+
+        for (LinearRing2D ring : rings) {
+            nv = ring.vertexNumber();
+            if (count + nv > index) {
+                boundary = ring;
+                break;
+            }
+            count += nv;
+        }
+
+        if (boundary == null)
+            throw new IndexOutOfBoundsException();
+
+        boundary.insertVertex(index-count, point);
+    }
+
+    /**
+     * Returns the i-th vertex of the polygon.
+     * 
+     * @param i index of the vertex, between 0 and the number of vertices minus one
+     */
+    public void removeVertex(int i) {
+        int count = 0;
+        LinearRing2D boundary = null;
+
+        for (LinearRing2D ring : rings) {
+            int nv = ring.vertexNumber();
+            if (count + nv > i) {
+                boundary = ring;
+                break;
+            }
+            count += nv;
+        }
+
+        if (boundary == null)
+            throw new IndexOutOfBoundsException();
+
+        boundary.removeVertex(i-count);
+    }
+
+    /**
+     * Returns the total number of vertices in this polygon. 
+     * The total number is computed as the sum of vertex number in each ring
+     * of the polygon.
+     */
+    public int vertexNumber() {
+        int count = 0;
+        for (LinearRing2D ring : rings)
+            count += ring.vertexNumber();
+        return count;
+    }
+
+    /**
+     * Computes the index of the closest vertex to the input point.
+     */
+    public int closestVertexIndex(Point2D point) {
+    	double minDist = Double.POSITIVE_INFINITY;
+    	int index = -1;
+    	
+    	int i = 0;
+    	for (LinearRing2D ring : this.rings) {
+    		for (Point2D vertex : ring.vertices()) {
+    			double dist = vertex.distance(point);
+        		if (dist < minDist) {
+        			index = i;
+        			minDist = dist;
+        		}
+        		i++;
+    		}
+    		
+    	}
+    	
+    	return index;
+    }
+    
 
 	// ===================================================================
-    // methods inherited from Domain2D interface
+    // methods implementing the Domain2D interface
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
@@ -138,10 +321,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	public CirculinearDomain2D buffer(double dist) {
 		return Polygons2D.createBuffer(this, dist);
 	}
-
-	
-    // ===================================================================
-    // methods implementing the Domain2D interface 
 
 	/* (non-Javadoc)
 	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
@@ -172,63 +351,6 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         
         // create the new MultiMpolygon2D with set of reversed rings
         return new MultiPolygon2D(reverseLines);
-    }
-
-    // ===================================================================
-    // methods implementing the interface Polygon2D
-
-    public Collection<LineSegment2D> edges() {
-    	int nEdges = edgeNumber();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nEdges);
-        for (LinearRing2D ring : rings)
-            edges.addAll(ring.edges());
-        return edges;
-    }
-
-    public int edgeNumber() {
-        int count = 0;
-        for (LinearRing2D ring : rings)
-            count += ring.vertexNumber();
-        return count;
-    }
-
-    public Collection<Point2D> vertices() {
-    	int nv = vertexNumber();
-        ArrayList<Point2D> points = new ArrayList<Point2D>(nv);
-        for (LinearRing2D ring : rings)
-            points.addAll(ring.vertices());
-        return points;
-    }
-
-    /**
-     * Returns the i-th vertex of the polygon.
-     * 
-     * @param i index of the vertex, between 0 and the number of vertices
-     */
-    public Point2D vertex(int i) {
-        int count = 0;
-        LinearRing2D boundary = null;
-
-        for (LinearRing2D ring : rings) {
-            int nv = ring.vertexNumber();
-            if (count + nv > i) {
-                boundary = ring;
-                break;
-            }
-            count += nv;
-        }
-
-        if (boundary == null)
-            throw new IndexOutOfBoundsException();
-
-        return boundary.vertex(i-count);
-    }
-
-    public int vertexNumber() {
-        int count = 0;
-        for (LinearRing2D ring : rings)
-            count += ring.vertexNumber();
-        return count;
     }
 
     // ===================================================================
