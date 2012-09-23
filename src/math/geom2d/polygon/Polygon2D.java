@@ -53,6 +53,52 @@ public interface Polygon2D extends CirculinearDomain2D {
      */
     public Point2D vertex(int i);
 
+	/**
+	 * Sets the position of the i-th vertex
+	 * 
+	 * @param i
+	 *            the vertex index
+	 * @param point
+	 *            the new position of the vertex
+	 * @throws UnsupportedOperationException
+	 *             if this polygon implementation does not support vertex
+	 *             modification
+	 */
+    public void setVertex(int i, Point2D point);
+    
+	/**
+	 * Adds a vertex as last vertex of this polygon.
+	 * 
+	 * @param point
+	 *            the position of the new vertex
+	 * @throws UnsupportedOperationException
+	 *             if this polygon implementation does not support vertex
+	 *             modification
+	 */
+    public void addVertex(Point2D point);
+
+	/**
+	 * Inserts a vertex at the specified position.
+	 * 
+	 * @param index
+	 *            index at which the specified vertex is to be inserted
+	 * @param point
+	 *            the position of the new vertex
+	 * @throws UnsupportedOperationException
+	 *             if this polygon implementation does not support vertex
+	 *             modification
+	 */
+    public void insertVertex(int index, Point2D point);
+    
+    /**
+     * Removes the vertex at the given index.
+     * @param index index of the vertex to remove
+	 * @throws UnsupportedOperationException
+	 *             if this polygon implementation does not support vertex
+	 *             modification
+     */
+    public void removeVertex(int index);
+    
     /**
      * Returns the number of vertices of the polygon
      * 
@@ -60,6 +106,11 @@ public interface Polygon2D extends CirculinearDomain2D {
      */
     public int vertexNumber();
 
+    /**
+     * Returns the index of the closest vertex to the input point.
+     */
+    public int closestVertexIndex(Point2D point);
+    
     /** Return the edges as line segments of the polygon */
     public Collection<? extends LineSegment2D> edges();
 

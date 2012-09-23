@@ -160,6 +160,24 @@ implements CirculinearContinuousCurve2D {
         return vertices.size();
     }
 
+    /**
+     * Computes the index of the closest vertex to the input point.
+     */
+    public int closestVertexIndex(Point2D point) {
+    	double minDist = Double.POSITIVE_INFINITY;
+    	int index = -1;
+    	
+    	for (int i = 0; i < vertices.size(); i++) {
+    		double dist = vertices.get(i).distance(point);
+    		if (dist < minDist) {
+    			index = i;
+    			minDist = dist;
+    		}
+    	}
+    	
+    	return index;
+    }
+    
     // ===================================================================
     // Management of edges
 
