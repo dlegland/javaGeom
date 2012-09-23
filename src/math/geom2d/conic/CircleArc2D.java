@@ -290,22 +290,24 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
 	 */
 	public CirculinearElement2D transform(CircleInversion2D inv) {
-		// Extract inversion parameters
-        Point2D center = inv.center();        
-        
+        // Transform the support circle
+		CirculinearElement2D support = circle.transform(inv);
+		
         // transform the extremities
         Point2D p1 = this.firstPoint().transform(inv);
         Point2D p2 = this.lastPoint().transform(inv);
         	
-        CirculinearElement2D element = circle.transform(inv);
-        
-        if(element instanceof Circle2D) {
+        if(support instanceof Circle2D) {
+        	Circle2D circle2 = (Circle2D) support;
+        	Point2D center = circle2.center();        
+
         	return new CircleArc2D(
-        			(Circle2D)element, 
+        			circle2.center(), circle2.radius(), 
         			Angle2D.horizontalAngle(center, p1),
         			Angle2D.horizontalAngle(center, p2),
-        			!this.isDirect());
-        } else if (element instanceof StraightLine2D) {
+        			!this.isDirect() ^ circle2.isDirect());
+        	
+        } else if (support instanceof StraightLine2D) {
             //TODO: add processing of special cases (arc contains transform center)            
         	return new LineSegment2D(p1, p2);
         } 

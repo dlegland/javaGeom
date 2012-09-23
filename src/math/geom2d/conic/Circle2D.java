@@ -305,7 +305,9 @@ Cloneable {
 
     	// Compute distance between line and circle center
     	Point2D inter 	= perp.intersection(new StraightLine2D(line));
-		assert (inter != null);
+    	if (inter == null) {
+    		throw new RuntimeException("Could not compute intersection point when computing line-cicle intersection");
+    	}
 		double dist 	= inter.distance(center);
 
     	// if the distance is the radius of the circle, return the
@@ -318,7 +320,7 @@ Cloneable {
 
     	// compute angle of the line, and distance between 'inter' point and
     	// each intersection point
-    	double angle 	= line.horizontalAngle();
+    	double angle = line.horizontalAngle();
 		double d2 = sqrt(radius * radius - dist * dist);
 
     	// Compute position and angle of intersection points
@@ -616,8 +618,11 @@ Cloneable {
         // line joining centers of the two circles
         StraightLine2D centersLine = new StraightLine2D(center, c1);
 
-		// get the two points intersection the line joining the circle centers
+		// get the two intersection points with the line joining the circle centers
         Collection<Point2D> points = this.intersections(centersLine);
+        if (points.size() < 2) {
+        	throw new RuntimeException("Intersection of circle with line through center has less than 2 points");
+        }
         Iterator<Point2D> iter = points.iterator();
         Point2D p1 = iter.next();
         Point2D p2 = iter.next();
@@ -646,8 +651,9 @@ Cloneable {
         double diam = p1.distance(p2);
         c1 = Point2D.midPoint(p1, p2);
 
-        // create the transformed circle, 
-        return new Circle2D(c1, diam / 2, !this.isDirect());
+        // create the transformed circle
+        boolean direct = !this.isDirect() ^ this.isInside(inv.center());
+        return new Circle2D(c1, diam / 2, direct);
 	}
 
 	
