@@ -78,6 +78,9 @@ public class StraightLine3D implements ContinuousCurve3D {
         return new Vector3D(dx, dy, dz);
     }
 
+    /**
+     * not yet implemented
+     */
     public StraightLine2D project(Plane3D plane) {
     	// TODO Auto-generated method stub
         return null;
