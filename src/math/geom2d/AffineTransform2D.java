@@ -457,27 +457,20 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	public AffineTransform2D(java.awt.geom.AffineTransform transform) {
 		double[] coefs = new double[6];
 		transform.getMatrix(coefs);
-		assignCoefs(coefs);
+		m00 = coefs[0];
+		m10 = coefs[1];
+		m01 = coefs[2];
+		m11 = coefs[3];
+		m02 = coefs[4];
+		m12 = coefs[5];
 	}
 	
-	public AffineTransform2D(double[] coefs) {
-		assignCoefs(coefs);
-	}
-
-	public AffineTransform2D(double xx, double yx, double tx, double xy,
-			double yy, double ty) {
-		m00 = xx;
-		m01 = yx;
-		m02 = tx;
-		m10 = xy;
-		m11 = yy;
-		m12 = ty;
-	}
-
 	/**
-	 * Helper function that initializes coefficients given in an array.
+	 * Creates a new Affine Transform by directly specifying the coefficients, 
+	 * in the order m00, m01, m02, m10, m11, m12 (different order of 
+	 * java.awt.geom.AffineTransform).
 	 */
-	private void assignCoefs(double[] coefs) {
+	public AffineTransform2D(double[] coefs) {
 		if (coefs.length == 4) {
 			m00 = coefs[0];
 			m01 = coefs[1];
@@ -491,6 +484,16 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 			m11 = coefs[4];
 			m12 = coefs[5];
 		}
+	}
+
+	public AffineTransform2D(double xx, double yx, double tx, double xy,
+			double yy, double ty) {
+		m00 = xx;
+		m01 = yx;
+		m02 = tx;
+		m10 = xy;
+		m11 = yy;
+		m12 = ty;
 	}
 	
 	/**
@@ -533,8 +536,7 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 	 */
 	public java.awt.geom.AffineTransform asAwtTransform() {
 		return new java.awt.geom.AffineTransform(
-				this.m00, this.m01, this.m02,
-				this.m10, this.m11, this.m12);
+				this.m00, this.m10, this.m01, this.m11, this.m02, this.m12);
 	}
 	
 	/**
