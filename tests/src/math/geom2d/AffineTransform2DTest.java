@@ -296,7 +296,7 @@ public class AffineTransform2DTest extends TestCase {
 	}
 	
 	public void testConstructorAwtTransform() {
-		AffineTransform rot = AffineTransform.getRotateInstance(20, 30, .4);
+		AffineTransform rot = AffineTransform.getRotateInstance(.4, 20, 30);
 		AffineTransform2D trans = new AffineTransform2D(rot);
 		AffineTransform rot2 = trans.asAwtTransform();
 		assertTrue(rot.equals(rot2));
@@ -306,6 +306,20 @@ public class AffineTransform2DTest extends TestCase {
 		AffineTransform2D rot = AffineTransform2D.createRotation(20, 30, .4);
 		AffineTransform2D trans = new AffineTransform2D(rot);
 		assertTrue(trans.equals(rot));
+	}
+	
+	public void testasAwtTransform() {
+		AffineTransform awtRot = AffineTransform.getRotateInstance(.4, 20, 30);
+		AffineTransform2D rot = AffineTransform2D.createRotation(new Point2D(20, 30), .4);
+		AffineTransform rot2 = rot.asAwtTransform();
+		
+		double[] mat1 = new double[6];
+		double[] mat2 = new double[6];
+		awtRot.getMatrix(mat1);
+		rot2.getMatrix(mat2);
+		
+		for (int i = 0; i < 6; i++)
+			assertEquals(mat1[i], mat2[i], 1e-6);
 	}
 	
 	public void testIsIsometry(){
