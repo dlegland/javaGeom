@@ -1,5 +1,6 @@
 package math.geom3d.transform;
 
+import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
 import junit.framework.TestCase;
 
@@ -72,4 +73,31 @@ public class AffineTransform3DTest extends TestCase {
 		assertTrue(T1.equals(T2));
 	}
 
+	public void testTransformPoint() {
+		Vector3D vec = new Vector3D(3, 4, 5);
+		AffineTransform3D trans = AffineTransform3D.createTranslation(vec);
+		
+		Point3D p1 = new Point3D(10, 10, 10); 
+		Point3D p2 = new Point3D(10, 20, 30);
+		
+		Point3D res1 = trans.transformPoint(p1);
+		Point3D res2 = trans.transformPoint(p2);
+		
+		assertTrue(res1.equals(new Point3D(13, 14, 15)));
+		assertTrue(res2.equals(new Point3D(13, 24, 35)));	
+	}
+	
+	public void testTransformPoints_Array() {
+		Vector3D vec = new Vector3D(3, 4, 5);
+		AffineTransform3D trans = AffineTransform3D.createTranslation(vec);
+		
+		Point3D[] pts = new Point3D[]{
+				new Point3D(10, 10, 10), 
+				new Point3D(10, 20, 30) };
+		Point3D[] res = new Point3D[pts.length];
+		
+		trans.transformPoints(pts, res);
+		assertTrue(res[0].equals(new Point3D(13, 14, 15)));
+		assertTrue(res[1].equals(new Point3D(13, 24, 35)));	
+	}
 }

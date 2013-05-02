@@ -217,18 +217,34 @@ public class AffineTransform3D implements Bijection3D {
     // ===================================================================
     // general methods
 
-    // TODO: add methods to concatenate affine transforms.
-
     /**
-     * Combine this transform with another AffineTransform.
+     * Combines this transform with another AffineTransform.
      */
     public void transform(AffineTransform3D trans) {
-        double n00 = m00*trans.m00+m10*trans.m01;
-        double n10 = m00*trans.m10+m10*trans.m11;
-        double n01 = m01*trans.m00+m11*trans.m01;
-        double n11 = m01*trans.m10+m11*trans.m11;
-        double n02 = m02*trans.m00+m12*trans.m01+trans.m02;
-        double n12 = m02*trans.m10+m12*trans.m11+trans.m12;
+		double n00 = m00 * trans.m00 + m10 * trans.m01;
+		double n10 = m00 * trans.m10 + m10 * trans.m11;
+		double n01 = m01 * trans.m00 + m11 * trans.m01;
+		double n11 = m01 * trans.m10 + m11 * trans.m11;
+		double n02 = m02 * trans.m00 + m12 * trans.m01 + trans.m02;
+		double n12 = m02 * trans.m10 + m12 * trans.m11 + trans.m12;
+    m00 = n00;
+        m01 = n01;
+        m02 = n02;
+        m10 = n10;
+        m11 = n11;
+        m12 = n12;
+    }
+
+    /**
+     * Combines this transform with another AffineTransform.
+     */
+    public void preConcatenate(AffineTransform3D trans) {
+		double n00 = trans.m00 * m00 + trans.m10 * m01;
+		double n10 = trans.m00 * m10 + trans.m10 * m11;
+		double n01 = trans.m01 * m00 + trans.m11 * m01;
+		double n11 = trans.m01 * m10 + trans.m11 * m11;
+		double n02 = trans.m02 * m00 + trans.m12 * m01 + m02;
+		double n12 = trans.m02 * m10 + trans.m12 * m11 + m12;
         m00 = n00;
         m01 = n01;
         m02 = n02;
@@ -238,47 +254,34 @@ public class AffineTransform3D implements Bijection3D {
     }
 
     /**
-     * Combine this transform with another AffineTransform.
+     * Transforms the input point array, stores the result in the pre-allocated
+     * array, and returns a pointer to the result array.
+     * A new array is created if <code>res</code> is null or has length smaller
+     * than of src. 
      */
-    public void preConcatenate(AffineTransform3D trans) {
-        double n00 = trans.m00*m00+trans.m10*m01;
-        double n10 = trans.m00*m10+trans.m10*m11;
-        double n01 = trans.m01*m00+trans.m11*m01;
-        double n11 = trans.m01*m10+trans.m11*m11;
-        double n02 = trans.m02*m00+trans.m12*m01+m02;
-        double n12 = trans.m02*m10+trans.m12*m11+m12;
-        m00 = n00;
-        m01 = n01;
-        m02 = n02;
-        m10 = n10;
-        m11 = n11;
-        m12 = n12;
-    }
-
     public Point3D[] transformPoints(Point3D[] src, Point3D[] dst) {
-        if (dst==null)
-            dst = new Point3D[src.length];
-        if (dst[0]==null)
-            for (int i = 0; i<src.length; i++)
-                dst[i] = new Point3D();
+    	// Check validity of result array
+		if (dst == null || dst.length < src.length)
+			dst = new Point3D[src.length];
 
-        double coef[] = coefficients();
-
+		// transform each input point
 		for (int i = 0; i < src.length; i++) {
 			dst[i] = new Point3D(
-					src[i].getX() * coef[0] + src[i].getY() * coef[1] + src[i].getZ() * coef[2] + coef[3],
-					src[i].getX() * coef[4] + src[i].getY() * coef[5] + src[i].getZ() * coef[6] + coef[7], 
-					src[i].getX() * coef[8] + src[i].getY() * coef[9] + src[i].getZ() * coef[10] + coef[12]);
+					src[i].getX() * m00 + src[i].getY() * m01 + src[i].getZ() * m02 + m03,
+					src[i].getX() * m10 + src[i].getY() * m11 + src[i].getZ() * m12 + m13, 
+					src[i].getX() * m20 + src[i].getY() * m21 + src[i].getZ() * m22 + m23);
 		}
         return dst;
     }
 
+    /**
+     * Transforms the input point.
+     */
     public Point3D transformPoint(Point3D src) {
-        double coef[] = coefficients();
-        return new Point3D(src.getX()*coef[0]+src.getY()*coef[1]
-                +src.getZ()*coef[2]+coef[3], src.getX()*coef[4]+src.getY()
-                *coef[5]+src.getZ()*coef[6]+coef[7], src.getX()*coef[8]
-                +src.getY()*coef[9]+src.getZ()*coef[10]+coef[12]);
+		return new Point3D(
+				src.getX() * m00 + src.getY() * m01 + src.getZ() * m02 + m03, 
+				src.getX() * m10 + src.getY() * m11 + src.getZ() * m12 + m13,
+				src.getX() * m20 + src.getY() * m21 + src.getZ() * m22 + m23);
     }
     
     /**
@@ -292,30 +295,30 @@ public class AffineTransform3D implements Bijection3D {
 
         double tab[] = ((AffineTransform3D) obj).coefficients();
 
-        if (Math.abs(tab[0]-m00)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[1]-m01)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[2]-m02)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[3]-m03)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[4]-m10)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[5]-m11)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[6]-m12)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[7]-m13)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[8]-m20)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[9]-m21)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[10]-m22)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(tab[11]-m23)>Shape3D.ACCURACY)
-            return false;
+		if (Math.abs(tab[0] - m00) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[1] - m01) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[2] - m02) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[3] - m03) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[4] - m10) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[5] - m11) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[6] - m12) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[7] - m13) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[8] - m20) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[9] - m21) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[10] - m22) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(tab[11] - m23) > Shape3D.ACCURACY)
+			return false;
         return true;
     }
 
