@@ -32,7 +32,7 @@ public class Vector3D {
      * negative if they are in opposite direction.
      */
     public final static double dotProduct(Vector3D v1, Vector3D v2) {
-        return v1.getX()*v2.getX()+v1.getY()*v2.getY()+v1.getZ()*v2.getZ();
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     /**
@@ -41,8 +41,10 @@ public class Vector3D {
      * is comprised between 0 and PI, and negative otherwise.
      */
     public final static Vector3D crossProduct(Vector3D v1, Vector3D v2) {
-        return new Vector3D(v1.y*v2.z-v1.z*v2.y, v1.z*v2.x-v1.x*v2.z, v1.x*v2.y
-                -v1.y*v2.x);
+		return new Vector3D(
+				v1.y * v2.z - v1.z * v2.y, 
+				v1.z * v2.x - v1.x * v2.z, 
+				v1.x * v2.y - v1.y * v2.x);
     }
 
     /**
@@ -51,8 +53,9 @@ public class Vector3D {
      * @return true if the vectors are colinear
      */
     public final static boolean isColinear(Vector3D v1, Vector3D v2) {
-        return Vector3D.crossProduct(v1.normalize(),
-                v2.normalize()).norm()<Shape3D.ACCURACY;
+    	v1 = v1.normalize();
+    	v2 = v2.normalize();
+		return Vector3D.crossProduct(v1, v2).norm() < Shape3D.ACCURACY;
     }
 
     /**
@@ -61,8 +64,10 @@ public class Vector3D {
      * @return true if the vectors are orthogonal
      */
     public final static boolean isOrthogonal(Vector3D v1, Vector3D v2) {
-        return Vector3D.dotProduct(v1.normalize(), v2
-                .normalize())<Shape3D.ACCURACY;
+    	v1 = v1.normalize();
+    	v2 = v2.normalize();
+    	double dot = Vector3D.dotProduct(v1, v2); 
+		return Math.abs(dot) < Shape3D.ACCURACY;
     }
 
     // ===================================================================

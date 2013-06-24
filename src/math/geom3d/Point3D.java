@@ -33,9 +33,15 @@ import math.geom3d.transform.AffineTransform3D;
  */
 public class Point3D implements Shape3D {
 
+	// ===================================================================
+	// Class variables
+	
     private double x = 0;
     private double y = 0;
     private double z = 0;
+
+	// ===================================================================
+	// Constructors
 
     /**
      * Initialize at coordinate (0,0,0).
@@ -50,6 +56,9 @@ public class Point3D implements Shape3D {
         this.z = z;
     }
 
+	// ===================================================================
+	// Methods specific to Point3D
+	
     public double getX() {
         return x;
     }
@@ -62,13 +71,32 @@ public class Point3D implements Shape3D {
         return z;
     }
 
-    public double distance(Point3D point) {
-        double dx = point.x-x;
-        double dy = point.y-y;
-        double dz = point.z-z;
+	public Point3D plus(Vector3D vec) {
+		return new Point3D(this.x + vec.x, this.y + vec.y, this.z + vec.z);
+	}
+	
+	public Point3D plus(Point3D p2) {
+		return new Point3D(this.x + p2.x, this.y + p2.y, this.z + p2.z);
+	}
+	
+	public Point3D minus(Vector3D vec) {
+		return new Point3D(this.x - vec.x, this.y - vec.y, this.z - vec.z);
+	}
+	
+	public Point3D minus(Point3D p2) {
+		return new Point3D(this.x - p2.x, this.y - p2.y, this.z - p2.z);
+	}
+	
+	// ===================================================================
+	// Methods implementing the Shape3D interface
+	
+	public double distance(Point3D point) {
+		double dx = point.x - x;
+		double dy = point.y - y;
+		double dz = point.z - z;
 
-        return Math.hypot(Math.hypot(dx, dy), dz);
-    }
+		return Math.hypot(Math.hypot(dx, dy), dz);
+	}
 
     /**
      * A point 'contains' another point if their euclidean distance is less than
@@ -80,10 +108,16 @@ public class Point3D implements Shape3D {
         return true;
     }
 
+    /**
+     * Returns false, as a point is never empty.
+     */
     public boolean isEmpty() {
         return false;
     }
 
+    /**
+     * Returns true, as a point is always bounded.
+     */
     public boolean isBounded() {
         return true;
     }
@@ -95,16 +129,23 @@ public class Point3D implements Shape3D {
     /**
      * Returns the clipped point, or null if empty.
      */
-    public Shape3D clip(Box3D box) {
+    public PointSet3D clip(Box3D box) {
+    	PointSet3D set = new PointSet3D(1);
         if (x < box.getMinX() || x > box.getMaxX())
-            return null;
+            return set;
         if (y < box.getMinY() || y > box.getMaxY())
-            return null;
+            return set;
         if (z < box.getMinZ() || z > box.getMaxZ())
-            return null;
-        return this;
+            return set;
+        
+        set.addPoint(this);
+        return set;
     }
 
+    /**
+     * Applies the given affine transform to the point, and return the 
+     * transformed point.
+     */
     public Point3D transform(AffineTransform3D trans) {
 		double coef[] = trans.coefficients();
 		return new Point3D(
