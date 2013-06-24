@@ -441,9 +441,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * @deprecated replaces by x() (since 0.11.1) 
 	 */
-	@Deprecated
 	public double getX() {
 		return this.x;
 	}
@@ -456,9 +454,8 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 	
 	/**
-	 * @deprecated replaces by y() (since 0.11.1) 
+	 * Returns the y-coordinate of this point.
 	 */
-	@Deprecated
 	public double getY() {
 		return y;
 	}
