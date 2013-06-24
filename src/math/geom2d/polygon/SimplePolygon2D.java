@@ -155,6 +155,14 @@ public class SimplePolygon2D implements Polygon2D {
     }
         
     /**
+     * Returns a simplified version of this polygon, by using Douglas-Peucker
+     * algorithm.
+     */
+	public SimplePolygon2D simplify(double distMax) {
+		return new SimplePolygon2D(Polylines2D.simplifyClosedPolyline(this.vertices, distMax));
+	}
+	
+	/**
      * Returns the linear ring that composes the boundary of this polygon.
      * @since 0.9.3
      */

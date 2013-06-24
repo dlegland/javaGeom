@@ -75,7 +75,7 @@ implements CirculinearContinuousCurve2D, Cloneable {
     // Contructors
 
     public Polyline2D() {
-    	super();
+    	super(1);
     }
 
     /**
@@ -111,6 +111,14 @@ implements CirculinearContinuousCurve2D, Cloneable {
     
     // ===================================================================
     // Methods implementing LinearCurve2D methods
+
+    /**
+     * Returns a simplified version of this polyline, by using Douglas-Peucker
+     * algorithm.
+     */
+    public Polyline2D simplify(double distMax) {
+    	return new Polyline2D(Polylines2D.simplifyPolyline(this.vertices, distMax));
+    }
 
     /**
      * Returns an array of LineSegment2D. The number of edges is the number of

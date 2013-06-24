@@ -60,8 +60,11 @@ public class Polyline2DTest extends TestCase {
 	}
 
 	public void testSimplify() {
-		CircleArc2D arc = new CircleArc2D(0, 0, 10, 0, Math.PI/2);
-		arc.asPolyline(200); 
+		CircleArc2D arc = new CircleArc2D(0, 0, 10, 0, Math.PI / 2);
+		Polyline2D poly = arc.asPolyline(16);
+		Polyline2D poly2 = poly.simplify(2.5);
+		
+		assertEquals(3, poly2.vertexNumber());
 	}
 	
 	public void testGetLength() {
