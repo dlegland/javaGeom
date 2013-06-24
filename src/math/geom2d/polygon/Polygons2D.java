@@ -19,6 +19,7 @@ import math.geom2d.domain.Boundaries2D;
 import math.geom2d.domain.Contour2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.point.PointSets2D;
+import math.geom2d.polygon.convhull.JarvisMarch2D;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
@@ -26,8 +27,8 @@ import com.seisw.util.geom.PolySimple;
 
 /**
  * Several utility functions for working on polygons, including polygon
- * creation, and basic computations.  
- * I
+ * creation, and basic computations such as polygon area or centroid.  
+ * 
  * @author dlegland
  */
 public final class Polygons2D {
@@ -39,10 +40,10 @@ public final class Polygons2D {
 	 */
 	public final static SimplePolygon2D createRectangle(Point2D p1, Point2D p2) {
 		// corners coordinates
-    	double x1 = p1.x();
-    	double y1 = p1.y();
-    	double x2 = p2.x();
-    	double y2 = p2.y();
+    	double x1 = p1.getX();
+    	double y1 = p1.getY();
+    	double x2 = p2.getX();
+    	double y2 = p2.getY();
 
     	return createRectangle(x1, y1, x2, y2);
 	}
@@ -299,6 +300,18 @@ public final class Polygons2D {
     			(p2.x() - x) * (pt.y() - y) - (pt.x() - x) * (p2.y() - y));
     }
     
+	/**
+	 * Returns the convex hull of the given set of points. Uses the Jarvis March
+	 * algorithm.
+	 * 
+	 * @param points
+	 *            a collection of points
+	 * @return the convex hull of the set of points
+	 */
+    public final static Polygon2D convexHull(Collection<? extends Point2D> points) {
+    	return new JarvisMarch2D().convexHull(points);
+    }
+
     /**
      * Computes the buffer at a distance d of the input polygon. The result is
      * a domain whose boundary is composed of line segments and circle arcs.  

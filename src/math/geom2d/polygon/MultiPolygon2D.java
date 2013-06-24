@@ -217,11 +217,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     /**
      * Inserts a vertex at the given position
      * 
-     * @throw RuntimeException if this polygon has no ring
-     * @throw IllegalArgumentException if index is not smaller than vertex number
+     * @throws RuntimeException if this polygon has no ring
+     * @throws IllegalArgumentException if index is not smaller than vertex number
      */
     public void insertVertex(int index, Point2D point) {
-    	// chck number of rings
+    	// check number of rings
     	if (rings.size() == 0) {
     		throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
     	}
