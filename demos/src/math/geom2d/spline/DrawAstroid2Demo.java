@@ -1,7 +1,7 @@
 /**
  * 
  */
-package math.geom2d.conic;
+package math.geom2d.spline;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
