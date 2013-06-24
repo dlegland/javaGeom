@@ -5,8 +5,33 @@
 <p>
 Definitions and implementations of shapes composed several line segments:
 polylines, rings, polygons. Contains several polygon implementations, to
-manage the differents types of polygons.</p> 
+manage the different types of polygons.</p> 
 
+<p>
+Package organization:
+<ul>
+  <li>Polygons:
+    <ul>
+      <li><a href="Polygon2D.html">Polygon2D</a>: main interface for all polygonal shapes </li>
+      <li><a href="SimplePolygon2D.html">SimplePolygon2D</a>: implementation for simply connected polygons</li>
+      <li><a href="MultiPolygon2D.html">MultiPolygon2D</a>: implementation for polygons composed of several pieces</li>
+      </ul>
+    </li>
+  <li>Polylines:
+    <ul>
+      <li><a href="LinearCurve2D.html">LinearCurve2D</a>: abstract class for any type of polyline</li>
+      <li><a href="polyline2D.html">Polyline2D</a>: implementation for open polyline</li>
+      <li><a href="LinearRing2D.html">LinearRing2D</a>: implementation for closed polylines, typically polygon boundaries</li>
+      </ul>
+    </li>
+  <li>Utility class:
+    <ul>
+      <li><a href="Polygons2D.html">Polygons2D</a>: utilities for polygons</li>
+      <li><a href="Polylines2D.html">Polylines2D</a>: utilities for polylines</li>
+      </ul>
+    </li>
+  </ul>
+</p>
 
 </body>
 </html>
