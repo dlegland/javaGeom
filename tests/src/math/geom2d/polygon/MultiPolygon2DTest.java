@@ -287,7 +287,7 @@ public class MultiPolygon2DTest extends TestCase {
 		
 	}
 	
-	public void testClone() {
+	public void testCopyConstructor() {
         Point2D[] pts1 = new Point2D[]{
                 new Point2D(0, 0), 
                 new Point2D(10, 0),
@@ -306,6 +306,7 @@ public class MultiPolygon2DTest extends TestCase {
         polygon.addRing(ring1);
         polygon.addRing(ring2);
 
-        assertTrue(polygon.equals(polygon.clone()));
+        MultiPolygon2D copy = new MultiPolygon2D(polygon);
+        assertTrue(polygon.equals(copy));
 	}
 }

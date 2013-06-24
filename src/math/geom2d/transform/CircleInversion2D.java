@@ -67,12 +67,12 @@ public class CircleInversion2D implements Bijection2D {
     }
 
     public CircleInversion2D(Circle2D circle) {
-        this.center = circle.center().clone();
+        this.center = circle.center();
         this.radius = circle.radius();
     }
 
     public CircleInversion2D(Point2D center, double radius) {
-        this.center = center.clone();
+        this.center = center;
         this.radius = radius;
     }
 

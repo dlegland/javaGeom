@@ -83,6 +83,10 @@ implements SmoothCurve2D, Cloneable {
 		return false;
 	}
 	
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
 	public abstract SmoothCurve2D clone();
 }

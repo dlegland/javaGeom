@@ -134,7 +134,7 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
      * Define a new Ray, with same characteristics as given object.
      */
     public Ray2D(LinearShape2D line) {
-        super(line);
+        super(line.origin(), line.direction());
     }
 
     // ===================================================================
@@ -300,6 +300,10 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Ray2D clone() {
         return new Ray2D(x0, y0, dx, dy);

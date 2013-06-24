@@ -81,10 +81,6 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
         super();
     }
 
-    public LinearRing2D(Point2D initialPoint) {
-        super(initialPoint);
-    }
-
     public LinearRing2D(Point2D... vertices) {
         super(vertices);
     }
@@ -97,6 +93,9 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
         super(points);
     }
 
+    public LinearRing2D(LinearCurve2D lineString) {
+    	super(lineString.vertices);
+    }
     
     // ===================================================================
     // Methods specific to ClosedPolyline2D
@@ -291,7 +290,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
 
 		// check if equal to a vertex
 		if (Math.abs(t - ind0) < Shape2D.ACCURACY)
-			return new Point2D(p0);
+			return p0;
 
 		// index of vertex after point
 		int ind1 = ind0 + 1;
@@ -488,11 +487,15 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     // ===================================================================
 	// methods implementing the Object interface
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
 	public LinearRing2D clone() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
 		for (Point2D point : vertices)
-			array.add(point.clone());
+			array.add(point);
 		return new LinearRing2D(array);
     }
 }

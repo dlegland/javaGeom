@@ -410,14 +410,4 @@ public class Ellipse2DTest extends TestCase {
 		assertTrue(ell3.almostEquals(ellipse, Shape2D.ACCURACY));
 	}
 	
-	public void testClone() {
-	    // direct ellipse
-	    Ellipse2D ellipse = new Ellipse2D(10, 20, 30, 40, Math.PI/3);
-	    assertTrue(ellipse.equals(ellipse.clone()));
-	    
-	    // indirect ellipse
-        ellipse = new Ellipse2D(10, 20, 30, 40, Math.PI/3, false);
-        assertTrue(ellipse.equals(ellipse.clone()));
-	}
-
 }

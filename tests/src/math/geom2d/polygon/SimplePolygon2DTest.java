@@ -446,6 +446,7 @@ public class SimplePolygon2DTest extends TestCase {
                 new Point2D(50, 50)
         });
         
-        assertTrue(polygon.equals(polygon.clone()));
+        SimplePolygon2D copy = new SimplePolygon2D(polygon);
+        assertTrue(polygon.equals(copy));
     }
 }

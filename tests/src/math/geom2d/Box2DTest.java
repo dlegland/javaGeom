@@ -60,7 +60,7 @@ public class Box2DTest extends TestCase {
         assertEquals(40, box.getHeight(), 1e-14);
     }
 
-    public void testGetBoundary() {
+    public void testBoundary() {
 		// naming convention:
 		// box + 4 digits, each digit correspond to bounding info in one direction
 		// in order: x0 x1 y0 y1
@@ -138,9 +138,5 @@ public class Box2DTest extends TestCase {
 		Boundary2D bnd0111 = box0111.boundary();
 		assertEquals(1, bnd0111.continuousCurves().size());
     }
-    
-    public void testClone() {
-        Box2D box = new Box2D(-10, 10, -20, 20);
-        assertEquals(box, box.clone());
-    }
+
 }

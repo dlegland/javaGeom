@@ -441,7 +441,11 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		m02 = m12 = 0;
 	}
 
-	/** Constructor by copy of an existing transform */
+	/** 
+	 * Constructor by copy of an existing transform 
+	 * @deprecated not necessary to clone immutable objects (0.11.2)
+	 */
+	@Deprecated
 	public AffineTransform2D(AffineTransform2D trans) {
 		this.m00 = trans.m00;
 		this.m01 = trans.m01;
@@ -755,6 +759,10 @@ public class AffineTransform2D implements Bijection2D, GeometricObject2D,
 		return true;
 	}
 
+	/**
+	 * @deprecated immutable objects do not need to be cloned (0.11.2)
+	 */
+	@Deprecated
 	@Override
 	public AffineTransform2D clone() {
 		return new AffineTransform2D(m00, m01, m02, m10, m11, m12);

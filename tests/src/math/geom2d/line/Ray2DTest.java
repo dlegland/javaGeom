@@ -203,8 +203,9 @@ public class Ray2DTest extends TestCase {
 		assertEquals(5, ray.distance(pt), 1e-14);	
 	}
 
-	public void testClone(){
-	    Ray2D ray = new Ray2D(10, 20, 30, 40);
-	    assertTrue(ray.equals(ray.clone()));
+	public void testCopyConstructor(){
+		 Ray2D ray = new Ray2D(10, 20, 30, 40);
+		 Ray2D copy = new Ray2D(ray);
+		 assertTrue(ray.equals(copy));
 	}
 }

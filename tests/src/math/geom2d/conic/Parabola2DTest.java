@@ -424,11 +424,4 @@ public class Parabola2DTest extends TestCase {
 		assertEquals(inverse.windingAngle(pt), -2*Math.PI, eps);
 	}
 	
-	public void testClone() {
-	    Parabola2D parabola = new Parabola2D(10, 20, 2, Math.PI/3);
-	    assertTrue(parabola.equals(parabola.clone()));
-	    
-        parabola = new Parabola2D(10, 20, -2, Math.PI/3);
-        assertTrue(parabola.equals(parabola.clone()));
-	}
 }

@@ -125,7 +125,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      * Define a new Ray, with same characteristics as given object.
      */
     public InvertedRay2D(LinearShape2D line) {
-        super(line);
+        super(line.origin(), line.direction());
     }
 
     // ===================================================================
@@ -290,6 +290,10 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 		return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public InvertedRay2D clone() {
         return new InvertedRay2D(x0, y0, dx, dy);

@@ -165,7 +165,7 @@ public class TriangleGrid2D implements Grid2D {
         StraightLine2D line2 = baseLine.parallel(n2*s2);
 
         // projection of point on the surrounding lines
-        double t = line1.project(new Point2D(point));
+        double t = line1.project(point);
 
         Point2D p1, p2, p3;
         if (isEven(n1)) {

@@ -318,6 +318,10 @@ implements ShapeSet2D<T>, Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public ShapeArray2D<? extends Shape2D> clone() {
         ArrayList<Shape2D> array = new ArrayList<Shape2D>(shapes.size());

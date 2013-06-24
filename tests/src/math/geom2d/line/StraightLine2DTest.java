@@ -386,9 +386,10 @@ public class StraightLine2DTest extends TestCase {
 		assertEquals(line3.windingAngle(p4), Math.PI, 1e-14);		
 	}
 
-	public void testClone() {
+	public void testCopyConstructor() {
 	    StraightLine2D line = new StraightLine2D(new Point2D(10, 20), 
 	            new Vector2D(30, 40));
-	    assertTrue(line.equals(line.clone()));
+	    StraightLine2D copy = new StraightLine2D(line);
+	    assertTrue(line.equals(copy));
 	}
 }

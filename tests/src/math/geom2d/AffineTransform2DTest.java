@@ -302,11 +302,6 @@ public class AffineTransform2DTest extends TestCase {
 		assertTrue(rot.equals(rot2));
 	}
 	
-	public void testConstructorAffineTransform2D() {
-		AffineTransform2D rot = AffineTransform2D.createRotation(20, 30, .4);
-		AffineTransform2D trans = new AffineTransform2D(rot);
-		assertTrue(trans.equals(rot));
-	}
 	
 	public void testasAwtTransform() {
 		AffineTransform awtRot = AffineTransform.getRotateInstance(.4, 20, 30);
@@ -559,10 +554,5 @@ public class AffineTransform2DTest extends TestCase {
 	public void testEquals(){
 		AffineTransform2D trans  = new AffineTransform2D(1, 2, 3, 4, 5, 6);
 		assertTrue(trans.equals(trans));
-	}
-	
-	public void testClone() {
-        AffineTransform2D trans  = new AffineTransform2D(1, 2, 3, 4, 5, 6);
-        assertTrue(trans.equals(trans.clone()));
 	}
 }

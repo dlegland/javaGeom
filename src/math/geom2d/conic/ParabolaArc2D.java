@@ -84,6 +84,7 @@ implements SmoothOrientedCurve2D, Cloneable {
         this.t1 = t1;
     }
 
+    
     // ==========================================================
     // methods specific to ParabolaArc2D
 
@@ -458,6 +459,10 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public ParabolaArc2D clone() {
         return new ParabolaArc2D(parabola.clone(), t0, t1);

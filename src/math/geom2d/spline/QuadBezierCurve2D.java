@@ -556,6 +556,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated not necessary to clone immutable objects (0.11.2)
+	 */
+	@Deprecated
 	@Override
     public QuadBezierCurve2D clone() {
         return new QuadBezierCurve2D(x1, y1, ctrlx, ctrly, x2, y2);

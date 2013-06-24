@@ -492,14 +492,10 @@ public final class GeneralPath2D implements Shape, Cloneable {
         return this.path.equals(that.path);
     }
     
-    /**
-     * Creates a new object of the same class as this object.
-     * 
-     * @return a clone of this instance.
-     * @exception OutOfMemoryError if there is not enough memory.
-     * @see java.lang.Cloneable
-     * @since 1.2
-     */
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Object clone() {
         return path.clone();

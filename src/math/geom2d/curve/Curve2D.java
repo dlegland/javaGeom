@@ -217,10 +217,9 @@ public interface Curve2D extends Shape2D, Cloneable {
      */
     public abstract void draw(Graphics2D g2);
 
-    /**
-     * Overrides Object declaration to ensure Curve2D implementation are
-     * cloned as Curve2D.
-     * @return the cloned curve
-     */
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     public abstract Curve2D clone();
 }

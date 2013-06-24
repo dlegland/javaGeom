@@ -283,8 +283,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * Constructs a new Point2D at the given given position. Please consider
-	 * using the static factory method instead (0.8.1).
+	 * Constructs a new Point2D at the given given position.
 	 */
 	public Point2D(double x, double y) {
 		this.x = x;
@@ -293,7 +292,6 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/**
 	 * Constructs a new Point2D by copying coordinates of given java point.
-	 * Please consider using the static factory method instead (0.8.1)
 	 */
 	public Point2D(java.awt.geom.Point2D point) {
 		this(point.getX(), point.getY());
@@ -301,7 +299,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 
 	/**
 	 * Constructs a new Point2D by copying coordinates of given point.
+	 * @deprecated immutable objects do not need copy constructor (0.11.2)
 	 */
+	@Deprecated
 	public Point2D(Point2D point) {
 		this(point.x, point.y);
 	}
@@ -703,8 +703,9 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	}
 
 	/**
-	 * Creates a new Point2D object with same coordinates.
+	 * @deprecated not necessary to clone immutable objects (0.11.2)
 	 */
+	@Deprecated
 	@Override
 	public Point2D clone() {
 		return new Point2D(x, y);

@@ -195,6 +195,14 @@ implements Conic2D, Cloneable {
         this(0, 0, 1, 1, 0, true);
     }
 
+    /**
+     * Copy constructor
+     * @param hyp the hyperbola to copy
+     */
+    public Hyperbola2D(Hyperbola2D hyp) {
+    	this(hyp.xc, hyp.yc, hyp.a, hyp.b, hyp.theta, hyp.direct); 
+    }
+    
     public Hyperbola2D(Point2D center, double a, double b, double theta) {
         this(center.x(), center.y(), a, b, theta, true);
     }
@@ -617,6 +625,10 @@ implements Conic2D, Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Hyperbola2D clone() {
         return new Hyperbola2D(xc, yc, a, b, theta, direct);

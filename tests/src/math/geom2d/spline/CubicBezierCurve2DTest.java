@@ -164,12 +164,5 @@ public class CubicBezierCurve2DTest extends TestCase {
 		assertEquals(bezier1.distance(p1), 0, 1e-10);
 		assertEquals(bezier1.distance(p4), 0, 1e-10);
 	}
-	
-	public void testClone(){
-	    CubicBezierCurve2D bezier = new CubicBezierCurve2D(
-	            new Point2D(10, 20), new Point2D(30, 40), 
-	            new Point2D(50, 60), new Point2D(10, 80));
-	    
-	    assertTrue(bezier.equals(bezier.clone()));
-	}
+
 }

@@ -485,7 +485,7 @@ public class LinearRing2DTest extends TestCase {
 		assertNotNull(ring);
 	}
 	
-    public void testClone() {
+    public void testCopyConstructor() {
         LinearRing2D ring = new LinearRing2D(new Point2D[]{
                 new Point2D(150, 50),
                 new Point2D(150, 150),
@@ -493,7 +493,7 @@ public class LinearRing2DTest extends TestCase {
                 new Point2D(50, 150),
                 new Point2D(50, 50)
         });
-        
-        assertTrue(ring.equals(ring.clone()));
+        LinearRing2D copy = new LinearRing2D(ring);
+        assertTrue(ring.equals(copy));
     }	
 }

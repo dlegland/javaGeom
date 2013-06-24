@@ -247,9 +247,9 @@ implements EllipseShape2D, Cloneable {
      * Empty constructor, define ellipse centered at origin with both major and
      * minor semi-axis with length equal to 1.
      */
-    public Ellipse2D() {
-        this(0, 0, 1, 1, 0, true);
-    }
+	public Ellipse2D() {
+		this(0, 0, 1, 1, 0, true);
+	}
 
     /** Main constructor: define center by a point plus major and minor semi axis */
     public Ellipse2D(Point2D center, double l1, double l2) {
@@ -1197,6 +1197,10 @@ implements EllipseShape2D, Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Ellipse2D clone() {
         return new Ellipse2D(xc, yc, r1, r2, theta, direct);

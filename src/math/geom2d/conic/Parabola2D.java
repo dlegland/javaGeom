@@ -94,6 +94,9 @@ implements Contour2D, Conic2D, Cloneable {
     // ==========================================================
     // constructors
 
+    /**
+     * Empty constructor.
+     */
     public Parabola2D() {
         super();
     }
@@ -172,7 +175,7 @@ implements Contour2D, Conic2D, Cloneable {
      * @return
      */
     private Point2D formatPoint(Point2D point) {
-		Point2D p2 = new Point2D(point);
+		Point2D p2 = point;
 		p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
 		p2 = p2.transform(AffineTransform2D.createRotation(-theta));
 		p2 = p2.transform(AffineTransform2D.createScaling(1, 1.0 / a));
@@ -613,6 +616,10 @@ implements Contour2D, Conic2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Parabola2D clone() {
         return new Parabola2D(xv, yv, a, theta);
