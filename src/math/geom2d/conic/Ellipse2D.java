@@ -220,7 +220,51 @@ implements EllipseShape2D, Cloneable {
         return Ellipse2D.reduceCentered(coefs2);
     }
 
+    public final static Ellipse2D inertiaEllipse(Collection<Point2D> points) {
+    	double xc = 0;
+    	double yc = 0;
+    	
+    	for (Point2D p : points) {
+    		xc += p.getX();
+    		yc += p.getY();
+    	}
+    	
+    	int np = points.size();
+    	xc /= np;
+    	yc /= np;
 
+    	double Ixx = 0;
+    	double Iyy = 0;
+    	double Ixy = 0;
+    	
+    	for (Point2D p : points) {
+    		// re-centered point
+    		double x = p.getX() - xc;
+    		double y = p.getY() - yc;
+    		Ixx += x * x;
+    		Iyy += y * y;
+    		Ixy += x * y;
+    	}
+
+    	// normalize by point number
+    	Ixx /= np;
+    	Ixy /= np;
+    	Iyy /= np;
+    	
+    	// Compute ellipse semi-axis length
+    	double diff = Ixx - Iyy;
+    	double common = sqrt(diff * diff + 4 * Ixy * Ixy);
+    	double r1 = sqrt(2) * sqrt(Ixx + Iyy + common);
+    	double r2 = sqrt(2) * sqrt(Ixx + Iyy - common);
+
+    	// ellipse orientation
+    	double theta = atan2(2 * Ixy, Ixx - Iyy) / 2;
+
+    	// create ellipse object
+    	return new Ellipse2D(xc, yc, r1, r2, theta);
+    }
+
+    
     // ===================================================================
     // class variables
 

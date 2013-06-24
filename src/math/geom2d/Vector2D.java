@@ -169,9 +169,8 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     }
 
 	/**
-	 * @deprecated replaces by x() (since 0.11.1) 
+	 * Returns the x coordinates of this vector.
 	 */
-	@Deprecated
 	public double getX() {
 		return x;
 	}
@@ -184,9 +183,8 @@ public class Vector2D implements GeometricObject2D, Cloneable {
     }
 
 	/**
-	 * @deprecated replaces by y() (since 0.11.1) 
+	 * Returns the y coordinates of this vector.
 	 */
-	@Deprecated
 	public double getY() {
 		return y;
 	}
