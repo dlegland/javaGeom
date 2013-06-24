@@ -40,6 +40,7 @@ public class AllTests {
 		suite.addTest(new TestSuite(CubicBezierCurve2DTest.class));
 		suite.addTest(new TestSuite(PolyCubicBezierCurve2DTest.class));
 		suite.addTest(new TestSuite(QuadBezierCurve2DTest.class));
+		suite.addTest(new TestSuite(GeneralPath2DTest.class));
         //$JUnit-END$
 		return suite;
 	}

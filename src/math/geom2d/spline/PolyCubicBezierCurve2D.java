@@ -127,7 +127,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     // Methods specific to PolyCubicBezierCurve2D
 
     /**
-     * Returns a new PolyCubicBezierCurve2D.
+     * Returns a new set of PolyCubicBezierCurve2D.
      */
     @Override
     public CurveSet2D<? extends PolyCubicBezierCurve2D> clip(Box2D box) {

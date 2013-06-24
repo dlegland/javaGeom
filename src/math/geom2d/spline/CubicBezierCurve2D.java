@@ -23,7 +23,6 @@
 
 package math.geom2d.spline;
 
-import java.awt.geom.CubicCurve2D;
 import java.util.Collection;
 
 import math.geom2d.*;
@@ -415,8 +414,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	 * @see math.geom2d.Shape2D#contains(double, double)
 	 */
 	public boolean contains(double x, double y) {
-		return new CubicCurve2D.Double(
-				x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2).contains(x, y);
+		return this.asPolyline(180).contains(x, y);
 	}
 
 	/* (non-Javadoc)
@@ -478,19 +476,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * the bounding box of the set of control points.
      */
     public Box2D boundingBox() {
-    	Point2D p1 = this.firstPoint();
-        Point2D p2 = this.getControl1();
-        Point2D p3 = this.getControl2();
-        Point2D p4 = this.lastPoint();
-		double xmin = Math.min(Math.min(p1.x(), p2.x()),
-				Math.min(p3.x(), p4.x()));
-		double xmax = Math.max(Math.max(p1.x(), p2.x()),
-				Math.max(p3.x(), p4.x()));
-		double ymin = Math.min(Math.min(p1.y(), p2.y()),
-				Math.min(p3.y(), p4.y()));
-		double ymax = Math.max(Math.max(p1.y(), p2.y()),
-				Math.max(p3.y(), p4.y()));
-		return new Box2D(xmin, xmax, ymin, ymax);
+		double xmin = Math.min(Math.min(x1, ctrlx1), Math.min(ctrlx2, x2));
+		double xmax = Math.max(Math.max(x1, ctrlx1), Math.max(ctrlx2, x2));
+		double ymin = Math.min(Math.min(y1, ctrly1), Math.min(ctrly2, y2));
+		double ymax = Math.max(Math.max(y1, ctrly1), Math.max(ctrly2, y2));		return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     /**
@@ -506,28 +495,16 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        Point2D p2 = this.getControl1();
-        Point2D p3 = this.getControl2();
-        Point2D p4 = this.lastPoint();
-        path.curveTo(
-        		p2.x(), p2.y(), 
-        		p3.x(), p3.y(), 
-        		p4.x(), p4.y());
-        return path;
+        path.moveTo(x1, y1);
+		path.curveTo(ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
+		return path;
     }
 
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        Point2D p1 = this.firstPoint();
-        Point2D p2 = this.getControl1();
-        Point2D p3 = this.getControl2();
-        Point2D p4 = this.lastPoint();
-        path.moveTo(p1.x(), p1.y());
-        path.curveTo(
-        		p2.x(), p2.y(), 
-        		p3.x(), p3.y(), 
-        		p4.x(), p4.y());
-        return path;
+        path.moveTo(x1, y1);
+		path.curveTo(ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
+		return path;
     }
 
 
