@@ -95,7 +95,6 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * with a given size for allocating memory.
      */
     public CurveArray2D(int n) {
-    	this();
     	this.curves = new ArrayList<T>(n);
     }
 
@@ -105,10 +104,15 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * @param curves the array of curves in the set
      */
     public CurveArray2D(T... curves) {
-    	this();
-    	this.curves = new ArrayList<T>(curves.length);
+    	this(curves.length);
         for (T element : curves)
-            this.add(element);
+            this.curves.add(element);
+    }
+
+    public CurveArray2D(CurveSet2D<? extends T> set) {
+    	this(set.size());
+    	for(T curve : set)
+    		this.curves.add(curve);
     }
 
     /**
@@ -118,7 +122,6 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * @param curves the collection of curves to add to the set
      */
     public CurveArray2D(Collection<? extends T> curves) {
-    	this();
     	this.curves = new ArrayList<T>(curves.size());
         this.curves.addAll(curves);
     }
@@ -799,6 +802,10 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     public CurveArray2D<? extends Curve2D> clone() {
         ArrayList<Curve2D> array = new ArrayList<Curve2D>(curves.size());
         for(T curve : curves)

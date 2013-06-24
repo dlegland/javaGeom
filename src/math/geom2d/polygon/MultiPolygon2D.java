@@ -41,7 +41,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     // ===================================================================
     // class members
 
-    ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>();
+    ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
 
     
     // ===================================================================
@@ -50,8 +50,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     public MultiPolygon2D() {
     }
 
-    public MultiPolygon2D(LinearRing2D ring) {
-        rings.add(ring);
+    /**
+     * Ensures the inner buffer has enough capacity for storing the required
+     * number of rings.
+     */
+    public MultiPolygon2D(int nRings) {
+    	this.rings.ensureCapacity(nRings);
     }
 
     public MultiPolygon2D(LinearRing2D... rings) {
@@ -59,8 +63,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
             this.rings.add(ring);
     }
 
-    public MultiPolygon2D(SimplePolygon2D polygon) {
-        rings.addAll(polygon.boundary().curves());
+    public MultiPolygon2D(Polygon2D polygon) {
+    	if (polygon instanceof SimplePolygon2D) {
+    		rings.add(((SimplePolygon2D) polygon).getRing());
+    	} else {
+    		rings.addAll(polygon.boundary().curves());
+    	}
     }
 
     public MultiPolygon2D(Collection<LinearRing2D> lines) {
@@ -501,14 +509,17 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return true;
     }
    
-	@Override
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     public MultiPolygon2D clone() {
         // allocate memory for new ring array
         ArrayList<LinearRing2D> array = new ArrayList<LinearRing2D>(rings.size());
         
         // clone each ring
         for(LinearRing2D ring : rings)
-            array.add(ring.clone());
+            array.add(new LinearRing2D(ring));
         
         // create a new polygon with cloned rings
         return new MultiPolygon2D(array);

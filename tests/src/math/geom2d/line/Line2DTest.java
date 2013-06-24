@@ -280,8 +280,9 @@ public class Line2DTest extends TestCase {
         assertTrue(line2.equals(line1));
     }
     
-    public void testClone() {
+    public void testCopyConstructor() {
         Line2D line = new Line2D(10, 20, 30, 40);
-        assertTrue(line.equals(line.clone()));
+        Line2D copy = new Line2D(line);
+        assertTrue(line.equals(copy));
     }
 }

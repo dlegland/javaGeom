@@ -303,8 +303,5 @@ public class Point2DTest extends TestCase {
 		assertFalse(p1.contains(p3));
 		assertFalse(p3.contains(p1));
 	}
-	public void testClone() {
-	    Point2D point = new Point2D(10, 20);
-	    assertTrue(point.equals(point.clone()));
-	}
+
 }

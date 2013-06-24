@@ -114,11 +114,5 @@ public class QuadBezierCurve2DTest extends TestCase {
 		assertEquals(bezier1.distance(p1), 0, 1e-10);
 		assertEquals(bezier1.distance(p3), 0, 1e-10);
 	}
-	
-	public void testClone(){
-	    QuadBezierCurve2D bezier = new QuadBezierCurve2D(
-	            new Point2D(10, 20), new Point2D(30, 40), new Point2D(50, 60));
-	    
-	    assertTrue(bezier.equals(bezier.clone()));
-	}
+
 }

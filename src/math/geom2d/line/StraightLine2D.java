@@ -217,15 +217,7 @@ public class StraightLine2D extends AbstractLine2D implements
         this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
     }
 
-    /**
-     * Defines a new Straight line at the same position and with the same
-     * direction than an other straight object (line, edge or ray).
-     */
-    public StraightLine2D(LinearShape2D line) {
-        super(line);
-    }
-
-    /**
+    /*
      * Defines a new Straight line going through the point (xp, yp) and with
      * the direction dx, dy.
      */
@@ -233,6 +225,15 @@ public class StraightLine2D extends AbstractLine2D implements
         super(xp, yp, dx, dy);
     }
 
+    /**
+     * Copy constructor:
+     * Defines a new Straight line at the same position and with the same
+     * direction than an other straight object (line, edge or ray).
+     */
+    public StraightLine2D(LinearShape2D line) {
+        this(line.origin(), line.direction());
+    }
+    
     /**
      * Defines a new Straight line, parallel to another straigth object (ray,
      * straight line or edge), and going through the given point.
@@ -605,6 +606,10 @@ public class StraightLine2D extends AbstractLine2D implements
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public StraightLine2D clone() {
         return new StraightLine2D(x0, y0, dx, dy);

@@ -94,19 +94,11 @@ implements SmoothOrientedCurve2D, Cloneable {
      * @param t1 the upper bound of line arc parameterization
      */
     public LineArc2D(LinearShape2D line, double t0, double t1) {
-        super(line);
+        super(line.origin(), line.direction());
         this.t0 = t0;
         this.t1 = t1;
     }
 
-    /**
-     * Construction by copy of another line arc
-     * 
-     * @param line the line to copy
-     */
-    public LineArc2D(LineArc2D line) {
-        this(line.x0, line.y0, line.dx, line.dy, line.t0, line.t1);
-    }
 
     /**
      * Construct a line arc by the parameters of the supporting line and two
@@ -455,6 +447,10 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public LineArc2D clone() {
         return new LineArc2D(x0, y0, dx, dy, t0, t1);

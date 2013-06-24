@@ -346,12 +346,13 @@ public class Polyline2DTest extends TestCase {
 		assertNotNull(ring);
 	}
 
-	public void testClone() {
+	public void testCopyConstructor() {
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(150, 50), new Point2D(150, 150),
 				new Point2D(100, 100), new Point2D(50, 150),
 				new Point2D(50, 50) });
 
-		assertTrue(polyline.equals(polyline.clone()));
+		Polyline2D copy = new Polyline2D(polyline);
+		assertTrue(polyline.equals(copy));
 	}
 }

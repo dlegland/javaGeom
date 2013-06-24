@@ -124,7 +124,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     public CircleArc2D() {
         this(0, 0, 1, 0, PI/2);
     }
-
+    
     // Constructors based on Circles
 
     /**
@@ -963,6 +963,10 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return true;
     }
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public CircleArc2D clone() {
         return new CircleArc2D(circle.clone(), startAngle, angleExtent);

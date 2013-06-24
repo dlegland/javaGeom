@@ -137,10 +137,11 @@ public class PointArray2DTest extends TestCase {
 	    assertFalse(set3.equals(set1));
 	}
 
-	public void testClone() {
+	public void testCopyConstructor() {
 	    PointArray2D set = new PointArray2D(new Point2D[]{
 	            new Point2D(0, 0), new Point2D(10, 20), new Point2D(30, 40)
 	    });
-	    assertTrue(set.equals(set.clone()));
+	    PointArray2D copy = new PointArray2D(set);
+	    assertTrue(set.equals(copy));
 	}
 }

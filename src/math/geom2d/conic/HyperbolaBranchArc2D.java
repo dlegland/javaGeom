@@ -49,12 +49,16 @@ implements SmoothOrientedCurve2D, Cloneable {
     // ===================================================================
     // constructor
 
+	/**
+	 * Constructor from a branch and two bounds.
+	 */
     public HyperbolaBranchArc2D(HyperbolaBranch2D branch, double t0, double t1) {
         this.branch = branch;
         this.t0 = t0;
         this.t1 = t1;
     }
 
+    
     // ===================================================================
     // methods specific to the arc
 
@@ -225,7 +229,7 @@ implements SmoothOrientedCurve2D, Cloneable {
     }
 
     public double distance(Point2D point) {
-        Point2D p = point(project(new Point2D(point)));
+        Point2D p = point(project(point));
         return p.distance(point);
     }
 
@@ -328,6 +332,6 @@ implements SmoothOrientedCurve2D, Cloneable {
 
     @Override
     public HyperbolaBranchArc2D clone() {
-        return new HyperbolaBranchArc2D(branch.clone(), t0, t1);
+        return new HyperbolaBranchArc2D(branch, t0, t1);
     }
 }

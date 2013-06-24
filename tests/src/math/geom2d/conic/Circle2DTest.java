@@ -544,11 +544,4 @@ public class Circle2DTest extends TestCase {
 		assertTrue(curves.size() == 1);
 	}
 	
-	public void testClone() {
-	    Circle2D circle = new Circle2D(10, 20, 30);
-	    assertTrue(circle.equals(circle.clone()));
-	    
-	    circle = new Circle2D(10, 20, 30, false);
-        assertTrue(circle.equals(circle.clone()));
-	}
 }

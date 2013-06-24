@@ -1081,7 +1081,11 @@ Cloneable {
         return super.equals(obj);
     }
 
-    @Override
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
+	@Override
     public Circle2D clone() {
         return new Circle2D(xc, yc, r, direct);
     }

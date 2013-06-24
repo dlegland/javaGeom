@@ -313,13 +313,4 @@ public class ParabolaArc2DTest extends TestCase {
 		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);		
 	}
 	
-	public void testClone() {
-	    Parabola2D parabola = new Parabola2D(10, 20, 2, Math.PI/3);
-	    ParabolaArc2D arc = new ParabolaArc2D(parabola, -10, 20);
-	    assertTrue(arc.equals(arc.clone()));
-
-	    parabola = new Parabola2D(10, 20, -2, Math.PI/3);
-	    arc = new ParabolaArc2D(parabola, -10, 20);
-        assertTrue(arc.equals(arc.clone()));
-	}
 }

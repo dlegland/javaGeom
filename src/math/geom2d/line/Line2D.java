@@ -120,6 +120,13 @@ implements LinearElement2D, Cloneable {
         p2 = new Point2D(x2, y2);
     }
 
+    /**
+     * Copy constructor.
+     */
+    public Line2D(Line2D line) {
+    	this(line.getPoint1(), line.getPoint2());
+    }
+    
     // ===================================================================
     // Static factory
 
@@ -699,8 +706,12 @@ implements LinearElement2D, Cloneable {
         return p1.equals(edge.p1) && p2.equals(edge.p2);
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Line2D clone() {
-        return new Line2D(p1.clone(), p2.clone());
+        return new Line2D(p1, p2);
     }
 }

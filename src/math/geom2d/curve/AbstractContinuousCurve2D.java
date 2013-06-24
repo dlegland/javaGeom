@@ -153,6 +153,10 @@ implements ContinuousCurve2D, Cloneable {
         return path;
 	}
 	
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
 	@Override
     public abstract ContinuousCurve2D clone();
 }

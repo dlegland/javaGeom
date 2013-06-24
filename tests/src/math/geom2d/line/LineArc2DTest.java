@@ -255,8 +255,4 @@ public class LineArc2DTest extends TestCase {
         assertTrue(!edge4.equals(edge2));       
     }
 
-    public void testClone() {
-        LineArc2D arc = new LineArc2D(10, 20, 30, 40, -1, 2);
-        assertTrue(arc.equals(arc.clone()));
-    }
 }

@@ -107,6 +107,15 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     }
 
     /**
+     * Copy constructor
+     */
+    public PointArray2D(PointSet2D set) {
+        this(set.size());
+        for (Point2D element : set)
+            this.points.add(element);
+    }
+
+    /**
      * Points must be a collection of java.awt.Point. Instances of Point2D are
      * directly added, other Point are converted to Point2D with the same
      * location.
@@ -423,11 +432,15 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public PointArray2D clone() {
         PointArray2D set = new PointArray2D(this.size());
         for (Point2D point : this)
-            set.add(point.clone());
+            set.add(point);
         return set;
     }
 

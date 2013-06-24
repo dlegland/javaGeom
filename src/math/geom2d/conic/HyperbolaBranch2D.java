@@ -60,6 +60,7 @@ implements SmoothContour2D, Cloneable {
         this.positive = b;
     }
 
+    
     // ===================================================================
     // methods specific to HyperbolaBranch2D
 
@@ -146,12 +147,12 @@ implements SmoothContour2D, Cloneable {
 		if (hyperbola.isDirect()) {
 			if (hyperbola.isInside(point))
 				return true;
-			double x = hyperbola.toLocal(new Point2D(point)).x();
+			double x = hyperbola.toLocal(point).x();
 			return positive ? x < 0 : x > 0;
 		} else {
 			if (!hyperbola.isInside(point))
 				return false;
-			double x = hyperbola.toLocal(new Point2D(point)).x();
+			double x = hyperbola.toLocal(point).x();
 			return positive ? x > 0 : x < 0;
 		}
     }
@@ -204,13 +205,13 @@ implements SmoothContour2D, Cloneable {
     }
 
     public double position(Point2D point) {
-		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		Point2D pt = hyperbola.toLocal(point);
 		double y = this.positive ? pt.y() : -pt.y();
 		return log(y + hypot(y, 1));
 	}
 
 	public double project(Point2D point) {
-		Point2D pt = hyperbola.toLocal(new Point2D(point));
+		Point2D pt = hyperbola.toLocal(point);
 		double y = this.positive ? pt.y() : -pt.y();
 		return log(y + hypot(y, 1));
     }
@@ -306,7 +307,7 @@ implements SmoothContour2D, Cloneable {
     }
 
     public double distance(Point2D point) {
-        Point2D projected = this.point(this.project(new Point2D(point)));
+        Point2D projected = this.point(this.project(point));
         return projected.distance(point);
     }
 
@@ -385,6 +386,10 @@ implements SmoothContour2D, Cloneable {
         return positive == branch.positive;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public HyperbolaBranch2D clone() {
         return new HyperbolaBranch2D(hyperbola.clone(), positive);

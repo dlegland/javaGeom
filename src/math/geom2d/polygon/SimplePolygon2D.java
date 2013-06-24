@@ -116,6 +116,14 @@ public class SimplePolygon2D implements Polygon2D {
 		this.vertices.addAll(points);
 	}
 
+	/**
+	 * Ensure the polygon has enough memory for storing the required number of
+	 * vertices.
+	 */
+	public SimplePolygon2D(int nVertices) {
+    	vertices = new ArrayList<Point2D>(nVertices);
+    }
+	
     /**
      * Creates a simple polygon with the given linear ring representing its
      * boundary.
@@ -126,6 +134,10 @@ public class SimplePolygon2D implements Polygon2D {
         this.vertices.addAll(ring.vertices());
     }
 
+    public SimplePolygon2D(SimplePolygon2D poly) {
+    	this.vertices = new ArrayList<Point2D>(poly.vertexNumber());
+    	this.vertices.addAll(poly.vertices);
+    }
     
     // ===================================================================
     // methods specific to SimplePolygon2D
@@ -561,11 +573,15 @@ public class SimplePolygon2D implements Polygon2D {
         return true;
     }
     
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
     @Override
     public SimplePolygon2D clone() {
         ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
         for(Point2D point : vertices)
-            array.add(point.clone());
+            array.add(point);
         return new SimplePolygon2D(array);
     }
 

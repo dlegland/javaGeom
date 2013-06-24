@@ -139,7 +139,6 @@ implements Cloneable, CirculinearElement2D {
     public LineSegment2D(double x1, double y1, double x2, double y2) {
         super(x1, y1, x2-x1, y2-y1);
     }
-
     
     // ===================================================================
     // Methods specific to LineSegment2D
@@ -419,6 +418,10 @@ implements Cloneable, CirculinearElement2D {
 		return true;
 	}
 
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
 	@Override
 	public LineSegment2D clone() {
 		return new LineSegment2D(x0, y0, x0 + dx, y0 + dy);

@@ -384,6 +384,10 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 		return new String("x=" + x + " y=" + y);
 	}
 
+	/**
+	 * @deprecated not necessary to clone immutable object
+	 */
+	@Deprecated
 	@Override
 	public Vector2D clone() {
 		return new Vector2D(x, y);

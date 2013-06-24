@@ -187,8 +187,9 @@ public class InvertedRay2DTest extends TestCase {
 		assertEquals(5, ray.distance(pt), 1e-14);	
 	}
 
-	public void testClone(){
-        InvertedRay2D ray = new InvertedRay2D(10, 20, 30, 40);
-        assertTrue(ray.equals(ray.clone()));
+	public void testCopyConstructor(){
+		InvertedRay2D ray = new InvertedRay2D(10, 20, 30, 40);
+		InvertedRay2D copy = new InvertedRay2D(ray);
+        assertTrue(ray.equals(copy));
     }
 }

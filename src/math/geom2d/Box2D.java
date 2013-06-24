@@ -109,14 +109,14 @@ public class Box2D implements GeometricObject2D, Cloneable {
     /**
      * Main constructor, given bounds for x coord, then bounds for y coord.
      */
-    public Box2D(double x0, double x1, double y0, double y1) {
-        xmin = x0;
-        xmax = x1;
-        ymin = y0;
-        ymax = y1;
+    public Box2D(double xmin, double xmax, double ymin, double ymax) {
+        this.xmin = xmin;
+        this.xmax = xmax;
+        this.ymin = ymin;
+        this.ymax = ymax;
     }
-
-    /** Constructor from awt, to allow easy construction from existing apps. */
+    
+	/** Constructor from awt, to allow easy construction from existing apps. */
     public Box2D(java.awt.geom.Rectangle2D rect) {
 		this(rect.getX(), rect.getX() + rect.getWidth(), 
 			rect.getY(), rect.getY() + rect.getHeight());
@@ -656,6 +656,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
         return true;
     }
     
+	/**
+	 * @deprecated not necessary to clone immutable objects (0.11.2)
+	 */
+	@Deprecated
     @Override
     public Box2D clone() {
         return new Box2D(xmin, xmax, ymin, ymax);

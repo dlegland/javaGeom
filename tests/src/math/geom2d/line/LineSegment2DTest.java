@@ -491,9 +491,5 @@ public class LineSegment2DTest extends TestCase {
 		assertEquals(line2.project(pu2), 1, 1e-12);
 		assertEquals(line2.project(pu3), 1, 1e-12);
 	}
-	
-	public void testClone() {
-	    LineSegment2D edge = new LineSegment2D(10, 20, 30, 40);
-	    assertTrue(edge.equals(edge.clone()));
-	}
+
 }

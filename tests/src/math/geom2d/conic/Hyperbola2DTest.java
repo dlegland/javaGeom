@@ -177,23 +177,4 @@ public class Hyperbola2DTest extends TestCase {
 		assertTrue(arc2.getHyperbolaBranch().getHyperbola().equals(hyperbola));
 	}
 	
-//	public void testGetPathIterator(){
-//		Hyperbola2D hyperbola = new Hyperbola2D(0, 0, 1, 1, 0, true);
-//		Box2D box = new Box2D(-2, 2, -2, 2);
-//		
-//		// test number of intersections
-//		CurveSet2D<?> clipped = hyperbola.clip(box);
-//		assertTrue(clipped.getCurveNumber()==2);
-//		
-//		java.awt.geom.PathIterator path = clipped.getPathIterator(
-//				new java.awt.geom.AffineTransform());
-//	}
-	
-	public void testClone() {
-	    Hyperbola2D hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3);
-	    assertTrue(hyperbola.equals(hyperbola.clone()));
-	    
-	    hyperbola = new Hyperbola2D(10, 20, 30, 40, Math.PI/3, false);
-        assertTrue(hyperbola.equals(hyperbola.clone()));
-	}
 }

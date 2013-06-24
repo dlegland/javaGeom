@@ -168,6 +168,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         this.closed = closed;
     }
 
+    public PolyCurve2D(PolyCurve2D<? extends T> polyCurve) {
+    	super(polyCurve.curves);
+        this.closed = polyCurve.closed;
+    }
     
     // ===================================================================
     // Methods specific to PolyCurve2D

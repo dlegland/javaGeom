@@ -135,10 +135,6 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         this.dy = vector.y();
     }
 
-    protected AbstractLine2D(LinearShape2D line) {
-        this(line.origin(), line.direction());
-    }
-
     // ===================================================================
     // Methods specific to Line shapes
 
@@ -809,9 +805,10 @@ implements SmoothOrientedCurve2D, LinearElement2D {
         return result;
     }
     
-    /**
-     * Ensures public declaration of clone(), and ensures valid return type.
-     */
+	/**
+	 * @deprecated use copy constructor instead (0.11.2)
+	 */
+	@Deprecated
 	@Override
     public abstract AbstractLine2D clone();
 }
