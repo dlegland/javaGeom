@@ -81,7 +81,11 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
         super();
     }
 
-    public LinearRing2D(Point2D... vertices) {
+	public LinearRing2D(int n) {
+        super(n);
+    }
+
+	public LinearRing2D(Point2D... vertices) {
         super(vertices);
     }
 
@@ -110,21 +114,33 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
      * @return the signed area of the polyline.
      */
 	public double area() {
-		double area = 0;
+		// start from edge joining last and first vertices
 		Point2D prev = this.vertices.get(this.vertices.size() - 1);
-		Point2D point;
-		for (int i = 0; i < vertices.size(); i++) {
-			point = this.vertices.get(i);
+
+		// Iterate over all couples of adjacent vertices
+		double area = 0;
+		for (Point2D point : this.vertices) {
+			// add area of elementary parallelogram
 			area += prev.x() * point.y() - prev.y() * point.x();
 			prev = point;
 		}
+		
+		// divides by 2 to consider only elementary triangles
 		return area /= 2;
 	}
 
     // ===================================================================
-    // Methods specific to Polyline2D
+    // Methods specific to LinearCurve2D
 
-    /**
+	/**
+	 * Returns a simplified version of this linear ring, by using
+	 * Douglas-Peucker algorithm.
+	 */
+	public LinearRing2D simplify(double distMax) {
+		return new LinearRing2D(Polylines2D.simplifyClosedPolyline(this.vertices, distMax));
+	}
+
+	/**
      * Returns an array of LineSegment2D. The number of edges is the same as
      * the number of vertices.
      * 

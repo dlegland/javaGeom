@@ -31,13 +31,14 @@ implements CirculinearContinuousCurve2D {
     // ===================================================================
     // class variables
     
-    protected ArrayList<Point2D> vertices = new ArrayList<Point2D>();
+    protected ArrayList<Point2D> vertices;
 
 
     // ===================================================================
     // Contructors
 
     protected LinearCurve2D() {
+    	this.vertices = new ArrayList<Point2D>();
     }
 
     /**
@@ -50,16 +51,19 @@ implements CirculinearContinuousCurve2D {
     }
 
     protected LinearCurve2D(Point2D... vertices) {
+    	this.vertices = new ArrayList<Point2D>(vertices.length);
         for (Point2D vertex : vertices)
             this.vertices.add(vertex);
     }
 
     protected LinearCurve2D(Collection<? extends Point2D> vertices) {
+    	this.vertices = new ArrayList<Point2D>(vertices.size());
         this.vertices.addAll(vertices);
     }
 
     protected LinearCurve2D(double[] xcoords, double[] ycoords) {
-    	int n = xcoords.length;
+    	this.vertices = new ArrayList<Point2D>(xcoords.length);
+		int n = xcoords.length;
     	this.vertices.ensureCapacity(n);
         for (int i = 0; i < n; i++)
             vertices.add(new Point2D(xcoords[i], ycoords[i]));
@@ -69,6 +73,11 @@ implements CirculinearContinuousCurve2D {
     // ===================================================================
     // Methods specific to LinearCurve2D
 
+	/**
+	 * Returns a simplified version of this linear curve. Sub classes may
+	 * override this method to return a more specialized type.
+	 */
+	public abstract LinearCurve2D simplify(double distMax);
     
     /**
      * Returns an iterator on the collection of points.

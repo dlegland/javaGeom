@@ -37,6 +37,7 @@ import math.geom2d.Shape2D;
 import math.geom2d.circulinear.CirculinearContinuousCurve2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.domain.Boundary2D;
@@ -61,6 +62,14 @@ public class LinearRing2DTest extends TestCase {
 		junit.awtui.TestRunner.run(LinearRing2DTest.class);
 	}
 
+	public void testSimplify() {
+		Circle2D circle = new Circle2D(0, 0, 10);
+		LinearRing2D poly = circle.asPolyline(32);
+		LinearRing2D poly2 = poly.simplify(2.5);
+		
+		assertEquals(8, poly2.vertexNumber());
+	}
+	
 	public void testGetParallelPositiveDoubled() {
 		// create polyline
 		LinearRing2D ring = new LinearRing2D(new Point2D[]{
