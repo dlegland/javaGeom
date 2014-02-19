@@ -70,7 +70,7 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(8, poly2.vertexNumber());
 	}
 	
-	public void testGetParallelPositiveDoubled() {
+	public void testParallelPositiveDouble() {
 		// create polyline
 		LinearRing2D ring = new LinearRing2D(new Point2D[]{
 				new Point2D(100, 100),
@@ -84,7 +84,7 @@ public class LinearRing2DTest extends TestCase {
 		assertTrue(parallel.isClosed());
 	}
 	
-	public void testGetParallelNegativeDoubled() {
+	public void testParallelNegativeDouble() {
 		// create polyline
 		LinearRing2D ring = new LinearRing2D(new Point2D[]{
 				new Point2D(100, 100),
@@ -98,7 +98,7 @@ public class LinearRing2DTest extends TestCase {
 		assertTrue(parallel.isClosed());
 	}
 	
-	public void testGetBuffer() {
+	public void testBuffer() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
 				new Point2D(0, 0),
@@ -122,7 +122,7 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(smoothCurves.size(), 8);
 	}
 	
-	public void testGetBuffer_MShape() {
+	public void testBuffer_MShape() {
 		LinearRing2D ring = LinearRing2D.create(new Point2D[]{
 				new Point2D(100, 100),
 				new Point2D(300, 100),
@@ -139,7 +139,7 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(3, boundary.continuousCurves().size());
 	}
 	
-	public void testGetBuffer_SelfIntersect() {
+	public void testBuffer_SelfIntersect() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
 				new Point2D(0, 0),
@@ -158,7 +158,7 @@ public class LinearRing2DTest extends TestCase {
 	/**
 	 * Test buffer for a polyline with first and last point equal.
 	 */
-	public void testGetBuffer_LastPointDoubled () {
+	public void testBuffer_LastPointDoubled () {
 		// polyline with 4 vertices, 
 		LinearRing2D curve = new LinearRing2D(new Point2D[]{
 				new Point2D(100, 100), 
@@ -174,7 +174,7 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(2, buffer.boundary().continuousCurves().size());
 	}
 
-	public void testGetLength() {
+	public void testLength() {
 		// create polyline
 		LinearRing2D line = new LinearRing2D(new Point2D[]{
 				new Point2D(0, 0),
@@ -197,7 +197,7 @@ public class LinearRing2DTest extends TestCase {
 		assertEquals(line.vertexNumber(), points.length+1);		
 	}
 
-	public void testGetPoint() {
+	public void testPoint() {
 		// initialize points
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
@@ -231,7 +231,7 @@ public class LinearRing2DTest extends TestCase {
 		assertTrue(p40.equals(line1.point(4.1)));
 	}
 
-	public void testgetIntersections() {
+	public void testIntersections() {
 		// initialize points
 		Point2D[] points = new Point2D[3];
 		points[0] = new Point2D(0, -5);
@@ -258,7 +258,7 @@ public class LinearRing2DTest extends TestCase {
 		assertTrue(iter2.next().equals(new Point2D(15, 0)));
 	}
 
-	public void testGetSubCurve(){
+	public void testSubCurve(){
 		// initialize points
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);

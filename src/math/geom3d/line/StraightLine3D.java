@@ -7,14 +7,12 @@ package math.geom3d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.line.StraightLine2D;
 import math.geom3d.Box3D;
 import math.geom3d.Point3D;
 import math.geom3d.Shape3D;
 import math.geom3d.Vector3D;
 import math.geom3d.curve.ContinuousCurve3D;
 import math.geom3d.curve.Curve3D;
-import math.geom3d.plane.Plane3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -78,13 +76,13 @@ public class StraightLine3D implements ContinuousCurve3D {
         return new Vector3D(dx, dy, dz);
     }
 
-    /**
-     * not yet implemented
-     */
-    public StraightLine2D project(Plane3D plane) {
-    	// TODO Auto-generated method stub
-        return null;
-    }
+//    /**
+//     * not yet implemented
+//     */
+//    public StraightLine2D project(Plane3D plane) {
+//    	// TODO Auto-generated method stub
+//        return null;
+//    }
 
     // ===================================================================
     // methods implementing the Shape3D interface
