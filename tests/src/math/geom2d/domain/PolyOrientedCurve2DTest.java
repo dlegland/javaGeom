@@ -8,6 +8,7 @@
  */
 package math.geom2d.domain;
 
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.CircleArc2D;
 import junit.framework.TestCase;
@@ -88,4 +89,27 @@ public class PolyOrientedCurve2DTest extends TestCase {
 		assertEquals(curve, curve2);
 	}
 
+	public void testTransformClosed() {
+		double x1 = 100;
+		double x2 = 200;
+		double r = 100;
+		double y0 = 100;
+		
+		Point2D c1 = new Point2D(x1, y0);
+		Point2D c2 = new Point2D(x2, y0);
+		
+		double extent = 4*Math.PI/3;
+		CircleArc2D arc1 = new CircleArc2D(c1, r, Math.PI/3, extent);
+		CircleArc2D arc2 = new CircleArc2D(c2, r, 4*Math.PI/3, extent);
+		
+		PolyOrientedCurve2D<CircleArc2D> curve = PolyOrientedCurve2D.create(
+				new CircleArc2D[]{arc1, arc2});
+		curve.setClosed(true);
+		
+		AffineTransform2D trans = AffineTransform2D.createRotation(10, 20, Math.PI/3);
+		PolyOrientedCurve2D<?> curve2 = curve.transform(trans);
+		
+		assertNotNull(curve2);
+		assertTrue(curve2.isClosed());
+	}
 }
