@@ -52,6 +52,7 @@ import static java.lang.Math.*;
  * intersect nor self-intersect.
  * <p>
  * 
+ * @see BoundaryPolyCurve2D
  * @author dlegland
  */
 public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
@@ -335,11 +336,12 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     @Override
-    public PolyOrientedCurve2D<?> transform(AffineTransform2D trans) {
+    public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
         PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = 
         	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
         for (ContinuousOrientedCurve2D curve : curves)
             result.add(curve.transform(trans));
+        result.setClosed(this.closed);
         return result;
     }
     
