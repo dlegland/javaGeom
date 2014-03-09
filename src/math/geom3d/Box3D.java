@@ -5,6 +5,8 @@
 package math.geom3d;
 
 /**
+ * A 3-dimensional box, defined by its extent in each direction.
+ * 
  * @author dlegland
  */
 public class Box3D {

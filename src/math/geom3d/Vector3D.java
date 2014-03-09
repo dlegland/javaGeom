@@ -7,7 +7,7 @@ package math.geom3d;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
- * Define a vector in 3 Dimensions. Provides methods to compute cross product
+ * Define a vector in 3 dimensions. Provides methods to compute cross product
  * and dot product, addition and subtraction of vectors.
  */
 public class Vector3D {
@@ -174,16 +174,6 @@ public class Vector3D {
 		return x * x + y * y + z * z;
     }
 
-//    /**
-//     * Normalizes the vector, such that its norms becomes 1.
-//     */
-//    public void normalize() {
-//        double r = this.norm();
-//        this.x = this.x/r;
-//        this.y = this.y/r;
-//        this.z = this.z/r;
-//    }
-
     /**
      * Returns the vector with same direction as this one, but with norm equal
      * to 1.
@@ -214,15 +204,15 @@ public class Vector3D {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Vector3D))
-            return false;
+			return false;
 
-        Vector3D v = (Vector3D) obj;
-        if (Math.abs(x-v.x)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(y-v.y)>Shape3D.ACCURACY)
-            return false;
-        if (Math.abs(z-v.z)>Shape3D.ACCURACY)
-            return false;
+		Vector3D v = (Vector3D) obj;
+		if (Math.abs(x - v.x) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(y - v.y) > Shape3D.ACCURACY)
+			return false;
+		if (Math.abs(z - v.z) > Shape3D.ACCURACY)
+			return false;
         return true;
     }
 

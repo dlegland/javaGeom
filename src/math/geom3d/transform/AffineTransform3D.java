@@ -31,17 +31,20 @@ import math.geom3d.Shape3D;
 import math.geom3d.Vector3D;
 
 /**
+ * An affine transform in 3 dimensions. Contains also static methods for
+ * creating common transforms like translations or rotations.
+ * 
  * @author dlegland
  */
 public class AffineTransform3D implements Bijection3D {
 
-    // coefficients for x coordinate.
+    /** coefficients for x coordinate.*/
     protected double m00, m01, m02, m03;
 
-    // coefficients for y coordinate.
+    /** coefficients for y coordinate.*/
     protected double m10, m11, m12, m13;
 
-    // coefficients for y coordinate.
+    /** coefficients for z coordinate.*/
     protected double m20, m21, m22, m23;
 
     // ===================================================================
@@ -59,22 +62,28 @@ public class AffineTransform3D implements Bijection3D {
     public final static AffineTransform3D createRotationOx(double theta) {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
-        return new AffineTransform3D(1, 0, 0, 0, 0, cot, -sit, 0, 0, sit, cot,
-                0);
+        return new AffineTransform3D(
+        		1,   0,    0, 0, 
+        		0, cot, -sit, 0, 
+        		0, sit,  cot, 0);
     }
 
     public final static AffineTransform3D createRotationOy(double theta) {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
-        return new AffineTransform3D(cot, 0, sit, 0, 0, 1, 0, 0, -sit, 0, cot,
-                0);
+        return new AffineTransform3D(
+        		 cot, 0, sit, 0, 
+        		   0, 1,   0, 0, 
+        		-sit, 0, cot, 0);
     }
 
     public final static AffineTransform3D createRotationOz(double theta) {
         double cot = Math.cos(theta);
         double sit = Math.sin(theta);
-        return new AffineTransform3D(cot, -sit, 0, 0, sit, cot, 0, 0, 0, 0, 1,
-                0);
+        return new AffineTransform3D(
+        		cot, -sit, 0, 0, 
+        		sit,  cot, 0, 0, 
+        		  0,    0, 1, 0);
     }
 
     public final static AffineTransform3D createScaling(double s) {
@@ -98,7 +107,7 @@ public class AffineTransform3D implements Bijection3D {
     }
 
     public AffineTransform3D(double[] coefs) {
-        if (coefs.length==9) {
+        if (coefs.length == 9) {
             m00 = coefs[0];
             m01 = coefs[1];
             m02 = coefs[2];
@@ -108,7 +117,7 @@ public class AffineTransform3D implements Bijection3D {
             m20 = coefs[6];
             m21 = coefs[7];
             m22 = coefs[8];
-        } else if (coefs.length==12) {
+        } else if (coefs.length == 12) {
             m00 = coefs[0];
             m01 = coefs[1];
             m02 = coefs[2];
@@ -121,6 +130,9 @@ public class AffineTransform3D implements Bijection3D {
             m21 = coefs[9];
             m22 = coefs[10];
             m23 = coefs[11];
+        } else {
+			throw new IllegalArgumentException(
+					"Input array must have 9 or 12 elements");
         }
     }
 
@@ -145,30 +157,30 @@ public class AffineTransform3D implements Bijection3D {
     // accessors
 
     public boolean isIdentity() {
-        if (m00!=1)
-            return false;
-        if (m11!=1)
-            return false;
-        if (m22!=0)
-            return false;
-        if (m01!=0)
-            return false;
-        if (m02!=0)
-            return false;
-        if (m03!=0)
-            return false;
-        if (m10!=0)
-            return false;
-        if (m12!=0)
-            return false;
-        if (m13!=0)
-            return false;
-        if (m20!=0)
-            return false;
-        if (m21!=0)
-            return false;
-        if (m23!=0)
-            return false;
+		if (m00 != 1)
+			return false;
+		if (m11 != 1)
+			return false;
+		if (m22 != 0)
+			return false;
+		if (m01 != 0)
+			return false;
+		if (m02 != 0)
+			return false;
+		if (m03 != 0)
+			return false;
+		if (m10 != 0)
+			return false;
+		if (m12 != 0)
+			return false;
+		if (m13 != 0)
+			return false;
+		if (m20 != 0)
+			return false;
+		if (m21 != 0)
+			return false;
+		if (m23 != 0)
+			return false;
         return true;
     }
 
@@ -218,39 +230,57 @@ public class AffineTransform3D implements Bijection3D {
     // general methods
 
     /**
-     * Combines this transform with another AffineTransform.
+     * Returns the affine transform created by applying first the affine
+     * transform given by <code>that</code>, then this affine transform. 
+     * 
+     * @param that
+     *            the transform to apply first
+     * @return the composition this * that
      */
-    public void transform(AffineTransform3D trans) {
-		double n00 = m00 * trans.m00 + m10 * trans.m01;
-		double n10 = m00 * trans.m10 + m10 * trans.m11;
-		double n01 = m01 * trans.m00 + m11 * trans.m01;
-		double n11 = m01 * trans.m10 + m11 * trans.m11;
-		double n02 = m02 * trans.m00 + m12 * trans.m01 + trans.m02;
-		double n12 = m02 * trans.m10 + m12 * trans.m11 + trans.m12;
-    m00 = n00;
-        m01 = n01;
-        m02 = n02;
-        m10 = n10;
-        m11 = n11;
-        m12 = n12;
+    public AffineTransform3D concatenate(AffineTransform3D that) {
+		double n00 = m00 * that.m00 + m01 * that.m10 + m02 * that.m20;
+		double n01 = m00 * that.m01 + m01 * that.m11 + m02 * that.m21;
+		double n02 = m00 * that.m02 + m01 * that.m12 + m02 * that.m22;
+		double n03 = m00 * that.m03 + m01 * that.m13 + m02 * that.m23 + m03;
+		double n10 = m10 * that.m00 + m11 * that.m10 + m12 * that.m20;
+		double n11 = m10 * that.m01 + m11 * that.m11 + m12 * that.m21;
+		double n12 = m10 * that.m02 + m11 * that.m12 + m12 * that.m22;
+		double n13 = m10 * that.m03 + m11 * that.m13 + m12 * that.m23 + m13;
+		double n20 = m20 * that.m00 + m21 * that.m10 + m22 * that.m20;
+		double n21 = m20 * that.m01 + m21 * that.m11 + m22 * that.m21;
+		double n22 = m20 * that.m02 + m21 * that.m12 + m22 * that.m22;
+		double n23 = m20 * that.m03 + m21 * that.m13 + m22 * that.m23 + m23;
+		return new AffineTransform3D(
+				n00, n01, n02, n03,
+				n10, n11, n12, n13,
+				n20, n21, n22, n23);
     }
 
-    /**
-     * Combines this transform with another AffineTransform.
-     */
-    public void preConcatenate(AffineTransform3D trans) {
-		double n00 = trans.m00 * m00 + trans.m10 * m01;
-		double n10 = trans.m00 * m10 + trans.m10 * m11;
-		double n01 = trans.m01 * m00 + trans.m11 * m01;
-		double n11 = trans.m01 * m10 + trans.m11 * m11;
-		double n02 = trans.m02 * m00 + trans.m12 * m01 + m02;
-		double n12 = trans.m02 * m10 + trans.m12 * m11 + m12;
-        m00 = n00;
-        m01 = n01;
-        m02 = n02;
-        m10 = n10;
-        m11 = n11;
-        m12 = n12;
+	/**
+	 * Return the affine transform created by applying first this affine
+	 * transform, then the affine transform given by <code>that</code>. 
+	 * 
+	 * @param that
+	 *            the transform to apply in a second step
+	 * @return the composition that * this
+	 */
+    public AffineTransform3D preConcatenate(AffineTransform3D that) {
+		double n00 = that.m00 * m00 + that.m01 * m10 + that.m02 * m20;
+		double n01 = that.m00 * m01 + that.m01 * m11 + that.m02 * m21;
+		double n02 = that.m00 * m02 + that.m01 * m12 + that.m02 * m22;
+		double n03 = that.m00 * m03 + that.m01 * m13 + that.m02 * m23 + that.m03;
+		double n10 = that.m10 * m00 + that.m11 * m10 + that.m12 * m20;
+		double n11 = that.m10 * m01 + that.m11 * m11 + that.m12 * m21;
+		double n12 = that.m10 * m02 + that.m11 * m12 + that.m12 * m22;
+		double n13 = that.m10 * m03 + that.m11 * m13 + that.m12 * m23 + that.m13;
+		double n20 = that.m20 * m00 + that.m21 * m10 + that.m22 * m20;
+		double n21 = that.m20 * m01 + that.m21 * m11 + that.m22 * m21;
+		double n22 = that.m20 * m02 + that.m21 * m12 + that.m22 * m22;
+		double n23 = that.m20 * m03 + that.m21 * m13 + that.m22 * m23 + that.m23;
+		return new AffineTransform3D(
+				n00, n01, n02, n03,
+				n10, n11, n12, n13,
+				n20, n21, n22, n23);
     }
 
     /**
