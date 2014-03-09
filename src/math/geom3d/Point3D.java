@@ -29,6 +29,8 @@ package math.geom3d;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
+ * A 3-dimensional point.
+ * 
  * @author dlegland
  */
 public class Point3D implements Shape3D {
