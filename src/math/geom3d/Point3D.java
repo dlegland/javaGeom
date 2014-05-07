@@ -153,7 +153,7 @@ public class Point3D implements Shape3D {
 		return new Point3D(
 				x * coef[0] + y * coef[1] + z * coef[2] + coef[3], 
 				x * coef[4] + y * coef[5] + z * coef[6] + coef[7],
-				x * coef[8] + y * coef[9] + z * coef[10] + coef[12]);
+				x * coef[8] + y * coef[9] + z * coef[10] + coef[11]);
         
 
     }
