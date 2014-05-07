@@ -168,6 +168,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         this.closed = closed;
     }
 
+    /**
+     * Copy constructor of PolyCurve2D.
+     * @param polyCurve the polyCurve object to copy.
+     */
     public PolyCurve2D(PolyCurve2D<? extends T> polyCurve) {
     	super(polyCurve.curves);
         this.closed = polyCurve.closed;
@@ -217,16 +221,24 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
 
     /**
      * Converts this PolyCurve2D into a polyline with the given number of edges.
-     * @param n the number of edges of the result polyline
+     * @param n the number of edges of the resulting polyline
      * @see Polyline2D 
      */
     public Polyline2D asPolyline(int n) {
+    	// allocate point array
         Point2D[] points = new Point2D[n+1];
+        
+        // get parameterisation bounds
         double t0 = this.t0();
         double t1 = this.t1();
 		double dt = (t1 - t0) / n;
+		
+		// create vertices
 		for (int i = 0; i < n; i++)
 			points[i] = this.point(i * dt + t0);
+		points[n] = this.lastPoint();
+		
+		// return new polyline
 		return new Polyline2D(points);
 	}
 
@@ -265,12 +277,11 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
             return array;
         }
 
-        if (curve==null)
+        if (curve == null)
             return array;
 
-        System.err.println("could not find smooth parts of curve with class "
-                +curve.getClass().getName());
-        return array;
+        throw new IllegalArgumentException("could not find smooth parts of curve with class "
+                + curve.getClass().getName());
     }
 
     // ===================================================================
