@@ -492,4 +492,18 @@ public class LineSegment2DTest extends TestCase {
 		assertEquals(line2.project(pu3), 1, 1e-12);
 	}
 
+	/**
+	 * Tests distance between a point and a line segment for large coordinate values. 
+	 */
+	public void testDistancePoint_LargeValues() {
+		LineSegment2D line = new LineSegment2D(44154, 37711, 45754, 30113);
+		Point2D point = new Point2D(44767, 34320);
+		
+		Point2D projPoint = line.projectedPoint(point);
+		
+		double dist = line.distance(point);
+		double dist2 = point.distance(projPoint);
+
+		assertEquals(dist, dist2, 1e-5);
+	}
 }

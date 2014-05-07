@@ -308,12 +308,19 @@ implements Cloneable, CirculinearElement2D {
      */
     @Override
 	public double distance(double x, double y) {
-		Point2D proj = super.projectedPoint(x, y);
-		if (contains(proj))
-			return proj.distance(x, y);
-		double d1 = Math.hypot(x0 - x, y0 - y);
-		double d2 = Math.hypot(x0 + dx - x, y0 + dy - y);
-		return Math.min(d1, d2);
+        // compute position on the line
+    	StraightLine2D line = this.supportingLine();
+        double t = line.positionOnLine(x, y);
+
+        // clamp with parameterization bounds of edge
+		t = Math.max(Math.min(t, 1), 0);
+		t = Math.min(t, 1);
+		
+		// compute position of projected point on the edge
+		Point2D proj = line.point(t);
+		
+		// return distance to projected point
+		return proj.distance(x, y);
     }
 
     @Override
