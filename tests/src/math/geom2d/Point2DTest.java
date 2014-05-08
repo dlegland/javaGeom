@@ -47,10 +47,6 @@ public class Point2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Point2DTest.class);
-	}
-
 	/*
 	 * Test for double getDistance(Point2D)
 	 */

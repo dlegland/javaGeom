@@ -55,10 +55,6 @@ public class Polyline2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Polyline2DTest.class);
-	}
-
 	public void testSimplify() {
 		CircleArc2D arc = new CircleArc2D(0, 0, 10, 0, Math.PI / 2);
 		Polyline2D poly = arc.asPolyline(16);

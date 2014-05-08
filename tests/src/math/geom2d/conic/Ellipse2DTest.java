@@ -58,10 +58,6 @@ public class Ellipse2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Ellipse2DTest.class);
-	}
-
 	public void testCreatePointPointDouble(){
 		Ellipse2D base = new Ellipse2D(20, 30, 10, 4, Math.PI/3);
 		Point2D focus1 = base.focus1();

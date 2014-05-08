@@ -92,10 +92,6 @@ public class InvertedRay2DTest extends TestCase {
     	assertTrue(line1.parallel(1).equals(line1p));
     }
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(InvertedRay2DTest.class);
-	}
-
 	public void testIsBounded(){
 		InvertedRay2D ray1 = new InvertedRay2D(2, 2, 1, 0);
 		assertFalse(ray1.isBounded());

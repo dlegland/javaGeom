@@ -54,10 +54,6 @@ public class Ray2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Ray2DTest.class);
-	}
-
 	public void testGetBufferDouble() {
     	Point2D p1 = new Point2D(10, 10);
     	Point2D p2 = new Point2D(20, 30);

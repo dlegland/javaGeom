@@ -58,10 +58,6 @@ public class LinearRing2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(LinearRing2DTest.class);
-	}
-
 	public void testSimplify() {
 		Circle2D circle = new Circle2D(0, 0, 10);
 		LinearRing2D poly = circle.asPolyline(32);

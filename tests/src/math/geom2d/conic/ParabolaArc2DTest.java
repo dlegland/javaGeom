@@ -47,10 +47,6 @@ public class ParabolaArc2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(ParabolaArc2DTest.class);
-	}
-
 	public void testGetPoint(){
 		
 		// Vertical parabola

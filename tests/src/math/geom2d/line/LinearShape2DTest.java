@@ -41,11 +41,6 @@ public class LinearShape2DTest extends TestCase {
 	public LinearShape2DTest(String arg0) {
 		super(arg0);
 	}
-
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(LinearShape2DTest.class);
-	}
-	
 	
 	/*
 	 * Test for boolean contains(double, double)
