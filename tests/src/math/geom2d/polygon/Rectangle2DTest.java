@@ -43,10 +43,6 @@ public class Rectangle2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Rectangle2DTest.class);
-	}
-
 	public void testCentroid() {
 		Rectangle2D rect = new Rectangle2D(10, 20, 30, 40);
 		Point2D exp = new Point2D(25, 40);

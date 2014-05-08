@@ -55,10 +55,6 @@ public class SimplePolygon2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(SimplePolygon2DTest.class);
-	}
-
 	public void testGetComplement(){
 		// start with a simple rectangle
 		Point2D points[] = new Point2D[4];

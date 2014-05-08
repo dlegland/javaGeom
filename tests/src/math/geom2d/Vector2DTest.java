@@ -43,10 +43,6 @@ public class Vector2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Vector2DTest.class);
-	}
-
 	public void testDotVector2DVector2D() {
 	    double eps = 1e-14;
 	    

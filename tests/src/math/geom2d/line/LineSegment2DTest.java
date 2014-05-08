@@ -53,10 +53,6 @@ public class LineSegment2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(LineSegment2DTest.class);
-	}
-
 	public void testGetBuffer() {
 		// create a line segment, and computes its buffer
 	    LineSegment2D line = new LineSegment2D(50, 100, 150, 100);

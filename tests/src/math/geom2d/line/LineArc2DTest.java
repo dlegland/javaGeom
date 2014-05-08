@@ -43,10 +43,6 @@ public class LineArc2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(LineArc2DTest.class);
-	}
-
 	public void testGetParallelDouble() {
 		Point2D p1 = new Point2D(1, 1);
 		Point2D p2 = new Point2D(1, 3);

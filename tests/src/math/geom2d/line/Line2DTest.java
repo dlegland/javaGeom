@@ -44,11 +44,7 @@ public class Line2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Line2DTest.class);
-	}
-
-    public void testGetParallelDouble() {
+	public void testGetParallelDouble() {
     	Point2D p1 = new Point2D(1, 1);
     	Point2D p2 = new Point2D(1, 3);
     	Line2D line1 = new Line2D(p1, p2);

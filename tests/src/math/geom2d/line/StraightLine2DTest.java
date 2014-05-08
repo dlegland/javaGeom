@@ -49,10 +49,6 @@ public class StraightLine2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(StraightLine2DTest.class);
-	}
-
 	public void testGetParallel() {
 		
 	}

@@ -28,7 +28,6 @@ package math.geom2d.circulinear;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
@@ -90,7 +89,7 @@ public class CirculinearCurves2DTest extends TestCase {
 		
 		try {
 			CirculinearCurves2D.convert(curve);
-			Assert.fail("should have thrown an exception");
+			fail("should have thrown an exception");
 		} catch (NonCirculinearClassException ex) {
 			// should go here
 		}
@@ -134,7 +133,7 @@ public class CirculinearCurves2DTest extends TestCase {
 		
 		try {
 			CirculinearCurves2D.convert(curve);
-			Assert.fail("should have thrown an exception");
+			fail("should have thrown an exception");
 		} catch (NonCirculinearClassException ex) {
 			// should go here
 		}

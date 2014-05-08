@@ -50,10 +50,6 @@ public class Parabola2DTest extends TestCase {
 		super(arg0);
 	}
 
-	public static void main(String[] args) {
-		junit.awtui.TestRunner.run(Parabola2DTest.class);
-	}
-
 	public void testGetPoint(){		
 		// Vertical parabola
 		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);		
