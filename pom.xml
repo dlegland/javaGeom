@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>javaGeom</groupId>
+	<artifactId>javaGeom</artifactId>
+	<packaging>jar</packaging>
+	<version>0.11.3</version>
+	<url>http://geom-java.sourceforge.net/</url>
+
+	<description>A Java library for geometric computing and computational geometry</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.seisw</groupId>
+			<artifactId>gpcj</artifactId>
+			<version>2.2.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/gpcj-2.2.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+		 	<!--  Configure Unit tests: do not impose tests to pass to build jar-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+			
+			<!-- Add the possibility to execute maven as plugin ? -->
+			<!-- 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+ 			-->
+ 			
+			<!-- Configure the jar output directory such that plugin can be seen when 
+				ImageJ is run directly from eclipse workspace -->
+			<!-- 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/jar</outputDirectory>
+				</configuration>
+			</plugin>
+ 			-->
+ 			
+			<!-- plugin for generating the javadoc. Output is located in "ijpb-plugins/target/site/apidocs" -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+					<encoding>ISO-8859-1</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
+</project>
