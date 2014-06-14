@@ -29,14 +29,36 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-		 	<!--  Configure Unit tests: do not impose tests to pass to build jar-->
+		<pluginManagement><plugins>
+			<!-- Configure Unit tests: do not impose tests to pass to build jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
+			</plugin>
+
+			<!-- I want to generate demo and check classes -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.basedir}/src/demo</source>
+							</sources>
+							<outputDirectory>>${project.build.directory}/demo</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			
 			<!-- Add the possibility to execute maven as plugin ? -->
@@ -84,7 +106,6 @@
 				</executions>
 			</plugin>
 
-		</plugins>
-
+		</plugins></pluginManagement>
 	</build>
 </project>
