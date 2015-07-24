@@ -36,10 +36,10 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
      * collection of curves.
      * @since 0.8.1
      */
-    public static <T extends CirculinearContinuousCurve2D> 
+    /*public static <T extends CirculinearContinuousCurve2D> 
     PolyCirculinearCurve2D<T> create(Collection<T> curves) {
     	return new PolyCirculinearCurve2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array
@@ -56,10 +56,10 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
      * collection of curves and a flag indicating if the curve is closed.
      * @since 0.9.0
      */
-    public static <T extends CirculinearContinuousCurve2D> 
+    /*public static <T extends CirculinearContinuousCurve2D> 
     PolyCirculinearCurve2D<T> create(Collection<T> curves, boolean closed) {
     	return new PolyCirculinearCurve2D<T>(curves, closed);
-    }
+    }*/
     
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array

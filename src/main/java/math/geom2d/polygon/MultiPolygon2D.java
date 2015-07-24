@@ -10,6 +10,7 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
+import math.geom2d.circulinear.CirculinearContour2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
@@ -338,7 +339,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 	}
 
     public CirculinearContourArray2D<LinearRing2D> boundary() {
-        return CirculinearContourArray2D.create(rings);
+        return CirculinearContourArray2D.create(rings.toArray(new LinearRing2D[0]));
     }
 
 	/* (non-Javadoc)

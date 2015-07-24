@@ -66,10 +66,10 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * curves.
      * @since 0.8.1
      */
-    public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
+    /*public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
     create(Collection<T> curves) {
     	return new PolyOrientedCurve2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new PolyOrientedCurve2D from an array of
@@ -96,10 +96,10 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * curves and a flag indicating if the curve is closed or not.
      * @since 0.9.0
      */
-    public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
+    /*public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
     create(Collection<T> curves, boolean closed) {
     	return new PolyOrientedCurve2D<T>(curves, closed);
-    }
+    }*/
     
     /**
      * Static factory for creating a new PolyOrientedCurve2D from an array of

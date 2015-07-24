@@ -56,10 +56,10 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * curves.
      * @since 0.8.1
      */
-    public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
+    /*public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
     		Collection<T> curves) {
     	return new PolyCurve2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new PolyCurve2D from an array of

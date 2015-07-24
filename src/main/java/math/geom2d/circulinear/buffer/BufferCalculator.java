@@ -128,7 +128,7 @@ public class BufferCalculator {
 			parallelContours.add(contour.parallel(dist));
 		
 		// Create an agglomeration of the curves
-		return CirculinearContourArray2D.create(parallelContours);
+		return CirculinearContourArray2D.create(parallelContours.toArray(new CirculinearContour2D[0]));
 	}
 
 	public CirculinearContour2D createParallelContour(
@@ -148,7 +148,7 @@ public class BufferCalculator {
 			getParallelElements(contour, dist);
 		
 		// Create a new boundary with the set of parallel curves
-		return BoundaryPolyCirculinearCurve2D.create(parallelCurves, 
+		return BoundaryPolyCirculinearCurve2D.create(parallelCurves.toArray(new CirculinearContinuousCurve2D[0]),
 				contour.isClosed());
 	}
 	
@@ -170,7 +170,7 @@ public class BufferCalculator {
 		
 		// Create a new circulinear continuous curve with the set of parallel
 		// curves
-		return PolyCirculinearCurve2D.create(parallelCurves, curve.isClosed());
+		return PolyCirculinearCurve2D.create(parallelCurves.toArray(new CirculinearContinuousCurve2D[0]), curve.isClosed());
 	}
 	
 	private Collection<CirculinearContinuousCurve2D> getParallelElements(
@@ -294,7 +294,7 @@ public class BufferCalculator {
 		// All the rings are created, we can now create a new domain with the
 		// set of rings
 		return new GenericCirculinearDomain2D(
-				CirculinearContourArray2D.create(contours2));
+				CirculinearContourArray2D.create(contours2.toArray(new CirculinearContour2D[0])));
 	}
 	
 	/**
@@ -331,7 +331,7 @@ public class BufferCalculator {
 		}
 
 		return new GenericCirculinearDomain2D(
-				CirculinearContourArray2D.create(contours2));
+				CirculinearContourArray2D.create(contours2.toArray(new CirculinearContour2D[0])));
 	}
 
 	/**
@@ -503,9 +503,9 @@ public class BufferCalculator {
 		
 		// if the curve is closed, return an instance of GenericCirculinearRing2D
 		if (curve.isClosed())
-			return GenericCirculinearRing2D.create(curve.smoothPieces());
+			return GenericCirculinearRing2D.create(curve.smoothPieces().toArray(new CirculinearElement2D[0]));
 		
-		return BoundaryPolyCirculinearCurve2D.create(curve.smoothPieces());
+		return BoundaryPolyCirculinearCurve2D.create(curve.smoothPieces().toArray(new CirculinearContinuousCurve2D[0]));
 	}
 	
 	private double getDistanceCurveSingularPoints(

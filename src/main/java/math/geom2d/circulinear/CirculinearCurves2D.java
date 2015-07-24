@@ -87,7 +87,7 @@ public class CirculinearCurves2D {
 			}
 
 			// create the resulting CirculinearContinuousCurve2D
-			return CirculinearCurveArray2D.create(curves);
+			return CirculinearCurveArray2D.create(curves.toArray(new CirculinearElement2D[0]));
 		}
 
 		//TODO: throw exception ?
@@ -620,7 +620,7 @@ public class CirculinearCurves2D {
 
 			// create continuous curve formed only by circulinear elements
 			// and add it to the set of curves
-			contours.add(BoundaryPolyCirculinearCurve2D.create(elements, true));
+			contours.add(BoundaryPolyCirculinearCurve2D.create(elements.toArray(new CirculinearElement2D[0]), true));
 		}
 
 		return contours;
@@ -764,7 +764,7 @@ public class CirculinearCurves2D {
 
 			// create continuous curve formed only by circulinear elements
 			// and add it to the set of curves
-			contours.add(BoundaryPolyCirculinearCurve2D.create(elements, true));
+			contours.add(BoundaryPolyCirculinearCurve2D.create(elements.toArray(new CirculinearElement2D[0]), true));
 		}
 
 		// Process other curves, while there are intersections left
@@ -807,7 +807,7 @@ public class CirculinearCurves2D {
 
 			// create continuous curve formed only by circulinear elements
 			// and add it to the set of curves
-			contours.add(BoundaryPolyCirculinearCurve2D.create(elements, true));
+			contours.add(BoundaryPolyCirculinearCurve2D.create(elements.toArray(new CirculinearElement2D[0]), true));
 		}
 
 		return contours;

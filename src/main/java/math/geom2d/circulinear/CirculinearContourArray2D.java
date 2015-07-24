@@ -46,10 +46,10 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
      * collection of curves.
      * @since 0.8.1
      */
-	public static <T extends CirculinearContour2D> 
+	/*public static <T extends CirculinearContour2D>
 	CirculinearContourArray2D<T> create(Collection<T> curves) {
 		return new CirculinearContourArray2D<T>(curves);
-	}
+	}*/
 
     /**
      * Static factory for creating a new CirculinearContourArray2D from an 
@@ -246,6 +246,6 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
             curves.add((CirculinearContinuousCurve2D) curve);
 
         // Create CurveSet for the result
-        return CirculinearCurveArray2D.create(curves);
+        return CirculinearCurveArray2D.create(curves.toArray(new CirculinearElement2D[0]));
     }
 }

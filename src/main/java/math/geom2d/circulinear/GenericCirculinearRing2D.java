@@ -37,10 +37,10 @@ implements CirculinearRing2D {
      * curves.
      * @since 0.8.1
      */
-    public static <T extends CirculinearElement2D> GenericCirculinearRing2D
+    /*public static <T extends CirculinearElement2D> GenericCirculinearRing2D
     create(Collection<T> curves) {
     	return new GenericCirculinearRing2D(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new GenericCirculinearRing2D from an array of
