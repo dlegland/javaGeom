@@ -718,11 +718,15 @@ public class CircleArc2DTest extends TestCase {
 
 		Circle2D a = new Circle2D(10, 10, 5);
 		Circle2D b = new Circle2D(12, 10, 5);
+		Circle2D t = new Circle2D(20, 10, 5);
 		Optional<Collection<Point2D>> xs = arc.intersections(a);
 
 		assertTrue(!xs.isPresent());
 
 		xs = arc.intersections(b);
 		assertTrue(2 == xs.get().size());
+
+		xs = arc.intersections(t);
+		assertTrue(1 == xs.get().size());
 	}
 }
