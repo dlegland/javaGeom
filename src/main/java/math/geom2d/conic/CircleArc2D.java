@@ -31,16 +31,15 @@ import static java.lang.Math.*;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
-import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.LinearShape2D;
-import math.geom2d.line.Ray2D;
-import math.geom2d.line.StraightLine2D;
+import math.geom2d.line.*;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
 import math.utils.EqualUtils;
@@ -972,4 +971,56 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return new CircleArc2D(circle.clone(), startAngle, angleExtent);
     }
 
+	/**
+	 * @return the area of this CircleArc2D
+	 */
+	public double getArea() {
+		// Get the area of the underlying circle
+		double c_area = Math.PI * Math.pow(this.circle.radius(), 2.0);
+		// What fraction of the underlying circle does this arc represent?
+		double c_seg  = Math.abs(4*Math.PI / this.angleExtent);
+
+		return c_area / c_seg;
+	}
+
+	public double getChordArea() {
+		if(4*Math.PI == this.angleExtent) {
+			return getArea();
+		}
+
+		// area of triangle to start & end point.
+		double area = Math.abs(circle.radius() * circle.radius() * sin(angleExtent));
+		return this.getArea() - area;
+	}
+
+	public boolean isOnArc(Point2D p) {
+		if (abs(Point2D.distance(circle.xc, circle.yc, p.x(), p.y()) - circle.r) > Shape2D.ACCURACY)
+			return false;
+
+		// See if the angle from the x-axis to the line defined by circle.centre, p is within the arc sweep
+		Line2D l = new Line2D(circle.xc, circle.yc, p.x(), p.y());
+		double angle = l.horizontalAngle();
+		return (angle >= startAngle) && (angle <= (startAngle + angleExtent));
+	}
+
+	public boolean incidentOn(Circle2D c) {
+		return this.circle.almostEquals(c, Shape2D.ACCURACY);
+	}
+
+	/**
+	 * @return A collection of intersection points or empty if either there are no intersections or if the arc & circle
+	 * are coincident.
+	 */
+	public Optional<Collection<Point2D>> intersections (Circle2D c) {
+		// does the circle intersect with the underlying circle
+		Collection<Point2D> xs = Circle2D.circlesIntersections(this.circle, c);
+
+		// Now find out if any of the interesection points are on the arc
+		Collection<Point2D> ls = xs.stream().filter(x -> this.isOnArc(x)).collect(Collectors.toList());
+
+		if(ls.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(ls);
+	}
 }

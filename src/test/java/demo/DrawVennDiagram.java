@@ -173,6 +173,7 @@ public class DrawVennDiagram extends JPanel{
 		panel.setPreferredSize(new Dimension(600, 500));
 		
 		JFrame frame = new JFrame("Draw Venn Diagram demo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
 		
 		frame.pack();
