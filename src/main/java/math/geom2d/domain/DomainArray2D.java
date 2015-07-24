@@ -4,7 +4,7 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 17 août 10
+ * Created: 17 aoï¿½t 10
  */
 package math.geom2d.domain;
 
@@ -28,9 +28,9 @@ import math.geom2d.polygon.*;
 public class DomainArray2D<T extends Domain2D> extends ShapeArray2D<T> 
 implements DomainSet2D<T> {
 
-	public static <D extends Domain2D> DomainArray2D<D> create(Collection<D> array) {
+	/*public static <D extends Domain2D> DomainArray2D<D> create(Collection<D> array) {
 		return new DomainArray2D<D>(array);
-	}
+	}*/
 	
 	public static <D extends Domain2D> DomainArray2D<D> create(D... array) {
 		return new DomainArray2D<D>(array);

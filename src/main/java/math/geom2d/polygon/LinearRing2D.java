@@ -201,7 +201,7 @@ public class LinearRing2D extends LinearCurve2D implements CirculinearRing2D {
     public CirculinearRing2D parallel(double dist) {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 		return GenericCirculinearRing2D.create(
-    			bc.createContinuousParallel(this, dist).smoothPieces());
+    			bc.createContinuousParallel(this, dist).smoothPieces().toArray(new CirculinearElement2D[0]));
     }
     
 	/* (non-Javadoc)

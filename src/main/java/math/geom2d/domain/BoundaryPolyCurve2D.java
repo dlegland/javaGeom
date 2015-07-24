@@ -50,10 +50,10 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
      * of curves.
      * @since 0.8.1
      */
-    public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
+    /*public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
     		Collection<T> curves) {
     	return new BoundaryPolyCurve2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new BoundaryPolyCurve2D from an array of

@@ -130,10 +130,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
     	double y1 = p1.y();
     	double x2 = p2.x();
     	double y2 = p2.y();
-        this.xmin = min(x1, x2);
-        this.xmax = max(x1, x2);
-        this.ymin = min(y1, y2);
-        this.ymax = max(y1, y2);
+        this.xmin = Math.min(x1, x2);
+        this.xmax = Math.max(x1, x2);
+        this.ymin = Math.min(y1, y2);
+        this.ymax = Math.max(y1, y2);
     }
 
     /** Constructor from a point, a width and an height */
@@ -453,10 +453,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return a new Box2D
      */
     public Box2D union(Box2D box) {
-        double xmin = min(this.xmin, box.xmin);
-        double xmax = max(this.xmax, box.xmax);
-        double ymin = min(this.ymin, box.ymin);
-        double ymax = max(this.ymax, box.ymax);
+        double xmin = Math.min(this.xmin, box.xmin);
+        double xmax = Math.max(this.xmax, box.xmax);
+        double ymin = Math.min(this.ymin, box.ymin);
+        double ymax = Math.max(this.ymax, box.ymax);
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -468,10 +468,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return a new Box2D
      */
     public Box2D intersection(Box2D box) {
-        double xmin = max(this.xmin, box.xmin);
-        double xmax = min(this.xmax, box.xmax);
-        double ymin = max(this.ymin, box.ymin);
-        double ymax = min(this.ymax, box.ymax);
+        double xmin = Math.max(this.xmin, box.xmin);
+        double xmax = Math.min(this.xmax, box.xmax);
+        double ymin = Math.max(this.ymin, box.ymin);
+        double ymax = Math.min(this.ymax, box.ymax);
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -482,10 +482,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return this
      */
     public Box2D merge(Box2D box) {
-        this.xmin = min(this.xmin, box.xmin);
-        this.xmax = max(this.xmax, box.xmax);
-        this.ymin = min(this.ymin, box.ymin);
-        this.ymax = max(this.ymax, box.ymax);
+        this.xmin = Math.min(this.xmin, box.xmin);
+        this.xmax = Math.max(this.xmax, box.xmax);
+        this.ymin = Math.min(this.ymin, box.ymin);
+        this.ymax = Math.max(this.ymax, box.ymax);
         return this;
     }
 
@@ -496,10 +496,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
      * @return the clipped box
      */
     public Box2D clip(Box2D box) {
-        this.xmin = max(this.xmin, box.xmin);
-        this.xmax = min(this.xmax, box.xmax);
-        this.ymin = max(this.ymin, box.ymin);
-        this.ymax = min(this.ymax, box.ymax);
+        this.xmin = Math.max(this.xmin, box.xmin);
+        this.xmax = Math.min(this.xmax, box.xmax);
+        this.ymin = Math.max(this.ymin, box.ymin);
+        this.ymax = Math.min(this.ymax, box.ymax);
         return this;
     }
 
@@ -521,10 +521,10 @@ public class Box2D implements GeometricObject2D, Cloneable {
     	// update bounds with coordinates of transformed box vertices
     	for (Point2D point : this.vertices()) {
     		point = point.transform(trans);
-    		xmin = min(xmin, point.x());
-    		ymin = min(ymin, point.y());
-    		xmax = max(xmax, point.x());
-    		ymax = max(ymax, point.y());
+    		xmin = Math.min(xmin, point.x());
+    		ymin = Math.min(ymin, point.y());
+    		xmax = Math.max(xmax, point.x());
+    		ymax = Math.max(ymax, point.y());
     	}
     	
     	// create the resulting box

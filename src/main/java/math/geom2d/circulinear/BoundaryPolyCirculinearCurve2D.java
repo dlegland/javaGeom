@@ -44,22 +44,22 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
      * collection of curves.
      * @since 0.8.1
      */
-	public static <T extends CirculinearContinuousCurve2D> 
+	/*public static <T extends CirculinearContinuousCurve2D>
 	BoundaryPolyCirculinearCurve2D<T>
 	create(Collection<T> curves) {
 		return new BoundaryPolyCirculinearCurve2D<T>(curves);
-	}
+	}*/
 
     /**
      * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a
      * collection of curves.
      * @since 0.8.1
      */
-	public static <T extends CirculinearContinuousCurve2D> 
+	/*public static <T extends CirculinearContinuousCurve2D> 
 	BoundaryPolyCirculinearCurve2D<T>
 	create(Collection<T> curves, boolean closed) {
 		return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
-	}
+	}*/
 
     /**
      * Static factory for creating a new BoundaryPolyCirculinearCurve2D from an
@@ -158,7 +158,7 @@ implements CirculinearContinuousCurve2D, CirculinearContour2D {
 		BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
     	return GenericCirculinearRing2D.create(
-    			bc.createContinuousParallel(this, dist).smoothPieces());
+    			bc.createContinuousParallel(this, dist).smoothPieces().toArray(new CirculinearElement2D[0]));
     }
     
 	

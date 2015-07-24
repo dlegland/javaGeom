@@ -65,7 +65,7 @@ implements CirculinearDomain2D {
 		return new GenericCirculinearDomain2D(
 				CirculinearContourArray2D.create(
 						CirculinearCurves2D.splitIntersectingContours(
-								newBoundary.continuousCurves())));
+								newBoundary.continuousCurves()).toArray(new CirculinearContour2D[0])));
 	}
 
 	/* (non-Javadoc)

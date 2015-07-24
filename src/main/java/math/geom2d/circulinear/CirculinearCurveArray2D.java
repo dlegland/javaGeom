@@ -46,10 +46,10 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
      * curves.
      * @since 0.8.1
      */
-    public static <T extends CirculinearCurve2D> CirculinearCurveArray2D<T> create(
+    /*public static <T extends CirculinearCurve2D> CirculinearCurveArray2D<T> create(
     		Collection<T> curves) {
     	return new CirculinearCurveArray2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new CirculinearCurveArray2D from an array of

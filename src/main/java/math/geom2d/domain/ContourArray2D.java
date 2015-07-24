@@ -54,10 +54,10 @@ implements Boundary2D {
      * contours.
      * @since 0.8.1
      */
-    public static <T extends Contour2D> ContourArray2D<T> create(
+    /*public static <T extends Contour2D> ContourArray2D<T> create(
     		Collection<T> curves) {
     	return new ContourArray2D<T>(curves);
-    }
+    }*/
     
     /**
      * Static factory for creating a new ContourArray2D from an array of
