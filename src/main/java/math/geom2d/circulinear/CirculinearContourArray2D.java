@@ -56,6 +56,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
      * array of curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends CirculinearContour2D> 
     CirculinearContourArray2D<T> create(T... curves) {
     	return new CirculinearContourArray2D<T>(curves);
@@ -86,6 +87,7 @@ extends ContourArray2D<T> implements CirculinearBoundary2D {
      * 
      * @param curves the array of curves in the set
      */
+	@SafeVarargs
     public CirculinearContourArray2D(T... curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)

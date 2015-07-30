@@ -29,6 +29,7 @@ implements ShapeSet2D<T>, Cloneable {
 		return new ShapeArray2D<T>(shapes);
 	}
 
+	@SafeVarargs
 	public static <T extends Shape2D> ShapeArray2D<T> create(T... shapes) {
 		return new ShapeArray2D<T>(shapes);
 	}

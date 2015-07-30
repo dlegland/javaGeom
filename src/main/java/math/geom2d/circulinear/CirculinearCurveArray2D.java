@@ -56,6 +56,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
      * curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends CirculinearCurve2D> CirculinearCurveArray2D<T> create(
     		T... curves) {
     	return new CirculinearCurveArray2D<T>(curves);
@@ -85,6 +86,7 @@ extends CurveArray2D<T> implements CirculinearCurveSet2D<T> {
      * 
      * @param curves the array of curves in the set
      */
+	@SafeVarargs
     public CirculinearCurveArray2D(T... curves) {
     	this.curves = new ArrayList<T>(curves.length);
         for (T element : curves)

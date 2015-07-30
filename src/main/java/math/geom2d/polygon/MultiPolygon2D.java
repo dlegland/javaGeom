@@ -10,7 +10,6 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.GeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.CirculinearContour2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;

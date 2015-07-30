@@ -32,6 +32,7 @@ implements DomainSet2D<T> {
 		return new DomainArray2D<D>(array);
 	}*/
 	
+	@SafeVarargs
 	public static <D extends Domain2D> DomainArray2D<D> create(D... array) {
 		return new DomainArray2D<D>(array);
 	}
@@ -59,6 +60,7 @@ implements DomainSet2D<T> {
 	/**
 	 * @param domains the initial set of domains that constitutes this array.
 	 */
+	@SafeVarargs
 	public DomainArray2D(T... domains) {
     	super(domains);
 	}

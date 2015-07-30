@@ -66,6 +66,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends ContinuousCurve2D> PolyCurve2D<T> create(
     		T... curves) {
     	return new PolyCurve2D<T>(curves);
@@ -76,6 +77,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * curves.
      * @since 0.10.0
      */
+	@SafeVarargs
     public static <T extends ContinuousCurve2D> PolyCurve2D<T> createClosed(
     		T... curves) {
     	return new PolyCurve2D<T>(curves, true);
@@ -138,6 +140,7 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
      * Creates a new PolyCurve2D from the specified list of curves.
      * @param curves the curves that constitutes this PolyCurve2D
      */
+	@SafeVarargs
     public PolyCurve2D(T... curves) {
         super(curves);
     }

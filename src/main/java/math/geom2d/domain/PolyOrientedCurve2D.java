@@ -42,7 +42,6 @@ import math.geom2d.curve.CurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.curve.SmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
-
 import static java.lang.Math.*;
 
 
@@ -76,6 +75,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends ContinuousOrientedCurve2D> 
     PolyOrientedCurve2D<T> create(T... curves) {
     	return new PolyOrientedCurve2D<T>(curves);
@@ -86,6 +86,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
      * curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends ContinuousOrientedCurve2D> 
     PolyOrientedCurve2D<T> createClosed(T... curves) {
     	return new PolyOrientedCurve2D<T>(curves, true);
@@ -123,6 +124,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(size);
     }
 
+	@SafeVarargs
     public PolyOrientedCurve2D(T... curves) {
         super(curves);
     }
