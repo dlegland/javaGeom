@@ -268,6 +268,31 @@ public class SimplePolygon2DTest extends TestCase {
 		assertTrue(polygon.contains(pIn2));
 	}
 	
+	/*
+	 * Test for boolean contains(double, double)
+	 */
+	public void testContains2(){
+		// three vertices
+		Point2D vertex1 = new Point2D(0.14142135623730953, 0.14142135623730948);
+		Point2D vertex2 = new Point2D(0.7071067811865477, 0.7071067811865474);
+		Point2D vertex3 = new Point2D(0.7071067811865474, -0.7071067811865477);
+		
+		// create vertex array
+		Point2D[] loop2 = new Point2D[3];
+		loop2[0] = vertex1;
+		loop2[1] = vertex2;
+		loop2[2] = vertex3;
+		
+		// create polygon
+		SimplePolygon2D triangle = new SimplePolygon2D(loop2);
+		
+		// The following point is outside of triangle, but the triangle is CW
+		// oriented. Therefore, the "contains" method should return true.
+		Point2D point = new Point2D(0.0,0.0);
+		boolean cont = triangle.contains(point);
+		assertTrue(cont);
+	}
+
 	public void testGetCentroiddoubledouble(){
 		// start with a simple rectangle
 		Point2D points[] = new Point2D[4];
