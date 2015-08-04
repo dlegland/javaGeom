@@ -695,9 +695,9 @@ public class CircleArc2DTest extends TestCase {
 		assertEquals(expectedAreaParial, partial.getArea(), 0.0001);
 	}
 
-	public void testPoint() {
-		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(1/4)*PI;
-		CircleArc2D arc = new CircleArc2D(10, 10, radius, angle, PI*(1/4));
+	public void testArcPoint() {
+		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -0.25*PI;
+		CircleArc2D arc = new CircleArc2D(10, 10, radius, angle, PI*0.25);
 		Point2D o2 = arc.point(0.2), o8 = arc.point(0.8);
 
 		assertFalse(o2.equals(o8));
