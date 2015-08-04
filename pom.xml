@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>math.geom2d</groupId>
+	<groupId>javaGeom</groupId>
 	<artifactId>javaGeom</artifactId>
 	<packaging>jar</packaging>
-	<version>0.12.0</version>
+	<version>0.11.3</version>
 	<url>http://geom-java.sourceforge.net/</url>
 
 	<description>A Java library for geometric computing and computational geometry</description>

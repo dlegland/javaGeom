@@ -4,7 +4,7 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 17 août 10
+ * Created: 17 aoÃ»t 10
  */
 package math.geom2d;
 
@@ -29,6 +29,7 @@ implements ShapeSet2D<T>, Cloneable {
 		return new ShapeArray2D<T>(shapes);
 	}
 
+	@SafeVarargs
 	public static <T extends Shape2D> ShapeArray2D<T> create(T... shapes) {
 		return new ShapeArray2D<T>(shapes);
 	}

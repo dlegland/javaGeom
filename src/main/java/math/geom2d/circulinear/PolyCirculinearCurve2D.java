@@ -46,6 +46,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
      * of curves.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends CirculinearContinuousCurve2D> 
     PolyCirculinearCurve2D<T> create(T... curves) {
     	return new PolyCirculinearCurve2D<T>(curves);
@@ -76,6 +77,7 @@ extends PolyOrientedCurve2D<T> implements CirculinearContinuousCurve2D {
      * of curves and a flag indicating if the curve is closed.
      * @since 0.9.0
      */
+	@SafeVarargs
     public static <T extends CirculinearContinuousCurve2D> 
     PolyCirculinearCurve2D<T> createClosed(T... curves) {
     	return new PolyCirculinearCurve2D<T>(curves, true);

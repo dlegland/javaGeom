@@ -57,6 +57,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 		return new PointArray2D(points);
 	}
 
+	@SafeVarargs
 	public static <T extends Point2D> PointArray2D create(T... points) {
 		return new PointArray2D(points);
     }

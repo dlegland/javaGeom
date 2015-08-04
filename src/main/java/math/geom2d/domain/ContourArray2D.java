@@ -64,6 +64,7 @@ implements Boundary2D {
      * contours.
      * @since 0.8.1
      */
+	@SafeVarargs
     public static <T extends Contour2D> ContourArray2D<T> create(
     		T... curves) {
     	return new ContourArray2D<T>(curves);
@@ -79,6 +80,7 @@ implements Boundary2D {
     	super(size);
     }
 
+	@SafeVarargs
     public ContourArray2D(T... curves) {
         super(curves);
     }
