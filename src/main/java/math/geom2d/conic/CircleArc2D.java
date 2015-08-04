@@ -39,6 +39,7 @@ import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
+import math.geom2d.line.Line2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
