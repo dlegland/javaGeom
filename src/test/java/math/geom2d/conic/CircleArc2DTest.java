@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
@@ -724,9 +725,10 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(!xs.isPresent());
 
 		xs = arc.intersections(b);
-		assertTrue(2 == xs.get().size());
+		assertEquals(2, xs.get().size());
 
 		xs = arc.intersections(t);
-		assertTrue(1 == xs.get().size());
+		Collection<Point2D> uniq = xs.get().stream().distinct().collect(Collectors.toList());
+		assertEquals(1, uniq.size());
 	}
 }
