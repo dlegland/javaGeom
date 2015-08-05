@@ -1017,4 +1017,16 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 		}
 		return Optional.of(ls);
 	}
+
+	public Optional<Collection<Point2D>> intersections (CircleArc2D ca) {
+		Optional<Collection<Point2D>> ixs = this.intersections(ca.supportingCircle());
+
+		if(!ixs.isPresent()) {
+			return ixs;
+		}
+		// we now have everything that intersects with this arc, filter it to see if they also lie on the other arc.
+		ixs = Optional.of(ixs.get().stream().filter(x -> ca.contains(x)).collect(Collectors.toList()));
+
+		return ixs;
+	}
 }
