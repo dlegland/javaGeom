@@ -997,16 +997,6 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 		return this.getArea() - area;
 	}
 
-	public boolean isOnArc(Point2D p) {
-		if (abs(Point2D.distance(circle.xc, circle.yc, p.x(), p.y()) - circle.r) > Shape2D.ACCURACY)
-			return false;
-
-		// See if the angle from the x-axis to the line defined by circle.centre, p is within the arc sweep
-		Line2D l = new Line2D(circle.xc, circle.yc, p.x(), p.y());
-		double angle = l.horizontalAngle();
-		return (angle >= startAngle) && (angle <= (startAngle + angleExtent));
-	}
-
 	public boolean incidentOn(Circle2D c) {
 		return this.circle.almostEquals(c, Shape2D.ACCURACY);
 	}
@@ -1020,7 +1010,7 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 		Collection<Point2D> xs = Circle2D.circlesIntersections(this.circle, c);
 
 		// Now find out if any of the interesection points are on the arc
-		Collection<Point2D> ls = xs.stream().filter(x -> this.isOnArc(x)).collect(Collectors.toList());
+		Collection<Point2D> ls = xs.stream().filter(x -> this.contains(x)).collect(Collectors.toList());
 
 		if(ls.isEmpty()) {
 			return Optional.empty();

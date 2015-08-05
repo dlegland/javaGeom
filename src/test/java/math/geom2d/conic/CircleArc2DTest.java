@@ -709,8 +709,8 @@ public class CircleArc2DTest extends TestCase {
 		Point2D on = new Point2D(xc + radius * Math.cos(angle), yc + radius * Math.sin(angle));
 		Point2D off = new Point2D(xc + radius * Math.cos(angle), 0.001 + yc + radius * Math.sin(angle));
 
-		assertTrue(arc.isOnArc(on));
-		assertFalse(arc.isOnArc(off));
+		assertTrue(arc.contains(on));
+		assertFalse(arc.contains(off));
 	}
 
 	public void testIntersections() {
@@ -728,6 +728,7 @@ public class CircleArc2DTest extends TestCase {
 		assertEquals(2, xs.get().size());
 
 		xs = arc.intersections(t);
+		assertEquals(2, xs.get().size());
 		Collection<Point2D> uniq = xs.get().stream().distinct().collect(Collectors.toList());
 		assertEquals(1, uniq.size());
 	}
