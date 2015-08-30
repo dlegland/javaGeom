@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 import math.geom2d.*;
@@ -1027,6 +1028,18 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 		// we now have everything that intersects with this arc, filter it to see if they also lie on the other arc.
 		ixs = Optional.of(ixs.get().stream().filter(x -> ca.contains(x)).collect(Collectors.toList()));
 
+		return ixs;
+	}
+
+	public Optional<Collection<Point2D>> nonTangentalIntersections (CircleArc2D ca) {
+		Optional<Collection<Point2D>> ixs = intersections(ca);
+		if(ixs.isPresent()) {
+
+			// A point is a tangent point if the tangents of this arc and ca (at point p) are parallel.  They're
+			// parallel if tangent1 \times tangent2 is 0
+			Collection<Point2D> cleaned = ixs.get().stream().filter(p -> 0 == this.tangent(position(p)).cross(ca.tangent(ca.position(p)))).collect(Collectors.toList());
+			return Optional.of(cleaned);
+		}
 		return ixs;
 	}
 }
