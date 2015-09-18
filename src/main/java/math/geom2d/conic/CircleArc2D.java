@@ -989,13 +989,11 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 	}
 
 	public double getChordArea() {
-		if(4*Math.PI == this.angleExtent) {
+		if(2*Math.PI == this.angleExtent) {
 			return getArea();
 		}
 
-		// area of triangle to start & end point.
-		double area = Math.abs(circle.radius() * circle.radius() * sin(angleExtent));
-		return this.getArea() - area;
+		return (circle.r * circle.r * (angleExtent - sin(angleExtent)))/2;
 	}
 
 	public boolean incidentOn(Circle2D c) {
@@ -1028,18 +1026,6 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
 		// we now have everything that intersects with this arc, filter it to see if they also lie on the other arc.
 		ixs = Optional.of(ixs.get().stream().filter(x -> ca.contains(x)).collect(Collectors.toList()));
 
-		return ixs;
-	}
-
-	public Optional<Collection<Point2D>> nonTangentalIntersections (CircleArc2D ca) {
-		Optional<Collection<Point2D>> ixs = intersections(ca);
-		if(ixs.isPresent()) {
-
-			// A point is a tangent point if the tangents of this arc and ca (at point p) are parallel.  They're
-			// parallel if tangent1 \times tangent2 is 0
-			Collection<Point2D> cleaned = ixs.get().stream().filter(p -> 0 == this.tangent(position(p)).cross(ca.tangent(ca.position(p)))).collect(Collectors.toList());
-			return Optional.of(cleaned);
-		}
 		return ixs;
 	}
 }

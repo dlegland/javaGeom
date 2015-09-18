@@ -29,12 +29,15 @@ package math.geom2d.curve;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Vector;
+import java.util.Optional;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Shape2D;
 import math.geom2d.Vector2D;
+import math.geom2d.conic.CircleArc2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -461,5 +464,4 @@ public class PolyCurve2D<T extends ContinuousCurve2D> extends CurveArray2D<T>
         // otherwise return true
         return true;
     }
-
 }

@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 31 déc. 2003
+ * Created on 31 dï¿½c. 2003
  */
 
 package math.geom2d;
@@ -130,7 +130,7 @@ public class Point2DTest extends TestCase {
 	
 	public void testCreatePolar() {
 		Point2D p1 = new Point2D(0, 20);
-		Point2D p2 = Point2D.createPolar(20, Math.PI/2);
+		Point2D p2 = Point2D.createPolar(20, Math.PI / 2);
 		assertTrue(p1.distance(p2) < Shape2D.ACCURACY);
 	}
 	
@@ -171,7 +171,7 @@ public class Point2DTest extends TestCase {
         
         // test with <1 factor
         Point2D p3 = new Point2D(5, 4);
-        assertEquals(p1.scale(1./2., 1./5.), p3);
+        assertEquals(p1.scale(1. / 2., 1. / 5.), p3);
     }
     
     public void testScaleDouble() {
@@ -300,4 +300,10 @@ public class Point2DTest extends TestCase {
 		assertFalse(p3.contains(p1));
 	}
 
+	public void testHashCode() {
+		Point2D p1 = new Point2D(0, 0);
+		Point2D p2 = new Point2D(0, 0);
+
+		assertEquals(p1.hashCode(), p2.hashCode());
+	}
 }

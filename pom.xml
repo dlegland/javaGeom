@@ -30,8 +30,10 @@
 
 	<build>
 	  <pluginManagement><plugins>
-			<plugin>
+		<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -115,4 +117,8 @@
 
 		</plugins></pluginManagement>
 	</build>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiiler.target>1.8</maven.compiiler.target>
+	</properties>
 </project>
