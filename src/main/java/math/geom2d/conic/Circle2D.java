@@ -1089,5 +1089,12 @@ Cloneable {
     public Circle2D clone() {
         return new Circle2D(xc, yc, r, direct);
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 17 + center().hashCode();
+        hash = hash * 31 + Double.valueOf(radius()).hashCode();
+        return hash;
+    }
 }

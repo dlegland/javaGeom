@@ -4,7 +4,7 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 17 août 10
+ * Created: 17 aoÃ»t 10
  */
 package math.geom2d;
 

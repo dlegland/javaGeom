@@ -31,12 +31,16 @@ import static java.lang.Math.*;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearDomain2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.*;
+import math.geom2d.line.Line2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.line.Ray2D;
@@ -972,4 +976,56 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return new CircleArc2D(circle.clone(), startAngle, angleExtent);
     }
 
+	/**
+	 * @return the area of this CircleArc2D
+	 */
+	public double getArea() {
+		// Get the area of the underlying circle
+		double c_area = Math.PI * Math.pow(this.circle.radius(), 2.0);
+		// What fraction of the underlying circle does this arc represent?
+		double c_seg  = Math.abs(4*Math.PI / this.angleExtent);
+
+		return c_area / c_seg;
+	}
+
+	public double getChordArea() {
+		if(2*Math.PI == this.angleExtent) {
+			return getArea();
+		}
+
+		return (circle.r * circle.r * (angleExtent - sin(angleExtent)))/2;
+	}
+
+	public boolean incidentOn(Circle2D c) {
+		return this.circle.almostEquals(c, Shape2D.ACCURACY);
+	}
+
+	/**
+	 * @return A collection of intersection points or empty if either there are no intersections or if the arc & circle
+	 * are coincident.
+	 */
+	public Optional<Collection<Point2D>> intersections (Circle2D c) {
+		// does the circle intersect with the underlying circle
+		Collection<Point2D> xs = Circle2D.circlesIntersections(this.circle, c);
+
+		// Now find out if any of the interesection points are on the arc
+		Collection<Point2D> ls = xs.stream().filter(x -> this.contains(x)).collect(Collectors.toList());
+
+		if(ls.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(ls);
+	}
+
+	public Optional<Collection<Point2D>> intersections (CircleArc2D ca) {
+		Optional<Collection<Point2D>> ixs = this.intersections(ca.supportingCircle());
+
+		if(!ixs.isPresent()) {
+			return ixs;
+		}
+		// we now have everything that intersects with this arc, filter it to see if they also lie on the other arc.
+		ixs = Optional.of(ixs.get().stream().filter(x -> ca.contains(x)).collect(Collectors.toList()));
+
+		return ixs;
+	}
 }

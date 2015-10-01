@@ -28,6 +28,9 @@ package math.geom2d.conic;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
@@ -174,12 +177,12 @@ public class CircleArc2DTest extends TestCase {
 		assertTrue(arc2.containsAngle(0));
 		assertTrue(arc2.containsAngle(PI/2));
 		assertFalse(arc2.containsAngle(PI));
-		assertFalse(arc2.containsAngle(3*PI/2));
+		assertFalse(arc2.containsAngle(3 * PI / 2));
 	}
 	
 	public void testGetLength() {
 		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
-		assertEquals(arc.length(), (10*PI/2), Shape2D.ACCURACY);
+		assertEquals(arc.length(), (10 * PI / 2), Shape2D.ACCURACY);
 	}
 	
 	public void testGetT0Double(){
@@ -211,7 +214,7 @@ public class CircleArc2DTest extends TestCase {
 		Point2D origin = new Point2D(0, 0);
 		CircleArc2D arc = new CircleArc2D(origin, 10, 3*PI/2, 3*PI/2);
 		double pos = arc.position(new Point2D(10, 0));
-		assertEquals(PI/2, pos, 1e-12);
+		assertEquals(PI / 2, pos, 1e-12);
 	}
 	
 	public void testGetPositionPoint2D_indirect(){
@@ -250,7 +253,7 @@ public class CircleArc2DTest extends TestCase {
 	public void testGetWindingAngle() {
 		CircleArc2D arc = new CircleArc2D(new Point2D(0, 0), 10, 0, PI/2);
 		Point2D p = new Point2D(0, 0);
-		assertEquals(arc.windingAngle(p), (PI/2), Shape2D.ACCURACY);
+		assertEquals(arc.windingAngle(p), (PI / 2), Shape2D.ACCURACY);
 		p = new Point2D(0, -10);
 		assertEquals(arc.windingAngle(p), (PI/4), Shape2D.ACCURACY);
 		p = new Point2D(0, -20);
@@ -656,7 +659,7 @@ public class CircleArc2DTest extends TestCase {
 		Point2D point00 = new Point2D(20, 0);
 		assertEquals(0, arc.project(point00), eps);
 		Point2D point45 = new Point2D(20, 20);
-		assertEquals(PI/4, arc.project(point45), eps);
+		assertEquals(PI / 4, arc.project(point45), eps);
 		Point2D pointYX = new Point2D(40, 20);
 		assertEquals(Math.atan2(1, 2), arc.project(pointYX), eps);
 		Point2D pointXY = new Point2D(20, 40);
@@ -673,7 +676,72 @@ public class CircleArc2DTest extends TestCase {
 		CircleArc2D arc1 = new CircleArc2D(x0, y0, r, theta1, theta2-theta1);
 		
 		assertEquals(arc1.project(new Point2D(x0+r/2, y0+r*.8)), 0, eps);
-		assertEquals(arc1.project(new Point2D(x0+r*.8, y0+r/2)), theta2-theta1, eps);
+		assertEquals(arc1.project(new Point2D(x0 + r * .8, y0 + r / 2)), theta2-theta1, eps);
 	}
-	
+
+	public void testArea() {
+		// let's not have centre at (0,0) as that's the most straightforward
+		CircleArc2D whole = new CircleArc2D(-10, -10, 5, 0, 4*PI);
+		double expectedAreaWhile = PI*25; // \pi * 5^2
+
+		assertEquals(expectedAreaWhile, whole.getArea());
+
+		// TODO: Pull in JCheck to supercharge this.
+		Random r = new Random();
+		double sweepExtent = r.nextDouble();
+		CircleArc2D partial = new CircleArc2D(-10, -10, 5, 45, (4*PI)/sweepExtent);
+		double expectedAreaParial = expectedAreaWhile / sweepExtent;
+
+		assertEquals(expectedAreaParial, partial.getArea(), 0.0001);
+	}
+
+	public void testArcPoint() {
+		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -0.25*PI;
+		CircleArc2D arc = new CircleArc2D(10, 10, radius, angle, PI*0.25);
+		Point2D o2 = arc.point(0.2), o8 = arc.point(0.8);
+
+		assertFalse(o2.equals(o8));
+	}
+
+	public void testIsPointOnArc() {
+		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(0.25)*PI;
+		CircleArc2D arc = new CircleArc2D(xc, yc, radius, angle, PI *(0.25));
+		Point2D on = arc.point(0.1);
+		Point2D off = new Point2D(on.x() + 0.001, on.y());
+
+		assertTrue(arc.contains(on));
+		assertFalse(arc.contains(off));
+	}
+
+	public void testCirclesIntersections() {
+		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(0.25)*PI, extent = (2.0*PI)-(PI * 0.0625);
+		CircleArc2D arc = new CircleArc2D(xc, yc, radius, angle, extent);  // almost a full circle
+
+		Circle2D a = new Circle2D(10, 10, 5);
+		Circle2D b = new Circle2D(12, 10, 5);
+		Circle2D t = new Circle2D(20, 10, 5);
+		Optional<Collection<Point2D>> xs = arc.intersections(a);
+
+		assertTrue(!xs.isPresent());
+
+		xs = arc.intersections(b);
+		assertEquals(2, xs.get().size());
+
+		xs = arc.intersections(t);
+		assertEquals(2, xs.get().size());
+		Collection<Point2D> uniq = xs.get().stream().distinct().collect(Collectors.toList());
+		assertEquals(1, uniq.size());
+	}
+
+	public void testArcIntersections() {
+		double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(0.25)*PI, extent = (2.0*PI)-(PI * 0.0625);
+		CircleArc2D a1 = new CircleArc2D(xc, yc, radius, angle, extent);  // almost a full circle
+		CircleArc2D a2 = new CircleArc2D(xc + 5.0, yc, radius, angle, extent);
+
+		Optional<Collection<Point2D>> xs = a1.intersections(a2);
+
+		assertTrue(xs.isPresent());
+
+		assertEquals(2, xs.get().size());
+	}
 }

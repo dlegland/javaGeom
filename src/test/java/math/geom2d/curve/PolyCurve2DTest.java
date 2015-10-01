@@ -26,8 +26,19 @@
 package math.geom2d.curve;
 
 import junit.framework.TestCase;
+import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.conic.EllipseArcShape2D;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+
+import static java.lang.Math.*;
 
 public class PolyCurve2DTest extends TestCase {
 
@@ -68,5 +79,4 @@ public class PolyCurve2DTest extends TestCase {
 		Curve2D curve1 = clipped.firstCurve();
 		assertTrue(curve1 instanceof ContinuousCurve2D);
 	}
-
 }

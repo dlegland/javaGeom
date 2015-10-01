@@ -73,6 +73,7 @@ public class CheckFindIntersections extends JPanel{
 		JPanel panel = new CheckFindIntersections();
 		panel.setPreferredSize(new Dimension(500, 400));
 		JFrame frame = new JFrame("Draw parallel polyline");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
 		frame.pack();
 		frame.setVisible(true);		
