@@ -261,6 +261,12 @@ Cloneable {
         // Angle of line from center1 to center2
         double angle = Angle2D.horizontalAngle(center1, center2);
 
+        if(d == abs(r1 - r2) || d == (r1 + r2)) {
+            Collection<Point2D> r = new ArrayList<>(1);
+            r.add(Point2D.createPolar(center1, d/2.0, angle));
+            return r;
+        }
+
         // position of intermediate point
 		double d1 = d / 2 + (r1 * r1 - r2 * r2) / (2 * d);
 		Point2D tmp = Point2D.createPolar(center1, d1, angle);
