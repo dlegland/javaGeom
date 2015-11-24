@@ -203,6 +203,30 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     	return angleExtent;
     }
     
+    /**
+     * @return the area of this CircleArc2D
+     */
+    public double getArea() {
+        // Get the area of the underlying circle
+        double c_area = Math.PI * Math.pow(this.circle.radius(), 2.0);
+        // What fraction of the underlying circle does this arc represent?
+        double c_seg  = Math.abs(4*Math.PI / this.angleExtent);
+
+        return c_area / c_seg;
+    }
+
+    /**
+     * Gets the area of the chord defined by this arc
+     * @return the area of the chord
+     */
+    public double getChordArea() {
+        if(2*Math.PI == this.angleExtent) {
+            return getArea();
+        }
+
+        return (circle.r * circle.r * (angleExtent - sin(angleExtent)))/2;
+    }
+
     public boolean containsAngle(double angle) {
         return Angle2D.containsAngle(
         		startAngle, startAngle+angleExtent, angle, angleExtent>=0);
