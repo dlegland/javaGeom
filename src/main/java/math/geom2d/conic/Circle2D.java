@@ -263,7 +263,7 @@ Cloneable {
 
         if(d == abs(r1 - r2) || d == (r1 + r2)) {
             Collection<Point2D> r = new ArrayList<>(1);
-            r.add(Point2D.createPolar(center1, d/2.0, angle));
+            r.add(Point2D.createPolar(center1, r1, angle));
             return r;
         }
 
