@@ -3,6 +3,7 @@
  */
 package math.utils;
 
+import math.geom2d.Shape2D;
 
 /**
  * Collected methods which allow easy implementation of <code>equals</code>.
@@ -69,4 +70,34 @@ public final class EqualUtils {
 		//System.out.println("Object");
 		return aThis == null ? aThat == null : aThis.equals(aThat);
 	}
+
+	/**
+	 * Implements <= for doubles based on approximate equality.  Approximate
+	 * equality is defined by Shape2D.ACCURACY.
+	 * @param aThis
+	 * @param aThat
+	 * @return True if aThis is less than or approximately equal to aThat.
+	 */
+	static public boolean isLE(double aThis, double aThat) {
+	    if(aThis < aThat) return true;
+
+	    if(Math.abs(aThat - aThis) <= Shape2D.ACCURACY) return true;
+
+	    return false;
+	}
+	
+	   /**
+     * Implements >= for doubles based on approximate equality.  Approximate
+     * equality is defined by Shape2D.ACCURACY.
+     * @param aThis
+     * @param aThat
+     * @return True if aThis is less than or approximately equal to aThat.
+     */
+    static public boolean isGE(double aThis, double aThat) {
+        if(aThis > aThat) return true;
+
+        if(Math.abs(aThat - aThis) <= Shape2D.ACCURACY) return true;
+
+        return false;
+    }
 }

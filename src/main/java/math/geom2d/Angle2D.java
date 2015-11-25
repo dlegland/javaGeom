@@ -20,13 +20,15 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 1 déc. 2006
+ * Created on 1 dï¿½c. 2006
  *
  */
 
 package math.geom2d;
 
 import math.geom2d.line.LinearShape2D;
+import math.utils.EqualUtils;
+
 import static java.lang.Math.*;
 
 /**
@@ -273,9 +275,9 @@ public class Angle2D {
 		endAngle 	= formatAngle(endAngle);
 		angle 		= formatAngle(angle);
 		if (startAngle < endAngle)
-			return angle >= startAngle && angle <= endAngle;
+			return EqualUtils.isGE(angle, startAngle) && EqualUtils.isLE(angle, endAngle);
 		else
-			return angle <= endAngle || angle >= startAngle;
+			return EqualUtils.isLE(angle, endAngle) || EqualUtils.isGE(angle, startAngle);
 	}
 
 	/**
@@ -300,14 +302,14 @@ public class Angle2D {
 		angle 		= formatAngle(angle);
 		if (direct) {
 			if (startAngle < endAngle)
-				return angle >= startAngle && angle <= endAngle;
+				return EqualUtils.isGE(angle, startAngle) && EqualUtils.isLE(angle, endAngle);
 			else
-				return angle <= endAngle || angle >= startAngle;
+				return EqualUtils.isLE(angle, endAngle) || EqualUtils.isGE(angle, startAngle);
 		} else {
 			if (startAngle < endAngle)
-				return angle <= startAngle || angle >= endAngle;
+				return EqualUtils.isLE(angle, startAngle) || EqualUtils.isGE(angle, endAngle);
 			else
-				return angle >= endAngle && angle <= startAngle;
+				return EqualUtils.isGE(angle, endAngle) && EqualUtils.isLE(angle, startAngle);
 		}
 	}
 }

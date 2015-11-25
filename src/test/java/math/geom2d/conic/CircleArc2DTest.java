@@ -28,6 +28,7 @@ package math.geom2d.conic;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Random;
 
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
@@ -675,5 +676,52 @@ public class CircleArc2DTest extends TestCase {
 		assertEquals(arc1.project(new Point2D(x0+r/2, y0+r*.8)), 0, eps);
 		assertEquals(arc1.project(new Point2D(x0+r*.8, y0+r/2)), theta2-theta1, eps);
 	}
-	
+
+	   public void testArea() {
+	        // let's not have centre at (0,0) as that's the most straightforward
+	        CircleArc2D whole = new CircleArc2D(-10, -10, 5, 0, 4*PI);
+	        double expectedAreaWhile = PI*25; // \pi * 5^2
+
+	        assertEquals(expectedAreaWhile, whole.getArea());
+
+	        // TODO: Pull in JCheck to supercharge this.
+	        Random r = new Random();
+	        double sweepExtent = r.nextDouble();
+	        CircleArc2D partial = new CircleArc2D(-10, -10, 5, 45, (4*PI)/sweepExtent);
+	        double expectedAreaParial = expectedAreaWhile / sweepExtent;
+
+	        assertEquals(expectedAreaParial, partial.getArea(), 0.0001);
+	    }
+
+	    public void testPoint() {
+	        double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(1.0/4.0)*PI;
+	        CircleArc2D arc = new CircleArc2D(10, 10, radius, angle, PI*(1.0/4.0));
+	        Point2D o2 = arc.point(0), o8 = arc.point(PI/4.0);
+
+	        assertFalse(o2.equals(o8));
+	    }
+
+	    public void testContains() {
+	        double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(1.0/4.0)*PI;
+	        CircleArc2D arc = new CircleArc2D(xc, yc, radius, angle, PI *(1.0/4.0));
+	        Point2D on = arc.point(0);
+	        Point2D off = on.plus(new Point2D(1.0, 1.0));
+
+	        assertTrue(arc.contains(on));
+	        assertFalse(arc.contains(off));
+	    }
+
+	    public void testIntersections() {
+	        double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(1.0/4.0)*PI;
+	        CircleArc2D arc = new CircleArc2D(xc, yc, radius, angle, (2.0*PI)-(PI/16.0));  // almost a full circle
+
+	        CircleArc2D a = new CircleArc2D(10, 10, 5, 0, (2.0*PI));
+	        CircleArc2D b = new CircleArc2D(12, 10, 5, 0, (2.0*PI));
+	        Collection<Point2D> xs = arc.intersections(a);
+
+	        assertTrue(1 == xs.size());
+
+	        xs = arc.intersections(b);
+	        assertTrue(2 == xs.size());
+	    }
 }
