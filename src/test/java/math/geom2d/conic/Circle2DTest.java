@@ -544,4 +544,12 @@ public class Circle2DTest extends TestCase {
 		assertTrue(curves.size() == 1);
 	}
 	
+	public void testCirclesIntersections() {
+	    Circle2D ca = new Circle2D(0,-10, 10);
+	    Circle2D cb = new Circle2D(0, 10, 10);
+
+	    Collection<Point2D> points = Circle2D.circlesIntersections(ca, cb);
+
+	    assertEquals(1, points.size());
+	}
 }

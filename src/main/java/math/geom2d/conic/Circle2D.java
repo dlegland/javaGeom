@@ -261,6 +261,12 @@ Cloneable {
         // Angle of line from center1 to center2
         double angle = Angle2D.horizontalAngle(center1, center2);
 
+        if(d == abs(r1 - r2) || d == (r1 + r2)) {
+            Collection<Point2D> r = new ArrayList<>(1);
+            r.add(Point2D.createPolar(center1, r1, angle));
+            return r;
+        }
+
         // position of intermediate point
 		double d1 = d / 2 + (r1 * r1 - r2 * r2) / (2 * d);
 		Point2D tmp = Point2D.createPolar(center1, d1, angle);
@@ -1089,5 +1095,13 @@ Cloneable {
     public Circle2D clone() {
         return new Circle2D(xc, yc, r, direct);
     }
-    
+
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 17 + center().hashCode();
+        hash = hash * 31 + Double.valueOf(radius()).hashCode();
+        return hash;
+    }
 }

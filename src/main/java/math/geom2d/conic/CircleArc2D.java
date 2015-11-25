@@ -31,6 +31,7 @@ import static java.lang.Math.*;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import math.geom2d.*;
 import math.geom2d.circulinear.CirculinearDomain2D;
@@ -203,6 +204,30 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
     	return angleExtent;
     }
     
+    /**
+     * @return the area of this CircleArc2D
+     */
+    public double getArea() {
+        // Get the area of the underlying circle
+        double c_area = Math.PI * Math.pow(this.circle.radius(), 2.0);
+        // What fraction of the underlying circle does this arc represent?
+        double c_seg  = Math.abs(4*Math.PI / this.angleExtent);
+
+        return c_area / c_seg;
+    }
+
+    /**
+     * Gets the area of the chord defined by this arc
+     * @return the area of the chord
+     */
+    public double getChordArea() {
+        if(2*Math.PI == this.angleExtent) {
+            return getArea();
+        }
+
+        return (circle.r * circle.r * (angleExtent - sin(angleExtent)))/2;
+    }
+
     public boolean containsAngle(double angle) {
         return Angle2D.containsAngle(
         		startAngle, startAngle+angleExtent, angle, angleExtent>=0);
@@ -972,4 +997,17 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return new CircleArc2D(circle.clone(), startAngle, angleExtent);
     }
 
+	/**
+     * @return A collection of intersection points or empty if either there are no intersections or if the arc & circle
+     * are coincident.
+     */
+    public Collection<Point2D> intersections (CircleArc2D c) {
+        // does the circle intersect with the underlying circle
+        Collection<Point2D> xs = this.supportingCircle().intersections(c.supportingCircle());
+
+        // Now find out if any of the interesection points are on the arc
+        Collection<Point2D> ls = xs.stream().filter(x -> this.contains(x)).collect(Collectors.toList());
+
+        return ls;
+    }
 }
