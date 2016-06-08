@@ -300,6 +300,16 @@ public class Ray2D extends AbstractLine2D implements Cloneable {
         return true;
     }
 
+	@Override
+	public int hashCode() {
+	    int hash = 1;
+	    hash = hash * 31 + Double.valueOf(this.x0).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.y0).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.dx).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+	    return hash;
+	}
+
 	/**
 	 * @deprecated use copy constructor instead (0.11.2)
 	 */

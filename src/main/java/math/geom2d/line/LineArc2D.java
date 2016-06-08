@@ -447,6 +447,18 @@ implements SmoothOrientedCurve2D, Cloneable {
         return true;
     }
     
+	@Override
+	public int hashCode() {
+	    int hash = 1;
+	    hash = hash * 31 + Double.valueOf(this.x0).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.y0).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.dx).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.t0).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.t1).hashCode();
+	    return hash;
+	}
+
 	/**
 	 * @deprecated use copy constructor instead (0.11.2)
 	 */

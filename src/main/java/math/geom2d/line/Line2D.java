@@ -706,6 +706,14 @@ implements LinearElement2D, Cloneable {
         return p1.equals(edge.p1) && p2.equals(edge.p2);
     }
     
+	@Override
+	public int hashCode() {
+	    int hash = 1;
+	    hash = hash * 31 + p1.hashCode();
+	    hash = hash * 31 + p2.hashCode();
+	    return hash;
+	}
+
 	/**
 	 * @deprecated use copy constructor instead (0.11.2)
 	 */
