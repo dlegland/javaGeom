@@ -711,7 +711,7 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	@Override
 	public int hashCode() {
 	    int hash = 1;
-	    hash = hash * 17 + Double.valueOf(this.x).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.x).hashCode();
 	    hash = hash * 31 + Double.valueOf(this.y).hashCode();
 	    return hash;
 	}

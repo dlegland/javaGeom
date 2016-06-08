@@ -373,6 +373,14 @@ public class Vector2D implements GeometricObject2D, Cloneable {
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+	    int hash = 1;
+	    hash = hash * 31 + Double.valueOf(this.x).hashCode();
+	    hash = hash * 31 + Double.valueOf(this.y).hashCode();
+	    return hash;
+	}
+
 	/**
 	 * Display the coordinates of the vector. Typical output is:
 	 * <code>x=3 y=4</code>.
