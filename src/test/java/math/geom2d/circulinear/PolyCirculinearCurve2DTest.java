@@ -9,7 +9,10 @@
 package math.geom2d.circulinear;
 
 
+import java.util.LinkedList;
+
 import junit.framework.TestCase;
+import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.AbstractLine2D;
@@ -129,4 +132,30 @@ public class PolyCirculinearCurve2DTest extends TestCase {
 		
 	}
 
+	public void testBoundingBox() {
+		Point2D p1 = new Point2D(5, 1);
+		Point2D p2 = new Point2D(-7, 2);
+		
+		LineSegment2D segment = new LineSegment2D(p1, p2);
+		LinkedList<CirculinearElement2D> lineList = new LinkedList<>();
+		lineList.add(segment);
+		PolyCirculinearCurve2D<CirculinearElement2D> curve = new PolyCirculinearCurve2D<CirculinearElement2D>(lineList);
+		
+		Box2D refBox = new Box2D(p1, p2);
+		Box2D box = curve.boundingBox();
+		
+		assertTrue(refBox.equals(box));
+	}
+	
+	public void testBoundingBox2() {
+		LinkedList<CirculinearElement2D> lineList = new LinkedList<>();
+		lineList.add(new LineSegment2D(new Point2D(-1,3), new Point2D(-2,1)));
+		lineList.add(new LineSegment2D(new Point2D(-2,1), new Point2D(-3,3)));      
+		PolyCirculinearCurve2D<CirculinearElement2D> curv = new PolyCirculinearCurve2D<CirculinearElement2D>(lineList);
+
+		Box2D box = curv.boundingBox();
+		
+		Box2D refBox = new Box2D(-3, -1, 1, 3);
+		assertTrue(refBox.equals(box));
+	}
 }

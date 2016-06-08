@@ -383,10 +383,15 @@ public class LineSegment2DTest extends TestCase {
 	}
 
 	public void testGetBoundingBox() {
-		LineSegment2D edge;		
-
 		// diagonal edge
-		edge = new LineSegment2D(1, 1, 3, 2);
+		LineSegment2D edge = new LineSegment2D(1, 1, 3, 2);
+		Box2D box = edge.boundingBox();
+		assertTrue(box.equals(new Box2D(1, 3, 1, 2)));
+	}
+	
+	public void testGetBoundingBox_Reverse() {
+		// diagonal edge
+		LineSegment2D edge = new LineSegment2D(3, 2, 1, 1);
 		Box2D box = edge.boundingBox();
 		assertTrue(box.equals(new Box2D(1, 3, 1, 2)));
 	}

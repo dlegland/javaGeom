@@ -650,10 +650,10 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
      * Returns bounding box for the CurveArray2D.
      */
     public Box2D boundingBox() {
-        double xmin = Double.MAX_VALUE;
-        double ymin = Double.MAX_VALUE;
-        double xmax = Double.MIN_VALUE;
-        double ymax = Double.MIN_VALUE;
+        double xmin = Double.POSITIVE_INFINITY;
+        double ymin = Double.POSITIVE_INFINITY;
+        double xmax = Double.NEGATIVE_INFINITY;
+        double ymax = Double.NEGATIVE_INFINITY;
 
         Box2D box;
         for (Curve2D curve : curves) {

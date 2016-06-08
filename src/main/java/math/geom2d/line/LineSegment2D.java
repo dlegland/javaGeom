@@ -337,7 +337,11 @@ implements Cloneable, CirculinearElement2D {
      * Returns the bounding box of this line segment.
      */
     public Box2D boundingBox() {
-        return new Box2D(x0, x0+dx, y0, y0+dy);
+    	double xmin = Math.min(x0,  x0 + dx);
+    	double ymin = Math.min(y0,  y0 + dy);
+    	double xmax = Math.max(x0,  x0 + dx);
+    	double ymax = Math.max(y0,  y0 + dy);
+        return new Box2D(xmin, xmax, ymin, ymax);
     }
 
     // =================================
