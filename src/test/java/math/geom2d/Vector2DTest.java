@@ -256,4 +256,16 @@ public class Vector2DTest extends TestCase {
 		assertTrue(!v1.equals(v5));
 	}
 
+	/*
+	 * Test for boolean equals(Object)
+	 */
+	public void testHashCode() {
+		Vector2D v1 = new Vector2D(2, 3);
+		Vector2D v2 = new Vector2D(2, 3);
+		Vector2D v3 = new Vector2D(1, 3);
+		
+		assertTrue(v1.hashCode() == v2.hashCode());
+		assertFalse(v1.hashCode() == v3.hashCode());
+	}
+
 }

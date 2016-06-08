@@ -289,6 +289,18 @@ public class Point2DTest extends TestCase {
 		assertFalse(p1.equals(p5));
 	}
 
+	/*
+	 * Test for boolean equals(Object)
+	 */
+	public void testHashCode() {
+		Point2D p1 = new Point2D(2, 3);
+		Point2D p2 = new Point2D(2, 3);
+		Point2D p3 = new Point2D(1, 3);
+		
+		assertTrue(p1.hashCode() == p2.hashCode());
+		assertFalse(p1.hashCode() == p3.hashCode());
+	}
+
 	public void testContains() {
 		Point2D p1 = new Point2D(2, 3);
 		Point2D p2 = new Point2D(2, 3);
