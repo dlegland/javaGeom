@@ -544,7 +544,7 @@ public class StraightLine2D extends AbstractLine2D implements
         return super.supportContains(p.x(), p.y());
     }
 
-    /** Throws an infiniteShapeException */
+	/** Throws an infiniteShapeException */
     public java.awt.geom.GeneralPath getGeneralPath() {
         throw new UnboundedShape2DException(this);
     }

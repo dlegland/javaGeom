@@ -358,6 +358,20 @@ public class StraightLine2DTest extends TestCase {
 	
 	}
 	
+	public void testIntersection() {
+	    StraightLine2D line2d = new StraightLine2D(110337.28297120638, 48934.88776858141, 1650.316028793619, 1052.3122314185894);
+
+	    StraightLine2D line1 = new StraightLine2D(110083.599, 47397.2, 3808.0, 0.0);
+	    StraightLine2D line2 = new StraightLine2D(113891.599, 47397.2, 0.0, 5180.0);
+	    StraightLine2D line3 = new StraightLine2D(113891.599, 52577.2, -3808.0, 0.0);
+	    StraightLine2D line4 = new StraightLine2D(110083.599, 52577.2, 0.0, -5180.0);
+
+	    assertNotNull(line2d.intersection(line1));
+	    assertNotNull(line2d.intersection(line2));
+	    assertNotNull(line2d.intersection(line3));
+	    assertNotNull(line2d.intersection(line4));
+	}
+	
 	public void testGetViewAnglePoint2D(){
 		
 		StraightLine2D line1 = new StraightLine2D(2, 2, 1, 0);

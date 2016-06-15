@@ -215,6 +215,13 @@ implements LinearElement2D, Cloneable {
         return new LineSegment2D(p1, p2).isParallel(line);
     }
 
+
+	@Override
+	public boolean containsProjection(Point2D point) {
+	    double pos = new LineSegment2D(p1, p2).project(point);
+	    return pos > (0 - Shape2D.ACCURACY) && pos < (1 + Shape2D.ACCURACY);
+	}
+
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 

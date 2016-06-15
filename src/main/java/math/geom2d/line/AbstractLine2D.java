@@ -397,7 +397,7 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 
 		// check if point is inside the bounds of the object. This test
 		// is left to derived classes.
-		if (contains(point) && line.contains(point))
+		if (containsProjection(point) && line.containsProjection(point))
 			return point;
 		return null;
 	}
@@ -408,6 +408,12 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     public StraightLine2D supportingLine() {
         return new StraightLine2D(this);
     }
+
+    @Override
+	public boolean containsProjection(Point2D point) {
+        double pos = this.positionOnLine(point);
+        return pos > (this.t0() - Shape2D.ACCURACY) && pos < (this.t1() + Shape2D.ACCURACY);
+	}
 
 
     // ===================================================================

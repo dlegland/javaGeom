@@ -53,6 +53,19 @@ public interface LinearShape2D extends CirculinearCurve2D {
     public abstract Point2D intersection(LinearShape2D line);
 
     /**
+	 * Checks if the shape contains the orthogonal projection of the specified
+	 * point. The result is always true for straight lines. For bounded line
+	 * shapes, the result depends on the position of the point with respect to
+	 * shape bounds.
+	 * 
+	 * @param point
+	 *            a point in the plane
+	 * @return true if the orthogonal projection of the point on the supporting
+	 *         line belongs to the linear shape.
+	 */
+    public boolean containsProjection(Point2D point);
+    
+    /**
      * Transforms this linear shape. 
      */
     public LinearShape2D transform(AffineTransform2D trans);
