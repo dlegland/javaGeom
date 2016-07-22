@@ -9,6 +9,7 @@
 package math.geom2d.conic;
 
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearElement2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
@@ -31,6 +32,15 @@ extends CirculinearElement2D, SmoothOrientedCurve2D {
 	 */
 	public Circle2D supportingCircle();
 
+	/**
+	 * Returns true if the orthogonal projection of the point <code>p</code> on
+	 * the supporting circle of this curve belongs to this curve.
+	 * 
+	 * @param p a point in the plane
+	 * @return true if the projection of p on the supporting circle also belongs to this curve
+	 */
+    public boolean containsProjection(Point2D p);
+    
     // ===================================================================
     // methods inherited from Shape2D and Curve2D
 

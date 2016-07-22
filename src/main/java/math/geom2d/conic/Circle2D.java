@@ -319,7 +319,7 @@ Cloneable {
     	// if the distance is the radius of the circle, return the
     	// intersection point
 		if (abs(dist - radius) < Shape2D.ACCURACY) {
-			if (line.contains(inter) && circle.contains(inter))
+			if (line.containsProjection(inter) && circle.containsProjection(inter))
 				intersections.add(inter);
 			return intersections;
     	}
@@ -334,9 +334,9 @@ Cloneable {
     	Point2D p2 = Point2D.createPolar(inter, d2, angle);
 
     	// add points to the array only if they belong to the line
-    	if (line.contains(p1) && circle.contains(p1))
+    	if (line.containsProjection(p1) && circle.containsProjection(p1))
     		intersections.add(p1);
-    	if (line.contains(p2) && circle.contains(p2))
+    	if (line.containsProjection(p2) && circle.containsProjection(p2))
     		intersections.add(p2);
 
     	// return the result
@@ -951,11 +951,18 @@ Cloneable {
     // methods of Shape interface
 
     /**
-     * Returns true if the point p lies on the ellipse, with precision given
+     * Returns true if the point p lies on the circle, with precision given
      * by Shape2D.ACCURACY.
      */
     public boolean contains(Point2D p) {
 		return contains(p.x(), p.y());
+    }
+
+    /**
+     * Returns true.
+     */
+    public boolean containsProjection(Point2D p) {
+		return true;
     }
 
     /**

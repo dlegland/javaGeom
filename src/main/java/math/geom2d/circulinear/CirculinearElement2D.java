@@ -9,6 +9,7 @@
 package math.geom2d.circulinear;
 
 import math.geom2d.Box2D;
+import math.geom2d.Point2D;
 import math.geom2d.curve.CurveSet2D;
 import math.geom2d.domain.SmoothOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -34,4 +35,13 @@ public interface CirculinearElement2D extends CirculinearContinuousCurve2D,
 	public CurveSet2D<? extends CirculinearElement2D> clip(Box2D box);
     public CirculinearElement2D subCurve(double t0, double t1);
 	public CirculinearElement2D reverse();
+
+	/**
+	 * Returns true if the orthogonal projection of the point <code>p</code> on
+	 * the supporting shape of this curve (either e straight line or a circle) also belongs to this curve.
+	 * 
+	 * @param p a point in the plane
+	 * @return true if the projection of p on the supporting curve also belongs to this curve
+	 */
+    public boolean containsProjection(Point2D p);
 }

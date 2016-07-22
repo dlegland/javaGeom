@@ -268,7 +268,14 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
         return circle;
     }
 
-    // ===================================================================
+
+	@Override
+	public boolean containsProjection(Point2D p) {
+		double angle = Angle2D.horizontalAngle(this.circle.center(), p);
+		return containsAngle(angle);
+	}
+
+	// ===================================================================
     // Methods implementing the CirculinearCurve2D interface
 
 	/* (non-Javadoc)

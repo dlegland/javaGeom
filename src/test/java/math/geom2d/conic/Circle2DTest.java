@@ -59,6 +59,16 @@ public class Circle2DTest extends TestCase {
 		super(arg0);
 	}
 
+	public void testIntersectionsStraightLine2D() {
+		Point2D center = new Point2D(44729, 7264);
+		Point2D point = new Point2D(44501, 7010);
+		StraightLine2D line = new StraightLine2D(center, point);
+		Circle2D circle = new Circle2D(center, 250);
+		Collection<Point2D> circleIntersections = circle.intersections(line);
+		
+		assertEquals(2, circleIntersections.size());
+	}
+	
 	public void testCircumCircle(){
 		Point2D p1 = new Point2D(6, 1);
 		Point2D p2 = new Point2D(4, 3);
