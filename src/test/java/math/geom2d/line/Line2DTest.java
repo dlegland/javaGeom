@@ -268,6 +268,18 @@ public class Line2DTest extends TestCase {
 		assertEquals(line1.windingAngle(pr), Math.PI/2, Shape2D.ACCURACY);
 	}
     
+    public void testConstructorSamePoint() {
+    	Point2D p1 = new Point2D(5000, 6000);
+		Point2D p2 = new Point2D(5000, 6000);
+		try {
+			@SuppressWarnings("unused")
+			StraightLine2D line = new StraightLine2D(p1, p2);
+			assertTrue(false);
+		} catch (RuntimeException ex) {
+			
+		}
+    }
+    
     public void testEquals() {
         Line2D line1 = new Line2D(10, 20, 30, 40);
         Line2D line2 = new Line2D(new Point2D(10, 20), new Point2D(30, 40));

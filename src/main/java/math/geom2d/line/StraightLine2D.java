@@ -190,7 +190,7 @@ public class StraightLine2D extends AbstractLine2D implements
 
     /** Defines a new Straight line going through the two given points. */
     public StraightLine2D(Point2D point1, Point2D point2) {
-        this(point1, new Vector2D(point1, point2));
+    	this(point1, new Vector2D(point1, point2));
     }
 
     /**
@@ -217,9 +217,9 @@ public class StraightLine2D extends AbstractLine2D implements
         this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
     }
 
-    /*
+    /**
      * Defines a new Straight line going through the point (xp, yp) and with
-     * the direction dx, dy.
+     * the direction vector given by (dx, dy).
      */
     public StraightLine2D(double xp, double yp, double dx, double dy) {
         super(xp, yp, dx, dy);
