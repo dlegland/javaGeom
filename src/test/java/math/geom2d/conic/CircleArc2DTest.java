@@ -678,7 +678,7 @@ public class CircleArc2DTest extends TestCase {
 	}
 
 	   public void testArea() {
-	        // let's not have centre at (0,0) as that's the most straightforward
+	        // let's not have center at (0,0) as that's the most straightforward
 	        CircleArc2D whole = new CircleArc2D(-10, -10, 5, 0, 4*PI);
 	        double expectedAreaWhile = PI*25; // \pi * 5^2
 
@@ -695,7 +695,7 @@ public class CircleArc2DTest extends TestCase {
 
 	    public void testPoint() {
 	        double radius = 5.0, xc = 10.0, yc = 10.0, angle = -(1.0/4.0)*PI;
-	        CircleArc2D arc = new CircleArc2D(10, 10, radius, angle, PI*(1.0/4.0));
+	        CircleArc2D arc = new CircleArc2D(xc, yc, radius, angle, PI*(1.0/4.0));
 	        Point2D o2 = arc.point(0), o8 = arc.point(PI/4.0);
 
 	        assertFalse(o2.equals(o8));
