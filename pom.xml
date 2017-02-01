@@ -6,30 +6,25 @@
 	<groupId>javaGeom</groupId>
 	<artifactId>javaGeom</artifactId>
 	<packaging>jar</packaging>
-	<version>0.11.3</version>
+	<version>0.11.3-SNAPSHOT</version>
 	<url>http://geom-java.sourceforge.net/</url>
 
 	<description>A Java library for geometric computing and computational geometry</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.seisw</groupId>
-			<artifactId>gpcj</artifactId>
-			<version>2.2.0</version>
-			<!--
-				Rather than having a system path, install the jar using
-				$ mvn install:install-file -Dfile=lib/gpcj-2.2.0.jar -DgroupId=org.seisw -DartifactId=gpcj -Dversion=2.2.0 -Dpackaging=jar
-				this then allows us to shade the final jar properly.
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/gpcj-2.2.0.jar</systemPath>
-			-->
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- jar file for GPCJ library can be found in lib folder of the project -->
+		<dependency>
+			<groupId>com.seisw</groupId>
+			<artifactId>gpcj</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 	</dependencies>
 
@@ -85,18 +80,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
- 			-->
- 			
-			<!-- Configure the jar output directory such that plugin can be seen when 
-				ImageJ is run directly from eclipse workspace -->
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<outputDirectory>${project.build.directory}/jar</outputDirectory>
-				</configuration>
 			</plugin>
  			-->
  			
