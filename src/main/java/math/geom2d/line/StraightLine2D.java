@@ -160,12 +160,19 @@ public class StraightLine2D extends AbstractLine2D implements
 
 
     /**
-     * Returns a new Straight line, with the given coefficient of the cartesian
+     * Returns a new Straight line, with the given coefficient of the Cartesian
      * equation (a*x + b*y + c = 0).
      */
-    public static StraightLine2D createCartesian(double a, double b,
-            double c) {
-        return new StraightLine2D(a, b, c);
+    public static StraightLine2D createCartesian(double a, double b, double c) 
+    {
+        double d = a * a + b * b;
+        double x0 = -a * c / d;
+        double y0 = -b * c / d;
+        double theta = Math.atan2(-a, b);
+        double dx = Math.cos(theta);
+        double dy = Math.sin(theta);
+        
+        return new StraightLine2D(x0, y0, dx, dy);
     }
 
     /**
@@ -223,6 +230,12 @@ public class StraightLine2D extends AbstractLine2D implements
      */
     public StraightLine2D(double xp, double yp, double dx, double dy) {
         super(xp, yp, dx, dy);
+        
+        // enforce condition on direction vector
+        if (Math.hypot(dx, dy) < Shape2D.ACCURACY)
+        {
+            throw new IllegalArgumentException("Straight lines can not have direction vector with zero norm");
+        }
     }
 
     /**
@@ -246,8 +259,12 @@ public class StraightLine2D extends AbstractLine2D implements
      * Defines a new straight line, from the coefficients of the cartesian
      * equation. The starting point of the line is then the point of the line
      * closest to the origin, and the direction vector has unit norm.
+     * 
+     * @deprecated use static method createCartesian() instead
      */
-    public StraightLine2D(double a, double b, double c) {
+    @Deprecated
+    public StraightLine2D(double a, double b, double c) 
+    {
         this(0, 0, 1, 0);
 		double d = a * a + b * b;
 		x0 = -a * c / d;

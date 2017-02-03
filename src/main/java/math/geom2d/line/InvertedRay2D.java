@@ -80,15 +80,6 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
-     * Creates a new Ray2D, originating from point
-     * <code>(x1,y1)<\code>, and going 
-     * in the direction defined by vector <code>(dx, dy)<\code>.
-     */
-    public InvertedRay2D(double x1, double y1, double dx, double dy) {
-        super(x1, y1, dx, dy);
-    }
-
-    /**
      * Creates a new Ray2D, originating from point <code>point<\code>, and going 
      * in the direction defined by vector <code>(dx,dy)<\code>.
      */
@@ -122,10 +113,32 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     }
 
     /**
+     * Creates a new Ray2D, originating from point
+     * <code>(x1,y1)<\code>, and going 
+     * in the direction defined by vector <code>(dx, dy)<\code>.
+     */
+    public InvertedRay2D(double x1, double y1, double dx, double dy) {
+        super(x1, y1, dx, dy);
+        
+        // enforce condition on direction vector
+        if (Math.hypot(dx, dy) < Shape2D.ACCURACY)
+        {
+            throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
+        }
+    }
+
+
+    /**
      * Define a new Ray, with same characteristics as given object.
      */
     public InvertedRay2D(LinearShape2D line) {
         super(line.origin(), line.direction());
+        
+        // enforce condition on direction vector
+        if (Math.hypot(dx, dy) < Shape2D.ACCURACY)
+        {
+            throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
+        }
     }
 
     // ===================================================================
