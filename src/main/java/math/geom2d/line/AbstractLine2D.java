@@ -175,11 +175,14 @@ implements SmoothOrientedCurve2D, LinearElement2D {
 	 * Returns true if the point (x, y) lies on the line covering the object,
 	 * with precision given by Shape2D.ACCURACY.
 	 */
-	protected boolean supportContains(double x, double y) {
+	protected boolean supportContains(double x, double y) 
+	{
 		double denom = Math.hypot(dx, dy);
 		if (denom < Shape2D.ACCURACY)
+		{
 			throw new DegeneratedLine2DException(this);
-		return (Math.abs((x - x0) * dy - (y - y0) * dx) / denom < Shape2D.ACCURACY);
+		}
+		return (Math.abs((x - x0) * dy - (y - y0) * dx) / (denom * denom) < Shape2D.ACCURACY);
 	}
 
     /**

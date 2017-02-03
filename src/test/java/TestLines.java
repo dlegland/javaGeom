@@ -61,16 +61,16 @@ public class TestLines{
 		p0 = line1.intersection(line2);
 		System.out.println("point intersection : " + p0.x() + " " + p0.y());
 
-		line1 = new StraightLine2D(-1, 1, 0);
+		line1 = StraightLine2D.createCartesian(-1, 1, 0);
 		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
-		line1 = new StraightLine2D(-1, 2, 0);
+		line1 = StraightLine2D.createCartesian(-1, 2, 0);
 		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
-		line1 = new StraightLine2D(-1, 1, -1);
+		line1 = StraightLine2D.createCartesian(-1, 1, -1);
 		System.out.println("angle (abc) : " + line1.horizontalAngle());
 
-		line1 = new StraightLine2D(-1, 2, -2);
+		line1 = StraightLine2D.createCartesian(-1, 2, -2);
 		System.out.println("angle (abc) : " + line1.horizontalAngle());
 		
 		System.out.println("distances --------");
