@@ -322,6 +322,33 @@ public class StraightLine2DTest extends TestCase {
 		assertEquals(line.projectedPoint(p3), new Point2D(1, 2));
 	}
 
+	public void testLineContainsPoint()
+	{
+		Point2D p1 = new Point2D(-123.70, 157.92);
+		Point2D p2 = new Point2D(-125.83, 155.80);
+		StraightLine2D line = new StraightLine2D(p1, p2);
+		Point2D point2d = new Point2D(-125.03, 157.13);
+		Point2D projectedPoint = line.projectedPoint(point2d);
+
+//		assertEquals("Point need to be the same", new Point2D(-124768.55791617256, 156863.99791617255),  projectedPoint);
+		assertTrue("Point is on line", line.containsProjection(point2d));
+		assertTrue("Projected point has to be located on the line", line.contains(projectedPoint));
+	}
+
+
+	public void testLineContainsPoint_LargeValues()
+	{
+		Point2D p1 = new Point2D(-123707.89774439273, 157924.65808795238);
+		Point2D p2 = new Point2D(-125829.21808795238, 155803.33774439275);
+		StraightLine2D line = new StraightLine2D(p1, p2);
+		Point2D point2d = new Point2D(-125034.27520951361, 157129.7152095136);
+		Point2D projectedPoint = line.projectedPoint(point2d);
+
+		assertEquals("Point need to be the same", new Point2D(-124768.55791617256, 156863.99791617255),  projectedPoint);
+		assertTrue("Point is on line", line.containsProjection(point2d));
+		assertTrue("Projected point has to be located on the line", line.contains(projectedPoint));
+	}
+
 	public void testGetPolarCoefficients(){
 		StraightLine2D line;
 		double tab[];

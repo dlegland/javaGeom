@@ -507,4 +507,15 @@ public class LineSegment2DTest extends TestCase {
 
 		assertEquals(dist, dist2, 1e-5);
 	}
+	
+	public void testLineContainsPoint()
+	{
+	  LineSegment2D line = new LineSegment2D(-123707.89774439273, 157924.65808795238, -125829.21808795238, 155803.33774439275);
+	  Point2D point2d = new Point2D(-125034.27520951361, 157129.7152095136);
+	  Point2D projectedPoint = line.projectedPoint(point2d);
+	  
+	  assertEquals("Point need to be the same", new Point2D(-124768.55791617256, 156863.99791617255),  projectedPoint);
+	  assertTrue("Point is on line", line.containsProjection(point2d));
+	  assertTrue("Projected point has to be located on the line", line.contains(projectedPoint));
+	}
 }
