@@ -223,84 +223,193 @@ public class LineSegment2DTest extends TestCase {
     	assertTrue(line1.parallel(1).equals(line1p));
     }
 
-	/*
-	 * Test for double getDistance(Point2D)
-	 */
-	public void testGetDistanceDoubleDouble() {
-		
-		// basic
-		LineSegment2D edge = new LineSegment2D(1, 1, 4, 3);
-		
-		assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2.5, 2), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(4, 3), 0, Shape2D.ACCURACY);
-	
-		double d1 = Math.sqrt(13)/2;
-		assertEquals(edge.distance(-.5, 0), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, -.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(3.5, .5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(5, 1.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(5.5, 4), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(3, 4.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1.5, 3.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 2.5), d1, Shape2D.ACCURACY);
+	public void testProjectPoint2D(){
+    	// Test on a basic line segment (diagonal +1;+1)
+    	LineSegment2D line1 = new LineSegment2D(
+    			new Point2D(-1, 2), new Point2D(1, 4));
+    	Point2D point = new Point2D(1, 2);
+    	
+    	assertEquals(line1.project(point), .5, 1e-12);	
+    
+    	
+    	// Create a line segment with (1,2)*d direction vector
+    	double x0 = 20;
+    	double y0 = 30;
+    	double d = 10;
+    	LineSegment2D line2 = new LineSegment2D(
+    			new Point2D(x0, y0), new Point2D(x0+d, y0+2*d));
+    	
+    	// Test points which project 'nicely' on the line segment
+    	Point2D p0_0 = new Point2D(x0, y0);
+    	Point2D p1_0 = new Point2D(x0+d, y0);
+    	Point2D p0_1 = new Point2D(x0, y0+d);
+    	Point2D p1_1 = new Point2D(x0+d, y0+d);
+    	Point2D p0_2 = new Point2D(x0, y0+2*d);
+    	Point2D p1_2 = new Point2D(x0+d, y0+2*d);
+    	
+    	assertEquals(line2.project(p0_0), 0, 1e-12);
+    	assertEquals(line2.project(p1_0), .2, 1e-12);
+    	assertEquals(line2.project(p0_1), .4, 1e-12);
+    	assertEquals(line2.project(p1_1), .6, 1e-12);
+    	assertEquals(line2.project(p0_2), .8, 1e-12);
+    	assertEquals(line2.project(p1_2), 1, 1e-12);
+    	
+    	// Test points which project on first point
+    	Point2D pl1 = new Point2D(x0, y0-d);
+    	Point2D pl2 = new Point2D(x0-d, y0);
+    	Point2D pl3 = new Point2D(x0+d, y0-d);
+    	assertEquals(line2.project(pl1), 0, 1e-12);
+    	assertEquals(line2.project(pl2), 0, 1e-12);
+    	assertEquals(line2.project(pl3), 0, 1e-12);
+    	
+    	// Test points which project on last point
+    	Point2D pu1 = new Point2D(x0+d, y0+3*d);
+    	Point2D pu2 = new Point2D(x0+2*d, y0+2*d);
+    	Point2D pu3 = new Point2D(x0, y0+3*d);
+    	assertEquals(line2.project(pu1), 1, 1e-12);
+    	assertEquals(line2.project(pu2), 1, 1e-12);
+    	assertEquals(line2.project(pu3), 1, 1e-12);
+    }
 
-		double d2 = Math.sqrt(26)/2;
-		assertEquals(edge.distance(0.5, -1.5), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(-1.5, 1.5), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(6.5, 2.5), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(4.5, 5.5), d2, Shape2D.ACCURACY);
-		
-		// horizontal edge
-		edge = new LineSegment2D(1, 1, 4, 1);
-		assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2.5, 1), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(4, 1), 0, Shape2D.ACCURACY);
-		
-		d1 = 1;
-		assertEquals(edge.distance(0, 1), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(5, 1), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1, 0), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2.5, 0), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(4, 0), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1, 2), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2.5, 2), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(4, 2), d1, Shape2D.ACCURACY);
-		
-		d2=Math.sqrt(2);
-		assertEquals(edge.distance(0, 0), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 2), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(5, 0), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(5, 2), d2, Shape2D.ACCURACY);
-		
-		// vertical edge
-		edge = new LineSegment2D(1, 1, 1, 4);
-		assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1, 2.5), 0, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1, 4), 0, Shape2D.ACCURACY);
-		
-		assertEquals(edge.distance(1, 0), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(1, 5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 1), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 2.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 4), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, 1), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, 2.5), d1, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, 4), d1, Shape2D.ACCURACY);
+    /**
+     * Tests distance between a point and a line segment for large coordinate values. 
+     */
+    public void testDistancePoint_LargeValues() {
+    	LineSegment2D line = new LineSegment2D(44154, 37711, 45754, 30113);
+    	Point2D point = new Point2D(44767, 34320);
+    	
+    	Point2D projPoint = line.projectedPoint(point);
+    	
+    	double dist = line.distance(point);
+    	double dist2 = point.distance(projPoint);
+    
+    	assertEquals(dist, dist2, 1e-5);
+    }
 
-		assertEquals(edge.distance(0, 0), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, 0), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(2, 5), d2, Shape2D.ACCURACY);
-		assertEquals(edge.distance(0, 5), d2, Shape2D.ACCURACY);
-	}
+    public void testDistancePoint_SameExtremities()
+    {
+        final LineSegment2D lineA = new LineSegment2D(2400, 1500, 2400, 1500);
+        double dist = lineA.distance(new Point2D(2440, 1530));
+        assertEquals(50, dist, .01);
+    }
 
-	/*
-	 * Test for double getSignedDistance(Point2D)
-	 */
-	public void testGetSignedDistancePoint2D() {
-	}
+    /*
+     * Test for double distance(double, double)
+     */
+    public void testDistanceDoubleDouble() {
+    	
+    	// basic
+    	LineSegment2D edge = new LineSegment2D(1, 1, 4, 3);
+    	
+    	assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2.5, 2), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(4, 3), 0, Shape2D.ACCURACY);
+    
+    	double d1 = Math.sqrt(13)/2;
+    	assertEquals(edge.distance(-.5, 0), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, -.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(3.5, .5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(5, 1.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(5.5, 4), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(3, 4.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1.5, 3.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 2.5), d1, Shape2D.ACCURACY);
+    
+    	double d2 = Math.sqrt(26)/2;
+    	assertEquals(edge.distance(0.5, -1.5), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(-1.5, 1.5), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(6.5, 2.5), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(4.5, 5.5), d2, Shape2D.ACCURACY);
+    	
+    	// horizontal edge
+    	edge = new LineSegment2D(1, 1, 4, 1);
+    	assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2.5, 1), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(4, 1), 0, Shape2D.ACCURACY);
+    	
+    	d1 = 1;
+    	assertEquals(edge.distance(0, 1), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(5, 1), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1, 0), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2.5, 0), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(4, 0), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1, 2), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2.5, 2), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(4, 2), d1, Shape2D.ACCURACY);
+    	
+    	d2=Math.sqrt(2);
+    	assertEquals(edge.distance(0, 0), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 2), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(5, 0), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(5, 2), d2, Shape2D.ACCURACY);
+    	
+    	// vertical edge
+    	edge = new LineSegment2D(1, 1, 1, 4);
+    	assertEquals(edge.distance(1, 1), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1, 2.5), 0, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1, 4), 0, Shape2D.ACCURACY);
+    	
+    	assertEquals(edge.distance(1, 0), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(1, 5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 1), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 2.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 4), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, 1), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, 2.5), d1, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, 4), d1, Shape2D.ACCURACY);
+    
+    	assertEquals(edge.distance(0, 0), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, 0), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(2, 5), d2, Shape2D.ACCURACY);
+    	assertEquals(edge.distance(0, 5), d2, Shape2D.ACCURACY);
+    }
 
-	public void testGetEdgeAngleLineSegment2DLineSegment2D(){
+	public void testContainsPoint()
+    {
+      LineSegment2D line = new LineSegment2D(-123707.89774439273, 157924.65808795238, -125829.21808795238, 155803.33774439275);
+      Point2D point2d = new Point2D(-125034.27520951361, 157129.7152095136);
+      Point2D projectedPoint = line.projectedPoint(point2d);
+    
+      assertEquals("Point need to be the same", new Point2D(-124768.55791617256, 156863.99791617255),  projectedPoint);
+      assertTrue("Point is on line", line.containsProjection(point2d));
+      assertTrue("Projected point has to be located on the line", line.contains(projectedPoint));
+    }
+
+    /*
+     * Test for boolean contains(double, double)
+     */
+    public void testContainsdoubledouble() {
+    	LineSegment2D edge;
+    	
+    	// diagonal edge
+    	edge = new LineSegment2D(1, 1, 3, 2);
+    	assertTrue(edge.contains(1, 1));
+    	assertTrue(edge.contains(3, 2));
+    	assertTrue(edge.contains(2, 1.5));
+    	assertFalse(edge.contains(0, 0));
+    	assertFalse(edge.contains(-1, 0));
+    	assertFalse(edge.contains(5, 3));
+    	
+    	// horizontal edge
+    	edge = new LineSegment2D(1, 1, 3, 1);
+    	assertTrue(edge.contains(1, 1));
+    	assertTrue(edge.contains(3, 1));
+    	assertTrue(edge.contains(2, 1));
+    	assertFalse(edge.contains(0, 0));
+    	assertFalse(edge.contains(0, 1));
+    	assertFalse(edge.contains(4, 1));
+    
+    	// vertical edge
+    	edge = new LineSegment2D(1, 1, 1, 3);
+    	assertTrue(edge.contains(1, 1));
+    	assertTrue(edge.contains(1, 3));
+    	assertTrue(edge.contains(1, 2));
+    	assertFalse(edge.contains(0, 0));
+    	assertFalse(edge.contains(1, 0));
+    	assertFalse(edge.contains(1, 4));
+    }
+
+    public void testGetEdgeAngleLineSegment2DLineSegment2D(){
 		Point2D p1, p2, p3;
 		p1 = new Point2D(0, 0);
 		p2 = new Point2D(50, 50);
@@ -346,40 +455,6 @@ public class LineSegment2DTest extends TestCase {
 		edge2 = new LineSegment2D(1, 5, 5, 1);
 		assertTrue(edge1.intersection(edge2).equals(new Point2D(3, 3)));
 		assertTrue(edge2.intersection(edge1).equals(new Point2D(3, 3)));
-	}
-
-	/*
-	 * Test for boolean contains(double, double)
-	 */
-	public void testContainsdoubledouble() {
-		LineSegment2D edge;
-		
-		// diagonal edge
-		edge = new LineSegment2D(1, 1, 3, 2);
-		assertTrue(edge.contains(1, 1));
-		assertTrue(edge.contains(3, 2));
-		assertTrue(edge.contains(2, 1.5));
-		assertFalse(edge.contains(0, 0));
-		assertFalse(edge.contains(-1, 0));
-		assertFalse(edge.contains(5, 3));
-		
-		// horizontal edge
-		edge = new LineSegment2D(1, 1, 3, 1);
-		assertTrue(edge.contains(1, 1));
-		assertTrue(edge.contains(3, 1));
-		assertTrue(edge.contains(2, 1));
-		assertFalse(edge.contains(0, 0));
-		assertFalse(edge.contains(0, 1));
-		assertFalse(edge.contains(4, 1));
-
-		// vertical edge
-		edge = new LineSegment2D(1, 1, 1, 3);
-		assertTrue(edge.contains(1, 1));
-		assertTrue(edge.contains(1, 3));
-		assertTrue(edge.contains(1, 2));
-		assertFalse(edge.contains(0, 0));
-		assertFalse(edge.contains(1, 0));
-		assertFalse(edge.contains(1, 4));
 	}
 
 	public void testGetBoundingBox() {
@@ -443,79 +518,5 @@ public class LineSegment2DTest extends TestCase {
 		LineSegment2D edge4 = new LineSegment2D(2, 2, 0, 2);
 		assertEquals(edge4.windingAngle(p3), Math.PI/2, 1e-14);
 		assertEquals(edge4.windingAngle(p4), -Math.PI/2, 1e-14);
-	}
-
-	public void testProjectPoint2D(){
-		// Test on a basic line segment (diagonal +1;+1)
-		LineSegment2D line1 = new LineSegment2D(
-				new Point2D(-1, 2), new Point2D(1, 4));
-		Point2D point = new Point2D(1, 2);
-		
-		assertEquals(line1.project(point), .5, 1e-12);	
-
-		
-		// Create a line segment with (1,2)*d direction vector
-		double x0 = 20;
-		double y0 = 30;
-		double d = 10;
-		LineSegment2D line2 = new LineSegment2D(
-				new Point2D(x0, y0), new Point2D(x0+d, y0+2*d));
-		
-		// Test points which project 'nicely' on the line segment
-		Point2D p0_0 = new Point2D(x0, y0);
-		Point2D p1_0 = new Point2D(x0+d, y0);
-		Point2D p0_1 = new Point2D(x0, y0+d);
-		Point2D p1_1 = new Point2D(x0+d, y0+d);
-		Point2D p0_2 = new Point2D(x0, y0+2*d);
-		Point2D p1_2 = new Point2D(x0+d, y0+2*d);
-		
-		assertEquals(line2.project(p0_0), 0, 1e-12);
-		assertEquals(line2.project(p1_0), .2, 1e-12);
-		assertEquals(line2.project(p0_1), .4, 1e-12);
-		assertEquals(line2.project(p1_1), .6, 1e-12);
-		assertEquals(line2.project(p0_2), .8, 1e-12);
-		assertEquals(line2.project(p1_2), 1, 1e-12);
-		
-		// Test points which project on first point
-		Point2D pl1 = new Point2D(x0, y0-d);
-		Point2D pl2 = new Point2D(x0-d, y0);
-		Point2D pl3 = new Point2D(x0+d, y0-d);
-		assertEquals(line2.project(pl1), 0, 1e-12);
-		assertEquals(line2.project(pl2), 0, 1e-12);
-		assertEquals(line2.project(pl3), 0, 1e-12);
-		
-		// Test points which project on last point
-		Point2D pu1 = new Point2D(x0+d, y0+3*d);
-		Point2D pu2 = new Point2D(x0+2*d, y0+2*d);
-		Point2D pu3 = new Point2D(x0, y0+3*d);
-		assertEquals(line2.project(pu1), 1, 1e-12);
-		assertEquals(line2.project(pu2), 1, 1e-12);
-		assertEquals(line2.project(pu3), 1, 1e-12);
-	}
-
-	/**
-	 * Tests distance between a point and a line segment for large coordinate values. 
-	 */
-	public void testDistancePoint_LargeValues() {
-		LineSegment2D line = new LineSegment2D(44154, 37711, 45754, 30113);
-		Point2D point = new Point2D(44767, 34320);
-		
-		Point2D projPoint = line.projectedPoint(point);
-		
-		double dist = line.distance(point);
-		double dist2 = point.distance(projPoint);
-
-		assertEquals(dist, dist2, 1e-5);
-	}
-	
-	public void testLineContainsPoint()
-	{
-	  LineSegment2D line = new LineSegment2D(-123707.89774439273, 157924.65808795238, -125829.21808795238, 155803.33774439275);
-	  Point2D point2d = new Point2D(-125034.27520951361, 157129.7152095136);
-	  Point2D projectedPoint = line.projectedPoint(point2d);
-	  
-	  assertEquals("Point need to be the same", new Point2D(-124768.55791617256, 156863.99791617255),  projectedPoint);
-	  assertTrue("Point is on line", line.containsProjection(point2d));
-	  assertTrue("Projected point has to be located on the line", line.contains(projectedPoint));
 	}
 }

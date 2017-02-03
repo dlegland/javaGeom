@@ -182,11 +182,17 @@ implements Cloneable, CirculinearElement2D {
 	/* (non-Javadoc)
 	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
 	 */
-	public LineSegment2D parallel(double d) {
+	public LineSegment2D parallel(double d) 
+	{
+	    // Checks line segment has a valid length
 		double d2 = Math.hypot(dx, dy);
 		if (Math.abs(d2) < Shape2D.ACCURACY)
+		{
 			throw new DegeneratedLine2DException(
-					"Can not compute parallel of degnerated edge", this);
+					"Can not compute parallel of degenerated edge", this);
+		}
+		
+		// compute parallel line segment
 		d2 = d / d2;
 		return new LineSegment2D(
 				x0 + dy * d2, y0 - dx * d2, 
@@ -308,13 +314,18 @@ implements Cloneable, CirculinearElement2D {
      */
     @Override
 	public double distance(double x, double y) {
-        // compute position on the line
+        // In case of line segment with same extremities, computes distance to initial point 
+        if (length() < Shape2D.ACCURACY)
+        {
+            return Point2D.distance(this.x0, this.y0, x, y);
+        }
+        
+        // compute position on the supporting line
     	StraightLine2D line = this.supportingLine();
         double t = line.positionOnLine(x, y);
 
         // clamp with parameterization bounds of edge
 		t = Math.max(Math.min(t, 1), 0);
-		t = Math.min(t, 1);
 		
 		// compute position of projected point on the edge
 		Point2D proj = line.point(t);
