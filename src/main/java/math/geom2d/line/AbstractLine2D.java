@@ -121,27 +121,22 @@ implements SmoothOrientedCurve2D, LinearElement2D {
     // ===================================================================
     // Protected constructors
 
-    protected AbstractLine2D(double x0, double y0, double dx, double dy) {
-    	if (Math.abs(dx) < Shape2D.ACCURACY && Math.abs(dy) < Shape2D.ACCURACY) {
-    		throw new RuntimeException("Line objects cannot have direction vector equal to (0,0)");
-    	}
-    		
+    protected AbstractLine2D(double x0, double y0, double dx, double dy)
+    {
         this.x0 = x0;
         this.y0 = y0;
         this.dx = dx;
         this.dy = dy;
     }
-
-    protected AbstractLine2D(Point2D point, Vector2D vector) {
-    	if (Math.abs(vector.x()) < Shape2D.ACCURACY && Math.abs(vector.y()) < Shape2D.ACCURACY) {
-    		throw new RuntimeException("Line objects cannot have direction vector equal to (0,0)");
-    	}
+    
+    protected AbstractLine2D(Point2D point, Vector2D vector)
+    {
         this.x0 = point.x();
         this.y0 = point.y();
         this.dx = vector.x();
         this.dy = vector.y();
     }
-
+    
     // ===================================================================
     // Methods specific to Line shapes
 
