@@ -50,36 +50,6 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a straight line going through a point and with a given angle.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static StraightLine2D create(Point2D point, double angle) {
-        return new StraightLine2D(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
-    }
-
-    /**
-     * Creates a straight line through 2 points.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static StraightLine2D create(Point2D p1, Point2D p2) {
-        return new StraightLine2D(p1, p2);
-    }
-
-    /**
-     * Creates a straight line through a point and with a given direction vector.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static StraightLine2D create(Point2D origin, Vector2D direction) {
-        return new StraightLine2D(origin, direction);
-    }
-
-    /**
      * Creates a vertical straight line through the given point.
      * 
      * @since 0.10.3
@@ -109,7 +79,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     public static StraightLine2D createMedian(Point2D p1, Point2D p2) {
         Point2D mid = Point2D.midPoint(p1, p2);
-        StraightLine2D line = StraightLine2D.create(p1, p2);
+        StraightLine2D line = new StraightLine2D(p1, p2);
         return StraightLine2D.createPerpendicular(line, mid);
     }
 
@@ -224,22 +194,6 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     public StraightLine2D(ILinearShape2D line, Point2D point) {
         this(point, line.direction());
-    }
-
-    /**
-     * Defines a new straight line, from the coefficients of the cartesian equation. The starting point of the line is then the point of the line closest to the origin, and the direction vector has unit norm.
-     * 
-     * @deprecated use static method createCartesian() instead
-     */
-    @Deprecated
-    public StraightLine2D(double a, double b, double c) {
-        this(0, 0, 1, 0);
-        double d = a * a + b * b;
-        x0 = -a * c / d;
-        y0 = -b * c / d;
-        double theta = Math.atan2(-a, b);
-        dx = Math.cos(theta);
-        dy = Math.sin(theta);
     }
 
     // ===================================================================
@@ -406,26 +360,10 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
      */
     public double t1() {
         return Double.POSITIVE_INFINITY;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return this.t1();
     }
 
     /**
@@ -581,12 +519,4 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
         return hash;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public StraightLine2D clone() {
-        return new StraightLine2D(x0, y0, dx, dy);
-    }
 }

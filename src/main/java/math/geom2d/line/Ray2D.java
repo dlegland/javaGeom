@@ -44,26 +44,6 @@ import math.utils.EqualUtils;
 public class Ray2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new ray.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Ray2D create(Point2D origin, Vector2D direction) {
-        return new Ray2D(origin, direction);
-    }
-
-    /**
-     * Static factory for creating a new ray, originating from <code>origin<\code>, and going in the direction of <code>target<\code>.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Ray2D create(Point2D origin, Point2D target) {
-        return new Ray2D(origin, target);
-    }
-
     // ===================================================================
     // constructors
 
@@ -177,26 +157,10 @@ public class Ray2D extends AbstractLine2D {
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the position of the last point of the ray, which is always Double.POSITIVE_INFINITY.
      */
     public double t1() {
         return Double.POSITIVE_INFINITY;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /**
@@ -305,13 +269,4 @@ public class Ray2D extends AbstractLine2D {
         return hash;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Ray2D clone() {
-        return new Ray2D(x0, y0, dx, dy);
-
-    }
 }

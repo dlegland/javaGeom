@@ -120,19 +120,6 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     }
 
     // ===================================================================
-    // Static factory
-
-    /**
-     * Static factory for creating a new Line2D, starting from p1 and finishing at p2.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Line2D create(Point2D p1, Point2D p2) {
-        return new Line2D(p1, p2);
-    }
-
-    // ===================================================================
     // Methods specific to Line2D
 
     /**
@@ -519,26 +506,10 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns 1.
      */
     public double t1() {
         return 1.0;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Point2D point(double t) {
@@ -723,12 +694,4 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         return hash;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Line2D clone() {
-        return new Line2D(p1, p2);
-    }
 }

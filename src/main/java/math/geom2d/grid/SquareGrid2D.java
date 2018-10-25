@@ -62,15 +62,6 @@ public class SquareGrid2D implements Grid2D {
         this.sy = sy;
     }
 
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setOrigin(Point2D point) {
-        this.x0 = point.x();
-        this.y0 = point.y();
-    }
-
     public Point2D getOrigin() {
         return new Point2D(x0, y0);
     }
@@ -81,24 +72,6 @@ public class SquareGrid2D implements Grid2D {
 
     public double getSizeY() {
         return sy;
-    }
-
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setSize(double s) {
-        sx = s;
-        sy = s;
-    }
-
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setSize(double sx, double sy) {
-        this.sx = sx;
-        this.sy = sy;
     }
 
     /*

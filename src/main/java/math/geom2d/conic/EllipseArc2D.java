@@ -50,42 +50,6 @@ import math.utils.EqualUtils;
 public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, IEllipseArcShape2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Specify supporting ellipse, start angle and end angle, and a flag indicating whether the arc is directed or not.
-     * 
-     * @param ell
-     *            the supporting ellipse
-     * @param start
-     *            the starting angle
-     * @param extent
-     *            the (signed) angle extent
-     *
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static EllipseArc2D create(Ellipse2D ell, double start, double extent) {
-        return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, extent);
-    }
-
-    /**
-     * Specify supporting ellipse, start angle and end angle, and a flag indicating whether the arc is directed or not.
-     * 
-     * @param ell
-     *            the supporting ellipse
-     * @param start
-     *            the starting angle
-     * @param end
-     *            the ending angle
-     * @param direct
-     *            flag indicating if the arc is direct
-     *
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static EllipseArc2D create(Ellipse2D ell, double start, double end, boolean direct) {
-        return new EllipseArc2D(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, end, direct);
-    }
-
     // ====================================================================
     // Class variables
 
@@ -366,25 +330,9 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         return 0;
     }
 
-    /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
     /** Always returns the absolute value of the angle extent */
     public double t1() {
         return abs(angleExtent);
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /*

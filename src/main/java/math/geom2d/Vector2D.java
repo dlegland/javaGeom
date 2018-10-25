@@ -43,26 +43,6 @@ public class Vector2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Static factory for creating a new vector in Cartesian coordinates.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Vector2D create(double x, double y) {
-        return new Vector2D(x, y);
-    }
-
-    /**
-     * Static factory for creating a new vector from the coordinate of a point.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Vector2D create(Point2D point) {
-        return new Vector2D(point.x, point.y);
-    }
-
-    /**
      * Creates a new vector by specifying the distance to the origin, and the angle with the horizontal.
      */
     public static Vector2D createPolar(double rho, double theta) {
@@ -380,12 +360,4 @@ public class Vector2D implements IGeometricObject2D, Serializable {
         return new String("x=" + x + " y=" + y);
     }
 
-    /**
-     * @deprecated not necessary to clone immutable object
-     */
-    @Deprecated
-    @Override
-    public Vector2D clone() {
-        return new Vector2D(x, y);
-    }
 }

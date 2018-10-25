@@ -41,22 +41,6 @@ import math.geom2d.polygon.Polyline2D;
 public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public final static CubicBezierCurve2D create(Point2D p1, Point2D c1, Point2D c2, Point2D p2) {
-        return new CubicBezierCurve2D(p1, c1, c2, p2);
-    }
-
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public final static CubicBezierCurve2D create(Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
-        return new CubicBezierCurve2D(p1, v1, p2, v2);
-    }
-
     // ===================================================================
     // class variables
 
@@ -281,26 +265,10 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns 1, as Bezier curve is parameterized between 0 and 1.
      */
     public double t1() {
         return 1;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /**
@@ -551,12 +519,4 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
         return true;
     }
 
-    /**
-     * @deprecated not necessary to clone immutable objects (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public CubicBezierCurve2D clone() {
-        return new CubicBezierCurve2D(x1, y1, ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
-    }
 }

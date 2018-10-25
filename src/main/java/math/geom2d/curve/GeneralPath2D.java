@@ -432,12 +432,4 @@ public final class GeneralPath2D implements Shape, Serializable {
         return this.path.equals(that.path);
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Object clone() {
-        return path.clone();
-    }
 }

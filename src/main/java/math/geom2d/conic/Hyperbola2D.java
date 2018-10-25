@@ -601,12 +601,4 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Hyperbola2D clone() {
-        return new Hyperbola2D(xc, yc, a, b, theta, direct);
-    }
 }

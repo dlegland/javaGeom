@@ -59,29 +59,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /** The y coordinate of this point. */
     protected double y;
 
-    // ===================================================================
-    // static methods
-
-    /**
-     * Static factory for creating a new point in cartesian coordinates.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Point2D create(double x, double y) {
-        return new Point2D(x, y);
-    }
-
-    /**
-     * Static factory for creating a new point from an existing instance of java point.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Point2D create(java.awt.geom.Point2D point) {
-        return new Point2D(point.getX(), point.getY());
-    }
-
     /**
      * Static factory for creating a new point from an existing instance of javageom point.
      * 
@@ -290,16 +267,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      */
     public Point2D(java.awt.geom.Point2D point) {
         this(point.getX(), point.getY());
-    }
-
-    /**
-     * Constructs a new Point2D by copying coordinates of given point.
-     * 
-     * @deprecated immutable objects do not need copy constructor (0.11.2)
-     */
-    @Deprecated
-    public Point2D(Point2D point) {
-        this(point.x, point.y);
     }
 
     // ===================================================================
@@ -685,15 +652,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
             return false;
 
         return true;
-    }
-
-    /**
-     * @deprecated not necessary to clone immutable objects (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Point2D clone() {
-        return new Point2D(x, y);
     }
 
     @Override

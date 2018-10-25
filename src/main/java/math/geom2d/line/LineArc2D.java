@@ -187,26 +187,10 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the parameter of the last point of the line arc, arbitrarily set to 1.
      */
     public double t1() {
         return t1;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Point2D point(double t) {
@@ -454,12 +438,4 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         return hash;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public LineArc2D clone() {
-        return new LineArc2D(x0, y0, dx, dy, t0, t1);
-    }
 }

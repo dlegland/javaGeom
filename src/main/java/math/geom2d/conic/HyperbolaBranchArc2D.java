@@ -168,24 +168,8 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return t0;
     }
 
-    /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
     public double t1() {
         return t1;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     // ===================================================================

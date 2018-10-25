@@ -210,26 +210,10 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the position of the last point of the parabola arc.
      */
     public double t1() {
         return t1;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Point2D point(double t) {
@@ -448,12 +432,4 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public ParabolaArc2D clone() {
-        return new ParabolaArc2D(parabola.clone(), t0, t1);
-    }
 }

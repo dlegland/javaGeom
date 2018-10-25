@@ -571,16 +571,4 @@ public class SimplePolygon2D implements IPolygon2D {
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public SimplePolygon2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
-        for (Point2D point : vertices)
-            array.add(point);
-        return new SimplePolygon2D(array);
-    }
-
 }

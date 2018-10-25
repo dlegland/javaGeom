@@ -337,26 +337,10 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
      */
     public double t1() {
         return Double.POSITIVE_INFINITY;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Point2D point(double t) {
@@ -609,12 +593,4 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Parabola2D clone() {
-        return new Parabola2D(xv, yv, a, theta);
-    }
 }

@@ -61,34 +61,18 @@ public class Box2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Box2D create(double xmin, double xmax, double ymin, double ymax) {
-        return new Box2D(xmin, xmax, ymin, ymax);
-    }
-
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Box2D create(Point2D p1, Point2D p2) {
-        return new Box2D(p1, p2);
-    }
-
-    /**
      * The box corresponding to the unit square, with bounds [0 1] in each direction
      * 
      * @since 0.9.1
      */
-    public final static Box2D UNIT_SQUARE_BOX = Box2D.create(0, 1, 0, 1);
+    public final static Box2D UNIT_SQUARE_BOX = new Box2D(0, 1, 0, 1);
 
     /**
      * The box corresponding to the the whole plane, with infinite bounds in each direction.
      * 
      * @since 0.9.1
      */
-    public final static Box2D INFINITE_BOX = Box2D.create(NEGATIVE_INFINITY, POSITIVE_INFINITY, NEGATIVE_INFINITY, POSITIVE_INFINITY);
+    public final static Box2D INFINITE_BOX = new Box2D(NEGATIVE_INFINITY, POSITIVE_INFINITY, NEGATIVE_INFINITY, POSITIVE_INFINITY);
 
     // ===================================================================
     // class variables
@@ -560,14 +544,6 @@ public class Box2D implements IGeometricObject2D, Serializable {
     }
 
     /**
-     * @deprecated useless (0.11.1)
-     */
-    @Deprecated
-    public Box2D boundingBox() {
-        return new Box2D(xmin, xmax, ymin, ymax);
-    }
-
-    /**
      * Tests if boxes are the same. Two boxes are the same if they have the same bounds, up to the specified threshold value.
      */
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
@@ -625,12 +601,4 @@ public class Box2D implements IGeometricObject2D, Serializable {
         return true;
     }
 
-    /**
-     * @deprecated not necessary to clone immutable objects (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Box2D clone() {
-        return new Box2D(xmin, xmax, ymin, ymax);
-    }
 }

@@ -338,16 +338,4 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public ShapeArray2D<? extends IShape2D> clone() {
-        ArrayList<IShape2D> array = new ArrayList<IShape2D>(shapes.size());
-        for (T shape : shapes)
-            array.add(shape);
-        return new ShapeArray2D<IShape2D>(array);
-    }
-
 }

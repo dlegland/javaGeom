@@ -323,14 +323,6 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     }
 
     /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return this.t1();
-    }
-
-    /**
      * Returns the first point, as this is the same as the last point.
      */
     @Override
@@ -489,18 +481,4 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
         return true;
     }
 
-    // ===================================================================
-    // methods implementing the Object interface
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public LinearRing2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
-        for (Point2D point : vertices)
-            array.add(point);
-        return new LinearRing2D(array);
-    }
 }

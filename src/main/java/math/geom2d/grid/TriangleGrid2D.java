@@ -122,37 +122,12 @@ public class TriangleGrid2D implements Grid2D {
         this(point.x(), point.y(), s, theta);
     }
 
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setOrigin(Point2D point) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-    }
-
     public Point2D getOrigin() {
         return new Point2D(x0, y0);
     }
 
     public double getSize() {
         return s;
-    }
-
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setSize(double s) {
-        this.s = s;
-    }
-
-    /**
-     * @deprecated grids are supposed to be immutable (0.8.0)
-     */
-    @Deprecated
-    public void setAngle(double theta) {
-        this.theta = theta;
     }
 
     public double getTheta() {

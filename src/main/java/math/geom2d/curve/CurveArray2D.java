@@ -333,24 +333,8 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return 0;
     }
 
-    /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
     public double t1() {
         return Math.max(curves.size() * 2 - 1, 0);
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /*
@@ -790,17 +774,6 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
 
         // otherwise return true
         return true;
-    }
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    public CurveArray2D<? extends ICurve2D> clone() {
-        ArrayList<ICurve2D> array = new ArrayList<ICurve2D>(curves.size());
-        for (T curve : curves)
-            array.add(curve);
-        return new CurveArray2D<ICurve2D>(array);
     }
 
     // ===================================================================

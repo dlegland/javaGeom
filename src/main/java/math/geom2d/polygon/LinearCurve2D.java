@@ -405,14 +405,6 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the first point of the linear curve.
      */
     public Point2D firstPoint() {

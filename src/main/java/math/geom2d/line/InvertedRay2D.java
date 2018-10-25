@@ -45,19 +45,6 @@ public class InvertedRay2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Static factory for creating a new inverted ray with given direction to target.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static InvertedRay2D create(Point2D target, Vector2D direction) {
-        return new InvertedRay2D(target, direction);
-    }
-
-    // ===================================================================
-    // constructors
-
-    /**
      * Empty constructor for Ray2D. Default is ray starting at origin, and having a slope of 1*dx and 0*dy.
      */
     public InvertedRay2D() {
@@ -165,26 +152,10 @@ public class InvertedRay2D extends AbstractLine2D {
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns 0.
      */
     public double t1() {
         return 0;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /**
@@ -283,15 +254,6 @@ public class InvertedRay2D extends AbstractLine2D {
             return false;
 
         return true;
-    }
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public InvertedRay2D clone() {
-        return new InvertedRay2D(x0, y0, dx, dy);
     }
 
 }

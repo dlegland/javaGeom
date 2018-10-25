@@ -90,10 +90,4 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
         return false;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public abstract ISmoothCurve2D clone();
 }

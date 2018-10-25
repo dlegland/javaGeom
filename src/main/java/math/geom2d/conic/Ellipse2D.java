@@ -81,40 +81,10 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     }
 
     /**
-     * Main constructor: define center by a point plus major and minor semi axis
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Ellipse2D create(Point2D center, double l1, double l2) {
-        return new Ellipse2D(center.x(), center.y(), l1, l2, 0, true);
-    }
-
-    /**
-     * Define center by point, major and minor semi axis lengths, and orientation angle.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Ellipse2D create(Point2D center, double l1, double l2, double theta) {
-        return new Ellipse2D(center.x(), center.y(), l1, l2, theta, true);
-    }
-
-    /**
      * Define center by point, major and minor semi axis lengths, orientation angle, and boolean flag for direct ellipse.
      */
     public static Ellipse2D create(Point2D center, double l1, double l2, double theta, boolean direct) {
         return new Ellipse2D(center.x(), center.y(), l1, l2, theta, direct);
-    }
-
-    /**
-     * Constructs an ellipse from the java.awt.geom class for ellipse.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static Ellipse2D create(java.awt.geom.Ellipse2D ellipse) {
-        return new Ellipse2D(new Point2D(ellipse.getCenterX(), ellipse.getCenterY()), ellipse.getWidth() / 2, ellipse.getHeight() / 2);
     }
 
     // ===================================================================
@@ -796,26 +766,10 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the parameter of the last point of the ellipse, set to 2*PI.
      */
     public double t1() {
         return 2 * PI;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /**
@@ -1161,15 +1115,6 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
             return false;
 
         return true;
-    }
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Ellipse2D clone() {
-        return new Ellipse2D(xc, yc, r1, r2, theta, direct);
     }
 
     @Override

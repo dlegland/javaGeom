@@ -164,10 +164,4 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
         return path;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public abstract IContinuousCurve2D clone();
 }

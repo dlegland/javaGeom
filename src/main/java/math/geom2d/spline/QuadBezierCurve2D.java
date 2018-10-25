@@ -43,16 +43,6 @@ import math.geom2d.polygon.Polyline2D;
 public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new Quadratic Bezier curve from 3 points.
-     *
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static QuadBezierCurve2D create(Point2D p1, Point2D p2, Point2D p3) {
-        return new QuadBezierCurve2D(p1, p2, p3);
-    }
-
     // ===================================================================
     // class variables
 
@@ -267,26 +257,10 @@ public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothC
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns 1, as Bezier curve is parametrized between 0 and 1.
      */
     public double t1() {
         return 1;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     /**
@@ -548,12 +522,4 @@ public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothC
         return true;
     }
 
-    /**
-     * @deprecated not necessary to clone immutable objects (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public QuadBezierCurve2D clone() {
-        return new QuadBezierCurve2D(x1, y1, ctrlx, ctrly, x2, y2);
-    }
 }

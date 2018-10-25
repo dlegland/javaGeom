@@ -36,16 +36,6 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     private static final long serialVersionUID = 1L;
 
     /**
-     * Static factory for creating a new line segment between two points.
-     * 
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static LineSegment2D create(Point2D p1, Point2D p2) {
-        return new LineSegment2D(p1, p2);
-    }
-
-    /**
      * Returns the straight line that is the median of the edge extremities.
      */
     public static StraightLine2D getMedian(LineSegment2D edge) {
@@ -230,26 +220,10 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns the parameter of the last point of the edge, equals to 1.
      */
     public double t1() {
         return 1.0;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Point2D point(double t) {
@@ -426,12 +400,4 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
         return hash;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public LineSegment2D clone() {
-        return new LineSegment2D(x0, y0, x0 + dx, y0 + dy);
-    }
 }

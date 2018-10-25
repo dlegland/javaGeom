@@ -776,10 +776,4 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
         return result;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public abstract AbstractLine2D clone();
 }

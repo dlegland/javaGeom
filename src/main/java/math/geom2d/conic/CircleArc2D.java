@@ -75,38 +75,6 @@ import math.utils.EqualUtils;
 public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static CircleArc2D create(Circle2D support, double startAngle, double angleExtent) {
-        return new CircleArc2D(support, startAngle, angleExtent);
-    }
-
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static CircleArc2D create(Circle2D support, double startAngle, double endAngle, boolean direct) {
-        return new CircleArc2D(support, startAngle, endAngle, direct);
-    }
-
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static CircleArc2D create(Point2D center, double radius, double startAngle, double angleExtent) {
-        return new CircleArc2D(center, radius, startAngle, angleExtent);
-    }
-
-    /**
-     * @deprecated since 0.11.1
-     */
-    @Deprecated
-    public static CircleArc2D create(Point2D center, double radius, double startAngle, double endAngle, boolean direct) {
-        return new CircleArc2D(center, radius, startAngle, endAngle, direct);
-    }
-
     // ====================================================================
     // Class variables
 
@@ -496,25 +464,9 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     }
 
     /**
-     * @deprecated replaced by t0()
-     */
-    @Deprecated
-    public double getT0() {
-        return 0;
-    }
-
-    /**
      * Returns the last position of the circle are, which is given by the absolute angle of angle extent of this arc.
      */
     public double t1() {
-        return abs(this.angleExtent);
-    }
-
-    /**
-     * @deprecated replaced by t1()
-     */
-    @Deprecated
-    public double getT1() {
         return abs(this.angleExtent);
     }
 
@@ -918,15 +870,6 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
 
         // if no difference, this is the same
         return true;
-    }
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public CircleArc2D clone() {
-        return new CircleArc2D(circle.clone(), startAngle, angleExtent);
     }
 
     /**

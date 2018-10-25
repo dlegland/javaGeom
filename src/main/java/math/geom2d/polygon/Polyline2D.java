@@ -275,14 +275,6 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     }
 
     /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
-    }
-
-    /**
      * Returns the last point of this polyline, or null if the polyline does not contain any point.
      */
     @Override
@@ -459,18 +451,6 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
             if (!(vertices.get(i)).equals(polyline.vertices.get(i)))
                 return false;
         return true;
-    }
-
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public Polyline2D clone() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(vertices.size());
-        for (Point2D point : vertices)
-            array.add(point);
-        return new Polyline2D(array);
     }
 
 }

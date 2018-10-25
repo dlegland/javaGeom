@@ -222,26 +222,10 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     }
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT0() {
-        return t0();
-    }
-
-    /**
      * Returns Double.POSITIVE_INFINITY.
      */
     public double t1() {
         return Double.POSITIVE_INFINITY;
-    }
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public double getT1() {
-        return t1();
     }
 
     public Collection<Point2D> intersections(ILinearShape2D line) {
@@ -369,12 +353,4 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         return positive == branch.positive;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public HyperbolaBranch2D clone() {
-        return new HyperbolaBranch2D(hyperbola.clone(), positive);
-    }
 }

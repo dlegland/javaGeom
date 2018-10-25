@@ -510,19 +510,4 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    public MultiPolygon2D clone() {
-        // allocate memory for new ring array
-        ArrayList<LinearRing2D> array = new ArrayList<LinearRing2D>(rings.size());
-
-        // clone each ring
-        for (LinearRing2D ring : rings)
-            array.add(new LinearRing2D(ring));
-
-        // create a new polygon with cloned rings
-        return new MultiPolygon2D(array);
-    }
 }

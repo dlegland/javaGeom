@@ -428,16 +428,4 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
         return true;
     }
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    @Override
-    public PointArray2D clone() {
-        PointArray2D set = new PointArray2D(this.size());
-        for (Point2D point : this)
-            set.add(point);
-        return set;
-    }
-
 }

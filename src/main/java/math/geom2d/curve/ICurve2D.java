@@ -65,21 +65,9 @@ public interface ICurve2D extends IShape2D, Cloneable {
     public abstract double t0();
 
     /**
-     * @deprecated replaced by t0() (since 0.11.1).
-     */
-    @Deprecated
-    public abstract double getT0();
-
-    /**
      * Get value of parameter t for the last point of the curve. It can be +Infinity, in this case the piece of curve is not bounded.
      */
     public abstract double t1();
-
-    /**
-     * @deprecated replaced by t1() (since 0.11.1).
-     */
-    @Deprecated
-    public abstract double getT1();
 
     /**
      * Returns the point located at the given position on the curve. If the parameter lies outside the definition range, the parameter corresponding to the closest bound is used instead. This method can be used to draw an approximated outline of a curve, by selecting multiple values for t and drawing lines between them.
@@ -201,9 +189,4 @@ public interface ICurve2D extends IShape2D, Cloneable {
      */
     public abstract void draw(Graphics2D g2);
 
-    /**
-     * @deprecated use copy constructor instead (0.11.2)
-     */
-    @Deprecated
-    public abstract ICurve2D clone();
 }
