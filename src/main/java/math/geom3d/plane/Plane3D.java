@@ -7,7 +7,7 @@ package math.geom3d.plane;
 import math.geom2d.Point2D;
 import math.geom3d.Box3D;
 import math.geom3d.Point3D;
-import math.geom3d.Shape3D;
+import math.geom3d.IShape3D;
 import math.geom3d.Vector3D;
 import math.geom3d.line.StraightLine3D;
 import math.geom3d.transform.AffineTransform3D;
@@ -15,7 +15,7 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class Plane3D implements Shape3D {
+public class Plane3D implements IShape3D {
 
     // ===================================================================
     // class variables
@@ -137,7 +137,7 @@ public class Plane3D implements Shape3D {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
-    public Shape3D clip(Box3D box) {
+    public IShape3D clip(Box3D box) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -149,7 +149,7 @@ public class Plane3D implements Shape3D {
      */
     public boolean contains(Point3D point) {
         Point3D proj = this.projectPoint(point);
-        return (point.distance(proj) < Shape3D.ACCURACY);
+        return (point.distance(proj) < IShape3D.ACCURACY);
     }
 
     /*
@@ -159,15 +159,15 @@ public class Plane3D implements Shape3D {
      */
     public Box3D boundingBox() {
         // plane parallel to XY plane
-        if (Math.abs(dz1) < Shape3D.ACCURACY && Math.abs(dz2) < Shape3D.ACCURACY)
+        if (Math.abs(dz1) < IShape3D.ACCURACY && Math.abs(dz2) < IShape3D.ACCURACY)
             return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z0, z0);
 
         // plane parallel to YZ plane
-        if (Math.abs(dx1) < Shape3D.ACCURACY && Math.abs(dx2) < Shape3D.ACCURACY)
+        if (Math.abs(dx1) < IShape3D.ACCURACY && Math.abs(dx2) < IShape3D.ACCURACY)
             return new Box3D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // plane parallel to XZ plane
-        if (Math.abs(dy1) < Shape3D.ACCURACY && Math.abs(dy2) < Shape3D.ACCURACY)
+        if (Math.abs(dy1) < IShape3D.ACCURACY && Math.abs(dy2) < IShape3D.ACCURACY)
             return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
@@ -205,7 +205,7 @@ public class Plane3D implements Shape3D {
      * 
      * @see math.geom3d.Shape3D#transform(math.geom3d.transform.AffineTransform3D)
      */
-    public Shape3D transform(AffineTransform3D trans) {
+    public IShape3D transform(AffineTransform3D trans) {
         return new Plane3D(this.origin().transform(trans), this.vector1().transform(trans), this.vector2().transform(trans));
     }
 
@@ -218,23 +218,23 @@ public class Plane3D implements Shape3D {
             return false;
         Plane3D plane = (Plane3D) obj;
 
-        if (Math.abs(this.x0 - plane.x0) > Shape3D.ACCURACY)
+        if (Math.abs(this.x0 - plane.x0) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.y0 - plane.y0) > Shape3D.ACCURACY)
+        if (Math.abs(this.y0 - plane.y0) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.z0 - plane.z0) > Shape3D.ACCURACY)
+        if (Math.abs(this.z0 - plane.z0) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dx1 - plane.dx1) > Shape3D.ACCURACY)
+        if (Math.abs(this.dx1 - plane.dx1) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dy1 - plane.dy1) > Shape3D.ACCURACY)
+        if (Math.abs(this.dy1 - plane.dy1) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dz1 - plane.dz1) > Shape3D.ACCURACY)
+        if (Math.abs(this.dz1 - plane.dz1) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dx2 - plane.dx2) > Shape3D.ACCURACY)
+        if (Math.abs(this.dx2 - plane.dx2) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dy2 - plane.dy2) > Shape3D.ACCURACY)
+        if (Math.abs(this.dy2 - plane.dy2) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(this.dz2 - plane.dz2) > Shape3D.ACCURACY)
+        if (Math.abs(this.dz2 - plane.dz2) > IShape3D.ACCURACY)
             return false;
         return true;
     }

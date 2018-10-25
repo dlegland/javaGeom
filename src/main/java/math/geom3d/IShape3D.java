@@ -33,7 +33,7 @@ import math.geom3d.transform.*;
  * 
  * @author dlegland
  */
-public interface Shape3D {
+public interface IShape3D {
 
     public final static double ACCURACY = 1e-12;
 
@@ -46,9 +46,9 @@ public interface Shape3D {
 
     public abstract Box3D boundingBox();
 
-    public abstract Shape3D clip(Box3D box);
+    public abstract IShape3D clip(Box3D box);
 
-    public abstract Shape3D transform(AffineTransform3D trans);
+    public abstract IShape3D transform(AffineTransform3D trans);
 
     /**
      * Gets the distance of the shape to the given point, or the distance of point to the frontier of the shape in the case of a plain shape.

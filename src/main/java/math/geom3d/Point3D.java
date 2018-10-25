@@ -33,7 +33,7 @@ import math.geom3d.transform.AffineTransform3D;
  * 
  * @author dlegland
  */
-public class Point3D implements Shape3D {
+public class Point3D implements IShape3D {
 
     // ===================================================================
     // Class variables
@@ -161,11 +161,11 @@ public class Point3D implements Shape3D {
             return false;
         Point3D point = (Point3D) obj;
 
-        if (Math.abs(point.x - this.x) > Shape3D.ACCURACY)
+        if (Math.abs(point.x - this.x) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(point.y - this.y) > Shape3D.ACCURACY)
+        if (Math.abs(point.y - this.y) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(point.z - this.z) > Shape3D.ACCURACY)
+        if (Math.abs(point.z - this.z) > IShape3D.ACCURACY)
             return false;
         return true;
     }

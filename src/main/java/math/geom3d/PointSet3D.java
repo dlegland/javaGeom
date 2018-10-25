@@ -13,7 +13,7 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class PointSet3D implements Shape3D, Iterable<Point3D> {
+public class PointSet3D implements IShape3D, Iterable<Point3D> {
 
     protected Collection<Point3D> points = new ArrayList<Point3D>();
 
@@ -106,9 +106,9 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
-    public Shape3D clip(Box3D box) {
+    public IShape3D clip(Box3D box) {
         PointSet3D res = new PointSet3D(this.points.size());
-        Shape3D clipped;
+        IShape3D clipped;
         for (Point3D point : points) {
             clipped = point.clip(box);
             if (clipped != null)
@@ -152,7 +152,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
 
     public boolean contains(Point3D point) {
         for (Point3D p : points)
-            if (point.distance(p) < Shape3D.ACCURACY)
+            if (point.distance(p) < IShape3D.ACCURACY)
                 return true;
         return false;
     }
@@ -170,7 +170,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
      * 
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
-    public Shape3D transform(AffineTransform3D trans) {
+    public IShape3D transform(AffineTransform3D trans) {
         PointSet3D res = new PointSet3D();
         for (Point3D point : points)
             res.addPoint(point.transform(trans));

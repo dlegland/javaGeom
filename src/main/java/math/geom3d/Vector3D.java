@@ -47,7 +47,7 @@ public class Vector3D {
     public final static boolean isColinear(Vector3D v1, Vector3D v2) {
         v1 = v1.normalize();
         v2 = v2.normalize();
-        return Vector3D.crossProduct(v1, v2).norm() < Shape3D.ACCURACY;
+        return Vector3D.crossProduct(v1, v2).norm() < IShape3D.ACCURACY;
     }
 
     /**
@@ -59,7 +59,7 @@ public class Vector3D {
         v1 = v1.normalize();
         v2 = v2.normalize();
         double dot = Vector3D.dotProduct(v1, v2);
-        return Math.abs(dot) < Shape3D.ACCURACY;
+        return Math.abs(dot) < IShape3D.ACCURACY;
     }
 
     // ===================================================================
@@ -189,11 +189,11 @@ public class Vector3D {
             return false;
 
         Vector3D v = (Vector3D) obj;
-        if (Math.abs(x - v.x) > Shape3D.ACCURACY)
+        if (Math.abs(x - v.x) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(y - v.y) > Shape3D.ACCURACY)
+        if (Math.abs(y - v.y) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(z - v.z) > Shape3D.ACCURACY)
+        if (Math.abs(z - v.z) > IShape3D.ACCURACY)
             return false;
         return true;
     }

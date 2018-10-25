@@ -9,16 +9,16 @@ import java.util.Collection;
 
 import math.geom3d.Box3D;
 import math.geom3d.Point3D;
-import math.geom3d.Shape3D;
+import math.geom3d.IShape3D;
 import math.geom3d.Vector3D;
-import math.geom3d.curve.ContinuousCurve3D;
-import math.geom3d.curve.Curve3D;
+import math.geom3d.curve.IContinuousCurve3D;
+import math.geom3d.curve.ICurve3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
  * @author dlegland
  */
-public class StraightLine3D implements ContinuousCurve3D {
+public class StraightLine3D implements IContinuousCurve3D {
 
     // ===================================================================
     // Class variables
@@ -93,7 +93,7 @@ public class StraightLine3D implements ContinuousCurve3D {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
-    public Shape3D clip(Box3D box) {
+    public IShape3D clip(Box3D box) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -104,7 +104,7 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
     public boolean contains(Point3D point) {
-        return this.distance(point) < Shape3D.ACCURACY;
+        return this.distance(point) < IShape3D.ACCURACY;
     }
 
     public boolean isEmpty() {
@@ -124,15 +124,15 @@ public class StraightLine3D implements ContinuousCurve3D {
         Vector3D v = this.direction();
 
         // line parallel to (Ox) axis
-        if (Math.hypot(v.getY(), v.getZ()) < Shape3D.ACCURACY)
+        if (Math.hypot(v.getY(), v.getZ()) < IShape3D.ACCURACY)
             return new Box3D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oy) axis
-        if (Math.hypot(v.getX(), v.getZ()) < Shape3D.ACCURACY)
+        if (Math.hypot(v.getX(), v.getZ()) < IShape3D.ACCURACY)
             return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oz) axis
-        if (Math.hypot(v.getX(), v.getY()) < Shape3D.ACCURACY)
+        if (Math.hypot(v.getX(), v.getY()) < IShape3D.ACCURACY)
             return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z0, z0);
 
         return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
@@ -185,7 +185,7 @@ public class StraightLine3D implements ContinuousCurve3D {
         return new ArrayList<Point3D>(0);
     }
 
-    public Curve3D subCurve(double t0, double t1) {
+    public ICurve3D subCurve(double t0, double t1) {
         // TODO Auto-generated method stub
         return null;
     }

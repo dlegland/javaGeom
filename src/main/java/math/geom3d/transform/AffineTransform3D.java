@@ -27,7 +27,7 @@
 package math.geom3d.transform;
 
 import math.geom3d.Point3D;
-import math.geom3d.Shape3D;
+import math.geom3d.IShape3D;
 import math.geom3d.Vector3D;
 
 /**
@@ -276,29 +276,29 @@ public class AffineTransform3D implements Bijection3D {
 
         double tab[] = ((AffineTransform3D) obj).coefficients();
 
-        if (Math.abs(tab[0] - m00) > Shape3D.ACCURACY)
+        if (Math.abs(tab[0] - m00) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[1] - m01) > Shape3D.ACCURACY)
+        if (Math.abs(tab[1] - m01) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[2] - m02) > Shape3D.ACCURACY)
+        if (Math.abs(tab[2] - m02) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[3] - m03) > Shape3D.ACCURACY)
+        if (Math.abs(tab[3] - m03) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[4] - m10) > Shape3D.ACCURACY)
+        if (Math.abs(tab[4] - m10) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[5] - m11) > Shape3D.ACCURACY)
+        if (Math.abs(tab[5] - m11) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[6] - m12) > Shape3D.ACCURACY)
+        if (Math.abs(tab[6] - m12) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[7] - m13) > Shape3D.ACCURACY)
+        if (Math.abs(tab[7] - m13) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[8] - m20) > Shape3D.ACCURACY)
+        if (Math.abs(tab[8] - m20) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[9] - m21) > Shape3D.ACCURACY)
+        if (Math.abs(tab[9] - m21) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[10] - m22) > Shape3D.ACCURACY)
+        if (Math.abs(tab[10] - m22) > IShape3D.ACCURACY)
             return false;
-        if (Math.abs(tab[11] - m23) > Shape3D.ACCURACY)
+        if (Math.abs(tab[11] - m23) > IShape3D.ACCURACY)
             return false;
         return true;
     }

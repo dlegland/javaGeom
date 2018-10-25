@@ -7,8 +7,8 @@ package math.geom3d.curve;
 import java.util.Collection;
 
 import math.geom3d.Point3D;
-import math.geom3d.Shape3D;
-import math.geom3d.curve.Curve3D;
+import math.geom3d.IShape3D;
+import math.geom3d.curve.ICurve3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -16,7 +16,7 @@ import math.geom3d.transform.AffineTransform3D;
  * 
  * @author dlegland
  */
-public interface Curve3D extends Shape3D {
+public interface ICurve3D extends IShape3D {
 
     /**
      * Get value of parameter t for the first point of the curve. It can be -Infinity, in this case the piece of curve is not bounded.
@@ -75,14 +75,14 @@ public interface Curve3D extends Shape3D {
     /**
      * Returns the curve with same trace on the plane with parametrization in reverse order.
      */
-    public abstract Curve3D reverseCurve();
+    public abstract ICurve3D reverseCurve();
 
     /**
      * Returns the collection of continuous curves which constitute this curve.
      * 
      * @return a collection of continuous curves.
      */
-    public abstract Collection<? extends ContinuousCurve3D> continuousCurves();
+    public abstract Collection<? extends IContinuousCurve3D> continuousCurves();
 
     /**
      * Returns a portion of the original curve, delimited by two positions on the curve.
@@ -93,12 +93,12 @@ public interface Curve3D extends Shape3D {
      *            position of the end of the sub-curve
      * @return the portion of original curve comprised between t0 and t1.
      */
-    public abstract Curve3D subCurve(double t0, double t1);
+    public abstract ICurve3D subCurve(double t0, double t1);
 
     /**
      * Transforms the curve by an affine transform. The result is an instance of Curve3D.
      */
-    public abstract Curve3D transform(AffineTransform3D trans);
+    public abstract ICurve3D transform(AffineTransform3D trans);
 
     // /**
     // * When a curve is clipped, the result is a set of curves.
