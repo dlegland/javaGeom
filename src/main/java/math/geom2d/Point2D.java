@@ -25,32 +25,33 @@
 
 package math.geom2d;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
+
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearShape2D;
-import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.point.PointArray2D;
 import math.geom2d.point.IPointSet2D;
 import math.geom2d.point.IPointShape2D;
+import math.geom2d.point.PointArray2D;
 import math.geom2d.transform.CircleInversion2D;
 import math.utils.EqualUtils;
-
-import static java.lang.Math.*;
 
 /**
  * <p>
  * A point in the plane defined by its 2 Cartesian coordinates x and y. The class provides static methods to compute distance between two points.
  * </p>
  */
-public class Point2D implements IGeometricObject2D, IPointShape2D, Cloneable, ICirculinearShape2D {
-
-    // ===================================================================
-    // class variables
+public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearShape2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** The x coordinate of this point. */
     protected double x;

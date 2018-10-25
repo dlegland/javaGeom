@@ -26,17 +26,33 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.ISmoothCurve2D;
+import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.IContour2D;
 import math.geom2d.domain.IDomain2D;
-import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
@@ -55,10 +71,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, IConic2D, Cloneable {
-
-    // ==========================================================
-    // static constructors
+public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, IConic2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a parabola by supplying the vertex and the focus.

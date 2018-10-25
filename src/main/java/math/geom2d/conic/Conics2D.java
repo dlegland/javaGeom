@@ -285,6 +285,7 @@ public class Conics2D {
     // Some special conics
 
     static class ConicStraightLine2D extends StraightLine2D implements IConic2D {
+        private static final long serialVersionUID = 1L;
 
         double[] coefs = new double[] { 0, 0, 0, 1, 0, 0 };
 
@@ -323,6 +324,7 @@ public class Conics2D {
     }
 
     static class ConicTwoLines2D extends ContourArray2D<StraightLine2D> implements IConic2D {
+        private static final long serialVersionUID = 1L;
 
         double xc = 0, yc = 0, d = 1, theta = 0;
 

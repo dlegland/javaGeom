@@ -43,9 +43,7 @@ import math.geom2d.curve.*;
  * @author dlegland
  */
 public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implements IBoundary2D {
-
-    // ===================================================================
-    // static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new ContourArray2D from a collection of contours.

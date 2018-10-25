@@ -19,7 +19,8 @@ import math.geom2d.Vector2D;
  * 
  * @author dlegland
  */
-public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D implements ISmoothCurve2D, Cloneable {
+public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D implements ISmoothCurve2D {
+    private static final long serialVersionUID = 1L;
 
     /*
      * (non-Javadoc)

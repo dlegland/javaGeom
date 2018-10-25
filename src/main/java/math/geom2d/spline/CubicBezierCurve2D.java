@@ -38,10 +38,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author Legland
  */
-public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D, Cloneable {
-
-    // ===================================================================
-    // static methods
+public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * @deprecated since 0.11.1

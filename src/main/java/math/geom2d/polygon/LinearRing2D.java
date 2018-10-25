@@ -54,9 +54,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  */
 public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
-
-    // ===================================================================
-    // Static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new LinearRing2D from a collection of points.

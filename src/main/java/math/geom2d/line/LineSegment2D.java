@@ -32,10 +32,8 @@ import math.utils.EqualUtils;
 /**
  * Line segment, defined as the set of points located between the two end points.
  */
-public class LineSegment2D extends AbstractLine2D implements Cloneable, ICirculinearElement2D {
-
-    // ===================================================================
-    // static constructors
+public class LineSegment2D extends AbstractLine2D implements ICirculinearElement2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new line segment between two points.

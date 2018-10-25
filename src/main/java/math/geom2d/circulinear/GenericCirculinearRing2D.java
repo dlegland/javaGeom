@@ -24,6 +24,8 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinearElement2D> implements ICirculinearRing2D {
+    private static final long serialVersionUID = 1L;
+
     // TODO: parameterize with curve type ?
 
     // ===================================================================

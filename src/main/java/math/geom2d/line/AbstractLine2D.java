@@ -54,9 +54,7 @@ import math.geom2d.transform.CircleInversion2D;
  * <p>
  */
 public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, ILinearElement2D {
-
-    // ===================================================================
-    // static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Returns the unique intersection of two straight objects. If the intersection doesn't exist (parallel lines, short edge), return null.

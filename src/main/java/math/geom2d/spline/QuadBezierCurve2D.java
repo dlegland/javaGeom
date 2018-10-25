@@ -40,10 +40,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author Legland
  */
-public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D, Cloneable {
-
-    // ===================================================================
-    // static methods
+public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new Quadratic Bezier curve from 3 points.

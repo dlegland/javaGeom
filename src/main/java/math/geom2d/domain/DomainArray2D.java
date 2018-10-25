@@ -25,10 +25,7 @@ import math.geom2d.polygon.*;
  *
  */
 public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implements IDomainSet2D<T> {
-
-    /*
-     * public static <D extends Domain2D> DomainArray2D<D> create(Collection<D> array) { return new DomainArray2D<D>(array); }
-     */
+    private static final long serialVersionUID = 1L;
 
     @SafeVarargs
     public static <D extends IDomain2D> DomainArray2D<D> create(D... array) {

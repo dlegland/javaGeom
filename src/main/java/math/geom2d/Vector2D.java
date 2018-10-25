@@ -25,19 +25,22 @@
 
 package math.geom2d;
 
-import math.geom2d.AffineTransform2D;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
+
+import java.io.Serializable;
+
 import math.utils.EqualUtils;
-import static java.lang.Math.*;
 
 // Imports
 
 /**
  * A vector in the 2D plane. Provides methods to compute cross product and dot product, addition and subtraction of vectors.
  */
-public class Vector2D implements IGeometricObject2D, Cloneable {
-
-    // ===================================================================
-    // static functions
+public class Vector2D implements IGeometricObject2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new vector in Cartesian coordinates.

@@ -19,10 +19,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, Cloneable {
-
-    // ===================================================================
-    // constructor
+public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D {
+    private static final long serialVersionUID = 1L;
 
     public static HyperbolaBranchArc2D create(HyperbolaBranch2D branch, double t0, double t1) {
         return new HyperbolaBranchArc2D(branch, t0, t1);

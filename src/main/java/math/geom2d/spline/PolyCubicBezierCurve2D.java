@@ -40,9 +40,7 @@ import math.geom2d.curve.*;
  * @author dlegland
  */
 public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
-
-    // ===================================================================
-    // Static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a series a cubic bezier curves, by grouping 4 adjacent points. Two consecutive curves share one point, N curves will require 3*n+1 points.

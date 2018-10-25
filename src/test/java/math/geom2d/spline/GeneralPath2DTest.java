@@ -6,6 +6,7 @@ package math.geom2d.spline;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.curve.IContinuousCurve2D;
@@ -41,7 +42,7 @@ public class GeneralPath2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.spline.GeneralPath2D#AlmostEquals(Object,double)}.
+     * Test method for {@link math.geom2d.spline.GeneralPath2D#almostEquals(IGeometricObject2D,double)}.
      */
     public void testGeneralPath2DAlmostEquals() {
         GeneralPath2D path = createDefaultPath();
@@ -50,7 +51,7 @@ public class GeneralPath2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.spline.GeneralPath2D#intersections(math.geom2d.line.LinearShape2D)}.
+     * Test method for {@link math.geom2d.spline.GeneralPath2D#intersections(math.geom2d.line.ILinearShape2D)}.
      */
     public void testIntersections() {
         GeneralPath2D path = createDefaultPath();
@@ -62,7 +63,7 @@ public class GeneralPath2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.spline.GeneralPath2D#intersections(math.geom2d.line.LinearShape2D)}.
+     * Test method for {@link math.geom2d.spline.GeneralPath2D#intersections(math.geom2d.line.ILinearShape2D)}.
      */
     public void testBoundingBox() {
         GeneralPath2D path = createDefaultPath();

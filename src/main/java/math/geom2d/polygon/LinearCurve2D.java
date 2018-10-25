@@ -27,14 +27,9 @@ import math.geom2d.point.PointSets2D;
  *
  */
 public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements ICirculinearContinuousCurve2D {
-
-    // ===================================================================
-    // class variables
+    private static final long serialVersionUID = 1L;
 
     protected ArrayList<Point2D> vertices;
-
-    // ===================================================================
-    // Contructors
 
     protected LinearCurve2D() {
         this.vertices = new ArrayList<Point2D>();

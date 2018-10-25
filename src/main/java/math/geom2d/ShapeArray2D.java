@@ -9,6 +9,7 @@
 package math.geom2d;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,10 +20,8 @@ import java.util.Iterator;
  * @author dlegland
  *
  */
-public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Cloneable {
-
-    // ===================================================================
-    // Static constructors
+public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static <T extends IShape2D> ShapeArray2D<T> create(Collection<T> shapes) {
         return new ShapeArray2D<T>(shapes);

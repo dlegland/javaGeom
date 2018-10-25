@@ -8,12 +8,12 @@
  */
 package math.geom2d.domain;
 
+import static java.lang.Math.PI;
+
+import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Point2D;
 import math.geom2d.conic.CircleArc2D;
-import junit.framework.TestCase;
-
-import static java.lang.Math.*;
 
 /**
  * @author dlegland
@@ -22,7 +22,7 @@ import static java.lang.Math.*;
 public class PolyOrientedCurve2DTest extends TestCase {
 
     /**
-     * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#windingAngle(java.awt.geom.Point2D)}. Use a curve set formed by two circle arcs.
+     * Test method for {@link math.geom2d.domain.PolyOrientedCurve2D#windingAngle(math.geom2d.Point2D)}. Use a curve set formed by two circle arcs.
      */
     public void testGetWindingAnglePoint() {
         double x0 = 150;

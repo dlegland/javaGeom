@@ -18,10 +18,8 @@ import math.geom2d.line.ILinearShape2D;
 /**
  * Branch of an Hyperbola2D.
  */
-public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothContour2D, Cloneable {
-
-    // ===================================================================
-    // Static constructor
+public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothContour2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Generic constructor, using a parent Hyperbola, and a boolean to specifies if the branch is the right one (crossing the Ox axis on positive side, b true), or the left one (crossing the Oy axis on the negative side, b false).

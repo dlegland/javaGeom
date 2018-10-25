@@ -47,10 +47,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, Cloneable {
-
-    // ==========================================================
-    // static constructor
+public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D {
+    private static final long serialVersionUID = 1L;
 
     public static ParabolaArc2D create(Parabola2D parabola, double t0, double t1) {
         return new ParabolaArc2D(parabola, t0, t1);

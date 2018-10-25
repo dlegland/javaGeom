@@ -38,17 +38,20 @@ import math.utils.EqualUtils;
 import static java.lang.Math.*;
 import static math.geom2d.IShape2D.ACCURACY;
 
+import java.io.Serializable;
+
 /**
  * Base class for generic affine transforms in the plane. They include rotations, translations, shears, similarities, and combinations of these. Such transformations can be constructed by using coefficients specification, or by creating specialized instances, by using static methods.
  * <p>
  */
-public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Cloneable {
+public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // coefficients for x coordinate.
-    protected double m00, m01, m02;
+    private double m00, m01, m02;
 
     // coefficients for y coordinate.
-    protected double m10, m11, m12;
+    private double m10, m11, m12;
 
     // ===================================================================
     // static methods

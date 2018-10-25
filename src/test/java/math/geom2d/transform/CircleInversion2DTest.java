@@ -43,7 +43,7 @@ public class CircleInversion2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.transform.CircleInversion2D#transform(java.awt.geom.Point2D)}.
+     * Test method for {@link math.geom2d.transform.CircleInversion2D#transform(math.geom2d.Point2D)}.
      */
     public void testTransformPoint2D() {
         double xc = 10;

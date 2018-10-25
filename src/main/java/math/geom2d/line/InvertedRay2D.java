@@ -41,10 +41,8 @@ import math.utils.EqualUtils;
  * </p>
  * with <code>t<code> comprised between -INFINITY and 0. This is complementary class to Ray2D.
  */
-public class InvertedRay2D extends AbstractLine2D implements Cloneable {
-
-    // ===================================================================
-    // Static factory
+public class InvertedRay2D extends AbstractLine2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new inverted ray with given direction to target.

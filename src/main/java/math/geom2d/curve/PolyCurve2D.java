@@ -44,9 +44,7 @@ import math.geom2d.polygon.Polyline2D;
  * @author dlegland
  */
 public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> implements IContinuousCurve2D {
-
-    // ===================================================================
-    // static factories
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new PolyCurve2D from a collection of curves.

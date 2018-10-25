@@ -52,9 +52,7 @@ import static java.lang.Math.*;
  * @author dlegland
  */
 public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D {
-
-    // ===================================================================
-    // static constructors
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new PolyOrientedCurve2D from a collection of curves.

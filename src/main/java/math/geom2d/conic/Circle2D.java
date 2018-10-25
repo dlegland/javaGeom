@@ -52,10 +52,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, ICircleLine2D, ICircularShape2D, ICirculinearRing2D, Cloneable {
-
-    // ===================================================================
-    // Static methods
+public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, ICircleLine2D, ICircularShape2D, ICirculinearRing2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a circle from a center and a radius.

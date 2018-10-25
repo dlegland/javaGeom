@@ -30,9 +30,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyCirculinearCurve2D<T> implements ICirculinearContinuousCurve2D, ICirculinearContour2D {
-
-    // ===================================================================
-    // static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a collection of curves.

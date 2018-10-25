@@ -72,10 +72,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D, Cloneable {
-
-    // ====================================================================
-    // static factories
+public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * @deprecated since 0.11.1

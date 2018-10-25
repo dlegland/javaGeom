@@ -36,30 +36,29 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.ContourArray2D;
+import math.geom2d.domain.IBoundary2D;
 import math.geom2d.exception.UnboundedBox2DException;
 import math.geom2d.line.AbstractLine2D;
+import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.IPolygon2D;
+import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polygons2D;
 import math.utils.EqualUtils;
 
 /**
  * This class defines bounds of a shape. It stores limits in each direction: <code>x</code> and <code>y</code>. It also provides methods for clipping others shapes, depending on their type.
  */
-public class Box2D implements IGeometricObject2D, Cloneable {
-
-    // ===================================================================
-    // Static factory
+public class Box2D implements IGeometricObject2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * @deprecated since 0.11.1

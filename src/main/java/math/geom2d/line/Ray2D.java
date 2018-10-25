@@ -41,10 +41,8 @@ import math.utils.EqualUtils;
  * </p>
  * With <code>t<code> comprised between 0 and +INFINITY.
  */
-public class Ray2D extends AbstractLine2D implements Cloneable {
-
-    // ===================================================================
-    // Static constructors
+public class Ray2D extends AbstractLine2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new ray.

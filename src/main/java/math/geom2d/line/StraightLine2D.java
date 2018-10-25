@@ -46,16 +46,8 @@ import math.utils.EqualUtils;
 /**
  * Implementation of a straight line. Such a line can be constructed using two points, a point and a parallel line or straight object, or with coefficient of the Cartesian equation.
  */
-public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, Cloneable, ICircleLine2D {
-
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    // ===================================================================
-    // static methods
+public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, ICircleLine2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a straight line going through a point and with a given angle.

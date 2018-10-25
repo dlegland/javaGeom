@@ -10,6 +10,7 @@ package math.geom2d.curve;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,7 +25,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, Cloneable {
+public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Wrap the given curve into an array list with the appropriate generic.

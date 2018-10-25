@@ -46,7 +46,7 @@ public class MiterJoinFactoryTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.circulinear.buffer.MiterJoinFactory#createJoin(math.geom2d.circulinear.CirculinearElement2D, math.geom2d.circulinear.CirculinearElement2D, double)}.
+     * Test method for {@link math.geom2d.circulinear.buffer.MiterJoinFactory#createJoin(math.geom2d.circulinear.ICirculinearElement2D, math.geom2d.circulinear.ICirculinearElement2D, double)}.
      */
     public void testCreateJoin_TwoLineSegmentsLeft() {
         JoinFactory jf = new MiterJoinFactory();
@@ -65,7 +65,7 @@ public class MiterJoinFactoryTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.circulinear.buffer.MiterJoinFactory#createJoin(math.geom2d.circulinear.CirculinearElement2D, math.geom2d.circulinear.CirculinearElement2D, double)}.
+     * Test method for {@link math.geom2d.circulinear.buffer.MiterJoinFactory#createJoin(math.geom2d.circulinear.ICirculinearElement2D, math.geom2d.circulinear.ICirculinearElement2D, double)}.
      */
     public void testCreateJoin_TwoLineSegmentsRight() {
         JoinFactory jf = new MiterJoinFactory();

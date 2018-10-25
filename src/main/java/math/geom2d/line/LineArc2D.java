@@ -45,10 +45,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D, Cloneable {
-
-    // ===================================================================
-    // Static constructor
+public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new LineArc2D

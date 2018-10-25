@@ -25,9 +25,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyOrientedCurve2D<T> implements ICirculinearContinuousCurve2D {
-
-    // ===================================================================
-    // static constructors
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from a collection of curves.

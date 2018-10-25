@@ -26,6 +26,8 @@
 
 package math.geom3d;
 
+import java.io.Serializable;
+
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -33,10 +35,8 @@ import math.geom3d.transform.AffineTransform3D;
  * 
  * @author dlegland
  */
-public class Point3D implements IShape3D {
-
-    // ===================================================================
-    // Class variables
+public class Point3D implements IShape3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private double x = 0;
     private double y = 0;

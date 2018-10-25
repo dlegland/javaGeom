@@ -4,6 +4,7 @@
 
 package math.geom3d;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,7 +14,8 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class PointSet3D implements IShape3D, Iterable<Point3D> {
+public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected Collection<Point3D> points = new ArrayList<Point3D>();
 

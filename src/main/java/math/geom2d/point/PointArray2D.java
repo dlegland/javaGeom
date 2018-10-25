@@ -27,6 +27,7 @@
 package math.geom2d.point;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,8 +36,8 @@ import java.util.Iterator;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
@@ -47,10 +48,8 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Cloneable {
-
-    // ===================================================================
-    // static constructors
+public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static <T extends Point2D> PointArray2D create(Collection<T> points) {
         return new PointArray2D(points);

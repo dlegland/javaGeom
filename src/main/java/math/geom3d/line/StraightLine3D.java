@@ -4,12 +4,13 @@
 
 package math.geom3d.line;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom3d.Box3D;
-import math.geom3d.Point3D;
 import math.geom3d.IShape3D;
+import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
 import math.geom3d.curve.IContinuousCurve3D;
 import math.geom3d.curve.ICurve3D;
@@ -18,10 +19,8 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class StraightLine3D implements IContinuousCurve3D {
-
-    // ===================================================================
-    // Class variables
+public class StraightLine3D implements IContinuousCurve3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected double x0 = 0;
     protected double y0 = 0;

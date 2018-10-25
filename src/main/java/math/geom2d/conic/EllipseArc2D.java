@@ -47,10 +47,8 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, IEllipseArcShape2D, Cloneable {
-
-    // ====================================================================
-    // methods specific to EllipseArc2D
+public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, IEllipseArcShape2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Specify supporting ellipse, start angle and end angle, and a flag indicating whether the arc is directed or not.

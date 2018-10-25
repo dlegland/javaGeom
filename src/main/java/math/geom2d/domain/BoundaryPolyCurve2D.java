@@ -37,9 +37,7 @@ import math.geom2d.AffineTransform2D;
  * @author dlegland
  */
 public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends PolyOrientedCurve2D<T> implements IContour2D {
-
-    // ===================================================================
-    // Static methods
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new BoundaryPolyCurve2D from a collection of curves.

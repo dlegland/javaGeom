@@ -4,10 +4,12 @@
 
 package math.geom3d.plane;
 
+import java.io.Serializable;
+
 import math.geom2d.Point2D;
 import math.geom3d.Box3D;
-import math.geom3d.Point3D;
 import math.geom3d.IShape3D;
+import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
 import math.geom3d.line.StraightLine3D;
 import math.geom3d.transform.AffineTransform3D;
@@ -15,10 +17,8 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class Plane3D implements IShape3D {
-
-    // ===================================================================
-    // class variables
+public class Plane3D implements IShape3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected double x0 = 0;
     protected double y0 = 0;

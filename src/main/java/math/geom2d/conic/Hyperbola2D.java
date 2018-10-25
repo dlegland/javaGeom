@@ -43,10 +43,8 @@ import math.utils.EqualUtils;
 /**
  * An Hyperbola, which is represented as a curve set of two boundary curves which are instances of HyperbolaBranch2D.
  */
-public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IConic2D, Cloneable {
-
-    // ===================================================================
-    // Static factories
+public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IConic2D {
+    private static final long serialVersionUID = 1L;
 
     public static Hyperbola2D create(Point2D center, double a, double b, double theta) {
         return new Hyperbola2D(center.x(), center.y(), a, b, theta, true);

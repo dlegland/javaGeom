@@ -46,10 +46,8 @@ import math.utils.EqualUtils;
 /**
  * An ellipse in the plane. It is defined by the center, the orientation angle, and the lengths of the two axis. No convention is taken about lengths of semiaxis: the second semi axis can be greater than the first one.
  */
-public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D, Cloneable {
-
-    // ===================================================================
-    // Static factories
+public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Create a new Ellipse by specifying the two focii, and the length of the chord. The chord equals the sum of distances between a point of the ellipse and each focus.

@@ -10,12 +10,13 @@
 
 package math.geom2d.curve;
 
-import math.geom2d.Point2D;
-
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
-import java.awt.Shape;
+import java.io.Serializable;
+
+import math.geom2d.Point2D;
 
 /**
  * The <code>GeneralPath</code> class represents a geometric path constructed from straight lines, and quadratic and cubic (Bezier) curves. It can contain multiple subpaths.
@@ -29,7 +30,8 @@ import java.awt.Shape;
  * @version 1.54, 02/02/00
  * @author Jim Graham
  */
-public final class GeneralPath2D implements Shape, Cloneable {
+public final class GeneralPath2D implements Shape, Serializable {
+    private static final long serialVersionUID = 1L;
 
     GeneralPath path;
 
@@ -241,8 +243,8 @@ public final class GeneralPath2D implements Shape, Cloneable {
      * 
      * @param rule
      *            an integer representing the specified winding rule
-     * @exception <code>IllegalArgumentException</code>
-     *            if <code>rule</code> is not either <code>WIND_EVEN_ODD</code> or <code>WIND_NON_ZERO</code>
+     * @exception IllegalArgumentException
+     *                if <code>rule</code> is not either <code>WIND_EVEN_ODD</code> or <code>WIND_NON_ZERO</code>
      * @see #WIND_EVEN_ODD
      * @see #WIND_NON_ZERO
      */

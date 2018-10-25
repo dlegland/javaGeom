@@ -25,11 +25,16 @@ package math.geom2d.curve;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.ILinearShape2D;
 
 /**
@@ -42,10 +47,8 @@ import math.geom2d.line.ILinearShape2D;
  * 
  * @author Legland
  */
-public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T>, Cloneable {
-
-    // ===================================================================
-    // Static Constructors
+public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new CurveArray2D from a collection of curves.

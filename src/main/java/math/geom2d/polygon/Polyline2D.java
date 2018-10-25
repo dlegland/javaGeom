@@ -45,10 +45,8 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousCurve2D, Cloneable {
-
-    // ===================================================================
-    // Static methods
+public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousCurve2D {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Static factory for creating a new Polyline2D from a collection of points.
