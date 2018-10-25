@@ -55,7 +55,7 @@ public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends P
      */
     @SafeVarargs
     public static <T extends IContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(T... curves) {
-        return new BoundaryPolyCurve2D<T>(curves);
+        return new BoundaryPolyCurve2D<>(curves);
     }
 
     // ===================================================================
@@ -132,13 +132,13 @@ public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends P
         int n = curves.size();
         for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n - 1 - i).reverse();
-        return new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(curves2);
+        return new BoundaryPolyCurve2D<>(curves2);
     }
 
     @Override
     public BoundaryPolyCurve2D<IContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
         // create result curve
-        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(curves.size());
+        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<>(curves.size());
 
         // reverse each curve and add it to result
         for (IContinuousOrientedCurve2D curve : curves)

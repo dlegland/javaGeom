@@ -35,7 +35,7 @@ public class CheckBufferPolyCirculinearCurve extends JPanel {
         CircleArc2D arc2 = new CircleArc2D(new Point2D(200, 300), 100, 3 * Math.PI / 2, -Math.PI);
 
         // Create a new closed polycurve with 4 elements
-        curve = new PolyCirculinearCurve2D<CircleArc2D>(new CircleArc2D[] { arc1, arc2 }, false);
+        curve = new PolyCirculinearCurve2D<>(new CircleArc2D[] { arc1, arc2 }, false);
 
         domain = curve.buffer(dist);
     }

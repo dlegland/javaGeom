@@ -917,7 +917,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<ISmoothOrientedCurve2D> result = new CurveArray2D<ISmoothOrientedCurve2D>(set.size());
+        CurveArray2D<ISmoothOrientedCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {
@@ -973,7 +973,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
             return points;
 
         // convert points on circle as angles
-        ArrayList<Point2D> res = new ArrayList<Point2D>(points.size());
+        ArrayList<Point2D> res = new ArrayList<>(points.size());
         for (Point2D point : points)
             res.add(this.point(circle.position(point)));
 

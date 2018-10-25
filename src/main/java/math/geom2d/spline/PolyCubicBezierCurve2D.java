@@ -117,7 +117,7 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        ICurveSet2D<PolyCubicBezierCurve2D> result = new CurveArray2D<PolyCubicBezierCurve2D>(set.size());
+        ICurveSet2D<PolyCubicBezierCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

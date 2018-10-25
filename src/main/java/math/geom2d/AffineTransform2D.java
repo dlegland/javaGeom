@@ -48,10 +48,10 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     private static final long serialVersionUID = 1L;
 
     // coefficients for x coordinate.
-    private double m00, m01, m02;
+    private final double m00, m01, m02;
 
     // coefficients for y coordinate.
-    private double m10, m11, m12;
+    private final double m10, m11, m12;
 
     // ===================================================================
     // static methods
@@ -183,8 +183,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      */
     public static AffineTransform2D createQuadrantRotation(Point2D center, int numQuadrant) {
         AffineTransform2D trans = createQuadrantRotation(numQuadrant);
-        trans.recenter(center.x(), center.y());
-        return trans;
+        return trans.recenter(center.x(), center.y());
     }
 
     /**
@@ -192,8 +191,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      */
     public static AffineTransform2D createQuadrantRotation(double x0, double y0, int numQuadrant) {
         AffineTransform2D trans = createQuadrantRotation(numQuadrant);
-        trans.recenter(x0, y0);
-        return trans;
+        return trans.recenter(x0, y0);
     }
 
     /**
@@ -408,8 +406,10 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
         if (coefs.length == 4) {
             m00 = coefs[0];
             m01 = coefs[1];
+            m02 = 0;
             m10 = coefs[2];
             m11 = coefs[3];
+            m12 = 0;
         } else {
             m00 = coefs[0];
             m01 = coefs[1];
@@ -432,11 +432,15 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     /**
      * Helper function that fixes the center of the transform. This function recomputes m02 and m12 from the other coefficients and the given parameters. If transform is a pure translation, the result is the identity transform.
      */
-    private void recenter(double x0, double y0) {
-        this.m02 = (1 - this.m00) * x0 - this.m01 * y0;
-        this.m12 = (1 - this.m11) * y0 - this.m10 * x0;
+    private AffineTransform2D recenter(double x0, double y0) {
+        double newm00 = m00;
+        double newm01 = m01;
+        double newm02 = (1 - m00) * x0 - m01 * y0;
+        double newm10 = m10;
+        double newm11 = m11;
+        double newm12 = (1 - m11) * y0 - m10 * x0;
+        return new AffineTransform2D(newm00, newm01, newm02, newm10, newm11, newm12);
     }
-
     // ===================================================================
     // methods specific to AffineTransform2D class
 

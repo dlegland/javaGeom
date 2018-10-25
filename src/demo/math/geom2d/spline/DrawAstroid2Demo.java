@@ -48,7 +48,7 @@ public class DrawAstroid2Demo extends JPanel {
         QuadBezierCurve2D quad3 = new QuadBezierCurve2D(p3, p0, p4);
         QuadBezierCurve2D quad4 = new QuadBezierCurve2D(p4, p0, p1);
 
-        astroid = new BoundaryPolyCurve2D<QuadBezierCurve2D>(new QuadBezierCurve2D[] { quad1, quad2, quad3, quad4 });
+        astroid = new BoundaryPolyCurve2D<>(new QuadBezierCurve2D[] { quad1, quad2, quad3, quad4 });
     }
 
     public void paintComponent(Graphics g) {

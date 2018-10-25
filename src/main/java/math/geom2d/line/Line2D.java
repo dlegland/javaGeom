@@ -453,7 +453,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<Line2D> result = new CurveArray2D<Line2D>(set.size());
+        CurveArray2D<Line2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

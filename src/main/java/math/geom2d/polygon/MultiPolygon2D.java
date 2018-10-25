@@ -39,7 +39,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     // ===================================================================
     // class members
 
-    ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+    ArrayList<LinearRing2D> rings = new ArrayList<>(1);
 
     // ===================================================================
     // Constructors
@@ -127,7 +127,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     public Collection<LineSegment2D> edges() {
         int nEdges = edgeNumber();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nEdges);
+        ArrayList<LineSegment2D> edges = new ArrayList<>(nEdges);
         for (LinearRing2D ring : rings)
             edges.addAll(ring.edges());
         return edges;
@@ -142,7 +142,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     public Collection<Point2D> vertices() {
         int nv = vertexNumber();
-        ArrayList<Point2D> points = new ArrayList<Point2D>(nv);
+        ArrayList<Point2D> points = new ArrayList<>(nv);
         for (LinearRing2D ring : rings)
             points.addAll(ring.vertices());
         return points;
@@ -355,7 +355,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     public IPolygon2D complement() {
         // allocate memory for array of reversed rings
-        ArrayList<LinearRing2D> reverseLines = new ArrayList<LinearRing2D>(rings.size());
+        ArrayList<LinearRing2D> reverseLines = new ArrayList<>(rings.size());
 
         // reverse each ring
         for (LinearRing2D ring : rings)
@@ -423,7 +423,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     public MultiPolygon2D transform(AffineTransform2D trans) {
         // allocate memory for transformed rings
-        ArrayList<LinearRing2D> transformed = new ArrayList<LinearRing2D>(rings.size());
+        ArrayList<LinearRing2D> transformed = new ArrayList<>(rings.size());
 
         // transform each ring
         for (LinearRing2D ring : rings)

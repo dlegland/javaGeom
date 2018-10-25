@@ -32,23 +32,7 @@ import math.geom2d.transform.CircleInversion2D;
 public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyCirculinearCurve2D<T> implements ICirculinearContinuousCurve2D, ICirculinearContour2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearContinuousCurve2D> BoundaryPolyCirculinearCurve2D<T> create(Collection<T> curves) { return new BoundaryPolyCirculinearCurve2D<T>(curves); }
-     */
-
-    /**
-     * Static factory for creating a new BoundaryPolyCirculinearCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearContinuousCurve2D> BoundaryPolyCirculinearCurve2D<T> create(Collection<T> curves, boolean closed) { return new BoundaryPolyCirculinearCurve2D<T>(curves, closed); }
-     */
+  
 
     /**
      * Static factory for creating a new BoundaryPolyCirculinearCurve2D from an array of curves.
@@ -57,7 +41,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
      */
     @SafeVarargs
     public static <T extends ICirculinearContinuousCurve2D> BoundaryPolyCirculinearCurve2D<T> create(T... curves) {
-        return new BoundaryPolyCirculinearCurve2D<T>(curves);
+        return new BoundaryPolyCirculinearCurve2D<>(curves);
     }
 
     /**
@@ -66,7 +50,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
      * @since 0.8.1
      */
     public static <T extends ICirculinearContinuousCurve2D> BoundaryPolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
-        return new BoundaryPolyCirculinearCurve2D<T>(curves, closed);
+        return new BoundaryPolyCirculinearCurve2D<>(curves, closed);
     }
 
     /**
@@ -76,7 +60,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
      */
     @SafeVarargs
     public static <T extends ICirculinearContinuousCurve2D> BoundaryPolyCirculinearCurve2D<T> createClosed(T... curves) {
-        return new BoundaryPolyCirculinearCurve2D<T>(curves, true);
+        return new BoundaryPolyCirculinearCurve2D<>(curves, true);
     }
 
     // ===================================================================
@@ -163,7 +147,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
     public BoundaryPolyCirculinearCurve2D<? extends ICirculinearContinuousCurve2D> transform(CircleInversion2D inv) {
         // Allocate array for result
         int n = curves.size();
-        BoundaryPolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new BoundaryPolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(n);
+        BoundaryPolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new BoundaryPolyCirculinearCurve2D<>(n);
 
         // add each transformed curve
         for (ICirculinearContinuousCurve2D curve : curves)
@@ -203,7 +187,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
     @Override
     public Collection<? extends ICirculinearElement2D> smoothPieces() {
         // create array for storing result
-        ArrayList<ICirculinearElement2D> result = new ArrayList<ICirculinearElement2D>();
+        ArrayList<ICirculinearElement2D> result = new ArrayList<>();
 
         // add elements of each curve
         for (ICirculinearContinuousCurve2D curve : curves)
@@ -232,7 +216,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
             curves2[i] = curves.get(n - 1 - i).reverse();
 
         // create the reversed final curve
-        return new BoundaryPolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(curves2);
+        return new BoundaryPolyCirculinearCurve2D<>(curves2);
     }
 
     @Override
@@ -242,7 +226,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
 
         // prepare result
         int n = subcurve.size();
-        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(n);
+        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<>(n);
 
         // add each curve after class cast
         for (ICurve2D curve : subcurve) {
@@ -264,7 +248,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<ICirculinearContinuousCurve2D>(n);
+        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<>(n);
 
         // convert the result, class cast each curve
         for (ICurve2D curve : set.curves()) {
@@ -282,7 +266,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
         int n = this.size();
 
         // create result curve
-        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(n);
+        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<>(n);
 
         // add each curve after class cast
         for (IContinuousOrientedCurve2D curve : curves)

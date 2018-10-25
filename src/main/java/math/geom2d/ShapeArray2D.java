@@ -19,17 +19,18 @@ import java.util.Iterator;
  * 
  * @author dlegland
  *
+ *         TODO not immutable
  */
 public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static <T extends IShape2D> ShapeArray2D<T> create(Collection<T> shapes) {
-        return new ShapeArray2D<T>(shapes);
+        return new ShapeArray2D<>(shapes);
     }
 
     @SafeVarargs
     public static <T extends IShape2D> ShapeArray2D<T> create(T... shapes) {
-        return new ShapeArray2D<T>(shapes);
+        return new ShapeArray2D<>(shapes);
     }
 
     // ===================================================================
@@ -42,20 +43,20 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
     // Constructors
 
     public ShapeArray2D() {
-        this.shapes = new ArrayList<T>();
+        this.shapes = new ArrayList<>();
     }
 
     public ShapeArray2D(int n) {
-        this.shapes = new ArrayList<T>(n);
+        this.shapes = new ArrayList<>(n);
     }
 
     public ShapeArray2D(Collection<? extends T> shapes) {
-        this.shapes = new ArrayList<T>(shapes.size());
+        this.shapes = new ArrayList<>(shapes.size());
         this.shapes.addAll(shapes);
     }
 
     public ShapeArray2D(T[] shapes) {
-        this.shapes = new ArrayList<T>(shapes.length);
+        this.shapes = new ArrayList<>(shapes.length);
         for (T shape : shapes)
             this.shapes.add(shape);
     }
@@ -144,10 +145,10 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * @see math.geom2d.Shape2D#clip(math.geom2d.Box2D)
      */
     public IShape2D clip(Box2D box) {
-        ArrayList<IShape2D> clippedShapes = new ArrayList<IShape2D>(this.size());
+        ArrayList<IShape2D> clippedShapes = new ArrayList<>(this.size());
         for (T shape : shapes)
             clippedShapes.add(shape.clip(box));
-        return new ShapeArray2D<IShape2D>(clippedShapes);
+        return new ShapeArray2D<>(clippedShapes);
     }
 
     /*
@@ -255,7 +256,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      */
     public IShapeSet2D<? extends IShape2D> transform(AffineTransform2D trans) {
         // Allocate array for result
-        ShapeArray2D<IShape2D> result = new ShapeArray2D<IShape2D>(shapes.size());
+        ShapeArray2D<IShape2D> result = new ShapeArray2D<>(shapes.size());
 
         // add each transformed curve
         for (IShape2D shape : this.shapes)

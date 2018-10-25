@@ -26,7 +26,7 @@ public class DrawClippedCirclesDemo extends JPanel {
 
     Box2D clippingBox = new Box2D(100, 500, 100, 400);
 
-    CurveArray2D<Circle2D> circles = new CurveArray2D<Circle2D>();
+    CurveArray2D<Circle2D> circles = new CurveArray2D<>();
 
     public DrawClippedCirclesDemo() {
         Point2D point;

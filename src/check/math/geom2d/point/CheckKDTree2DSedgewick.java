@@ -51,7 +51,7 @@ public class CheckKDTree2DSedgewick extends JPanel {
         super();
 
         // Point coordinate are multiplied by 10 for better drawing
-        points = new ArrayList<Point2D>(16);
+        points = new ArrayList<>(16);
         points.add(new Point2D(130, 190));
         points.add(new Point2D(210, 110));
         points.add(new Point2D(160, 180));

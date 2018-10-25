@@ -107,7 +107,7 @@ public abstract class Curves2D {
 
         // Unknown case
         System.err.println("Unknown curve class in Box2D.clipCurve()");
-        return new CurveArray2D<ICurve2D>();
+        return new CurveArray2D<>();
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class Curves2D {
      */
     public static ICurveSet2D<? extends ICurve2D> clipCurveSet(ICurveSet2D<?> curveSet, Box2D box) {
         // Clip the current curve
-        CurveArray2D<ICurve2D> result = new CurveArray2D<ICurve2D>();
+        CurveArray2D<ICurve2D> result = new CurveArray2D<>();
         ICurveSet2D<?> clipped;
 
         // a clipped parts of current curve to the result
@@ -149,12 +149,12 @@ public abstract class Curves2D {
     public static ICurveSet2D<IContinuousCurve2D> clipContinuousCurve(IContinuousCurve2D curve, Box2D box) {
 
         // Create CurveSet2D for storing the result
-        CurveArray2D<IContinuousCurve2D> res = new CurveArray2D<IContinuousCurve2D>();
+        CurveArray2D<IContinuousCurve2D> res = new CurveArray2D<>();
 
         // ------ Compute ordered list of intersections
 
         // create array of intersection points
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
 
         // add all the intersections with edges of the box boundary
         for (ILinearShape2D edge : box.edges())
@@ -162,7 +162,7 @@ public abstract class Curves2D {
 
         // convert list to point array, sorted wrt to their position on the
         // curve
-        SortedSet<Double> set = new TreeSet<Double>();
+        SortedSet<Double> set = new TreeSet<>();
         for (Point2D p : points)
             set.add(new Double(curve.position(p)));
 
@@ -187,7 +187,7 @@ public abstract class Curves2D {
             between[i] = choosePosition(positions[i], positions[i + 1]);
 
         // array of positions to remove
-        ArrayList<Double> toRemove = new ArrayList<Double>();
+        ArrayList<Double> toRemove = new ArrayList<>();
 
         // remove an intersection point if the curve portions before and after
         // are both either inside or outside of the box.
@@ -300,7 +300,7 @@ public abstract class Curves2D {
      * Clip a continuous smooth curve. Currently just call the static method clipContinuousCurve, and cast clipped curves.
      */
     public static ICurveSet2D<ISmoothCurve2D> clipSmoothCurve(ISmoothCurve2D curve, Box2D box) {
-        CurveArray2D<ISmoothCurve2D> result = new CurveArray2D<ISmoothCurve2D>();
+        CurveArray2D<ISmoothCurve2D> result = new CurveArray2D<>();
         for (IContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
             if (cont instanceof ISmoothCurve2D)
                 result.add((ISmoothCurve2D) cont);
@@ -314,13 +314,13 @@ public abstract class Curves2D {
     public static ICurveSet2D<ISmoothCurve2D> clipSmoothCurve(ISmoothCurve2D curve, StraightLine2D line) {
 
         // get the list of intersections with the line
-        ArrayList<Point2D> list = new ArrayList<Point2D>();
+        ArrayList<Point2D> list = new ArrayList<>();
         list.addAll(curve.intersections(line));
 
         // convert list to point array, sorted with respect to their position
         // on the curve, but do not add tangent points with curvature greater
         // than 0
-        SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
+        SortedSet<java.lang.Double> set = new TreeSet<>();
         double position;
         Vector2D vector = line.direction();
         for (Point2D point : list) {
@@ -340,7 +340,7 @@ public abstract class Curves2D {
         }
 
         // Create CurveSet2D for storing the result
-        CurveArray2D<ISmoothCurve2D> res = new CurveArray2D<ISmoothCurve2D>();
+        CurveArray2D<ISmoothCurve2D> res = new CurveArray2D<>();
 
         // extract first point of the curve, or a point arbitrarily far
         Point2D point1;

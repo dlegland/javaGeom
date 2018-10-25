@@ -62,7 +62,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      */
     @SafeVarargs
     public static <T extends IContinuousCurve2D> PolyCurve2D<T> create(T... curves) {
-        return new PolyCurve2D<T>(curves);
+        return new PolyCurve2D<>(curves);
     }
 
     /**
@@ -72,7 +72,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      */
     @SafeVarargs
     public static <T extends IContinuousCurve2D> PolyCurve2D<T> createClosed(T... curves) {
-        return new PolyCurve2D<T>(curves, true);
+        return new PolyCurve2D<>(curves, true);
     }
 
     /**
@@ -81,7 +81,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * @since 0.9.0
      */
     public static <T extends IContinuousCurve2D> PolyCurve2D<T> create(Collection<T> curves, boolean closed) {
-        return new PolyCurve2D<T>(curves, closed);
+        return new PolyCurve2D<>(curves, closed);
     }
 
     /**
@@ -90,14 +90,14 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * @since 0.9.0
      */
     public static <T extends IContinuousCurve2D> PolyCurve2D<T> create(T[] curves, boolean closed) {
-        return new PolyCurve2D<T>(curves, closed);
+        return new PolyCurve2D<>(curves, closed);
     }
 
     /**
      * Shortcut function to convert a curve of class T to a collection of T containing only the input curve.
      */
     protected static <T extends IContinuousCurve2D> Collection<T> wrapCurve(T curve) {
-        ArrayList<T> list = new ArrayList<T>(1);
+        ArrayList<T> list = new ArrayList<>(1);
         list.add(curve);
         return list;
     }
@@ -256,7 +256,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * @return a collection of SmoothCurve2D
      */
     public Collection<? extends ISmoothCurve2D> smoothPieces() {
-        ArrayList<ISmoothCurve2D> list = new ArrayList<ISmoothCurve2D>();
+        ArrayList<ISmoothCurve2D> list = new ArrayList<>();
         for (ICurve2D curve : this.curves)
             list.addAll(PolyCurve2D.getSmoothCurves(curve));
         return list;
@@ -271,7 +271,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      */
     private static Collection<ISmoothCurve2D> getSmoothCurves(ICurve2D curve) {
         // create array for result
-        ArrayList<ISmoothCurve2D> array = new ArrayList<ISmoothCurve2D>();
+        ArrayList<ISmoothCurve2D> array = new ArrayList<>();
 
         // If curve is smooth, add it to the array and return.
         if (curve instanceof ISmoothCurve2D) {
@@ -317,7 +317,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
             curves2[i] = curves.get(n - 1 - i).reverse();
 
         // create the new reversed curve
-        return new PolyCurve2D<IContinuousCurve2D>(curves2, this.closed);
+        return new PolyCurve2D<>(curves2, this.closed);
     }
 
     /**
@@ -327,13 +327,13 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
     public PolyCurve2D<? extends IContinuousCurve2D> subCurve(double t0, double t1) {
         // check limit conditions
         if (t1 < t0 & !this.isClosed())
-            return new PolyCurve2D<IContinuousCurve2D>();
+            return new PolyCurve2D<>();
 
         // Call the parent method
         ICurveSet2D<?> set = super.subCurve(t0, t1);
 
         // create result object, with appropriate numbe of curves
-        PolyCurve2D<IContinuousCurve2D> subCurve = new PolyCurve2D<IContinuousCurve2D>(set.size());
+        PolyCurve2D<IContinuousCurve2D> subCurve = new PolyCurve2D<>(set.size());
 
         // If a part is selected, the result is obviously open
         subCurve.setClosed(false);
@@ -355,7 +355,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<IContinuousCurve2D> result = new CurveArray2D<IContinuousCurve2D>(set.size());
+        CurveArray2D<IContinuousCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {
@@ -370,7 +370,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      */
     @Override
     public PolyCurve2D<? extends IContinuousCurve2D> transform(AffineTransform2D trans) {
-        PolyCurve2D<IContinuousCurve2D> result = new PolyCurve2D<IContinuousCurve2D>();
+        PolyCurve2D<IContinuousCurve2D> result = new PolyCurve2D<>();
         for (IContinuousCurve2D curve : curves)
             result.add(curve.transform(trans));
         result.setClosed(this.isClosed());

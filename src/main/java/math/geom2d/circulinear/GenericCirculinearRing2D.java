@@ -28,17 +28,8 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
 
     // TODO: parameterize with curve type ?
 
-    // ===================================================================
-    // static methods
 
-    /**
-     * Static factory for creating a new GenericCirculinearRing2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearElement2D> GenericCirculinearRing2D create(Collection<T> curves) { return new GenericCirculinearRing2D(curves); }
-     */
+
 
     /**
      * Static factory for creating a new GenericCirculinearRing2D from an array of curves.
@@ -135,7 +126,7 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
         int n = this.size();
 
         // create result curve
-        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(n);
+        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<>(n);
 
         // add each curve after class cast
         for (IContinuousOrientedCurve2D curve : curves)

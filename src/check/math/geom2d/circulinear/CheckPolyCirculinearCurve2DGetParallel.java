@@ -34,7 +34,7 @@ public class CheckPolyCirculinearCurve2DGetParallel extends JPanel {
         LineSegment2D line2 = new LineSegment2D(new Point2D(50, 150), new Point2D(50, 100));
         CircleArc2D arc2 = new CircleArc2D(center, 50, Math.PI / 2, -Math.PI / 2);
 
-        curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
+        curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
     }
 
     public void paintComponent(Graphics g) {

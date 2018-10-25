@@ -31,7 +31,7 @@ public abstract class Boundaries2D {
     public final static ICurveSet2D<IContinuousOrientedCurve2D> clipContinuousOrientedCurve(IContinuousOrientedCurve2D curve, Box2D box) {
 
         // create result array
-        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>();
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<>();
 
         // for each clipped curve, add its pieces
         for (IContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
@@ -110,13 +110,13 @@ public abstract class Boundaries2D {
         // The set of boundary curves. Each curve of this set is either a
         // curve of the original boundary, or a composition of a portion of
         // original boundary with a portion of the box.
-        ContourArray2D<IContour2D> res = new ContourArray2D<IContour2D>();
+        ContourArray2D<IContour2D> res = new ContourArray2D<>();
 
         // to store result of curve clipping
         ICurveSet2D<IContinuousOrientedCurve2D> clipped;
 
         // to store set of all clipped curves
-        CurveArray2D<IContinuousOrientedCurve2D> curveSet = new CurveArray2D<IContinuousOrientedCurve2D>();
+        CurveArray2D<IContinuousOrientedCurve2D> curveSet = new CurveArray2D<>();
 
         // Iterate on contours: clip each contour with box,
         // and add clipped curves to the array 'curveSet'
@@ -187,7 +187,7 @@ public abstract class Boundaries2D {
                 if (curve instanceof IContour2D) {
                     res.add((IContour2D) curve);
                 } else {
-                    BoundaryPolyCurve2D<IContinuousOrientedCurve2D> bnd = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>();
+                    BoundaryPolyCurve2D<IContinuousOrientedCurve2D> bnd = new BoundaryPolyCurve2D<>();
                     bnd.add(curve);
                     res.add(bnd);
                 }
@@ -199,7 +199,7 @@ public abstract class Boundaries2D {
             }
 
             // create a new Boundary curve
-            BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary0 = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>();
+            BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary0 = new BoundaryPolyCurve2D<>();
 
             // add current curve to boundary curve
             boundary0.add(curve);
@@ -212,7 +212,7 @@ public abstract class Boundaries2D {
             int ind0 = ind;
 
             // store indices of curves, to remove them later
-            ArrayList<Integer> indices = new ArrayList<Integer>();
+            ArrayList<Integer> indices = new ArrayList<>();
             indices.add(new Integer(ind));
 
             // position of last point of current curve on box boundary
@@ -334,7 +334,7 @@ public abstract class Boundaries2D {
         // Create an array to store vertices
         // Array can contain at most 6 vertices: 4 for the box corners,
         // and 2 for curve extremities.
-        ArrayList<Point2D> vertices = new ArrayList<Point2D>(6);
+        ArrayList<Point2D> vertices = new ArrayList<>(6);
 
         // add the first point.
         vertices.add(p0);

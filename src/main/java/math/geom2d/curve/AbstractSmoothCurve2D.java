@@ -64,7 +64,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * @see math.geom2d.curve.ICurve2D#singularPoints()
      */
     public Collection<Point2D> singularPoints() {
-        return new ArrayList<Point2D>(0);
+        return new ArrayList<>(0);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * @see math.geom2d.curve.ICurve2D#vertices()
      */
     public Collection<Point2D> vertices() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> array = new ArrayList<>(2);
         if (!Double.isInfinite(this.t0()))
             array.add(this.firstPoint());
         if (!Double.isInfinite(this.t1()))

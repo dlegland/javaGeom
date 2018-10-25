@@ -24,7 +24,7 @@ import math.geom2d.domain.IDomain2D;
 public class CheckDrawCurveSet2D extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    ContourArray2D<Circle2D> circleSet = new ContourArray2D<Circle2D>();
+    ContourArray2D<Circle2D> circleSet = new ContourArray2D<>();
 
     public CheckDrawCurveSet2D() {
         circleSet.add(new Circle2D(50, 50, 40));

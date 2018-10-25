@@ -27,7 +27,7 @@ public class DrawClippedLinesDemo extends JPanel {
     Box2D outerBox = new Box2D(50, 550, 50, 450);
     Box2D innerBox = new Box2D(100, 500, 100, 400);
 
-    CurveArray2D<StraightLine2D> lines = new CurveArray2D<StraightLine2D>();
+    CurveArray2D<StraightLine2D> lines = new CurveArray2D<>();
 
     public DrawClippedLinesDemo() {
         Point2D point;

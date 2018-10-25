@@ -70,7 +70,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
      */
     @SafeVarargs
     public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(T... curves) {
-        return new PolyOrientedCurve2D<T>(curves);
+        return new PolyOrientedCurve2D<>(curves);
     }
 
     /**
@@ -80,7 +80,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
      */
     @SafeVarargs
     public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> createClosed(T... curves) {
-        return new PolyOrientedCurve2D<T>(curves, true);
+        return new PolyOrientedCurve2D<>(curves, true);
     }
 
     /**
@@ -98,7 +98,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
      * @since 0.9.0
      */
     public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(T[] curves, boolean closed) {
-        return new PolyOrientedCurve2D<T>(curves, closed);
+        return new PolyOrientedCurve2D<>(curves, closed);
     }
 
     // ===================================================================
@@ -275,7 +275,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
         int n = curves.size();
         for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n - 1 - i).reverse();
-        return new PolyOrientedCurve2D<IContinuousOrientedCurve2D>(curves2);
+        return new PolyOrientedCurve2D<>(curves2);
     }
 
     /**
@@ -284,7 +284,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
     @Override
     public PolyOrientedCurve2D<? extends IContinuousOrientedCurve2D> subCurve(double t0, double t1) {
         PolyCurve2D<?> set = super.subCurve(t0, t1);
-        PolyOrientedCurve2D<IContinuousOrientedCurve2D> subCurve = new PolyOrientedCurve2D<IContinuousOrientedCurve2D>();
+        PolyOrientedCurve2D<IContinuousOrientedCurve2D> subCurve = new PolyOrientedCurve2D<>();
         subCurve.setClosed(false);
 
         // convert to PolySmoothCurve by adding curves.
@@ -304,7 +304,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>(n);
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<>(n);
 
         // convert the result
         for (ICurve2D curve : set.curves()) {
@@ -316,7 +316,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
 
     @Override
     public PolyOrientedCurve2D<? extends IContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
-        PolyOrientedCurve2D<IContinuousOrientedCurve2D> result = new PolyOrientedCurve2D<IContinuousOrientedCurve2D>();
+        PolyOrientedCurve2D<IContinuousOrientedCurve2D> result = new PolyOrientedCurve2D<>();
         for (IContinuousOrientedCurve2D curve : curves)
             result.add(curve.transform(trans));
         result.setClosed(this.closed);

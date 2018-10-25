@@ -25,7 +25,7 @@ import math.geom2d.line.StraightLine2D;
 public class CheckClipBoundaryPolyCircleArc2D extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    ContourArray2D<Circle2D> circleSet = new ContourArray2D<Circle2D>();
+    ContourArray2D<Circle2D> circleSet = new ContourArray2D<>();
 
     public CheckClipBoundaryPolyCircleArc2D() {
         circleSet.add(new Circle2D(50, 50, 40));
@@ -49,7 +49,7 @@ public class CheckClipBoundaryPolyCircleArc2D extends JPanel {
         Box2D box = new Box2D(50, 350, 50, 280);
         box.draw(g2);
 
-        BoundaryPolyCurve2D<CircleArc2D> curve = new BoundaryPolyCurve2D<CircleArc2D>(new CircleArc2D[] { arc1, arc2 });
+        BoundaryPolyCurve2D<CircleArc2D> curve = new BoundaryPolyCurve2D<>(new CircleArc2D[] { arc1, arc2 });
         curve.draw(g2);
         ICurve2D clipped = curve.clip(box);
         clipped.draw(g2);

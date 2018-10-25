@@ -83,7 +83,7 @@ public class BufferCalculator {
         }
 
         // Create array for storing result
-        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> parallels = new CirculinearCurveArray2D<ICirculinearContinuousCurve2D>();
+        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> parallels = new CirculinearCurveArray2D<>();
 
         // compute parallel of each continuous part, and add it to the result
         for (ICirculinearContinuousCurve2D continuous : curve.continuousCurves()) {
@@ -106,7 +106,7 @@ public class BufferCalculator {
         Collection<? extends ICirculinearContour2D> contours = boundary.continuousCurves();
 
         // allocate the array of parallel contours
-        Collection<ICirculinearContour2D> parallelContours = new ArrayList<ICirculinearContour2D>(contours.size());
+        Collection<ICirculinearContour2D> parallelContours = new ArrayList<>(contours.size());
 
         // compute the parallel of each contour
         for (ICirculinearContour2D contour : contours)
@@ -164,7 +164,7 @@ public class BufferCalculator {
         ICirculinearElement2D current = null;
 
         // create array for storing result
-        ArrayList<ICirculinearContinuousCurve2D> parallelCurves = new ArrayList<ICirculinearContinuousCurve2D>();
+        ArrayList<ICirculinearContinuousCurve2D> parallelCurves = new ArrayList<>();
 
         // check if curve is empty
         if (!iterator.hasNext())
@@ -219,7 +219,7 @@ public class BufferCalculator {
      */
     public ICirculinearDomain2D computeBuffer(ICirculinearCurve2D curve, double dist) {
 
-        ArrayList<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> contours = new ArrayList<>();
 
         // iterate on all continuous curves
         for (ICirculinearContinuousCurve2D cont : curve.continuousCurves()) {
@@ -231,10 +231,10 @@ public class BufferCalculator {
         }
 
         // split contours which intersect each others
-        contours = new ArrayList<ICirculinearContour2D>(CirculinearCurves2D.splitIntersectingContours(contours));
+        contours = new ArrayList<>(CirculinearCurves2D.splitIntersectingContours(contours));
 
         // Remove contours that cross or that are too close from base curve
-        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<ICirculinearContour2D>(contours.size());
+        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<>(contours.size());
         Collection<Point2D> intersects;
         Collection<Point2D> vertices;
 
@@ -271,7 +271,7 @@ public class BufferCalculator {
      */
     public ICirculinearDomain2D computeBuffer(IPointSet2D set, double dist) {
         // create array for storing result
-        Collection<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>(set.size());
+        Collection<ICirculinearContour2D> contours = new ArrayList<>(set.size());
 
         // for each point, add a new circle
         for (Point2D point : set) {
@@ -282,7 +282,7 @@ public class BufferCalculator {
         contours = CirculinearCurves2D.splitIntersectingContours(contours);
 
         // Remove contours that cross or that are too close from base curve
-        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<ICirculinearContour2D>(contours.size());
+        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<>(contours.size());
         for (ICirculinearContour2D ring : contours) {
 
             // check that vertices of contour are not too close from original
@@ -303,7 +303,7 @@ public class BufferCalculator {
      */
     private Collection<? extends ICirculinearContour2D> computeBufferSimpleCurve(ICirculinearContinuousCurve2D curve, double d) {
 
-        Collection<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>(2);
+        Collection<ICirculinearContour2D> contours = new ArrayList<>(2);
 
         // the parallel in each side
         ICirculinearContinuousCurve2D parallel1, parallel2;
@@ -332,14 +332,14 @@ public class BufferCalculator {
     private Collection<ICirculinearContour2D> createSingleContourFromTwoParallels(ICirculinearContinuousCurve2D curve1, ICirculinearContinuousCurve2D curve2) {
 
         // create array for storing result
-        ArrayList<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> contours = new ArrayList<>();
 
         ICirculinearContinuousCurve2D cap;
 
         // create new ring using two open curves and two circle arcs
         if (curve1 != null && curve2 != null) {
             // array of elements for creating new ring.
-            ArrayList<ICirculinearElement2D> elements = new ArrayList<ICirculinearElement2D>();
+            ArrayList<ICirculinearElement2D> elements = new ArrayList<>();
 
             // some shortcuts for computing infinity of curve
             boolean b0 = !Curves2D.isLeftInfinite(curve1);
@@ -414,7 +414,7 @@ public class BufferCalculator {
 
     private Collection<ICirculinearContour2D> removeIntersectingContours(Collection<ICirculinearContour2D> contours, ICirculinearCurve2D curve, double d) {
         // prepare an array to store the set of rings
-        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> contours2 = new ArrayList<>();
 
         // iterate on the set of rings
         for (ICirculinearContour2D contour : contours)
@@ -459,7 +459,7 @@ public class BufferCalculator {
 
         // If no singular point, choose an arbitrary point on the curve
         if (points.isEmpty()) {
-            points = new ArrayList<Point2D>();
+            points = new ArrayList<>();
             double t = Curves2D.choosePosition(curve.t0(), curve.t1());
             points.add(curve.point(t));
         }

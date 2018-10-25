@@ -77,18 +77,10 @@ public class Box2D implements IGeometricObject2D, Serializable {
     // ===================================================================
     // class variables
 
-    private double xmin = 0;
-    private double xmax = 0;
-    private double ymin = 0;
-    private double ymax = 0;
-
-    // ===================================================================
-    // constructors
-
-    /** Empty constructor (size and position zero) */
-    public Box2D() {
-        this(0, 0, 0, 0);
-    }
+    private final double xmin;
+    private final double xmax;
+    private final double ymin;
+    private final double ymax;
 
     /**
      * Main constructor, given bounds for x coord, then bounds for y coord.
@@ -221,7 +213,7 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * @return a set of straight lines
      */
     public Collection<StraightLine2D> clippingLines() {
-        ArrayList<StraightLine2D> lines = new ArrayList<StraightLine2D>(4);
+        ArrayList<StraightLine2D> lines = new ArrayList<>(4);
 
         if (isFinite(ymin))
             lines.add(new StraightLine2D(0, ymin, 1, 0));
@@ -238,7 +230,7 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * Returns the set of linear shapes that constitutes the boundary of this box.
      */
     public Collection<ILinearShape2D> edges() {
-        ArrayList<ILinearShape2D> edges = new ArrayList<ILinearShape2D>(4);
+        ArrayList<ILinearShape2D> edges = new ArrayList<>(4);
 
         if (isBounded()) {
             edges.add(new LineSegment2D(xmin, ymin, xmax, ymin));
@@ -318,7 +310,7 @@ public class Box2D implements IGeometricObject2D, Serializable {
                 return new StraightLine2D(0, ymin, 1, 0);
             if (!by0 && by1)
                 return new StraightLine2D(0, ymax, -1, 0);
-            return new ContourArray2D<StraightLine2D>(new StraightLine2D[] { new StraightLine2D(0, ymin, 1, 0), new StraightLine2D(0, ymax, -1, 0) });
+            return new ContourArray2D<>(new StraightLine2D[] { new StraightLine2D(0, ymin, 1, 0), new StraightLine2D(0, ymax, -1, 0) });
         }
 
         // case of boxes unbounded in both y directions
@@ -329,42 +321,42 @@ public class Box2D implements IGeometricObject2D, Serializable {
                 return new StraightLine2D(xmin, 0, 0, -1);
             if (!bx0 && bx1)
                 return new StraightLine2D(xmax, 0, 0, 1);
-            return new ContourArray2D<StraightLine2D>(new StraightLine2D[] { new StraightLine2D(xmin, 0, 0, -1), new StraightLine2D(xmax, 0, 0, 1) });
+            return new ContourArray2D<>(new StraightLine2D[] { new StraightLine2D(xmin, 0, 0, -1), new StraightLine2D(xmax, 0, 0, 1) });
         }
 
         // "corner boxes"
 
         if (bx0 && by0) // lower left corner
-            return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx1 && by0) // lower right corner
-            return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
         if (bx1 && by1) // upper right corner
-            return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx0 && by1) // upper left corner
-            return new BoundaryPolyCurve2D<LineArc2D>(new LineArc2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         // Remains only 4 cases: boxes unbounded in only one direction
 
         if (bx0)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymax, xmin, ymin), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymax, xmin, ymin), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx1)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymin, xmax, ymax), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymin, xmax, ymax), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
 
         if (by0)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymin, xmax, ymin), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymin, xmax, ymin), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
         if (by1)
-            return new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymax, xmin, ymax), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymax, xmin, ymax), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         return null;
     }
 
     public Collection<Point2D> vertices() {
-        ArrayList<Point2D> points = new ArrayList<Point2D>(4);
+        ArrayList<Point2D> points = new ArrayList<>(4);
         boolean bx0 = isFinite(xmin);
         boolean bx1 = isFinite(xmax);
         boolean by0 = isFinite(ymin);
@@ -434,11 +426,11 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * @return this
      */
     public Box2D merge(Box2D box) {
-        this.xmin = Math.min(this.xmin, box.xmin);
-        this.xmax = Math.max(this.xmax, box.xmax);
-        this.ymin = Math.min(this.ymin, box.ymin);
-        this.ymax = Math.max(this.ymax, box.ymax);
-        return this;
+        double newxmin = Math.min(this.xmin, box.xmin);
+        double newxmax = Math.max(this.xmax, box.xmax);
+        double newymin = Math.min(this.ymin, box.ymin);
+        double newymax = Math.max(this.ymax, box.ymax);
+        return new Box2D(newxmin, newxmax, newymin, newymax);
     }
 
     /**
@@ -447,11 +439,11 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * @return the clipped box
      */
     public Box2D clip(Box2D box) {
-        this.xmin = Math.max(this.xmin, box.xmin);
-        this.xmax = Math.min(this.xmax, box.xmax);
-        this.ymin = Math.max(this.ymin, box.ymin);
-        this.ymax = Math.min(this.ymax, box.ymax);
-        return this;
+        double newxmin = Math.max(this.xmin, box.xmin);
+        double newxmax = Math.min(this.xmax, box.xmax);
+        double newymin = Math.max(this.ymin, box.ymin);
+        double newymax = Math.min(this.ymax, box.ymax);
+        return new Box2D(newxmin, newxmax, newymin, newymax);
     }
 
     /**

@@ -27,7 +27,7 @@ public class CheckDrawRotatedRays extends JPanel {
     CurveArray2D<Ray2D> rays;
 
     public CheckDrawRotatedRays() {
-        rays = new CurveArray2D<Ray2D>();
+        rays = new CurveArray2D<>();
 
         Ray2D ray0 = new Ray2D(x0 + 20, y0, 1, 0);
         int N = 11;

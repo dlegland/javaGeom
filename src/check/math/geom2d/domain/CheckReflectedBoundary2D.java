@@ -66,7 +66,7 @@ public class CheckReflectedBoundary2D extends JPanel {
         AffineTransform2D trans = AffineTransform2D.createLineReflection(line);
 
         BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary;
-        boundary = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(new LineSegment2D[] { seg1, seg2, seg3 });
+        boundary = new BoundaryPolyCurve2D<>(new LineSegment2D[] { seg1, seg2, seg3 });
 
         IBoundary2D boundary2 = boundary.transform(trans);
 

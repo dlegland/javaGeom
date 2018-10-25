@@ -74,7 +74,7 @@ public class GenericDomain2DTest extends TestCase {
         double r2 = 20;
         Circle2D circle2 = new Circle2D(xc2, yc2, r2);
 
-        ContourArray2D<Circle2D> discs = new ContourArray2D<Circle2D>(new Circle2D[] { circle1, circle2 });
+        ContourArray2D<Circle2D> discs = new ContourArray2D<>(new Circle2D[] { circle1, circle2 });
 
         IDomain2D domain = new GenericDomain2D(discs);
 

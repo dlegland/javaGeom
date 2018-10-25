@@ -233,7 +233,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
 
     @Override
     public Collection<Point2D> singularPoints() {
-        ArrayList<Point2D> list = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> list = new ArrayList<>(2);
         if (t0 != Double.NEGATIVE_INFINITY)
             list.add(this.firstPoint());
         if (t1 != Double.POSITIVE_INFINITY)

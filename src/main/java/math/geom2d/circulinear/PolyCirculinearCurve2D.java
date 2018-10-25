@@ -43,7 +43,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      */
     @SafeVarargs
     public static <T extends ICirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> create(T... curves) {
-        return new PolyCirculinearCurve2D<T>(curves);
+        return new PolyCirculinearCurve2D<>(curves);
     }
 
     /**
@@ -61,7 +61,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * @since 0.9.0
      */
     public static <T extends ICirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> create(T[] curves, boolean closed) {
-        return new PolyCirculinearCurve2D<T>(curves, closed);
+        return new PolyCirculinearCurve2D<>(curves, closed);
     }
 
     /**
@@ -71,7 +71,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      */
     @SafeVarargs
     public static <T extends ICirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> createClosed(T... curves) {
-        return new PolyCirculinearCurve2D<T>(curves, true);
+        return new PolyCirculinearCurve2D<>(curves, true);
     }
 
     // ===================================================================
@@ -162,7 +162,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
     public PolyCirculinearCurve2D<? extends ICirculinearContinuousCurve2D> transform(CircleInversion2D inv) {
         // Allocate array for result
         int n = curves.size();
-        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(n);
+        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<>(n);
 
         // add each transformed curve
         for (ICirculinearContinuousCurve2D curve : curves)
@@ -181,7 +181,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
     @Override
     public Collection<? extends ICirculinearElement2D> smoothPieces() {
         // create array for storing result
-        ArrayList<ICirculinearElement2D> result = new ArrayList<ICirculinearElement2D>();
+        ArrayList<ICirculinearElement2D> result = new ArrayList<>();
 
         // add elements of each curve
         for (ICirculinearContinuousCurve2D curve : curves)
@@ -206,7 +206,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<ICirculinearContinuousCurve2D>(n);
+        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<>(n);
 
         // convert the result, class cast each curve
         for (ICurve2D curve : set.curves()) {
@@ -239,7 +239,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
 
         // prepare result
         int n = subcurve.size();
-        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(n);
+        PolyCirculinearCurve2D<ICirculinearContinuousCurve2D> result = new PolyCirculinearCurve2D<>(n);
 
         // add each curve after class cast
         for (ICurve2D curve : subcurve) {

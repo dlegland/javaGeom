@@ -53,11 +53,13 @@ import math.utils.EqualUtils;
 public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearShape2D, Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Point2D ORIGIN = new Point2D(0, 0);
+
     /** The x coordinate of this point. */
-    protected double x;
+    private final double x;
 
     /** The y coordinate of this point. */
-    protected double y;
+    private final double y;
 
     /**
      * Static factory for creating a new point from an existing instance of javageom point.
@@ -242,18 +244,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
         return new Point2D((pt1.x + pt2.x + pt3.x) / 3, (pt1.y + pt2.y + pt3.y) / 3);
     }
 
-    // ===================================================================
-    // class variables
-
-    // coordinates are inherited from java class for Point
-
-    // ===================================================================
-    // constructors
-
-    /** Constructs a new Point2D at position (0,0). */
-    public Point2D() {
-    }
-
     /**
      * Constructs a new Point2D at the given given position.
      */
@@ -283,7 +273,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * Adds the coordinates of the given vector to the coordinates of this point.
      */
     public Point2D plus(Vector2D v) {
-        return new Point2D(this.x + v.x, this.y + v.y);
+        return new Point2D(this.x + v.x(), this.y + v.y());
     }
 
     /**
@@ -297,7 +287,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * Removes the coordinates of the given vector from the coordinates of this point.
      */
     public Point2D minus(Vector2D v) {
-        return new Point2D(this.x - v.x, this.y - v.y);
+        return new Point2D(this.x - v.x(), this.y - v.y());
     }
 
     /**
@@ -471,7 +461,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * @see math.geom2d.point.PointShape2D#points()
      */
     public Collection<Point2D> points() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(1);
+        ArrayList<Point2D> array = new ArrayList<>(1);
         array.add(this);
         return array;
     }

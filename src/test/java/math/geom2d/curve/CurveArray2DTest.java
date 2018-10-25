@@ -55,7 +55,7 @@ public class CurveArray2DTest extends TestCase {
         double r = 10;
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
-        CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
+        CurveArray2D<CircleArc2D> set = new CurveArray2D<>(2);
         set.add(arc1);
         set.add(arc2);
 
@@ -85,7 +85,7 @@ public class CurveArray2DTest extends TestCase {
         double extent = 2 * Math.PI / 3;
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, extent);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, extent);
-        CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
+        CurveArray2D<CircleArc2D> set = new CurveArray2D<>(2);
         set.add(arc1);
         set.add(arc2);
 
@@ -100,7 +100,7 @@ public class CurveArray2DTest extends TestCase {
         double extent = 2 * Math.PI / 3;
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, extent);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, extent);
-        CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
+        CurveArray2D<CircleArc2D> set = new CurveArray2D<>(2);
         set.add(arc1);
         set.add(arc2);
 
@@ -122,7 +122,7 @@ public class CurveArray2DTest extends TestCase {
         CircleArc2D arc1h2 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, Math.PI / 3);
         CircleArc2D arc2h2 = new CircleArc2D(r, 0, r, Math.PI, Math.PI / 3);
 
-        CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
+        CurveArray2D<CircleArc2D> set = new CurveArray2D<>(2);
         set.add(arc1);
         set.add(arc2);
 
@@ -158,7 +158,7 @@ public class CurveArray2DTest extends TestCase {
         // Create a curve set with 2 line segments
         LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), new Point2D(2, 2));
         LineSegment2D line2 = new LineSegment2D(new Point2D(2, 0), new Point2D(-2, 4));
-        CurveArray2D<LineSegment2D> set = new CurveArray2D<LineSegment2D>(new LineSegment2D[] { line1, line2 });
+        CurveArray2D<LineSegment2D> set = new CurveArray2D<>(new LineSegment2D[] { line1, line2 });
 
         assertTrue(set.isSingular(0));
         assertTrue(!set.isSingular(0.5));
@@ -172,7 +172,7 @@ public class CurveArray2DTest extends TestCase {
     public void testClipEmptyCurveSet() {
         Box2D box = new Box2D(-10, 10, -10, 10);
 
-        ICurveSet2D<ICurve2D> set1 = new CurveArray2D<ICurve2D>();
+        ICurveSet2D<ICurve2D> set1 = new CurveArray2D<>();
         ICurveSet2D<?> clipped = set1.clip(box);
         assertTrue(clipped.isEmpty());
     }

@@ -372,7 +372,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
         double dx = line2.direction().x();
         double dy = line2.direction().y();
 
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
 
         // case of vertical or quasi-vertical line
         if (Math.abs(dx) < IShape2D.ACCURACY) {
@@ -485,7 +485,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<ParabolaArc2D> result = new CurveArray2D<ParabolaArc2D>(set.size());
+        CurveArray2D<ParabolaArc2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

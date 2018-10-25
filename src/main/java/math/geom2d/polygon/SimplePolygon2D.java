@@ -81,7 +81,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * Empty constructor: no vertex.
      */
     public SimplePolygon2D() {
-        vertices = new ArrayList<Point2D>();
+        vertices = new ArrayList<>();
     }
 
     /**
@@ -91,7 +91,7 @@ public class SimplePolygon2D implements IPolygon2D {
      *            the vertices stored in an array of Point2D
      */
     public SimplePolygon2D(Point2D... vertices) {
-        this.vertices = new ArrayList<Point2D>(vertices.length);
+        this.vertices = new ArrayList<>(vertices.length);
         for (Point2D vertex : vertices)
             this.vertices.add(vertex);
     }
@@ -105,13 +105,13 @@ public class SimplePolygon2D implements IPolygon2D {
      *            the y coordinate of each vertex
      */
     public SimplePolygon2D(double[] xcoords, double[] ycoords) {
-        vertices = new ArrayList<Point2D>(xcoords.length);
+        vertices = new ArrayList<>(xcoords.length);
         for (int i = 0; i < xcoords.length; i++)
             vertices.add(new Point2D(xcoords[i], ycoords[i]));
     }
 
     public SimplePolygon2D(Collection<? extends Point2D> points) {
-        this.vertices = new ArrayList<Point2D>(points.size());
+        this.vertices = new ArrayList<>(points.size());
         this.vertices.addAll(points);
     }
 
@@ -119,7 +119,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * Ensure the polygon has enough memory for storing the required number of vertices.
      */
     public SimplePolygon2D(int nVertices) {
-        vertices = new ArrayList<Point2D>(nVertices);
+        vertices = new ArrayList<>(nVertices);
     }
 
     /**
@@ -129,12 +129,12 @@ public class SimplePolygon2D implements IPolygon2D {
      *            the boundary of the polygon
      */
     public SimplePolygon2D(LinearRing2D ring) {
-        this.vertices = new ArrayList<Point2D>(ring.vertexNumber());
+        this.vertices = new ArrayList<>(ring.vertexNumber());
         this.vertices.addAll(ring.vertices());
     }
 
     public SimplePolygon2D(SimplePolygon2D poly) {
-        this.vertices = new ArrayList<Point2D>(poly.vertexNumber());
+        this.vertices = new ArrayList<>(poly.vertexNumber());
         this.vertices.addAll(poly.vertices);
     }
 
@@ -290,7 +290,7 @@ public class SimplePolygon2D implements IPolygon2D {
     public Collection<LineSegment2D> edges() {
 
         int nPoints = this.vertices.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nPoints);
+        ArrayList<LineSegment2D> edges = new ArrayList<>(nPoints);
 
         if (nPoints == 0)
             return edges;
@@ -360,7 +360,7 @@ public class SimplePolygon2D implements IPolygon2D {
         for (int i = 0; i < this.vertices.size(); i++)
             array[i] = this.vertices.get(i);
 
-        return new CirculinearContourArray2D<LinearRing2D>(new LinearRing2D(array));
+        return new CirculinearContourArray2D<>(new LinearRing2D(array));
     }
 
     /*
@@ -369,7 +369,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * @see math.geom2d.domain.Domain2D#contours()
      */
     public Collection<LinearRing2D> contours() {
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        ArrayList<LinearRing2D> rings = new ArrayList<>(1);
         rings.add(new LinearRing2D(vertices));
         return rings;
     }
@@ -445,7 +445,7 @@ public class SimplePolygon2D implements IPolygon2D {
 
         for (int i = 0; i < nPoints; i++) {
             array[i] = this.vertices.get(i);
-            res[i] = new Point2D();
+            res[i] = Point2D.ORIGIN;
         }
         trans.transform(array, res);
 

@@ -121,7 +121,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      */
     public Collection<LineSegment2D> edges() {
         int n = vertices.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
+        ArrayList<LineSegment2D> edges = new ArrayList<>(n);
 
         if (n < 2)
             return edges;
@@ -162,7 +162,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
 
         // Create array for storing transformed arcs
         Collection<LineSegment2D> edges = this.edges();
-        ArrayList<ICirculinearContinuousCurve2D> arcs = new ArrayList<ICirculinearContinuousCurve2D>(edges.size());
+        ArrayList<ICirculinearContinuousCurve2D> arcs = new ArrayList<>(edges.size());
 
         // Transform each arc
         for (LineSegment2D edge : edges) {
@@ -170,7 +170,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
         }
 
         // create the transformed shape
-        return new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(arcs);
+        return new PolyCirculinearCurve2D<>(arcs);
     }
 
     // ===================================================================

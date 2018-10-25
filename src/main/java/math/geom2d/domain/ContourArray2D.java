@@ -61,7 +61,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
      */
     @SafeVarargs
     public static <T extends IContour2D> ContourArray2D<T> create(T... curves) {
-        return new ContourArray2D<T>(curves);
+        return new ContourArray2D<>(curves);
     }
 
     // ===================================================================
@@ -147,7 +147,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
         int n = curves.size();
         for (int i = 0; i < n; i++)
             curves2[i] = curves.get(n - 1 - i).reverse();
-        return new ContourArray2D<IContour2D>(curves2);
+        return new ContourArray2D<>(curves2);
     }
 
     @Override
@@ -156,12 +156,12 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
         ICurveSet2D<? extends ICurve2D> curveSet = super.subCurve(t0, t1);
 
         // create subcurve array
-        ArrayList<IContinuousOrientedCurve2D> curves = new ArrayList<IContinuousOrientedCurve2D>();
+        ArrayList<IContinuousOrientedCurve2D> curves = new ArrayList<>();
         for (ICurve2D curve : curveSet.curves())
             curves.add((IContinuousOrientedCurve2D) curve);
 
         // Create CurveSet for the result
-        return new CurveArray2D<IContinuousOrientedCurve2D>(curves);
+        return new CurveArray2D<>(curves);
     }
 
     // ===================================================================
@@ -176,7 +176,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>(set.size());
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {
@@ -188,7 +188,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
 
     @Override
     public ContourArray2D<? extends IContour2D> transform(AffineTransform2D trans) {
-        ContourArray2D<IContour2D> result = new ContourArray2D<IContour2D>(curves.size());
+        ContourArray2D<IContour2D> result = new ContourArray2D<>(curves.size());
         for (ICurve2D curve : curves)
             result.add((IContour2D) curve.transform(trans));
         return result;

@@ -43,7 +43,7 @@ public class CheckSplit3Circles extends JPanel {
         ring2.draw(g2);
         ring3.draw(g2);
 
-        ArrayList<ICirculinearContour2D> rings = new ArrayList<ICirculinearContour2D>(3);
+        ArrayList<ICirculinearContour2D> rings = new ArrayList<>(3);
         rings.add(ring1);
         rings.add(ring2);
         rings.add(ring3);

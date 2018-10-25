@@ -57,7 +57,7 @@ public class GrahamScan2D implements ConvexHull2D {
         Comparator<Point2D> comparator = new CompareByPseudoAngle(lowestPoint);
 
         // create a sorted set
-        ArrayList<Point2D> sorted = new ArrayList<Point2D>(nbPoints);
+        ArrayList<Point2D> sorted = new ArrayList<>(nbPoints);
         sorted.addAll(points);
         Collections.sort(sorted, comparator);
 

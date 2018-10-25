@@ -56,7 +56,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * @since 0.8.1
      */
     public static <T extends ICurve2D> CurveArray2D<T> create(Collection<T> curves) {
-        return new CurveArray2D<T>(curves);
+        return new CurveArray2D<>(curves);
     }
 
     /**
@@ -66,7 +66,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      */
     @SafeVarargs
     public static <T extends ICurve2D> CurveArray2D<T> create(T... curves) {
-        return new CurveArray2D<T>(curves);
+        return new CurveArray2D<>(curves);
     }
 
     // ===================================================================
@@ -82,14 +82,14 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * Empty constructor. Initializes an empty array of curves.
      */
     public CurveArray2D() {
-        this.curves = new ArrayList<T>();
+        this.curves = new ArrayList<>();
     }
 
     /**
      * Empty constructor. Initializes an empty array of curves, with a given size for allocating memory.
      */
     public CurveArray2D(int n) {
-        this.curves = new ArrayList<T>(n);
+        this.curves = new ArrayList<>(n);
     }
 
     /**
@@ -118,7 +118,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      *            the collection of curves to add to the set
      */
     public CurveArray2D(Collection<? extends T> curves) {
-        this.curves = new ArrayList<T>(curves.size());
+        this.curves = new ArrayList<>(curves.size());
         this.curves.addAll(curves);
     }
 
@@ -317,7 +317,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     // methods inherited from interface Curve2D
 
     public Collection<Point2D> intersections(ILinearShape2D line) {
-        ArrayList<Point2D> intersect = new ArrayList<Point2D>();
+        ArrayList<Point2D> intersect = new ArrayList<>();
 
         // add intersections with each curve
         for (ICurve2D curve : curves)
@@ -398,7 +398,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      */
     public Collection<Point2D> singularPoints() {
         // create array for result
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
         double eps = IShape2D.ACCURACY;
 
         // iterate on curves composing the array
@@ -511,7 +511,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
             curves2[i] = curves.get(n - 1 - i).reverse();
 
         // create the reversed final curve
-        return new CurveArray2D<ICurve2D>(curves2);
+        return new CurveArray2D<>(curves2);
     }
 
     /**
@@ -522,7 +522,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         int nc = curves.size();
 
         // create a new empty curve set
-        CurveArray2D<ICurve2D> res = new CurveArray2D<ICurve2D>();
+        CurveArray2D<ICurve2D> res = new CurveArray2D<>();
         ICurve2D curve;
 
         // format to ensure t is between T0 and T1
@@ -644,7 +644,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      */
     public CurveArray2D<? extends ICurve2D> transform(AffineTransform2D trans) {
         // Allocate array for result
-        CurveArray2D<ICurve2D> result = new CurveArray2D<ICurve2D>(curves.size());
+        CurveArray2D<ICurve2D> result = new CurveArray2D<>(curves.size());
 
         // add each transformed curve
         for (ICurve2D curve : curves)
@@ -654,7 +654,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
 
     public Collection<? extends IContinuousCurve2D> continuousCurves() {
         // create array for storing result
-        ArrayList<IContinuousCurve2D> continuousCurves = new ArrayList<IContinuousCurve2D>();
+        ArrayList<IContinuousCurve2D> continuousCurves = new ArrayList<>();
 
         // Iterate on curves, and add either the curve itself, or the set of
         // continuous curves making the curve

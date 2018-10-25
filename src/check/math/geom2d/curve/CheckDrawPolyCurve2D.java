@@ -37,7 +37,7 @@ public class CheckDrawPolyCurve2D extends JPanel {
         LineSegment2D line3 = new LineSegment2D(p3, p4);
 
         // create the polycurve
-        polycurve = new PolyCurve2D<LineSegment2D>(2);
+        polycurve = new PolyCurve2D<>(2);
         polycurve.add(line1);
         polycurve.add(line2);
         polycurve.add(line3);

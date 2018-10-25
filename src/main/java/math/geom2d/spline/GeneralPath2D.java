@@ -47,7 +47,7 @@ public class GeneralPath2D implements ICurve2D {
      * Initialize an empty path.
      */
     public GeneralPath2D() {
-        this.segments = new ArrayList<Segment>();
+        this.segments = new ArrayList<>();
     }
 
     /**
@@ -56,7 +56,7 @@ public class GeneralPath2D implements ICurve2D {
     public GeneralPath2D(GeneralPath2D path) {
 
         // init local segment array
-        this.segments = new ArrayList<Segment>(path.segments.size());
+        this.segments = new ArrayList<>(path.segments.size());
 
         Point2D[] pts;
 
@@ -128,7 +128,7 @@ public class GeneralPath2D implements ICurve2D {
         Point2D[] pts;
 
         int n = this.segments.size();
-        ArrayList<ISmoothCurve2D> curves = new ArrayList<ISmoothCurve2D>(n);
+        ArrayList<ISmoothCurve2D> curves = new ArrayList<>(n);
 
         for (Segment seg : this.segments) {
             switch (seg.type()) {
@@ -293,7 +293,7 @@ public class GeneralPath2D implements ICurve2D {
 
     public Collection<Point2D> singularPoints() {
         // allocate memory for result
-        ArrayList<Point2D> points = new ArrayList<Point2D>(this.segments.size());
+        ArrayList<Point2D> points = new ArrayList<>(this.segments.size());
 
         // iterate on segments, and add the last control of each segment
         for (Segment seg : this.segments) {
@@ -308,7 +308,7 @@ public class GeneralPath2D implements ICurve2D {
 
     public Collection<Point2D> vertices() {
         // allocate memory for result
-        ArrayList<Point2D> vertices = new ArrayList<Point2D>(this.segments.size());
+        ArrayList<Point2D> vertices = new ArrayList<>(this.segments.size());
 
         // iterate on segments, and add the control points of each segment
         for (Segment seg : this.segments) {
@@ -396,7 +396,7 @@ public class GeneralPath2D implements ICurve2D {
 
     public Collection<Point2D> intersections(ILinearShape2D line) {
         // allocate array for the result
-        ArrayList<Point2D> pts = new ArrayList<Point2D>();
+        ArrayList<Point2D> pts = new ArrayList<>();
 
         // Iterate on the set of curves, and compute intersections
         for (ISmoothCurve2D curve : this.smoothCurves()) {
@@ -410,7 +410,7 @@ public class GeneralPath2D implements ICurve2D {
     public ICurve2D reverse() {
         ArrayList<IContinuousCurve2D> list = splitContinuousCurves();
         Collections.reverse(list);
-        return new CurveArray2D<IContinuousCurve2D>(list);
+        return new CurveArray2D<>(list);
     }
 
     public Collection<? extends IContinuousCurve2D> continuousCurves() {
@@ -423,7 +423,7 @@ public class GeneralPath2D implements ICurve2D {
         Point2D[] pts;
 
         int n = this.segments.size();
-        ArrayList<IContinuousCurve2D> curveList = new ArrayList<IContinuousCurve2D>(n);
+        ArrayList<IContinuousCurve2D> curveList = new ArrayList<>(n);
 
         // the current continuous curve
         PolyCurve2D<ISmoothCurve2D> curve = null;
@@ -434,7 +434,7 @@ public class GeneralPath2D implements ICurve2D {
                 // If current curve is not null, add it the the set
                 if (curve != null)
                     curveList.add(curve);
-                curve = new PolyCurve2D<ISmoothCurve2D>();
+                curve = new PolyCurve2D<>();
 
                 // update last control and initial point
                 lastStart = seg.lastControl();
@@ -466,7 +466,7 @@ public class GeneralPath2D implements ICurve2D {
 
                 // add current curve to the list, and reset it
                 curveList.add(curve);
-                curve = new PolyCurve2D<ISmoothCurve2D>();
+                curve = new PolyCurve2D<>();
 
                 // update for next start
                 lastControl = lastStart;
@@ -624,7 +624,7 @@ public class GeneralPath2D implements ICurve2D {
 
     public ICurveSet2D<? extends ICurve2D> clip(Box2D box) {
         ArrayList<IContinuousCurve2D> list = splitContinuousCurves();
-        ICurve2D curve = new CurveArray2D<IContinuousCurve2D>(list);
+        ICurve2D curve = new CurveArray2D<>(list);
         return curve.clip(box);
     }
 

@@ -38,7 +38,7 @@ public class PolyCurve2DTest extends TestCase {
         double r = 10;
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
-        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
+        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<>();
         set.add(arc1);
         set.add(arc2);
 
@@ -60,7 +60,7 @@ public class PolyCurve2DTest extends TestCase {
         Box2D box1 = new Box2D(-L / 2, L / 2, -L / 2, L / 2);
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
-        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
+        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<>();
         set.add(arc1);
         set.add(arc2);
 

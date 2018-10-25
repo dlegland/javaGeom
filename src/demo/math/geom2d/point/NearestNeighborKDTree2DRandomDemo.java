@@ -54,14 +54,14 @@ public class NearestNeighborKDTree2DRandomDemo extends JPanel {
         super();
 
         // Point coordinate are multiplied by 10 for better drawing
-        points = new ArrayList<Point2D>(nbPoints);
+        points = new ArrayList<>(nbPoints);
         for (int i = 0; i < nbPoints; i++) {
             points.add(new Point2D(Math.random() * 300 + 50, Math.random() * 300 + 50));
         }
 
         tree = new KDTree2D(points);
 
-        probes = new ArrayList<Point2D>(9);
+        probes = new ArrayList<>(9);
         for (double x = 100; x <= 300; x += 100)
             for (double y = 100; y <= 300; y += 100)
                 probes.add(new Point2D(x, y));

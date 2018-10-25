@@ -405,7 +405,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<CubicBezierCurve2D> result = new CurveArray2D<CubicBezierCurve2D>(set.size());
+        CurveArray2D<CubicBezierCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

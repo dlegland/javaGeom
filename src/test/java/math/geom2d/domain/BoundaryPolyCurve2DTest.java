@@ -117,7 +117,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
         LineSegment2D line2 = new LineSegment2D(p1, p2);
         LineSegment2D line3 = new LineSegment2D(p2, p3);
         LineSegment2D line4 = new LineSegment2D(p3, p4);
-        BoundaryPolyCurve2D<LineSegment2D> boundary = new BoundaryPolyCurve2D<LineSegment2D>(line1, line2, line3, line4);
+        BoundaryPolyCurve2D<LineSegment2D> boundary = new BoundaryPolyCurve2D<>(line1, line2, line3, line4);
 
         assertTrue(boundary.isInside(pt0));
         assertTrue(!boundary.isInside(pt1));
@@ -132,7 +132,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
         assertTrue(reverse.isInside(pt3));
 
         // Try with a different order of curves
-        BoundaryPolyCurve2D<LineSegment2D> boundary2 = new BoundaryPolyCurve2D<LineSegment2D>(new LineSegment2D[] { line2, line3, line4, line1 });
+        BoundaryPolyCurve2D<LineSegment2D> boundary2 = new BoundaryPolyCurve2D<>(new LineSegment2D[] { line2, line3, line4, line1 });
 
         assertTrue(boundary2.isInside(pt0));
         assertTrue(!boundary2.isInside(pt1));
@@ -157,7 +157,7 @@ public class BoundaryPolyCurve2DTest extends TestCase {
         CircleArc2D arc1 = new CircleArc2D(x1, y, r, Math.PI / 3, 4 * Math.PI / 3);
         CircleArc2D arc2 = new CircleArc2D(x2, y, r, 4 * Math.PI / 3, -2 * Math.PI / 3);
 
-        BoundaryPolyCurve2D<CircleArc2D> boundary = new BoundaryPolyCurve2D<CircleArc2D>(new CircleArc2D[] { arc1, arc2 });
+        BoundaryPolyCurve2D<CircleArc2D> boundary = new BoundaryPolyCurve2D<>(new CircleArc2D[] { arc1, arc2 });
 
         Point2D pt1 = new Point2D(10, 10);
         assertTrue(!boundary.isInside(pt1));

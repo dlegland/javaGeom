@@ -48,7 +48,7 @@ public class CirculinearCurves2D {
             Collection<? extends ISmoothCurve2D> smoothPieces = continuous.smoothPieces();
 
             // prepare array of elements
-            ArrayList<ICirculinearElement2D> elements = new ArrayList<ICirculinearElement2D>(smoothPieces.size());
+            ArrayList<ICirculinearElement2D> elements = new ArrayList<>(smoothPieces.size());
 
             // class cast for each element, or throw an exception
             for (ISmoothCurve2D smooth : smoothPieces) {
@@ -59,7 +59,7 @@ public class CirculinearCurves2D {
             }
 
             // create the resulting CirculinearContinuousCurve2D
-            return new PolyCirculinearCurve2D<ICirculinearElement2D>(elements);
+            return new PolyCirculinearCurve2D<>(elements);
         }
 
         // If the curve is continuous, creates a CirculinearContinuousCurve2D
@@ -69,7 +69,7 @@ public class CirculinearCurves2D {
             Collection<? extends IContinuousCurve2D> continuousCurves = set.continuousCurves();
 
             // prepare array of elements
-            ArrayList<ICirculinearContinuousCurve2D> curves = new ArrayList<ICirculinearContinuousCurve2D>(continuousCurves.size());
+            ArrayList<ICirculinearContinuousCurve2D> curves = new ArrayList<>(continuousCurves.size());
 
             // class cast for each element, or throw an exception
             for (IContinuousCurve2D continuous : continuousCurves) {
@@ -156,14 +156,14 @@ public class CirculinearCurves2D {
     public static Collection<Point2D> findSelfIntersections(ICirculinearCurve2D curve) {
 
         // create array of circulinear elements
-        ArrayList<ICirculinearElement2D> elements = new ArrayList<ICirculinearElement2D>();
+        ArrayList<ICirculinearElement2D> elements = new ArrayList<>();
 
         // extract all circulinear elements of the curve
         for (ICirculinearContinuousCurve2D cont : curve.continuousCurves())
             elements.addAll(cont.smoothPieces());
 
         // create array for storing result
-        ArrayList<Point2D> result = new ArrayList<Point2D>(0);
+        ArrayList<Point2D> result = new ArrayList<>(0);
 
         // iterate on each couple of elements
         int n = elements.size();
@@ -189,8 +189,8 @@ public class CirculinearCurves2D {
     public static double[][] locateSelfIntersections(ICurveSet2D<? extends ICirculinearElement2D> curve) {
 
         // create array for storing result
-        ArrayList<Double> list1 = new ArrayList<Double>(0);
-        ArrayList<Double> list2 = new ArrayList<Double>(0);
+        ArrayList<Double> list1 = new ArrayList<>(0);
+        ArrayList<Double> list2 = new ArrayList<>(0);
         double dt;
 
         // iterate on each couple of elements
@@ -255,8 +255,8 @@ public class CirculinearCurves2D {
     public static Collection<Point2D> findIntersections(ICirculinearCurve2D curve1, ICirculinearCurve2D curve2) {
 
         // create array of circulinear elements
-        ArrayList<ICirculinearElement2D> elements1 = new ArrayList<ICirculinearElement2D>();
-        ArrayList<ICirculinearElement2D> elements2 = new ArrayList<ICirculinearElement2D>();
+        ArrayList<ICirculinearElement2D> elements1 = new ArrayList<>();
+        ArrayList<ICirculinearElement2D> elements2 = new ArrayList<>();
 
         // extract all circulinear elements of the curve
         for (ICirculinearContinuousCurve2D cont : curve1.continuousCurves())
@@ -265,7 +265,7 @@ public class CirculinearCurves2D {
             elements2.addAll(cont.smoothPieces());
 
         // create array for storing result
-        ArrayList<Point2D> result = new ArrayList<Point2D>(0);
+        ArrayList<Point2D> result = new ArrayList<>(0);
 
         // iterate on each couple of elements
         int n1 = elements1.size();
@@ -292,12 +292,12 @@ public class CirculinearCurves2D {
     public static double[][] locateIntersections(ICirculinearCurve2D curve1, ICirculinearCurve2D curve2) {
 
         // create array for storing result
-        ArrayList<Double> list1 = new ArrayList<Double>(0);
-        ArrayList<Double> list2 = new ArrayList<Double>(0);
+        ArrayList<Double> list1 = new ArrayList<>(0);
+        ArrayList<Double> list2 = new ArrayList<>(0);
 
         // create array of circulinear elements
-        ArrayList<ICirculinearElement2D> elements1 = new ArrayList<ICirculinearElement2D>();
-        ArrayList<ICirculinearElement2D> elements2 = new ArrayList<ICirculinearElement2D>();
+        ArrayList<ICirculinearElement2D> elements1 = new ArrayList<>();
+        ArrayList<ICirculinearElement2D> elements2 = new ArrayList<>();
 
         // extract all circulinear elements of the curve
         for (ICirculinearContinuousCurve2D cont : curve1.continuousCurves())
@@ -356,7 +356,7 @@ public class CirculinearCurves2D {
             Vector2D v1 = line1.direction();
             Vector2D v2 = line2.direction();
             if (Vector2D.isColinear(v1, v2))
-                return new ArrayList<Point2D>(0);
+                return new ArrayList<>(0);
 
             return line1.intersections(line2);
         }
@@ -375,7 +375,7 @@ public class CirculinearCurves2D {
         Circle2D circ2 = ((ICircularShape2D) elem2).supportingCircle();
 
         // create array for storing result (max 2 possible intersections)
-        ArrayList<Point2D> pts = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> pts = new ArrayList<>(2);
 
         // for each of the circle intersections, check if they belong to
         // both elements
@@ -400,7 +400,7 @@ public class CirculinearCurves2D {
         double pos0, pos1, pos2;
 
         // create the array of resulting curves
-        ArrayList<ICirculinearContinuousCurve2D> result = new ArrayList<ICirculinearContinuousCurve2D>();
+        ArrayList<ICirculinearContinuousCurve2D> result = new ArrayList<>();
 
         // Instances of CirculinearElement2D can not self-intersect
         if (curve instanceof ICirculinearElement2D) {
@@ -423,7 +423,7 @@ public class CirculinearCurves2D {
         }
 
         // put all positions into a tree map
-        TreeMap<Double, Double> twins = new TreeMap<Double, Double>();
+        TreeMap<Double, Double> twins = new TreeMap<>();
         for (int i = 0; i < couples.length; i++) {
             pos1 = couples[i][0];
             pos2 = couples[i][1];
@@ -437,7 +437,7 @@ public class CirculinearCurves2D {
         // Process the first curve
 
         // create new empty array of elements for current continuous curve
-        elements = new ArrayList<ICirculinearElement2D>();
+        elements = new ArrayList<>();
 
         // get first intersection
         pos1 = polyCurve.t0();
@@ -471,7 +471,7 @@ public class CirculinearCurves2D {
         // Process other curves, while there are intersections left
         while (!twins.isEmpty()) {
             // create new empty array of elements for current continuous curve
-            elements = new ArrayList<ICirculinearElement2D>();
+            elements = new ArrayList<>();
 
             // get first intersection
             pos0 = twins.firstKey();
@@ -510,7 +510,7 @@ public class CirculinearCurves2D {
      * This is a helper method, used to avoid excessive use of generics within other methods of the class.
      */
     private static PolyCirculinearCurve2D<ICirculinearElement2D> createPolyCurve(Collection<? extends ICirculinearElement2D> elements, boolean closed) {
-        return new PolyCirculinearCurve2D<ICirculinearElement2D>(elements, closed);
+        return new PolyCirculinearCurve2D<>(elements, closed);
     }
 
     public static Collection<ICirculinearContour2D> splitIntersectingContours(ICirculinearContour2D curve1, ICirculinearContour2D curve2) {
@@ -521,7 +521,7 @@ public class CirculinearCurves2D {
         // Initializations
 
         // create the array of resulting curves
-        ArrayList<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> contours = new ArrayList<>();
 
         // identify couples of intersections
         double[][] couples = locateIntersections(curve1, curve2);
@@ -535,12 +535,12 @@ public class CirculinearCurves2D {
         }
 
         // stores couple of points in 'twins'
-        TreeMap<Double, Double> twins1 = new TreeMap<Double, Double>();
-        TreeMap<Double, Double> twins2 = new TreeMap<Double, Double>();
+        TreeMap<Double, Double> twins1 = new TreeMap<>();
+        TreeMap<Double, Double> twins2 = new TreeMap<>();
 
         // stores also positions on each curve in an ordered tree
-        TreeSet<Double> positions1 = new TreeSet<Double>();
-        TreeSet<Double> positions2 = new TreeSet<Double>();
+        TreeSet<Double> positions1 = new TreeSet<>();
+        TreeSet<Double> positions2 = new TreeSet<>();
 
         // iterate on intersections to populate the data
         for (int i = 0; i < couples.length; i++) {
@@ -558,7 +558,7 @@ public class CirculinearCurves2D {
         // Process other curves, while there are intersections left
         while (!twins1.isEmpty()) {
             // create new empty array of elements for current contour
-            elements = new ArrayList<ICirculinearElement2D>();
+            elements = new ArrayList<>();
 
             // get first intersection
             pos0 = twins2.firstEntry().getValue();
@@ -609,8 +609,8 @@ public class CirculinearCurves2D {
         // 1) index of crossing curve for each intersection of i-th curve
         // 2) position on crossing curve of the intersection point
         int nCurves = curves.size();
-        ArrayList<TreeMap<Double, Integer>> twinIndices = new ArrayList<TreeMap<Double, Integer>>(nCurves);
-        ArrayList<TreeMap<Double, Double>> twinPositions = new ArrayList<TreeMap<Double, Double>>(nCurves);
+        ArrayList<TreeMap<Double, Integer>> twinIndices = new ArrayList<>(nCurves);
+        ArrayList<TreeMap<Double, Double>> twinPositions = new ArrayList<>(nCurves);
 
         // Populate the two arrays with empty trees
         for (int i = 0; i < nCurves; i++) {
@@ -620,7 +620,7 @@ public class CirculinearCurves2D {
 
         // Create array of tree sets for storing positions of intersections
         // on each curve
-        ArrayList<TreeSet<Double>> positions = new ArrayList<TreeSet<Double>>(nCurves);
+        ArrayList<TreeSet<Double>> positions = new ArrayList<>(nCurves);
 
         // populate the array with empty tree sets
         for (int i = 0; i < nCurves; i++) {
@@ -658,7 +658,7 @@ public class CirculinearCurves2D {
         }
 
         // create the array of resulting curves
-        ArrayList<ICirculinearContour2D> contours = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> contours = new ArrayList<>();
 
         // process curves without intersections
         for (int i = 0; i < nCurves; i++) {
@@ -684,7 +684,7 @@ public class CirculinearCurves2D {
             int ind0 = twinIndices.get(i).firstEntry().getValue();
 
             // create new empty array of elements for current contour
-            ArrayList<ICirculinearElement2D> elements = new ArrayList<ICirculinearElement2D>();
+            ArrayList<ICirculinearElement2D> elements = new ArrayList<>();
 
             // add portion of curve until intersection
             ICirculinearContour2D curve0 = curveArray[i];
@@ -728,7 +728,7 @@ public class CirculinearCurves2D {
         // Process other curves, while there are intersections left
         while (!isAllEmpty(twinPositions)) {
             // create new empty array of elements for current contour
-            ArrayList<ICirculinearElement2D> elements = new ArrayList<ICirculinearElement2D>();
+            ArrayList<ICirculinearElement2D> elements = new ArrayList<>();
 
             // indices of the two considered curves.
             int ind0 = 0, ind;

@@ -36,7 +36,7 @@ import static java.lang.Math.*;
  * 
  * @author dlegland
  */
-public class Angle2DUtil {
+public final class Angle2DUtil {
 
     /** The constant for PI, equivalent to 180 degrees. */
     public final static double M_PI = Math.PI;
@@ -68,7 +68,7 @@ public class Angle2DUtil {
      * Returns the horizontal angle formed by the line joining the origin and the given point.
      */
     public static double horizontalAngle(Point2D point) {
-        return (Math.atan2(point.y, point.x) + M_2PI) % (M_2PI);
+        return (Math.atan2(point.y(), point.x()) + M_2PI) % (M_2PI);
     }
 
     /**
@@ -82,7 +82,7 @@ public class Angle2DUtil {
      * Returns the horizontal angle formed by the line joining the origin and the point with given coordinate.
      */
     public static double horizontalAngle(Vector2D vect) {
-        return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
+        return (Math.atan2(vect.y(), vect.x()) + M_2PI) % (M_2PI);
     }
 
     /**
@@ -90,14 +90,14 @@ public class Angle2DUtil {
      */
     public static double horizontalAngle(ILinearShape2D object) {
         Vector2D vect = object.supportingLine().direction();
-        return (Math.atan2(vect.y, vect.x) + M_2PI) % (M_2PI);
+        return (Math.atan2(vect.y(), vect.x()) + M_2PI) % (M_2PI);
     }
 
     /**
      * Returns the horizontal angle formed by the line joining the two given points.
      */
     public static double horizontalAngle(Point2D p1, Point2D p2) {
-        return (Math.atan2(p2.y - p1.y, p2.x - p1.x) + M_2PI) % (M_2PI);
+        return (Math.atan2(p2.y() - p1.y(), p2.x() - p1.x()) + M_2PI) % (M_2PI);
     }
 
     /**
@@ -119,8 +119,8 @@ public class Angle2DUtil {
      * @return the pseudo angle of line joining p1 to p2
      */
     public static double pseudoAngle(Point2D p1, Point2D p2) {
-        double dx = p2.x - p1.x;
-        double dy = p2.y - p1.y;
+        double dx = p2.x() - p1.x();
+        double dy = p2.y() - p1.y();
         double s = abs(dx) + abs(dy);
         double t = (s == 0) ? 0.0 : dy / s;
         if (dx < 0) {

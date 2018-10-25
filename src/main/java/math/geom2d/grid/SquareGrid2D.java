@@ -105,7 +105,7 @@ public class SquareGrid2D implements Grid2D {
         xi = Math.ceil((xmin - x0) / sx) * sx + x0;
         yi = Math.ceil((ymin - y0) / sy) * sy + y0;
 
-        ArrayList<LineSegment2D> array = new ArrayList<LineSegment2D>();
+        ArrayList<LineSegment2D> array = new ArrayList<>();
 
         // add horizontal lines
         for (y = yi; y - ymax < IShape2D.ACCURACY; y += sy)
@@ -139,7 +139,7 @@ public class SquareGrid2D implements Grid2D {
         xi = Math.ceil((xmin - x0) / sx) * sx + x0;
         yi = Math.ceil((ymin - y0) / sy) * sy + y0;
 
-        ArrayList<Point2D> array = new ArrayList<Point2D>();
+        ArrayList<Point2D> array = new ArrayList<>();
 
         // iterate on lines in each direction
         for (y = yi; y - ymax < IShape2D.ACCURACY; y += sy)

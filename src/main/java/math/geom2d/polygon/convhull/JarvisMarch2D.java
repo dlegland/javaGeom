@@ -47,7 +47,7 @@ public class JarvisMarch2D implements ConvexHull2D {
         }
 
         // initialize array of points located on convex hull
-        ArrayList<Point2D> hullPoints = new ArrayList<Point2D>();
+        ArrayList<Point2D> hullPoints = new ArrayList<>();
 
         // Init iteration on points
         Point2D currentPoint = lowestPoint;

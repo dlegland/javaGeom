@@ -314,7 +314,7 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
     }
 
     public Collection<HyperbolaBranch2D> branches() {
-        ArrayList<HyperbolaBranch2D> array = new ArrayList<HyperbolaBranch2D>(2);
+        ArrayList<HyperbolaBranch2D> array = new ArrayList<>(2);
         array.add(branch1);
         array.add(branch2);
         return array;
@@ -334,7 +334,7 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
         v2 = v2.transform(rot);
 
         // init array for storing lines
-        ArrayList<StraightLine2D> array = new ArrayList<StraightLine2D>(2);
+        ArrayList<StraightLine2D> array = new ArrayList<>(2);
 
         // add each asymptote
         Point2D center = this.getCenter();
@@ -403,7 +403,7 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
     @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
 
-        Collection<Point2D> points = new ArrayList<Point2D>();
+        Collection<Point2D> points = new ArrayList<>();
 
         // format to 'standard' hyperbola
         ILinearShape2D line2 = formatLine(line);

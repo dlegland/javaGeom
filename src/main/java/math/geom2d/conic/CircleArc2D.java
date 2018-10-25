@@ -586,7 +586,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // create a new structure for storing result
-        CurveArray2D<CircleArc2D> result = new CurveArray2D<CircleArc2D>(set.size());
+        CurveArray2D<CircleArc2D> result = new CurveArray2D<>(set.size());
 
         // convert result
         for (ICurve2D curve : set.curves()) {

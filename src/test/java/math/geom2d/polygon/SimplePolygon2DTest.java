@@ -380,7 +380,7 @@ public class SimplePolygon2DTest extends TestCase {
     }
 
     public void testCreate_Collection() {
-        ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+        ArrayList<Point2D> array = new ArrayList<>(4);
         array.add(new Point2D(10, 10));
         array.add(new Point2D(20, 10));
         array.add(new Point2D(20, 20));

@@ -37,7 +37,7 @@ public class CheckSplitContinuousOpen extends JPanel {
         LineSegment2D line2 = new LineSegment2D(new Point2D(150, 50), new Point2D(150, 200));
         CircleArc2D arc2 = new CircleArc2D(new Point2D(50, 200), 100, 0, -Math.PI / 2);
 
-        curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 });
+        curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 });
     }
 
     public void paintComponent(Graphics g) {

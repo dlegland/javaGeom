@@ -39,10 +39,10 @@ public class CheckDrawWedges2D extends JPanel {
 
     @SuppressWarnings("unchecked")
     public CheckDrawWedges2D() {
-        wedge1 = new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { inv1, ray1 });
-        wedge2 = new BoundaryPolyCurve2D<AbstractLine2D>(new AbstractLine2D[] { inv2, ray2 });
+        wedge1 = new BoundaryPolyCurve2D<>(new AbstractLine2D[] { inv1, ray1 });
+        wedge2 = new BoundaryPolyCurve2D<>(new AbstractLine2D[] { inv2, ray2 });
         // Unchecked type cast
-        boundary = new ContourArray2D<BoundaryPolyCurve2D<AbstractLine2D>>(new BoundaryPolyCurve2D[] { wedge1, wedge2 });
+        boundary = new ContourArray2D<>(new BoundaryPolyCurve2D[] { wedge1, wedge2 });
     }
 
     public void paintComponent(Graphics g) {

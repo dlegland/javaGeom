@@ -194,7 +194,7 @@ public class TriangleGrid2D implements Grid2D {
     public Collection<LineSegment2D> getEdges(Box2D box) {
 
         // init the array of line segments
-        ArrayList<LineSegment2D> array = new ArrayList<LineSegment2D>();
+        ArrayList<LineSegment2D> array = new ArrayList<>();
 
         double d = s * Math.sqrt(3) / 2;
         double dmin, dmax;
@@ -240,7 +240,7 @@ public class TriangleGrid2D implements Grid2D {
     public IPointSet2D getVertices(Box2D box) {
 
         // init the array of line segments
-        ArrayList<Point2D> array = new ArrayList<Point2D>();
+        ArrayList<Point2D> array = new ArrayList<>();
 
         double d = s * Math.sqrt(3) / 2;
         double dmin, dmax;

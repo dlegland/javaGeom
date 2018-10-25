@@ -73,7 +73,7 @@ public class DrawCircularShapeDemo extends JPanel {
         CircleArc2D arclc = new CircleArc2D(xl, yc, r, Math.PI / 2, ext2);
 
         // Build the main boundary curve
-        IContour2D boundary0 = new BoundaryPolyCurve2D<CircleArc2D>(new CircleArc2D[] { arcll, arccl, arcul, arcuc, arcuu, arccu, arclu, arclc });
+        IContour2D boundary0 = new BoundaryPolyCurve2D<>(new CircleArc2D[] { arcll, arccl, arcul, arcuc, arcuu, arccu, arclu, arclc });
 
         // Build the inner boundaries
         IContour2D boundaryll = new Circle2D(xu, yu, r2, false);
@@ -83,7 +83,7 @@ public class DrawCircularShapeDemo extends JPanel {
         IContour2D boundarycc = new Circle2D(xc, yc, r2, false);
 
         // Gather the different boundaries
-        IBoundary2D boundary = new ContourArray2D<IContour2D>(new IContour2D[] { boundary0, boundarycc, boundaryll, boundarylu, boundaryuu, boundaryul });
+        IBoundary2D boundary = new ContourArray2D<>(new IContour2D[] { boundary0, boundarycc, boundaryll, boundarylu, boundaryuu, boundaryul });
 
         // Build the domain
         domain = new GenericDomain2D(boundary);

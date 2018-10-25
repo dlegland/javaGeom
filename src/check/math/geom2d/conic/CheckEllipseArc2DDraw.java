@@ -87,7 +87,7 @@ public class CheckEllipseArc2DDraw extends JPanel {
         g2.setColor(Color.RED);
         // g2.draw(arc2);
 
-        CurveArray2D<EllipseArc2D> set = new CurveArray2D<EllipseArc2D>();
+        CurveArray2D<EllipseArc2D> set = new CurveArray2D<>();
         set.add(arc1);
         set.add(arc2);
 

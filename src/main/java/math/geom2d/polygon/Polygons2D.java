@@ -301,7 +301,7 @@ public final class Polygons2D {
         ContourArray2D<IContour2D> contours = Boundaries2D.clipBoundary(boundary, box);
 
         // convert boundaries to linear rings
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>();
+        ArrayList<LinearRing2D> rings = new ArrayList<>();
         for (IContour2D contour : contours)
             rings.add(convertContourToLinearRing(contour));
 
@@ -319,7 +319,7 @@ public final class Polygons2D {
             return (LinearRing2D) contour;
 
         // extract all vertices of the contour
-        List<Point2D> vertices = new ArrayList<Point2D>();
+        List<Point2D> vertices = new ArrayList<>();
         for (Point2D v : contour.singularPoints())
             vertices.add(v);
 

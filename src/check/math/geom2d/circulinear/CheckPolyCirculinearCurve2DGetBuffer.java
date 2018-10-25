@@ -44,7 +44,7 @@ public class CheckPolyCirculinearCurve2DGetBuffer extends JPanel {
         CircleArc2D arc2 = new CircleArc2D(center, R, Math.PI / 2, -Math.PI / 2);
 
         // create the curve by concatenating elements
-        curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
+        curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
     }
 
     public void paintComponent(Graphics g) {

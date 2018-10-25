@@ -44,7 +44,7 @@ public class DrawAstroidDemo extends JPanel {
         CircleArc2D arc3 = new CircleArc2D(x0 - r, y0 - r, r, PI / 2, -PI / 2);
         CircleArc2D arc4 = new CircleArc2D(x0 + r, y0 - r, r, PI, -PI / 2);
 
-        astroid = new BoundaryPolyCurve2D<CircleArc2D>(new CircleArc2D[] { arc1, arc2, arc3, arc4 });
+        astroid = new BoundaryPolyCurve2D<>(new CircleArc2D[] { arc1, arc2, arc3, arc4 });
     }
 
     public void paintComponent(Graphics g) {

@@ -53,7 +53,7 @@ public class TuneGrahamScan2D {
 
         for (int i = 0; i < nIter; i++) {
             // Generate point coordinates
-            ArrayList<Point2D> points = new ArrayList<Point2D>(nPoints);
+            ArrayList<Point2D> points = new ArrayList<>(nPoints);
             for (int p = 0; p < nPoints; p++)
                 points.add(new Point2D(Math.random() * 200 + 100, Math.random() * 200 + 100));
 

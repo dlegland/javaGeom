@@ -23,7 +23,7 @@ public class CirculinearDomains2D {
 
     public final static ICirculinearDomain2D computeBuffer(ICirculinearDomain2D domain, double dist) {
 
-        ArrayList<ICirculinearContour2D> rings = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> rings = new ArrayList<>();
 
         // iterate on all continuous curves
         for (ICirculinearContour2D contour : domain.contours()) {
@@ -37,7 +37,7 @@ public class CirculinearDomains2D {
 
         // All the rings are created, we can now create a new domain with the
         // set of rings
-        return new GenericCirculinearDomain2D(new CirculinearContourArray2D<ICirculinearContour2D>(rings));
+        return new GenericCirculinearDomain2D(new CirculinearContourArray2D<>(rings));
     }
 
     /**
@@ -46,13 +46,13 @@ public class CirculinearDomains2D {
     public final static Collection<ICirculinearContour2D> computeBufferSimpleRing(ICirculinearContour2D curve, double d) {
 
         // prepare an array to store the set of rings
-        ArrayList<ICirculinearContour2D> rings = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> rings = new ArrayList<>();
 
         // the parallel in the positive side
         ICirculinearContinuousCurve2D parallel1 = curve.parallel(d);
 
         // split each parallel into continuous curves
-        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> curves = new CirculinearCurveArray2D<ICirculinearContinuousCurve2D>();
+        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> curves = new CirculinearCurveArray2D<>();
 
         // select only curve parts which do not cross original curve
         for (ICirculinearContinuousCurve2D split : CirculinearCurves2D.splitContinuousCurve(parallel1)) {
@@ -66,7 +66,7 @@ public class CirculinearDomains2D {
         }
 
         // prepare an array to store the set of rings
-        ArrayList<ICirculinearContour2D> rings2 = new ArrayList<ICirculinearContour2D>();
+        ArrayList<ICirculinearContour2D> rings2 = new ArrayList<>();
 
         // iterate on the set of rings
         for (ICirculinearContour2D ring : rings)

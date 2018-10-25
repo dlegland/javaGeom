@@ -233,7 +233,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         Collection<Point2D> inters = hyperbola.intersections(line);
 
         // check which points belong to this branch
-        Collection<Point2D> result = new ArrayList<Point2D>();
+        Collection<Point2D> result = new ArrayList<>();
         for (Point2D point : inters) {
             if (!(hyperbola.toLocal(point).x() > 0 ^ positive))
                 result.add(point);
@@ -259,7 +259,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<HyperbolaBranchArc2D> result = new CurveArray2D<HyperbolaBranchArc2D>(set.size());
+        CurveArray2D<HyperbolaBranchArc2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

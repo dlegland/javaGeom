@@ -43,7 +43,7 @@ public class Boundaries2DTest extends TestCase {
         Box2D box = new Box2D(0, 10, 0, 10);
 
         Circle2D circle1 = new Circle2D(5, 7, 2);
-        ContourArray2D<IContour2D> boundary = new ContourArray2D<IContour2D>(circle1);
+        ContourArray2D<IContour2D> boundary = new ContourArray2D<>(circle1);
         ContourArray2D<IContour2D> clipped = Boundaries2D.clipBoundary(boundary, box);
 
         Collection<? extends IContour2D> curves = clipped.continuousCurves();
@@ -70,10 +70,10 @@ public class Boundaries2DTest extends TestCase {
         double r = 10;
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
-        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
+        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<>();
         set.add(arc1);
         set.add(arc2);
-        boundary = new ContourArray2D<IContour2D>();
+        boundary = new ContourArray2D<>();
         boundary.add(set);
         double L = 40;
         double l = 10;

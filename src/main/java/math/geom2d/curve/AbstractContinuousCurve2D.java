@@ -32,7 +32,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * Wrap the given curve into an array list with the appropriate generic.
      */
     protected static <T extends IContinuousCurve2D> Collection<T> wrapCurve(T curve) {
-        ArrayList<T> list = new ArrayList<T>(1);
+        ArrayList<T> list = new ArrayList<>(1);
         list.add(curve);
         return list;
     }

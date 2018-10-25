@@ -94,7 +94,7 @@ public class Curves2DTest extends TestCase {
 
         CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * PI / 3, 2 * PI / 3);
         CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * PI / 3, 2 * PI / 3);
-        CurveArray2D<CircleArc2D> set = new CurveArray2D<CircleArc2D>(2);
+        CurveArray2D<CircleArc2D> set = new CurveArray2D<>(2);
         set.add(arc1);
         set.add(arc2);
 
@@ -121,7 +121,7 @@ public class Curves2DTest extends TestCase {
         Polyline2D sub2 = new Polyline2D(new Point2D[] { new Point2D(20, 15), new Point2D(15, 20) });
         Polyline2D sub3 = new Polyline2D(new Point2D[] { new Point2D(5, 20), new Point2D(0, 15) });
         Polyline2D sub4 = new Polyline2D(new Point2D[] { new Point2D(0, 5), new Point2D(5, 0) });
-        CurveArray2D<ICurve2D> set1 = new CurveArray2D<ICurve2D>(4);
+        CurveArray2D<ICurve2D> set1 = new CurveArray2D<>(4);
         set1.add(sub1);
         set1.add(sub2);
         set1.add(sub3);

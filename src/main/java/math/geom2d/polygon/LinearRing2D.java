@@ -144,7 +144,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     public Collection<LineSegment2D> edges() {
         // create resulting array
         int n = vertices.size();
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(n);
+        ArrayList<LineSegment2D> edges = new ArrayList<>(n);
 
         // do not process empty polylines
         if (n < 2)
@@ -205,7 +205,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
 
         // Create array for storing transformed arcs
         Collection<LineSegment2D> edges = this.edges();
-        ArrayList<ICirculinearElement2D> arcs = new ArrayList<ICirculinearElement2D>(edges.size());
+        ArrayList<ICirculinearElement2D> arcs = new ArrayList<>(edges.size());
 
         // Transform each arc
         for (LineSegment2D edge : edges) {

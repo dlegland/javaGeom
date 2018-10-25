@@ -69,7 +69,7 @@ public class CheckClipInvertedCircles2D extends JPanel {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        ContourArray2D<Circle2D> boundary = new ContourArray2D<Circle2D>(new Circle2D[] { circle1, circle2, circle3, circle4 });
+        ContourArray2D<Circle2D> boundary = new ContourArray2D<>(new Circle2D[] { circle1, circle2, circle3, circle4 });
 
         g2.setColor(Color.CYAN);
         boundary.domain().clip(box).fill(g2);

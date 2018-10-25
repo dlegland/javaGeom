@@ -32,9 +32,9 @@ public class CheckCircle2DClipBox2D extends JPanel {
         Box2D box2 = new Box2D(30, 270, 30, 270);
 
         // init circles
-        Collection<Circle2D> circles1 = new ArrayList<Circle2D>();
-        Collection<Circle2D> circles2 = new ArrayList<Circle2D>();
-        Collection<Circle2D> circles0 = new ArrayList<Circle2D>();
+        Collection<Circle2D> circles1 = new ArrayList<>();
+        Collection<Circle2D> circles2 = new ArrayList<>();
+        Collection<Circle2D> circles0 = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             circles1.add(new Circle2D(x[i], y[i], r1));
             circles2.add(new Circle2D(x[i], y[i], r2));

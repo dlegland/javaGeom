@@ -56,7 +56,7 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      * @see math.geom3d.curve.Curve3D#getContinuousCurves()
      */
     public Collection<LineSegment3D> continuousCurves() {
-        ArrayList<LineSegment3D> array = new ArrayList<LineSegment3D>(1);
+        ArrayList<LineSegment3D> array = new ArrayList<>(1);
         array.add(this);
         return array;
     }
@@ -118,7 +118,7 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      * @see math.geom3d.curve.ICurve3D#singularPoints()
      */
     public Collection<Point3D> singularPoints() {
-        ArrayList<Point3D> points = new ArrayList<Point3D>(2);
+        ArrayList<Point3D> points = new ArrayList<>(2);
         points.add(firstPoint());
         points.add(lastPoint());
         return points;

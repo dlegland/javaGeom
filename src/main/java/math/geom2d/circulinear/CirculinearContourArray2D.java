@@ -57,7 +57,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      */
     @SafeVarargs
     public static <T extends ICirculinearContour2D> CirculinearContourArray2D<T> create(T... curves) {
-        return new CirculinearContourArray2D<T>(curves);
+        return new CirculinearContourArray2D<>(curves);
     }
 
     // ===================================================================
@@ -67,14 +67,14 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * Empty constructor. Initializes an empty array of curves.
      */
     public CirculinearContourArray2D() {
-        this.curves = new ArrayList<T>();
+        this.curves = new ArrayList<>();
     }
 
     /**
      * Empty constructor. Initializes an empty array of curves, with a given size for allocating memory.
      */
     public CirculinearContourArray2D(int n) {
-        this.curves = new ArrayList<T>(n);
+        this.curves = new ArrayList<>(n);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      */
     @SafeVarargs
     public CirculinearContourArray2D(T... curves) {
-        this.curves = new ArrayList<T>(curves.length);
+        this.curves = new ArrayList<>(curves.length);
         for (T element : curves)
             this.add(element);
     }
@@ -97,7 +97,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      *            the initial contour contained in the array
      */
     public CirculinearContourArray2D(T curve) {
-        this.curves = new ArrayList<T>();
+        this.curves = new ArrayList<>();
         this.curves.add(curve);
     }
 
@@ -108,7 +108,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      *            the collection of curves to add to the set
      */
     public CirculinearContourArray2D(Collection<? extends T> curves) {
-        this.curves = new ArrayList<T>(curves.size());
+        this.curves = new ArrayList<>(curves.size());
         this.curves.addAll(curves);
     }
 
@@ -184,7 +184,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      */
     public CirculinearContourArray2D<? extends ICirculinearContour2D> transform(CircleInversion2D inv) {
         // Allocate array for result
-        CirculinearContourArray2D<ICirculinearContour2D> result = new CirculinearContourArray2D<ICirculinearContour2D>(curves.size());
+        CirculinearContourArray2D<ICirculinearContour2D> result = new CirculinearContourArray2D<>(curves.size());
 
         // add each transformed curve
         for (ICirculinearContour2D curve : curves)
@@ -207,7 +207,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<ICirculinearContinuousCurve2D>(n);
+        CirculinearCurveArray2D<ICirculinearContinuousCurve2D> result = new CirculinearCurveArray2D<>(n);
 
         // convert the result, class cast each curve
         for (ICurve2D curve : set.curves()) {
@@ -230,7 +230,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
             curves2[i] = curves.get(n - 1 - i).reverse();
 
         // create the reversed final curve
-        return new CirculinearContourArray2D<ICirculinearContour2D>(curves2);
+        return new CirculinearContourArray2D<>(curves2);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
         ICurveSet2D<? extends IContinuousOrientedCurve2D> curveSet = super.subCurve(t0, t1);
 
         // create subcurve array
-        ArrayList<ICirculinearContinuousCurve2D> curves = new ArrayList<ICirculinearContinuousCurve2D>(curveSet.size());
+        ArrayList<ICirculinearContinuousCurve2D> curves = new ArrayList<>(curveSet.size());
 
         // class cast each curve
         for (ICurve2D curve : curveSet.curves())

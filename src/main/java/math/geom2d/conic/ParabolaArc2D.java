@@ -239,7 +239,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
 
     public Collection<Point2D> intersections(ILinearShape2D line) {
         Collection<Point2D> inters0 = this.parabola.intersections(line);
-        ArrayList<Point2D> inters = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> inters = new ArrayList<>(2);
         for (Point2D point : inters0) {
             double pos = this.parabola.position(point);
             if (pos > this.t0 && pos < this.t1)
@@ -302,7 +302,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<ParabolaArc2D> result = new CurveArray2D<ParabolaArc2D>(set.size());
+        CurveArray2D<ParabolaArc2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

@@ -26,7 +26,7 @@ public class KDTree2DTest extends TestCase {
      */
     public void testContains() {
         int n = 5;
-        ArrayList<Point2D> points = new ArrayList<Point2D>(n);
+        ArrayList<Point2D> points = new ArrayList<>(n);
         points.add(new Point2D(5, 5));
         points.add(new Point2D(10, 10));
         points.add(new Point2D(20, 20));
@@ -42,7 +42,7 @@ public class KDTree2DTest extends TestCase {
 
     public void testGetNodePoint2D() {
         int n = 5;
-        ArrayList<Point2D> points = new ArrayList<Point2D>(n);
+        ArrayList<Point2D> points = new ArrayList<>(n);
         points.add(new Point2D(5, 5));
         points.add(new Point2D(10, 10));
         points.add(new Point2D(20, 20));
@@ -57,7 +57,7 @@ public class KDTree2DTest extends TestCase {
 
     public void testAddPoint2D() {
         int n = 5;
-        ArrayList<Point2D> points = new ArrayList<Point2D>(n);
+        ArrayList<Point2D> points = new ArrayList<>(n);
         points.add(new Point2D(5, 5));
         points.add(new Point2D(10, 10));
         points.add(new Point2D(20, 20));
@@ -72,7 +72,7 @@ public class KDTree2DTest extends TestCase {
     }
 
     public void testNearestNeighborPoint2D() {
-        ArrayList<Point2D> points = new ArrayList<Point2D>(3);
+        ArrayList<Point2D> points = new ArrayList<>(3);
         points.add(new Point2D(12, 10));
         points.add(new Point2D(7, 6));
         points.add(new Point2D(15, 16));
@@ -80,7 +80,7 @@ public class KDTree2DTest extends TestCase {
 
         assertEquals(tree.nearestNeighbor(new Point2D(11, 11)), new Point2D(12, 10));
 
-        points = new ArrayList<Point2D>(7);
+        points = new ArrayList<>(7);
         points.add(new Point2D(12, 10));
         points.add(new Point2D(7, 6));
         points.add(new Point2D(15, 16));
@@ -95,7 +95,7 @@ public class KDTree2DTest extends TestCase {
     }
 
     public void testRangeSearch() {
-        ArrayList<Point2D> points = new ArrayList<Point2D>(3);
+        ArrayList<Point2D> points = new ArrayList<>(3);
         points.add(new Point2D(-15, 0));
         points.add(new Point2D(15, 0));
         points.add(new Point2D(0, -15));

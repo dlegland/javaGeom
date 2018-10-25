@@ -30,7 +30,7 @@ public class CheckClipBand2D extends JPanel {
     ContourArray2D<StraightLine2D> band;
 
     public CheckClipBand2D() {
-        band = new ContourArray2D<StraightLine2D>(new StraightLine2D[] { line1, line2 });
+        band = new ContourArray2D<>(new StraightLine2D[] { line1, line2 });
     }
 
     public void paintComponent(Graphics g) {

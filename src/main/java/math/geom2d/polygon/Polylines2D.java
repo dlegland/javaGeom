@@ -25,7 +25,7 @@ public abstract class Polylines2D {
         int last = vertices.size() - 1;
         int[] inds = recurseSimplify(vertices, 0, last, distMax);
 
-        ArrayList<Point2D> newVerts = new ArrayList<Point2D>(inds.length + 2);
+        ArrayList<Point2D> newVerts = new ArrayList<>(inds.length + 2);
         newVerts.add(vertices.get(0));
         for (int i : inds)
             newVerts.add(vertices.get(i));
@@ -56,7 +56,7 @@ public abstract class Polylines2D {
 
         int[] inds = concatInds(inds1, indMax, inds2);
 
-        ArrayList<Point2D> newVerts = new ArrayList<Point2D>(inds.length + 2);
+        ArrayList<Point2D> newVerts = new ArrayList<>(inds.length + 2);
         newVerts.add(vertices.get(0));
         for (int i : inds)
             newVerts.add(vertices.get(i));
@@ -153,7 +153,7 @@ public abstract class Polylines2D {
      */
     public static Collection<Point2D> intersect(LinearCurve2D poly1, LinearCurve2D poly2) {
         // array for storing intersections
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
 
         // iterate on edge couples
         Point2D point;

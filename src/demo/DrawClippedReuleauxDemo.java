@@ -53,7 +53,7 @@ public class DrawClippedReuleauxDemo extends JPanel {
         CircleArc2D arc2 = new CircleArc2D(x0 - r / 2, y0 - d, r, 0, Math.PI / 3);
         CircleArc2D arc3 = new CircleArc2D(x0 + r / 2, y0 - d, r, 2 * Math.PI / 3, Math.PI / 3);
 
-        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
+        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<>();
         set.add(arc1);
         set.add(arc2);
         set.add(arc3);

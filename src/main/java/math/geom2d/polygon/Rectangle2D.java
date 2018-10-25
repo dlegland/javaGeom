@@ -128,7 +128,7 @@ public class Rectangle2D implements IPolygon2D {
      */
     public Collection<Point2D> vertices() {
         // Allocate memory
-        ArrayList<Point2D> array = new ArrayList<Point2D>(4);
+        ArrayList<Point2D> array = new ArrayList<>(4);
 
         // add each vertex
         array.add(new Point2D(x0, y0));
@@ -210,7 +210,7 @@ public class Rectangle2D implements IPolygon2D {
      * Returns the four edges that constitute the boundary of this rectangle.
      */
     public Collection<LineSegment2D> edges() {
-        ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(4);
+        ArrayList<LineSegment2D> edges = new ArrayList<>(4);
         edges.add(new LineSegment2D(x0, y0, x0 + w, y0));
         edges.add(new LineSegment2D(x0 + w, y0, x0 + w, y0 + h));
         edges.add(new LineSegment2D(x0 + w, y0 + h, x0, y0 + h));
@@ -285,7 +285,7 @@ public class Rectangle2D implements IPolygon2D {
     // methods inherited from interface Domain2D
 
     public CirculinearContourArray2D<LinearRing2D> boundary() {
-        return new CirculinearContourArray2D<LinearRing2D>(asRing());
+        return new CirculinearContourArray2D<>(asRing());
     }
 
     /*
@@ -294,7 +294,7 @@ public class Rectangle2D implements IPolygon2D {
      * @see math.geom2d.domain.Domain2D#contours()
      */
     public Collection<LinearRing2D> contours() {
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
+        ArrayList<LinearRing2D> rings = new ArrayList<>(1);
         rings.add(this.asRing());
         return rings;
     }
@@ -380,7 +380,7 @@ public class Rectangle2D implements IPolygon2D {
         Iterator<Point2D> iter = this.vertices().iterator();
         for (int i = 0; i < nPoints; i++) {
             array[i] = iter.next();
-            res[i] = new Point2D();
+            res[i] = Point2D.ORIGIN;
         }
 
         trans.transform(array, res);

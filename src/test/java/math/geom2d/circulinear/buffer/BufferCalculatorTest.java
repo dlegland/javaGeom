@@ -278,7 +278,7 @@ public class BufferCalculatorTest extends TestCase {
         Ray2D ray2 = new Ray2D(origin, v2);
 
         // create the curve
-        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<ICirculinearElement2D>();
+        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<>();
         curve.add(ray1);
         curve.add(ray2);
 
@@ -380,7 +380,7 @@ public class BufferCalculatorTest extends TestCase {
         Ray2D ray2 = new Ray2D(origin, v2);
 
         // create the curve
-        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<ICirculinearElement2D>();
+        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<>();
         curve.add(ray1);
         curve.add(ray2);
         assertEquals(2, curve.smoothPieces().size());

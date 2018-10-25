@@ -621,9 +621,9 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      */
     public Collection<Point2D> intersections(ILinearShape2D line) {
         if (this.isParallel(line))
-            return new ArrayList<Point2D>(0);
+            return new ArrayList<>(0);
 
-        ArrayList<Point2D> points = new ArrayList<Point2D>(1);
+        ArrayList<Point2D> points = new ArrayList<>(1);
         Point2D point = intersection(line);
         if (point != null)
             points.add(point);
@@ -766,7 +766,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
         ICurveSet2D<IContinuousCurve2D> set = Curves2D.clipContinuousCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<AbstractLine2D> result = new CurveArray2D<AbstractLine2D>(set.size());
+        CurveArray2D<AbstractLine2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

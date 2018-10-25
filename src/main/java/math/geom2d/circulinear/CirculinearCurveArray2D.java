@@ -57,7 +57,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      */
     @SafeVarargs
     public static <T extends ICirculinearCurve2D> CirculinearCurveArray2D<T> create(T... curves) {
-        return new CirculinearCurveArray2D<T>(curves);
+        return new CirculinearCurveArray2D<>(curves);
     }
 
     // ===================================================================
@@ -67,14 +67,14 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * Empty constructor. Initializes an empty array of curves.
      */
     public CirculinearCurveArray2D() {
-        this.curves = new ArrayList<T>();
+        this.curves = new ArrayList<>();
     }
 
     /**
      * Empty constructor. Initializes an empty array of curves, with a given size for allocating memory.
      */
     public CirculinearCurveArray2D(int n) {
-        this.curves = new ArrayList<T>(n);
+        this.curves = new ArrayList<>(n);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      */
     @SafeVarargs
     public CirculinearCurveArray2D(T... curves) {
-        this.curves = new ArrayList<T>(curves.length);
+        this.curves = new ArrayList<>(curves.length);
         for (T element : curves)
             this.add(element);
     }
@@ -97,7 +97,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      *            the collection of curves to add to the set
      */
     public CirculinearCurveArray2D(Collection<? extends T> curves) {
-        this.curves = new ArrayList<T>(curves.size());
+        this.curves = new ArrayList<>(curves.size());
         this.curves.addAll(curves);
     }
 
@@ -161,7 +161,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      */
     public CirculinearCurveArray2D<ICirculinearCurve2D> transform(CircleInversion2D inv) {
         // Allocate array for result
-        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<ICirculinearCurve2D>(curves.size());
+        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<>(curves.size());
 
         // add each transformed curve
         for (ICirculinearCurve2D curve : curves)
@@ -175,7 +175,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
     @Override
     public Collection<? extends ICirculinearContinuousCurve2D> continuousCurves() {
         // create array for storing result
-        ArrayList<ICirculinearContinuousCurve2D> result = new ArrayList<ICirculinearContinuousCurve2D>();
+        ArrayList<ICirculinearContinuousCurve2D> result = new ArrayList<>();
 
         // iterate on curves, and extract each set of continuous curves
         for (ICirculinearCurve2D curve : curves)
@@ -192,7 +192,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<ICirculinearCurve2D>(n);
+        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<>(n);
 
         // convert the result, class cast each curve
         for (ICurve2D curve : set.curves()) {
@@ -210,7 +210,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
         ICurveSet2D<? extends ICurve2D> subcurve = super.subCurve(t0, t1);
 
         // prepare result
-        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<ICirculinearCurve2D>(subcurve.size());
+        CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<>(subcurve.size());
 
         // add each curve after class,cast
         for (ICurve2D curve : subcurve) {
@@ -235,6 +235,6 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
             curves2[i] = curves.get(n - 1 - i).reverse();
 
         // create the reversed final curve
-        return new CirculinearCurveArray2D<ICirculinearCurve2D>(curves2);
+        return new CirculinearCurveArray2D<>(curves2);
     }
 }

@@ -95,7 +95,7 @@ public class DrawVennDiagram extends JPanel {
         CircleArc2D cad3 = new CircleArc2D(cd3, cd3.position(pc2), cd3.position(pc3), false);
 
         // Create curve d
-        PolyCurve2D<CircleArc2D> cd = new PolyCurve2D<CircleArc2D>(cad0, cad1, cad2, cad3);
+        PolyCurve2D<CircleArc2D> cd = new PolyCurve2D<>(cad0, cad1, cad2, cad3);
         Graphics2D g2 = (Graphics2D) g;
         Box2D box = new Box2D(10, 590, 10, 390);
 
@@ -148,7 +148,7 @@ public class DrawVennDiagram extends JPanel {
         }
 
         // Create the curve
-        PolyCurve2D<CircleArc2D> result = new PolyCurve2D<CircleArc2D>(arcs);
+        PolyCurve2D<CircleArc2D> result = new PolyCurve2D<>(arcs);
         return result;
     }
 

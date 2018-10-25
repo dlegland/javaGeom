@@ -71,7 +71,7 @@ public class CheckSortPointsByAngle extends JPanel {
     public CheckSortPointsByAngle() {
         super();
 
-        points = new ArrayList<Point2D>();
+        points = new ArrayList<>();
         Point2D[] array = new Point2D[] { new Point2D(3, 9), new Point2D(11, 1), new Point2D(6, 8), new Point2D(4, 3), new Point2D(5, 15), new Point2D(8, 11), new Point2D(1, 6), new Point2D(7, 4), new Point2D(9, 7), new Point2D(14, 5), new Point2D(10, 13), new Point2D(16, 14), new Point2D(15, 2), new Point2D(13, 16), new Point2D(3, 12), new Point2D(12, 10), };
         for (Point2D point : array)
             points.add(new Point2D(point.x() * 10, point.y() * 10));

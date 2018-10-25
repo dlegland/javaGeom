@@ -54,7 +54,7 @@ public class DrawBoundaryHoleDemo extends JPanel {
         LinearRing2D square = new LinearRing2D(new Point2D[] { new Point2D(50, 50), new Point2D(250, 50), new Point2D(250, 250), new Point2D(50, 250) });
 
         // build the boundary set
-        ContourArray2D<IContour2D> boundary = new ContourArray2D<IContour2D>(new IContour2D[] { square, circle });
+        ContourArray2D<IContour2D> boundary = new ContourArray2D<>(new IContour2D[] { square, circle });
 
         // fill the domain
         g2.setColor(Color.CYAN);

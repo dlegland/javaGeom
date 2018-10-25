@@ -53,7 +53,7 @@ public class DrawKDTree2DRandomDemo extends JPanel {
         super();
 
         // Point coordinate are multiplied by 10 for better drawing
-        points = new ArrayList<Point2D>(nbPoints);
+        points = new ArrayList<>(nbPoints);
         for (int i = 0; i < nbPoints; i++) {
             points.add(new Point2D(Math.random() * 300 + 50, Math.random() * 300 + 50));
         }

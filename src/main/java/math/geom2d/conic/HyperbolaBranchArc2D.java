@@ -111,7 +111,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
 
     public Collection<Point2D> intersections(ILinearShape2D line) {
         Collection<Point2D> inters0 = this.branch.intersections(line);
-        ArrayList<Point2D> inters = new ArrayList<Point2D>();
+        ArrayList<Point2D> inters = new ArrayList<>();
         for (Point2D point : inters0) {
             double pos = this.branch.project(point);
             if (pos > this.t0 && pos < this.t1)
@@ -189,7 +189,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<HyperbolaBranchArc2D> result = new CurveArray2D<HyperbolaBranchArc2D>(set.size());
+        CurveArray2D<HyperbolaBranchArc2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

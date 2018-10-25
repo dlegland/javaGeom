@@ -101,7 +101,7 @@ public class PointSets2D {
         int nMulti = countMultipleVertices(vertices, closed);
 
         // create result with the right number of simple vertices
-        ArrayList<T> result = new ArrayList<T>(size - nMulti);
+        ArrayList<T> result = new ArrayList<>(size - nMulti);
 
         // If array is empty, return empty array
         if (size == 0)

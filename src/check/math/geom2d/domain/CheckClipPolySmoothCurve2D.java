@@ -55,7 +55,7 @@ public class CheckClipPolySmoothCurve2D extends JPanel {
         LineSegment2D seg3 = new LineSegment2D(p3, p1);
 
         BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary;
-        boundary = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(new LineSegment2D[] { seg1, seg2, seg3 });
+        boundary = new BoundaryPolyCurve2D<>(new LineSegment2D[] { seg1, seg2, seg3 });
         IDomain2D domain = new GenericDomain2D(boundary);
 
         IDomain2D clipped = domain.complement().clip(box);

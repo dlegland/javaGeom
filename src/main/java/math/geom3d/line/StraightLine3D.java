@@ -181,7 +181,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * Returns an empty array of Point3D.
      */
     public Collection<Point3D> singularPoints() {
-        return new ArrayList<Point3D>(0);
+        return new ArrayList<>(0);
     }
 
     public ICurve3D subCurve(double t0, double t1) {
@@ -213,7 +213,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     }
 
     public Collection<StraightLine3D> continuousCurves() {
-        ArrayList<StraightLine3D> array = new ArrayList<StraightLine3D>(1);
+        ArrayList<StraightLine3D> array = new ArrayList<>(1);
         array.add(this);
         return array;
     }

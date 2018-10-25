@@ -83,7 +83,7 @@ public class Point2DTest extends TestCase {
         Point2D p2 = new Point2D(110, 60);
         Point2D p3 = new Point2D(150, 140);
         Point2D p4 = new Point2D(90, 140);
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
         points.add(p1);
         points.add(p2);
         points.add(p3);

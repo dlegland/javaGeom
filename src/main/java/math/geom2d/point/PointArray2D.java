@@ -92,7 +92,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      *            the expected number of points in the PointArray2D.
      */
     public PointArray2D(int n) {
-        points = new ArrayList<Point2D>();
+        points = new ArrayList<>();
     }
 
     /**

@@ -97,10 +97,10 @@ public class Vector2D implements IGeometricObject2D, Serializable {
     // class variables
 
     /** the x-coordinate of the vector */
-    protected double x;
+    private final double x;
 
     /** the y-coordinate of the vector */
-    protected double y;
+    private final double y;
 
     // ===================================================================
     // constructors
@@ -124,14 +124,14 @@ public class Vector2D implements IGeometricObject2D, Serializable {
      * Constructs a new vector between the origin and the given point.
      */
     public Vector2D(Point2D point) {
-        this(point.x, point.y);
+        this(point.x(), point.y());
     }
 
     /**
      * Constructs a new vector between two points
      */
     public Vector2D(Point2D point1, Point2D point2) {
-        this(point2.x - point1.x, point2.y - point1.y);
+        this(point2.x() - point1.x(), point2.y() - point1.y());
     }
 
     // ===================================================================

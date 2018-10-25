@@ -26,7 +26,7 @@ public class DrawLineSegmentIntersectionsDemo extends JPanel {
 
     Box2D box = new Box2D(100, 500, 100, 400);
 
-    CurveArray2D<LineSegment2D> lines = new CurveArray2D<LineSegment2D>();
+    CurveArray2D<LineSegment2D> lines = new CurveArray2D<>();
     PointArray2D points = new PointArray2D();
 
     public DrawLineSegmentIntersectionsDemo() {

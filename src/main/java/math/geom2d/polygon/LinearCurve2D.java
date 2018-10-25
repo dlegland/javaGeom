@@ -32,7 +32,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     protected ArrayList<Point2D> vertices;
 
     protected LinearCurve2D() {
-        this.vertices = new ArrayList<Point2D>();
+        this.vertices = new ArrayList<>();
     }
 
     /**
@@ -41,22 +41,22 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * @param nVertices
      */
     protected LinearCurve2D(int nVertices) {
-        this.vertices = new ArrayList<Point2D>(nVertices);
+        this.vertices = new ArrayList<>(nVertices);
     }
 
     protected LinearCurve2D(Point2D... vertices) {
-        this.vertices = new ArrayList<Point2D>(vertices.length);
+        this.vertices = new ArrayList<>(vertices.length);
         for (Point2D vertex : vertices)
             this.vertices.add(vertex);
     }
 
     protected LinearCurve2D(Collection<? extends Point2D> vertices) {
-        this.vertices = new ArrayList<Point2D>(vertices.size());
+        this.vertices = new ArrayList<>(vertices.size());
         this.vertices.addAll(vertices);
     }
 
     protected LinearCurve2D(double[] xcoords, double[] ycoords) {
-        this.vertices = new ArrayList<Point2D>(xcoords.length);
+        this.vertices = new ArrayList<>(xcoords.length);
         int n = xcoords.length;
         this.vertices.ensureCapacity(n);
         for (int i = 0; i < n; i++)
@@ -455,7 +455,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * @see math.geom2d.Curve2D#intersections(math.geom2d.LinearShape2D)
      */
     public Collection<Point2D> intersections(ILinearShape2D line) {
-        ArrayList<Point2D> list = new ArrayList<Point2D>();
+        ArrayList<Point2D> list = new ArrayList<>();
 
         // extract intersections with each edge, and add to a list
         Point2D point;
@@ -598,7 +598,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<LinearCurve2D> result = new CurveArray2D<LinearCurve2D>(set.size());
+        CurveArray2D<LinearCurve2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

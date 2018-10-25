@@ -34,7 +34,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         Vector2D v1 = new Vector2D(-2, 0);
         Vector2D v2 = new Vector2D(0, 3);
         AbstractLine2D[] array = new AbstractLine2D[] { new InvertedRay2D(point, v1), new Ray2D(point, v2) };
-        PolyCirculinearCurve2D<AbstractLine2D> curve = new PolyCirculinearCurve2D<AbstractLine2D>(array);
+        PolyCirculinearCurve2D<AbstractLine2D> curve = new PolyCirculinearCurve2D<>(array);
 
         double dist = 5;
 
@@ -51,7 +51,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), new Point2D(10, 0));
         Line2D line2 = new Line2D(new Point2D(10, 0), new Point2D(10, 10));
         LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), new Point2D(20, 10));
-        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
+        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
 
         assertEquals(curve.length(), 30, 1e-14);
     }
@@ -63,7 +63,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), new Point2D(10, 0));
         Line2D line2 = new Line2D(new Point2D(10, 0), new Point2D(10, 10));
         LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), new Point2D(20, 10));
-        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
+        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
 
         assertEquals(curve.length(1), 10, 1e-14);
         assertEquals(curve.length(2), 10, 1e-14);
@@ -80,7 +80,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         LineSegment2D line1 = new LineSegment2D(new Point2D(0, 0), new Point2D(10, 0));
         Line2D line2 = new Line2D(new Point2D(10, 0), new Point2D(10, 10));
         LineSegment2D line3 = new LineSegment2D(new Point2D(10, 10), new Point2D(20, 10));
-        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<ICirculinearContinuousCurve2D>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
+        PolyCirculinearCurve2D<?> curve = new PolyCirculinearCurve2D<>(new ICirculinearContinuousCurve2D[] { line1, line2, line3 });
 
         assertEquals(curve.position(0), 0, 1e-14);
         assertEquals(curve.position(5), .5, 1e-14);
@@ -115,7 +115,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         LineSegment2D segment = new LineSegment2D(p1, p2);
         LinkedList<ICirculinearElement2D> lineList = new LinkedList<>();
         lineList.add(segment);
-        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(lineList);
+        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<>(lineList);
 
         Box2D refBox = new Box2D(p1, p2);
         Box2D box = curve.boundingBox();
@@ -127,7 +127,7 @@ public class PolyCirculinearCurve2DTest extends TestCase {
         LinkedList<ICirculinearElement2D> lineList = new LinkedList<>();
         lineList.add(new LineSegment2D(new Point2D(-1, 3), new Point2D(-2, 1)));
         lineList.add(new LineSegment2D(new Point2D(-2, 1), new Point2D(-3, 3)));
-        PolyCirculinearCurve2D<ICirculinearElement2D> curv = new PolyCirculinearCurve2D<ICirculinearElement2D>(lineList);
+        PolyCirculinearCurve2D<ICirculinearElement2D> curv = new PolyCirculinearCurve2D<>(lineList);
 
         Box2D box = curv.boundingBox();
 

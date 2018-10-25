@@ -216,7 +216,7 @@ public class KDTree2D {
     }
 
     public Collection<Point2D> rangeSearch(Box2D range) {
-        ArrayList<Point2D> points = new ArrayList<Point2D>();
+        ArrayList<Point2D> points = new ArrayList<>();
         rangeSearch(range, points, root, 0);
         return points;
     }
@@ -310,7 +310,7 @@ public class KDTree2D {
      */
     public static void main(String[] args) {
         int n = 3;
-        ArrayList<Point2D> points = new ArrayList<Point2D>(n);
+        ArrayList<Point2D> points = new ArrayList<>(n);
         points.add(new Point2D(5, 5));
         points.add(new Point2D(10, 10));
         points.add(new Point2D(20, 20));

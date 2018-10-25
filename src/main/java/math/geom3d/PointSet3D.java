@@ -17,7 +17,7 @@ import math.geom3d.transform.AffineTransform3D;
 public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected Collection<Point3D> points = new ArrayList<Point3D>();
+    protected Collection<Point3D> points = new ArrayList<>();
 
     public PointSet3D() {
     }
@@ -29,7 +29,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
      *            the number of points to store
      */
     public PointSet3D(int n) {
-        this.points = new ArrayList<Point3D>(n);
+        this.points = new ArrayList<>(n);
     }
 
     /**

@@ -1,5 +1,3 @@
-// TestLines.java
-// a simple java file for console program
 
 // Imports
 import math.geom2d.*;

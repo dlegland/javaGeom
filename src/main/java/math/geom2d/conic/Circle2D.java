@@ -136,7 +136,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
 
         // case of no intersection
         if (d < abs(r1 - r2) || d > (r1 + r2))
-            return new ArrayList<Point2D>(0);
+            return new ArrayList<>(0);
 
         // Angle of line from center1 to center2
         double angle = Angle2DUtil.horizontalAngle(center1, center2);
@@ -155,7 +155,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
         double h = sqrt(r1 * r1 - d1 * d1);
 
         // create empty array
-        ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> intersections = new ArrayList<>(2);
 
         // Add the 2 intersection points
         Point2D p1 = Point2D.createPolar(tmp, h, angle + PI / 2);
@@ -174,7 +174,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      */
     public static Collection<Point2D> lineCircleIntersections(ILinearShape2D line, ICircularShape2D circle) {
         // initialize array of points (maximum 2 intersections)
-        ArrayList<Point2D> intersections = new ArrayList<Point2D>(2);
+        ArrayList<Point2D> intersections = new ArrayList<>(2);
 
         // extract parameters of the circle
         Circle2D parent = circle.supportingCircle();
@@ -763,7 +763,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<ICircularShape2D> result = new CurveArray2D<ICircularShape2D>(set.size());
+        CurveArray2D<ICircularShape2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

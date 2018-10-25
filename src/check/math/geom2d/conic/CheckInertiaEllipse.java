@@ -40,7 +40,7 @@ public class CheckInertiaEllipse extends JPanel {
 
         java.util.Random random = new java.util.Random();
         int np = 100;
-        points = new ArrayList<Point2D>(np);
+        points = new ArrayList<>(np);
         for (int i = 0; i < np; i++) {
             double x = random.nextGaussian() * ra;
             double y = random.nextGaussian() * rb;

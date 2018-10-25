@@ -343,7 +343,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /** Returns an empty list of points. */
     @Override
     public Collection<Point2D> singularPoints() {
-        return new ArrayList<Point2D>(0);
+        return new ArrayList<>(0);
     }
 
     /** Returns false, whatever the position. */
@@ -378,7 +378,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     @Override
     public Collection<? extends StraightLine2D> continuousCurves() {
-        ArrayList<StraightLine2D> list = new ArrayList<StraightLine2D>(1);
+        ArrayList<StraightLine2D> list = new ArrayList<>(1);
         list.add(this);
         return list;
     }

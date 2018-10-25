@@ -55,41 +55,41 @@ public interface IShape2D extends IGeometricObject2D {
     /**
      * Checks if the shape contains the planar point defined by (x,y).
      */
-    public abstract boolean contains(double x, double y);
+    boolean contains(double x, double y);
 
     /**
      * Checks if the shape contains the given point.
      */
-    public abstract boolean contains(Point2D p);
+    boolean contains(Point2D p);
 
     /**
      * Returns the distance of the shape to the given point, or the distance of point to the frontier of the shape in the case of a plain shape.
      */
-    public abstract double distance(Point2D p);
+    double distance(Point2D p);
 
     /**
      * Returns the distance of the shape to the given point, specified by x and y, or the distance of point to the frontier of the shape in the case of a plain (i.e. fillable) shape.
      */
-    public abstract double distance(double x, double y);
+    double distance(double x, double y);
 
     /**
      * Returns true if the shape is bounded, that is if we can draw a finite rectangle enclosing the shape. For example, a straight line or a parabola are not bounded.
      */
-    public abstract boolean isBounded();
+    boolean isBounded();
 
     /**
      * Returns true if the shape does not contain any point. This is the case for example for PointSet2D without any point.
      * 
      * @return true if the shape does not contain any point.
      */
-    public abstract boolean isEmpty();
+    boolean isEmpty();
 
     /**
      * Returns the bounding box of the shape.
      * 
      * @return the bounding box of the shape.
      */
-    public abstract Box2D boundingBox();
+    Box2D boundingBox();
 
     /**
      * Clip the shape with the given box, and returns a new shape. The box must be bounded.
@@ -98,7 +98,7 @@ public interface IShape2D extends IGeometricObject2D {
      *            the clipping box
      * @return the clipped shape
      */
-    public abstract IShape2D clip(Box2D box);
+    IShape2D clip(Box2D box);
 
     /**
      * Transforms the shape by an affine transform. Subclasses may override the type of returned shape.
@@ -107,10 +107,10 @@ public interface IShape2D extends IGeometricObject2D {
      *            an affine transform
      * @return the transformed shape
      */
-    public abstract IShape2D transform(AffineTransform2D trans);
+    IShape2D transform(AffineTransform2D trans);
 
     /**
      * Draws the shape on the given graphics. If the shape is empty, nothing is drawn. If the shape is unbounded, an exception is thrown.
      */
-    public abstract void draw(Graphics2D g2);
+    void draw(Graphics2D g2);
 }

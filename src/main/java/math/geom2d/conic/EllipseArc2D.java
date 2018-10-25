@@ -397,7 +397,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     public Collection<Point2D> intersections(ILinearShape2D line) {
 
         // check point contained in it
-        ArrayList<Point2D> array = new ArrayList<Point2D>();
+        ArrayList<Point2D> array = new ArrayList<>();
         for (Point2D point : ellipse.intersections(line))
             if (contains(point))
                 array.add(point);
@@ -478,7 +478,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<EllipseArc2D> result = new CurveArray2D<EllipseArc2D>(set.size());
+        CurveArray2D<EllipseArc2D> result = new CurveArray2D<>(set.size());
 
         // convert the result
         for (ICurve2D curve : set.curves()) {

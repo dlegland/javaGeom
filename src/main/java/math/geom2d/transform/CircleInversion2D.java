@@ -60,7 +60,7 @@ public class CircleInversion2D implements Bijection2D {
      * Construct a new circle inversion based on the unit circle centered on the origin.
      */
     public CircleInversion2D() {
-        this.center = new Point2D();
+        this.center = Point2D.ORIGIN;
         this.radius = 1;
     }
 
@@ -124,7 +124,7 @@ public class CircleInversion2D implements Bijection2D {
         // create instances of Points if necessary
         if (dst[0] == null)
             for (int i = 0; i < dst.length; i++)
-                dst[i] = new Point2D();
+                dst[i] = Point2D.ORIGIN;
 
         xc = center.x();
         yc = center.y();

@@ -167,7 +167,7 @@ public class CirculinearCurves2DTest extends TestCase {
         Circle2D ring2 = new Circle2D(250, 150, 100);
         Circle2D ring3 = new Circle2D(200, 220, 100);
 
-        ArrayList<ICirculinearContour2D> rings = new ArrayList<ICirculinearContour2D>(3);
+        ArrayList<ICirculinearContour2D> rings = new ArrayList<>(3);
         rings.add(ring1);
         rings.add(ring2);
         rings.add(ring3);
@@ -224,7 +224,7 @@ public class CirculinearCurves2DTest extends TestCase {
         Ray2D ray2 = new Ray2D(origin, v2);
 
         // create the curve
-        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<ICirculinearElement2D>();
+        PolyCirculinearCurve2D<ICirculinearElement2D> curve = new PolyCirculinearCurve2D<>();
         curve.add(ray1);
         curve.add(ray2);
         assertEquals(2, curve.smoothPieces().size());

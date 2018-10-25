@@ -78,7 +78,7 @@ public class GenericDomain2D implements IDomain2D {
      */
     public IPolygon2D asPolygon(int n) {
         Collection<? extends IContour2D> contours = boundary.continuousCurves();
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(contours.size());
+        ArrayList<LinearRing2D> rings = new ArrayList<>(contours.size());
         for (IContour2D contour : contours) {
             // Check that the curve is bounded
             if (!contour.isBounded())

@@ -38,7 +38,7 @@ public class CheckBufferPolyCurveColinear extends JPanel {
         CircleArc2D arc2 = new CircleArc2D(new Point2D(200, 200), 100, Math.PI / 2, Math.PI);
 
         // Create a new closed polycurve with 4 elements
-        curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
+        curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 }, true);
 
         domain = curve.buffer(dist);
     }

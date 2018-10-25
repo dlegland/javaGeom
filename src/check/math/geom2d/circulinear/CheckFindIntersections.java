@@ -35,7 +35,7 @@ public class CheckFindIntersections extends JPanel {
         CircleArc2D arc2 = new CircleArc2D(new Point2D(50, 150), 50, 0, -d90);
         CircleArc2D arc3 = new CircleArc2D(new Point2D(100, 100), 50, d180, d180);
 
-        curve = new PolyCirculinearCurve2D<ICirculinearElement2D>(new ICirculinearElement2D[] { arc1, arc2, arc3 }, true);
+        curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { arc1, arc2, arc3 }, true);
     }
 
     public void paintComponent(Graphics g) {

@@ -29,7 +29,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
 
     @SafeVarargs
     public static <D extends IDomain2D> DomainArray2D<D> create(D... array) {
-        return new DomainArray2D<D>(array);
+        return new DomainArray2D<>(array);
     }
 
     /**
@@ -69,10 +69,10 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      */
     public IBoundary2D boundary() {
         int n = this.shapes.size();
-        ArrayList<IContour2D> boundaries = new ArrayList<IContour2D>(n);
+        ArrayList<IContour2D> boundaries = new ArrayList<>(n);
         for (IDomain2D domain : this)
             boundaries.addAll(domain.boundary().continuousCurves());
-        return new ContourArray2D<IContour2D>(boundaries);
+        return new ContourArray2D<>(boundaries);
     }
 
     /*
@@ -91,10 +91,10 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      */
     public IDomainSet2D<? extends IDomain2D> complement() {
         int n = this.shapes.size();
-        ArrayList<IDomain2D> complements = new ArrayList<IDomain2D>(n);
+        ArrayList<IDomain2D> complements = new ArrayList<>(n);
         for (IDomain2D domain : this)
             complements.add(domain.complement());
-        return new DomainArray2D<IDomain2D>(complements);
+        return new DomainArray2D<>(complements);
     }
 
     /*
@@ -109,7 +109,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
             nContours += domain.boundary().continuousCurves().size();
 
         // concatenate the set of linear rings
-        ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(nContours);
+        ArrayList<LinearRing2D> rings = new ArrayList<>(nContours);
         for (IDomain2D domain : this.shapes) {
             for (IContour2D contour : domain.boundary().continuousCurves()) {
                 // Check that the curve is bounded
@@ -150,7 +150,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      */
     public DomainArray2D<? extends IDomain2D> transform(AffineTransform2D trans) {
         // Allocate array for result
-        DomainArray2D<IDomain2D> result = new DomainArray2D<IDomain2D>(shapes.size());
+        DomainArray2D<IDomain2D> result = new DomainArray2D<>(shapes.size());
 
         // add each transformed curve
         for (IDomain2D domain : this)
@@ -164,10 +164,10 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * @see math.geom2d.Shape2D#clip(math.geom2d.Box2D)
      */
     public IDomain2D clip(Box2D box) {
-        ArrayList<IDomain2D> clippedShapes = new ArrayList<IDomain2D>();
+        ArrayList<IDomain2D> clippedShapes = new ArrayList<>();
         for (T domain : this)
             clippedShapes.add(domain.clip(box));
-        return new DomainArray2D<IDomain2D>(clippedShapes);
+        return new DomainArray2D<>(clippedShapes);
     }
 
     @Override
