@@ -39,70 +39,70 @@ import math.geom2d.curve.CurveArray2D;
 
 /**
  * Check the transformation of Ellipses by affine transforms.
+ * 
  * @author dlegland
  *
  */
-public class CheckEllipseArc2DDraw extends JPanel{
+public class CheckEllipseArc2DDraw extends JPanel {
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	double x0 = 150;
-	double y0 = 150;
-	double a  = 50;
-	double b  = 30;
-	double theta  = Math.PI/3;
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	Point2D origin = new Point2D(x0, y0);
-	
-	double tx = 100;
-	double ty = 100;
-	
-	Ellipse2D ellipse = null;
-	Box2D box = null;
-	
-	public CheckEllipseArc2DDraw() {
-		super();
-		
-		ellipse = new Ellipse2D(x0, y0, a, b, theta);
-		
-		box = new Box2D(x0-a, x0+a, y0-b, y0+b);
-	
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-		
-		// Draw the support ellipse
-		g2.setColor(Color.CYAN);
-		ellipse.draw(g2);
-		
-		// create an arc
-		EllipseArc2D arc1 = new EllipseArc2D(ellipse, Math.PI/6, 2*Math.PI/3);
-		g2.setColor(Color.BLUE);
-		//g2.draw(arc1);
-		
-		// create an arc
-		EllipseArc2D arc2 = new EllipseArc2D(ellipse, -Math.PI/6, -2*Math.PI/3);
-		g2.setColor(Color.RED);
-		//g2.draw(arc2);
-		
+    double x0 = 150;
+    double y0 = 150;
+    double a = 50;
+    double b = 30;
+    double theta = Math.PI / 3;
 
-		CurveArray2D<EllipseArc2D> set = new CurveArray2D<EllipseArc2D>();
-		set.add(arc1);
-		set.add(arc2);
-		
-		g2.setColor(Color.BLACK);
-		set.draw(g2);
-	}
+    Point2D origin = new Point2D(x0, y0);
 
-	public final static void main(String[] args){
-		System.out.println("Transform ellipse arc");
-		
-		JPanel panel = new CheckEllipseArc2DDraw();
-		JFrame frame = new JFrame("Check transformation of ellipse arc");
-		frame.setContentPane(panel);
-		frame.setSize(500, 400);
-		frame.setVisible(true);
-		
-	}
+    double tx = 100;
+    double ty = 100;
+
+    Ellipse2D ellipse = null;
+    Box2D box = null;
+
+    public CheckEllipseArc2DDraw() {
+        super();
+
+        ellipse = new Ellipse2D(x0, y0, a, b, theta);
+
+        box = new Box2D(x0 - a, x0 + a, y0 - b, y0 + b);
+
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Draw the support ellipse
+        g2.setColor(Color.CYAN);
+        ellipse.draw(g2);
+
+        // create an arc
+        EllipseArc2D arc1 = new EllipseArc2D(ellipse, Math.PI / 6, 2 * Math.PI / 3);
+        g2.setColor(Color.BLUE);
+        // g2.draw(arc1);
+
+        // create an arc
+        EllipseArc2D arc2 = new EllipseArc2D(ellipse, -Math.PI / 6, -2 * Math.PI / 3);
+        g2.setColor(Color.RED);
+        // g2.draw(arc2);
+
+        CurveArray2D<EllipseArc2D> set = new CurveArray2D<EllipseArc2D>();
+        set.add(arc1);
+        set.add(arc2);
+
+        g2.setColor(Color.BLACK);
+        set.draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("Transform ellipse arc");
+
+        JPanel panel = new CheckEllipseArc2DDraw();
+        JFrame frame = new JFrame("Check transformation of ellipse arc");
+        frame.setContentPane(panel);
+        frame.setSize(500, 400);
+        frame.setVisible(true);
+
+    }
 }

@@ -35,14 +35,12 @@ import math.geom3d.transform.*;
  */
 public interface Shape3D {
 
-    public final static double  ACCURACY  = 1e-12;
+    public final static double ACCURACY = 1e-12;
 
     public abstract boolean isEmpty();
 
     /**
-     * Returns true if the shape is bounded, that is if we can draw a finite
-     * rectangle enclosing the shape. For example, a straight line or a parabola
-     * are not bounded.
+     * Returns true if the shape is bounded, that is if we can draw a finite rectangle enclosing the shape. For example, a straight line or a parabola are not bounded.
      */
     public abstract boolean isBounded();
 
@@ -53,8 +51,7 @@ public interface Shape3D {
     public abstract Shape3D transform(AffineTransform3D trans);
 
     /**
-     * Gets the distance of the shape to the given point, or the distance of
-     * point to the frontier of the shape in the case of a plain shape.
+     * Gets the distance of the shape to the given point, or the distance of point to the frontier of the shape in the case of a plain shape.
      */
     public abstract double distance(Point3D p);
 

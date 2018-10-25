@@ -45,65 +45,50 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     // Static methods
 
     /**
-     * Creates a series a cubic bezier curves, by grouping 4 adjacent points.
-     * Two consecutive curves share one point, N curves will require 3*n+1
-     * points.
+     * Creates a series a cubic bezier curves, by grouping 4 adjacent points. Two consecutive curves share one point, N curves will require 3*n+1 points.
      */
-    public final static PolyCubicBezierCurve2D create(Point2D... points){
-    	// number of points
-    	int np = points.length;
-    	
-    	// compute number of curves
-		int nc = (np - 1) / 3;
-    	
-    	// create array of curves
-    	PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
-    	
-    	// build each curve
-		for (int i = 0; i < np - 3; i += 3) {
-			polyBezier.add(new CubicBezierCurve2D(
-					points[i],
-					points[i + 1], 
-					points[i + 2], 
-					points[i + 3]));
-		}
-		
-    	// return the curve
-    	return polyBezier;
+    public final static PolyCubicBezierCurve2D create(Point2D... points) {
+        // number of points
+        int np = points.length;
+
+        // compute number of curves
+        int nc = (np - 1) / 3;
+
+        // create array of curves
+        PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
+
+        // build each curve
+        for (int i = 0; i < np - 3; i += 3) {
+            polyBezier.add(new CubicBezierCurve2D(points[i], points[i + 1], points[i + 2], points[i + 3]));
+        }
+
+        // return the curve
+        return polyBezier;
     }
 
-    
     /**
-     * Creates a series a cubic bezier curves, by grouping consecutive couples
-     * of points and vectors. A polycurve composed of N Bezier curves requires
-     * N+1 points and N+1 vectors. 
+     * Creates a series a cubic bezier curves, by grouping consecutive couples of points and vectors. A polycurve composed of N Bezier curves requires N+1 points and N+1 vectors.
      */
-    public final static PolyCubicBezierCurve2D create(
-    		Point2D[] points, Vector2D[] vectors){
-    	// number of points
-    	int np = Math.min(points.length, vectors.length);
-    	
-		// compute number of curves
-		int nc = (np - 1) / 2;
+    public final static PolyCubicBezierCurve2D create(Point2D[] points, Vector2D[] vectors) {
+        // number of points
+        int np = Math.min(points.length, vectors.length);
 
-		// create array of curves
-		PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
+        // compute number of curves
+        int nc = (np - 1) / 2;
 
-		// build each curve
-		for (int i = 0; i < nc - 1; i += 2) {
-			polyBezier.add(new CubicBezierCurve2D(
-					points[i],
-					vectors[i], 
-					points[i + 1], 
-					vectors[i + 1]));
-		}
-		
-    	// return the curve
-    	return polyBezier;
+        // create array of curves
+        PolyCubicBezierCurve2D polyBezier = new PolyCubicBezierCurve2D(nc);
+
+        // build each curve
+        for (int i = 0; i < nc - 1; i += 2) {
+            polyBezier.add(new CubicBezierCurve2D(points[i], vectors[i], points[i + 1], vectors[i + 1]));
+        }
+
+        // return the curve
+        return polyBezier;
     }
 
-    
-	// ===================================================================
+    // ===================================================================
     // Constructors
 
     public PolyCubicBezierCurve2D() {
@@ -121,7 +106,6 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
     public PolyCubicBezierCurve2D(Collection<CubicBezierCurve2D> curves) {
         super(curves);
     }
-    
 
     // ===================================================================
     // Methods specific to PolyCubicBezierCurve2D
@@ -130,16 +114,15 @@ public class PolyCubicBezierCurve2D extends PolyCurve2D<CubicBezierCurve2D> {
      * Returns a new set of PolyCubicBezierCurve2D.
      */
     @Override
-    public CurveSet2D<? extends PolyCubicBezierCurve2D> clip(Box2D box) {
+    public ICurveSet2D<? extends PolyCubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveSet2D<PolyCubicBezierCurve2D> result = 
-        	new CurveArray2D<PolyCubicBezierCurve2D>(set.size());
+        ICurveSet2D<PolyCubicBezierCurve2D> result = new CurveArray2D<PolyCubicBezierCurve2D>(set.size());
 
         // convert the result
-        for (Curve2D curve : set.curves()) {
+        for (ICurve2D curve : set.curves()) {
             if (curve instanceof PolyCubicBezierCurve2D)
                 result.add((PolyCubicBezierCurve2D) curve);
         }

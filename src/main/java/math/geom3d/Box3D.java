@@ -27,12 +27,9 @@ public class Box3D {
     }
 
     /**
-     * Main constructor, given bounds for x coord, bounds for y coord, and
-     * bounds for z coord. A check is performed to ensure first bound is lower
-     * than second bound.
+     * Main constructor, given bounds for x coord, bounds for y coord, and bounds for z coord. A check is performed to ensure first bound is lower than second bound.
      */
-    public Box3D(double x0, double x1, double y0, double y1, double z0,
-            double z1) {
+    public Box3D(double x0, double x1, double y0, double y1, double z0, double z1) {
         xmin = Math.min(x0, x1);
         xmax = Math.max(x0, x1);
         ymin = Math.min(y0, y1);
@@ -75,23 +72,24 @@ public class Box3D {
 
     /** Returns the width, i.e. the difference between the min and max x coord */
     public double getWidth() {
-        return xmax-xmin;
+        return xmax - xmin;
     }
 
     /** Returns the height, i.e. the difference between the min and max y coord */
     public double getHeight() {
-        return ymax-ymin;
+        return ymax - ymin;
     }
 
     /** Returns the depth, i.e. the difference between the min and max z coord */
     public double getDepth() {
-        return zmax-zmin;
+        return zmax - zmin;
     }
 
     /**
      * Returns the Box2D which contains both this box and the specified box.
      * 
-     * @param box the bounding box to include
+     * @param box
+     *            the bounding box to include
      * @return this
      */
     public Box3D union(Box3D box) {
@@ -105,10 +103,10 @@ public class Box3D {
     }
 
     /**
-     * Returns the Box2D which is contained both by this box and by the
-     * specified box.
+     * Returns the Box2D which is contained both by this box and by the specified box.
      * 
-     * @param box the bounding box to include
+     * @param box
+     *            the bounding box to include
      * @return this
      */
     public Box3D intersection(Box3D box) {

@@ -19,18 +19,19 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
 
     public PointSet3D() {
     }
-    
+
     /**
      * Creates a new point set and allocate memory for storing the points.
-     * @param n the number of points to store
+     * 
+     * @param n
+     *            the number of points to store
      */
     public PointSet3D(int n) {
-    	this.points = new ArrayList<Point3D>(n);
+        this.points = new ArrayList<Point3D>(n);
     }
 
     /**
-     * Instances of Point3D are directly added, other Point are converted to
-     * Point3D with the same location.
+     * Instances of Point3D are directly added, other Point are converted to Point3D with the same location.
      */
     public PointSet3D(Point3D[] points) {
         for (Point3D element : points)
@@ -38,9 +39,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
     }
 
     /**
-     * Points must be a collection of java.awt.Point. Instances of Point3D are
-     * directly added, other Point are converted to Point3D with the same
-     * location.
+     * Points must be a collection of java.awt.Point. Instances of Point3D are directly added, other Point are converted to Point3D with the same location.
      * 
      * @param points
      */
@@ -51,8 +50,7 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
     }
 
     /**
-     * Adds a new point to the set of point. If point is not an instance of
-     * Point3D, a Point3D with same location is added instead of point.
+     * Adds a new point to the set of point. If point is not an instance of Point3D, a Point3D with same location is added instead of point.
      * 
      * @param point
      */
@@ -63,7 +61,8 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
     /**
      * Add a series of points
      * 
-     * @param points an array of points
+     * @param points
+     *            an array of points
      */
     public void addPoints(Point3D[] points) {
         for (Point3D element : points)
@@ -153,13 +152,13 @@ public class PointSet3D implements Shape3D, Iterable<Point3D> {
 
     public boolean contains(Point3D point) {
         for (Point3D p : points)
-            if (point.distance(p)<Shape3D.ACCURACY)
+            if (point.distance(p) < Shape3D.ACCURACY)
                 return true;
         return false;
     }
 
     public boolean isEmpty() {
-        return points.size()==0;
+        return points.size() == 0;
     }
 
     public boolean isBounded() {

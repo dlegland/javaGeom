@@ -32,41 +32,34 @@ import java.util.Collection;
 import math.geom2d.AffineTransform2D;
 
 /**
- * A single continuous oriented curve, which defines the boundary of a planar
- * domain. The boundary curve is composed of several continuous and oriented
- * curves linked together to form a continuous curve. The resulting boundary
- * curve is either a closed curve, or an infinite curve at both ends.
+ * A single continuous oriented curve, which defines the boundary of a planar domain. The boundary curve is composed of several continuous and oriented curves linked together to form a continuous curve. The resulting boundary curve is either a closed curve, or an infinite curve at both ends.
  * 
  * @author dlegland
  */
-public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
-        PolyOrientedCurve2D<T> implements Contour2D {
+public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends PolyOrientedCurve2D<T> implements IContour2D {
 
     // ===================================================================
     // Static methods
 
     /**
-     * Static factory for creating a new BoundaryPolyCurve2D from a collection
-     * of curves.
+     * Static factory for creating a new BoundaryPolyCurve2D from a collection of curves.
+     * 
      * @since 0.8.1
      */
-    /*public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
-    		Collection<T> curves) {
-    	return new BoundaryPolyCurve2D<T>(curves);
-    }*/
-    
+    /*
+     * public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create( Collection<T> curves) { return new BoundaryPolyCurve2D<T>(curves); }
+     */
+
     /**
-     * Static factory for creating a new BoundaryPolyCurve2D from an array of
-     * curves.
+     * Static factory for creating a new BoundaryPolyCurve2D from an array of curves.
+     * 
      * @since 0.8.1
      */
-	@SafeVarargs
-   public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(
-    		T... curves) {
-    	return new BoundaryPolyCurve2D<T>(curves);
+    @SafeVarargs
+    public static <T extends IContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create(T... curves) {
+        return new BoundaryPolyCurve2D<T>(curves);
     }
 
-    
     // ===================================================================
     // Constructors
 
@@ -79,7 +72,9 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
 
     /**
      * Creates a BoundaryPolyCurve2D by reserving space for n curves.
-     * @param n the number of curves to store
+     * 
+     * @param n
+     *            the number of curves to store
      */
     public BoundaryPolyCurve2D(int n) {
         super(n);
@@ -88,7 +83,7 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     /**
      * Creates a BoundaryPolyCurve2D from the specified set of curves.
      */
-	@SafeVarargs
+    @SafeVarargs
     public BoundaryPolyCurve2D(T... curves) {
         super(curves);
     }
@@ -100,13 +95,11 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(curves);
     }
 
-    
     // ===================================================================
     // Methods overriding CurveSet2D methods
 
     /**
-     * Overrides the isClosed() in the following way: return true if all curves
-     * are bounded. If at least one curve is unbounded, return false.
+     * Overrides the isClosed() in the following way: return true if all curves are bounded. If at least one curve is unbounded, return false.
      */
     @Override
     public boolean isClosed() {
@@ -121,10 +114,10 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods implementing Boundary2D interface
 
     public Collection<BoundaryPolyCurve2D<T>> continuousCurves() {
-    	return wrapCurve(this);
+        return wrapCurve(this);
     }
 
-    public Domain2D domain() {
+    public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -136,24 +129,21 @@ public class BoundaryPolyCurve2D<T extends ContinuousOrientedCurve2D> extends
     // Methods implementing OrientedCurve2D interface
 
     @Override
-    public BoundaryPolyCurve2D<? extends ContinuousOrientedCurve2D> reverse() {
-        ContinuousOrientedCurve2D[] curves2 = 
-        	new ContinuousOrientedCurve2D[curves.size()];
+    public BoundaryPolyCurve2D<? extends IContinuousOrientedCurve2D> reverse() {
+        IContinuousOrientedCurve2D[] curves2 = new IContinuousOrientedCurve2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i < n; i++)
-            curves2[i] = curves.get(n-1-i).reverse();
-        return new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves2);
+            curves2[i] = curves.get(n - 1 - i).reverse();
+        return new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(curves2);
     }
 
     @Override
-    public BoundaryPolyCurve2D<ContinuousOrientedCurve2D> transform(
-            AffineTransform2D trans) {
-    	// create result curve
-        BoundaryPolyCurve2D<ContinuousOrientedCurve2D> result =
-        	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(curves.size());
-        
+    public BoundaryPolyCurve2D<IContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
+        // create result curve
+        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> result = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(curves.size());
+
         // reverse each curve and add it to result
-        for (ContinuousOrientedCurve2D curve : curves)
+        for (IContinuousOrientedCurve2D curve : curves)
             result.add(curve.transform(trans));
         return result;
     }

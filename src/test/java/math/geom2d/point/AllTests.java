@@ -11,7 +11,6 @@ package math.geom2d.point;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
  * @author dlegland
  *
@@ -20,11 +19,11 @@ public class AllTests {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for math.geom2d.point");
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTest(new TestSuite(KDTree2DTest.class));
         suite.addTest(new TestSuite(PointArray2DTest.class));
         suite.addTest(new TestSuite(PointSets2DTest.class));
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 

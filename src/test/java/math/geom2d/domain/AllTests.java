@@ -34,14 +34,14 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d.domain");
-		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(Boundaries2DTest.class));
-		suite.addTest(new TestSuite(BoundaryPolyCurve2DTest.class));
-		suite.addTest(new TestSuite(GenericDomain2DTest.class));
-		suite.addTest(new TestSuite(PolyOrientedCurve2DTest.class));
-		//$JUnit-END$
-		return suite;
-	}
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Test for math.geom2d.domain");
+        // $JUnit-BEGIN$
+        suite.addTest(new TestSuite(Boundaries2DTest.class));
+        suite.addTest(new TestSuite(BoundaryPolyCurve2DTest.class));
+        suite.addTest(new TestSuite(GenericDomain2DTest.class));
+        suite.addTest(new TestSuite(PolyOrientedCurve2DTest.class));
+        // $JUnit-END$
+        return suite;
+    }
 }

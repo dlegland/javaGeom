@@ -34,11 +34,11 @@ import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.GeometricObject2D;
+import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.circulinear.CirculinearDomain2D;
-import math.geom2d.circulinear.CirculinearShape2D;
+import math.geom2d.IShape2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -47,39 +47,38 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class PointArray2D 
-implements PointSet2D, CirculinearShape2D, Cloneable {
+public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Cloneable {
 
     // ===================================================================
     // static constructors
 
-	public static <T extends Point2D> PointArray2D create(Collection<T> points) {
-		return new PointArray2D(points);
-	}
-
-	@SafeVarargs
-	public static <T extends Point2D> PointArray2D create(T... points) {
-		return new PointArray2D(points);
+    public static <T extends Point2D> PointArray2D create(Collection<T> points) {
+        return new PointArray2D(points);
     }
-    
+
+    @SafeVarargs
+    public static <T extends Point2D> PointArray2D create(T... points) {
+        return new PointArray2D(points);
+    }
+
     /**
      * Allocate memory for the specified number of points.
      */
     public static PointArray2D create(int size) {
-    	return new PointArray2D(size);
+        return new PointArray2D(size);
     }
-    
+
     // ===================================================================
     // inner variables
 
-	/**
+    /**
      * The inner collection of points composing the set.
      */
     protected ArrayList<Point2D> points = null;
 
     // ===================================================================
     // constructors
-    
+
     /**
      * Creates a new PointArray2D without any points.
      */
@@ -88,18 +87,17 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     }
 
     /**
-     * Creates a new empty PointArray2D, but preallocates the memory for storing a
-     * given amount of points.
+     * Creates a new empty PointArray2D, but preallocates the memory for storing a given amount of points.
      * 
-     * @param n the expected number of points in the PointArray2D.
+     * @param n
+     *            the expected number of points in the PointArray2D.
      */
     public PointArray2D(int n) {
         points = new ArrayList<Point2D>();
     }
 
     /**
-     * Instances of Point2D are directly added, other Point are converted to
-     * Point2D with the same location.
+     * Instances of Point2D are directly added, other Point are converted to Point2D with the same location.
      */
     public PointArray2D(Point2D... points) {
         this(points.length);
@@ -110,16 +108,14 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     /**
      * Copy constructor
      */
-    public PointArray2D(PointSet2D set) {
+    public PointArray2D(IPointSet2D set) {
         this(set.size());
         for (Point2D element : set)
             this.points.add(element);
     }
 
     /**
-     * Points must be a collection of java.awt.Point. Instances of Point2D are
-     * directly added, other Point are converted to Point2D with the same
-     * location.
+     * Points must be a collection of java.awt.Point. Instances of Point2D are directly added, other Point are converted to Point2D with the same location.
      * 
      * @param points
      */
@@ -133,10 +129,9 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
 
     // ===================================================================
     // methods implementing the PointSet2D interface
-    
+
     /**
-     * Add a new point to the set of point. If point is not an instance of
-     * Point2D, a Point2D with same location is added instead of point.
+     * Add a new point to the set of point. If point is not an instance of Point2D, a Point2D with same location is added instead of point.
      * 
      * @param point
      */
@@ -144,14 +139,15 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return this.points.add(point);
     }
 
-	public void add(int index, Point2D point) {
-		this.points.add(index, point);
-	}
+    public void add(int index, Point2D point) {
+        this.points.add(index, point);
+    }
 
     /**
      * Add a series of points
      * 
-     * @param points an array of points
+     * @param points
+     *            an array of points
      */
     public void addAll(Point2D[] points) {
         for (Point2D element : points)
@@ -163,22 +159,22 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     }
 
     public Point2D get(int index) {
-    	return this.points.get(index);
+        return this.points.get(index);
     }
-    
-	public boolean remove(Point2D point) {
-		return this.points.remove(point);
-	}
-	
-	public Point2D remove(int index) {
-		return this.points.remove(index);
-	}
 
-	public int indexOf(Point2D point) {
-		return this.points.indexOf(point);
-	}
+    public boolean remove(Point2D point) {
+        return this.points.remove(point);
+    }
 
-	/**
+    public Point2D remove(int index) {
+        return this.points.remove(index);
+    }
+
+    public int indexOf(Point2D point) {
+        return this.points.indexOf(point);
+    }
+
+    /**
      * return an iterator on the internal point collection.
      * 
      * @return the collection of points
@@ -203,29 +199,30 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return points.size();
     }
 
-
     // ===================================================================
     // Methods implementing CirculinearShape2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
-	 */
-	public CirculinearDomain2D buffer(double dist) {
-		BufferCalculator bc = BufferCalculator.getDefaultInstance();
-		return bc.computeBuffer(this, dist);
-	}
-
-	public PointArray2D transform(CircleInversion2D inv) {
-    	
-    	PointArray2D array = new PointArray2D(points.size());
-    	
-    	for (Point2D point : points) 
-    		array.add(point.transform(inv));
-    	
-    	return array;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
+     */
+    public ICirculinearDomain2D buffer(double dist) {
+        BufferCalculator bc = BufferCalculator.getDefaultInstance();
+        return bc.computeBuffer(this, dist);
     }
-   
-   /**
+
+    public PointArray2D transform(CircleInversion2D inv) {
+
+        PointArray2D array = new PointArray2D(points.size());
+
+        for (Point2D point : points)
+            array.add(point.transform(inv));
+
+        return array;
+    }
+
+    /**
      * Return distance to the closest point of the collection
      */
     public double distance(Point2D p) {
@@ -238,15 +235,15 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * @see math.geom2d.Shape2D#distance(double, double)
      */
     public double distance(double x, double y) {
-    	// basic checkup
+        // basic checkup
         if (points.isEmpty())
             return Double.NaN;
-        
+
         // find smallest distance
         double dist = Double.MAX_VALUE;
         for (Point2D point : points)
             dist = Math.min(dist, point.distance(x, y));
-        
+
         // return distance to closest point
         return dist;
     }
@@ -257,8 +254,8 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     public boolean isBounded() {
         return true;
     }
-    
-    /** 
+
+    /**
      * Returns true if the point set is empty, i.e. the number of points is 0.
      */
     public boolean isEmpty() {
@@ -271,25 +268,25 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      * @see math.geom2d.Shape2D#clip(java.awt.geom.Rectangle2D)
      */
     public PointArray2D clip(Box2D box) {
-    	// allocate memory for result
+        // allocate memory for result
         PointArray2D res = new PointArray2D(points.size());
 
         // select only points inside of box
         for (Point2D point : points) {
-        	if (box.contains(point)) {
-        		res.add(point);
-        	}
+            if (box.contains(point)) {
+                res.add(point);
+            }
         }
-        
+
         // use array the right size
         res.points.trimToSize();
-        
+
         // return result
         return res;
     }
 
     public Box2D boundingBox() {
-    	// init with max values in each direction
+        // init with max values in each direction
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
         double xmax = Double.MIN_VALUE;
@@ -302,7 +299,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
             xmax = Math.max(xmax, point.x());
             ymax = Math.max(ymax, point.y());
         }
-        
+
         // create the bounding box
         return new Box2D(xmin, xmax, ymin, ymax);
     }
@@ -328,7 +325,7 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
      */
     public boolean contains(double x, double y) {
         for (Point2D point : points)
-            if (point.distance(x, y) < Shape2D.ACCURACY)
+            if (point.distance(x, y) < IShape2D.ACCURACY)
                 return true;
         return false;
     }
@@ -343,28 +340,28 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     }
 
     /**
-     * Draws the point set on the specified Graphics2D, using default radius
-     * equal to 1.
+     * Draws the point set on the specified Graphics2D, using default radius equal to 1.
      * 
-     * @param g2 the graphics to draw the point set
+     * @param g2
+     *            the graphics to draw the point set
      */
     public void draw(Graphics2D g2) {
         this.draw(g2, 1);
     }
 
     /**
-     * Draws the point set on the specified Graphics2D, by filling a disc with a
-     * given radius.
+     * Draws the point set on the specified Graphics2D, by filling a disc with a given radius.
      * 
-     * @param g2 the graphics to draw the point set
+     * @param g2
+     *            the graphics to draw the point set
      */
     public void draw(Graphics2D g2, double r) {
-    	double x, y;
-    	double w = 2 * r;
+        double x, y;
+        double w = 2 * r;
         for (Point2D point : points) {
-        	x = point.x();
-        	y = point.y();
-            g2.fill(new java.awt.geom.Ellipse2D.Double(x-r, y-r, w, w));
+            x = point.x();
+            y = point.y();
+            g2.fill(new java.awt.geom.Ellipse2D.Double(x - r, y - r, w, w));
         }
     }
 
@@ -376,67 +373,66 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
     public Iterator<Point2D> iterator() {
         return points.iterator();
     }
-    
+
     // ===================================================================
     // methods implementing GeometricObject2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
-	 */
-	public boolean almostEquals(GeometricObject2D obj, double eps) {
-		if (this == obj)
-			return true;
-		
-        if (!(obj instanceof PointSet2D))
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+     */
+    public boolean almostEquals(IGeometricObject2D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof IPointSet2D))
             return false;
-        
-        PointSet2D set = (PointSet2D) obj;
+
+        IPointSet2D set = (IPointSet2D) obj;
         if (this.points.size() != set.size())
-        	return false;
+            return false;
 
         Iterator<Point2D> iter = set.iterator();
         for (Point2D point : points) {
-        	if (!point.almostEquals(iter.next(), eps))
-        		return false;
+            if (!point.almostEquals(iter.next(), eps))
+                return false;
         }
-        
+
         return true;
-	}
-	
+    }
+
     // ===================================================================
     // methods overriding Object methods
 
-
     /**
-     * Returns true if the given object is an instance of PointSet2D that
-     * contains the same number of points, such that iteration on each set
-     * returns equal points.
+     * Returns true if the given object is an instance of PointSet2D that contains the same number of points, such that iteration on each set returns equal points.
      */
     @Override
     public boolean equals(Object obj) {
-    	if (this == obj)
-    		return true;
-    	
-        if (!(obj instanceof PointSet2D))
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof IPointSet2D))
             return false;
-        
-        PointSet2D set = (PointSet2D) obj;
+
+        IPointSet2D set = (IPointSet2D) obj;
         if (this.points.size() != set.size())
-        	return false;
-        
+            return false;
+
         Iterator<Point2D> iter = set.iterator();
         for (Point2D point : points) {
-        	if (!point.equals(iter.next()))
-        		return false;
+            if (!point.equals(iter.next()))
+                return false;
         }
-        
+
         return true;
     }
-    
-	/**
-	 * @deprecated use copy constructor instead (0.11.2)
-	 */
-	@Deprecated
+
+    /**
+     * @deprecated use copy constructor instead (0.11.2)
+     */
+    @Deprecated
     @Override
     public PointArray2D clone() {
         PointArray2D set = new PointArray2D(this.size());

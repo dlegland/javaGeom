@@ -31,48 +31,46 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.conic.Parabola2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.ICurve2D;
 
+public class CheckClipBoundary2D extends JPanel {
 
-public class CheckClipBoundary2D extends JPanel{
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	
-	Curve2D curve = null;
-	
-	public CheckClipBoundary2D() {
-		super();
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
+    ICurve2D curve = null;
 
-		Box2D box = new Box2D(50, 350, 50, 350);
-		Parabola2D parabola = new Parabola2D(200, 200, -.01, 0);
-		
-		
-		// fill the domain
-		g2.setColor(Color.CYAN);
-		Boundary2D boundary = Boundaries2D.clipBoundary(parabola, box);
-		new GenericDomain2D(boundary).fill(g2);
-		
-		// draw the domain
-		g2.setColor(Color.BLUE);
-		parabola.clip(box).draw(g2);
-		
-		// draw the boundary
-		g2.setColor(Color.BLACK);
-		box.boundary().draw(g2);
-	}
+    public CheckClipBoundary2D() {
+        super();
+    }
 
-	public final static void main(String[] args){
-		System.out.println("draw a clipped boundary");
-		
-		JPanel panel = new CheckClipBoundary2D();
-		JFrame frame = new JFrame("Draw a clipped boundary");
-		frame.setContentPane(panel);
-		frame.setSize(500, 400);
-		frame.setVisible(true);
-		
-	}
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        Box2D box = new Box2D(50, 350, 50, 350);
+        Parabola2D parabola = new Parabola2D(200, 200, -.01, 0);
+
+        // fill the domain
+        g2.setColor(Color.CYAN);
+        IBoundary2D boundary = Boundaries2D.clipBoundary(parabola, box);
+        new GenericDomain2D(boundary).fill(g2);
+
+        // draw the domain
+        g2.setColor(Color.BLUE);
+        parabola.clip(box).draw(g2);
+
+        // draw the boundary
+        g2.setColor(Color.BLACK);
+        box.boundary().draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("draw a clipped boundary");
+
+        JPanel panel = new CheckClipBoundary2D();
+        JFrame frame = new JFrame("Draw a clipped boundary");
+        frame.setContentPane(panel);
+        frame.setSize(500, 400);
+        frame.setVisible(true);
+
+    }
 }

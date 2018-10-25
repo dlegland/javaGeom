@@ -38,113 +38,109 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.StraightLine2D;
 
 /**
  * Check the transformation of Hyperbolas by affine transforms.
+ * 
  * @author dlegland
  *
  */
-public class CheckReflectHyperbolaBranch2D extends JPanel{
+public class CheckReflectHyperbolaBranch2D extends JPanel {
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	private final static Point2D center = new Point2D(200, 200);
-	
-	private final static Vector2D Ox = new Vector2D(1, 0);
-	private final static Vector2D Oy = new Vector2D(0, 1);
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	double x0 = 150;
-	double y0 = 150;
-	double a  = 30;
-	double b  = 10;
-	double theta  = 0;
+    private final static Point2D center = new Point2D(200, 200);
 
-	Point2D origin = new Point2D(x0, y0);
-	
-	Hyperbola2D hyperbola = null;
-	HyperbolaBranch2D branch1 = null;
-	Box2D box = null;
-	
-	public CheckReflectHyperbolaBranch2D() {
-		super();
-		
-		hyperbola = new Hyperbola2D(x0, y0, a, b, theta);
-		branch1 = hyperbola.branch1;
-		box = new Box2D(50, 350, 50, 350);
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-		
-		// The rotation of the base hyperbola
-		double theta = Math.PI/3;
-		AffineTransform2D rot = 
-			AffineTransform2D.createRotation(origin, theta);
-		HyperbolaBranch2D rotated = branch1.transform(rot);
+    private final static Vector2D Ox = new Vector2D(1, 0);
+    private final static Vector2D Oy = new Vector2D(0, 1);
 
-		// the reflection of the hyperbola 
-		AffineTransform2D refOy = 
-			AffineTransform2D.createLineReflection(
-					new StraightLine2D(center, Oy));
-		AffineTransform2D refOx = 
-			AffineTransform2D.createLineReflection(
-					new StraightLine2D(center, Ox));
-		
-		g2.setColor(Color.CYAN);
-		rotated.domain().clip(box).fill(g2);
-		g2.setColor(Color.BLUE);
-		rotated.clip(box).draw(g2);
-		
-		// draw the clip of the transform
-		HyperbolaBranch2D reflected = rotated.transform(refOy);
-		g2.setColor(Color.BLACK);
-		reflected.clip(box).draw(g2);
-		
-		// draw the clip of the transform
-		HyperbolaBranch2D reflectedOx = rotated.transform(refOx);
-		g2.setColor(Color.MAGENTA);
-		reflectedOx.clip(box).draw(g2);
-		
-		// draw the transform of the clip
-		Curve2D clipped = rotated.clip(box).transform(refOy);
-		g2.setColor(Color.RED);
-		clipped.draw(g2);
-		for(ContinuousCurve2D cont : clipped.continuousCurves()){
-			cont.asPolyline(30).draw(g2);
-//			System.out.println(cont.getFirstPoint());
-//			System.out.println(cont.getLastPoint());
-		}
-		
-//		// Draw the original hyperbola
-//		g2.setColor(Color.BLACK);
-//		hyperbola.clip(box).draw(g2);
-		
-		// draw the bounding box
-		g2.setColor(Color.BLACK);
-		box.boundary().draw(g2);
+    double x0 = 150;
+    double y0 = 150;
+    double a = 30;
+    double b = 10;
+    double theta = 0;
 
-		// draw the main axes
-		g2.setColor(Color.GRAY);
-		new StraightLine2D(center, Ox).clip(box).draw(g2);
-		new StraightLine2D(center, Oy).clip(box).draw(g2);
+    Point2D origin = new Point2D(x0, y0);
 
-		// Draw the origin point
-		g2.setColor(Color.BLACK);
-		Point2D p1 = new Point2D(x0, y0);
-		p1.draw(g2, 4);
-	}
+    Hyperbola2D hyperbola = null;
+    HyperbolaBranch2D branch1 = null;
+    Box2D box = null;
 
-	public final static void main(String[] args){
-		System.out.println("Transform hyperbola");
-		
-		JPanel panel = new CheckReflectHyperbolaBranch2D();
-		panel.setPreferredSize(new Dimension(400, 400));
-		JFrame frame = new JFrame("Check reflection of hyperbola branch");
-		frame.setContentPane(panel);
-		frame.pack();
-		frame.setVisible(true);		
-	}
+    public CheckReflectHyperbolaBranch2D() {
+        super();
+
+        hyperbola = new Hyperbola2D(x0, y0, a, b, theta);
+        branch1 = hyperbola.branch1;
+        box = new Box2D(50, 350, 50, 350);
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        // The rotation of the base hyperbola
+        double theta = Math.PI / 3;
+        AffineTransform2D rot = AffineTransform2D.createRotation(origin, theta);
+        HyperbolaBranch2D rotated = branch1.transform(rot);
+
+        // the reflection of the hyperbola
+        AffineTransform2D refOy = AffineTransform2D.createLineReflection(new StraightLine2D(center, Oy));
+        AffineTransform2D refOx = AffineTransform2D.createLineReflection(new StraightLine2D(center, Ox));
+
+        g2.setColor(Color.CYAN);
+        rotated.domain().clip(box).fill(g2);
+        g2.setColor(Color.BLUE);
+        rotated.clip(box).draw(g2);
+
+        // draw the clip of the transform
+        HyperbolaBranch2D reflected = rotated.transform(refOy);
+        g2.setColor(Color.BLACK);
+        reflected.clip(box).draw(g2);
+
+        // draw the clip of the transform
+        HyperbolaBranch2D reflectedOx = rotated.transform(refOx);
+        g2.setColor(Color.MAGENTA);
+        reflectedOx.clip(box).draw(g2);
+
+        // draw the transform of the clip
+        ICurve2D clipped = rotated.clip(box).transform(refOy);
+        g2.setColor(Color.RED);
+        clipped.draw(g2);
+        for (IContinuousCurve2D cont : clipped.continuousCurves()) {
+            cont.asPolyline(30).draw(g2);
+            // System.out.println(cont.getFirstPoint());
+            // System.out.println(cont.getLastPoint());
+        }
+
+        // // Draw the original hyperbola
+        // g2.setColor(Color.BLACK);
+        // hyperbola.clip(box).draw(g2);
+
+        // draw the bounding box
+        g2.setColor(Color.BLACK);
+        box.boundary().draw(g2);
+
+        // draw the main axes
+        g2.setColor(Color.GRAY);
+        new StraightLine2D(center, Ox).clip(box).draw(g2);
+        new StraightLine2D(center, Oy).clip(box).draw(g2);
+
+        // Draw the origin point
+        g2.setColor(Color.BLACK);
+        Point2D p1 = new Point2D(x0, y0);
+        p1.draw(g2, 4);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("Transform hyperbola");
+
+        JPanel panel = new CheckReflectHyperbolaBranch2D();
+        panel.setPreferredSize(new Dimension(400, 400));
+        JFrame frame = new JFrame("Check reflection of hyperbola branch");
+        frame.setContentPane(panel);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }

@@ -35,15 +35,15 @@ import math.geom3d.transform.AffineTransform3D;
  */
 public class Point3D implements Shape3D {
 
-	// ===================================================================
-	// Class variables
-	
+    // ===================================================================
+    // Class variables
+
     private double x = 0;
     private double y = 0;
     private double z = 0;
 
-	// ===================================================================
-	// Constructors
+    // ===================================================================
+    // Constructors
 
     /**
      * Initialize at coordinate (0,0,0).
@@ -58,9 +58,9 @@ public class Point3D implements Shape3D {
         this.z = z;
     }
 
-	// ===================================================================
-	// Methods specific to Point3D
-	
+    // ===================================================================
+    // Methods specific to Point3D
+
     public double getX() {
         return x;
     }
@@ -73,36 +73,35 @@ public class Point3D implements Shape3D {
         return z;
     }
 
-	public Point3D plus(Vector3D vec) {
-		return new Point3D(this.x + vec.x, this.y + vec.y, this.z + vec.z);
-	}
-	
-	public Point3D plus(Point3D p2) {
-		return new Point3D(this.x + p2.x, this.y + p2.y, this.z + p2.z);
-	}
-	
-	public Point3D minus(Vector3D vec) {
-		return new Point3D(this.x - vec.x, this.y - vec.y, this.z - vec.z);
-	}
-	
-	public Point3D minus(Point3D p2) {
-		return new Point3D(this.x - p2.x, this.y - p2.y, this.z - p2.z);
-	}
-	
-	// ===================================================================
-	// Methods implementing the Shape3D interface
-	
-	public double distance(Point3D point) {
-		double dx = point.x - x;
-		double dy = point.y - y;
-		double dz = point.z - z;
+    public Point3D plus(Vector3D vec) {
+        return new Point3D(this.x + vec.x, this.y + vec.y, this.z + vec.z);
+    }
 
-		return Math.hypot(Math.hypot(dx, dy), dz);
-	}
+    public Point3D plus(Point3D p2) {
+        return new Point3D(this.x + p2.x, this.y + p2.y, this.z + p2.z);
+    }
+
+    public Point3D minus(Vector3D vec) {
+        return new Point3D(this.x - vec.x, this.y - vec.y, this.z - vec.z);
+    }
+
+    public Point3D minus(Point3D p2) {
+        return new Point3D(this.x - p2.x, this.y - p2.y, this.z - p2.z);
+    }
+
+    // ===================================================================
+    // Methods implementing the Shape3D interface
+
+    public double distance(Point3D point) {
+        double dx = point.x - x;
+        double dy = point.y - y;
+        double dz = point.z - z;
+
+        return Math.hypot(Math.hypot(dx, dy), dz);
+    }
 
     /**
-     * A point 'contains' another point if their euclidean distance is less than
-     * the accuracy.
+     * A point 'contains' another point if their euclidean distance is less than the accuracy.
      */
     public boolean contains(Point3D point) {
         if (distance(point) > ACCURACY)
@@ -132,29 +131,24 @@ public class Point3D implements Shape3D {
      * Returns the clipped point, or null if empty.
      */
     public PointSet3D clip(Box3D box) {
-    	PointSet3D set = new PointSet3D(1);
+        PointSet3D set = new PointSet3D(1);
         if (x < box.getMinX() || x > box.getMaxX())
             return set;
         if (y < box.getMinY() || y > box.getMaxY())
             return set;
         if (z < box.getMinZ() || z > box.getMaxZ())
             return set;
-        
+
         set.addPoint(this);
         return set;
     }
 
     /**
-     * Applies the given affine transform to the point, and return the 
-     * transformed point.
+     * Applies the given affine transform to the point, and return the transformed point.
      */
     public Point3D transform(AffineTransform3D trans) {
-		double coef[] = trans.coefficients();
-		return new Point3D(
-				x * coef[0] + y * coef[1] + z * coef[2] + coef[3], 
-				x * coef[4] + y * coef[5] + z * coef[6] + coef[7],
-				x * coef[8] + y * coef[9] + z * coef[10] + coef[11]);
-        
+        double coef[] = trans.coefficients();
+        return new Point3D(x * coef[0] + y * coef[1] + z * coef[2] + coef[3], x * coef[4] + y * coef[5] + z * coef[6] + coef[7], x * coef[8] + y * coef[9] + z * coef[10] + coef[11]);
 
     }
 
@@ -167,11 +161,11 @@ public class Point3D implements Shape3D {
             return false;
         Point3D point = (Point3D) obj;
 
-        if (Math.abs(point.x-this.x)>Shape3D.ACCURACY)
+        if (Math.abs(point.x - this.x) > Shape3D.ACCURACY)
             return false;
-        if (Math.abs(point.y-this.y)>Shape3D.ACCURACY)
+        if (Math.abs(point.y - this.y) > Shape3D.ACCURACY)
             return false;
-        if (Math.abs(point.z-this.z)>Shape3D.ACCURACY)
+        if (Math.abs(point.z - this.z) > Shape3D.ACCURACY)
             return false;
         return true;
     }

@@ -30,74 +30,57 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.IDomain2D;
 
 /**
- * Compute buffer (set of points located less than a given distance) from the
- * polygon, for simple polygon, and polygon with hole.
+ * Compute buffer (set of points located less than a given distance) from the polygon, for simple polygon, and polygon with hole.
+ * 
  * @author dlegland
  *
  */
-public class CheckPolygon2DCreateBuffer extends JPanel{
+public class CheckPolygon2DCreateBuffer extends JPanel {
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	Polygon2D polygon = null;
-	Polygon2D polygon1 = null;
-	Polygon2D polygon2 = null;
-	
-	public CheckPolygon2DCreateBuffer() {
-		super();
-		
-		Point2D[] points1 = new Point2D[]{
-				new Point2D(50, 50),
-				new Point2D(100, 50),
-				new Point2D(100, 100),
-				new Point2D(150, 100),
-				new Point2D(50, 200) };
+    private static final long serialVersionUID = 7331324136801936514L;
 
-		Point2D[] points2 = new Point2D[]{
-				new Point2D(200, 50), 
-				new Point2D(350, 50), 
-				new Point2D(350, 250), 
-				new Point2D(250, 250), 
-				new Point2D(200, 200)};
-		
-		Point2D[] points3 = new Point2D[]{
-				new Point2D(250, 100), 
-				new Point2D(250, 150), 
-				new Point2D(300, 150), 
-				new Point2D(300, 100) };
+    IPolygon2D polygon = null;
+    IPolygon2D polygon1 = null;
+    IPolygon2D polygon2 = null;
 
-		polygon1 = new SimplePolygon2D(points1);
-		polygon2 = new SimplePolygon2D(points2);
-		
-		polygon = new MultiPolygon2D(new LinearRing2D[]{
-				new LinearRing2D(points1),
-				new LinearRing2D(points2),
-				new LinearRing2D(points3) });
-		
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-	
-		Domain2D buffer = Polygons2D.createBuffer(polygon, 10);
-		g2.setColor(Color.CYAN);
-		buffer.fill(g2);
-		g2.setColor(Color.BLUE);
-		buffer.boundary().draw(g2);
-		
-		g2.setColor(Color.BLACK);
-		polygon.boundary().draw(g2);
-	}
+    public CheckPolygon2DCreateBuffer() {
+        super();
 
-	public final static void main(String[] args){		
-		JPanel panel = new CheckPolygon2DCreateBuffer();
-		JFrame frame = new JFrame("Create Polygon buffer");
-		frame.setContentPane(panel);
-		frame.setSize(400, 300);
-		frame.setVisible(true);
-		
-	}
+        Point2D[] points1 = new Point2D[] { new Point2D(50, 50), new Point2D(100, 50), new Point2D(100, 100), new Point2D(150, 100), new Point2D(50, 200) };
+
+        Point2D[] points2 = new Point2D[] { new Point2D(200, 50), new Point2D(350, 50), new Point2D(350, 250), new Point2D(250, 250), new Point2D(200, 200) };
+
+        Point2D[] points3 = new Point2D[] { new Point2D(250, 100), new Point2D(250, 150), new Point2D(300, 150), new Point2D(300, 100) };
+
+        polygon1 = new SimplePolygon2D(points1);
+        polygon2 = new SimplePolygon2D(points2);
+
+        polygon = new MultiPolygon2D(new LinearRing2D[] { new LinearRing2D(points1), new LinearRing2D(points2), new LinearRing2D(points3) });
+
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        IDomain2D buffer = Polygons2D.createBuffer(polygon, 10);
+        g2.setColor(Color.CYAN);
+        buffer.fill(g2);
+        g2.setColor(Color.BLUE);
+        buffer.boundary().draw(g2);
+
+        g2.setColor(Color.BLACK);
+        polygon.boundary().draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        JPanel panel = new CheckPolygon2DCreateBuffer();
+        JFrame frame = new JFrame("Create Polygon buffer");
+        frame.setContentPane(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+    }
 }

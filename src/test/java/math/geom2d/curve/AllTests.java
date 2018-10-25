@@ -34,13 +34,13 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d.curve");
-		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(CurveArray2DTest.class));
-		suite.addTest(new TestSuite(Curves2DTest.class));
-		suite.addTest(new TestSuite(PolyCurve2DTest.class));
-		//$JUnit-END$
-		return suite;
-	}
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Test for math.geom2d.curve");
+        // $JUnit-BEGIN$
+        suite.addTest(new TestSuite(CurveArray2DTest.class));
+        suite.addTest(new TestSuite(Curves2DTest.class));
+        suite.addTest(new TestSuite(PolyCurve2DTest.class));
+        // $JUnit-END$
+        return suite;
+    }
 }

@@ -34,16 +34,16 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d");
-		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(AffineTransform2DTest.class));
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Test for math.geom2d");
+        // $JUnit-BEGIN$
+        suite.addTest(new TestSuite(AffineTransform2DTest.class));
         suite.addTest(new TestSuite(Angle2DTest.class));
-		suite.addTest(new TestSuite(Box2DTest.class));
-		suite.addTest(new TestSuite(Point2DTest.class));
-		suite.addTest(new TestSuite(ShapeArray2DTest.class));
-		suite.addTest(new TestSuite(Vector2DTest.class));
-		//$JUnit-END$
-		return suite;
-	}
+        suite.addTest(new TestSuite(Box2DTest.class));
+        suite.addTest(new TestSuite(Point2DTest.class));
+        suite.addTest(new TestSuite(ShapeArray2DTest.class));
+        suite.addTest(new TestSuite(Vector2DTest.class));
+        // $JUnit-END$
+        return suite;
+    }
 }

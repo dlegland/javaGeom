@@ -1,7 +1,6 @@
 // TestLines.java
 // a simple java file for console program
 
-
 // Imports
 import math.geom2d.*;
 import math.geom2d.line.StraightLine2D;
@@ -9,79 +8,77 @@ import math.geom2d.line.StraightLine2D;
 /**
  * class TestLines.
  */
-public class TestLines{
+public class TestLines {
 
+    // ===================================================================
+    // main method
 
-	// ===================================================================
-	// main method
+    public final static void main(String arg[]) {
 
-	public final static void main(String arg[]){
+        double theta;
 
-		double theta;
-		
-		Point2D p1 = new Point2D(-1, 0);
-		Point2D p2 = new Point2D(1, 0);
-		
-		StraightLine2D line1 = new StraightLine2D(p1, p2);
+        Point2D p1 = new Point2D(-1, 0);
+        Point2D p2 = new Point2D(1, 0);
 
-		theta = line1.horizontalAngle();
-		System.out.println("angle : " + theta);
+        StraightLine2D line1 = new StraightLine2D(p1, p2);
 
-		Point2D p3 = new Point2D(0, -1);
-		Point2D p4 = new Point2D(0, 1);
-		
-		StraightLine2D line2 = new StraightLine2D(p3, p4);
+        theta = line1.horizontalAngle();
+        System.out.println("angle : " + theta);
 
-		theta = line2.horizontalAngle();
-		System.out.println("angle : " + theta);
-		
-		Point2D p0 = line1.intersection(line2);
-		System.out.println("point intersection : " + p0.x() + " " + p0.y());
+        Point2D p3 = new Point2D(0, -1);
+        Point2D p4 = new Point2D(0, 1);
 
-		
-		System.out.println(line1.contains(0, 0));
-		System.out.println(line1.contains(0, 1e-14));
-		
-		p1 = new Point2D(-1, 0);
-		p2 = new Point2D(0,  1);
-		
-		line1 = new StraightLine2D(p1, p2);
+        StraightLine2D line2 = new StraightLine2D(p3, p4);
 
-		theta = line1.horizontalAngle();
-		System.out.println("angle : " + theta);
+        theta = line2.horizontalAngle();
+        System.out.println("angle : " + theta);
 
-		p3 = new Point2D(5, 0);
-		p4 = new Point2D(4, 1);
-		
-		line2 = new StraightLine2D(p3, p4);
+        Point2D p0 = line1.intersection(line2);
+        System.out.println("point intersection : " + p0.x() + " " + p0.y());
 
-		theta = line2.horizontalAngle();
-		System.out.println("angle : " + theta);
-		
-		p0 = line1.intersection(line2);
-		System.out.println("point intersection : " + p0.x() + " " + p0.y());
+        System.out.println(line1.contains(0, 0));
+        System.out.println(line1.contains(0, 1e-14));
 
-		line1 = StraightLine2D.createCartesian(-1, 1, 0);
-		System.out.println("angle (abc) : " + line1.horizontalAngle());
+        p1 = new Point2D(-1, 0);
+        p2 = new Point2D(0, 1);
 
-		line1 = StraightLine2D.createCartesian(-1, 2, 0);
-		System.out.println("angle (abc) : " + line1.horizontalAngle());
+        line1 = new StraightLine2D(p1, p2);
 
-		line1 = StraightLine2D.createCartesian(-1, 1, -1);
-		System.out.println("angle (abc) : " + line1.horizontalAngle());
+        theta = line1.horizontalAngle();
+        System.out.println("angle : " + theta);
 
-		line1 = StraightLine2D.createCartesian(-1, 2, -2);
-		System.out.println("angle (abc) : " + line1.horizontalAngle());
-		
-		System.out.println("distances --------");
-		p1 = new Point2D(0, 0);
-		p2 = new Point2D(1, 1);				
-		line1 = new StraightLine2D(p1, p2);
-		
-		System.out.println("point (0,0) :" + line1.signedDistance(0,0));
-		System.out.println("point (1,0) :" + line1.signedDistance(1,0));
-		System.out.println("point (4,0) :" + line1.signedDistance(4, 0));
-		System.out.println("point (0,4) :" + line1.signedDistance(0, 4));
-		System.out.println("point (10, 0) :" + line1.signedDistance(10, 0));
-	}
+        p3 = new Point2D(5, 0);
+        p4 = new Point2D(4, 1);
+
+        line2 = new StraightLine2D(p3, p4);
+
+        theta = line2.horizontalAngle();
+        System.out.println("angle : " + theta);
+
+        p0 = line1.intersection(line2);
+        System.out.println("point intersection : " + p0.x() + " " + p0.y());
+
+        line1 = StraightLine2D.createCartesian(-1, 1, 0);
+        System.out.println("angle (abc) : " + line1.horizontalAngle());
+
+        line1 = StraightLine2D.createCartesian(-1, 2, 0);
+        System.out.println("angle (abc) : " + line1.horizontalAngle());
+
+        line1 = StraightLine2D.createCartesian(-1, 1, -1);
+        System.out.println("angle (abc) : " + line1.horizontalAngle());
+
+        line1 = StraightLine2D.createCartesian(-1, 2, -2);
+        System.out.println("angle (abc) : " + line1.horizontalAngle());
+
+        System.out.println("distances --------");
+        p1 = new Point2D(0, 0);
+        p2 = new Point2D(1, 1);
+        line1 = new StraightLine2D(p1, p2);
+
+        System.out.println("point (0,0) :" + line1.signedDistance(0, 0));
+        System.out.println("point (1,0) :" + line1.signedDistance(1, 0));
+        System.out.println("point (4,0) :" + line1.signedDistance(4, 0));
+        System.out.println("point (0,4) :" + line1.signedDistance(0, 4));
+        System.out.println("point (10, 0) :" + line1.signedDistance(10, 0));
+    }
 }

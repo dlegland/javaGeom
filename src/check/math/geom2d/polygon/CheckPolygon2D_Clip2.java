@@ -30,58 +30,57 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.domain.Boundary2D;
+import math.geom2d.domain.IBoundary2D;
 import math.geom2d.polygon.SimplePolygon2D;
 
+public class CheckPolygon2D_Clip2 extends JPanel {
 
-public class CheckPolygon2D_Clip2 extends JPanel{
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	SimplePolygon2D polygon = null;
-	Box2D box = null;
-	
-	public CheckPolygon2D_Clip2() {
-		super();
-		
-		Point2D p1 = new Point2D(200, 100);
-		Point2D p2 = new Point2D(350, 250);
-		Point2D p3 = new Point2D(250, 350);
-		Point2D p4 = new Point2D(100, 200);
-		polygon = new SimplePolygon2D(new Point2D[]{p1, p2, p3, p4});
-		
-		box = new Box2D(50, 250, 50, 250);
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-	
-		g2.setColor(Color.BLUE);
-		box.asRectangle().boundary().draw(g2);
-		
-		Boundary2D boundary = polygon.boundary();
+    SimplePolygon2D polygon = null;
+    Box2D box = null;
 
-		// Draw initial polygon
-		g2.setColor(Color.YELLOW);
-		polygon.fill(g2);		
-		g2.setColor(Color.BLUE);
-		boundary.draw(g2);
+    public CheckPolygon2D_Clip2() {
+        super();
 
-		// draw clipped polygon
-		g2.setColor(Color.CYAN);
-		polygon.clip(box).fill(g2);
-		g2.setColor(Color.BLUE);
-		g2.setStroke(new BasicStroke(2.0f));
-		boundary.clip(box).draw(g2);
-	}
+        Point2D p1 = new Point2D(200, 100);
+        Point2D p2 = new Point2D(350, 250);
+        Point2D p3 = new Point2D(250, 350);
+        Point2D p4 = new Point2D(100, 200);
+        polygon = new SimplePolygon2D(new Point2D[] { p1, p2, p3, p4 });
 
-	public final static void main(String[] args){
-		System.out.println("should draw a clipped polygon");
-		
-		JPanel panel = new CheckPolygon2D_Clip2();
-		JFrame frame = new JFrame("Clip Polygon demo (2)");
-		frame.setContentPane(panel);
-		frame.setSize(400, 400);
-		frame.setVisible(true);	
-	}
+        box = new Box2D(50, 250, 50, 250);
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setColor(Color.BLUE);
+        box.asRectangle().boundary().draw(g2);
+
+        IBoundary2D boundary = polygon.boundary();
+
+        // Draw initial polygon
+        g2.setColor(Color.YELLOW);
+        polygon.fill(g2);
+        g2.setColor(Color.BLUE);
+        boundary.draw(g2);
+
+        // draw clipped polygon
+        g2.setColor(Color.CYAN);
+        polygon.clip(box).fill(g2);
+        g2.setColor(Color.BLUE);
+        g2.setStroke(new BasicStroke(2.0f));
+        boundary.clip(box).draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("should draw a clipped polygon");
+
+        JPanel panel = new CheckPolygon2D_Clip2();
+        JFrame frame = new JFrame("Clip Polygon demo (2)");
+        frame.setContentPane(panel);
+        frame.setSize(400, 400);
+        frame.setVisible(true);
+    }
 }

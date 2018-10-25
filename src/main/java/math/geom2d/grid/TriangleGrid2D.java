@@ -10,33 +10,33 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.point.PointArray2D;
-import math.geom2d.point.PointSet2D;
+import math.geom2d.point.IPointSet2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.LinearShape2D;
+import math.geom2d.line.ILinearShape2D;
 
 /**
- * Defines a triangle grid, with various size and orientation. The grid contains
- * triangle with all edges the same length.
+ * Defines a triangle grid, with various size and orientation. The grid contains triangle with all edges the same length.
  * 
  * @author dlegland
  */
 public class TriangleGrid2D implements Grid2D {
 
-    double x0    = 0;
-    double y0    = 0;
-    double s     = 1;
+    double x0 = 0;
+    double y0 = 0;
+    double s = 1;
 
     double theta = 0;
 
     /**
      * Returns TRUE if the number <code>n</code> is even (like 0, 2, 4...).
      * 
-     * @param n an integer
+     * @param n
+     *            an integer
      * @return TRUE if n is even.
      */
     private final static boolean isEven(int n) {
-        return Math.abs(n*.5-Math.floor(n*.5))<.25;
+        return Math.abs(n * .5 - Math.floor(n * .5)) < .25;
     }
 
     public TriangleGrid2D() {
@@ -44,34 +44,44 @@ public class TriangleGrid2D implements Grid2D {
     }
 
     /**
-     * @param s size of the triangle tile
+     * @param s
+     *            size of the triangle tile
      */
     public TriangleGrid2D(double s) {
         this(0, 0, s, 0);
     }
 
     /**
-     * @param x0 x-coord of grid origin
-     * @param y0 y-coord of grid origin
+     * @param x0
+     *            x-coord of grid origin
+     * @param y0
+     *            y-coord of grid origin
      */
     public TriangleGrid2D(double x0, double y0) {
         this(x0, y0, 1, 0);
     }
 
     /**
-     * @param x0 x-coord of grid origin
-     * @param y0 y-coord of grid origin
-     * @param s size of the triangle tile
+     * @param x0
+     *            x-coord of grid origin
+     * @param y0
+     *            y-coord of grid origin
+     * @param s
+     *            size of the triangle tile
      */
     public TriangleGrid2D(double x0, double y0, double s) {
         this(x0, y0, s, 0);
     }
 
     /**
-     * @param x0 x-coord of grid origin
-     * @param y0 y-coord of grid origin
-     * @param s size of the triangle tile
-     * @param theta orientation of the grid with horizontal
+     * @param x0
+     *            x-coord of grid origin
+     * @param y0
+     *            y-coord of grid origin
+     * @param s
+     *            size of the triangle tile
+     * @param theta
+     *            orientation of the grid with horizontal
      */
     public TriangleGrid2D(double x0, double y0, double s, double theta) {
         this.x0 = x0;
@@ -83,24 +93,30 @@ public class TriangleGrid2D implements Grid2D {
     /**
      * Assumes unit grid.
      * 
-     * @param point the grid origin
+     * @param point
+     *            the grid origin
      */
     public TriangleGrid2D(Point2D point) {
         this(point.x(), point.y(), 1, 0);
     }
 
     /**
-     * @param point the grid origin
-     * @param s size of the triangle tile
+     * @param point
+     *            the grid origin
+     * @param s
+     *            size of the triangle tile
      */
     public TriangleGrid2D(Point2D point, double s) {
         this(point.x(), point.y(), s, 0);
     }
 
     /**
-     * @param point the grid origin
-     * @param s size of the triangle tile
-     * @param theta orientation of the grid with horizontal
+     * @param point
+     *            the grid origin
+     * @param s
+     *            size of the triangle tile
+     * @param theta
+     *            orientation of the grid with horizontal
      */
     public TriangleGrid2D(Point2D point, double s, double theta) {
         this(point.x(), point.y(), s, theta);
@@ -155,40 +171,40 @@ public class TriangleGrid2D implements Grid2D {
         StraightLine2D baseLine = new StraightLine2D(x0, y0, cot, sit);
 
         // compute distance to line, and deduces indices of surrounding lines
-        double s2 = s*Math.sqrt(3)/2;
+        double s2 = s * Math.sqrt(3) / 2;
         double d = baseLine.signedDistance(point);
-        int n1 = (int) Math.floor(d/s2);
-        int n2 = (int) Math.ceil(d/s2);
+        int n1 = (int) Math.floor(d / s2);
+        int n2 = (int) Math.ceil(d / s2);
 
         // compute the two surrounding lines
-        StraightLine2D line1 = baseLine.parallel(n1*s2);
-        StraightLine2D line2 = baseLine.parallel(n2*s2);
+        StraightLine2D line1 = baseLine.parallel(n1 * s2);
+        StraightLine2D line2 = baseLine.parallel(n2 * s2);
 
         // projection of point on the surrounding lines
         double t = line1.project(point);
 
         Point2D p1, p2, p3;
         if (isEven(n1)) {
-            p1 = line1.point(Math.floor(t/s)*s);
-            p2 = line1.point(Math.ceil(t/s)*s);
-            p3 = line2.point((Math.floor(t/s)+.5)*s);
+            p1 = line1.point(Math.floor(t / s) * s);
+            p2 = line1.point(Math.ceil(t / s) * s);
+            p3 = line2.point((Math.floor(t / s) + .5) * s);
         } else {
-            p1 = line1.point((Math.floor(t/s)+.5)*s);
-            p2 = line2.point(Math.floor(t/s)*s);
-            p3 = line2.point(Math.ceil(t/s)*s);
+            p1 = line1.point((Math.floor(t / s) + .5) * s);
+            p2 = line2.point(Math.floor(t / s) * s);
+            p3 = line2.point(Math.ceil(t / s) * s);
         }
 
         Point2D res = p1;
         double minDist = res.distance(point);
 
         double d2 = p2.distance(point);
-        if (d2<minDist) {
+        if (d2 < minDist) {
             res = p2;
             minDist = d2;
         }
 
         double d3 = p3.distance(point);
-        if (d3<minDist) {
+        if (d3 < minDist) {
             res = p3;
             minDist = d3;
         }
@@ -205,12 +221,12 @@ public class TriangleGrid2D implements Grid2D {
         // init the array of line segments
         ArrayList<LineSegment2D> array = new ArrayList<LineSegment2D>();
 
-        double d = s*Math.sqrt(3)/2;
+        double d = s * Math.sqrt(3) / 2;
         double dmin, dmax;
 
-        for (int k = 0; k<3; k++) {
+        for (int k = 0; k < 3; k++) {
             // consider a line through origin with one of the 2 orientations
-            double theta2 = this.theta+Math.PI*(k)/3.0;
+            double theta2 = this.theta + Math.PI * (k) / 3.0;
             double cot = Math.cos(theta2);
             double sit = Math.sin(theta2);
             StraightLine2D baseLine = new StraightLine2D(x0, y0, cot, sit);
@@ -225,14 +241,14 @@ public class TriangleGrid2D implements Grid2D {
             }
 
             // compute the number of lines in each direction
-            double s2 = s*Math.sqrt(3)/2;
-            int i0 = (int) Math.ceil(dmin/s2);
-            int i1 = (int) Math.floor(dmax/s2);
+            double s2 = s * Math.sqrt(3) / 2;
+            int i0 = (int) Math.ceil(dmin / s2);
+            int i1 = (int) Math.floor(dmax / s2);
 
             // add each clipped line
-            for (int i = i0; i<=i1; i++) {
-                StraightLine2D line = baseLine.parallel(d*i);
-                for (LinearShape2D arc : line.clip(box)) {
+            for (int i = i0; i <= i1; i++) {
+                StraightLine2D line = baseLine.parallel(d * i);
+                for (ILinearShape2D arc : line.clip(box)) {
                     if (arc instanceof LineSegment2D)
                         array.add((LineSegment2D) arc);
                 }
@@ -246,12 +262,12 @@ public class TriangleGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getVertices(math.geom2d.Box2D)
      */
-    public PointSet2D getVertices(Box2D box) {
+    public IPointSet2D getVertices(Box2D box) {
 
         // init the array of line segments
         ArrayList<Point2D> array = new ArrayList<Point2D>();
 
-        double d = s*Math.sqrt(3)/2;
+        double d = s * Math.sqrt(3) / 2;
         double dmin, dmax;
 
         // consider a line through origin with one of the 2 orientations
@@ -269,14 +285,14 @@ public class TriangleGrid2D implements Grid2D {
         }
 
         // compute the number of lines in each direction
-        int i0 = (int) Math.ceil(dmin/s);
-        int i1 = (int) Math.floor(dmax/s);
+        int i0 = (int) Math.ceil(dmin / s);
+        int i1 = (int) Math.floor(dmax / s);
 
         // consider only the first line
-        for (int i = i0; i<=i1; i++) {
+        for (int i = i0; i <= i1; i++) {
             // compute supporting line, supposing that the norm of the
             // direction vector equals 1 (should be the case)
-            StraightLine2D line = baseLine.parallel(d*i);
+            StraightLine2D line = baseLine.parallel(d * i);
 
             // extract the line segment
             LineSegment2D seg = (LineSegment2D) line.clip(box).firstCurve();
@@ -287,17 +303,17 @@ public class TriangleGrid2D implements Grid2D {
             double t2 = line.position(seg.lastPoint());
 
             // check if point on this line are shifted or not
-            double t0 = isEven(i) ? 0 : s*.5;
+            double t0 = isEven(i) ? 0 : s * .5;
 
             // compute the number of points in each side of the origin
-            int j0 = (int) Math.ceil((t1-t0)/s);
-            int j1 = (int) Math.floor((t2-t0)/s);
+            int j0 = (int) Math.ceil((t1 - t0) / s);
+            int j1 = (int) Math.floor((t2 - t0) / s);
 
             // iterate on points
-            if (j1<j0)
+            if (j1 < j0)
                 continue;
-            for (int j = j0; j<=j1; j++)
-                array.add(line.point(j*s+t0));
+            for (int j = j0; j <= j1; j++)
+                array.add(line.point(j * s + t0));
         }
 
         return new PointArray2D(array);

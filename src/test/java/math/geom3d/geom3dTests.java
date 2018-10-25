@@ -11,7 +11,6 @@ package math.geom3d;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
  * @author dlegland
  *
@@ -20,12 +19,12 @@ public class geom3dTests {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for math.geom3d");
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTest(math.geom3d.AllTests.suite());
         suite.addTest(math.geom3d.line.AllTests.suite());
         suite.addTest(math.geom3d.plane.AllTests.suite());
         suite.addTest(math.geom3d.transform.AllTests.suite());
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 

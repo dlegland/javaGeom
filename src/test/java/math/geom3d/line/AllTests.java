@@ -11,7 +11,6 @@ package math.geom3d.line;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
  * @author dlegland
  *
@@ -20,9 +19,9 @@ public class AllTests {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for math.geom3d.line");
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTestSuite(StraightLine3DTest.class);
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 

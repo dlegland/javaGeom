@@ -40,76 +40,73 @@ import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 
+public class CheckReflectedBoundary2D extends JPanel {
 
-public class CheckReflectedBoundary2D extends JPanel{
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	
-	Boundary2D curve = null;
-	Box2D box = new Box2D(50, 450, 50, 350);
-	
-	public CheckReflectedBoundary2D() {
-		super();
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
+    IBoundary2D curve = null;
+    Box2D box = new Box2D(50, 450, 50, 350);
 
-		Point2D p1 = new Point2D(100, 100);
-		Point2D p2 = new Point2D(300, 100);
-		Point2D p3 = new Point2D(200, 270);
-		
-		LineSegment2D seg1 = new LineSegment2D(p1, p2);
-		LineSegment2D seg2 = new LineSegment2D(p2, p3);
-		LineSegment2D seg3 = new LineSegment2D(p3, p1);
-		
-		StraightLine2D line = new StraightLine2D(p2, p3);
-		AffineTransform2D trans =
-			AffineTransform2D.createLineReflection(line);
-		
-		BoundaryPolyCurve2D<ContinuousOrientedCurve2D> boundary;
-		boundary = new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>(
-				new LineSegment2D[]{seg1, seg2, seg3});
-		
-		Boundary2D boundary2 = boundary.transform(trans);
-		
-		Domain2D domain = new GenericDomain2D(boundary2);
-		Domain2D domain2 = domain.complement();
-		
-		// fill the domain
-		g2.setColor(Color.CYAN);
-		Domain2D clipped = domain.clip(box);
-		clipped.fill(g2);
-		
-		// fill the domain
-		g2.setColor(Color.YELLOW);
-		Domain2D clipped2 = domain2.clip(box);
-		clipped2.fill(g2);
-		
-		g2.setColor(Color.BLACK);
-		line.clip(box).draw(g2);
+    public CheckReflectedBoundary2D() {
+        super();
+    }
 
-//		g2.setColor(Color.RED);
-//		domain.clip(box).getBoundary().draw(g2);
-//	
-		// draw the boundary
-		g2.setColor(Color.BLUE);
-		boundary2.clip(box).draw(g2);
-		
-		// draw the bounding box
-		g2.setColor(Color.BLACK);
-		box.boundary().draw(g2);
-	}
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
 
-	public final static void main(String[] args){
-		System.out.println("draw a clipped boundary");
-		
-		JPanel panel = new CheckReflectedBoundary2D();
-		JFrame frame = new JFrame("Draw a clipped boundary");
-		panel.setPreferredSize(new Dimension(500,400));
-		frame.setContentPane(panel);
-		frame.pack();
-		frame.setVisible(true);
-		
-	}
+        Point2D p1 = new Point2D(100, 100);
+        Point2D p2 = new Point2D(300, 100);
+        Point2D p3 = new Point2D(200, 270);
+
+        LineSegment2D seg1 = new LineSegment2D(p1, p2);
+        LineSegment2D seg2 = new LineSegment2D(p2, p3);
+        LineSegment2D seg3 = new LineSegment2D(p3, p1);
+
+        StraightLine2D line = new StraightLine2D(p2, p3);
+        AffineTransform2D trans = AffineTransform2D.createLineReflection(line);
+
+        BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary;
+        boundary = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>(new LineSegment2D[] { seg1, seg2, seg3 });
+
+        IBoundary2D boundary2 = boundary.transform(trans);
+
+        IDomain2D domain = new GenericDomain2D(boundary2);
+        IDomain2D domain2 = domain.complement();
+
+        // fill the domain
+        g2.setColor(Color.CYAN);
+        IDomain2D clipped = domain.clip(box);
+        clipped.fill(g2);
+
+        // fill the domain
+        g2.setColor(Color.YELLOW);
+        IDomain2D clipped2 = domain2.clip(box);
+        clipped2.fill(g2);
+
+        g2.setColor(Color.BLACK);
+        line.clip(box).draw(g2);
+
+        // g2.setColor(Color.RED);
+        // domain.clip(box).getBoundary().draw(g2);
+        //
+        // draw the boundary
+        g2.setColor(Color.BLUE);
+        boundary2.clip(box).draw(g2);
+
+        // draw the bounding box
+        g2.setColor(Color.BLACK);
+        box.boundary().draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("draw a clipped boundary");
+
+        JPanel panel = new CheckReflectedBoundary2D();
+        JFrame frame = new JFrame("Draw a clipped boundary");
+        panel.setPreferredSize(new Dimension(500, 400));
+        frame.setContentPane(panel);
+        frame.pack();
+        frame.setVisible(true);
+
+    }
 }

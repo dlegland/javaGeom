@@ -34,53 +34,52 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.Boundaries2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 
+public class DrawBoundarySetDemo extends JPanel {
 
-public class DrawBoundarySetDemo extends JPanel{
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	Boundary2D curve = null;
-	
-	public DrawBoundarySetDemo() {
-		super();
-		
-		double x0 = 100;
-		double y0 = 100;
-		double r  = 50;
-		CircleArc2D arc1 = new CircleArc2D(x0, y0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(x0+r, y0, r, 2*Math.PI/3, 2*Math.PI/3);
-		
-		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
-		set.add(arc1);
-		set.add(arc2);
-		
-		Box2D box = new Box2D(0, 400, 0, 400);
-				
-		curve = Boundaries2D.clipBoundary(set, box);
-		System.out.println(curve);
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
+    IBoundary2D curve = null;
 
-//		g2.setColor(Color.CYAN);
-//		g2.fillRect(30, 30, 180, 150);
-		
-		g2.setColor(Color.YELLOW);
-		new GenericDomain2D(curve).fill(g2);
-		
-		g2.setColor(Color.BLUE);
-		curve.draw(g2);
-	}
+    public DrawBoundarySetDemo() {
+        super();
 
-	public final static void main(String[] args){
-		System.out.println("should draw a circle");
-		
-		JPanel panel = new DrawBoundarySetDemo();
-		JFrame frame = new JFrame("Draw circle demo");
-		frame.setContentPane(panel);
-		frame.setSize(400, 300);
-		frame.setVisible(true);
-		
-	}
+        double x0 = 100;
+        double y0 = 100;
+        double r = 50;
+        CircleArc2D arc1 = new CircleArc2D(x0, y0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
+        CircleArc2D arc2 = new CircleArc2D(x0 + r, y0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
+
+        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
+        set.add(arc1);
+        set.add(arc2);
+
+        Box2D box = new Box2D(0, 400, 0, 400);
+
+        curve = Boundaries2D.clipBoundary(set, box);
+        System.out.println(curve);
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        // g2.setColor(Color.CYAN);
+        // g2.fillRect(30, 30, 180, 150);
+
+        g2.setColor(Color.YELLOW);
+        new GenericDomain2D(curve).fill(g2);
+
+        g2.setColor(Color.BLUE);
+        curve.draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("should draw a circle");
+
+        JPanel panel = new DrawBoundarySetDemo();
+        JFrame frame = new JFrame("Draw circle demo");
+        frame.setContentPane(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+    }
 }

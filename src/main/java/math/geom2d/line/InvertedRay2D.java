@@ -28,18 +28,18 @@ package math.geom2d.line;
 import java.awt.geom.GeneralPath;
 
 import math.geom2d.*;
+import math.geom2d.exception.UnboundedShape2DException;
 import math.utils.EqualUtils;
 
 // Imports
 
 /**
- * Inverted ray is defined from an origin and a direction vector. It is composed
- * of all points satisfying the parametric equation:
+ * Inverted ray is defined from an origin and a direction vector. It is composed of all points satisfying the parametric equation:
  * <p>
  * <code>x(t) = x0+t*dx<code><br>
- * <code>y(t) = y0+t*dy<code></p> 
- * with <code>t<code> comprised between -INFINITY and 0.
- * This is complementary class to Ray2D.
+ * <code>y(t) = y0+t*dy<code>
+ * </p>
+ * with <code>t<code> comprised between -INFINITY and 0. This is complementary class to Ray2D.
  */
 public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
@@ -47,96 +47,80 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // Static factory
 
     /**
-     * Static factory for creating a new inverted ray with given direction
-     * to target.
-	 * @deprecated since 0.11.1
-	 */
-	@Deprecated
+     * Static factory for creating a new inverted ray with given direction to target.
+     * 
+     * @deprecated since 0.11.1
+     */
+    @Deprecated
     public static InvertedRay2D create(Point2D target, Vector2D direction) {
-    	return new InvertedRay2D(target, direction);
+        return new InvertedRay2D(target, direction);
     }
-    
-    
+
     // ===================================================================
     // constructors
 
     /**
-     * Empty constructor for Ray2D. Default is ray starting at origin, and
-     * having a slope of 1*dx and 0*dy.
+     * Empty constructor for Ray2D. Default is ray starting at origin, and having a slope of 1*dx and 0*dy.
      */
     public InvertedRay2D() {
         this(0, 0, 1, 0);
     }
 
     /**
-     * Creates a new Ray2D, originating from
-     * <code>point1<\code>, and going in the
-     * direction of <code>point2<\code>.
+     * Creates a new Ray2D, originating from <code>point1<\code>, and going in the direction of <code>point2<\code>.
      */
     public InvertedRay2D(Point2D point1, Point2D point2) {
-        this(point1.x(), point1.y(), 
-        		point2.x()-point1.x(), 
-        		point2.y()-point1.y());
+        this(point1.x(), point1.y(), point2.x() - point1.x(), point2.y() - point1.y());
     }
 
     /**
-     * Creates a new Ray2D, originating from point <code>point<\code>, and going 
-     * in the direction defined by vector <code>(dx,dy)<\code>.
+     * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction defined by vector <code>(dx,dy)<\code>.
      */
     public InvertedRay2D(Point2D point, double dx, double dy) {
         this(point.x(), point.y(), dx, dy);
     }
 
     /**
-     * Creates a new Ray2D, originating from point <code>point<\code>, and going 
-     * in the direction specified by <code>vector<\code>.
+     * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction specified by <code>vector<\code>.
      */
     public InvertedRay2D(Point2D point, Vector2D vector) {
         this(point.x(), point.y(), vector.x(), vector.y());
     }
 
     /**
-     * Creates a new Ray2D, originating from point <code>point<\code>, and going 
-     * in the direction specified by <code>angle<\code> (in radians).
+     * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction specified by <code>angle<\code> (in radians).
      */
     public InvertedRay2D(Point2D point, double angle) {
         this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
     }
 
     /**
-     * Creates a new Ray2D, originating from point
-     * <code>(x, y)<\code>, and going 
-     * in the direction specified by <code>angle<\code> (in radians).
+     * Creates a new Ray2D, originating from point <code>(x, y)<\code>, and going in the direction specified by <code>angle<\code> (in radians).
      */
     public InvertedRay2D(double x, double y, double angle) {
         this(x, y, Math.cos(angle), Math.sin(angle));
     }
 
     /**
-     * Creates a new Ray2D, originating from point
-     * <code>(x1,y1)<\code>, and going 
-     * in the direction defined by vector <code>(dx, dy)<\code>.
+     * Creates a new Ray2D, originating from point <code>(x1,y1)<\code>, and going in the direction defined by vector <code>(dx, dy)<\code>.
      */
     public InvertedRay2D(double x1, double y1, double dx, double dy) {
         super(x1, y1, dx, dy);
-        
+
         // enforce condition on direction vector
-        if (Math.hypot(dx, dy) < Shape2D.ACCURACY)
-        {
+        if (Math.hypot(dx, dy) < IShape2D.ACCURACY) {
             throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
         }
     }
 
-
     /**
      * Define a new Ray, with same characteristics as given object.
      */
-    public InvertedRay2D(LinearShape2D line) {
+    public InvertedRay2D(ILinearShape2D line) {
         super(line.origin(), line.direction());
-        
+
         // enforce condition on direction vector
-        if (Math.hypot(dx, dy) < Shape2D.ACCURACY)
-        {
+        if (Math.hypot(dx, dy) < IShape2D.ACCURACY) {
             throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
         }
     }
@@ -144,15 +128,15 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
     // ===================================================================
     // methods implementing the CirculinearCurve2D interface
 
-	/**
-	 * Returns another instance of InvertedRay2D, parallel to this one, 
-	 * and located at the given distance.
-	 * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
-	 */
-	public InvertedRay2D parallel(double d) {
+    /**
+     * Returns another instance of InvertedRay2D, parallel to this one, and located at the given distance.
+     * 
+     * @see math.geom2d.circulinear.ICirculinearCurve2D#parallel(double)
+     */
+    public InvertedRay2D parallel(double d) {
         double dd = Math.hypot(dx, dy);
-		return new InvertedRay2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
-	}
+        return new InvertedRay2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
+    }
 
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
@@ -172,7 +156,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     public Point2D point(double t) {
         t = Math.min(t, 0);
-		return new Point2D(x0 + t * dx, y0 + t * dy);
+        return new Point2D(x0 + t * dx, y0 + t * dy);
     }
 
     /**
@@ -187,7 +171,7 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      */
     @Deprecated
     public double getT0() {
-    	return t0();
+        return t0();
     }
 
     /**
@@ -202,11 +186,12 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
      */
     @Deprecated
     public double getT1() {
-    	return t1();
+        return t1();
     }
 
     /**
      * Reverses this curve, and return the result as an instance of Ray2D.
+     * 
      * @see Ray2D#reverse()
      */
     public Ray2D reverse() {
@@ -225,52 +210,52 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
         if (!this.supportContains(x, y))
             return false;
         double t = this.positionOnLine(x, y);
-        return t < Shape2D.ACCURACY;
+        return t < IShape2D.ACCURACY;
     }
 
     public Box2D boundingBox() {
         double t = Double.NEGATIVE_INFINITY;
         Point2D p0 = new Point2D(x0, y0);
-        Point2D p1 = new Point2D(t * dx, t* dy);
-		return new Box2D(p0, p1);
-	}
+        Point2D p1 = new Point2D(t * dx, t * dy);
+        return new Box2D(p0, p1);
+    }
 
     @Override
-	public InvertedRay2D transform(AffineTransform2D trans) {
-		double[] tab = trans.coefficients();
-		double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
-		double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
-		return new InvertedRay2D(x1, y1, 
-				dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
-	}
+    public InvertedRay2D transform(AffineTransform2D trans) {
+        double[] tab = trans.coefficients();
+        double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
+        double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
+        return new InvertedRay2D(x1, y1, dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+    }
 
     // ===================================================================
     // methods implementing the Shape interface
 
+    // ===================================================================
+    // methods implementing the GeometricObject2D interface
 
-	// ===================================================================
-	// methods implementing the GeometricObject2D interface
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+     */
+    public boolean almostEquals(IGeometricObject2D obj, double eps) {
+        if (this == obj)
+            return true;
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
-	 */
-    public boolean almostEquals(GeometricObject2D obj, double eps) {
-		if (this == obj)
-			return true;
-    	
-		if (!(obj instanceof InvertedRay2D))
-			return false;
-		InvertedRay2D ray = (InvertedRay2D) obj;
-		if (Math.abs(x0 - ray.x0) > eps)
-			return false;
-		if (Math.abs(y0 - ray.y0) > eps)
-			return false;
-		if (Math.abs(dx - ray.dx) > eps)
-			return false;
-		if (Math.abs(dy - ray.dy) > eps)
-			return false;
+        if (!(obj instanceof InvertedRay2D))
+            return false;
+        InvertedRay2D ray = (InvertedRay2D) obj;
+        if (Math.abs(x0 - ray.x0) > eps)
+            return false;
+        if (Math.abs(y0 - ray.y0) > eps)
+            return false;
+        if (Math.abs(dx - ray.dx) > eps)
+            return false;
+        if (Math.abs(dy - ray.dy) > eps)
+            return false;
 
-		return true;
+        return true;
     }
 
     // ===================================================================
@@ -278,35 +263,34 @@ public class InvertedRay2D extends AbstractLine2D implements Cloneable {
 
     @Override
     public String toString() {
-        return new String("InvertedRay2D(" + x0 + "," + y0 + "," + 
-        		dx + "," + dy + ")");
+        return new String("InvertedRay2D(" + x0 + "," + y0 + "," + dx + "," + dy + ")");
     }
-    
+
     @Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof InvertedRay2D))
-			return false;
-		InvertedRay2D that = (InvertedRay2D) obj;
-		
-        // Compare each field
-		if (!EqualUtils.areEqual(this.x0, that.x0)) 
-			return false;
-		if (!EqualUtils.areEqual(this.y0, that.y0)) 
-			return false;
-		if (!EqualUtils.areEqual(this.dx, that.dx)) 
-			return false;
-		if (!EqualUtils.areEqual(this.dy, that.dy)) 
-			return false;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof InvertedRay2D))
+            return false;
+        InvertedRay2D that = (InvertedRay2D) obj;
 
-		return true;
+        // Compare each field
+        if (!EqualUtils.areEqual(this.x0, that.x0))
+            return false;
+        if (!EqualUtils.areEqual(this.y0, that.y0))
+            return false;
+        if (!EqualUtils.areEqual(this.dx, that.dx))
+            return false;
+        if (!EqualUtils.areEqual(this.dy, that.dy))
+            return false;
+
+        return true;
     }
 
-	/**
-	 * @deprecated use copy constructor instead (0.11.2)
-	 */
-	@Deprecated
+    /**
+     * @deprecated use copy constructor instead (0.11.2)
+     */
+    @Deprecated
     @Override
     public InvertedRay2D clone() {
         return new InvertedRay2D(x0, y0, dx, dy);

@@ -45,7 +45,7 @@ public class LineSegment3D implements ContinuousCurve3D {
     // methods specific to StraightLine3D
 
     public StraightLine3D supportingLine() {
-        return new StraightLine3D(x1, y1, z1, x2-x1, y2-y1, z2-z1);
+        return new StraightLine3D(x1, y1, z1, x2 - x1, y2 - y1, z2 - z1);
     }
 
     // ===================================================================
@@ -87,10 +87,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      */
     public Point3D point(double t) {
         t = Math.max(Math.min(t, 1), 0);
-		return new Point3D(
-				x1 + (x2 - x1) * t, 
-				y1 + (y2 - y1) * t, 
-				z1 + (z2 - z1) * t);
+        return new Point3D(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, z1 + (z2 - z1) * t);
     }
 
     /**
@@ -100,9 +97,9 @@ public class LineSegment3D implements ContinuousCurve3D {
      */
     public double position(Point3D point) {
         double t = this.supportingLine().position(point);
-        if (t>1)
+        if (t > 1)
             return Double.NaN;
-        if (t<0)
+        if (t < 0)
             return Double.NaN;
         return t;
     }
@@ -173,8 +170,7 @@ public class LineSegment3D implements ContinuousCurve3D {
      * @see math.geom3d.curve.Curve3D#transform(math.geom3d.transform.AffineTransform3D)
      */
     public Curve3D transform(AffineTransform3D trans) {
-        return new LineSegment3D(new Point3D(x1, y1, z1).transform(trans),
-                new Point3D(x2, y2, z2).transform(trans));
+        return new LineSegment3D(new Point3D(x1, y1, z1).transform(trans), new Point3D(x2, y2, z2).transform(trans));
     }
 
     // ===================================================================
@@ -200,9 +196,9 @@ public class LineSegment3D implements ContinuousCurve3D {
         if (!line.contains(point))
             return false;
         double t = line.position(point);
-        if (t<-Shape3D.ACCURACY)
+        if (t < -Shape3D.ACCURACY)
             return false;
-        if (t>1+Shape3D.ACCURACY)
+        if (t > 1 + Shape3D.ACCURACY)
             return false;
         return true;
     }

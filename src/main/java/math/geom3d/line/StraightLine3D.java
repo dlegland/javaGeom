@@ -48,15 +48,16 @@ public class StraightLine3D implements ContinuousCurve3D {
     /**
      * Constructs a line passing through the 2 points.
      * 
-     * @param p1 the first point
-     * @param p2 the second point
+     * @param p1
+     *            the first point
+     * @param p2
+     *            the second point
      */
     public StraightLine3D(Point3D p1, Point3D p2) {
         this(p1, new Vector3D(p1, p2));
     }
 
-    public StraightLine3D(double x0, double y0, double z0, double dx,
-            double dy, double dz) {
+    public StraightLine3D(double x0, double y0, double z0, double dx, double dy, double dz) {
         this.x0 = x0;
         this.y0 = y0;
         this.z0 = z0;
@@ -76,13 +77,13 @@ public class StraightLine3D implements ContinuousCurve3D {
         return new Vector3D(dx, dy, dz);
     }
 
-//    /**
-//     * not yet implemented
-//     */
-//    public StraightLine2D project(Plane3D plane) {
-//    	// TODO Auto-generated method stub
-//        return null;
-//    }
+    // /**
+    // * not yet implemented
+    // */
+    // public StraightLine2D project(Plane3D plane) {
+    // // TODO Auto-generated method stub
+    // return null;
+    // }
 
     // ===================================================================
     // methods implementing the Shape3D interface
@@ -123,26 +124,18 @@ public class StraightLine3D implements ContinuousCurve3D {
         Vector3D v = this.direction();
 
         // line parallel to (Ox) axis
-        if (Math.hypot(v.getY(), v.getZ())<Shape3D.ACCURACY)
-            return new Box3D(x0, x0, Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY);
+        if (Math.hypot(v.getY(), v.getZ()) < Shape3D.ACCURACY)
+            return new Box3D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oy) axis
-        if (Math.hypot(v.getX(), v.getZ())<Shape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY);
+        if (Math.hypot(v.getX(), v.getZ()) < Shape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oz) axis
-        if (Math.hypot(v.getX(), v.getY())<Shape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, z0, z0);
+        if (Math.hypot(v.getX(), v.getY()) < Shape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z0, z0);
 
-        return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     /*
@@ -153,7 +146,7 @@ public class StraightLine3D implements ContinuousCurve3D {
     public double distance(Point3D p) {
         Vector3D vl = this.direction();
         Vector3D vp = new Vector3D(this.origin(), p);
-        return Vector3D.crossProduct(vl, vp).norm()/vl.norm();
+        return Vector3D.crossProduct(vl, vp).norm() / vl.norm();
     }
 
     /*
@@ -162,19 +155,15 @@ public class StraightLine3D implements ContinuousCurve3D {
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
     public StraightLine3D transform(AffineTransform3D trans) {
-        return new StraightLine3D(
-        		origin().transform(trans), 
-        		direction().transform(trans));
+        return new StraightLine3D(origin().transform(trans), direction().transform(trans));
     }
 
     public Point3D firstPoint() {
-        return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.POSITIVE_INFINITY);
+        return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     public Point3D lastPoint() {
-        return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
-                Double.POSITIVE_INFINITY);
+        return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     public Point3D point(double t) {
@@ -216,13 +205,12 @@ public class StraightLine3D implements ContinuousCurve3D {
     }
 
     /**
-     * Compute the position of the orthogonal projection of the given point on
-     * this line.
+     * Compute the position of the orthogonal projection of the given point on this line.
      */
     public double project(Point3D point) {
         Vector3D vl = this.direction();
         Vector3D vp = new Vector3D(this.origin(), point);
-        return Vector3D.dotProduct(vl, vp)/vl.normSq();
+        return Vector3D.dotProduct(vl, vp) / vl.normSq();
     }
 
     public Collection<StraightLine3D> continuousCurves() {

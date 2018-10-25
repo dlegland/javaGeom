@@ -28,56 +28,50 @@ import java.util.Collection;
 
 import math.geom2d.*;
 import math.geom2d.curve.*;
-import math.geom2d.domain.ContinuousOrientedCurve2D;
-import math.geom2d.line.LinearShape2D;
+import math.geom2d.domain.IContinuousOrientedCurve2D;
+import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
- * A quadratic Bezier curve, defined by 3 control points.
- * The curve starts at the first control point and finished at the third
- * control point. The second point is used to defined the curvature of the
- * curve. 
+ * A quadratic Bezier curve, defined by 3 control points. The curve starts at the first control point and finished at the third control point. The second point is used to defined the curvature of the curve.
  * 
- * From javaGeom 0.8.0, this shape does not extends.
- * java.awt.geom.QuadCurve2D.Double anymore
+ * From javaGeom 0.8.0, this shape does not extends. java.awt.geom.QuadCurve2D.Double anymore
  * 
  * @author Legland
  */
-public class QuadBezierCurve2D extends AbstractSmoothCurve2D
-implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
+public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D, Cloneable {
 
     // ===================================================================
     // static methods
-   
+
     /**
      * Static factory for creating a new Quadratic Bezier curve from 3 points.
-	 *
-	 * @deprecated since 0.11.1
-	 */
-	@Deprecated
+     *
+     * @deprecated since 0.11.1
+     */
+    @Deprecated
     public static QuadBezierCurve2D create(Point2D p1, Point2D p2, Point2D p3) {
-    	return new QuadBezierCurve2D(p1, p2, p3);
+        return new QuadBezierCurve2D(p1, p2, p3);
     }
-    
 
     // ===================================================================
     // class variables
-   
+
     /**
      * Coordinates of the first point of the curve
      */
-	protected double x1, y1;
-    
-	/**
+    protected double x1, y1;
+
+    /**
      * Coordinates of the control point of the curve
      */
-	protected double ctrlx, ctrly;
+    protected double ctrlx, ctrly;
 
-	/**
+    /**
      * Coordinates of the last point of the curve
      */
-	protected double x2, y2;
+    protected double x2, y2;
 
     // ===================================================================
     // constructors
@@ -90,44 +84,37 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Build a new Bezier curve from its array of coefficients. The array must
-     * have size 2*3.
+     * Build a new Bezier curve from its array of coefficients. The array must have size 2*3.
      * 
-     * @param coefs the coefficients of the QuadBezierCurve2D.
+     * @param coefs
+     *            the coefficients of the QuadBezierCurve2D.
      */
     public QuadBezierCurve2D(double[][] coefs) {
-		this(coefs[0][0], coefs[1][0], 
-				coefs[0][0] + coefs[0][1] / 2.0,
-				coefs[1][0] + coefs[1][1] / 2.0, 
-				coefs[0][0] + coefs[0][1] + coefs[0][2], 
-				coefs[1][0] + coefs[1][1] + coefs[1][2]);
+        this(coefs[0][0], coefs[1][0], coefs[0][0] + coefs[0][1] / 2.0, coefs[1][0] + coefs[1][1] / 2.0, coefs[0][0] + coefs[0][1] + coefs[0][2], coefs[1][0] + coefs[1][1] + coefs[1][2]);
     }
 
     /**
-     * Build a new quadratic Bezier curve by specifying position of extreme
-     * points and position of control point. The resulting curve is totally
-     * contained in the convex polygon formed by the 3 control points.
+     * Build a new quadratic Bezier curve by specifying position of extreme points and position of control point. The resulting curve is totally contained in the convex polygon formed by the 3 control points.
      * 
-     * @param p1 first point
-     * @param ctrl control point
-     * @param p2 last point
+     * @param p1
+     *            first point
+     * @param ctrl
+     *            control point
+     * @param p2
+     *            last point
      */
     public QuadBezierCurve2D(Point2D p1, Point2D ctrl, Point2D p2) {
         this(p1.x(), p1.y(), ctrl.x(), ctrl.y(), p2.x(), p2.y());
     }
 
     public QuadBezierCurve2D(Point2D[] pts) {
-		this(pts[0].x(), pts[0].y(), pts[1].x(), pts[1].y(), 
-				pts[2].x(), pts[2].y());
+        this(pts[0].x(), pts[0].y(), pts[1].x(), pts[1].y(), pts[2].x(), pts[2].y());
     }
 
     /**
-     * Build a new quadratic Bezier curve by specifying position of extreme
-     * points and position of control point. The resulting curve is totally
-     * contained in the convex polygon formed by the 3 control points.
+     * Build a new quadratic Bezier curve by specifying position of extreme points and position of control point. The resulting curve is totally contained in the convex polygon formed by the 3 control points.
      */
-    public QuadBezierCurve2D(double x1, double y1, double xctrl, double yctrl,
-            double x2, double y2) {
+    public QuadBezierCurve2D(double x1, double y1, double xctrl, double yctrl, double x2, double y2) {
         this.x1 = x1;
         this.y1 = y1;
         this.ctrlx = xctrl;
@@ -144,20 +131,19 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     public Point2D getP1() {
-    	return this.firstPoint();
+        return this.firstPoint();
     }
-    
+
     public Point2D getP2() {
-    	return this.lastPoint();
+        return this.lastPoint();
     }
-    
+
     public Point2D getCtrl() {
-    	return this.getControl();
+        return this.getControl();
     }
-    
+
     /**
-     * Returns the matrix of parametric representation of the line. Result is a
-     * 2x3 array with coefficients:
+     * Returns the matrix of parametric representation of the line. Result is a 2x3 array with coefficients:
      * <p>
      * <code>[ cx0  cx1 cx2] </code>
      * <p>
@@ -170,13 +156,13 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public double[][] getParametric() {
         double[][] tab = new double[2][3];
-		tab[0][0] = x1;
-		tab[0][1] = 2 * ctrlx - 2 * x1;
-		tab[0][2] = x2 - 2 * ctrlx + x1;
+        tab[0][0] = x1;
+        tab[0][1] = 2 * ctrlx - 2 * x1;
+        tab[0][2] = x2 - 2 * ctrlx + x1;
 
-		tab[1][0] = y1;
-		tab[1][1] = 2 * ctrly - 2 * y1;
-		tab[1][2] = y2 - 2 * ctrly + y1;
+        tab[1][0] = y1;
+        tab[1][1] = 2 * ctrly - 2 * y1;
+        tab[1][2] = y2 - 2 * ctrly + y1;
         return tab;
     }
 
@@ -186,17 +172,17 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Use winding angle of approximated polyline
      * 
-     * @see math.geom2d.domain.OrientedCurve2D#windingAngle(Point2D)
+     * @see math.geom2d.domain.IOrientedCurve2D#windingAngle(Point2D)
      */
     public double windingAngle(Point2D point) {
         return this.asPolyline(100).windingAngle(point);
     }
 
     /**
-     * Returns true if the point is 'inside' the domain bounded by the curve.
-     * Uses a polyline approximation.
+     * Returns true if the point is 'inside' the domain bounded by the curve. Uses a polyline approximation.
      * 
-     * @param pt a point in the plane
+     * @param pt
+     *            a point in the plane
      * @return true if the point is on the left side of the curve.
      */
     public boolean isInside(Point2D pt) {
@@ -211,7 +197,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * @see math.geom2d.domain.OrientedCurve2D#signedDistance(Point2D)
+     * @see math.geom2d.domain.IOrientedCurve2D#signedDistance(Point2D)
      */
     public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
@@ -224,23 +210,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // methods from SmoothCurve2D interface
 
     public Vector2D tangent(double t) {
-		double[][] c = getParametric();
-		double dx = c[0][1] + 2 * c[0][2] * t;
-		double dy = c[1][1] + 2 * c[1][2] * t;
-		return new Vector2D(dx, dy);
-	}
+        double[][] c = getParametric();
+        double dx = c[0][1] + 2 * c[0][2] * t;
+        double dy = c[1][1] + 2 * c[1][2] * t;
+        return new Vector2D(dx, dy);
+    }
 
     /**
      * Returns the curvature of the Curve.
      */
     public double curvature(double t) {
         double[][] c = getParametric();
-		double xp = c[0][1] + 2 * c[0][2] * t;
-		double yp = c[1][1] + 2 * c[1][2] * t;
-		double xs = 2 * c[0][2];
-		double ys = 2 * c[1][2];
+        double xp = c[0][1] + 2 * c[0][2] * t;
+        double yp = c[1][1] + 2 * c[1][2] * t;
+        double xs = 2 * c[0][2];
+        double ys = 2 * c[1][2];
 
-		return (xp * ys - yp * xs) / Math.pow(Math.hypot(xp, yp), 3);
+        return (xp * ys - yp * xs) / Math.pow(Math.hypot(xp, yp), 3);
     }
 
     // ===================================================================
@@ -253,10 +239,12 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return false;
     }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
-	 */
-	public Polyline2D asPolyline(int n) {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
+     */
+    public Polyline2D asPolyline(int n) {
 
         // compute increment value
         double dt = 1.0 / n;
@@ -265,10 +253,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         // Computes also value for last point.
         Point2D[] points = new Point2D[n + 1];
         for (int i = 0; i < n + 1; i++)
-        	points[i] = this.point(i * dt);
+            points[i] = this.point(i * dt);
 
         return new Polyline2D(points);
-	}
+    }
 
     // ===================================================================
     // methods from Curve2D interface
@@ -285,9 +273,9 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     @Deprecated
     public double getT0() {
-    	return t0();
+        return t0();
     }
-    
+
     /**
      * Returns 1, as Bezier curve is parametrized between 0 and 1.
      */
@@ -300,27 +288,27 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     @Deprecated
     public double getT1() {
-    	return t1();
+        return t1();
     }
-    
+
     /**
      * Use approximation, by replacing Bezier curve with a polyline.
      * 
-     * @see math.geom2d.curve.Curve2D#intersections(math.geom2d.line.LinearShape2D)
+     * @see math.geom2d.curve.ICurve2D#intersections(math.geom2d.line.ILinearShape2D)
      */
-    public Collection<Point2D> intersections(LinearShape2D line) {
+    public Collection<Point2D> intersections(ILinearShape2D line) {
         return this.asPolyline(100).intersections(line);
     }
 
     /**
-     * @see math.geom2d.curve.Curve2D#point(double)
+     * @see math.geom2d.curve.ICurve2D#point(double)
      */
     public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
-		double[][] c = getParametric();
-		double x = c[0][0] + (c[0][1] + c[0][2] * t) * t;
-		double y = c[1][0] + (c[1][1] + c[1][2] * t) * t;
-		return new Point2D(x, y);
+        double[][] c = getParametric();
+        double x = c[0][0] + (c[0][1] + c[0][2] * t) * t;
+        double y = c[1][0] + (c[1][1] + c[1][2] * t) * t;
+        return new Point2D(x, y);
     }
 
     /**
@@ -328,7 +316,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * 
      * @return the first point of the curve
      */
-	@Override
+    @Override
     public Point2D firstPoint() {
         return new Point2D(this.x1, this.y1);
     }
@@ -338,7 +326,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * 
      * @return the last point of the curve.
      */
-	@Override
+    @Override
     public Point2D lastPoint() {
         return new Point2D(this.x2, this.y2);
     }
@@ -347,24 +335,23 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      * Computes position by approximating cubic spline with a polyline.
      */
     public double position(Point2D point) {
-		int N = 100;
-		return this.asPolyline(N).position(point) / (N);
-   }
+        int N = 100;
+        return this.asPolyline(N).position(point) / (N);
+    }
 
     /**
      * Computes position by approximating cubic spline with a polyline.
      */
     public double project(Point2D point) {
         int N = 100;
-        return this.asPolyline(N).project(point)/(N);
+        return this.asPolyline(N).project(point) / (N);
     }
 
     /**
      * Returns the bezier curve given by control points taken in reverse order.
      */
     public QuadBezierCurve2D reverse() {
-        return new QuadBezierCurve2D(
-        		this.lastPoint(), this.getControl(), this.firstPoint());
+        return new QuadBezierCurve2D(this.lastPoint(), this.getControl(), this.firstPoint());
     }
 
     /**
@@ -373,7 +360,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     public QuadBezierCurve2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
-		if (t0 > t1)
+        if (t0 > t1)
             return null;
 
         // Extreme points
@@ -396,23 +383,26 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     // ===================================================================
     // methods from Shape2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#contains(double, double)
-	 */
-	public boolean contains(double x, double y) {
-		return new QuadCurve2D.Double(
-				x1, y1, ctrlx, ctrly, x2, y2).contains(x, y);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.Shape2D#contains(double, double)
+     */
+    public boolean contains(double x, double y) {
+        return new QuadCurve2D.Double(x1, y1, ctrlx, ctrly, x2, y2).contains(x, y);
+    }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.Shape2D#contains(Point2D)
-	 */
-	public boolean contains(Point2D p) {
-		return this.contains(p.x(), p.y());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.Shape2D#contains(Point2D)
+     */
+    public boolean contains(Point2D p) {
+        return this.contains(p.x(), p.y());
+    }
 
-	/**
-     * @see math.geom2d.Shape2D#distance(Point2D)
+    /**
+     * @see math.geom2d.IShape2D#distance(Point2D)
      */
     public double distance(Point2D p) {
         return this.distance(p.x(), p.y());
@@ -421,7 +411,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     /**
      * Computes approximated distance, computed on a polyline.
      * 
-     * @see math.geom2d.Shape2D#distance(double, double)
+     * @see math.geom2d.IShape2D#distance(double, double)
      */
     public double distance(double x, double y) {
         return this.asPolyline(100).distance(x, y);
@@ -439,21 +429,17 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Clip the curve by a box. The result is an instance of
-     * CurveSet2D, which contains only instances of QuadBezierCurve2D. 
-     * If the curve is not clipped, the result is an instance of CurveSet2D
-     * which contains 0 curves.
+     * Clip the curve by a box. The result is an instance of CurveSet2D, which contains only instances of QuadBezierCurve2D. If the curve is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
-    public CurveSet2D<? extends QuadBezierCurve2D> clip(Box2D box) {
+    public ICurveSet2D<? extends QuadBezierCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<SmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<QuadBezierCurve2D> result = 
-        	new CurveArray2D<QuadBezierCurve2D>(set.size());
+        CurveArray2D<QuadBezierCurve2D> result = new CurveArray2D<QuadBezierCurve2D>(set.size());
 
         // convert the result
-        for (Curve2D curve : set.curves()) {
+        for (ICurve2D curve : set.curves()) {
             if (curve instanceof QuadBezierCurve2D)
                 result.add((QuadBezierCurve2D) curve);
         }
@@ -461,11 +447,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Returns the approximate bounding box of this curve. Actually, computes
-     * the bounding box of the set of control points.
+     * Returns the approximate bounding box of this curve. Actually, computes the bounding box of the set of control points.
      */
     public Box2D boundingBox() {
-    	Point2D p1 = this.firstPoint();
+        Point2D p1 = this.firstPoint();
         Point2D p2 = this.getControl();
         Point2D p3 = this.lastPoint();
         double xmin = Math.min(Math.min(p1.x(), p2.x()), p3.x());
@@ -476,14 +461,10 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
     }
 
     /**
-     * Returns the Bezier Curve transformed by the given AffineTransform2D. This
-     * is simply done by transforming control points of the curve.
+     * Returns the Bezier Curve transformed by the given AffineTransform2D. This is simply done by transforming control points of the curve.
      */
     public QuadBezierCurve2D transform(AffineTransform2D trans) {
-        return new QuadBezierCurve2D(
-                trans.transform(this.firstPoint()), 
-                trans.transform(this.getControl()),
-                trans.transform(this.lastPoint()));
+        return new QuadBezierCurve2D(trans.transform(this.firstPoint()), trans.transform(this.getControl()), trans.transform(this.lastPoint()));
     }
 
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
@@ -503,64 +484,77 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
         return path;
     }
 
+    // ===================================================================
+    // methods implementing the GeometricObject2D interface
 
-	// ===================================================================
-	// methods implementing the GeometricObject2D interface
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+     */
+    public boolean almostEquals(IGeometricObject2D obj, double eps) {
+        if (this == obj)
+            return true;
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
-	 */
-    public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this==obj)
-    		return true;
-    	
-        if(!(obj instanceof QuadBezierCurve2D))
+        if (!(obj instanceof QuadBezierCurve2D))
             return false;
-        
+
         // Class cast
         QuadBezierCurve2D bezier = (QuadBezierCurve2D) obj;
-        
+
         // Compare each field
-        if(Math.abs(this.x1-bezier.x1)>eps) return false;
-        if(Math.abs(this.y1-bezier.y1)>eps) return false;
-        if(Math.abs(this.ctrlx-bezier.ctrlx)>eps) return false;
-        if(Math.abs(this.ctrly-bezier.ctrly)>eps) return false;
-        if(Math.abs(this.x2-bezier.x2)>eps) return false;
-        if(Math.abs(this.y2-bezier.y2)>eps) return false;
-        
+        if (Math.abs(this.x1 - bezier.x1) > eps)
+            return false;
+        if (Math.abs(this.y1 - bezier.y1) > eps)
+            return false;
+        if (Math.abs(this.ctrlx - bezier.ctrlx) > eps)
+            return false;
+        if (Math.abs(this.ctrly - bezier.ctrly) > eps)
+            return false;
+        if (Math.abs(this.x2 - bezier.x2) > eps)
+            return false;
+        if (Math.abs(this.y2 - bezier.y2) > eps)
+            return false;
+
         return true;
     }
 
-	// ===================================================================
-	// methods overriding the class Object
+    // ===================================================================
+    // methods overriding the class Object
 
     @Override
     public boolean equals(Object obj) {
-    	if (this==obj)
-    		return true;
-    	
-        if(!(obj instanceof QuadBezierCurve2D))
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof QuadBezierCurve2D))
             return false;
-        
+
         // Class cast
         QuadBezierCurve2D bezier = (QuadBezierCurve2D) obj;
-        
+
         // Compare each field
-        if(Math.abs(this.x1-bezier.x1)>Shape2D.ACCURACY) return false;
-        if(Math.abs(this.y1-bezier.y1)>Shape2D.ACCURACY) return false;
-        if(Math.abs(this.ctrlx-bezier.ctrlx)>Shape2D.ACCURACY) return false;
-        if(Math.abs(this.ctrly-bezier.ctrly)>Shape2D.ACCURACY) return false;
-        if(Math.abs(this.x2-bezier.x2)>Shape2D.ACCURACY) return false;
-        if(Math.abs(this.y2-bezier.y2)>Shape2D.ACCURACY) return false;
-        
+        if (Math.abs(this.x1 - bezier.x1) > IShape2D.ACCURACY)
+            return false;
+        if (Math.abs(this.y1 - bezier.y1) > IShape2D.ACCURACY)
+            return false;
+        if (Math.abs(this.ctrlx - bezier.ctrlx) > IShape2D.ACCURACY)
+            return false;
+        if (Math.abs(this.ctrly - bezier.ctrly) > IShape2D.ACCURACY)
+            return false;
+        if (Math.abs(this.x2 - bezier.x2) > IShape2D.ACCURACY)
+            return false;
+        if (Math.abs(this.y2 - bezier.y2) > IShape2D.ACCURACY)
+            return false;
+
         return true;
     }
-    
-	/**
-	 * @deprecated not necessary to clone immutable objects (0.11.2)
-	 */
-	@Deprecated
-	@Override
+
+    /**
+     * @deprecated not necessary to clone immutable objects (0.11.2)
+     */
+    @Deprecated
+    @Override
     public QuadBezierCurve2D clone() {
         return new QuadBezierCurve2D(x1, y1, ctrlx, ctrly, x2, y2);
     }

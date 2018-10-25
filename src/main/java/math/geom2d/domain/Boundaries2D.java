@@ -9,13 +9,13 @@ import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.UnboundedBox2DException;
-import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.IShape2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2D;
+import math.geom2d.exception.UnboundedBox2DException;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -26,22 +26,17 @@ import math.geom2d.polygon.Polyline2D;
 public abstract class Boundaries2D {
 
     /**
-     * Clip a curve, and return a CurveSet2D. If the curve is totally outside
-     * the box, return a CurveSet2D with 0 curves inside. If the curve is
-     * totally inside the box, return a CurveSet2D with only one curve, which is
-     * the original curve.
+     * Clip a curve, and return a CurveSet2D. If the curve is totally outside the box, return a CurveSet2D with 0 curves inside. If the curve is totally inside the box, return a CurveSet2D with only one curve, which is the original curve.
      */
-    public final static CurveSet2D<ContinuousOrientedCurve2D> 
-    clipContinuousOrientedCurve(ContinuousOrientedCurve2D curve, Box2D box) {
+    public final static ICurveSet2D<IContinuousOrientedCurve2D> clipContinuousOrientedCurve(IContinuousOrientedCurve2D curve, Box2D box) {
 
-    	// create result array
-    	CurveArray2D<ContinuousOrientedCurve2D> result = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>();
-    	
-    	// for each clipped curve, add its pieces
-        for (ContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
-            if (cont instanceof ContinuousOrientedCurve2D)
-                result.add((ContinuousOrientedCurve2D) cont);
+        // create result array
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>();
+
+        // for each clipped curve, add its pieces
+        for (IContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
+            if (cont instanceof IContinuousOrientedCurve2D)
+                result.add((IContinuousOrientedCurve2D) cont);
 
         return result;
 
@@ -51,20 +46,20 @@ public abstract class Boundaries2D {
         // // add the intersections with edges of the box boundary
         // for(StraightObject2D edge : box.getEdges())
         // points.addAll(curve.getIntersections(edge));
-        //		
+        //
         // // convert list to point array, sorted wrt to their position on the
         // curve
         // SortedSet<java.lang.Double> set = new TreeSet<java.lang.Double>();
         // for(Point2D p : points)
         // set.add(new java.lang.Double(curve.getPosition(p)));
-        //				
+        //
         // // Create curveset for storing the result
         // CurveSet2D<ContinuousOrientedCurve2D> res =
         // new CurveSet2D<ContinuousOrientedCurve2D>();
-        //				
+        //
         // // extract first point of the curve
         // Point2D point1 = curve.getFirstPoint();
-        //		
+        //
         // // case of empty curve set, for example
         // if(point1==null)
         // return res;
@@ -76,17 +71,17 @@ public abstract class Boundaries2D {
         // res.addCurve(curve);
         // return res;
         // }
-        //		
+        //
         // double pos1, pos2;
         // Iterator<java.lang.Double> iter = set.iterator();
-        //		
+        //
         // double pos0=0;
-        //		
+        //
         // // different behavior depending if first point lies inside the box
         // if(box.contains(point1) && !box.getBoundary().contains(point1))
         // pos0 = iter.next().doubleValue();
-        //		
-        //		
+        //
+        //
         // // add the portions of curve between couples of intersections
         // while(iter.hasNext()){
         // pos1 = iter.next().doubleValue();
@@ -96,42 +91,39 @@ public abstract class Boundaries2D {
         // pos2 = pos0;
         // res.addCurve(curve.getSubCurve(pos1, pos2));
         // }
-        //		
+        //
         // return res;
     }
 
     /**
-     * Clips a boundary and closes the result curve. Returns an instance of
-     * ContourArray2D.
+     * Clips a boundary and closes the result curve. Returns an instance of ContourArray2D.
      */
-    public final static ContourArray2D<Contour2D> clipBoundary(
-            Boundary2D boundary, Box2D box) {
+    public final static ContourArray2D<IContour2D> clipBoundary(IBoundary2D boundary, Box2D box) {
 
-    	// basic check-up
+        // basic check-up
         if (!box.isBounded())
             throw new UnboundedBox2DException(box);
 
         // iteration variable
-        ContinuousOrientedCurve2D curve;
+        IContinuousOrientedCurve2D curve;
 
         // The set of boundary curves. Each curve of this set is either a
         // curve of the original boundary, or a composition of a portion of
         // original boundary with a portion of the box.
-		ContourArray2D<Contour2D> res = new ContourArray2D<Contour2D>();
+        ContourArray2D<IContour2D> res = new ContourArray2D<IContour2D>();
 
         // to store result of curve clipping
-        CurveSet2D<ContinuousOrientedCurve2D> clipped;
+        ICurveSet2D<IContinuousOrientedCurve2D> clipped;
 
         // to store set of all clipped curves
-        CurveArray2D<ContinuousOrientedCurve2D> curveSet = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>();
+        CurveArray2D<IContinuousOrientedCurve2D> curveSet = new CurveArray2D<IContinuousOrientedCurve2D>();
 
-        // Iterate on contours: clip each contour with box, 
+        // Iterate on contours: clip each contour with box,
         // and add clipped curves to the array 'curveSet'
-        for (Contour2D contour : boundary.continuousCurves()) {
+        for (IContour2D contour : boundary.continuousCurves()) {
             clipped = Boundaries2D.clipContinuousOrientedCurve(contour, box);
 
-            for (ContinuousOrientedCurve2D clip : clipped)
+            for (IContinuousOrientedCurve2D clip : clipped)
                 curveSet.add(clip);
         }
 
@@ -144,13 +136,13 @@ public abstract class Boundaries2D {
         boolean intersect = false;
 
         // also create array of curves
-        ContinuousOrientedCurve2D[] curves = new ContinuousOrientedCurve2D[nc];
+        IContinuousOrientedCurve2D[] curves = new IContinuousOrientedCurve2D[nc];
 
         // boundary of the box
-        Curve2D boxBoundary = box.boundary();
+        ICurve2D boxBoundary = box.boundary();
 
         // compute position on the box for first and last point of each curve
-        Iterator<ContinuousOrientedCurve2D> iter = curveSet.curves().iterator();
+        Iterator<IContinuousOrientedCurve2D> iter = curveSet.curves().iterator();
 
         for (int i = 0; i < nc; i++) {
             // save current curve
@@ -179,12 +171,12 @@ public abstract class Boundaries2D {
         // current index of curve
         int c = 0;
 
-		// iterate while there are boundary curve to build
-		while (c < nb) {
-			int ind = c;
-			// find the current curve (used curves are removed from array)
-			while (curves[ind] == null)
-				ind++;
+        // iterate while there are boundary curve to build
+        while (c < nb) {
+            int ind = c;
+            // find the current curve (used curves are removed from array)
+            while (curves[ind] == null)
+                ind++;
 
             // current curve
             curve = curves[ind];
@@ -192,11 +184,10 @@ public abstract class Boundaries2D {
             // if curve is closed, we can switch to next curve
             if (curve.isClosed()) {
                 // Add current boundary to the set of boundary curves
-                if (curve instanceof Contour2D) {
-                    res.add((Contour2D) curve);
+                if (curve instanceof IContour2D) {
+                    res.add((IContour2D) curve);
                 } else {
-                    BoundaryPolyCurve2D<ContinuousOrientedCurve2D> bnd = 
-                    	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
+                    BoundaryPolyCurve2D<IContinuousOrientedCurve2D> bnd = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>();
                     bnd.add(curve);
                     res.add(bnd);
                 }
@@ -208,8 +199,7 @@ public abstract class Boundaries2D {
             }
 
             // create a new Boundary curve
-            BoundaryPolyCurve2D<ContinuousOrientedCurve2D> boundary0 = 
-            	new BoundaryPolyCurve2D<ContinuousOrientedCurve2D>();
+            BoundaryPolyCurve2D<IContinuousOrientedCurve2D> boundary0 = new BoundaryPolyCurve2D<IContinuousOrientedCurve2D>();
 
             // add current curve to boundary curve
             boundary0.add(curve);
@@ -236,7 +226,7 @@ public abstract class Boundaries2D {
 
                 // add a link between previous curve and current curve
                 Point2D p0i = curve.firstPoint();
-				boundary0.add(getBoundaryPortion(box, p1, p0i));
+                boundary0.add(getBoundaryPortion(box, p1, p0i));
 
                 // add to current boundary
                 boundary0.add(curve);
@@ -284,30 +274,30 @@ public abstract class Boundaries2D {
     public final static int findNextCurveIndex(double[] positions, double pos) {
         int ind = -1;
         double posMin = java.lang.Double.MAX_VALUE;
-        for (int i = 0; i<positions.length; i++) {
+        for (int i = 0; i < positions.length; i++) {
             // avoid NaN
             if (java.lang.Double.isNaN(positions[i]))
                 continue;
             // avoid values before
-            if (positions[i]-pos<Shape2D.ACCURACY)
+            if (positions[i] - pos < IShape2D.ACCURACY)
                 continue;
 
             // test if closer that other points
-            if (positions[i]<posMin) {
+            if (positions[i] < posMin) {
                 ind = i;
                 posMin = positions[i];
             }
         }
 
-        if (ind!=-1)
+        if (ind != -1)
             return ind;
 
         // if not found, return index of smallest value (mean that pos is last
         // point on the boundary, so we need to start at the beginning).
-        for (int i = 0; i<positions.length; i++) {
+        for (int i = 0; i < positions.length; i++) {
             if (java.lang.Double.isNaN(positions[i]))
                 continue;
-            if (positions[i]-posMin<Shape2D.ACCURACY) {
+            if (positions[i] - posMin < IShape2D.ACCURACY) {
                 ind = i;
                 posMin = positions[i];
             }
@@ -318,14 +308,16 @@ public abstract class Boundaries2D {
     /**
      * Extracts a portion of the boundary of a bounded box.
      * 
-     * @param box the box from which one extract a portion of boundary
-     * @param p0 the first point of the portion
-     * @param p1 the last point of the portion
+     * @param box
+     *            the box from which one extract a portion of boundary
+     * @param p0
+     *            the first point of the portion
+     * @param p1
+     *            the last point of the portion
      * @return the portion of the bounding box boundary as a Polyline2D
      */
-    public final static Polyline2D getBoundaryPortion(Box2D box, Point2D p0,
-            Point2D p1) {
-        Boundary2D boundary = box.boundary();
+    public final static Polyline2D getBoundaryPortion(Box2D box, Point2D p0, Point2D p1) {
+        IBoundary2D boundary = box.boundary();
 
         // position of start and end points
         double t0 = boundary.position(p0);
@@ -336,8 +328,8 @@ public abstract class Boundaries2D {
         int ind1 = (int) Math.floor(t1);
 
         // Simple case: returns a polyline with only 2 vertices
-		if (ind0 == ind1 && t0 < t1)
-			return new Polyline2D(new Point2D[] { p0, p1 });
+        if (ind0 == ind1 && t0 < t1)
+            return new Polyline2D(new Point2D[] { p0, p1 });
 
         // Create an array to store vertices
         // Array can contain at most 6 vertices: 4 for the box corners,
@@ -347,14 +339,14 @@ public abstract class Boundaries2D {
         // add the first point.
         vertices.add(p0);
 
-		// compute index of first box boundary edge
-		int ind = (ind0 + 1) % 4;
+        // compute index of first box boundary edge
+        int ind = (ind0 + 1) % 4;
 
-		// add all vertices segments between the 2 end points
-		while (ind != ind1) {
-			vertices.add(boundary.point(ind));
-			ind = (ind + 1) % 4;
-		}
+        // add all vertices segments between the 2 end points
+        while (ind != ind1) {
+            vertices.add(boundary.point(ind));
+            ind = (ind + 1) % 4;
+        }
         vertices.add(boundary.point(ind));
 
         // add the last line segment

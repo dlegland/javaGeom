@@ -31,42 +31,42 @@ import math.geom2d.conic.CircleArc2D;
 
 public class PolyCurve2DTest extends TestCase {
 
-	/*
-	 * Test method for 'math.geom2d.PolyCurve2D.getSubCurve(double, double)'
-	 */
-	public void testGetSubCurve() {
-		double r = 10;
-		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
-		PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
-		set.add(arc1);
-		set.add(arc2);
-		
-		Curve2D sub1 = set.subCurve(0, 2);
-		assertTrue(sub1 instanceof CurveSet2D<?>);
-		assertTrue(sub1 instanceof PolyCurve2D<?>);
-		
-		CurveSet2D<?> subset = (PolyCurve2D<?>) sub1;
-		assertEquals(subset.size(), 2);
-	}
-	
-	/*
-	 * Test method for 'math.geom2d.PolyCurve2D.getClippedShape()'
-	 */
-	public void testClip() {
-		double r = 10;
-		double L = 40;
+    /*
+     * Test method for 'math.geom2d.PolyCurve2D.getSubCurve(double, double)'
+     */
+    public void testGetSubCurve() {
+        double r = 10;
+        CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
+        CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
+        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
+        set.add(arc1);
+        set.add(arc2);
 
-		Box2D box1 = new Box2D(-L/2, L/2, -L/2, L/2);
-		CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5*Math.PI/3, 2*Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2*Math.PI/3, 2*Math.PI/3);		
-		PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
-		set.add(arc1);
-		set.add(arc2);
-		
-		CurveSet2D<?> clipped = set.clip(box1);
-		Curve2D curve1 = clipped.firstCurve();
-		assertTrue(curve1 instanceof ContinuousCurve2D);
-	}
+        ICurve2D sub1 = set.subCurve(0, 2);
+        assertTrue(sub1 instanceof ICurveSet2D<?>);
+        assertTrue(sub1 instanceof PolyCurve2D<?>);
+
+        ICurveSet2D<?> subset = (PolyCurve2D<?>) sub1;
+        assertEquals(subset.size(), 2);
+    }
+
+    /*
+     * Test method for 'math.geom2d.PolyCurve2D.getClippedShape()'
+     */
+    public void testClip() {
+        double r = 10;
+        double L = 40;
+
+        Box2D box1 = new Box2D(-L / 2, L / 2, -L / 2, L / 2);
+        CircleArc2D arc1 = new CircleArc2D(0, 0, r, 5 * Math.PI / 3, 2 * Math.PI / 3);
+        CircleArc2D arc2 = new CircleArc2D(r, 0, r, 2 * Math.PI / 3, 2 * Math.PI / 3);
+        PolyCurve2D<CircleArc2D> set = new PolyCurve2D<CircleArc2D>();
+        set.add(arc1);
+        set.add(arc2);
+
+        ICurveSet2D<?> clipped = set.clip(box1);
+        ICurve2D curve1 = clipped.firstCurve();
+        assertTrue(curve1 instanceof IContinuousCurve2D);
+    }
 
 }

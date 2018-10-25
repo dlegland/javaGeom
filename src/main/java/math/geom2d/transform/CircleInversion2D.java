@@ -25,32 +25,31 @@
 
 package math.geom2d.transform;
 
-import math.geom2d.Angle2D;
+import math.geom2d.Angle2DUtil;
 import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 
 // Imports
 
 /**
- * circle inversion : performs a bijection between points outside the circle and
- * points inside the circle.
+ * circle inversion : performs a bijection between points outside the circle and points inside the circle.
  */
 public class CircleInversion2D implements Bijection2D {
 
     // ===================================================================
     // static constructors
 
-	public static CircleInversion2D create(Point2D center, double radius) {
-		return new CircleInversion2D(center, radius);
-	}
-	
-	public static CircleInversion2D create(Circle2D circle) {
-		return new CircleInversion2D(circle);
-	}
-	
+    public static CircleInversion2D create(Point2D center, double radius) {
+        return new CircleInversion2D(center, radius);
+    }
+
+    public static CircleInversion2D create(Circle2D circle) {
+        return new CircleInversion2D(circle);
+    }
+
     // ===================================================================
     // class variables
-	
+
     protected Point2D center;
     protected double radius;
 
@@ -58,8 +57,7 @@ public class CircleInversion2D implements Bijection2D {
     // constructors
 
     /**
-     * Construct a new circle inversion based on the unit circle centered on the
-     * origin.
+     * Construct a new circle inversion based on the unit circle centered on the origin.
      */
     public CircleInversion2D() {
         this.center = new Point2D();
@@ -85,32 +83,31 @@ public class CircleInversion2D implements Bijection2D {
     // accessors
 
     public Point2D center() {
-    	return center;
+        return center;
     }
-    
+
     public double radius() {
-    	return radius;
+        return radius;
     }
-   
-    
+
     // ===================================================================
     // methods implementing the Bijection2D interface
-    
-   /**
-    * Returns this circle inversion.
-    */
+
+    /**
+     * Returns this circle inversion.
+     */
     public CircleInversion2D invert() {
-    	return this;
+        return this;
     }
 
     // ===================================================================
     // methods implementing the Transform2D interface
 
     public Point2D transform(Point2D pt) {
-    	double r = radius;
-        
-        double d = r*r/Point2D.distance(pt, center);
-        double theta = Angle2D.horizontalAngle(center, pt);
+        double r = radius;
+
+        double d = r * r / Point2D.distance(pt, center);
+        double theta = Angle2DUtil.horizontalAngle(center, pt);
         return Point2D.createPolar(center, d, theta);
     }
 
@@ -121,24 +118,24 @@ public class CircleInversion2D implements Bijection2D {
         double xc, yc, r;
 
         // create the array if necessary
-        if (dst==null)
+        if (dst == null)
             dst = new Point2D[src.length];
 
         // create instances of Points if necessary
-        if (dst[0]==null)
-            for (int i = 0; i<dst.length; i++)
+        if (dst[0] == null)
+            for (int i = 0; i < dst.length; i++)
                 dst[i] = new Point2D();
 
         xc = center.x();
         yc = center.y();
-        r  = radius;
+        r = radius;
 
         // transform each point
-        for (int i = 0; i<src.length; i++) {
+        for (int i = 0; i < src.length; i++) {
             d = Point2D.distance(src[i].x(), src[i].y(), xc, yc);
-            d = r*r/d;
-            theta = Math.atan2(src[i].y()-yc, src[i].x()-xc);
-            dst[i] = new Point2D(d*Math.cos(theta), d*Math.sin(theta));
+            d = r * r / d;
+            theta = Math.atan2(src[i].y() - yc, src[i].x() - xc);
+            dst[i] = new Point2D(d * Math.cos(theta), d * Math.sin(theta));
         }
 
         return dst;

@@ -1,3 +1,4 @@
+
 /* file : DrawClippedReuleauxDemo.java
  * 
  * Project : Euclide
@@ -29,66 +30,65 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.Curve2D;
-import math.geom2d.domain.Boundary2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.Boundaries2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 
+public class DrawClippedReuleauxDemo extends JPanel {
 
-public class DrawClippedReuleauxDemo extends JPanel{
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	Boundary2D boundary = null;
-	
-	public DrawClippedReuleauxDemo() {
-		super();
-		
-		double x0 = 100;
-		double y0 = 150;
-		double r  = 100;
-		double d  = r*Math.sqrt(3)/2;
-		
-		CircleArc2D arc1 = new CircleArc2D(x0, y0, r, 4*Math.PI/3, Math.PI/3);
-		CircleArc2D arc2 = new CircleArc2D(x0-r/2, y0-d, r, 0, Math.PI/3);
-		CircleArc2D arc3 = new CircleArc2D(x0+r/2, y0-d, r, 2*Math.PI/3, Math.PI/3);
-		
-		BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
-		set.add(arc1);
-		set.add(arc2);
-		set.add(arc3);
-		
-		boundary = set;
-		System.out.println(boundary);
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
+    IBoundary2D boundary = null;
 
-		Box2D box = new Box2D(60, 140, 30, 180);
-		g2.setColor(Color.CYAN);
-		box.fill(g2);
-		
-		g2.setColor(Color.YELLOW);
-		boundary.fill(g2);
-		
-		g2.setColor(Color.BLUE);
-		boundary.fill(g2);
-		
-		Curve2D clipped = Boundaries2D.clipBoundary(boundary, box);
-		g2.setColor(Color.RED);
-		g2.setStroke(new BasicStroke(2));
-		clipped.draw(g2);
-	}
+    public DrawClippedReuleauxDemo() {
+        super();
 
-	public final static void main(String[] args){
-		System.out.println("should draw a Reuleaux triangle");
-		
-		JPanel panel = new DrawClippedReuleauxDemo();
-		JFrame frame = new JFrame("Draw Reuleaux demo");
-		frame.setContentPane(panel);
-		frame.setSize(400, 300);
-		frame.setVisible(true);
-		
-	}
+        double x0 = 100;
+        double y0 = 150;
+        double r = 100;
+        double d = r * Math.sqrt(3) / 2;
+
+        CircleArc2D arc1 = new CircleArc2D(x0, y0, r, 4 * Math.PI / 3, Math.PI / 3);
+        CircleArc2D arc2 = new CircleArc2D(x0 - r / 2, y0 - d, r, 0, Math.PI / 3);
+        CircleArc2D arc3 = new CircleArc2D(x0 + r / 2, y0 - d, r, 2 * Math.PI / 3, Math.PI / 3);
+
+        BoundaryPolyCurve2D<CircleArc2D> set = new BoundaryPolyCurve2D<CircleArc2D>();
+        set.add(arc1);
+        set.add(arc2);
+        set.add(arc3);
+
+        boundary = set;
+        System.out.println(boundary);
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        Box2D box = new Box2D(60, 140, 30, 180);
+        g2.setColor(Color.CYAN);
+        box.fill(g2);
+
+        g2.setColor(Color.YELLOW);
+        boundary.fill(g2);
+
+        g2.setColor(Color.BLUE);
+        boundary.fill(g2);
+
+        ICurve2D clipped = Boundaries2D.clipBoundary(boundary, box);
+        g2.setColor(Color.RED);
+        g2.setStroke(new BasicStroke(2));
+        clipped.draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("should draw a Reuleaux triangle");
+
+        JPanel panel = new DrawClippedReuleauxDemo();
+        JFrame frame = new JFrame("Draw Reuleaux demo");
+        frame.setContentPane(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+    }
 }

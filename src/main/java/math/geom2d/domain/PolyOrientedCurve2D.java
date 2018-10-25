@@ -30,89 +30,79 @@ package math.geom2d.domain;
 import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
-import math.geom2d.Angle2D;
+import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.ContinuousCurve2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.PolyCurve2D;
-import math.geom2d.curve.SmoothCurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.line.StraightLine2D;
 import static java.lang.Math.*;
 
-
 /**
- * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the
- * end of a curve is the beginning of the next curve, and such that they do not
- * intersect nor self-intersect.
+ * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the end of a curve is the beginning of the next curve, and such that they do not intersect nor self-intersect.
  * <p>
  * 
  * @see BoundaryPolyCurve2D
  * @author dlegland
  */
-public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
-        PolyCurve2D<T> implements ContinuousOrientedCurve2D {
+public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D {
 
     // ===================================================================
     // static constructors
 
     /**
-     * Static factory for creating a new PolyOrientedCurve2D from a collection of
-     * curves.
+     * Static factory for creating a new PolyOrientedCurve2D from a collection of curves.
+     * 
      * @since 0.8.1
      */
-    /*public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
-    create(Collection<T> curves) {
-    	return new PolyOrientedCurve2D<T>(curves);
-    }*/
-    
+    /*
+     * public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(Collection<T> curves) { return new PolyOrientedCurve2D<T>(curves); }
+     */
+
     /**
-     * Static factory for creating a new PolyOrientedCurve2D from an array of
-     * curves.
+     * Static factory for creating a new PolyOrientedCurve2D from an array of curves.
+     * 
      * @since 0.8.1
      */
-	@SafeVarargs
-    public static <T extends ContinuousOrientedCurve2D> 
-    PolyOrientedCurve2D<T> create(T... curves) {
-    	return new PolyOrientedCurve2D<T>(curves);
+    @SafeVarargs
+    public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(T... curves) {
+        return new PolyOrientedCurve2D<T>(curves);
     }
 
     /**
-     * Static factory for creating a new PolyOrientedCurve2D from an array of
-     * curves.
+     * Static factory for creating a new PolyOrientedCurve2D from an array of curves.
+     * 
      * @since 0.8.1
      */
-	@SafeVarargs
-    public static <T extends ContinuousOrientedCurve2D> 
-    PolyOrientedCurve2D<T> createClosed(T... curves) {
-    	return new PolyOrientedCurve2D<T>(curves, true);
+    @SafeVarargs
+    public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> createClosed(T... curves) {
+        return new PolyOrientedCurve2D<T>(curves, true);
     }
 
     /**
-     * Static factory for creating a new PolyOrientedCurve2D from a collection of
-     * curves and a flag indicating if the curve is closed or not.
+     * Static factory for creating a new PolyOrientedCurve2D from a collection of curves and a flag indicating if the curve is closed or not.
+     * 
      * @since 0.9.0
      */
-    /*public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T>
-    create(Collection<T> curves, boolean closed) {
-    	return new PolyOrientedCurve2D<T>(curves, closed);
-    }*/
-    
+    /*
+     * public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(Collection<T> curves, boolean closed) { return new PolyOrientedCurve2D<T>(curves, closed); }
+     */
+
     /**
-     * Static factory for creating a new PolyOrientedCurve2D from an array of
-     * curves and a flag indicating if the curve is closed or not.
+     * Static factory for creating a new PolyOrientedCurve2D from an array of curves and a flag indicating if the curve is closed or not.
+     * 
      * @since 0.9.0
      */
-    public static <T extends ContinuousOrientedCurve2D> 
-    PolyOrientedCurve2D<T> create(T[] curves, boolean closed) {
-    	return new PolyOrientedCurve2D<T>(curves, closed);
+    public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(T[] curves, boolean closed) {
+        return new PolyOrientedCurve2D<T>(curves, closed);
     }
 
-   
     // ===================================================================
     // Constructors
 
@@ -124,7 +114,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(size);
     }
 
-	@SafeVarargs
+    @SafeVarargs
     public PolyOrientedCurve2D(T... curves) {
         super(curves);
     }
@@ -141,13 +131,12 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         super(curves, closed);
     }
 
-    
     // ===================================================================
     // Methods specific to PolyOrientedCurve2D
 
     public double windingAngle(Point2D point) {
         double angle = 0;
-        for (OrientedCurve2D curve : this.curves)
+        for (IOrientedCurve2D curve : this.curves)
             angle += curve.windingAngle(point);
         return angle;
     }
@@ -171,8 +160,7 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
     }
 
     /**
-     * Determines if the given point lies within the domain bounded by this
-     * curve.
+     * Determines if the given point lies within the domain bounded by this curve.
      */
     public boolean isInside(Point2D point) {
         double pos = this.project(point);
@@ -181,19 +169,19 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
             // Simply call the method isInside on the child curve
             return this.childCurve(pos).isInside(point);
         }
-        
+
         // number of curves
         int n = this.size();
 
         // vertex index and position
         int i = this.curveIndex(pos);
         if (pos / 2 - i > .25)
-        	i++;
+            i++;
 
         // Test case of point equal to last position
         if (round(pos) == 2 * n - 1) {
-        	pos = 0;
-        	i = 0;
+            pos = 0;
+            i = 0;
         }
 
         Point2D vertex = this.point(pos);
@@ -215,142 +203,132 @@ public class PolyOrientedCurve2D<T extends ContinuousOrientedCurve2D> extends
         boolean in2 = new StraightLine2D(vertex, v2).isInside(point);
 
         // check if angle between vectors is acute or obtuse
-        double diff = Angle2D.angle(v1, v2);
+        double diff = Angle2DUtil.angle(v1, v2);
         double eps = 1e-12;
         if (diff < PI - eps) {
-        	// Acute angle
-        	return in1 && in2;
-        } 
-        
+            // Acute angle
+            return in1 && in2;
+        }
+
         if (diff > PI + eps) {
-        	// obtuse angle
+            // obtuse angle
             return in1 || in2;
         }
-        
+
         // Extract curvatures of both curves around singular point
-        SmoothCurve2D smoothPrev = Curves2D.getLastSmoothCurve(prev);
-        SmoothCurve2D smoothNext = Curves2D.getFirstSmoothCurve(next);
+        ISmoothCurve2D smoothPrev = Curves2D.getLastSmoothCurve(prev);
+        ISmoothCurve2D smoothNext = Curves2D.getFirstSmoothCurve(next);
         double kappaPrev = smoothPrev.curvature(smoothPrev.t1());
         double kappaNext = smoothNext.curvature(smoothNext.t0());
-        
+
         // get curvature signs
         double sp = Math.signum(kappaPrev);
         double sn = Math.signum(kappaNext);
-        
+
         // Both curvatures have same sign
         // -> point is inside if both curvature are positive
         if (sn * sp > 0) {
-        	return kappaPrev > 0 && kappaNext > 0;
+            return kappaPrev > 0 && kappaNext > 0;
         }
-        
+
         // One of the curvature is zero (straight curve)
-		if (sn * sp == 0) {
-			if (sn == 0 && sp == 0) {
-				throw new IllegalArgumentException("colinear lines...");
-			}
-			
-			if (sp == 0)
-				return kappaNext > 0;
-			else
-				return kappaPrev > 0;
-		}
-        
-		// if curvatures have opposite signs, curves point in the same
-		// direction but with opposite direction.
-		if (kappaPrev > 0 && kappaNext < 0) {
-			return Math.abs(kappaPrev) > Math.abs(kappaNext);
-		} else {
-			return Math.abs(kappaPrev) < Math.abs(kappaNext);
-		}
+        if (sn * sp == 0) {
+            if (sn == 0 && sp == 0) {
+                throw new IllegalArgumentException("colinear lines...");
+            }
+
+            if (sp == 0)
+                return kappaNext > 0;
+            else
+                return kappaPrev > 0;
+        }
+
+        // if curvatures have opposite signs, curves point in the same
+        // direction but with opposite direction.
+        if (kappaPrev > 0 && kappaNext < 0) {
+            return Math.abs(kappaPrev) > Math.abs(kappaNext);
+        } else {
+            return Math.abs(kappaPrev) < Math.abs(kappaNext);
+        }
     }
-    
+
     /**
      * Computes the tangent of the curve at the given position.
      */
-    private static Vector2D computeTangent(ContinuousCurve2D curve, double pos) {
+    private static Vector2D computeTangent(IContinuousCurve2D curve, double pos) {
         // For smooth curves, simply call the getTangent() method
-        if (curve instanceof SmoothCurve2D)
-            return ((SmoothCurve2D) curve).tangent(pos);
+        if (curve instanceof ISmoothCurve2D)
+            return ((ISmoothCurve2D) curve).tangent(pos);
 
         // Extract sub curve and recursively call this method on the sub curve
-        if (curve instanceof CurveSet2D<?>) {
-            CurveSet2D<?> curveSet = (CurveSet2D<?>) curve;
+        if (curve instanceof ICurveSet2D<?>) {
+            ICurveSet2D<?> curveSet = (ICurveSet2D<?>) curve;
             double pos2 = curveSet.localPosition(pos);
-            Curve2D subCurve = curveSet.childCurve(pos);
-            return computeTangent((ContinuousCurve2D) subCurve, pos2);
+            ICurve2D subCurve = curveSet.childCurve(pos);
+            return computeTangent((IContinuousCurve2D) subCurve, pos2);
         }
 
-        throw new IllegalArgumentException(
-        		"Unknown type of curve: should be either continuous or curveset");
+        throw new IllegalArgumentException("Unknown type of curve: should be either continuous or curveset");
     }
 
     @Override
-    public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> reverse() {
-        ContinuousOrientedCurve2D[] curves2 = 
-        	new ContinuousOrientedCurve2D[curves.size()];
+    public PolyOrientedCurve2D<? extends IContinuousOrientedCurve2D> reverse() {
+        IContinuousOrientedCurve2D[] curves2 = new IContinuousOrientedCurve2D[curves.size()];
         int n = curves.size();
         for (int i = 0; i < n; i++)
-            curves2[i] = curves.get(n-1-i).reverse();
-        return new PolyOrientedCurve2D<ContinuousOrientedCurve2D>(curves2);
+            curves2[i] = curves.get(n - 1 - i).reverse();
+        return new PolyOrientedCurve2D<IContinuousOrientedCurve2D>(curves2);
     }
 
     /**
      * Returns a portion of this curve as an instance of PolyOrientedCurve2D.
      */
     @Override
-    public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> subCurve(
-            double t0, double t1) {
+    public PolyOrientedCurve2D<? extends IContinuousOrientedCurve2D> subCurve(double t0, double t1) {
         PolyCurve2D<?> set = super.subCurve(t0, t1);
-        PolyOrientedCurve2D<ContinuousOrientedCurve2D> subCurve = 
-        	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
+        PolyOrientedCurve2D<IContinuousOrientedCurve2D> subCurve = new PolyOrientedCurve2D<IContinuousOrientedCurve2D>();
         subCurve.setClosed(false);
 
         // convert to PolySmoothCurve by adding curves.
-        for (Curve2D curve : set.curves())
-            subCurve.add((ContinuousOrientedCurve2D) curve);
+        for (ICurve2D curve : set.curves())
+            subCurve.add((IContinuousOrientedCurve2D) curve);
 
         return subCurve;
     }
 
     /**
-     * Clips the PolyCurve2D by a box. 
-     * The result is an instance of CurveSet2D,
-     * which contains only instances of ContinuousOrientedCurve2D. If the
-     * PolyCurve2D is not clipped, the result is an instance of 
-     * CurveSet2D which contains 0 curves.
+     * Clips the PolyCurve2D by a box. The result is an instance of CurveSet2D, which contains only instances of ContinuousOrientedCurve2D. If the PolyCurve2D is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
     @Override
-    public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
+    public ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();
-        CurveArray2D<ContinuousOrientedCurve2D> result = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>(n);
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>(n);
 
         // convert the result
-        for (Curve2D curve : set.curves()) {
-            if (curve instanceof ContinuousOrientedCurve2D)
-                result.add((ContinuousOrientedCurve2D) curve);
+        for (ICurve2D curve : set.curves()) {
+            if (curve instanceof IContinuousOrientedCurve2D)
+                result.add((IContinuousOrientedCurve2D) curve);
         }
         return result;
     }
 
     @Override
-    public PolyOrientedCurve2D<? extends ContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
-        PolyOrientedCurve2D<ContinuousOrientedCurve2D> result = 
-        	new PolyOrientedCurve2D<ContinuousOrientedCurve2D>();
-        for (ContinuousOrientedCurve2D curve : curves)
+    public PolyOrientedCurve2D<? extends IContinuousOrientedCurve2D> transform(AffineTransform2D trans) {
+        PolyOrientedCurve2D<IContinuousOrientedCurve2D> result = new PolyOrientedCurve2D<IContinuousOrientedCurve2D>();
+        for (IContinuousOrientedCurve2D curve : curves)
             result.add(curve.transform(trans));
         result.setClosed(this.closed);
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         // check class
-        if (!(obj instanceof CurveSet2D<?>))
+        if (!(obj instanceof ICurveSet2D<?>))
             return false;
         // call superclass method
         return super.equals(obj);

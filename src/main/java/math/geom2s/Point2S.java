@@ -33,12 +33,12 @@ package math.geom2s;
  */
 public class Point2S implements Shape2S {
 
-	double phi;
-	double theta;
-	
+    double phi;
+    double theta;
+
     public Point2S(double phi, double theta) {
-    	this.phi = phi;
-    	this.theta = theta;
+        this.phi = phi;
+        this.theta = theta;
     }
 
 }

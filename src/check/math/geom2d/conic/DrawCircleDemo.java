@@ -31,33 +31,32 @@ import javax.swing.*;
 
 import math.geom2d.conic.Circle2D;
 
+public class DrawCircleDemo extends JPanel {
 
-public class DrawCircleDemo extends JPanel{
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	Circle2D circle = new Circle2D(100, 100, 50);
-	
-	public DrawCircleDemo() {
-		super();
-	}
-	
-	public void paintComponent(Graphics g){
-		g.setColor(Color.CYAN);
-		g.fillRect(30, 30, 180, 150);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.BLUE);
-		circle.draw(g2);
-	}
+    Circle2D circle = new Circle2D(100, 100, 50);
 
-	public final static void main(String[] args){
-		System.out.println("should draw a circle");
-		
-		JPanel panel = new DrawCircleDemo();
-		JFrame frame = new JFrame("Draw circle demo");
-		frame.setContentPane(panel);
-		frame.setSize(400, 300);
-		frame.setVisible(true);
-		
-	}
+    public DrawCircleDemo() {
+        super();
+    }
+
+    public void paintComponent(Graphics g) {
+        g.setColor(Color.CYAN);
+        g.fillRect(30, 30, 180, 150);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.BLUE);
+        circle.draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        System.out.println("should draw a circle");
+
+        JPanel panel = new DrawCircleDemo();
+        JFrame frame = new JFrame("Draw circle demo");
+        frame.setContentPane(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+    }
 }

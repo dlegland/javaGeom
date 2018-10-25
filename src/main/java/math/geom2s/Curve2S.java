@@ -27,8 +27,7 @@
 package math.geom2s;
 
 /**
- * Interface for 1-dimension shapes defined on the 2 dimensions sphere, such as
- * small and great circle, and corresponding arcs.
+ * Interface for 1-dimension shapes defined on the 2 dimensions sphere, such as small and great circle, and corresponding arcs.
  * 
  * @author Legland
  */

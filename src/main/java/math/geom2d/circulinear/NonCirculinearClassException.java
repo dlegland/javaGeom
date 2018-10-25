@@ -8,19 +8,18 @@
  */
 package math.geom2d.circulinear;
 
-
 /**
  * @author dlegland
  *
  */
 public class NonCirculinearClassException extends NonCirculinearShape2DException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	public NonCirculinearClassException(Object obj) {
-		super(obj);
-	}
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public NonCirculinearClassException(Object obj) {
+        super(obj);
+    }
 }

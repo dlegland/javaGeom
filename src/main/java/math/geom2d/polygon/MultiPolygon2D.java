@@ -8,42 +8,39 @@ import java.util.Collections;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.GeometricObject2D;
+import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
-import math.geom2d.circulinear.CirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
-import math.geom2d.domain.Boundary2D;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.IBoundary2D;
+import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
- * A polygonal domain whose boundary is composed of several disjoint continuous
- * LinearRing2D.
+ * A polygonal domain whose boundary is composed of several disjoint continuous LinearRing2D.
  * 
  * @author dlegland
  */
-public class MultiPolygon2D implements Domain2D, Polygon2D {
+public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     // ===================================================================
     // Static constructors
-	
-	public static MultiPolygon2D create(Collection<LinearRing2D> rings) {
-		return new MultiPolygon2D(rings);
-	}
 
-	public static MultiPolygon2D create(LinearRing2D... rings) {
-		return new MultiPolygon2D(rings);
-	}
+    public static MultiPolygon2D create(Collection<LinearRing2D> rings) {
+        return new MultiPolygon2D(rings);
+    }
 
-	
+    public static MultiPolygon2D create(LinearRing2D... rings) {
+        return new MultiPolygon2D(rings);
+    }
+
     // ===================================================================
     // class members
 
     ArrayList<LinearRing2D> rings = new ArrayList<LinearRing2D>(1);
 
-    
     // ===================================================================
     // Constructors
 
@@ -51,11 +48,10 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     /**
-     * Ensures the inner buffer has enough capacity for storing the required
-     * number of rings.
+     * Ensures the inner buffer has enough capacity for storing the required number of rings.
      */
     public MultiPolygon2D(int nRings) {
-    	this.rings.ensureCapacity(nRings);
+        this.rings.ensureCapacity(nRings);
     }
 
     public MultiPolygon2D(LinearRing2D... rings) {
@@ -63,12 +59,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
             this.rings.add(ring);
     }
 
-    public MultiPolygon2D(Polygon2D polygon) {
-    	if (polygon instanceof SimplePolygon2D) {
-    		rings.add(((SimplePolygon2D) polygon).getRing());
-    	} else {
-    		rings.addAll(polygon.boundary().curves());
-    	}
+    public MultiPolygon2D(IPolygon2D polygon) {
+        if (polygon instanceof SimplePolygon2D) {
+            rings.add(((SimplePolygon2D) polygon).getRing());
+        } else {
+            rings.addAll(polygon.boundary().curves());
+        }
     }
 
     public MultiPolygon2D(Collection<LinearRing2D> lines) {
@@ -83,17 +79,17 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     public void insertRing(int index, LinearRing2D ring) {
-    	rings.add(index, ring);
+        rings.add(index, ring);
     }
-    
+
     public void removeRing(LinearRing2D ring) {
         rings.remove(ring);
     }
 
     public void clearRings() {
-    	rings.clear();
+        rings.clear();
     }
-    
+
     public LinearRing2D getRing(int index) {
         return rings.get(index);
     }
@@ -106,30 +102,31 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return rings.size();
     }
 
-    
     // ===================================================================
     // methods implementing the Polygon2D interface
 
     /**
-     * Computes the signed area of the polygon. 
+     * Computes the signed area of the polygon.
+     * 
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
     public double area() {
-    	return Polygons2D.computeArea(this);
+        return Polygons2D.computeArea(this);
     }
 
     /**
-     * Computes the centroid (center of mass) of the polygon. 
+     * Computes the centroid (center of mass) of the polygon.
+     * 
      * @return the centroid of the polygon
      * @since 0.9.1
      */
     public Point2D centroid() {
-    	return Polygons2D.computeCentroid(this);
+        return Polygons2D.computeCentroid(this);
     }
 
     public Collection<LineSegment2D> edges() {
-    	int nEdges = edgeNumber();
+        int nEdges = edgeNumber();
         ArrayList<LineSegment2D> edges = new ArrayList<LineSegment2D>(nEdges);
         for (LinearRing2D ring : rings)
             edges.addAll(ring.edges());
@@ -144,7 +141,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     }
 
     public Collection<Point2D> vertices() {
-    	int nv = vertexNumber();
+        int nv = vertexNumber();
         ArrayList<Point2D> points = new ArrayList<Point2D>(nv);
         for (LinearRing2D ring : rings)
             points.addAll(ring.vertices());
@@ -154,7 +151,8 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     /**
      * Returns the i-th vertex of the polygon.
      * 
-     * @param i index of the vertex, between 0 and the number of vertices minus one
+     * @param i
+     *            index of the vertex, between 0 and the number of vertices minus one
      */
     public Point2D vertex(int i) {
         int count = 0;
@@ -172,13 +170,14 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         if (boundary == null)
             throw new IndexOutOfBoundsException();
 
-        return boundary.vertex(i-count);
+        return boundary.vertex(i - count);
     }
 
     /**
      * Sets the position of the i-th vertex of this polygon.
      * 
-     * @param i index of the vertex, between 0 and the number of vertices
+     * @param i
+     *            index of the vertex, between 0 and the number of vertices
      */
     public void setVertex(int i, Point2D point) {
         int count = 0;
@@ -196,44 +195,45 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         if (boundary == null)
             throw new IndexOutOfBoundsException();
 
-        boundary.setVertex(i-count, point);
+        boundary.setVertex(i - count, point);
     }
 
-	/**
-	 * Adds a vertex at the end of the last ring of this polygon.
-	 * 
-	 * @throws RuntimeException
-	 *             if this MultiPolygon does not contain any ring
-	 */
+    /**
+     * Adds a vertex at the end of the last ring of this polygon.
+     * 
+     * @throws RuntimeException
+     *             if this MultiPolygon does not contain any ring
+     */
     public void addVertex(Point2D position) {
-    	// get the last ring
-    	if (rings.size() == 0) {
-    		throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
-    	}
-		LinearRing2D ring = rings.get(rings.size() - 1);
-		ring.addVertex(position);
+        // get the last ring
+        if (rings.size() == 0) {
+            throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
+        }
+        LinearRing2D ring = rings.get(rings.size() - 1);
+        ring.addVertex(position);
     }
-    
+
     /**
      * Inserts a vertex at the given position
      * 
-     * @throws RuntimeException if this polygon has no ring
-     * @throws IllegalArgumentException if index is not smaller than vertex number
+     * @throws RuntimeException
+     *             if this polygon has no ring
+     * @throws IllegalArgumentException
+     *             if index is not smaller than vertex number
      */
     public void insertVertex(int index, Point2D point) {
-    	// check number of rings
-    	if (rings.size() == 0) {
-    		throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
-    	}
-    	
-    	// Check number of vertices
-    	int nv = this.vertexNumber();
-    	if (nv <= index) {
-    		throw new IllegalArgumentException("Can not insert vertex at position " +
-    				index + " (max is " + nv + ")");
-    	}
-    	
-    	// Find the ring that correspond to index
+        // check number of rings
+        if (rings.size() == 0) {
+            throw new RuntimeException("Can not add a vertex to a multipolygon with no ring");
+        }
+
+        // Check number of vertices
+        int nv = this.vertexNumber();
+        if (nv <= index) {
+            throw new IllegalArgumentException("Can not insert vertex at position " + index + " (max is " + nv + ")");
+        }
+
+        // Find the ring that correspond to index
         int count = 0;
         LinearRing2D boundary = null;
 
@@ -249,13 +249,14 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         if (boundary == null)
             throw new IndexOutOfBoundsException();
 
-        boundary.insertVertex(index-count, point);
+        boundary.insertVertex(index - count, point);
     }
 
     /**
      * Returns the i-th vertex of the polygon.
      * 
-     * @param i index of the vertex, between 0 and the number of vertices minus one
+     * @param i
+     *            index of the vertex, between 0 and the number of vertices minus one
      */
     public void removeVertex(int i) {
         int count = 0;
@@ -273,13 +274,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         if (boundary == null)
             throw new IndexOutOfBoundsException();
 
-        boundary.removeVertex(i-count);
+        boundary.removeVertex(i - count);
     }
 
     /**
-     * Returns the total number of vertices in this polygon. 
-     * The total number is computed as the sum of vertex number in each ring
-     * of the polygon.
+     * Returns the total number of vertices in this polygon. The total number is computed as the sum of vertex number in each ring of the polygon.
      */
     public int vertexNumber() {
         int count = 0;
@@ -292,71 +291,76 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
      * Computes the index of the closest vertex to the input point.
      */
     public int closestVertexIndex(Point2D point) {
-    	double minDist = Double.POSITIVE_INFINITY;
-    	int index = -1;
-    	
-    	int i = 0;
-    	for (LinearRing2D ring : this.rings) {
-    		for (Point2D vertex : ring.vertices()) {
-    			double dist = vertex.distance(point);
-        		if (dist < minDist) {
-        			index = i;
-        			minDist = dist;
-        		}
-        		i++;
-    		}
-    		
-    	}
-    	
-    	return index;
-    }
-    
+        double minDist = Double.POSITIVE_INFINITY;
+        int index = -1;
 
-	// ===================================================================
+        int i = 0;
+        for (LinearRing2D ring : this.rings) {
+            for (Point2D vertex : ring.vertices()) {
+                double dist = vertex.distance(point);
+                if (dist < minDist) {
+                    index = i;
+                    minDist = dist;
+                }
+                i++;
+            }
+
+        }
+
+        return index;
+    }
+
+    // ===================================================================
     // methods implementing the Domain2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
-	 */
-	public CirculinearDomain2D transform(CircleInversion2D inv) {
-		return new GenericCirculinearDomain2D(
-				this.boundary().transform(inv).reverse());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
+     */
+    public ICirculinearDomain2D transform(CircleInversion2D inv) {
+        return new GenericCirculinearDomain2D(this.boundary().transform(inv).reverse());
+    }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
-	 */
-	public CirculinearDomain2D buffer(double dist) {
-		return Polygons2D.createBuffer(this, dist);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
+     */
+    public ICirculinearDomain2D buffer(double dist) {
+        return Polygons2D.createBuffer(this, dist);
+    }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#asPolygon(int)
-	 */
-	public Polygon2D asPolygon(int n) {
-		return this;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.domain.Domain2D#asPolygon(int)
+     */
+    public IPolygon2D asPolygon(int n) {
+        return this;
+    }
 
     public CirculinearContourArray2D<LinearRing2D> boundary() {
         return CirculinearContourArray2D.create(rings.toArray(new LinearRing2D[0]));
     }
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.domain.Domain2D#contours()
-	 */
-	public Collection<LinearRing2D> contours() {
-		return Collections.unmodifiableList(rings);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.domain.Domain2D#contours()
+     */
+    public Collection<LinearRing2D> contours() {
+        return Collections.unmodifiableList(rings);
+    }
 
-    public Polygon2D complement() {
+    public IPolygon2D complement() {
         // allocate memory for array of reversed rings
-        ArrayList<LinearRing2D> reverseLines = 
-        	new ArrayList<LinearRing2D>(rings.size());
-        
+        ArrayList<LinearRing2D> reverseLines = new ArrayList<LinearRing2D>(rings.size());
+
         // reverse each ring
         for (LinearRing2D ring : rings)
             reverseLines.add(ring.reverse());
-        
+
         // create the new MultiMpolygon2D with set of reversed rings
         return new MultiPolygon2D(reverseLines);
     }
@@ -366,14 +370,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 
     public Box2D boundingBox() {
         // start with empty bounding box
-        Box2D box = new Box2D(
-        		Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 
-                Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        
+        Box2D box = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+
         // compute union of all bounding boxes
         for (LinearRing2D ring : this.rings)
             box = box.union(ring.boundingBox());
-        
+
         // return result
         return box;
     }
@@ -381,8 +383,8 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     /**
      * Clips the polygon with the specified box.
      */
-    public Polygon2D clip(Box2D box) {
-    	return Polygons2D.clipPolygon(this, box);
+    public IPolygon2D clip(Box2D box) {
+        return Polygons2D.clipPolygon(this, box);
     }
 
     public double distance(Point2D p) {
@@ -395,7 +397,7 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 
     public boolean isBounded() {
         // If boundary is not bounded, the polygon is not
-        Boundary2D boundary = this.boundary();
+        IBoundary2D boundary = this.boundary();
         if (!boundary.isBounded())
             return false;
 
@@ -405,12 +407,11 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
             area += ring.area();
 
         // bounded if positive area
-        return area>0;
+        return area > 0;
     }
 
     /**
-     * The MultiPolygon2D is empty either if it contains no ring, or if all
-     * rings are empty.
+     * The MultiPolygon2D is empty either if it contains no ring, or if all rings are empty.
      */
     public boolean isEmpty() {
         // return true if at least one ring is not empty
@@ -422,13 +423,12 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
 
     public MultiPolygon2D transform(AffineTransform2D trans) {
         // allocate memory for transformed rings
-        ArrayList<LinearRing2D> transformed = 
-            new ArrayList<LinearRing2D>(rings.size());
-        
+        ArrayList<LinearRing2D> transformed = new ArrayList<LinearRing2D>(rings.size());
+
         // transform each ring
         for (LinearRing2D ring : rings)
             transformed.add(ring.transform(trans));
-        
+
         // creates a new MultiPolygon2D with the set of trasnformed rings
         return new MultiPolygon2D(transformed);
     }
@@ -437,13 +437,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         double angle = 0;
         for (LinearRing2D ring : this.rings)
             angle += ring.windingAngle(point);
-      
+
         double area = this.area();
-    	if (area > 0) {
-    		return angle > Math.PI;
-    	} else {
-    		return angle > -Math.PI;
-    	}
+        if (area > 0) {
+            return angle > Math.PI;
+        } else {
+            return angle > -Math.PI;
+        }
     }
 
     public boolean contains(double x, double y) {
@@ -457,70 +457,71 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
     public void fill(Graphics2D g) {
         g.fill(this.boundary().getGeneralPath());
     }
-    
 
-	// ===================================================================
-	// methods implementing the GeometricObject2D interface
+    // ===================================================================
+    // methods implementing the GeometricObject2D interface
 
-	/* (non-Javadoc)
-	 * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
-	 */
-    public boolean almostEquals(GeometricObject2D obj, double eps) {
-    	if (this == obj)
-    		return true;
-    	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
+     */
+    public boolean almostEquals(IGeometricObject2D obj, double eps) {
+        if (this == obj)
+            return true;
+
         if (!(obj instanceof MultiPolygon2D))
             return false;
         MultiPolygon2D polygon = (MultiPolygon2D) obj;
 
         // check if the two objects have same number of rings
-        if (polygon.rings.size() != this.rings.size()) 
+        if (polygon.rings.size() != this.rings.size())
             return false;
-        
+
         // check each couple of ring
         for (int i = 0; i < rings.size(); i++)
-            if(!this.rings.get(i).almostEquals(polygon.rings.get(i), eps))
+            if (!this.rings.get(i).almostEquals(polygon.rings.get(i), eps))
                 return false;
-        
+
         return true;
     }
 
-	// ===================================================================
-	// methods overriding the Object class
+    // ===================================================================
+    // methods overriding the Object class
 
-	@Override
+    @Override
     public boolean equals(Object obj) {
-    	if (this == obj)
-    		return true;
+        if (this == obj)
+            return true;
 
-    	if (!(obj instanceof MultiPolygon2D))
+        if (!(obj instanceof MultiPolygon2D))
             return false;
-        
+
         // check if the two objects have same number of rings
         MultiPolygon2D polygon = (MultiPolygon2D) obj;
-        if (polygon.rings.size() != this.rings.size()) 
+        if (polygon.rings.size() != this.rings.size())
             return false;
-        
+
         // check each couple of ring
         for (int i = 0; i < rings.size(); i++)
             if (!this.rings.get(i).equals(polygon.rings.get(i)))
                 return false;
-        
+
         return true;
     }
-   
-	/**
-	 * @deprecated use copy constructor instead (0.11.2)
-	 */
-	@Deprecated
+
+    /**
+     * @deprecated use copy constructor instead (0.11.2)
+     */
+    @Deprecated
     public MultiPolygon2D clone() {
         // allocate memory for new ring array
         ArrayList<LinearRing2D> array = new ArrayList<LinearRing2D>(rings.size());
-        
+
         // clone each ring
-        for(LinearRing2D ring : rings)
+        for (LinearRing2D ring : rings)
             array.add(new LinearRing2D(ring));
-        
+
         // create a new polygon with cloned rings
         return new MultiPolygon2D(array);
     }

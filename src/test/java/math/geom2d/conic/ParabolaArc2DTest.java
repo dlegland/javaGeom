@@ -30,283 +30,277 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 import math.geom2d.Point2D;
-import math.geom2d.Shape2D;
-import math.geom2d.curve.Curve2D;
+import math.geom2d.IShape2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2D;
-import math.geom2d.curve.CurveSet2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.LinearCurve2D;
 
 public class ParabolaArc2DTest extends TestCase {
 
-	/**
-	 * Constructor for Point2DTest.
-	 * @param arg0
-	 */
-	public ParabolaArc2DTest(String arg0) {
-		super(arg0);
-	}
+    /**
+     * Constructor for Point2DTest.
+     * 
+     * @param arg0
+     */
+    public ParabolaArc2DTest(String arg0) {
+        super(arg0);
+    }
 
-	public void testGetPoint(){
-		
-		// Vertical parabola
-		ParabolaArc2D arc = new ParabolaArc2D(
-				new Parabola2D(0, 0, 1, 0), -5, 5);		
-		Point2D p0;
-		
-		// origin
-		p0 = arc.point(0);
-		assertEquals(p0, new Point2D(0, 0));
+    public void testGetPoint() {
 
-		// after origin
-		p0 = arc.point(1);
-		assertEquals(p0, new Point2D(1, 1));
-		p0 = arc.point(2);
-		assertEquals(p0, new Point2D(2, 4));
-		
-		// before origin
-		p0 = arc.point(-1);
-		assertEquals(p0, new Point2D(-1, 1));
-		p0 = arc.point(-2);
-		assertEquals(p0, new Point2D(-2, 4));
+        // Vertical parabola
+        ParabolaArc2D arc = new ParabolaArc2D(new Parabola2D(0, 0, 1, 0), -5, 5);
+        Point2D p0;
 
+        // origin
+        p0 = arc.point(0);
+        assertEquals(p0, new Point2D(0, 0));
 
-		// Horizontal parabola (pointing to the right)
-		arc = new ParabolaArc2D(new Parabola2D(0, 0, 1, -Math.PI/2), -5, 5);	
+        // after origin
+        p0 = arc.point(1);
+        assertEquals(p0, new Point2D(1, 1));
+        p0 = arc.point(2);
+        assertEquals(p0, new Point2D(2, 4));
 
-		// origin
-		p0 = arc.point(0);
-		assertEquals(p0, new Point2D(0, 0));
+        // before origin
+        p0 = arc.point(-1);
+        assertEquals(p0, new Point2D(-1, 1));
+        p0 = arc.point(-2);
+        assertEquals(p0, new Point2D(-2, 4));
 
-		// after origin
-		p0 = arc.point(1);
-		assertEquals(p0, new Point2D(1, -1));
-		p0 = arc.point(2);
-		assertEquals(p0, new Point2D(4, -2));
+        // Horizontal parabola (pointing to the right)
+        arc = new ParabolaArc2D(new Parabola2D(0, 0, 1, -Math.PI / 2), -5, 5);
 
-		// before origin
-		p0 = arc.point(-1);
-		assertEquals(p0, new Point2D(1, 1));
-		p0 = arc.point(-2);
-		assertEquals(p0, new Point2D(4, 2));
+        // origin
+        p0 = arc.point(0);
+        assertEquals(p0, new Point2D(0, 0));
 
+        // after origin
+        p0 = arc.point(1);
+        assertEquals(p0, new Point2D(1, -1));
+        p0 = arc.point(2);
+        assertEquals(p0, new Point2D(4, -2));
 
-		// Shifted horizontal parabola
-		arc = new ParabolaArc2D(new Parabola2D(20, 10, 1, -Math.PI/2), -5, 5);	
+        // before origin
+        p0 = arc.point(-1);
+        assertEquals(p0, new Point2D(1, 1));
+        p0 = arc.point(-2);
+        assertEquals(p0, new Point2D(4, 2));
 
-		// origin
-		p0 = arc.point(0);
-		assertEquals(p0, new Point2D(20, 10));
+        // Shifted horizontal parabola
+        arc = new ParabolaArc2D(new Parabola2D(20, 10, 1, -Math.PI / 2), -5, 5);
 
-		// after origin
-		p0 = arc.point(1);
-		assertEquals(p0, new Point2D(20+1, 10-1));
-		p0 = arc.point(2);
-		assertEquals(p0, new Point2D(20+4, 10-2));
+        // origin
+        p0 = arc.point(0);
+        assertEquals(p0, new Point2D(20, 10));
 
-		// before origin
-		p0 = arc.point(-1);
-		assertEquals(p0, new Point2D(20+1, 10+1));
-		p0 = arc.point(-2);
-		assertEquals(p0, new Point2D(20+4, 10+2));
-	}
+        // after origin
+        p0 = arc.point(1);
+        assertEquals(p0, new Point2D(20 + 1, 10 - 1));
+        p0 = arc.point(2);
+        assertEquals(p0, new Point2D(20 + 4, 10 - 2));
 
-	public void testGetAsPolyline2D(){
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D parabolaArc = new ParabolaArc2D(parabola, -10, 10);
-		
-		LinearCurve2D polyline = parabolaArc.asPolyline(4);
-		assertTrue(polyline.vertexArray().length==5);
-	}
-	
-	public void testContainsPoint2D(){
-		// parabola pointing upwards
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
-		
-		Point2D point1 = new Point2D(-2, 4);
-		assertTrue(arc.contains(point1));
-		
-		Point2D point2 = new Point2D(2, 4);
-		assertTrue(arc.contains(point2));		
-	}
+        // before origin
+        p0 = arc.point(-1);
+        assertEquals(p0, new Point2D(20 + 1, 10 + 1));
+        p0 = arc.point(-2);
+        assertEquals(p0, new Point2D(20 + 4, 10 + 2));
+    }
 
-	public void testGetPositionPoint2D(){
-		// parabola pointing upwards
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		
-		Point2D point1 = new Point2D(-2, 4);
-		assertEquals(parabola.position(point1), -2, Shape2D.ACCURACY);
-		
-		Point2D point2 = new Point2D(2, 4);
-		assertEquals(parabola.position(point2), 2, Shape2D.ACCURACY);
-		
-	}
+    public void testGetAsPolyline2D() {
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D parabolaArc = new ParabolaArc2D(parabola, -10, 10);
 
-	public void testGetIntersectionsLine(){
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola,
-				Double.NEGATIVE_INFINITY, 10);
-		StraightLine2D line;
-		Collection<Point2D> inters;
-		Iterator<Point2D> iter;
-		Point2D inter;
-		
-		// Horizontal line cutting in two points
-		line = new StraightLine2D(10, 4, -20, 0);		
-		inters = arc.intersections(line);
-		assertTrue(inters.size()==2);
-		iter = inters.iterator();
-		inter = iter.next();
-		assertEquals(inter, new Point2D(-2, 4));
-		assertTrue(arc.contains(inter));
-		assertEquals(arc.position(inter), -2, Shape2D.ACCURACY);
-		inter = iter.next();
-		assertEquals(inter, new Point2D(2, 4));
-		assertTrue(arc.contains(inter));
-		assertEquals(arc.position(inter), 2, Shape2D.ACCURACY);
-	}
-	
-	public void testClipLine2D(){
-		// parabola pointing upwards
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, 
-				Double.NEGATIVE_INFINITY, 10);
-		ParabolaArc2D clippedArc = new ParabolaArc2D(parabola, -2, 2);
-		StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
-	
-		CurveSet2D<?> clippedCurve = Curves2D.clipSmoothCurve(arc, line);
-		Curve2D curve = clippedCurve.firstCurve();
-		
-		assertTrue(clippedCurve.size()==1);
-		assertTrue(curve instanceof ParabolaArc2D);
-		assertTrue(clippedArc.equals(curve));		
-	}
-	
-	public void testIsInside_Direct(){
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
-		Point2D pt;
-		
-		// inside parent parabola
-		pt = new Point2D(0, 2);
-		assertTrue(arc.isInside(pt));
+        LinearCurve2D polyline = parabolaArc.asPolyline(4);
+        assertTrue(polyline.vertexArray().length == 5);
+    }
 
-		// inside first tangent
-		pt = new Point2D(-2, 3.5);
-		assertTrue(arc.isInside(pt));
+    public void testContainsPoint2D() {
+        // parabola pointing upwards
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
 
-		// inside second tangent
-		pt = new Point2D(3, 8.5);
-		assertTrue(arc.isInside(pt));
+        Point2D point1 = new Point2D(-2, 4);
+        assertTrue(arc.contains(point1));
 
-		// outside parent parabola, but inside both tangents
-		pt = new Point2D(.5, 0);
-		assertTrue(!arc.isInside(pt));
+        Point2D point2 = new Point2D(2, 4);
+        assertTrue(arc.contains(point2));
+    }
 
-		// outside first tangent
-		pt = new Point2D(-1, 0);
-		assertTrue(!arc.isInside(pt));
+    public void testGetPositionPoint2D() {
+        // parabola pointing upwards
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
 
-		// outside second tangent
-		pt = new Point2D(2, 0);
-		assertTrue(!arc.isInside(pt));
+        Point2D point1 = new Point2D(-2, 4);
+        assertEquals(parabola.position(point1), -2, IShape2D.ACCURACY);
 
-		// outside both tangent
-		pt = new Point2D(1, -4);
-		assertTrue(!arc.isInside(pt));
-	}
+        Point2D point2 = new Point2D(2, 4);
+        assertEquals(parabola.position(point2), 2, IShape2D.ACCURACY);
 
-	public void testIsInside_Inverse(){
-		Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
-		Point2D pt;
-		
-		// inside parent parabola
-		pt = new Point2D(0, -2);
-		assertTrue(!arc.isInside(pt));
+    }
 
-		// inside first tangent
-		pt = new Point2D(-2, 2);
-		assertTrue(arc.isInside(pt));
+    public void testGetIntersectionsLine() {
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
+        StraightLine2D line;
+        Collection<Point2D> inters;
+        Iterator<Point2D> iter;
+        Point2D inter;
 
-		// inside second tangent
-		pt = new Point2D(4, -4);
-		assertTrue(arc.isInside(pt));
+        // Horizontal line cutting in two points
+        line = new StraightLine2D(10, 4, -20, 0);
+        inters = arc.intersections(line);
+        assertTrue(inters.size() == 2);
+        iter = inters.iterator();
+        inter = iter.next();
+        assertEquals(inter, new Point2D(-2, 4));
+        assertTrue(arc.contains(inter));
+        assertEquals(arc.position(inter), -2, IShape2D.ACCURACY);
+        inter = iter.next();
+        assertEquals(inter, new Point2D(2, 4));
+        assertTrue(arc.contains(inter));
+        assertEquals(arc.position(inter), 2, IShape2D.ACCURACY);
+    }
 
-		// outside parent parabola, but inside both tangents
-		pt = new Point2D(.5, 0);
-		assertTrue(arc.isInside(pt));
+    public void testClipLine2D() {
+        // parabola pointing upwards
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, Double.NEGATIVE_INFINITY, 10);
+        ParabolaArc2D clippedArc = new ParabolaArc2D(parabola, -2, 2);
+        StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
 
-		// outside first tangent
-		pt = new Point2D(-2, -3.5);
-		assertTrue(!arc.isInside(pt));
+        ICurveSet2D<?> clippedCurve = Curves2D.clipSmoothCurve(arc, line);
+        ICurve2D curve = clippedCurve.firstCurve();
 
-		// outside second tangent
-		pt = new Point2D(3, -8.5);
-		assertTrue(!arc.isInside(pt));
+        assertTrue(clippedCurve.size() == 1);
+        assertTrue(curve instanceof ParabolaArc2D);
+        assertTrue(clippedArc.equals(curve));
+    }
 
-		// outside both tangent
-		pt = new Point2D(1, 4);
-		assertTrue(arc.isInside(pt));
-	}
-	
-	public void testGetWindingAnglePoint2D_Direct(){
-		Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
-		Point2D pt;
-		double eps = 1e-12;
-		
-		pt = new Point2D(0, 2);
-		assertEquals(arc.windingAngle(pt), Math.PI, eps);
-		
-		pt = new Point2D(-1, 4);
-		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
-		
-		pt = new Point2D(2, 1);
-		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
-		
-		
-		parabola = new Parabola2D(0, 0, 1, Math.PI);
-		arc = new ParabolaArc2D(parabola, -1, 2);
-		
-		pt = new Point2D(0, -2);
-		assertEquals(arc.windingAngle(pt), Math.PI, eps);
-		
-		pt = new Point2D(1, -4);
-		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
-		
-		pt = new Point2D(-2, -1);
-		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);		
-	}
-	
-	public void testGetWindingAnglePoint2D_Inverse(){
-		Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
-		ParabolaArc2D arc = new ParabolaArc2D(parabola, -2, 1);
-		Point2D pt;
-		double eps = 1e-12;
-		
-		pt = new Point2D(0, -2);
-		assertEquals(arc.windingAngle(pt), -Math.PI, eps);
-		
-		pt = new Point2D(1, -4);
-		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
-		
-		pt = new Point2D(-2, -1);
-		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);
-		
-		
-		parabola = new Parabola2D(0, 0, -1, Math.PI);
-		arc = new ParabolaArc2D(parabola, -2, 1);
-		
-		pt = new Point2D(0, 2);
-		assertEquals(arc.windingAngle(pt), -Math.PI, eps);
-		
-		pt = new Point2D(-1, 4);
-		assertEquals(arc.windingAngle(pt), -Math.PI/2, eps);
-		
-		pt = new Point2D(2, 1);
-		assertEquals(arc.windingAngle(pt), Math.PI/2, eps);		
-	}
-	
+    public void testIsInside_Direct() {
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+        Point2D pt;
+
+        // inside parent parabola
+        pt = new Point2D(0, 2);
+        assertTrue(arc.isInside(pt));
+
+        // inside first tangent
+        pt = new Point2D(-2, 3.5);
+        assertTrue(arc.isInside(pt));
+
+        // inside second tangent
+        pt = new Point2D(3, 8.5);
+        assertTrue(arc.isInside(pt));
+
+        // outside parent parabola, but inside both tangents
+        pt = new Point2D(.5, 0);
+        assertTrue(!arc.isInside(pt));
+
+        // outside first tangent
+        pt = new Point2D(-1, 0);
+        assertTrue(!arc.isInside(pt));
+
+        // outside second tangent
+        pt = new Point2D(2, 0);
+        assertTrue(!arc.isInside(pt));
+
+        // outside both tangent
+        pt = new Point2D(1, -4);
+        assertTrue(!arc.isInside(pt));
+    }
+
+    public void testIsInside_Inverse() {
+        Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+        Point2D pt;
+
+        // inside parent parabola
+        pt = new Point2D(0, -2);
+        assertTrue(!arc.isInside(pt));
+
+        // inside first tangent
+        pt = new Point2D(-2, 2);
+        assertTrue(arc.isInside(pt));
+
+        // inside second tangent
+        pt = new Point2D(4, -4);
+        assertTrue(arc.isInside(pt));
+
+        // outside parent parabola, but inside both tangents
+        pt = new Point2D(.5, 0);
+        assertTrue(arc.isInside(pt));
+
+        // outside first tangent
+        pt = new Point2D(-2, -3.5);
+        assertTrue(!arc.isInside(pt));
+
+        // outside second tangent
+        pt = new Point2D(3, -8.5);
+        assertTrue(!arc.isInside(pt));
+
+        // outside both tangent
+        pt = new Point2D(1, 4);
+        assertTrue(arc.isInside(pt));
+    }
+
+    public void testGetWindingAnglePoint2D_Direct() {
+        Parabola2D parabola = new Parabola2D(0, 0, 1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, -1, 2);
+        Point2D pt;
+        double eps = 1e-12;
+
+        pt = new Point2D(0, 2);
+        assertEquals(arc.windingAngle(pt), Math.PI, eps);
+
+        pt = new Point2D(-1, 4);
+        assertEquals(arc.windingAngle(pt), Math.PI / 2, eps);
+
+        pt = new Point2D(2, 1);
+        assertEquals(arc.windingAngle(pt), -Math.PI / 2, eps);
+
+        parabola = new Parabola2D(0, 0, 1, Math.PI);
+        arc = new ParabolaArc2D(parabola, -1, 2);
+
+        pt = new Point2D(0, -2);
+        assertEquals(arc.windingAngle(pt), Math.PI, eps);
+
+        pt = new Point2D(1, -4);
+        assertEquals(arc.windingAngle(pt), Math.PI / 2, eps);
+
+        pt = new Point2D(-2, -1);
+        assertEquals(arc.windingAngle(pt), -Math.PI / 2, eps);
+    }
+
+    public void testGetWindingAnglePoint2D_Inverse() {
+        Parabola2D parabola = new Parabola2D(0, 0, -1, 0);
+        ParabolaArc2D arc = new ParabolaArc2D(parabola, -2, 1);
+        Point2D pt;
+        double eps = 1e-12;
+
+        pt = new Point2D(0, -2);
+        assertEquals(arc.windingAngle(pt), -Math.PI, eps);
+
+        pt = new Point2D(1, -4);
+        assertEquals(arc.windingAngle(pt), -Math.PI / 2, eps);
+
+        pt = new Point2D(-2, -1);
+        assertEquals(arc.windingAngle(pt), Math.PI / 2, eps);
+
+        parabola = new Parabola2D(0, 0, -1, Math.PI);
+        arc = new ParabolaArc2D(parabola, -2, 1);
+
+        pt = new Point2D(0, 2);
+        assertEquals(arc.windingAngle(pt), -Math.PI, eps);
+
+        pt = new Point2D(-1, 4);
+        assertEquals(arc.windingAngle(pt), -Math.PI / 2, eps);
+
+        pt = new Point2D(2, 1);
+        assertEquals(arc.windingAngle(pt), Math.PI / 2, eps);
+    }
+
 }

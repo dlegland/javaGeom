@@ -30,49 +30,44 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.*;
-import math.geom2d.domain.Domain2D;
+import math.geom2d.domain.IDomain2D;
 import math.geom2d.polygon.SimplePolygon2D;
 
+public class CheckPolyline2DCreateBuffer extends JPanel {
 
-public class CheckPolyline2DCreateBuffer extends JPanel{
+    private static final long serialVersionUID = 7331324136801936514L;
 
-	private static final long serialVersionUID = 7331324136801936514L;
-	
-	Polygon2D polygon = null;
-	Polygon2D polygon1 = null;
-	Polygon2D polygon2 = null;
-	
-	public CheckPolyline2DCreateBuffer() {
-		super();
-		
-		Point2D[] points1 = new Point2D[]{
-				new Point2D(50, 50),
-				new Point2D(100, 50),
-				new Point2D(100, 100),
-				new Point2D(50, 150) };
-		
-		polygon = new SimplePolygon2D(points1);
-	}
-	
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-	
-		Domain2D buffer = Polygons2D.createBuffer(polygon, 10);
-		g2.setColor(Color.CYAN);
-		buffer.fill(g2);
-		g2.setColor(Color.BLUE);
-		buffer.boundary().draw(g2);
-		
-		g2.setColor(Color.BLACK);
-		polygon.boundary().draw(g2);
-	}
+    IPolygon2D polygon = null;
+    IPolygon2D polygon1 = null;
+    IPolygon2D polygon2 = null;
 
-	public final static void main(String[] args){		
-		JPanel panel = new CheckPolyline2DCreateBuffer();
-		JFrame frame = new JFrame("Create Polyline buffer");
-		frame.setContentPane(panel);
-		frame.setSize(400, 300);
-		frame.setVisible(true);
-		
-	}
+    public CheckPolyline2DCreateBuffer() {
+        super();
+
+        Point2D[] points1 = new Point2D[] { new Point2D(50, 50), new Point2D(100, 50), new Point2D(100, 100), new Point2D(50, 150) };
+
+        polygon = new SimplePolygon2D(points1);
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        IDomain2D buffer = Polygons2D.createBuffer(polygon, 10);
+        g2.setColor(Color.CYAN);
+        buffer.fill(g2);
+        g2.setColor(Color.BLUE);
+        buffer.boundary().draw(g2);
+
+        g2.setColor(Color.BLACK);
+        polygon.boundary().draw(g2);
+    }
+
+    public final static void main(String[] args) {
+        JPanel panel = new CheckPolyline2DCreateBuffer();
+        JFrame frame = new JFrame("Create Polyline buffer");
+        frame.setContentPane(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
+    }
 }

@@ -37,37 +37,33 @@ import math.geom2d.Point2D;
 import math.geom2d.curve.*;
 
 /**
- * A ContourArray2D is a set of contours. Each contour in the set defines its
- * own domain.
+ * A ContourArray2D is a set of contours. Each contour in the set defines its own domain.
  * <p>
  * 
  * @author dlegland
  */
-public class ContourArray2D<T extends Contour2D> extends CurveArray2D<T>
-implements Boundary2D {
+public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implements IBoundary2D {
 
     // ===================================================================
     // static methods
 
     /**
-     * Static factory for creating a new ContourArray2D from a collection of
-     * contours.
+     * Static factory for creating a new ContourArray2D from a collection of contours.
+     * 
      * @since 0.8.1
      */
-    /*public static <T extends Contour2D> ContourArray2D<T> create(
-    		Collection<T> curves) {
-    	return new ContourArray2D<T>(curves);
-    }*/
-    
+    /*
+     * public static <T extends Contour2D> ContourArray2D<T> create( Collection<T> curves) { return new ContourArray2D<T>(curves); }
+     */
+
     /**
-     * Static factory for creating a new ContourArray2D from an array of
-     * contours.
+     * Static factory for creating a new ContourArray2D from an array of contours.
+     * 
      * @since 0.8.1
      */
-	@SafeVarargs
-    public static <T extends Contour2D> ContourArray2D<T> create(
-    		T... curves) {
-    	return new ContourArray2D<T>(curves);
+    @SafeVarargs
+    public static <T extends IContour2D> ContourArray2D<T> create(T... curves) {
+        return new ContourArray2D<T>(curves);
     }
 
     // ===================================================================
@@ -77,10 +73,10 @@ implements Boundary2D {
     }
 
     public ContourArray2D(int size) {
-    	super(size);
+        super(size);
     }
 
-	@SafeVarargs
+    @SafeVarargs
     public ContourArray2D(T... curves) {
         super(curves);
     }
@@ -94,15 +90,14 @@ implements Boundary2D {
         this.add(curve);
     }
 
-    
     // ===================================================================
     // Methods implementing Boundary2D interface
 
     public Collection<? extends T> continuousCurves() {
-    	return Collections.unmodifiableCollection(this.curves);
+        return Collections.unmodifiableCollection(this.curves);
     }
 
-    public Domain2D domain() {
+    public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
@@ -115,7 +110,7 @@ implements Boundary2D {
 
     public double windingAngle(Point2D point) {
         double angle = 0;
-        for (OrientedCurve2D curve : this.curves())
+        for (IOrientedCurve2D curve : this.curves())
             angle += curve.windingAngle(point);
         return angle;
     }
@@ -133,9 +128,9 @@ implements Boundary2D {
         double minDist = Double.POSITIVE_INFINITY;
         double dist = Double.POSITIVE_INFINITY;
 
-        for (OrientedCurve2D curve : this.curves()) {
+        for (IOrientedCurve2D curve : this.curves()) {
             dist = Math.min(dist, curve.signedDistance(x, y));
-            if (Math.abs(dist)<Math.abs(minDist))
+            if (Math.abs(dist) < Math.abs(minDist))
                 minDist = dist;
         }
         return minDist;
@@ -149,67 +144,58 @@ implements Boundary2D {
     // Methods implementing Curve2D interface
 
     @Override
-    public ContourArray2D<? extends Contour2D> reverse() {
-        Contour2D[] curves2 = new Contour2D[curves.size()];
+    public ContourArray2D<? extends IContour2D> reverse() {
+        IContour2D[] curves2 = new IContour2D[curves.size()];
         int n = curves.size();
-        for (int i = 0; i<n; i++)
-            curves2[i] = curves.get(n-1-i).reverse();
-        return new ContourArray2D<Contour2D>(curves2);
+        for (int i = 0; i < n; i++)
+            curves2[i] = curves.get(n - 1 - i).reverse();
+        return new ContourArray2D<IContour2D>(curves2);
     }
 
     @Override
-    public CurveSet2D<? extends ContinuousOrientedCurve2D> subCurve(
-            double t0, double t1) {
+    public ICurveSet2D<? extends IContinuousOrientedCurve2D> subCurve(double t0, double t1) {
         // get the subcurve
-        CurveSet2D<? extends Curve2D> curveSet = super.subCurve(t0, t1);
+        ICurveSet2D<? extends ICurve2D> curveSet = super.subCurve(t0, t1);
 
         // create subcurve array
-        ArrayList<ContinuousOrientedCurve2D> curves = 
-        	new ArrayList<ContinuousOrientedCurve2D>();
-        for (Curve2D curve : curveSet.curves())
-            curves.add((ContinuousOrientedCurve2D) curve);
+        ArrayList<IContinuousOrientedCurve2D> curves = new ArrayList<IContinuousOrientedCurve2D>();
+        for (ICurve2D curve : curveSet.curves())
+            curves.add((IContinuousOrientedCurve2D) curve);
 
         // Create CurveSet for the result
-        return new CurveArray2D<ContinuousOrientedCurve2D>(curves);
+        return new CurveArray2D<IContinuousOrientedCurve2D>(curves);
     }
 
     // ===================================================================
     // Methods implementing the Shape2D interface
 
     /**
-     * Clip the curve by a box. The result is an instance of
-     * CurveSet2D<ContinuousOrientedCurve2D>, which contains
-     * only instances of ContinuousOrientedCurve2D. 
-     * If the curve is not clipped, the result is an instance of 
-     * CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
+     * Clip the curve by a box. The result is an instance of CurveSet2D<ContinuousOrientedCurve2D>, which contains only instances of ContinuousOrientedCurve2D. If the curve is not clipped, the result is an instance of CurveSet2D<ContinuousOrientedCurve2D> which contains 0 curves.
      */
     @Override
-    public CurveSet2D<? extends ContinuousOrientedCurve2D> clip(Box2D box) {
+    public ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        CurveSet2D<? extends Curve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
 
         // Stores the result in appropriate structure
-        CurveArray2D<ContinuousOrientedCurve2D> result = 
-        	new CurveArray2D<ContinuousOrientedCurve2D>(set.size());
+        CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<IContinuousOrientedCurve2D>(set.size());
 
         // convert the result
-        for (Curve2D curve : set.curves()) {
-            if (curve instanceof ContinuousOrientedCurve2D)
-                result.add((ContinuousOrientedCurve2D) curve);
+        for (ICurve2D curve : set.curves()) {
+            if (curve instanceof IContinuousOrientedCurve2D)
+                result.add((IContinuousOrientedCurve2D) curve);
         }
         return result;
     }
 
     @Override
-    public ContourArray2D<? extends Contour2D> transform(
-            AffineTransform2D trans) {
-        ContourArray2D<Contour2D> result = 
-        	new ContourArray2D<Contour2D>(curves.size());
-        for (Curve2D curve : curves)
-            result.add((Contour2D) curve.transform(trans));
+    public ContourArray2D<? extends IContour2D> transform(AffineTransform2D trans) {
+        ContourArray2D<IContour2D> result = new ContourArray2D<IContour2D>(curves.size());
+        for (ICurve2D curve : curves)
+            result.add((IContour2D) curve.transform(trans));
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         // check class

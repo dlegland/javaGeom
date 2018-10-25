@@ -34,18 +34,18 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d.circulinear");
-		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(BufferCalculatorTest.class));
-		suite.addTest(new TestSuite(ButtCapFactoryTest.class));
-		suite.addTest(new TestSuite(BevelJoinFactoryTest.class));
-		suite.addTest(new TestSuite(MiterJoinFactoryTest.class));
-		suite.addTest(new TestSuite(RoundCapFactoryTest.class));
-		suite.addTest(new TestSuite(RoundJoinFactoryTest.class));
-		suite.addTest(new TestSuite(SquareCapFactoryTest.class));
-		suite.addTest(new TestSuite(TriangleCapFactoryTest.class));
-        //$JUnit-END$
-		return suite;
-	}
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Test for math.geom2d.circulinear");
+        // $JUnit-BEGIN$
+        suite.addTest(new TestSuite(BufferCalculatorTest.class));
+        suite.addTest(new TestSuite(ButtCapFactoryTest.class));
+        suite.addTest(new TestSuite(BevelJoinFactoryTest.class));
+        suite.addTest(new TestSuite(MiterJoinFactoryTest.class));
+        suite.addTest(new TestSuite(RoundCapFactoryTest.class));
+        suite.addTest(new TestSuite(RoundJoinFactoryTest.class));
+        suite.addTest(new TestSuite(SquareCapFactoryTest.class));
+        suite.addTest(new TestSuite(TriangleCapFactoryTest.class));
+        // $JUnit-END$
+        return suite;
+    }
 }

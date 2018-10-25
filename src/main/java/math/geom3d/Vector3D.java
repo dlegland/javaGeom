@@ -7,8 +7,7 @@ package math.geom3d;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
- * Define a vector in 3 dimensions. Provides methods to compute cross product
- * and dot product, addition and subtraction of vectors.
+ * Define a vector in 3 dimensions. Provides methods to compute cross product and dot product, addition and subtraction of vectors.
  */
 public class Vector3D {
 
@@ -27,24 +26,17 @@ public class Vector3D {
      * <p>
      * <code> x1*x2 + y1*y2 + z1*z2</code>
      * <p>
-     * Dot product is zero if the vectors defined by the 2 vectors are
-     * orthogonal. It is positive if vectors are in the same direction, and
-     * negative if they are in opposite direction.
+     * Dot product is zero if the vectors defined by the 2 vectors are orthogonal. It is positive if vectors are in the same direction, and negative if they are in opposite direction.
      */
     public final static double dotProduct(Vector3D v1, Vector3D v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     /**
-     * Computes the cross product of the two vectors. Cross product is zero for
-     * colinear vectors. It is positive if angle between vector 1 and vector 2
-     * is comprised between 0 and PI, and negative otherwise.
+     * Computes the cross product of the two vectors. Cross product is zero for colinear vectors. It is positive if angle between vector 1 and vector 2 is comprised between 0 and PI, and negative otherwise.
      */
     public final static Vector3D crossProduct(Vector3D v1, Vector3D v2) {
-		return new Vector3D(
-				v1.y * v2.z - v1.z * v2.y, 
-				v1.z * v2.x - v1.x * v2.z, 
-				v1.x * v2.y - v1.y * v2.x);
+        return new Vector3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
     }
 
     /**
@@ -53,9 +45,9 @@ public class Vector3D {
      * @return true if the vectors are colinear
      */
     public final static boolean isColinear(Vector3D v1, Vector3D v2) {
-    	v1 = v1.normalize();
-    	v2 = v2.normalize();
-		return Vector3D.crossProduct(v1, v2).norm() < Shape3D.ACCURACY;
+        v1 = v1.normalize();
+        v2 = v2.normalize();
+        return Vector3D.crossProduct(v1, v2).norm() < Shape3D.ACCURACY;
     }
 
     /**
@@ -64,10 +56,10 @@ public class Vector3D {
      * @return true if the vectors are orthogonal
      */
     public final static boolean isOrthogonal(Vector3D v1, Vector3D v2) {
-    	v1 = v1.normalize();
-    	v2 = v2.normalize();
-    	double dot = Vector3D.dotProduct(v1, v2); 
-		return Math.abs(dot) < Shape3D.ACCURACY;
+        v1 = v1.normalize();
+        v2 = v2.normalize();
+        double dot = Vector3D.dotProduct(v1, v2);
+        return Math.abs(dot) < Shape3D.ACCURACY;
     }
 
     // ===================================================================
@@ -96,9 +88,7 @@ public class Vector3D {
      * construct a new vector between two points
      */
     public Vector3D(Point3D point1, Point3D point2) {
-        this(point2.getX()-point1.getX(), point2.getY()-point1.getY(), point2
-                .getZ()
-                -point1.getZ());
+        this(point2.getX() - point1.getX(), point2.getY() - point1.getY(), point2.getZ() - point1.getZ());
     }
 
     // ===================================================================
@@ -120,34 +110,31 @@ public class Vector3D {
     // basic arithmetic on vectors
 
     /**
-     * Return the sum of current vector with vector given as parameter. Inner
-     * fields are not modified.
+     * Return the sum of current vector with vector given as parameter. Inner fields are not modified.
      */
     public Vector3D plus(Vector3D v) {
-        return new Vector3D(x+v.x, y+v.y, z+v.z);
+        return new Vector3D(x + v.x, y + v.y, z + v.z);
     }
 
     /**
-     * Return the subtraction of current vector with vector given as parameter.
-     * Inner fields are not modified.
+     * Return the subtraction of current vector with vector given as parameter. Inner fields are not modified.
      */
     public Vector3D minus(Vector3D v) {
-        return new Vector3D(x-v.x, y-v.y, z-v.z);
+        return new Vector3D(x - v.x, y - v.y, z - v.z);
     }
 
     /**
      * Multiplies this vector by a constant.
      */
     public Vector3D times(double k) {
-        return new Vector3D(k*x, k*y, k*z);
+        return new Vector3D(k * x, k * y, k * z);
     }
 
     // ===================================================================
     // general operations on vectors
 
     /**
-     * Returns the opposite vector v2 of this, such that the sum of this and v2
-     * equals the null vector.
+     * Returns the opposite vector v2 of this, such that the sum of this and v2 equals the null vector.
      * 
      * @return the vector opposite to <code>this</code>.
      */
@@ -165,38 +152,33 @@ public class Vector3D {
     }
 
     /**
-     * Computes the square of the norm of the vector. This avoids to compute the
-     * square root.
+     * Computes the square of the norm of the vector. This avoids to compute the square root.
      * 
      * @return the euclidean norm of the vector
      */
     public double normSq() {
-		return x * x + y * y + z * z;
+        return x * x + y * y + z * z;
     }
 
     /**
-     * Returns the vector with same direction as this one, but with norm equal
-     * to 1.
+     * Returns the vector with same direction as this one, but with norm equal to 1.
      */
     public Vector3D normalize() {
         double r = this.norm();
-        return new Vector3D(this.x/r, this.y/r, this.z/r);
+        return new Vector3D(this.x / r, this.y / r, this.z / r);
     }
 
     /**
-     * Transform the vector, by using only the first 4 parameters of the
-     * transform. Translation of a vector returns the same vector.
+     * Transform the vector, by using only the first 4 parameters of the transform. Translation of a vector returns the same vector.
      * 
-     * @param trans an affine transform
+     * @param trans
+     *            an affine transform
      * @return the transformed vector.
      */
     public Vector3D transform(AffineTransform3D trans) {
         double[] tab = trans.coefficients();
-		return new Vector3D(
-				x * tab[0] + y * tab[1] + z * tab[2], 
-				x * tab[4] + y * tab[5] + z * tab[6], 
-				x * tab[8] + y * tab[9] + z * tab[10]);
-	}
+        return new Vector3D(x * tab[0] + y * tab[1] + z * tab[2], x * tab[4] + y * tab[5] + z * tab[6], x * tab[8] + y * tab[9] + z * tab[10]);
+    }
 
     // ===================================================================
     // methods implementing Object interface
@@ -204,15 +186,15 @@ public class Vector3D {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Vector3D))
-			return false;
+            return false;
 
-		Vector3D v = (Vector3D) obj;
-		if (Math.abs(x - v.x) > Shape3D.ACCURACY)
-			return false;
-		if (Math.abs(y - v.y) > Shape3D.ACCURACY)
-			return false;
-		if (Math.abs(z - v.z) > Shape3D.ACCURACY)
-			return false;
+        Vector3D v = (Vector3D) obj;
+        if (Math.abs(x - v.x) > Shape3D.ACCURACY)
+            return false;
+        if (Math.abs(y - v.y) > Shape3D.ACCURACY)
+            return false;
+        if (Math.abs(z - v.z) > Shape3D.ACCURACY)
+            return false;
         return true;
     }
 

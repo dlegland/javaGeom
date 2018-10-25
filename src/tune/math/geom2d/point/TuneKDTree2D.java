@@ -32,43 +32,42 @@ import math.geom2d.*;
 
 /**
  * At the moment, this class computes only the construction time.
+ * 
  * @author dlegland
  *
  */
 public class TuneKDTree2D {
-	
-	private final static int nPoints = 10000;
-	
-	private final static int nIter = 20;
-	
-	public final static void main(String[] args){
-		System.out.println("Tune KD Tree");
-		
-		// Create a new Convex hull calculator
-        
+
+    private final static int nPoints = 10000;
+
+    private final static int nIter = 20;
+
+    public final static void main(String[] args) {
+        System.out.println("Tune KD Tree");
+
+        // Create a new Convex hull calculator
+
         long[] times = new long[nIter];
         double total = 0;
-        
-		for (int i=0; i<nIter; i++) {
-		    // Generate point coordinates
-		    ArrayList<Point2D> points = new ArrayList<Point2D>(nPoints);
-		    for(int p=0; p<nPoints; p++)
-		        points.add(new Point2D(
-		                Math.random()*200+100, 
-		                Math.random()*200+100));        
 
-		    // Compute time for creating convex hull
-		    long t0 = System.currentTimeMillis();
-		    new KDTree2D(points);
+        for (int i = 0; i < nIter; i++) {
+            // Generate point coordinates
+            ArrayList<Point2D> points = new ArrayList<Point2D>(nPoints);
+            for (int p = 0; p < nPoints; p++)
+                points.add(new Point2D(Math.random() * 200 + 100, Math.random() * 200 + 100));
+
+            // Compute time for creating convex hull
+            long t0 = System.currentTimeMillis();
+            new KDTree2D(points);
             long t1 = System.currentTimeMillis();
-		    
-		    times[i]= t1-t0;
-		    total += times[i];
-		    
-		    System.out.println("Elapsed time: " + times[i] + "ms");
-		}
-       
-		System.out.println("---");
-		System.out.println("Average time: " + (total/nIter) + "ms");
-	}
+
+            times[i] = t1 - t0;
+            total += times[i];
+
+            System.out.println("Elapsed time: " + times[i] + "ms");
+        }
+
+        System.out.println("---");
+        System.out.println("Average time: " + (total / nIter) + "ms");
+    }
 }

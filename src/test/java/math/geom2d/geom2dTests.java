@@ -34,22 +34,22 @@ import junit.framework.TestSuite;
  */
 public class geom2dTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Tests for package math.geom2d");
-		//$JUnit-BEGIN$
-		suite.addTest(math.geom2d.AllTests.suite());
-		suite.addTest(math.geom2d.circulinear.AllTests.suite());
-		suite.addTest(math.geom2d.circulinear.buffer.AllTests.suite());
-		suite.addTest(math.geom2d.conic.AllTests.suite());
-		suite.addTest(math.geom2d.curve.AllTests.suite());
-		suite.addTest(math.geom2d.domain.AllTests.suite());
-		suite.addTest(math.geom2d.line.AllTests.suite());
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Tests for package math.geom2d");
+        // $JUnit-BEGIN$
+        suite.addTest(math.geom2d.AllTests.suite());
+        suite.addTest(math.geom2d.circulinear.AllTests.suite());
+        suite.addTest(math.geom2d.circulinear.buffer.AllTests.suite());
+        suite.addTest(math.geom2d.conic.AllTests.suite());
+        suite.addTest(math.geom2d.curve.AllTests.suite());
+        suite.addTest(math.geom2d.domain.AllTests.suite());
+        suite.addTest(math.geom2d.line.AllTests.suite());
         suite.addTest(math.geom2d.point.AllTests.suite());
         suite.addTest(math.geom2d.polygon.AllTests.suite());
         suite.addTest(math.geom2d.polygon.convhull.AllTests.suite());
-		suite.addTest(math.geom2d.spline.AllTests.suite());
-		suite.addTest(math.geom2d.transform.AllTests.suite());
-		//$JUnit-END$
-		return suite;
-	}
+        suite.addTest(math.geom2d.spline.AllTests.suite());
+        suite.addTest(math.geom2d.transform.AllTests.suite());
+        // $JUnit-END$
+        return suite;
+    }
 }

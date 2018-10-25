@@ -34,19 +34,19 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for math.geom2d.conic...");
-		//$JUnit-BEGIN$
-		suite.addTest(new TestSuite(Circle2DTest.class));
-		suite.addTest(new TestSuite(CircleArc2DTest.class));
-		suite.addTest(new TestSuite(Conics2DTest.class));
-		suite.addTest(new TestSuite(Ellipse2DTest.class));
-		suite.addTest(new TestSuite(EllipseArc2DTest.class));
-		suite.addTest(new TestSuite(Hyperbola2DTest.class));
-		suite.addTest(new TestSuite(HyperbolaBranch2DTest.class));
-		suite.addTest(new TestSuite(Parabola2DTest.class));
-		suite.addTest(new TestSuite(ParabolaArc2DTest.class));
-		//$JUnit-END$
-		return suite;
-	}
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Test for math.geom2d.conic...");
+        // $JUnit-BEGIN$
+        suite.addTest(new TestSuite(Circle2DTest.class));
+        suite.addTest(new TestSuite(CircleArc2DTest.class));
+        suite.addTest(new TestSuite(Conics2DTest.class));
+        suite.addTest(new TestSuite(Ellipse2DTest.class));
+        suite.addTest(new TestSuite(EllipseArc2DTest.class));
+        suite.addTest(new TestSuite(Hyperbola2DTest.class));
+        suite.addTest(new TestSuite(HyperbolaBranch2DTest.class));
+        suite.addTest(new TestSuite(Parabola2DTest.class));
+        suite.addTest(new TestSuite(ParabolaArc2DTest.class));
+        // $JUnit-END$
+        return suite;
+    }
 }
