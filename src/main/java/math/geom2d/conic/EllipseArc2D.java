@@ -26,21 +26,37 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.ceil;
+import static java.lang.Math.cos;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.sin;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polyline2D;
-import math.utils.EqualUtils;
 
 /**
  * An arc of ellipse. It is defined by a supporting ellipse, a starting angle, and a signed angle extent, both in radians. The ellipse arc is oriented counter-clockwise if angle extent is positive, and clockwise otherwise.
@@ -50,27 +66,14 @@ import math.utils.EqualUtils;
 public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, IEllipseArcShape2D {
     private static final long serialVersionUID = 1L;
 
-    // ====================================================================
-    // Class variables
-
     /** The supporting ellipse */
-    protected Ellipse2D ellipse;
+    private final Ellipse2D ellipse;
 
     /** The starting position on ellipse, in radians between 0 and +2PI */
-    protected double startAngle = 0;
+    private final double startAngle;
 
     /** The signed angle extent, in radians between -2PI and +2PI. */
-    protected double angleExtent = PI;
-
-    // ====================================================================
-    // Constructors
-
-    /**
-     * Construct a default Ellipse arc, centered on (0,0), with radii equal to 1 and 1, orientation equal to 0, start angle equal to 0, and angle extent equal to PI/2.
-     */
-    public EllipseArc2D() {
-        this(0, 0, 1, 1, 0, 0, PI / 2);
-    }
+    private final double angleExtent;
 
     /**
      * Specify supporting ellipse, start angle and angle extent.
@@ -83,7 +86,9 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      *            the angle extent (signed angle)
      */
     public EllipseArc2D(Ellipse2D ell, double start, double extent) {
-        this(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, extent);
+        this.ellipse = ell;
+        this.startAngle = start;
+        this.angleExtent = extent;
     }
 
     /**
@@ -99,27 +104,27 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      *            flag indicating if the arc is direct
      */
     public EllipseArc2D(Ellipse2D ell, double start, double end, boolean direct) {
-        this(ell.xc, ell.yc, ell.r1, ell.r2, ell.theta, start, end, direct);
+        this.ellipse = ell;
+        this.startAngle = start;
+        if (direct) {
+            this.angleExtent = Angle2DUtil.formatAngle(end - start);
+        } else {
+            this.angleExtent = Angle2DUtil.formatAngle(end - start) - PI * 2;
+        }
     }
 
     /**
      * Specify parameters of supporting ellipse, start angle, and angle extent.
      */
     public EllipseArc2D(double xc, double yc, double a, double b, double theta, double start, double extent) {
-        this.ellipse = new Ellipse2D(xc, yc, a, b, theta);
-        this.startAngle = start;
-        this.angleExtent = extent;
+        this(new Ellipse2D(xc, yc, a, b, theta), start, extent);
     }
 
     /**
      * Specify parameters of supporting ellipse, bounding angles and flag for direct ellipse.
      */
     public EllipseArc2D(double xc, double yc, double a, double b, double theta, double start, double end, boolean direct) {
-        this.ellipse = new Ellipse2D(xc, yc, a, b, theta);
-        this.startAngle = start;
-        this.angleExtent = Angle2DUtil.formatAngle(end - start);
-        if (!direct)
-            this.angleExtent = this.angleExtent - PI * 2;
+        this(new Ellipse2D(xc, yc, a, b, theta), start, end, direct);
     }
 
     // ====================================================================
@@ -167,6 +172,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.OrientedCurve2D#windingAngle(math.geom2d.Point2D)
      */
+    @Override
     public double windingAngle(Point2D point) {
         Point2D p1 = point(0);
         Point2D p2 = point(abs(angleExtent));
@@ -206,10 +212,12 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         }
     }
 
+    @Override
     public boolean isInside(Point2D p) {
         return signedDistance(p.x(), p.y()) < 0;
     }
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
@@ -219,6 +227,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
+    @Override
     public double signedDistance(double x, double y) {
         boolean direct = angleExtent >= 0;
 
@@ -262,6 +271,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     // ====================================================================
     // methods from interface SmoothCurve2D
 
+    @Override
     public Vector2D tangent(double t) {
         // format between min and max admissible values
         t = min(max(0, t), abs(angleExtent));
@@ -278,6 +288,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Returns the curvature of the ellipse arc. Curvature is negative if the arc is indirect.
      */
+    @Override
     public double curvature(double t) {
         // convert position to angle
         if (angleExtent < 0)
@@ -292,6 +303,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     // methods from interface ContinuousCurve2D
 
     /** Returns false, as an ellipse arc is never closed. */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -299,6 +311,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Returns a collection of curves containing only this circle arc.
      */
+    @Override
     public Collection<? extends EllipseArc2D> smoothPieces() {
         return wrapCurve(this);
     }
@@ -308,6 +321,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public Polyline2D asPolyline(int n) {
 
         // compute increment value
@@ -326,11 +340,13 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     // methods from interface Curve2D
 
     /** Always returns 0 */
+    @Override
     public double t0() {
         return 0;
     }
 
     /** Always returns the absolute value of the angle extent */
+    @Override
     public double t1() {
         return abs(angleExtent);
     }
@@ -340,6 +356,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Curve2D#point(double, math.geom2d.Point2D)
      */
+    @Override
     public Point2D point(double t) {
         // check bounds
         t = max(t, 0);
@@ -360,6 +377,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
+    @Override
     public double position(Point2D point) {
         double angle = Angle2DUtil.horizontalAngle(ellipse.center(), point);
         if (this.containsAngle(angle))
@@ -372,6 +390,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         return Double.NaN;
     }
 
+    @Override
     public double project(Point2D point) {
         double angle = ellipse.project(point);
 
@@ -394,6 +413,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Curve2D#intersections(math.geom2d.LinearShape2D)
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
 
         // check point contained in it
@@ -408,6 +428,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Returns the ellipse arc which refers to the reversed parent ellipse, with same start angle, and with opposite angle extent.
      */
+    @Override
     public EllipseArc2D reverse() {
         double newStart = Angle2DUtil.formatAngle(startAngle + angleExtent);
         return new EllipseArc2D(ellipse, newStart, -angleExtent);
@@ -421,6 +442,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Returns a new EllipseArc2D.
      */
+    @Override
     public EllipseArc2D subCurve(double t0, double t1) {
         // convert position to angle
         t0 = Angle2DUtil.formatAngle(startAngle + t0);
@@ -444,6 +466,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Shape2D#distance(math.geom2d.Point2D)
      */
+    @Override
     public double distance(Point2D point) {
         return distance(point.x(), point.y());
     }
@@ -453,12 +476,14 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Shape2D#distance(double, double)
      */
+    @Override
     public double distance(double x, double y) {
         Point2D p = point(project(new Point2D(x, y)));
         return p.distance(x, y);
     }
 
     /** Always return true: an ellipse arc is bounded by definition */
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -466,6 +491,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Returns false.
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -473,6 +499,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     /**
      * Clips the ellipse arc by a box. The result is an instance of CurveSet2D, which contains only instances of EllipseArc2D. If the ellipse arc is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends EllipseArc2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -488,6 +515,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         return result;
     }
 
+    @Override
     public Box2D boundingBox() {
 
         // first get ending points
@@ -514,14 +542,14 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         boolean direct = angleExtent >= 0;
 
         // check cases arc contains one maximum
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI / 2 + ellipse.theta, direct))
-            ymax = max(ymax, yc + ellipse.r1);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, 3 * PI / 2 + ellipse.theta, direct))
-            ymin = min(ymin, yc - ellipse.r1);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, ellipse.theta, direct))
-            xmax = max(xmax, xc + ellipse.r2);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI + ellipse.theta, direct))
-            xmin = min(xmin, xc - ellipse.r2);
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI / 2 + ellipse.angle(), direct))
+            ymax = max(ymax, yc + ellipse.semiMajorAxisLength());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, 3 * PI / 2 + ellipse.angle(), direct))
+            ymin = min(ymin, yc - ellipse.semiMajorAxisLength());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, ellipse.angle(), direct))
+            xmax = max(xmax, xc + ellipse.semiMinorAxisLength());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI + ellipse.angle(), direct))
+            xmin = min(xmin, xc - ellipse.semiMinorAxisLength());
 
         // return a bounding with computed limits
         return new Box2D(xmin, xmax, ymin, ymax);
@@ -532,6 +560,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
+    @Override
     public EllipseArc2D transform(AffineTransform2D trans) {
         // transform supporting ellipse
         Ellipse2D ell = ellipse.transform(trans);
@@ -554,6 +583,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see java.awt.Shape#contains(double, double)
      */
+    @Override
     public boolean contains(double x, double y) {
         return distance(x, y) > IShape2D.ACCURACY;
     }
@@ -563,10 +593,12 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see java.awt.Shape#contains(Point2D)
      */
+    @Override
     public boolean contains(Point2D point) {
         return contains(point.x(), point.y());
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         // number of curves to approximate the arc
         int nSeg = (int) ceil(abs(angleExtent) / (PI / 2));
@@ -670,6 +702,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -679,15 +712,15 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         EllipseArc2D arc = (EllipseArc2D) obj;
 
         // test whether supporting ellipses have same support
-        if (abs(ellipse.xc - arc.ellipse.xc) > eps)
+        if (abs(ellipse.center().x() - arc.ellipse.center().x()) > eps)
             return false;
-        if (abs(ellipse.yc - arc.ellipse.yc) > eps)
+        if (abs(ellipse.center().y() - arc.ellipse.center().y()) > eps)
             return false;
-        if (abs(ellipse.r1 - arc.ellipse.r1) > eps)
+        if (abs(ellipse.semiMajorAxisLength() - arc.ellipse.semiMajorAxisLength()) > eps)
             return false;
-        if (abs(ellipse.r2 - arc.ellipse.r2) > eps)
+        if (abs(ellipse.semiMinorAxisLength() - arc.ellipse.semiMinorAxisLength()) > eps)
             return false;
-        if (abs(ellipse.theta - arc.ellipse.theta) > eps)
+        if (abs(ellipse.angle() - arc.ellipse.angle()) > eps)
             return false;
 
         // test if angles are the same
@@ -705,33 +738,41 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     @Override
     public String toString() {
         Point2D center = ellipse.center();
-        return String.format(Locale.US, "EllipseArc2D(%7.2f,%7.2f,%7.2f,%7.2f,%7.5f,%7.5f,%7.5f)", center.x(), center.y(), ellipse.r1, ellipse.r2, ellipse.theta, startAngle, angleExtent);
+        return String.format(Locale.US, "EllipseArc2D(%7.2f,%7.2f,%7.2f,%7.2f,%7.5f,%7.5f,%7.5f)", center.x(), center.y(), ellipse.semiMajorAxisLength(), ellipse.semiMinorAxisLength(), ellipse.angle(), startAngle, angleExtent);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(angleExtent);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((ellipse == null) ? 0 : ellipse.hashCode());
+        temp = Double.doubleToLongBits(startAngle);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof EllipseArc2D))
+        if (obj == null)
             return false;
-        EllipseArc2D that = (EllipseArc2D) obj;
-
-        // test whether supporting ellipses have same support
-        if (!this.ellipse.equals(that.ellipse))
+        if (getClass() != obj.getClass())
             return false;
-
-        // test if angles are the same
-        if (!EqualUtils.areEqual(startAngle, that.startAngle))
+        EllipseArc2D other = (EllipseArc2D) obj;
+        if (Double.doubleToLongBits(angleExtent) != Double.doubleToLongBits(other.angleExtent))
             return false;
-        if (!EqualUtils.areEqual(angleExtent, that.angleExtent))
+        if (ellipse == null) {
+            if (other.ellipse != null)
+                return false;
+        } else if (!ellipse.equals(other.ellipse))
             return false;
-
+        if (Double.doubleToLongBits(startAngle) != Double.doubleToLongBits(other.startAngle))
+            return false;
         return true;
     }
 
-    @Override
-    public EllipseArc2D clone() {
-        return new EllipseArc2D(ellipse, startAngle, angleExtent);
-    }
 }

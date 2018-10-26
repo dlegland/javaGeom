@@ -1,5 +1,5 @@
-/* File Point2S.java 
- *
+/* file : Bijection3D.java
+ * 
  * Project : geometry
  *
  * ===========================================
@@ -20,25 +20,19 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * author : Legland
- * Created on 31 mai 2004
+ * Created on 28 nov. 2006
+ *
  */
 
-package math.geom2s;
+package math.geom3d.transform;
 
 /**
- * A point in spherical coordinates.
+ * A transformation in the space that have an inverse.
  * 
- * @author Legland
+ * @author dlegland
  */
-public class Point2S implements IShape2S {
+public interface IBijection3D extends ITransform3D {
 
-    double phi;
-    double theta;
-
-    public Point2S(double phi, double theta) {
-        this.phi = phi;
-        this.theta = theta;
-    }
+    public abstract IBijection3D inverse();
 
 }

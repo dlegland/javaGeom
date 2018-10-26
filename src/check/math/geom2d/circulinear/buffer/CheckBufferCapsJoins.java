@@ -41,6 +41,7 @@ public class CheckBufferCapsJoins extends JPanel {
         curve4 = curve3.transform(trans);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

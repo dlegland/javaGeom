@@ -47,8 +47,8 @@ public class BufferCalculator {
     // ===================================================================
     // Class variables
 
-    private JoinFactory joinFactory;
-    private CapFactory capFactory;
+    private IJoinFactory joinFactory;
+    private ICapFactory capFactory;
 
     // ===================================================================
     // Constructors
@@ -64,7 +64,7 @@ public class BufferCalculator {
     /**
      * Creates a new buffer calculator with specific join and cap factories.
      */
-    public BufferCalculator(JoinFactory joinFactory, CapFactory capFactory) {
+    public BufferCalculator(IJoinFactory joinFactory, ICapFactory capFactory) {
         this.joinFactory = joinFactory;
         this.capFactory = capFactory;
     }

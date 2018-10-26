@@ -3,8 +3,8 @@ package math.geom2d.conic;
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.StraightLine2D;
 
 public class Conics2DTest extends TestCase {
@@ -38,7 +38,7 @@ public class Conics2DTest extends TestCase {
         double eps = IShape2D.ACCURACY;
 
         // Ellipse transformed by an identity
-        AffineTransform2D id = new AffineTransform2D();
+        AffineTransform2D id = AffineTransform2D.IDENTITY;
         coefs2 = Conics2D.transform(coefs, id);
         conic = Conics2D.reduceConic(coefs2);
         assertTrue(ell0.almostEquals(conic, eps));

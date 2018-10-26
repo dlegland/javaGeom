@@ -25,13 +25,25 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
@@ -348,6 +360,7 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
     // ===================================================================
     // methods inherited from Conic2D interface
 
+    @Override
     public double[] conicCoefficients() {
         // scaling coefficients
         double aSq = this.a * this.a;
@@ -370,24 +383,26 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
          * Compute the coefficients. These formulae are the transformations on the unit hyperbola written out long hand
          */
 
-        double a = costSq / aSq - sintSq / bSq;
-        double b = (bSq + aSq) * sin2t / (aSq * bSq);
+        double aa = costSq / aSq - sintSq / bSq;
+        double bb = (bSq + aSq) * sin2t / (aSq * bSq);
         double c = sintSq / aSq - costSq / bSq;
-        double d = -yc * b - 2 * xc * a;
-        double e = -xc * b - 2 * yc * c;
+        double d = -yc * bb - 2 * xc * aa;
+        double e = -xc * bb - 2 * yc * c;
         double f = -1.0 + (xcSq + ycSq) * (aSqInv - bSqInv) / 2.0 + (costSq - sintSq) * (xcSq - ycSq) * (aSqInv + bSqInv) / 2.0 + xc * yc * (aSqInv + bSqInv) * sin2t;
         // Equivalent to:
         // double f = (xcSq*costSq + xc*yc*sin2t + ycSq*sintSq)*aSqInv
         // - (xcSq*sintSq - xc*yc*sin2t + ycSq*costSq)*bSqInv - 1;
 
         // Return array of results
-        return new double[] { a, b, c, d, e, f };
+        return new double[] { aa, bb, c, d, e, f };
     }
 
+    @Override
     public IConic2D.Type conicType() {
         return IConic2D.Type.HYPERBOLA;
     }
 
+    @Override
     public double eccentricity() {
         return hypot(1, b * b / a / a);
     }
@@ -541,6 +556,7 @@ public class Hyperbola2D extends ContourArray2D<HyperbolaBranch2D> implements IC
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

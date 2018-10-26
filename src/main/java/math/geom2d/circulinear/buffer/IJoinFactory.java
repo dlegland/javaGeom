@@ -17,7 +17,7 @@ import math.geom2d.circulinear.ICirculinearElement2D;
  * @author dlegland
  *
  */
-public interface JoinFactory {
+public interface IJoinFactory {
 
     /**
      * Creates a join between the parallels of two curves at the specified distance. The first point of curve2 is assumed to be the last point of curve1.

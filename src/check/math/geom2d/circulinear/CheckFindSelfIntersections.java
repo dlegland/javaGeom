@@ -41,6 +41,7 @@ public class CheckFindSelfIntersections extends JPanel {
         curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { line1, arc1, line2, arc2 });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

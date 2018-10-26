@@ -60,6 +60,7 @@ public interface ISmoothCurve2D extends IContinuousCurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#reverse()
      */
+    @Override
     public abstract ISmoothCurve2D reverse();
 
     /*
@@ -67,6 +68,7 @@ public interface ISmoothCurve2D extends IContinuousCurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#subCurve(double, double)
      */
+    @Override
     public abstract ISmoothCurve2D subCurve(double t0, double t1);
 
     /*
@@ -74,6 +76,7 @@ public interface ISmoothCurve2D extends IContinuousCurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#clip(Box2D)
      */
+    @Override
     public abstract ICurveSet2D<? extends ISmoothCurve2D> clip(Box2D box);
 
     /*
@@ -81,5 +84,6 @@ public interface ISmoothCurve2D extends IContinuousCurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#transform(AffineTransform2D)
      */
+    @Override
     public abstract ISmoothCurve2D transform(AffineTransform2D trans);
 }

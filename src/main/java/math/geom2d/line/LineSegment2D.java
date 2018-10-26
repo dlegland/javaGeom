@@ -25,9 +25,17 @@
 
 package math.geom2d.line;
 
-import math.geom2d.*;
+import java.io.Serializable;
+
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
-import math.utils.EqualUtils;
+import math.geom2d.exception.DegeneratedLine2DException;
 
 /**
  * Line segment, defined as the set of points located between the two end points.
@@ -39,7 +47,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      * Returns the straight line that is the median of the edge extremities.
      */
     public static StraightLine2D getMedian(LineSegment2D edge) {
-        return new StraightLine2D(edge.x0 + edge.dx * .5, edge.y0 + edge.dy * .5, -edge.dy, edge.dx);
+        return new StraightLine2D(edge.x0() + edge.dx() * .5, edge.y0() + edge.dy() * .5, -edge.dy(), edge.dx());
     }
 
     /**
@@ -48,34 +56,34 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     public static double getEdgeAngle(LineSegment2D edge1, LineSegment2D edge2) {
         double x0, y0, x1, y1, x2, y2;
 
-        if (Math.abs(edge1.x0 - edge2.x0) < IShape2D.ACCURACY && Math.abs(edge1.y0 - edge2.y0) < IShape2D.ACCURACY) {
-            x0 = edge1.x0;
-            y0 = edge1.y0;
-            x1 = edge1.x0 + edge1.dx;
-            y1 = edge1.y0 + edge1.dy;
-            x2 = edge2.x0 + edge2.dx;
-            y2 = edge2.y0 + edge2.dy;
-        } else if (Math.abs(edge1.x0 + edge1.dx - edge2.x0) < IShape2D.ACCURACY && Math.abs(edge1.y0 + edge1.dy - edge2.y0) < IShape2D.ACCURACY) {
-            x0 = edge1.x0 + edge1.dx;
-            y0 = edge1.y0 + edge1.dy;
-            x1 = edge1.x0;
-            y1 = edge1.y0;
-            x2 = edge2.x0 + edge2.dx;
-            y2 = edge2.y0 + edge2.dy;
-        } else if (Math.abs(edge1.x0 + edge1.dx - edge2.x0 - edge2.dx) < IShape2D.ACCURACY && Math.abs(edge1.y0 + edge1.dy - edge2.y0 - edge2.dy) < IShape2D.ACCURACY) {
-            x0 = edge1.x0 + edge1.dx;
-            y0 = edge1.y0 + edge1.dy;
-            x1 = edge1.x0;
-            y1 = edge1.y0;
-            x2 = edge2.x0;
-            y2 = edge2.y0;
-        } else if (Math.abs(edge1.x0 - edge2.x0 - edge2.dx) < IShape2D.ACCURACY && Math.abs(edge1.y0 - edge2.y0 - edge2.dy) < IShape2D.ACCURACY) {
-            x0 = edge1.x0;
-            y0 = edge1.y0;
-            x1 = edge1.x0 + edge1.dx;
-            y1 = edge1.y0 + edge1.dy;
-            x2 = edge2.x0;
-            y2 = edge2.y0;
+        if (Math.abs(edge1.x0() - edge2.x0()) < IShape2D.ACCURACY && Math.abs(edge1.y0() - edge2.y0()) < IShape2D.ACCURACY) {
+            x0 = edge1.x0();
+            y0 = edge1.y0();
+            x1 = edge1.x0() + edge1.dx();
+            y1 = edge1.y0() + edge1.dy();
+            x2 = edge2.x0() + edge2.dx();
+            y2 = edge2.y0() + edge2.dy();
+        } else if (Math.abs(edge1.x0() + edge1.dx() - edge2.x0()) < IShape2D.ACCURACY && Math.abs(edge1.y0() + edge1.dy() - edge2.y0()) < IShape2D.ACCURACY) {
+            x0 = edge1.x0() + edge1.dx();
+            y0 = edge1.y0() + edge1.dy();
+            x1 = edge1.x0();
+            y1 = edge1.y0();
+            x2 = edge2.x0() + edge2.dx();
+            y2 = edge2.y0() + edge2.dy();
+        } else if (Math.abs(edge1.x0() + edge1.dx() - edge2.x0() - edge2.dx()) < IShape2D.ACCURACY && Math.abs(edge1.y0() + edge1.dy() - edge2.y0() - edge2.dy()) < IShape2D.ACCURACY) {
+            x0 = edge1.x0() + edge1.dx();
+            y0 = edge1.y0() + edge1.dy();
+            x1 = edge1.x0();
+            y1 = edge1.y0();
+            x2 = edge2.x0();
+            y2 = edge2.y0();
+        } else if (Math.abs(edge1.x0() - edge2.x0() - edge2.dx()) < IShape2D.ACCURACY && Math.abs(edge1.y0() - edge2.y0() - edge2.dy()) < IShape2D.ACCURACY) {
+            x0 = edge1.x0();
+            y0 = edge1.y0();
+            x1 = edge1.x0() + edge1.dx();
+            y1 = edge1.y0() + edge1.dy();
+            x2 = edge2.x0();
+            y2 = edge2.y0();
         } else {// no common vertex -> return NaN
             return Double.NaN;
         }
@@ -127,10 +135,10 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      * @return the other vertex, or null if point is nor a vertex of the edge
      */
     public Point2D opposite(Point2D point) {
-        if (point.equals(new Point2D(x0, y0)))
-            return new Point2D(x0 + dx, y0 + dy);
-        if (point.equals(new Point2D(x0 + dx, y0 + dy)))
-            return new Point2D(x0, y0);
+        if (point.equals(new Point2D(x0(), y0())))
+            return new Point2D(x0() + dx(), y0() + dy());
+        if (point.equals(new Point2D(x0() + dx(), y0() + dy())))
+            return new Point2D(x0(), y0());
         return null;
     }
 
@@ -140,7 +148,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     public StraightLine2D getMedian() {
         // initial point is the middle of the edge -> x = x0+.5*dx
         // direction vector is the initial direction vector rotated by pi/2.
-        return new StraightLine2D(x0 + dx * .5, y0 + dy * .5, -dy, dx);
+        return new StraightLine2D(x0() + dx() * .5, y0() + dy() * .5, -dy(), dx());
     }
 
     // ===================================================================
@@ -151,7 +159,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      */
     @Override
     public double length() {
-        return Math.hypot(dx, dy);
+        return Math.hypot(dx(), dy());
     }
 
     /*
@@ -159,16 +167,17 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
      */
+    @Override
     public LineSegment2D parallel(double d) {
         // Checks line segment has a valid length
-        double d2 = Math.hypot(dx, dy);
+        double d2 = Math.hypot(dx(), dy());
         if (Math.abs(d2) < IShape2D.ACCURACY) {
             throw new DegeneratedLine2DException("Can not compute parallel of degenerated edge", this);
         }
 
         // compute parallel line segment
         d2 = d / d2;
-        return new LineSegment2D(x0 + dy * d2, y0 - dx * d2, x0 + dx + dy * d2, y0 + dy - dx * d2);
+        return new LineSegment2D(x0() + dy() * d2, y0() - dx() * d2, x0() + dx() + dy() * d2, y0() + dy() - dx() * d2);
     }
 
     // ===================================================================
@@ -199,7 +208,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      */
     @Override
     public Point2D firstPoint() {
-        return new Point2D(x0, y0);
+        return new Point2D(x0(), y0());
     }
 
     /**
@@ -209,12 +218,13 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      */
     @Override
     public Point2D lastPoint() {
-        return new Point2D(x0 + dx, y0 + dy);
+        return new Point2D(x0() + dx(), y0() + dy());
     }
 
     /**
      * Returns the parameter of the first point of the edge, equals to 0.
      */
+    @Override
     public double t0() {
         return 0.0;
     }
@@ -222,20 +232,23 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     /**
      * Returns the parameter of the last point of the edge, equals to 1.
      */
+    @Override
     public double t1() {
         return 1.0;
     }
 
+    @Override
     public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
-        return new Point2D(x0 + dx * t, y0 + dy * t);
+        return new Point2D(x0() + dx() * t, y0() + dy() * t);
     }
 
     /**
      * Returns the LineSegment which start from last point of this line segment, and which ends at the fist point of this last segment.
      */
+    @Override
     public LineSegment2D reverse() {
-        return new LineSegment2D(x0 + dx, y0 + dy, x0, y0);
+        return new LineSegment2D(x0() + dx(), y0() + dy(), x0(), y0());
     }
 
     // ===================================================================
@@ -244,10 +257,12 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     /**
      * Returns true
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
+    @Override
     public boolean contains(double xp, double yp) {
         if (!super.supportContains(xp, yp))
             return false;
@@ -270,7 +285,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     public double distance(double x, double y) {
         // In case of line segment with same extremities, computes distance to initial point
         if (length() < IShape2D.ACCURACY) {
-            return Point2D.distance(this.x0, this.y0, x, y);
+            return Point2D.distance(this.x0(), this.y0(), x, y);
         }
 
         // compute position on the supporting line
@@ -290,21 +305,22 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     @Override
     public LineSegment2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
-        double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
-        double x2 = (x0 + dx) * tab[0] + (y0 + dy) * tab[1] + tab[2];
-        double y2 = (x0 + dx) * tab[3] + (y0 + dy) * tab[4] + tab[5];
+        double x1 = x0() * tab[0] + y0() * tab[1] + tab[2];
+        double y1 = x0() * tab[3] + y0() * tab[4] + tab[5];
+        double x2 = (x0() + dx()) * tab[0] + (y0() + dy()) * tab[1] + tab[2];
+        double y2 = (x0() + dx()) * tab[3] + (y0() + dy()) * tab[4] + tab[5];
         return new LineSegment2D(x1, y1, x2, y2);
     }
 
     /**
      * Returns the bounding box of this line segment.
      */
+    @Override
     public Box2D boundingBox() {
-        double xmin = Math.min(x0, x0 + dx);
-        double ymin = Math.min(y0, y0 + dy);
-        double xmax = Math.max(x0, x0 + dx);
-        double ymax = Math.max(y0, y0 + dy);
+        double xmin = Math.min(x0(), x0() + dx());
+        double ymin = Math.min(y0(), y0() + dy());
+        double xmax = Math.max(x0(), x0() + dx());
+        double ymax = Math.max(y0(), y0() + dy());
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
@@ -318,8 +334,9 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      *            the path to modify
      * @return the modified path
      */
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        path.lineTo((float) x0 + dx, (float) y0 + dy);
+        path.lineTo((float) x0() + dx(), (float) y0() + dy());
         return path;
     }
 
@@ -328,8 +345,8 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      */
     public java.awt.geom.GeneralPath getGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        path.moveTo((float) x0, (float) y0);
-        path.lineTo((float) (x0 + dx), (float) (y0 + dy));
+        path.moveTo((float) x0(), (float) y0());
+        path.lineTo((float) (x0() + dx()), (float) (y0() + dy()));
         return path;
     }
 
@@ -341,6 +358,7 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -349,13 +367,13 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
             return false;
         LineSegment2D edge = (LineSegment2D) obj;
 
-        if (Math.abs(x0 - edge.x0) > eps)
+        if (Math.abs(x0() - edge.x0()) > eps)
             return false;
-        if (Math.abs(y0 - edge.y0) > eps)
+        if (Math.abs(y0() - edge.y0()) > eps)
             return false;
-        if (Math.abs(dx - edge.dx) > eps)
+        if (Math.abs(dx() - edge.dx()) > eps)
             return false;
-        if (Math.abs(dy - edge.dy) > eps)
+        if (Math.abs(dy() - edge.dy()) > eps)
             return false;
 
         return true;
@@ -365,39 +383,27 @@ public class LineSegment2D extends AbstractLine2D implements ICirculinearElement
     // Methods implementing the Object interface
 
     @Override
-    public String toString() {
-        return new String("LineSegment2D[(" + x0 + "," + y0 + ")-(" + (x0 + dx) + "," + (y0 + dy) + ")]");
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (!(obj instanceof LineSegment2D))
             return false;
-        LineSegment2D that = (LineSegment2D) obj;
 
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
-            return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
-            return false;
-        if (!EqualUtils.areEqual(this.dx, that.dx))
-            return false;
-        if (!EqualUtils.areEqual(this.dy, that.dy))
-            return false;
-
-        return true;
+        return super.equals(obj);
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 31 + Double.valueOf(this.x0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.y0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dx).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+        hash = hash * 31 + Double.valueOf(this.x0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.y0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dx()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dy()).hashCode();
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return new String("LineSegment2D[(" + x0() + "," + y0() + ")-(" + (x0() + dx()) + "," + (y0() + dy()) + ")]");
+    }
 }

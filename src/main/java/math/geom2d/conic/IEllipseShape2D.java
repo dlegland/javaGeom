@@ -38,13 +38,16 @@ public interface IEllipseShape2D extends ISmoothContour2D, IConic2D {
     // ===================================================================
     // methods of Curve2D interface
 
+    @Override
     public IEllipseShape2D reverse();
 
+    @Override
     public Collection<? extends IEllipseShape2D> continuousCurves();
 
     // ===================================================================
     // methods of Shape2D interface
 
+    @Override
     public IEllipseShape2D transform(AffineTransform2D trans);
 
 }

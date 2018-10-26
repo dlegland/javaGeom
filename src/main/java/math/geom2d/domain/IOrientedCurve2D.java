@@ -29,8 +29,8 @@ package math.geom2d.domain;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.ICurve2D;
 
 /**
  * An OrientedCurve2D defines an 'inside' and an 'outside'. It is typically a part of the boundary of a domain. Several OrientedCurve2D form a Contour2D, and one or several Contour2D form a Boundary2D.
@@ -77,15 +77,18 @@ public interface IOrientedCurve2D extends ICurve2D {
      */
     public abstract boolean isInside(Point2D pt);
 
+    @Override
     public abstract IOrientedCurve2D reverse();
 
     // TODO: what to do with non-continuous oriented curves ?
     // public abstract OrientedCurve2D subCurve(double t0, double t1);
 
+    @Override
     public abstract ICurveSet2D<? extends IOrientedCurve2D> clip(Box2D box);
 
     /**
      * Transforms the oriented curve, and returns another oriented curve. If transform is not direct, the domains bounded by the transformed curve should be complemented to have same orientation as the original domain.
      */
+    @Override
     public abstract IOrientedCurve2D transform(AffineTransform2D trans);
 }

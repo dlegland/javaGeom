@@ -6,7 +6,7 @@
  *
  * Created: 1 nov. 09
  */
-package math.geom2d.circulinear;
+package math.geom2d.exception;
 
 /**
  * @author dlegland

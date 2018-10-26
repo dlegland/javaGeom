@@ -23,6 +23,7 @@ import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
+import math.geom2d.exception.NonCirculinearClassException;
 import math.geom2d.line.ILinearShape2D;
 
 /**

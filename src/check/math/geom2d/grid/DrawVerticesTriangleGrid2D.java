@@ -21,8 +21,9 @@ public class DrawVerticesTriangleGrid2D extends JPanel {
 
     Box2D box = new Box2D(30, 270, 30, 270);
 
-    Grid2D grid = new TriangleGrid2D(x0, y0, 50);
+    IGrid2D grid = new TriangleGrid2D(x0, y0, 50);
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

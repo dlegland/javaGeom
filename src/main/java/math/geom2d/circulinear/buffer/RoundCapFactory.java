@@ -8,13 +8,13 @@
  */
 package math.geom2d.circulinear.buffer;
 
+import static java.lang.Math.PI;
+
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.conic.CircleArc2D;
-
-import static java.lang.Math.PI;
 
 /**
  * Generate a circular cap at the end of a curve.
@@ -22,7 +22,7 @@ import static java.lang.Math.PI;
  * @author dlegland
  *
  */
-public class RoundCapFactory implements CapFactory {
+public class RoundCapFactory implements ICapFactory {
 
     public RoundCapFactory() {
     }
@@ -32,6 +32,7 @@ public class RoundCapFactory implements CapFactory {
      * 
      * @see math.geom2d.circulinear.buffer.CapFactory#createCap(math.geom2d.Point2D, math.geom2d.Vector2D, double)
      */
+    @Override
     public ICirculinearContinuousCurve2D createCap(Point2D center, Vector2D direction, double dist) {
         double angle = direction.angle();
         double angle1 = Angle2DUtil.formatAngle(angle - PI / 2);
@@ -39,6 +40,7 @@ public class RoundCapFactory implements CapFactory {
         return new CircleArc2D(center, dist, angle1, angle2, true);
     }
 
+    @Override
     public ICirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
         Point2D center = Point2D.midPoint(p1, p2);
         double radius = p1.distance(p2) / 2;

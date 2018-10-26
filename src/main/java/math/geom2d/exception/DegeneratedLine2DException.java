@@ -6,7 +6,9 @@
  *
  * Created: 19 août 2010
  */
-package math.geom2d.line;
+package math.geom2d.exception;
+
+import math.geom2d.line.ILinearShape2D;
 
 /**
  * A degenerated line, whose direction vector is undefined, had been encountered. This kind of exception can occur during polygon or polylines algorithms, when polygons have multiple vertices.
@@ -15,13 +17,9 @@ package math.geom2d.line;
  * @since 0.9.0
  */
 public class DegeneratedLine2DException extends RuntimeException {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
-    protected ILinearShape2D line;
+    private final ILinearShape2D line;
 
     /**
      * @param msg

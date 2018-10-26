@@ -92,6 +92,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
+    @Override
     public IShape3D clip(Box3D box) {
         // TODO Auto-generated method stub
         return null;
@@ -102,14 +103,17 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
+    @Override
     public boolean contains(Point3D point) {
         return this.distance(point) < IShape3D.ACCURACY;
     }
 
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public boolean isBounded() {
         return false;
     }
@@ -119,6 +123,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#getBoundingBox()
      */
+    @Override
     public Box3D boundingBox() {
         Vector3D v = this.direction();
 
@@ -142,6 +147,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
+    @Override
     public double distance(Point3D p) {
         Vector3D vl = this.direction();
         Vector3D vp = new Vector3D(this.origin(), p);
@@ -153,26 +159,32 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
+    @Override
     public StraightLine3D transform(AffineTransform3D trans) {
         return new StraightLine3D(origin().transform(trans), direction().transform(trans));
     }
 
+    @Override
     public Point3D firstPoint() {
         return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
+    @Override
     public Point3D lastPoint() {
         return new Point3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
+    @Override
     public Point3D point(double t) {
         return new Point3D(x0 + t * dx, y0 + t * dy, z0 + t * dz);
     }
 
+    @Override
     public double position(Point3D point) {
         return project(point);
     }
 
+    @Override
     public StraightLine3D reverseCurve() {
         return new StraightLine3D(origin(), direction().opposite());
     }
@@ -180,10 +192,12 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     /**
      * Returns an empty array of Point3D.
      */
+    @Override
     public Collection<Point3D> singularPoints() {
         return new ArrayList<>(0);
     }
 
+    @Override
     public ICurve3D subCurve(double t0, double t1) {
         // TODO Auto-generated method stub
         return null;
@@ -192,6 +206,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     /**
      * Returns -INFINITY;
      */
+    @Override
     public double getT0() {
         return Double.NEGATIVE_INFINITY;
     }
@@ -199,6 +214,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     /**
      * Returns +INFINITY;
      */
+    @Override
     public double getT1() {
         return Double.POSITIVE_INFINITY;
     }
@@ -206,12 +222,14 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     /**
      * Compute the position of the orthogonal projection of the given point on this line.
      */
+    @Override
     public double project(Point3D point) {
         Vector3D vl = this.direction();
         Vector3D vp = new Vector3D(this.origin(), point);
         return Vector3D.dotProduct(vl, vp) / vl.normSq();
     }
 
+    @Override
     public Collection<StraightLine3D> continuousCurves() {
         ArrayList<StraightLine3D> array = new ArrayList<>(1);
         array.add(this);

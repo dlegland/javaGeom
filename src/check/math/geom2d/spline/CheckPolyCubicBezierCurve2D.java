@@ -35,6 +35,7 @@ public class CheckPolyCubicBezierCurve2D extends JPanel {
         points = new Point2D[] { p11, p12, p22, p21, p20, p30, p31, p32, p23, p13 };
     }
 
+    @Override
     public void paintComponent(Graphics g) {
 
         PolyCubicBezierCurve2D curve = PolyCubicBezierCurve2D.create(points);

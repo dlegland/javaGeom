@@ -56,6 +56,7 @@ public class CheckSortPointsByAngle extends JPanel {
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(Point2D point1, Point2D point2) {
             double angle1 = Angle2DUtil.horizontalAngle(basePoint, point1);
             double angle2 = Angle2DUtil.horizontalAngle(basePoint, point2);
@@ -94,6 +95,7 @@ public class CheckSortPointsByAngle extends JPanel {
         polygon = new SimplePolygon2D(points);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

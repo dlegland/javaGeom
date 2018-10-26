@@ -8,28 +8,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
-import math.geom2d.point.PointArray2D;
-import math.geom2d.point.IPointSet2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.IPointSet2D;
+import math.geom2d.point.PointArray2D;
 
 /**
  * Defines a square grid, which can have different size in each direction. The grid is always parallel to the main axes.
  * 
  * @author dlegland
  */
-public class SquareGrid2D implements Grid2D {
+public class SquareGrid2D implements IGrid2D {
+    private final double x0;
+    private final double y0;
 
-    double x0 = 0;
-    double y0 = 0;
-
-    double sx = 1;
-    double sy = 1;
-
-    public SquareGrid2D() {
-
-    }
+    private final double sx;
+    private final double sy;
 
     public SquareGrid2D(Point2D origin) {
         this(origin.x(), origin.y(), 1, 1);
@@ -62,6 +57,7 @@ public class SquareGrid2D implements Grid2D {
         this.sy = sy;
     }
 
+    @Override
     public Point2D getOrigin() {
         return new Point2D(x0, y0);
     }
@@ -79,6 +75,7 @@ public class SquareGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getClosestVertex(math.geom2d.Point2D)
      */
+    @Override
     public Point2D getClosestVertex(Point2D point) {
         double nx = Math.round((point.x() - x0) / sx);
         double ny = Math.round((point.y() - y0) / sy);
@@ -90,6 +87,7 @@ public class SquareGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getEdges(math.geom2d.Box2D)
      */
+    @Override
     public Collection<LineSegment2D> getEdges(Box2D box) {
         double x, y; // iterations
         double xmin, ymin, xmax, ymax; // limits
@@ -124,6 +122,7 @@ public class SquareGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getVertices(math.geom2d.Box2D)
      */
+    @Override
     public IPointSet2D getVertices(Box2D box) {
         double x, y; // iterations
         double xmin, ymin, xmax, ymax; // limits

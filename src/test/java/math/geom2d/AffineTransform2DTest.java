@@ -27,13 +27,11 @@
 
 package math.geom2d;
 
-import java.awt.geom.AffineTransform;
-
+import static java.lang.Math.PI;
+import static java.lang.Math.sqrt;
 import junit.framework.TestCase;
 import math.geom2d.exception.NonInvertibleTransform2DException;
 import math.geom2d.line.StraightLine2D;
-
-import static java.lang.Math.*;
 
 /**
  * @author Legland
@@ -54,7 +52,7 @@ public class AffineTransform2DTest extends TestCase {
     }
 
     public void testIdentityConstructor() {
-        AffineTransform2D trans = new AffineTransform2D();
+        AffineTransform2D trans = AffineTransform2D.IDENTITY;
 
         // some tests on the created Transform
         assertTrue(trans.isSimilarity());
@@ -119,19 +117,19 @@ public class AffineTransform2DTest extends TestCase {
 
     public void testQuadrantRotation() {
         AffineTransform2D rot0 = AffineTransform2D.createRotation(0);
-        AffineTransform2D qrot0 = AffineTransform2D.createQuadrantRotation(0);
+        AffineTransform2D qrot0 = AffineTransform2D.getQuadrantRotation(0);
         assertTrue(rot0.equals(qrot0));
 
         AffineTransform2D rot1 = AffineTransform2D.createRotation(PI / 2);
-        AffineTransform2D qrot1 = AffineTransform2D.createQuadrantRotation(1);
+        AffineTransform2D qrot1 = AffineTransform2D.getQuadrantRotation(1);
         assertTrue(rot1.equals(qrot1));
 
         AffineTransform2D rot2 = AffineTransform2D.createRotation(PI);
-        AffineTransform2D qrot2 = AffineTransform2D.createQuadrantRotation(2);
+        AffineTransform2D qrot2 = AffineTransform2D.getQuadrantRotation(2);
         assertTrue(rot2.equals(qrot2));
 
         AffineTransform2D rot3 = AffineTransform2D.createRotation(3 * PI / 2);
-        AffineTransform2D qrot3 = AffineTransform2D.createQuadrantRotation(3);
+        AffineTransform2D qrot3 = AffineTransform2D.getQuadrantRotation(3);
         assertTrue(rot3.equals(qrot3));
 
     }
@@ -293,27 +291,6 @@ public class AffineTransform2DTest extends TestCase {
         assertEquals(expect.distance(point2), 0, 1e-14);
     }
 
-    public void testConstructorAwtTransform() {
-        AffineTransform rot = AffineTransform.getRotateInstance(.4, 20, 30);
-        AffineTransform2D trans = new AffineTransform2D(rot);
-        AffineTransform rot2 = trans.asAwtTransform();
-        assertTrue(rot.equals(rot2));
-    }
-
-    public void testasAwtTransform() {
-        AffineTransform awtRot = AffineTransform.getRotateInstance(.4, 20, 30);
-        AffineTransform2D rot = AffineTransform2D.createRotation(new Point2D(20, 30), .4);
-        AffineTransform rot2 = rot.asAwtTransform();
-
-        double[] mat1 = new double[6];
-        double[] mat2 = new double[6];
-        awtRot.getMatrix(mat1);
-        rot2.getMatrix(mat2);
-
-        for (int i = 0; i < 6; i++)
-            assertEquals(mat1[i], mat2[i], 1e-6);
-    }
-
     public void testIsIsometry() {
         AffineTransform2D trans;
 
@@ -404,7 +381,7 @@ public class AffineTransform2DTest extends TestCase {
     public void testIsIdentity() {
         AffineTransform2D trans;
 
-        trans = new AffineTransform2D();
+        trans = AffineTransform2D.IDENTITY;
         assertTrue(trans.isIdentity());
 
         trans = AffineTransform2D.createScaling(1, 1);
@@ -417,7 +394,7 @@ public class AffineTransform2DTest extends TestCase {
     public void testIsDirect() {
         AffineTransform2D trans;
 
-        trans = new AffineTransform2D();
+        trans = AffineTransform2D.IDENTITY;
         assertTrue(trans.isDirect());
 
         trans = AffineTransform2D.createScaling(2, 3);

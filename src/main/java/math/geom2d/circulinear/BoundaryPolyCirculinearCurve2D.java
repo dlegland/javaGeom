@@ -32,8 +32,6 @@ import math.geom2d.transform.CircleInversion2D;
 public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyCirculinearCurve2D<T> implements ICirculinearContinuousCurve2D, ICirculinearContour2D {
     private static final long serialVersionUID = 1L;
 
-  
-
     /**
      * Static factory for creating a new BoundaryPolyCirculinearCurve2D from an array of curves.
      * 
@@ -163,6 +161,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
      * 
      * @see math.geom2d.domain.Boundary2D#fill(java.awt.Graphics2D)
      */
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }
@@ -172,6 +171,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
      * 
      * @see math.geom2d.domain.Boundary2D#domain()
      */
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }

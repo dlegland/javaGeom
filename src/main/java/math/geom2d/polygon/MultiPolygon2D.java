@@ -11,8 +11,8 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
-import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
@@ -111,6 +111,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
+    @Override
     public double area() {
         return Polygons2D.computeArea(this);
     }
@@ -121,10 +122,12 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @return the centroid of the polygon
      * @since 0.9.1
      */
+    @Override
     public Point2D centroid() {
         return Polygons2D.computeCentroid(this);
     }
 
+    @Override
     public Collection<LineSegment2D> edges() {
         int nEdges = edgeNumber();
         ArrayList<LineSegment2D> edges = new ArrayList<>(nEdges);
@@ -133,6 +136,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return edges;
     }
 
+    @Override
     public int edgeNumber() {
         int count = 0;
         for (LinearRing2D ring : rings)
@@ -140,6 +144,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return count;
     }
 
+    @Override
     public Collection<Point2D> vertices() {
         int nv = vertexNumber();
         ArrayList<Point2D> points = new ArrayList<>(nv);
@@ -154,6 +159,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @param i
      *            index of the vertex, between 0 and the number of vertices minus one
      */
+    @Override
     public Point2D vertex(int i) {
         int count = 0;
         LinearRing2D boundary = null;
@@ -179,6 +185,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @param i
      *            index of the vertex, between 0 and the number of vertices
      */
+    @Override
     public void setVertex(int i, Point2D point) {
         int count = 0;
         LinearRing2D boundary = null;
@@ -204,6 +211,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @throws RuntimeException
      *             if this MultiPolygon does not contain any ring
      */
+    @Override
     public void addVertex(Point2D position) {
         // get the last ring
         if (rings.size() == 0) {
@@ -221,6 +229,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @throws IllegalArgumentException
      *             if index is not smaller than vertex number
      */
+    @Override
     public void insertVertex(int index, Point2D point) {
         // check number of rings
         if (rings.size() == 0) {
@@ -258,6 +267,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * @param i
      *            index of the vertex, between 0 and the number of vertices minus one
      */
+    @Override
     public void removeVertex(int i) {
         int count = 0;
         LinearRing2D boundary = null;
@@ -280,6 +290,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     /**
      * Returns the total number of vertices in this polygon. The total number is computed as the sum of vertex number in each ring of the polygon.
      */
+    @Override
     public int vertexNumber() {
         int count = 0;
         for (LinearRing2D ring : rings)
@@ -290,6 +301,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     /**
      * Computes the index of the closest vertex to the input point.
      */
+    @Override
     public int closestVertexIndex(Point2D point) {
         double minDist = Double.POSITIVE_INFINITY;
         int index = -1;
@@ -318,6 +330,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearDomain2D transform(CircleInversion2D inv) {
         return new GenericCirculinearDomain2D(this.boundary().transform(inv).reverse());
     }
@@ -327,6 +340,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         return Polygons2D.createBuffer(this, dist);
     }
@@ -336,10 +350,12 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#asPolygon(int)
      */
+    @Override
     public IPolygon2D asPolygon(int n) {
         return this;
     }
 
+    @Override
     public CirculinearContourArray2D<LinearRing2D> boundary() {
         return CirculinearContourArray2D.create(rings.toArray(new LinearRing2D[0]));
     }
@@ -349,10 +365,12 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<LinearRing2D> contours() {
         return Collections.unmodifiableList(rings);
     }
 
+    @Override
     public IPolygon2D complement() {
         // allocate memory for array of reversed rings
         ArrayList<LinearRing2D> reverseLines = new ArrayList<>(rings.size());
@@ -368,6 +386,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     // ===================================================================
     // methods inherited from interface Shape2D
 
+    @Override
     public Box2D boundingBox() {
         // start with empty bounding box
         Box2D box = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
@@ -383,18 +402,22 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     /**
      * Clips the polygon with the specified box.
      */
+    @Override
     public IPolygon2D clip(Box2D box) {
         return Polygons2D.clipPolygon(this, box);
     }
 
+    @Override
     public double distance(Point2D p) {
         return Math.max(this.boundary().signedDistance(p), 0);
     }
 
+    @Override
     public double distance(double x, double y) {
         return Math.max(this.boundary().signedDistance(x, y), 0);
     }
 
+    @Override
     public boolean isBounded() {
         // If boundary is not bounded, the polygon is not
         IBoundary2D boundary = this.boundary();
@@ -413,6 +436,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
     /**
      * The MultiPolygon2D is empty either if it contains no ring, or if all rings are empty.
      */
+    @Override
     public boolean isEmpty() {
         // return true if at least one ring is not empty
         for (LinearRing2D ring : rings)
@@ -421,6 +445,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return true;
     }
 
+    @Override
     public MultiPolygon2D transform(AffineTransform2D trans) {
         // allocate memory for transformed rings
         ArrayList<LinearRing2D> transformed = new ArrayList<>(rings.size());
@@ -433,6 +458,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return new MultiPolygon2D(transformed);
     }
 
+    @Override
     public boolean contains(Point2D point) {
         double angle = 0;
         for (LinearRing2D ring : this.rings)
@@ -446,14 +472,17 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         }
     }
 
+    @Override
     public boolean contains(double x, double y) {
         return this.contains(new math.geom2d.Point2D(x, y));
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         g2.draw(this.boundary().getGeneralPath());
     }
 
+    @Override
     public void fill(Graphics2D g) {
         g.fill(this.boundary().getGeneralPath());
     }
@@ -466,6 +495,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

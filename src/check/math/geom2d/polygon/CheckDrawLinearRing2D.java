@@ -33,6 +33,7 @@ public class CheckDrawLinearRing2D extends JPanel {
         ring = new LinearRing2D(new Point2D[] { new Point2D(50, 50), new Point2D(100, 50), new Point2D(100, 100), new Point2D(150, 100), new Point2D(50, 200) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

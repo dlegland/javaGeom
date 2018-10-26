@@ -32,6 +32,7 @@ public class CheckSplitContinuousClosed extends JPanel {
         curve = new LinearRing2D(new Point2D[] { new Point2D(40, 80), new Point2D(140, 80), new Point2D(140, 160), new Point2D(60, 160), new Point2D(60, 100), new Point2D(160, 100), new Point2D(160, 180), new Point2D(80, 180), new Point2D(80, 60), new Point2D(120, 60), new Point2D(120, 140), new Point2D(40, 140) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

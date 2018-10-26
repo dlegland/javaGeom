@@ -9,6 +9,7 @@
 package math.geom2d.circulinear.buffer;
 
 import static java.lang.Math.PI;
+
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
@@ -20,7 +21,7 @@ import math.geom2d.polygon.Polyline2D;
  * @author dlegland
  *
  */
-public class MiterJoinFactory implements JoinFactory {
+public class MiterJoinFactory implements IJoinFactory {
 
     private double minDenom = 1e-100;
 
@@ -29,6 +30,7 @@ public class MiterJoinFactory implements JoinFactory {
      * 
      * @see math.geom2d.circulinear.buffer.JoinFactory#createJoin(math.geom2d.circulinear.CirculinearElement2D, math.geom2d.circulinear.CirculinearElement2D, double)
      */
+    @Override
     public ICirculinearContinuousCurve2D createJoin(ICirculinearElement2D curve1, ICirculinearElement2D curve2, double dist) {
 
         // extremity of each curve

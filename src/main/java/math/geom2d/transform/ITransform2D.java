@@ -31,7 +31,7 @@ import math.geom2d.Point2D;
 /**
  * general class for all transformation in the plane, linear or not linear.
  */
-public interface Transform2D {
+public interface ITransform2D {
 
     // ===================================================================
     // constants

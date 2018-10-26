@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 
 /**
  * A set of static methods for manipulating point sets.

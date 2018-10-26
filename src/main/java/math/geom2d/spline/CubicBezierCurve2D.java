@@ -25,8 +25,18 @@ package math.geom2d.spline;
 
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.polygon.Polyline2D;
@@ -44,10 +54,10 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     // ===================================================================
     // class variables
 
-    protected double x1, y1;
-    protected double ctrlx1, ctrly1;
-    protected double ctrlx2, ctrly2;
-    protected double x2, y2;
+    private final double x1, y1;
+    private final double ctrlx1, ctrly1;
+    private final double ctrlx2, ctrly2;
+    private final double x2, y2;
 
     // ===================================================================
     // constructors
@@ -170,6 +180,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.domain.IOrientedCurve2D#windingAngle(Point2D)
      */
+    @Override
     public double windingAngle(Point2D point) {
         return this.asPolyline(100).windingAngle(point);
     }
@@ -181,10 +192,12 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      *            a point in the plane
      * @return true if the point is on the left side of the curve.
      */
+    @Override
     public boolean isInside(Point2D pt) {
         return this.asPolyline(100).isInside(pt);
     }
 
+    @Override
     public double signedDistance(Point2D point) {
         if (isInside(point))
             return -distance(point.x(), point.y());
@@ -195,6 +208,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * @see math.geom2d.domain.IOrientedCurve2D#signedDistance(Point2D)
      */
+    @Override
     public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
             return -distance(x, y);
@@ -205,6 +219,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     // ===================================================================
     // methods from SmoothCurve2D interface
 
+    @Override
     public Vector2D tangent(double t) {
         double[][] c = getParametric();
         double dx = c[0][1] + (2 * c[0][2] + 3 * c[0][3] * t) * t;
@@ -215,6 +230,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns the curvature of the Curve.
      */
+    @Override
     public double curvature(double t) {
         double[][] c = getParametric();
         double xp = c[0][1] + (2 * c[0][2] + 3 * c[0][3] * t) * t;
@@ -231,6 +247,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * The cubic curve is never closed.
      */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -240,6 +257,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public Polyline2D asPolyline(int n) {
 
         // compute increment value
@@ -260,6 +278,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * returns 0, as Bezier curve is parameterized between 0 and 1.
      */
+    @Override
     public double t0() {
         return 0;
     }
@@ -267,6 +286,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns 1, as Bezier curve is parameterized between 0 and 1.
      */
+    @Override
     public double t1() {
         return 1;
     }
@@ -276,6 +296,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.curve.ICurve2D#intersections(math.geom2d.line.ILinearShape2D)
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         return this.asPolyline(100).intersections(line);
     }
@@ -283,6 +304,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * @see math.geom2d.curve.ICurve2D#point(double)
      */
+    @Override
     public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
         double[][] c = getParametric();
@@ -314,6 +336,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Computes position by approximating cubic spline with a polyline.
      */
+    @Override
     public double position(Point2D point) {
         int N = 100;
         return this.asPolyline(N).position(point) / (N);
@@ -322,6 +345,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Computes position by approximating cubic spline with a polyline.
      */
+    @Override
     public double project(Point2D point) {
         int N = 100;
         return this.asPolyline(N).project(point) / (N);
@@ -330,6 +354,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns the Bezier curve given by control points taken in reverse order.
      */
+    @Override
     public CubicBezierCurve2D reverse() {
         return new CubicBezierCurve2D(this.lastPoint(), this.getControl1(), this.getControl2(), this.firstPoint());
     }
@@ -337,6 +362,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Computes portion of BezierCurve. If t1<t0, returns null.
      */
+    @Override
     public CubicBezierCurve2D subCurve(double t0, double t1) {
         t0 = Math.max(t0, 0);
         t1 = Math.min(t1, 1);
@@ -357,6 +383,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.Shape2D#contains(double, double)
      */
+    @Override
     public boolean contains(double x, double y) {
         return this.asPolyline(180).contains(x, y);
     }
@@ -366,6 +393,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.Shape2D#contains(Point2D)
      */
+    @Override
     public boolean contains(Point2D p) {
         return this.contains(p.x(), p.y());
     }
@@ -373,6 +401,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * @see math.geom2d.IShape2D#distance(Point2D)
      */
+    @Override
     public double distance(Point2D p) {
         return this.distance(p.x(), p.y());
     }
@@ -382,6 +411,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.IShape2D#distance(double, double)
      */
+    @Override
     public double distance(double x, double y) {
         return this.asPolyline(100).distance(x, y);
     }
@@ -389,10 +419,12 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns true, a cubic Bezier Curve is always bounded.
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -400,6 +432,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Clip the Bezier curve by a box. Return a set of CubicBezierCurve2D.
      */
+    @Override
     public ICurveSet2D<? extends CubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -418,6 +451,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns the approximate bounding box of this curve. Actually, computes the bounding box of the set of control points.
      */
+    @Override
     public Box2D boundingBox() {
         double xmin = Math.min(Math.min(x1, ctrlx1), Math.min(ctrlx2, x2));
         double xmax = Math.max(Math.max(x1, ctrlx1), Math.max(ctrlx2, x2));
@@ -429,10 +463,12 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     /**
      * Returns the Bezier Curve transformed by the given AffineTransform2D. This is simply done by transforming control points of the curve.
      */
+    @Override
     public CubicBezierCurve2D transform(AffineTransform2D trans) {
         return new CubicBezierCurve2D(trans.transform(this.firstPoint()), trans.transform(this.getControl1()), trans.transform(this.getControl2()), trans.transform(this.lastPoint()));
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         path.moveTo(x1, y1);
         path.curveTo(ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
@@ -454,6 +490,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

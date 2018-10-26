@@ -32,8 +32,6 @@ import static java.lang.Math.sin;
 
 import java.io.Serializable;
 
-import math.utils.EqualUtils;
-
 // Imports
 
 /**
@@ -41,6 +39,14 @@ import math.utils.EqualUtils;
  */
 public class Vector2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Vector2D UNIT = new Vector2D(1, 0);
+
+    /** the x-coordinate of the vector */
+    private final double x;
+
+    /** the y-coordinate of the vector */
+    private final double y;
 
     /**
      * Creates a new vector by specifying the distance to the origin, and the angle with the horizontal.
@@ -93,25 +99,6 @@ public class Vector2D implements IGeometricObject2D, Serializable {
         return abs(v1.x * v2.x + v1.y * v2.y) < IShape2D.ACCURACY;
     }
 
-    // ===================================================================
-    // class variables
-
-    /** the x-coordinate of the vector */
-    private final double x;
-
-    /** the y-coordinate of the vector */
-    private final double y;
-
-    // ===================================================================
-    // constructors
-
-    /**
-     * Constructs a new Vectors initialized with x=1 and y=0.
-     */
-    public Vector2D() {
-        this(1, 0);
-    }
-
     /**
      * Constructs a new vector with the given coordinates. Consider creating a new Vector using static factory.
      */
@@ -140,29 +127,15 @@ public class Vector2D implements IGeometricObject2D, Serializable {
     /**
      * Returns the x coordinates of this vector.
      */
-    public double x() {
+    public final double x() {
         return this.x;
     }
 
     /**
-     * Returns the x coordinates of this vector.
-     */
-    public double getX() {
-        return x;
-    }
-
-    /**
      * Returns the y coordinates of this vector.
      */
-    public double y() {
+    public final double y() {
         return this.y;
-    }
-
-    /**
-     * Returns the y coordinates of this vector.
-     */
-    public double getY() {
-        return y;
     }
 
     /**
@@ -305,6 +278,7 @@ public class Vector2D implements IGeometricObject2D, Serializable {
     /**
      * Test whether this object is the same as another vector, with respect to a given threshold.
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -321,26 +295,19 @@ public class Vector2D implements IGeometricObject2D, Serializable {
         return true;
     }
 
-    /**
-     * Test whether this object is exactly the same as another vector.
-     * 
-     * @see #almostEquals
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof Vector2D))
+        if (obj == null)
             return false;
-        Vector2D that = (Vector2D) obj;
-
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x, that.x))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.y, that.y))
+        Vector2D other = (Vector2D) obj;
+        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
-
+        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+            return false;
         return true;
     }
 
@@ -352,12 +319,8 @@ public class Vector2D implements IGeometricObject2D, Serializable {
         return hash;
     }
 
-    /**
-     * Display the coordinates of the vector. Typical output is: <code>x=3 y=4</code>.
-     */
     @Override
     public String toString() {
-        return new String("x=" + x + " y=" + y);
+        return "Vector2D [x=" + x + ", y=" + y + "]";
     }
-
 }

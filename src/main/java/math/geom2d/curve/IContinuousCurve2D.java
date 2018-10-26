@@ -26,7 +26,7 @@
 package math.geom2d.curve;
 
 // Imports
-import java.util.*;
+import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
@@ -111,6 +111,7 @@ public interface IContinuousCurve2D extends ICurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#reverse(D)
      */
+    @Override
     public abstract IContinuousCurve2D reverse();
 
     /*
@@ -118,6 +119,7 @@ public interface IContinuousCurve2D extends ICurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#subCurve(double, double)
      */
+    @Override
     public abstract IContinuousCurve2D subCurve(double t0, double t1);
 
     // ===================================================================
@@ -128,6 +130,7 @@ public interface IContinuousCurve2D extends ICurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#clip(Box2D)
      */
+    @Override
     public abstract ICurveSet2D<? extends IContinuousCurve2D> clip(Box2D box);
 
     /*
@@ -135,5 +138,6 @@ public interface IContinuousCurve2D extends ICurve2D {
      * 
      * @see math.geom2d.curve.Curve2D#transform(AffineTransform2D)
      */
+    @Override
     public abstract IContinuousCurve2D transform(AffineTransform2D trans);
 }

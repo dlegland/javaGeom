@@ -35,6 +35,7 @@ public class CheckIntersectPolyline2D extends JPanel {
         points = Polylines2D.intersect(polyline1, polyline2);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

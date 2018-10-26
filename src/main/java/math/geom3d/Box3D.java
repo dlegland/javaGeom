@@ -93,13 +93,13 @@ public class Box3D {
      * @return this
      */
     public Box3D union(Box3D box) {
-        double xmin = Math.min(this.xmin, box.xmin);
-        double xmax = Math.max(this.xmax, box.xmax);
-        double ymin = Math.min(this.ymin, box.ymin);
-        double ymax = Math.max(this.ymax, box.ymax);
-        double zmin = Math.min(this.zmin, box.zmin);
-        double zmax = Math.max(this.zmax, box.zmax);
-        return new Box3D(xmin, xmax, ymin, ymax, zmin, zmax);
+        double newxmin = Math.min(this.xmin, box.xmin);
+        double newxmax = Math.max(this.xmax, box.xmax);
+        double newymin = Math.min(this.ymin, box.ymin);
+        double newymax = Math.max(this.ymax, box.ymax);
+        double newzmin = Math.min(this.zmin, box.zmin);
+        double newzmax = Math.max(this.zmax, box.zmax);
+        return new Box3D(newxmin, newxmax, newymin, newymax, newzmin, newzmax);
     }
 
     /**
@@ -110,13 +110,13 @@ public class Box3D {
      * @return this
      */
     public Box3D intersection(Box3D box) {
-        double xmin = Math.max(this.xmin, box.xmin);
-        double xmax = Math.min(this.xmax, box.xmax);
-        double ymin = Math.max(this.ymin, box.ymin);
-        double ymax = Math.min(this.ymax, box.ymax);
-        double zmin = Math.max(this.zmin, box.zmin);
-        double zmax = Math.min(this.zmax, box.zmax);
-        return new Box3D(xmin, xmax, ymin, ymax, zmin, zmax);
+        double newxmin = Math.max(this.xmin, box.xmin);
+        double newxmax = Math.min(this.xmax, box.xmax);
+        double newymin = Math.max(this.ymin, box.ymin);
+        double newymax = Math.min(this.ymax, box.ymax);
+        double newzmin = Math.max(this.zmin, box.zmin);
+        double newzmax = Math.min(this.zmax, box.zmax);
+        return new Box3D(newxmin, newxmax, newymin, newymax, newzmin, newzmax);
     }
 
 }

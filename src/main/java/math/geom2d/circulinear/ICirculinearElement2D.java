@@ -26,15 +26,19 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public interface ICirculinearElement2D extends ICirculinearContinuousCurve2D, ISmoothOrientedCurve2D {
-
+    @Override
     public ICirculinearElement2D parallel(double d);
 
+    @Override
     public ICirculinearElement2D transform(CircleInversion2D inv);
 
+    @Override
     public ICurveSet2D<? extends ICirculinearElement2D> clip(Box2D box);
 
+    @Override
     public ICirculinearElement2D subCurve(double t0, double t1);
 
+    @Override
     public ICirculinearElement2D reverse();
 
     /**

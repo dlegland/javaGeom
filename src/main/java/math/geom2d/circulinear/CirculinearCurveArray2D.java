@@ -13,7 +13,10 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.*;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -41,14 +44,6 @@ import math.geom2d.transform.CircleInversion2D;
 public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends CurveArray2D<T> implements ICirculinearCurveSet2D<T> {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new CirculinearCurveArray2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearCurve2D> CirculinearCurveArray2D<T> create( Collection<T> curves) { return new CirculinearCurveArray2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new CirculinearCurveArray2D from an array of curves.
@@ -109,6 +104,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         double sum = 0;
         for (ICirculinearCurve2D curve : this.curves())
@@ -121,6 +117,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return CirculinearCurves2D.getLength(this, pos);
     }
@@ -130,6 +127,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         return CirculinearCurves2D.getPosition(this, length);
     }
@@ -139,6 +137,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -149,6 +148,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
      */
+    @Override
     public ICirculinearCurve2D parallel(double d) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.createParallel(this, d);
@@ -159,6 +159,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public CirculinearCurveArray2D<ICirculinearCurve2D> transform(CircleInversion2D inv) {
         // Allocate array for result
         CirculinearCurveArray2D<ICirculinearCurve2D> result = new CirculinearCurveArray2D<>(curves.size());

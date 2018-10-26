@@ -32,9 +32,13 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
-import math.geom2d.circulinear.*;
+import math.geom2d.Point2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.circulinear.GenericCirculinearRing2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearElement2D;
+import math.geom2d.circulinear.ICirculinearRing2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -131,6 +135,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns a simplified version of this linear ring, by using Douglas-Peucker algorithm.
      */
+    @Override
     public LinearRing2D simplify(double distMax) {
         return new LinearRing2D(Polylines2D.simplifyClosedPolyline(this.vertices, distMax));
     }
@@ -166,6 +171,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
         return edges;
     }
 
+    @Override
     public int edgeNumber() {
         int n = vertices.size();
         if (n > 1)
@@ -173,6 +179,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
         return 0;
     }
 
+    @Override
     public LineSegment2D edge(int index) {
         int i2 = (index + 1) % vertices.size();
         return new LineSegment2D(vertices.get(index), vertices.get(i2));
@@ -181,6 +188,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns the last edge of this linear ring. The last edge connects the last vertex with the first one.
      */
+    @Override
     public LineSegment2D lastEdge() {
         int n = vertices.size();
         if (n < 2)
@@ -191,6 +199,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     // ===================================================================
     // Methods inherited from CirculinearCurve2D
 
+    @Override
     public ICirculinearRing2D parallel(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return GenericCirculinearRing2D.create(bc.createContinuousParallel(this, dist).smoothPieces().toArray(new ICirculinearElement2D[0]));
@@ -201,6 +210,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearRing2D transform(CircleInversion2D inv) {
 
         // Create array for storing transformed arcs
@@ -219,10 +229,12 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     // ===================================================================
     // Methods inherited from Boundary2D
 
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.asGeneralPath());
     }
@@ -235,6 +247,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * 
      * @see math.geom2d.OrientedCurve2D#windingAngle(Point2D)
      */
+    @Override
     public double windingAngle(Point2D point) {
         int wn = Polygons2D.windingNumber(this.vertices, point);
         return wn * 2 * Math.PI;
@@ -249,6 +262,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * 
      * @see math.geom2d.OrientedCurve2D#isInside(Point2D)
      */
+    @Override
     public boolean isInside(Point2D point) {
         // TODO: choose convention for points on the boundary
         if (this.contains(point))
@@ -270,6 +284,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns true, by definition of linear ring.
      */
+    @Override
     public boolean isClosed() {
         return true;
     }
@@ -280,6 +295,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns point from position as double. Position t can be from 0 to n, with n equal to the number of vertices of the linear ring.
      */
+    @Override
     public math.geom2d.Point2D point(double t) {
         // format position to stay between limits
         double t0 = this.t0();
@@ -318,6 +334,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns the number of points in the linear ring.
      */
+    @Override
     public double t1() {
         return vertices.size();
     }
@@ -340,6 +357,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns the linear ring with same points taken in reverse order. The first points is still the same. Points of reverse curve are the same as the original curve (same references).
      */
+    @Override
     public LinearRing2D reverse() {
         Point2D[] points2 = new Point2D[vertices.size()];
         int n = vertices.size();
@@ -355,6 +373,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Return an instance of Polyline2D. If t1 is lower than t0, the returned Polyline contains the origin of the curve.
      */
+    @Override
     public Polyline2D subCurve(double t0, double t1) {
         // code adapted from CurveSet2D
 
@@ -410,6 +429,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     /**
      * Returns the transformed shape, as a LinerRing2D.
      */
+    @Override
     public LinearRing2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[vertices.size()];
         for (int i = 0; i < vertices.size(); i++)
@@ -422,6 +442,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * 
      * @see math.geom2d.ContinuousCurve2D#appendPath(java.awt.geom.GeneralPath)
      */
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
         if (vertices.size() < 2)
@@ -450,6 +471,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

@@ -35,7 +35,10 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.exception.UnboundedShape2DException;
-import math.geom2d.polygon.*;
+import math.geom2d.polygon.IPolygon2D;
+import math.geom2d.polygon.LinearCurve2D;
+import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.MultiPolygon2D;
 
 /**
  * A domain defined from its boundary. The boundary curve must be correctly oriented, non self intersecting, and clearly separating interior and exterior.
@@ -76,6 +79,7 @@ public class GenericDomain2D implements IDomain2D {
      * 
      * @see math.geom2d.domain.Domain2D#asPolygon(int)
      */
+    @Override
     public IPolygon2D asPolygon(int n) {
         Collection<? extends IContour2D> contours = boundary.continuousCurves();
         ArrayList<LinearRing2D> rings = new ArrayList<>(contours.size());
@@ -97,6 +101,7 @@ public class GenericDomain2D implements IDomain2D {
         return new MultiPolygon2D(rings);
     }
 
+    @Override
     public IBoundary2D boundary() {
         return boundary;
     }
@@ -106,10 +111,12 @@ public class GenericDomain2D implements IDomain2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<? extends IContour2D> contours() {
         return this.boundary.continuousCurves();
     }
 
+    @Override
     public IDomain2D complement() {
         return new GenericDomain2D(boundary.reverse());
     }
@@ -117,10 +124,12 @@ public class GenericDomain2D implements IDomain2D {
     // ===================================================================
     // methods implementing the Shape2D interface
 
+    @Override
     public double distance(Point2D p) {
         return Math.max(boundary.signedDistance(p.x(), p.y()), 0);
     }
 
+    @Override
     public double distance(double x, double y) {
         return Math.max(boundary.signedDistance(x, y), 0);
     }
@@ -128,6 +137,7 @@ public class GenericDomain2D implements IDomain2D {
     /**
      * Returns true if the domain is bounded. The domain is unbounded if either its boundary is unbounded, or a point located outside of the boundary bounding box is located inside of the domain.
      */
+    @Override
     public boolean isBounded() {
         // If boundary is not bounded, the domain is not bounded.
         if (!boundary.isBounded())
@@ -141,10 +151,12 @@ public class GenericDomain2D implements IDomain2D {
         return !boundary.isInside(point);
     }
 
+    @Override
     public boolean isEmpty() {
         return boundary.isEmpty() && !this.contains(0, 0);
     }
 
+    @Override
     public IDomain2D clip(Box2D box) {
         return new GenericDomain2D(Boundaries2D.clipBoundary(this.boundary(), box));
     }
@@ -152,6 +164,7 @@ public class GenericDomain2D implements IDomain2D {
     /**
      * If the domain is bounded, returns the bounding box of its boundary, otherwise returns an infinite bounding box.
      */
+    @Override
     public Box2D boundingBox() {
         if (this.isBounded())
             return boundary.boundingBox();
@@ -161,6 +174,7 @@ public class GenericDomain2D implements IDomain2D {
     /**
      * Returns a new domain which is created from the transformed domain of this boundary.
      */
+    @Override
     public GenericDomain2D transform(AffineTransform2D trans) {
         IBoundary2D transformed = boundary.transform(trans);
         if (!trans.isDirect())
@@ -168,6 +182,7 @@ public class GenericDomain2D implements IDomain2D {
         return new GenericDomain2D(transformed);
     }
 
+    @Override
     public boolean contains(double x, double y) {
         return boundary.signedDistance(x, y) <= 0;
     }
@@ -175,14 +190,17 @@ public class GenericDomain2D implements IDomain2D {
     // ===================================================================
     // methods implementing the Shape interface
 
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         boundary.draw(g2);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         boundary.fill(g2);
     }
@@ -195,6 +213,7 @@ public class GenericDomain2D implements IDomain2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

@@ -291,7 +291,7 @@ public class Conics2D {
 
         public ConicStraightLine2D(StraightLine2D line) {
             super(line);
-            coefs = new double[] { 0, 0, 0, dy, -dx, dx * y0 - dy * x0 };
+            coefs = new double[] { 0, 0, 0, dy(), -dx(), dx() * y0() - dy() * x0() };
         }
 
         public ConicStraightLine2D(double a, double b, double c) {
@@ -299,15 +299,18 @@ public class Conics2D {
             coefs = new double[] { 0, 0, 0, a, b, c };
         }
 
+        @Override
         public double[] conicCoefficients() {
             return coefs;
         }
 
+        @Override
         public Type conicType() {
             return IConic2D.Type.STRAIGHT_LINE;
         }
 
         /** Return NaN. */
+        @Override
         public double eccentricity() {
             return Double.NaN;
         }
@@ -345,6 +348,7 @@ public class Conics2D {
             this.add(baseLine.parallel(-d).reverse());
         }
 
+        @Override
         public double[] conicCoefficients() {
             double[] coefs = { 0, 0, 1, 0, 0, -1 };
             AffineTransform2D sca = AffineTransform2D.createScaling(0, d);
@@ -356,10 +360,12 @@ public class Conics2D {
             return Conics2D.transform(coefs, trans);
         }
 
+        @Override
         public Type conicType() {
             return IConic2D.Type.TWO_LINES;
         }
 
+        @Override
         public double eccentricity() {
             return Double.NaN;
         }

@@ -27,8 +27,6 @@ package math.geom2d;
 
 import java.awt.Graphics2D;
 
-import math.geom2d.AffineTransform2D;
-
 // Imports
 
 /**

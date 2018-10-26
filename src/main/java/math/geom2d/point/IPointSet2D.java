@@ -12,8 +12,8 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShapeSet2D;
+import math.geom2d.Point2D;
 
 /**
  * A set of points. All points within the set are instances of Point2D. The most direct implementation of PointSet2D is PointArray2D.
@@ -29,6 +29,7 @@ public interface IPointSet2D extends IPointShape2D, IShapeSet2D<Point2D> {
      * @param point
      *            the initial point in the set
      */
+    @Override
     public boolean add(Point2D point);
 
     /**
@@ -44,6 +45,7 @@ public interface IPointSet2D extends IPointShape2D, IShapeSet2D<Point2D> {
      * 
      * @return the collection of points
      */
+    @Override
     public Collection<Point2D> points();
 
     /**
@@ -51,15 +53,18 @@ public interface IPointSet2D extends IPointShape2D, IShapeSet2D<Point2D> {
      * 
      * @return the number of points
      */
+    @Override
     public int size();
 
     /**
      * Transforms the point set by returning a new point set containing each transformed point.
      */
+    @Override
     public abstract IPointSet2D transform(AffineTransform2D trans);
 
     /**
      * Returns a new point set containing only points located within the box.
      */
+    @Override
     public abstract IPointSet2D clip(Box2D box);
 }

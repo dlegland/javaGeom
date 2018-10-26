@@ -4,18 +4,19 @@
 
 package math.geom2d.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
-import math.geom2d.exception.UnboundedBox2DException;
-import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.exception.UnboundedBox2DException;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -23,7 +24,8 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public abstract class Boundaries2D {
+public abstract class Boundaries2D implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     /**
      * Clip a curve, and return a CurveSet2D. If the curve is totally outside the box, return a CurveSet2D with 0 curves inside. If the curve is totally inside the box, return a CurveSet2D with only one curve, which is the original curve.

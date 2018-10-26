@@ -46,6 +46,7 @@ public class DrawBoundaryHoleDemo extends JPanel {
         super();
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

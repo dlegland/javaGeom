@@ -45,6 +45,7 @@ public class CheckDrawWedges2D extends JPanel {
         boundary = new ContourArray2D<>(new BoundaryPolyCurve2D[] { wedge1, wedge2 });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

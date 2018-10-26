@@ -27,6 +27,7 @@ public class CheckCircle2DClipBox2D extends JPanel {
     double[] x0 = new double[] { 40, 150, 260, 40, 260, 40, 150, 260 };
     double[] y0 = new double[] { 40, 40, 40, 150, 150, 260, 260, 260 };
 
+    @Override
     public void paintComponent(Graphics g) {
         Box2D box1 = new Box2D(50, 250, 50, 250);
         Box2D box2 = new Box2D(30, 270, 30, 270);

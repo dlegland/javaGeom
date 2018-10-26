@@ -23,6 +23,7 @@ public class CheckDrawCircleArcAsBezier2D extends JPanel {
     double r = 200;
     double extent = Math.PI / 2;
 
+    @Override
     public void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;

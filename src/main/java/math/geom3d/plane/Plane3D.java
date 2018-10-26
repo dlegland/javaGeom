@@ -137,6 +137,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
+    @Override
     public IShape3D clip(Box3D box) {
         // TODO Auto-generated method stub
         return null;
@@ -147,6 +148,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
+    @Override
     public boolean contains(Point3D point) {
         Point3D proj = this.projectPoint(point);
         return (point.distance(proj) < IShape3D.ACCURACY);
@@ -157,6 +159,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#getBoundingBox()
      */
+    @Override
     public Box3D boundingBox() {
         // plane parallel to XY plane
         if (Math.abs(dz1) < IShape3D.ACCURACY && Math.abs(dz2) < IShape3D.ACCURACY)
@@ -178,6 +181,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
+    @Override
     public double distance(Point3D point) {
         return point.distance(this.projectPoint(point));
     }
@@ -187,6 +191,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#isBounded()
      */
+    @Override
     public boolean isBounded() {
         return false;
     }
@@ -196,6 +201,7 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -205,38 +211,67 @@ public class Plane3D implements IShape3D, Serializable {
      * 
      * @see math.geom3d.Shape3D#transform(math.geom3d.transform.AffineTransform3D)
      */
+    @Override
     public IShape3D transform(AffineTransform3D trans) {
         return new Plane3D(this.origin().transform(trans), this.vector1().transform(trans), this.vector2().transform(trans));
     }
 
-    // ===================================================================
-    // methods overriding Object superclass
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(dx1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dx2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dy1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dy2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dz1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dz2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Plane3D))
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        Plane3D plane = (Plane3D) obj;
-
-        if (Math.abs(this.x0 - plane.x0) > IShape3D.ACCURACY)
+        if (getClass() != obj.getClass())
             return false;
-        if (Math.abs(this.y0 - plane.y0) > IShape3D.ACCURACY)
+        Plane3D other = (Plane3D) obj;
+        if (Double.doubleToLongBits(dx1) != Double.doubleToLongBits(other.dx1))
             return false;
-        if (Math.abs(this.z0 - plane.z0) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(dx2) != Double.doubleToLongBits(other.dx2))
             return false;
-        if (Math.abs(this.dx1 - plane.dx1) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(dy1) != Double.doubleToLongBits(other.dy1))
             return false;
-        if (Math.abs(this.dy1 - plane.dy1) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(dy2) != Double.doubleToLongBits(other.dy2))
             return false;
-        if (Math.abs(this.dz1 - plane.dz1) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(dz1) != Double.doubleToLongBits(other.dz1))
             return false;
-        if (Math.abs(this.dx2 - plane.dx2) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(dz2) != Double.doubleToLongBits(other.dz2))
             return false;
-        if (Math.abs(this.dy2 - plane.dy2) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(x0) != Double.doubleToLongBits(other.x0))
             return false;
-        if (Math.abs(this.dz2 - plane.dz2) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(y0) != Double.doubleToLongBits(other.y0))
+            return false;
+        if (Double.doubleToLongBits(z0) != Double.doubleToLongBits(other.z0))
             return false;
         return true;
     }
+
+
 
 }

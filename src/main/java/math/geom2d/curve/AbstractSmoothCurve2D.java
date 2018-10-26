@@ -27,6 +27,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
      */
+    @Override
     public Vector2D leftTangent(double t) {
         return this.tangent(t);
     }
@@ -36,6 +37,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
      */
+    @Override
     public Vector2D rightTangent(double t) {
         return this.tangent(t);
     }
@@ -45,6 +47,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#normal(double)
      */
+    @Override
     public Vector2D normal(double t) {
         return this.tangent(t).rotate(-Math.PI / 2);
     }
@@ -54,6 +57,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#smoothPieces()
      */
+    @Override
     public Collection<? extends ISmoothCurve2D> smoothPieces() {
         return wrapCurve(this);
     }
@@ -63,6 +67,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ICurve2D#singularPoints()
      */
+    @Override
     public Collection<Point2D> singularPoints() {
         return new ArrayList<>(0);
     }
@@ -72,6 +77,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ICurve2D#vertices()
      */
+    @Override
     public Collection<Point2D> vertices() {
         ArrayList<Point2D> array = new ArrayList<>(2);
         if (!Double.isInfinite(this.t0()))
@@ -86,6 +92,7 @@ public abstract class AbstractSmoothCurve2D extends AbstractContinuousCurve2D im
      * 
      * @see math.geom2d.curve.ICurve2D#isSingular(double)
      */
+    @Override
     public boolean isSingular(double pos) {
         return false;
     }

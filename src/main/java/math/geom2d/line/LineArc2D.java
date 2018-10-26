@@ -29,7 +29,11 @@ package math.geom2d.line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.utils.EqualUtils;
@@ -61,10 +65,10 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     // class variables
 
     /** Lower bound of this arc parameterization */
-    protected double t0 = 0;
+    private final double t0;
 
     /** Upper bound of this arc parameterization */
-    protected double t1 = 1;
+    private final double t1;
 
     // ===================================================================
     // Constructors
@@ -135,30 +139,30 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
             return Double.POSITIVE_INFINITY;
     }
 
-    public double getX1() {
+    public double x1() {
         if (t0 != Double.NEGATIVE_INFINITY)
-            return x0 + t0 * dx;
+            return x0() + t0 * dx();
         else
             return Double.NEGATIVE_INFINITY;
     }
 
-    public double getY1() {
+    public double y1() {
         if (t0 != Double.NEGATIVE_INFINITY)
-            return y0 + t0 * dy;
+            return y0() + t0 * dy();
         else
             return Double.NEGATIVE_INFINITY;
     }
 
-    public double getX2() {
+    public double x2() {
         if (t1 != Double.POSITIVE_INFINITY)
-            return x0 + t1 * dx;
+            return x0() + t1 * dx();
         else
             return Double.POSITIVE_INFINITY;
     }
 
-    public double getY2() {
+    public double y2() {
         if (t1 != Double.POSITIVE_INFINITY)
-            return y0 + t1 * dy;
+            return y0() + t1 * dy();
         else
             return Double.POSITIVE_INFINITY;
     }
@@ -171,9 +175,10 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
      */
+    @Override
     public LineArc2D parallel(double d) {
-        double d2 = d / Math.hypot(dx, dy);
-        return new LineArc2D(x0 + dy * d2, y0 - dx * d2, dx, dy, t0, t1);
+        double d2 = d / Math.hypot(dx(), dy());
+        return new LineArc2D(x0() + dy() * d2, y0() - dx() * d2, dx(), dy(), t0, t1);
     }
 
     // ===================================================================
@@ -182,6 +187,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     /**
      * Returns the parameter of the first point of the line arc, arbitrarily set to 0.
      */
+    @Override
     public double t0() {
         return t0;
     }
@@ -189,10 +195,12 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     /**
      * Returns the parameter of the last point of the line arc, arbitrarily set to 1.
      */
+    @Override
     public double t1() {
         return t1;
     }
 
+    @Override
     public Point2D point(double t) {
         if (t < t0)
             t = t0;
@@ -202,7 +210,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         if (Double.isInfinite(t))
             throw new UnboundedShape2DException(this);
         else
-            return new Point2D(x0 + dx * t, y0 + dy * t);
+            return new Point2D(x0() + dx() * t, y0() + dy() * t);
     }
 
     /**
@@ -213,7 +221,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     @Override
     public Point2D firstPoint() {
         if (!Double.isInfinite(t0))
-            return new Point2D(x0 + t0 * dx, y0 + t0 * dy);
+            return new Point2D(x0() + t0 * dx(), y0() + t0 * dy());
         else
             throw new UnboundedShape2DException(this);
     }
@@ -226,7 +234,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     @Override
     public Point2D lastPoint() {
         if (!Double.isInfinite(t1))
-            return new Point2D(x0 + t1 * dx, y0 + t1 * dy);
+            return new Point2D(x0() + t1 * dx(), y0() + t1 * dy());
         else
             throw new UnboundedShape2DException(this);
     }
@@ -258,8 +266,9 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     /**
      * Returns the line arc which have the same trace, but has the inverse parameterization.
      */
+    @Override
     public LineArc2D reverse() {
-        return new LineArc2D(x0, y0, -dx, -dy, -t1, -t0);
+        return new LineArc2D(x0(), y0(), -dx(), -dy(), -t1, -t0);
     }
 
     /**
@@ -278,6 +287,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     /**
      * Returns true if both t0 and t1 are different from infinity.
      */
+    @Override
     public boolean isBounded() {
         return t0 != Double.NEGATIVE_INFINITY && t1 != Double.POSITIVE_INFINITY;
     }
@@ -285,8 +295,9 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     /**
      * Returns the bounding box of this line arc.
      */
+    @Override
     public Box2D boundingBox() {
-        return new Box2D(x0 + t0 * dx, x0 + t1 * dx, y0 + t0 * dy, y0 + t1 * dy);
+        return new Box2D(x0() + t0 * dx(), x0() + t1 * dx(), y0() + t0 * dy(), y0() + t1 * dy());
     }
 
     // ===================================================================
@@ -297,6 +308,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         return contains(pt.x(), pt.y());
     }
 
+    @Override
     public boolean contains(double xp, double yp) {
         if (!super.supportContains(xp, yp))
             return false;
@@ -316,8 +328,8 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-        path.moveTo((float) (x0 + t0 * dx), (float) (y0 + t0 * dy));
-        path.lineTo((float) (x0 + t1 * dx), (float) (y0 + t1 * dy));
+        path.moveTo((float) (x0() + t0 * dx()), (float) (y0() + t0 * dy()));
+        path.lineTo((float) (x0() + t1 * dx()), (float) (y0() + t1 * dy()));
         return path;
     }
 
@@ -328,6 +340,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
      *            the path to modify
      * @return the modified path
      */
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
@@ -335,22 +348,22 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
             return path;
         if (t1 == Double.POSITIVE_INFINITY)
             return path;
-        path.lineTo((float) getX1(), (float) getY1());
-        path.lineTo((float) getX2(), (float) getY2());
+        path.lineTo((float) x1(), (float) y1());
+        path.lineTo((float) x2(), (float) y2());
         return path;
     }
 
     @Override
     public LineArc2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
-        double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
-        return new LineArc2D(x1, y1, dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4], t0, t1);
+        double x1 = x0() * tab[0] + y0() * tab[1] + tab[2];
+        double y1 = x0() * tab[3] + y0() * tab[4] + tab[5];
+        return new LineArc2D(x1, y1, dx() * tab[0] + dy() * tab[1], dx() * tab[3] + dy() * tab[4], t0, t1);
     }
 
     @Override
     public String toString() {
-        return new String("LineArc2D(" + x0 + "," + y0 + "," + dx + "," + dy + "," + t0 + "," + t1 + ")");
+        return new String("LineArc2D(" + x0() + "," + y0() + "," + dx() + "," + dy() + "," + t0 + "," + t1 + ")");
     }
 
     // ===================================================================
@@ -361,6 +374,7 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -370,13 +384,13 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         LineArc2D that = (LineArc2D) obj;
 
         // Compare each field
-        if (!almostEquals(this.x0, that.x0, eps))
+        if (!almostEquals(this.x0(), that.x0(), eps))
             return false;
-        if (!almostEquals(this.y0, that.y0, eps))
+        if (!almostEquals(this.y0(), that.y0(), eps))
             return false;
-        if (!almostEquals(this.dx, that.dx, eps))
+        if (!almostEquals(this.dx(), that.dx(), eps))
             return false;
-        if (!almostEquals(this.dy, that.dy, eps))
+        if (!almostEquals(this.dy(), that.dy(), eps))
             return false;
         if (!almostEquals(this.t0, that.t0, eps))
             return false;
@@ -410,13 +424,13 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
         LineArc2D that = (LineArc2D) obj;
 
         // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
+        if (!EqualUtils.areEqual(this.x0(), that.x0()))
             return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
+        if (!EqualUtils.areEqual(this.y0(), that.y0()))
             return false;
-        if (!EqualUtils.areEqual(this.dx, that.dx))
+        if (!EqualUtils.areEqual(this.dx(), that.dx()))
             return false;
-        if (!EqualUtils.areEqual(this.dy, that.dy))
+        if (!EqualUtils.areEqual(this.dy(), that.dy()))
             return false;
         if (!EqualUtils.areEqual(this.t0, that.t0))
             return false;
@@ -429,10 +443,10 @@ public class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 31 + Double.valueOf(this.x0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.y0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dx).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+        hash = hash * 31 + Double.valueOf(this.x0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.y0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dx()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dy()).hashCode();
         hash = hash * 31 + Double.valueOf(this.t0).hashCode();
         hash = hash * 31 + Double.valueOf(this.t1).hashCode();
         return hash;

@@ -32,8 +32,8 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.polygon.Polyline2D;
 
@@ -46,14 +46,6 @@ import math.geom2d.polygon.Polyline2D;
 public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> implements IContinuousCurve2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new PolyCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends ContinuousCurve2D> PolyCurve2D<T> create( Collection<T> curves) { return new PolyCurve2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new PolyCurve2D from an array of curves.
@@ -196,6 +188,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
      */
+    @Override
     public Vector2D leftTangent(double t) {
         return this.childCurve(t).leftTangent(this.localPosition(t));
     }
@@ -205,6 +198,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
      */
+    @Override
     public Vector2D rightTangent(double t) {
         return this.childCurve(t).rightTangent(this.localPosition(t));
     }
@@ -214,6 +208,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
      */
+    @Override
     public double curvature(double t) {
         return this.childCurve(t).curvature(this.localPosition(t));
     }
@@ -221,6 +216,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
     /**
      * Returns true if the PolyCurve2D is closed.
      */
+    @Override
     public boolean isClosed() {
         return closed;
     }
@@ -232,6 +228,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      *            the number of edges of the resulting polyline
      * @see Polyline2D
      */
+    @Override
     public Polyline2D asPolyline(int n) {
         // allocate point array
         Point2D[] points = new Point2D[n + 1];
@@ -255,6 +252,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
      * 
      * @return a collection of SmoothCurve2D
      */
+    @Override
     public Collection<? extends ISmoothCurve2D> smoothPieces() {
         ArrayList<ISmoothCurve2D> list = new ArrayList<>();
         for (ICurve2D curve : this.curves)
@@ -377,6 +375,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
         return result;
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         Point2D point;
         for (IContinuousCurve2D curve : curves()) {

@@ -25,7 +25,6 @@ package math.geom2d.curve;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -47,18 +46,7 @@ import math.geom2d.line.ILinearShape2D;
  * 
  * @author Legland
  */
-public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T>, Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Static factory for creating a new CurveArray2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    public static <T extends ICurve2D> CurveArray2D<T> create(Collection<T> curves) {
-        return new CurveArray2D<>(curves);
-    }
-
+public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T> {
     /**
      * Static factory for creating a new CurveArray2D from an array of curves.
      * 
@@ -134,6 +122,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      *            the position on the curve set
      * @return the position on the subcurve
      */
+    @Override
     public double localPosition(double t) {
         int i = this.curveIndex(t);
         T curve = curves.get(i);
@@ -153,6 +142,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      *            the position on the curve
      * @return the position on the curve set, between 0 and 2*Nc-1
      */
+    @Override
     public double globalPosition(int i, double t) {
         T curve = curves.get(i);
         double t0 = curve.t0();
@@ -167,6 +157,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      *            the position on the set of curves, between 0 and twice the number of curves minus 1
      * @return the index of the curve which contains position t
      */
+    @Override
     public int curveIndex(double t) {
 
         // check bounds
@@ -195,12 +186,14 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * @param curve
      *            the curve to add
      */
+    @Override
     public boolean add(T curve) {
         if (curves.contains(curve))
             return false;
         return curves.add(curve);
     }
 
+    @Override
     public void add(int index, T curve) {
         this.curves.add(index, curve);
     }
@@ -211,10 +204,12 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * @param curve
      *            the curve to remove
      */
+    @Override
     public boolean remove(T curve) {
         return curves.remove(curve);
     }
 
+    @Override
     public T remove(int index) {
         return this.curves.remove(index);
     }
@@ -222,6 +217,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Checks if the curve set contains the given curve.
      */
+    @Override
     public boolean contains(T curve) {
         return curves.contains(curve);
     }
@@ -229,6 +225,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Returns index of the given curve within the inner array.
      */
+    @Override
     public int indexOf(T curve) {
         return this.curves.indexOf(curve);
     }
@@ -236,6 +233,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Clears the inner curve collection.
      */
+    @Override
     public void clear() {
         curves.clear();
     }
@@ -245,6 +243,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the inner collection of curves
      */
+    @Override
     public Collection<T> curves() {
         return curves;
     }
@@ -257,6 +256,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * @return the i-th inner curve
      * @since 0.6.3
      */
+    @Override
     public T get(int index) {
         return curves.get(index);
     }
@@ -269,6 +269,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * @return the curve corresponding to the position.
      * @since 0.6.3
      */
+    @Override
     public T childCurve(double t) {
         if (curves.size() == 0)
             return null;
@@ -280,6 +281,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the first curve of the collection
      */
+    @Override
     public T firstCurve() {
         if (curves.size() == 0)
             return null;
@@ -291,6 +293,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the last curve of the collection
      */
+    @Override
     public T lastCurve() {
         if (curves.size() == 0)
             return null;
@@ -302,6 +305,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the number of curves in the collection
      */
+    @Override
     public int size() {
         return curves.size();
     }
@@ -309,6 +313,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Returns true if the CurveSet does not contain any curve.
      */
+    @Override
     public boolean isEmpty() {
         return curves.size() == 0;
     }
@@ -316,6 +321,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     // ===================================================================
     // methods inherited from interface Curve2D
 
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         ArrayList<Point2D> intersect = new ArrayList<>();
 
@@ -329,10 +335,12 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Returns 0.
      */
+    @Override
     public double t0() {
         return 0;
     }
 
+    @Override
     public double t1() {
         return Math.max(curves.size() * 2 - 1, 0);
     }
@@ -342,6 +350,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @see math.geom2d.Curve2D#point(double)
      */
+    @Override
     public Point2D point(double t) {
         if (curves.size() == 0)
             return null;
@@ -374,6 +383,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the first point of the curve
      */
+    @Override
     public Point2D firstPoint() {
         if (curves.size() == 0)
             return null;
@@ -385,6 +395,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @return the last point of the curve.
      */
+    @Override
     public Point2D lastPoint() {
         if (curves.size() == 0)
             return null;
@@ -396,6 +407,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @see #vertices()
      */
+    @Override
     public Collection<Point2D> singularPoints() {
         // create array for result
         ArrayList<Point2D> points = new ArrayList<>();
@@ -439,10 +451,12 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @see #singularPoints()
      */
+    @Override
     public Collection<Point2D> vertices() {
         return this.singularPoints();
     }
 
+    @Override
     public boolean isSingular(double pos) {
         if (Math.abs(pos - Math.round(pos)) < IShape2D.ACCURACY)
             return true;
@@ -459,6 +473,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return curve.isSingular(this.localPosition(pos));
     }
 
+    @Override
     public double position(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
         double x = point.x(), y = point.y();
@@ -480,6 +495,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return pos;
     }
 
+    @Override
     public double project(Point2D point) {
         double minDist = Double.MAX_VALUE, dist = minDist;
         double x = point.x(), y = point.y();
@@ -501,6 +517,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return pos;
     }
 
+    @Override
     public ICurve2D reverse() {
         // create array of reversed curves
         int n = curves.size();
@@ -517,6 +534,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Return an instance of CurveArray2D.
      */
+    @Override
     public ICurveSet2D<? extends ICurve2D> subCurve(double t0, double t1) {
         // number of curves in the set
         int nc = curves.size();
@@ -589,10 +607,12 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     // ===================================================================
     // methods inherited from interface Shape2D
 
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
 
+    @Override
     public double distance(double x, double y) {
         double dist = Double.POSITIVE_INFINITY;
         for (ICurve2D curve : curves)
@@ -603,6 +623,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * return true, if all curve pieces are bounded
      */
+    @Override
     public boolean isBounded() {
         for (ICurve2D curve : curves)
             if (!curve.isBounded())
@@ -613,6 +634,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Clips a curve, and return a CurveArray2D. If the curve is totally outside the box, return a CurveArray2D with 0 curves inside. If the curve is totally inside the box, return a CurveArray2D with only one curve, which is the original curve.
      */
+    @Override
     public ICurveSet2D<? extends ICurve2D> clip(Box2D box) {
         // Simply calls the generic method in Curve2DUtils
         return Curves2D.clipCurveSet(this, box);
@@ -621,6 +643,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Returns bounding box for the CurveArray2D.
      */
+    @Override
     public Box2D boundingBox() {
         double xmin = Double.POSITIVE_INFINITY;
         double ymin = Double.POSITIVE_INFINITY;
@@ -642,6 +665,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     /**
      * Transforms each curve, and build a new CurveArray2D with the set of transformed curves.
      */
+    @Override
     public CurveArray2D<? extends ICurve2D> transform(AffineTransform2D trans) {
         // Allocate array for result
         CurveArray2D<ICurve2D> result = new CurveArray2D<>(curves.size());
@@ -652,6 +676,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return result;
     }
 
+    @Override
     public Collection<? extends IContinuousCurve2D> continuousCurves() {
         // create array for storing result
         ArrayList<IContinuousCurve2D> continuousCurves = new ArrayList<>();
@@ -673,11 +698,13 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     // methods inherited from interface Shape2D
 
     /** Returns true if one of the curves contains the point */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
 
     /** Returns true if one of the curves contains the point */
+    @Override
     public boolean contains(double x, double y) {
         for (ICurve2D curve : curves) {
             if (curve.contains(x, y))
@@ -711,10 +738,12 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @see math.geom2d.curve.Curve2D#getAsAWTShape()
      */
+    @Override
     public Shape asAwtShape() {
         return this.getGeneralPath();
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         for (ICurve2D curve : curves)
             curve.draw(g2);
@@ -728,6 +757,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -750,40 +780,41 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         return true;
     }
 
-    // ===================================================================
-    // methods inherited from interface Object
 
-    /**
-     * Returns true if obj is a CurveArray2D with the same number of curves, and such that each curve belongs to both objects.
-     */
+
+  
+
     @Override
-    public boolean equals(Object obj) {
-        // check class, and cast type
-        if (!(obj instanceof CurveArray2D<?>))
-            return false;
-        CurveArray2D<?> curveSet = (CurveArray2D<?>) obj;
-
-        // check the number of curves in each set
-        if (this.size() != curveSet.size())
-            return false;
-
-        // return false if at least one couple of curves does not match
-        for (int i = 0; i < curves.size(); i++)
-            if (!curves.get(i).equals(curveSet.curves.get(i)))
-                return false;
-
-        // otherwise return true
-        return true;
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((curves == null) ? 0 : curves.hashCode());
+        return result;
     }
 
-    // ===================================================================
-    // methods implementing the Iterable interface
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CurveArray2D<?> other = (CurveArray2D<?>) obj;
+        if (curves == null) {
+            if (other.curves != null)
+                return false;
+        } else if (!curves.equals(other.curves))
+            return false;
+        return true;
+    }
 
     /*
      * (non-Javadoc)
      * 
      * @see java.lang.Iterable#iterator()
      */
+    @Override
     public Iterator<T> iterator() {
         return curves.iterator();
     }

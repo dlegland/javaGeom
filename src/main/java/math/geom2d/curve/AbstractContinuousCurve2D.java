@@ -42,6 +42,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.IContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public LinearCurve2D asPolyline(int n) {
         // Check that the curve is bounded
         if (!this.isBounded())
@@ -109,6 +110,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.Curve2D#getContinuousCurves()
      */
+    @Override
     public Collection<? extends IContinuousCurve2D> continuousCurves() {
         return wrapCurve(this);
     }
@@ -118,6 +120,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.Curve2D#getFirstPoint()
      */
+    @Override
     public Point2D firstPoint() {
         double t0 = this.t0();
         if (Double.isInfinite(t0))
@@ -130,6 +133,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.Curve2D#getLastPoint()
      */
+    @Override
     public Point2D lastPoint() {
         double t1 = this.t1();
         if (Double.isInfinite(t1))
@@ -142,6 +146,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.Curve2D#draw(java.awt.Graphics2D)
      */
+    @Override
     public void draw(Graphics2D g2) {
         g2.draw(this.asAwtShape());
     }
@@ -151,6 +156,7 @@ public abstract class AbstractContinuousCurve2D implements IContinuousCurve2D, S
      * 
      * @see math.geom2d.curve.Curve2D#asAWTShape()
      */
+    @Override
     public Shape asAwtShape() {
         // Check that the curve is bounded
         if (!this.isBounded())

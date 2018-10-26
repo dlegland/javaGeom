@@ -40,6 +40,7 @@ public class DrawCubicBezier2D extends JPanel {
         this.curve = new CubicBezierCurve2D(p0, p1, p2, p3);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

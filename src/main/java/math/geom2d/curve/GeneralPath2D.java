@@ -33,7 +33,7 @@ import math.geom2d.Point2D;
 public final class GeneralPath2D implements Shape, Serializable {
     private static final long serialVersionUID = 1L;
 
-    GeneralPath path;
+    private final GeneralPath path;
 
     /**
      * An even-odd winding rule for determining the interior of a path.
@@ -258,7 +258,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      * @return a <code>Point2D</code> object containing the ending coordinates of the path or <code>null</code> if there are no points in the path.
      */
     public synchronized Point2D getCurrentPoint() {
-        return new Point2D(path.getCurrentPoint());
+        return new Point2D(path.getCurrentPoint().getX(),path.getCurrentPoint().getY());
     }
 
     /**
@@ -294,6 +294,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      * 
      * @return a {@link java.awt.Rectangle} object that bounds the current path.
      */
+    @Override
     public java.awt.Rectangle getBounds() {
         return path.getBounds();
     }
@@ -303,6 +304,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      * 
      * @return a {@link math.geom2d.polygon.Rectangle2D} object that bounds the current path.
      */
+    @Override
     public synchronized java.awt.geom.Rectangle2D getBounds2D() {
         return path.getBounds2D();
     }
@@ -316,6 +318,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the y-coordinate of the point
      * @return <code>true</code> if the specified coordinates are inside this <code>Shape</code>; <code>false</code> otherwise
      */
+    @Override
     public boolean contains(double x, double y) {
         return path.contains(x, y);
     }
@@ -327,6 +330,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the specified <code>Point2D</code>
      * @return <code>true</code> if this <code>Shape</code> contains the specified <code>Point2D</code>, <code>false</code> otherwise.
      */
+    @Override
     public boolean contains(java.awt.geom.Point2D p) {
         return path.contains(new java.awt.Point.Double(p.getX(), p.getY()));
     }
@@ -355,6 +359,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the height of the specified rectangular area
      * @return <code>true</code> if this <code>Shape</code> contains the specified rectangluar area; <code>false</code> otherwise.
      */
+    @Override
     public boolean contains(double x, double y, double w, double h) {
         return path.contains(x, y, w, h);
     }
@@ -366,6 +371,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            a specified <code>Rectangle2D</code>
      * @return <code>true</code> if this <code>Shape</code> bounds the specified <code>Rectangle2D</code>; <code>false</code> otherwise.
      */
+    @Override
     public boolean contains(java.awt.geom.Rectangle2D r) {
         return path.contains(r);
     }
@@ -383,6 +389,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the height of the specified rectangular coordinates
      * @return <code>true</code> if this <code>Shape</code> and the interior of the specified set of rectangular coordinates intersect each other; <code>false</code> otherwise.
      */
+    @Override
     public boolean intersects(double x, double y, double w, double h) {
         return path.intersects(x, y, w, h);
     }
@@ -394,6 +401,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the specified <code>Rectangle2D</code>
      * @return <code>true</code> if this <code>Shape</code> and the interior of the specified <code>Rectangle2D</code> intersect each other; <code>false</code> otherwise.
      */
+    @Override
     public boolean intersects(java.awt.geom.Rectangle2D r) {
         return path.intersects(r);
     }
@@ -405,6 +413,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            an <code>AffineTransform</code>
      * @return a new <code>PathIterator</code> that iterates along the boundary of this <code>Shape</code> and provides access to the geometry of this <code>Shape</code>'s outline
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         return path.getPathIterator(at);
     }
@@ -418,18 +427,33 @@ public final class GeneralPath2D implements Shape, Serializable {
      *            the maximum distance that the line segments used to approximate the curved segments are allowed to deviate from any point on the original curve
      * @return a new <code>PathIterator</code> that iterates along the flattened <code>Shape</code> boundary.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return path.getPathIterator(at, flatness);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        // check class, and cast type
-        if (!(obj instanceof GeneralPath2D))
-            return false;
-        GeneralPath2D that = (GeneralPath2D) obj;
-
-        return this.path.equals(that.path);
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        return result;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GeneralPath2D other = (GeneralPath2D) obj;
+        if (path == null) {
+            if (other.path != null)
+                return false;
+        } else if (!path.equals(other.path))
+            return false;
+        return true;
+    }
 }

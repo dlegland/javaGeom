@@ -1,4 +1,4 @@
-/* File Shape2S.java 
+/* File Curve2S.java 
  *
  * Project : geometry
  *
@@ -27,8 +27,10 @@
 package math.geom2s;
 
 /**
+ * Interface for 1-dimension shapes defined on the 2 dimensions sphere, such as small and great circle, and corresponding arcs.
+ * 
  * @author Legland
  */
-public interface Shape2S {
-
+public interface ICurve2S extends IShape2S {
+    // nothing
 }

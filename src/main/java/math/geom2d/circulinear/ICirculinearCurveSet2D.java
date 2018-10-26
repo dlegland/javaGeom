@@ -18,13 +18,12 @@ import math.geom2d.curve.ICurveSet2D;
  *
  */
 public interface ICirculinearCurveSet2D<T extends ICirculinearCurve2D> extends ICurveSet2D<T>, ICirculinearCurve2D {
+    @Override
+    ICirculinearCurveSet2D<? extends ICirculinearCurve2D> clip(Box2D box);
 
-    // ===================================================================
-    // methods implementing the CirculinearCurve2D interface
+    @Override
+    ICirculinearCurveSet2D<? extends ICirculinearCurve2D> subCurve(double t0, double t1);
 
-    public ICirculinearCurveSet2D<? extends ICirculinearCurve2D> clip(Box2D box);
-
-    public ICirculinearCurveSet2D<? extends ICirculinearCurve2D> subCurve(double t0, double t1);
-
-    public ICirculinearCurveSet2D<? extends ICirculinearCurve2D> reverse();
+    @Override
+    ICirculinearCurveSet2D<? extends ICirculinearCurve2D> reverse();
 }

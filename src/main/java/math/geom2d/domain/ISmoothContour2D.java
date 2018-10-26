@@ -24,10 +24,12 @@ public interface ISmoothContour2D extends ISmoothOrientedCurve2D, IContour2D {
     /**
      * Transforms the contour, and returns an instance of SmoothContour2D.
      */
+    @Override
     ISmoothContour2D transform(AffineTransform2D trans);
 
     /**
      * Reverses the contour, and returns an instance of SmoothContour2D.
      */
+    @Override
     ISmoothContour2D reverse();
 }

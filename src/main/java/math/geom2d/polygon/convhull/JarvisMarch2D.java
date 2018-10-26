@@ -20,7 +20,7 @@ import math.geom2d.polygon.SimplePolygon2D;
  * 
  * @author dlegland
  */
-public class JarvisMarch2D implements ConvexHull2D {
+public class JarvisMarch2D implements IConvexHull2D {
 
     /**
      * Creates a new Convex hull calculator.
@@ -31,6 +31,7 @@ public class JarvisMarch2D implements ConvexHull2D {
     /**
      * Computes the convex hull of a set of points as a single Polygon2D. Current implementation start at the point with lowest y-coord. The points are considered in counter-clockwise order. Result is an instance of SimplePolygon2D. Complexity is O(n*h), with n number of points, h number of points of the hull. Worst case complexity is O(n^2).
      */
+    @Override
     public IPolygon2D convexHull(Collection<? extends Point2D> points) {
         // Init iteration on points
         Point2D lowestPoint = null;

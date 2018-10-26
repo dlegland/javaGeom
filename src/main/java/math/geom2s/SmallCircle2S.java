@@ -31,6 +31,6 @@ package math.geom2s;
  * 
  * @author Legland
  */
-public class SmallCircle2S implements Curve2S {
-
+public class SmallCircle2S implements ICurve2S {
+    // nothing
 }

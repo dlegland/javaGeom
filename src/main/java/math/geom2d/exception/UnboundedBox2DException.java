@@ -13,13 +13,9 @@ import math.geom2d.Box2D;
  * @author dlegland
  */
 public class UnboundedBox2DException extends RuntimeException {
-
-    private Box2D box;
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
+
+    private final Box2D box;
 
     public UnboundedBox2DException(Box2D box) {
         this.box = box;

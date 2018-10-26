@@ -26,17 +26,29 @@
 package math.geom2d.line;
 
 //Imports
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.*;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
+import math.geom2d.exception.DegeneratedLine2DException;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -55,6 +67,36 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, ILinearElement2D {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Coordinates of starting point of the line
+     */
+    private final double x0, y0;
+
+    /**
+     * Direction vector of the line. dx and dy should not be both zero.
+     */
+    private final double dx, dy;
+
+    // ===================================================================
+    // Protected constructors
+
+    protected AbstractLine2D(double x0, double y0, double dx, double dy) {
+        this.x0 = x0;
+        this.y0 = y0;
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    protected AbstractLine2D(Point2D point, Vector2D vector) {
+        this.x0 = point.x();
+        this.y0 = point.y();
+        this.dx = vector.x();
+        this.dy = vector.y();
+    }
+
+    // ===================================================================
+    // static methods
 
     /**
      * Returns the unique intersection of two straight objects. If the intersection doesn't exist (parallel lines, short edge), return null.
@@ -93,33 +135,6 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     // ===================================================================
     // class variables
 
-    /**
-     * Coordinates of starting point of the line
-     */
-    protected double x0, y0;
-
-    /**
-     * Direction vector of the line. dx and dy should not be both zero.
-     */
-    protected double dx, dy;
-
-    // ===================================================================
-    // Protected constructors
-
-    protected AbstractLine2D(double x0, double y0, double dx, double dy) {
-        this.x0 = x0;
-        this.y0 = y0;
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-    protected AbstractLine2D(Point2D point, Vector2D vector) {
-        this.x0 = point.x();
-        this.y0 = point.y();
-        this.dx = vector.x();
-        this.dy = vector.y();
-    }
-
     // ===================================================================
     // Methods specific to Line shapes
 
@@ -135,16 +150,32 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
         // method for details on tests)
         StraightLine2D line = linear.supportingLine();
         if (Math.abs(dx) > Math.abs(dy)) {
-            if (Math.abs((line.x0 - x0) * dy / dx + y0 - line.y0) > IShape2D.ACCURACY)
+            if (Math.abs((line.x0() - x0) * dy / dx + y0 - line.y0()) > IShape2D.ACCURACY)
                 return false;
             else
                 return true;
         } else {
-            if (Math.abs((line.y0 - y0) * dx / dy + x0 - line.x0) > IShape2D.ACCURACY)
+            if (Math.abs((line.y0() - y0) * dx / dy + x0 - line.x0()) > IShape2D.ACCURACY)
                 return false;
             else
                 return true;
         }
+    }
+
+    public double x0() {
+        return x0;
+    }
+
+    public double y0() {
+        return y0;
+    }
+
+    public double dx() {
+        return dx;
+    }
+
+    public double dy() {
+        return dy;
     }
 
     /**
@@ -328,6 +359,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the origin point of this linear shape.
      */
+    @Override
     public Point2D origin() {
         return new Point2D(x0, y0);
     }
@@ -335,6 +367,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the direction vector of this linear shape.
      */
+    @Override
     public Vector2D direction() {
         return new Vector2D(dx, dy);
     }
@@ -342,6 +375,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Gets Angle with axis (O,i), counted counter-clockwise. Result is given between 0 and 2*pi.
      */
+    @Override
     public double horizontalAngle() {
         return (Math.atan2(dy, dx) + 2 * Math.PI) % (2 * Math.PI);
     }
@@ -349,6 +383,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the unique intersection with a linear shape. If the intersection doesn't exist (parallel lines, short edges), return null.
      */
+    @Override
     public Point2D intersection(ILinearShape2D line) {
         Vector2D vect = line.direction();
         double dx2 = vect.x();
@@ -380,6 +415,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.line.AbstractLine2D#supportingLine()
      */
+    @Override
     public StraightLine2D supportingLine() {
         return new StraightLine2D(this);
     }
@@ -398,6 +434,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         if (!this.isBounded())
             return Double.POSITIVE_INFINITY;
@@ -409,6 +446,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return pos * Math.hypot(dx, dy);
     }
@@ -418,6 +456,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double distance) {
         double delta = Math.hypot(dx, dy);
         if (delta < IShape2D.ACCURACY)
@@ -433,6 +472,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearElement2D transform(CircleInversion2D inv) {
         // Extract inversion parameters
         Point2D center = inv.center();
@@ -506,6 +546,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -519,6 +560,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.domain.OrientedCurve2D#windingAngle(Point2D)
      */
+    @Override
     public double windingAngle(Point2D point) {
 
         double t0 = this.t0();
@@ -551,6 +593,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the signed distance of the StraightObject2d to the given point. The signed distance is positive if point lies 'to the right' of the line, when moving in the direction given by direction vector. This method is not designed to be used directly, because AbstractLine2D is an abstract class, but it can be used by subclasses to help computations.
      */
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
@@ -558,6 +601,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the signed distance of the StraightObject2d to the given point. The signed distance is positive if point lies 'to the right' of the line, when moving in the direction given by direction vector. This method is not designed to be used directly, because AbstractLine2D is an abstract class, but it can be used by subclasses to help computations.
      */
+    @Override
     public double signedDistance(double x, double y) {
         double delta = Math.hypot(dx, dy);
         if (delta < IShape2D.ACCURACY)
@@ -572,6 +616,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      *            the point to test
      * @return true if point p lies on the 'left' of the line.
      */
+    @Override
     public boolean isInside(Point2D p) {
         return ((p.x() - x0) * dy - (p.y() - y0) * dx < 0);
     }
@@ -584,6 +629,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.curve.SmoothCurve2D#tangent(double)
      */
+    @Override
     public Vector2D tangent(double t) {
         return new Vector2D(dx, dy);
     }
@@ -591,6 +637,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns 0 as for every straight object.
      */
+    @Override
     public double curvature(double t) {
         return 0.0;
     }
@@ -601,6 +648,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Always returns false, because we can not come back to starting point if we always go straight...
      */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -619,6 +667,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the intersection points of the curve with the specified line. The length of the result array is the number of intersection points.
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         if (this.isParallel(line))
             return new ArrayList<>(0);
@@ -641,6 +690,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * <p>
      * If point does not belong to line, returns Double.NaN.
      */
+    @Override
     public double position(Point2D point) {
         double pos = this.positionOnLine(point);
 
@@ -664,6 +714,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * <p>
      * If point does not belong to line, returns t0, or t1, depending on which one is the closest.
      */
+    @Override
     public double project(Point2D point) {
         double pos = this.positionOnLine(point);
 
@@ -674,23 +725,26 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns a new AbstractLine2D, which is the portion of this AbstractLine2D delimited by parameters t0 and t1. Casts the result to StraightLine2D, Ray2D or LineSegment2D when appropriate.
      */
+    @Override
     public AbstractLine2D subCurve(double t0, double t1) {
         // keep min and max of bounds
-        t0 = Math.max(t0, this.t0());
-        t1 = Math.min(t1, this.t1());
+        double mt0 = Math.max(t0, this.t0());
+        double mt1 = Math.min(t1, this.t1());
 
         // check for special cases
-        if (Double.isInfinite(t1)) {
-            if (Double.isInfinite(t0))
+        if (Double.isInfinite(mt1)) {
+            if (Double.isInfinite(mt0)) {
                 return new StraightLine2D(this);
-            else
-                return new Ray2D(this.point(t0), this.direction());
+            } else {
+                return new Ray2D(this.point(mt0), this.direction());
+            }
         }
 
-        if (Double.isInfinite(t0))
-            return new InvertedRay2D(this.point(t1), this.direction());
-        else
-            return new LineSegment2D(this.point(t0), this.point(t1));
+        if (Double.isInfinite(mt0)) {
+            return new InvertedRay2D(this.point(mt1), this.direction());
+        } else {
+            return new LineSegment2D(this.point(mt0), this.point(mt1));
+        }
 
     }
 
@@ -708,6 +762,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns the distance of the StraightObject2d to the given point. This method is not designed to be used directly, because AbstractLine2D is an abstract class, but it can be called by subclasses to help computations.
      */
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
@@ -721,6 +776,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      *            the y-coordinate of the point
      * @return distance between this object and the point (x,y)
      */
+    @Override
     public double distance(double x, double y) {
         // first project on the line
         Point2D proj = projectedPoint(x, y);
@@ -743,6 +799,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.Shape2D#contains(Point2D)
      */
+    @Override
     public boolean contains(Point2D p) {
         return this.contains(p.x(), p.y());
     }
@@ -750,6 +807,7 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
     /**
      * Returns false, unless both dx and dy equal 0.
      */
+    @Override
     public boolean isEmpty() {
         return Math.hypot(dx, dy) < IShape2D.ACCURACY;
     }
@@ -759,8 +817,10 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
      * 
      * @see math.geom2d.Shape2D#transform(AffineTransform2D)
      */
+    @Override
     public abstract AbstractLine2D transform(AffineTransform2D transform);
 
+    @Override
     public ICurveSet2D<? extends AbstractLine2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<IContinuousCurve2D> set = Curves2D.clipContinuousCurve(this, box);
@@ -776,4 +836,44 @@ public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements IS
         return result;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(dx);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dy);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AbstractLine2D other = (AbstractLine2D) obj;
+        if (Double.doubleToLongBits(dx) != Double.doubleToLongBits(other.dx))
+            return false;
+        if (Double.doubleToLongBits(dy) != Double.doubleToLongBits(other.dy))
+            return false;
+        if (Double.doubleToLongBits(x0) != Double.doubleToLongBits(other.x0))
+            return false;
+        if (Double.doubleToLongBits(y0) != Double.doubleToLongBits(other.y0))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractLine2D [x0=" + x0 + ", y0=" + y0 + ", dx=" + dx + ", dy=" + dy + "]";
+    }
 }

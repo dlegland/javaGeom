@@ -74,6 +74,8 @@ import math.utils.EqualUtils;
 public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, ICircleLine2D, ICircularShape2D, ICirculinearRing2D {
     private static final long serialVersionUID = 1L;
 
+    public static final Circle2D UNIT_CIRCLE = new Circle2D(Point2D.ORIGIN, 1);
+
     /**
      * Computes the circumscribed circle of the 3 input points.
      * 
@@ -265,34 +267,24 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     // Class variables
 
     /** Coordinate of center. */
-    protected double xc;
-    protected double yc;
+    private final Point2D center;
 
     /** the radius of the circle. */
-    protected double r = 0;
+    private final double r;
 
     /** Directed circle or not */
-    protected boolean direct = true;
+    private final boolean direct;
 
-    /** Orientation of major semi-axis, in radians, between 0 and 2*PI. */
-    protected double theta = 0;
-
-    // ===================================================================
-    // Constructors
-
-    /** Empty constructor: center 0,0 and radius 0. */
-    public Circle2D() {
-        this(0, 0, 0, true);
+    /** Create a new circle with specified center, radius and orientation */
+    public Circle2D(Point2D center, double radius, boolean direct) {
+        this.center = center;
+        this.r = radius;
+        this.direct = direct;
     }
 
     /** Create a new circle with specified point center and radius */
     public Circle2D(Point2D center, double radius) {
-        this(center.x(), center.y(), radius, true);
-    }
-
-    /** Create a new circle with specified center, radius and orientation */
-    public Circle2D(Point2D center, double radius, boolean direct) {
-        this(center.x(), center.y(), radius, direct);
+        this(center, radius, true);
     }
 
     /** Create a new circle with specified center and radius */
@@ -302,10 +294,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
 
     /** Create a new circle with specified center, radius and orientation. */
     public Circle2D(double xcenter, double ycenter, double radius, boolean direct) {
-        this.xc = xcenter;
-        this.yc = ycenter;
-        this.r = radius;
-        this.direct = direct;
+        this(new Point2D(xcenter, ycenter), radius, direct);
     }
 
     // ===================================================================
@@ -331,6 +320,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns the circle itself.
      */
+    @Override
     public Circle2D supportingCircle() {
         return this;
     }
@@ -341,6 +331,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns true if circle has a direct orientation.
      */
+    @Override
     public boolean isDirect() {
         return direct;
     }
@@ -348,48 +339,12 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns center of the circle.
      */
+    @Override
     public Point2D center() {
-        return new Point2D(xc, yc);
+        return center;
     }
 
-    /**
-     * Returns the first direction vector of the circle, in the direction of the major axis.
-     */
-    public Vector2D vector1() {
-        return new Vector2D(cos(theta), sin(theta));
-    }
-
-    /**
-     * Returns the second direction vector of the circle, in the direction of the minor axis.
-     */
-    public Vector2D vector2() {
-        if (direct)
-            return new Vector2D(-sin(theta), cos(theta));
-        else
-            return new Vector2D(sin(theta), -cos(theta));
-    }
-
-    /**
-     * Returns the angle of the circle main axis with the Ox axis.
-     */
-    public double angle() {
-        return theta;
-    }
-
-    /**
-     * Returns the first focus, which for a circle is the same point as the center.
-     */
-    public Point2D focus1() {
-        return new Point2D(xc, yc);
-    }
-
-    /**
-     * Returns the second focus, which for a circle is the same point as the center.
-     */
-    public Point2D focus2() {
-        return new Point2D(xc, yc);
-    }
-
+    @Override
     public boolean isCircle() {
         return true;
     }
@@ -400,12 +355,13 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * @return a new instance of Ellipse2D that corresponds to this circle
      */
     public Ellipse2D asEllipse() {
-        return new Ellipse2D(this.xc, this.yc, this.r, this.r, this.theta, this.direct);
+        return new Ellipse2D(this.center.x(), this.center.y(), this.r, this.r, 0, this.direct);
     }
 
     // ===================================================================
     // methods implementing the Conic2D interface
 
+    @Override
     public Type conicType() {
         return IConic2D.Type.CIRCLE;
     }
@@ -417,13 +373,15 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * <p>
      * <code>x^2 + 0*x*y + y^2 -2*xc*x -2*yc*y + xc*xc+yc*yc-r*r = 0</code>.
      */
+    @Override
     public double[] conicCoefficients() {
-        return new double[] { 1, 0, 1, -2 * xc, -2 * yc, xc * xc + yc * yc - r * r };
+        return new double[] { 1, 0, 1, -2 * center.x(), -2 * center.y(), center.x() * center.x() + center.y() * center.y() - r * r };
     }
 
     /**
      * Returns 0, which is the eccentricity of a circle by definition.
      */
+    @Override
     public double eccentricity() {
         return 0;
     }
@@ -436,6 +394,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -444,12 +403,14 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns the parallel circle located at a distance d from this circle. For direct circle, distance is positive outside of the circle, and negative inside. This is the contrary for indirect circles.
      */
+    @Override
     public Circle2D parallel(double d) {
         double rp = max(direct ? r + d : r - d, 0);
-        return new Circle2D(xc, yc, rp, direct);
+        return new Circle2D(center, rp, direct);
     }
 
     /** Returns perimeter of the circle (equal to 2*PI*radius). */
+    @Override
     public double length() {
         return PI * 2 * r;
     }
@@ -459,6 +420,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.circulinear.ICirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return pos * this.r;
     }
@@ -468,6 +430,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         return length / this.r;
     }
@@ -477,6 +440,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICircleLine2D transform(CircleInversion2D inv) {
         // Extract inversion parameters
         Point2D center = inv.center();
@@ -533,16 +497,18 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     // ===================================================================
     // methods implementing the Boundary2D interface
 
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         // convert ellipse to awt shape
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(xc - r, yc - r, 2 * r, 2 * r);
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(center.x() - r, center.y() - r, 2 * r, 2 * r);
 
         // need to rotate by angle theta
-        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
+        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(0, center.x(), center.y());
         Shape shape = trans.createTransformedShape(ellipse);
 
         // draw the awt ellipse
@@ -555,6 +521,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Return either 0, 2*PI or -2*PI, depending whether the point is located inside the interior of the ellipse or not.
      */
+    @Override
     public double windingAngle(Point2D point) {
         if (this.signedDistance(point) > 0)
             return 0;
@@ -565,23 +532,23 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     // ===================================================================
     // methods of SmoothCurve2D interface
 
+    @Override
     public Vector2D tangent(double t) {
         if (!direct)
             t = -t;
-        double cot = cos(theta);
-        double sit = sin(theta);
         double cost = cos(t);
         double sint = sin(t);
 
         if (direct)
-            return new Vector2D(-r * sint * cot - r * cost * sit, -r * sint * sit + r * cost * cot);
+            return new Vector2D(-r * sint, r * cost);
         else
-            return new Vector2D(r * sint * cot + r * cost * sit, r * sint * sit - r * cost * cot);
+            return new Vector2D(r * sint, -r * cost);
     }
 
     /**
      * Returns the inverse of the circle radius. If the circle is indirect, the curvature is negative.
      */
+    @Override
     public double curvature(double t) {
         double k = 1 / r;
         return direct ? k : -k;
@@ -601,6 +568,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns true, as an ellipse is always closed.
      */
+    @Override
     public boolean isClosed() {
         return true;
     }
@@ -610,6 +578,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public LinearRing2D asPolyline(int n) {
         return this.asPolylineClosed(n);
     }
@@ -620,32 +589,37 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Test whether the point is inside the circle. The test is performed by translating the point, and re-scaling it such that its coordinates are expressed in unit circle basis.
      */
+    @Override
     public boolean isInside(Point2D point) {
-        double xp = (point.x() - this.xc) / this.r;
-        double yp = (point.y() - this.yc) / this.r;
+        double xp = (point.x() - this.center.x()) / this.r;
+        double yp = (point.y() - this.center.y()) / this.r;
         return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
+    @Override
     public double signedDistance(Point2D point) {
         return signedDistance(point.x(), point.y());
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         if (direct)
-            return Point2D.distance(xc, yc, x, y) - r;
+            return Point2D.distance(center.x(), center.y(), x, y) - r;
         else
-            return r - Point2D.distance(xc, yc, x, y);
+            return r - Point2D.distance(center.x(), center.y(), x, y);
     }
 
     // ===================================================================
     // methods of Curve2D interface
 
     /** Always returns true. */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
     /** Always returns false. */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -653,6 +627,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns the parameter of the first point of the ellipse, set to 0.
      */
+    @Override
     public double t0() {
         return 0;
     }
@@ -660,6 +635,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns the parameter of the last point of the ellipse, set to 2*PI.
      */
+    @Override
     public double t1() {
         return 2 * PI;
     }
@@ -667,11 +643,12 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Get the position of the curve from internal parametric representation, depending on the parameter t. This parameter is between the two limits 0 and 2*Math.PI.
      */
+    @Override
     public Point2D point(double t) {
-        double angle = theta + t;
+        double angle = t;
         if (!direct)
-            angle = theta - t;
-        return new Point2D(xc + r * cos(angle), yc + r * sin(angle));
+            angle = -t;
+        return new Point2D(center.x() + r * cos(angle), center.y() + r * sin(angle));
     }
 
     /**
@@ -679,8 +656,9 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @return the first point of the curve
      */
+    @Override
     public Point2D firstPoint() {
-        return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
+        return new Point2D(center.x() + r, center.y());
     }
 
     /**
@@ -688,24 +666,27 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @return the last point of the curve.
      */
+    @Override
     public Point2D lastPoint() {
-        return new Point2D(xc + r * cos(theta), yc + r * sin(theta));
+        return new Point2D(center.x() + r, center.y());
     }
 
+    @Override
     public double position(Point2D point) {
-        double angle = Angle2DUtil.horizontalAngle(xc, yc, point.x(), point.y());
+        double angle = Angle2DUtil.horizontalAngle(center.x(), center.y(), point.x(), point.y());
         if (direct)
-            return Angle2DUtil.formatAngle(angle - theta);
+            return Angle2DUtil.formatAngle(angle);
         else
-            return Angle2DUtil.formatAngle(theta - angle);
+            return Angle2DUtil.formatAngle(-angle);
     }
 
     /**
      * Computes the projection position of the point on the circle, by computing angle with horizonrtal
      */
+    @Override
     public double project(Point2D point) {
-        double xp = point.x() - this.xc;
-        double yp = point.y() - this.yc;
+        double xp = point.x() - this.center.x();
+        double yp = point.y() - this.center.y();
 
         // compute angle
         return Angle2DUtil.horizontalAngle(xp, yp);
@@ -714,13 +695,15 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns the circle with same center and same radius, but with the opposite orientation.
      */
+    @Override
     public Circle2D reverse() {
-        return new Circle2D(this.xc, this.yc, this.r, !this.direct);
+        return new Circle2D(this.center, this.r, !this.direct);
     }
 
     /**
      * Returns a new CircleArc2D. t0 and t1 are position on circle.
      */
+    @Override
     public CircleArc2D subCurve(double t0, double t1) {
         double startAngle, extent;
         if (this.direct) {
@@ -733,6 +716,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
         return new CircleArc2D(this, startAngle, extent);
     }
 
+    @Override
     public Collection<? extends Circle2D> continuousCurves() {
         return wrapCurve(this);
     }
@@ -740,17 +724,20 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     // ===================================================================
     // methods of Shape2D interface
 
+    @Override
     public double distance(Point2D point) {
-        return abs(Point2D.distance(xc, yc, point.x(), point.y()) - r);
+        return abs(Point2D.distance(center.x(), center.y(), point.x(), point.y()) - r);
     }
 
+    @Override
     public double distance(double x, double y) {
-        return abs(Point2D.distance(xc, yc, x, y) - r);
+        return abs(Point2D.distance(center.x(), center.y(), x, y) - r);
     }
 
     /**
      * Computes intersections of the circle with a line. Return an array of Point2D, of size 0, 1 or 2 depending on the distance between circle and line. If there are 2 intersections points, the first one in the array is the first one on the line.
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         return Circle2D.lineCircleIntersections(line, this);
     }
@@ -758,6 +745,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Clips the circle by a box. The result is an instance of CurveSet2D, which contains only instances of CircleArc2D or Circle2D. If the circle is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends ICircularShape2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -781,6 +769,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns true if the point p lies on the circle, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
@@ -788,6 +777,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns true.
      */
+    @Override
     public boolean containsProjection(Point2D p) {
         return true;
     }
@@ -795,13 +785,13 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns true if the point (x, y) lies exactly on the circle.
      */
+    @Override
     public boolean contains(double x, double y) {
         return abs(distance(x, y)) <= IShape2D.ACCURACY;
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        double cot = cos(theta);
-        double sit = sin(theta);
         double cost, sint;
 
         if (direct) {
@@ -809,25 +799,26 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
             for (double t = .1; t < PI * 2; t += .1) {
                 cost = cos(t);
                 sint = sin(t);
-                path.lineTo((float) (xc + r * cost * cot - r * sint * sit), (float) (yc + r * cost * sit + r * sint * cot));
+                path.lineTo((float) (center.x() + r * cost), (float) (center.y() + r * sint));
             }
         } else {
             // Clockwise circle
             for (double t = .1; t < PI * 2; t += .1) {
                 cost = cos(t);
                 sint = sin(t);
-                path.lineTo((float) (xc + r * cost * cot + r * sint * sit), (float) (yc + r * cost * sit - r * sint * cot));
+                path.lineTo((float) (center.x() + r * cost), (float) (center.y() - r * sint));
             }
         }
 
         // line to first point
-        path.lineTo((float) (xc + r * cot), (float) (yc + r * sit));
+        path.lineTo((float) (center.x() + r), (float) (center.y()));
 
         return path;
     }
 
+    @Override
     public void draw(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(xc - r, yc - r, 2 * r, 2 * r);
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(center.x() - r, center.y() - r, 2 * r, 2 * r);
         g2.draw(ellipse);
     }
 
@@ -839,15 +830,16 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (!(obj instanceof Circle2D))
             return false;
 
         Circle2D circle = (Circle2D) obj;
 
-        if (abs(circle.xc - xc) > eps)
+        if (abs(circle.center.x() - center.x()) > eps)
             return false;
-        if (abs(circle.yc - yc) > eps)
+        if (abs(circle.center.y() - center.y()) > eps)
             return false;
         if (abs(circle.r - r) > eps)
             return false;
@@ -859,13 +851,15 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     /**
      * Returns bounding box of the circle.
      */
+    @Override
     public Box2D boundingBox() {
-        return new Box2D(xc - r, xc + r, yc - r, yc + r);
+        return new Box2D(center.x() - r, center.x() + r, center.y() - r, center.y() + r);
     }
 
     /**
      * Transforms this circle by an affine transform. If the transformed shape is a circle (ellipse with equal axis lengths), returns an instance of Circle2D. The resulting ellipse is direct if this ellipse and the transform are either both direct or both indirect.
      */
+    @Override
     public IEllipseShape2D transform(AffineTransform2D trans) {
         // When the transform is not a similarity, should switch to EllipseArc
         // computation
@@ -887,7 +881,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "Circle2D(%7.2f,%7.2f,%7.2f,%s)", xc, yc, r, direct ? "true" : "false");
+        return String.format(Locale.US, "Circle2D(%7.2f,%7.2f,%7.2f,%s)", center.x(), center.y(), r, direct ? "true" : "false");
     }
 
     @Override
@@ -898,9 +892,9 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
             Circle2D that = (Circle2D) obj;
 
             // Compare each field
-            if (!EqualUtils.areEqual(this.xc, that.xc))
+            if (!EqualUtils.areEqual(this.center.x(), that.center.x()))
                 return false;
-            if (!EqualUtils.areEqual(this.yc, that.yc))
+            if (!EqualUtils.areEqual(this.center.y(), that.center.y()))
                 return false;
             if (!EqualUtils.areEqual(this.r, that.r))
                 return false;

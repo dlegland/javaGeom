@@ -16,7 +16,10 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.ShapeArray2D;
 import math.geom2d.exception.UnboundedShape2DException;
-import math.geom2d.polygon.*;
+import math.geom2d.polygon.IPolygon2D;
+import math.geom2d.polygon.LinearCurve2D;
+import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.polygon.MultiPolygon2D;
 
 /**
  * An array of domains. Note that this class if different from a generic domain whose boundary is a set of contours. In the latter case, the shape is itself a domain, not in the former.
@@ -67,6 +70,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.domain.Domain2D#boundary()
      */
+    @Override
     public IBoundary2D boundary() {
         int n = this.shapes.size();
         ArrayList<IContour2D> boundaries = new ArrayList<>(n);
@@ -80,6 +84,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<? extends IContour2D> contours() {
         return this.boundary().continuousCurves();
     }
@@ -89,6 +94,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.domain.Domain2D#complement()
      */
+    @Override
     public IDomainSet2D<? extends IDomain2D> complement() {
         int n = this.shapes.size();
         ArrayList<IDomain2D> complements = new ArrayList<>(n);
@@ -102,6 +108,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.domain.Domain2D#asPolygon(int)
      */
+    @Override
     public IPolygon2D asPolygon(int n) {
         // Compute number of contours
         int nContours = 0;
@@ -135,6 +142,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.domain.Domain2D#fill(java.awt.Graphics2D)
      */
+    @Override
     public void fill(Graphics2D g2) {
         for (IDomain2D domain : this)
             domain.fill(g2);
@@ -148,6 +156,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
+    @Override
     public DomainArray2D<? extends IDomain2D> transform(AffineTransform2D trans) {
         // Allocate array for result
         DomainArray2D<IDomain2D> result = new DomainArray2D<>(shapes.size());
@@ -163,6 +172,7 @@ public class DomainArray2D<T extends IDomain2D> extends ShapeArray2D<T> implemen
      * 
      * @see math.geom2d.Shape2D#clip(math.geom2d.Box2D)
      */
+    @Override
     public IDomain2D clip(Box2D box) {
         ArrayList<IDomain2D> clippedShapes = new ArrayList<>();
         for (T domain : this)

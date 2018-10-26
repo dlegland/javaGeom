@@ -35,7 +35,11 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
-import math.geom2d.circulinear.*;
+import math.geom2d.circulinear.CirculinearContourArray2D;
+import math.geom2d.circulinear.CirculinearDomains2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearBoundary2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.PointSets2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -176,6 +180,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Adds a point as the last vertex.
      */
+    @Override
     public void addVertex(Point2D point) {
         this.vertices.add(point);
     }
@@ -185,6 +190,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @since 0.9.3
      */
+    @Override
     public void insertVertex(int index, Point2D point) {
         this.vertices.add(index, point);
     }
@@ -192,6 +198,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Changes the position of the i-th vertex.
      */
+    @Override
     public void setVertex(int index, Point2D position) {
         this.vertices.set(index, position);
     }
@@ -211,6 +218,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @since 0.9.3
      */
+    @Override
     public void removeVertex(int index) {
         this.vertices.remove(index);
     }
@@ -225,6 +233,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Computes the index of the closest vertex to the input point.
      */
+    @Override
     public int closestVertexIndex(Point2D point) {
         double minDist = Double.POSITIVE_INFINITY;
         int index = -1;
@@ -245,6 +254,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @return the signed area of the polygon.
      */
+    @Override
     public double area() {
         return Polygons2D.computeArea(this);
     }
@@ -254,6 +264,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @return the centroid of the polygon
      */
+    @Override
     public Point2D centroid() {
         return Polygons2D.computeCentroid(this);
     }
@@ -261,6 +272,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the points of the polygon. The result is a pointer to the inner collection of vertices.
      */
+    @Override
     public Collection<Point2D> vertices() {
         return vertices;
     }
@@ -271,6 +283,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * @param i
      *            index of the vertex, between 0 and the number of vertices
      */
+    @Override
     public Point2D vertex(int i) {
         return vertices.get(i);
     }
@@ -280,6 +293,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @since 0.6.3
      */
+    @Override
     public int vertexNumber() {
         return vertices.size();
     }
@@ -287,6 +301,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the set of edges, as a collection of LineSegment2D.
      */
+    @Override
     public Collection<LineSegment2D> edges() {
 
         int nPoints = this.vertices.size();
@@ -306,6 +321,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the number of edges. For a simple polygon, this equals the number of vertices.
      */
+    @Override
     public int edgeNumber() {
         return vertices.size();
     }
@@ -318,6 +334,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearDomain2D transform(CircleInversion2D inv) {
         ICirculinearBoundary2D boundary = this.boundary().transform(inv).reverse();
         return new GenericCirculinearDomain2D(boundary);
@@ -328,6 +345,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         // check for multiple vertices
         if (PointSets2D.hasMultipleVertices(this.vertices, true)) {
@@ -348,6 +366,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#asPolygon(int)
      */
+    @Override
     public IPolygon2D asPolygon(int n) {
         return this;
     }
@@ -355,6 +374,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns a set of one LinearRing2D, which encloses the polygon.
      */
+    @Override
     public CirculinearContourArray2D<LinearRing2D> boundary() {
         Point2D[] array = new Point2D[this.vertices.size()];
         for (int i = 0; i < this.vertices.size(); i++)
@@ -368,7 +388,8 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
-    public Collection<LinearRing2D> contours() {
+    @Override
+    public List<LinearRing2D> contours() {
         ArrayList<LinearRing2D> rings = new ArrayList<>(1);
         rings.add(new LinearRing2D(vertices));
         return rings;
@@ -377,6 +398,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the polygon created by reversing the order of the vertices.
      */
+    @Override
     public SimplePolygon2D complement() {
         int nPoints = this.vertices.size();
 
@@ -397,6 +419,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the distance of the point to the polygon. The result is the minimal distance computed for each edge if the polygon, or ZERO if the point lies inside the polygon.
      */
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
@@ -404,6 +427,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the distance of the point to the polygon. The result is the minimal distance computed for each edge if the polygon, or ZERO if the point lies inside the polygon.
      */
+    @Override
     public double distance(double x, double y) {
         double dist = boundary().signedDistance(x, y);
         return Math.max(dist, 0);
@@ -412,6 +436,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the shape formed by the polygon clipped by the given box.
      */
+    @Override
     public IPolygon2D clip(Box2D box) {
         return Polygons2D.clipPolygon(this, box);
     }
@@ -419,6 +444,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the bounding box of the polygon.
      */
+    @Override
     public Box2D boundingBox() {
         return boundary().boundingBox();
     }
@@ -426,10 +452,12 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns true if polygon is oriented counter-clockwise, false otherwise.
      */
+    @Override
     public boolean isBounded() {
         return this.area() > 0;
     }
 
+    @Override
     public boolean isEmpty() {
         return vertices.size() == 0;
     }
@@ -437,6 +465,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns the new Polygon created by an affine transform of this polygon. If the transform is not direct, the order of vertices is reversed.
      */
+    @Override
     public SimplePolygon2D transform(AffineTransform2D trans) {
         int nPoints = this.vertices.size();
 
@@ -462,6 +491,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns true if the point p lies inside the polygon, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
@@ -469,6 +499,7 @@ public class SimplePolygon2D implements IPolygon2D {
     /**
      * Returns true if the point (x, y) lies inside the polygon, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(double x, double y) {
         if (this.boundary().contains(x, y))
             return true;
@@ -508,10 +539,12 @@ public class SimplePolygon2D implements IPolygon2D {
         return path;
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         g2.draw(this.getGeneralPath());
     }
 
+    @Override
     public void fill(Graphics2D g) {
         g.fill(this.getGeneralPath());
     }
@@ -524,6 +557,7 @@ public class SimplePolygon2D implements IPolygon2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

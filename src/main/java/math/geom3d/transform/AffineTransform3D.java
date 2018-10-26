@@ -35,7 +35,7 @@ import math.geom3d.Vector3D;
  * 
  * @author dlegland
  */
-public class AffineTransform3D implements Bijection3D {
+public class AffineTransform3D implements IBijection3D {
 
     /** coefficients for x coordinate. */
     protected double m00, m01, m02, m03;
@@ -190,6 +190,7 @@ public class AffineTransform3D implements Bijection3D {
     /**
      * Computes the inverse affine transform.
      */
+    @Override
     public AffineTransform3D inverse() {
         double det = this.determinant();
         return new AffineTransform3D((m11 * m22 - m21 * m12) / det, (m21 * m02 - m01 * m22) / det, (m01 * m12 - m11 * m02) / det, (m01 * (m22 * m13 - m12 * m23) + m02 * (m11 * m23 - m21 * m13) - m03 * (m11 * m22 - m21 * m12)) / det, (m20 * m12 - m10 * m22) / det, (m00 * m22 - m20 * m02) / det, (m10 * m02 - m00 * m12) / det, (m00 * (m12 * m23 - m22 * m13) - m02 * (m10 * m23 - m20 * m13) + m03 * (m10 * m22 - m20 * m12)) / det, (m10 * m21 - m20 * m11) / det, (m20 * m01 - m00 * m21) / det, (m00 * m11 - m10 * m01) / det, (m00 * (m21 * m13 - m11 * m23) + m01 * (m10 * m23 - m20 * m13) - m03 * (m10 * m21 - m20 * m11)) / det);
@@ -247,6 +248,7 @@ public class AffineTransform3D implements Bijection3D {
     /**
      * Transforms the input point array, stores the result in the pre-allocated array, and returns a pointer to the result array. A new array is created if <code>res</code> is null or has length smaller than of src.
      */
+    @Override
     public Point3D[] transformPoints(Point3D[] src, Point3D[] dst) {
         // Check validity of result array
         if (dst == null || dst.length < src.length)
@@ -262,45 +264,78 @@ public class AffineTransform3D implements Bijection3D {
     /**
      * Transforms the input point.
      */
+    @Override
     public Point3D transformPoint(Point3D src) {
         return new Point3D(src.getX() * m00 + src.getY() * m01 + src.getZ() * m02 + m03, src.getX() * m10 + src.getY() * m11 + src.getZ() * m12 + m13, src.getX() * m20 + src.getY() * m21 + src.getZ() * m22 + m23);
     }
 
-    /**
-     * Compares two transforms. Returns true if all inner fields are equal up to the precision given by Shape3D.ACCURACY.
-     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(m00);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m01);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m02);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m03);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m10);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m11);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m12);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m13);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m20);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m21);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m22);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m23);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AffineTransform3D))
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-
-        double tab[] = ((AffineTransform3D) obj).coefficients();
-
-        if (Math.abs(tab[0] - m00) > IShape3D.ACCURACY)
+        if (getClass() != obj.getClass())
             return false;
-        if (Math.abs(tab[1] - m01) > IShape3D.ACCURACY)
+        AffineTransform3D other = (AffineTransform3D) obj;
+        if (Double.doubleToLongBits(m00) != Double.doubleToLongBits(other.m00))
             return false;
-        if (Math.abs(tab[2] - m02) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m01) != Double.doubleToLongBits(other.m01))
             return false;
-        if (Math.abs(tab[3] - m03) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m02) != Double.doubleToLongBits(other.m02))
             return false;
-        if (Math.abs(tab[4] - m10) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m03) != Double.doubleToLongBits(other.m03))
             return false;
-        if (Math.abs(tab[5] - m11) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m10) != Double.doubleToLongBits(other.m10))
             return false;
-        if (Math.abs(tab[6] - m12) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m11) != Double.doubleToLongBits(other.m11))
             return false;
-        if (Math.abs(tab[7] - m13) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m12) != Double.doubleToLongBits(other.m12))
             return false;
-        if (Math.abs(tab[8] - m20) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m13) != Double.doubleToLongBits(other.m13))
             return false;
-        if (Math.abs(tab[9] - m21) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m20) != Double.doubleToLongBits(other.m20))
             return false;
-        if (Math.abs(tab[10] - m22) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m21) != Double.doubleToLongBits(other.m21))
             return false;
-        if (Math.abs(tab[11] - m23) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(m22) != Double.doubleToLongBits(other.m22))
+            return false;
+        if (Double.doubleToLongBits(m23) != Double.doubleToLongBits(other.m23))
             return false;
         return true;
     }
+
 
 }

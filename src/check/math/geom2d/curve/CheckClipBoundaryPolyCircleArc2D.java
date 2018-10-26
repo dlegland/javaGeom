@@ -33,6 +33,7 @@ public class CheckClipBoundaryPolyCircleArc2D extends JPanel {
         circleSet.add(new Circle2D(100, 140, 50));
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

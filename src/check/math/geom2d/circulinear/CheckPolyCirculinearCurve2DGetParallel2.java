@@ -37,6 +37,7 @@ public class CheckPolyCirculinearCurve2DGetParallel2 extends JPanel {
         curve = new PolyCirculinearCurve2D<>(new ICirculinearElement2D[] { arc1, arc2, arc3 }, true);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

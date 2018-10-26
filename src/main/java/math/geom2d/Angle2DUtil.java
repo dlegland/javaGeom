@@ -26,6 +26,10 @@
 
 package math.geom2d;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+
 import math.geom2d.line.ILinearShape2D;
 import math.utils.EqualUtils;
 

@@ -39,10 +39,12 @@ public interface IContour2D extends IBoundary2D, IContinuousOrientedCurve2D {
     /**
      * Computes the reversed contour.
      */
+    @Override
     public abstract IContour2D reverse();
 
     /**
      * Computes the transformed contour.
      */
+    @Override
     public abstract IContour2D transform(AffineTransform2D trans);
 }

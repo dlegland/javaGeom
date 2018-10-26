@@ -134,10 +134,12 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @param point
      */
+    @Override
     public boolean add(Point2D point) {
         return this.points.add(point);
     }
 
+    @Override
     public void add(int index, Point2D point) {
         this.points.add(index, point);
     }
@@ -153,22 +155,27 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
             this.add(element);
     }
 
+    @Override
     public void addAll(Collection<? extends Point2D> points) {
         this.points.addAll(points);
     }
 
+    @Override
     public Point2D get(int index) {
         return this.points.get(index);
     }
 
+    @Override
     public boolean remove(Point2D point) {
         return this.points.remove(point);
     }
 
+    @Override
     public Point2D remove(int index) {
         return this.points.remove(index);
     }
 
+    @Override
     public int indexOf(Point2D point) {
         return this.points.indexOf(point);
     }
@@ -178,6 +185,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @return the collection of points
      */
+    @Override
     public Collection<Point2D> points() {
         return Collections.unmodifiableList(points);
     }
@@ -185,6 +193,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
     /**
      * remove all points of the set.
      */
+    @Override
     public void clear() {
         this.points.clear();
     }
@@ -194,6 +203,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @return the number of points
      */
+    @Override
     public int size() {
         return points.size();
     }
@@ -206,11 +216,13 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
     }
 
+    @Override
     public PointArray2D transform(CircleInversion2D inv) {
 
         PointArray2D array = new PointArray2D(points.size());
@@ -224,6 +236,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
     /**
      * Return distance to the closest point of the collection
      */
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
@@ -233,6 +246,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see math.geom2d.Shape2D#distance(double, double)
      */
+    @Override
     public double distance(double x, double y) {
         // basic checkup
         if (points.isEmpty())
@@ -250,6 +264,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
     /**
      * Always return true.
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -257,6 +272,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
     /**
      * Returns true if the point set is empty, i.e. the number of points is 0.
      */
+    @Override
     public boolean isEmpty() {
         return points.size() == 0;
     }
@@ -266,6 +282,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see math.geom2d.Shape2D#clip(java.awt.geom.Rectangle2D)
      */
+    @Override
     public PointArray2D clip(Box2D box) {
         // allocate memory for result
         PointArray2D res = new PointArray2D(points.size());
@@ -284,6 +301,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
         return res;
     }
 
+    @Override
     public Box2D boundingBox() {
         // init with max values in each direction
         double xmin = Double.MAX_VALUE;
@@ -308,6 +326,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
+    @Override
     public PointArray2D transform(AffineTransform2D trans) {
         PointArray2D res = new PointArray2D(points.size());
 
@@ -322,6 +341,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see java.awt.Shape#contains(double, double)
      */
+    @Override
     public boolean contains(double x, double y) {
         for (Point2D point : points)
             if (point.distance(x, y) < IShape2D.ACCURACY)
@@ -334,6 +354,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see java.awt.Shape#contains(java.awt.geom.Point2D)
      */
+    @Override
     public boolean contains(Point2D point) {
         return contains(point.x(), point.y());
     }
@@ -344,6 +365,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * @param g2
      *            the graphics to draw the point set
      */
+    @Override
     public void draw(Graphics2D g2) {
         this.draw(g2, 1);
     }
@@ -369,6 +391,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see java.lang.Iterable#iterator()
      */
+    @Override
     public Iterator<Point2D> iterator() {
         return points.iterator();
     }
@@ -381,6 +404,7 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -400,9 +424,6 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
 
         return true;
     }
-
-    // ===================================================================
-    // methods overriding Object methods
 
     /**
      * Returns true if the given object is an instance of PointSet2D that contains the same number of points, such that iteration on each set returns equal points.
@@ -427,5 +448,4 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
 
         return true;
     }
-
 }

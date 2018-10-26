@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Default Implementation of ShapeSet2D.
+ * Default Implementation of IShapeSet2D.
  * 
  * @author dlegland
  *
@@ -70,12 +70,14 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * @param shape
      *            the shape to add
      */
+    @Override
     public boolean add(T shape) {
         if (shapes.contains(shape))
             return false;
         return shapes.add(shape);
     }
 
+    @Override
     public void add(int index, T shape) {
         this.shapes.add(index, shape);
     }
@@ -87,6 +89,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      *            index of the shape
      * @return the i-th inner curve
      */
+    @Override
     public T get(int index) {
         return shapes.get(index);
     }
@@ -97,10 +100,12 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * @param shape
      *            the shape to remove
      */
+    @Override
     public boolean remove(T shape) {
         return shapes.remove(shape);
     }
 
+    @Override
     public T remove(int index) {
         return this.shapes.remove(index);
     }
@@ -108,10 +113,12 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
     /**
      * Checks if the shape set contains the given shape.
      */
+    @Override
     public boolean contains(T shape) {
         return shapes.contains(shape);
     }
 
+    @Override
     public int indexOf(T shape) {
         return shapes.indexOf(shape);
     }
@@ -119,10 +126,12 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
     /**
      * Clears the inner shape collection.
      */
+    @Override
     public void clear() {
         shapes.clear();
     }
 
+    @Override
     public int size() {
         return shapes.size();
     }
@@ -144,6 +153,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#clip(math.geom2d.Box2D)
      */
+    @Override
     public IShape2D clip(Box2D box) {
         ArrayList<IShape2D> clippedShapes = new ArrayList<>(this.size());
         for (T shape : shapes)
@@ -156,6 +166,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#contains(double, double)
      */
+    @Override
     public boolean contains(double x, double y) {
         for (IShape2D shape : shapes) {
             if (shape.contains(x, y))
@@ -169,6 +180,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#contains(java.awt.geom.Point2D)
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
@@ -178,6 +190,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#draw(java.awt.Graphics2D)
      */
+    @Override
     public void draw(Graphics2D g2) {
         for (IShape2D shape : shapes)
             shape.draw(g2);
@@ -188,6 +201,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#getBoundingBox()
      */
+    @Override
     public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
@@ -212,6 +226,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#getDistance(Point2D)
      */
+    @Override
     public double distance(Point2D p) {
         return this.distance(p.x(), p.y());
     }
@@ -221,6 +236,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#getDistance(double, double)
      */
+    @Override
     public double distance(double x, double y) {
         double dist = Double.POSITIVE_INFINITY;
         for (IShape2D shape : shapes)
@@ -233,6 +249,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#isBounded()
      */
+    @Override
     public boolean isBounded() {
         for (IShape2D shape : shapes)
             if (!shape.isBounded())
@@ -245,6 +262,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return this.shapes.isEmpty();
     }
@@ -254,6 +272,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
+    @Override
     public IShapeSet2D<? extends IShape2D> transform(AffineTransform2D trans) {
         // Allocate array for result
         ShapeArray2D<IShape2D> result = new ShapeArray2D<>(shapes.size());
@@ -272,6 +291,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -304,6 +324,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      * 
      * @see java.lang.Iterable#iterator()
      */
+    @Override
     public Iterator<T> iterator() {
         return shapes.iterator();
     }

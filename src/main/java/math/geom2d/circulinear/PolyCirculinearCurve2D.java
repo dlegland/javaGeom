@@ -13,7 +13,9 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.*;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -27,14 +29,6 @@ import math.geom2d.transform.CircleInversion2D;
 public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyOrientedCurve2D<T> implements ICirculinearContinuousCurve2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new PolyCirculinearCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> create(Collection<T> curves) { return new PolyCirculinearCurve2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array of curves.
@@ -46,14 +40,6 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
         return new PolyCirculinearCurve2D<>(curves);
     }
 
-    /**
-     * Static factory for creating a new PolyCirculinearCurve2D from a collection of curves and a flag indicating if the curve is closed.
-     * 
-     * @since 0.9.0
-     */
-    /*
-     * public static <T extends CirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> create(Collection<T> curves, boolean closed) { return new PolyCirculinearCurve2D<T>(curves, closed); }
-     */
 
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array of curves and a flag indicating if the curve is closed.
@@ -109,6 +95,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         double sum = 0;
         for (ICirculinearCurve2D curve : this.curves())
@@ -121,6 +108,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return CirculinearCurves2D.getLength(this, pos);
     }
@@ -130,6 +118,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         return CirculinearCurves2D.getPosition(this, length);
     }
@@ -139,6 +128,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -149,6 +139,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
      */
+    @Override
     public ICirculinearContinuousCurve2D parallel(double d) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.createContinuousParallel(this, d);
@@ -159,6 +150,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public PolyCirculinearCurve2D<? extends ICirculinearContinuousCurve2D> transform(CircleInversion2D inv) {
         // Allocate array for result
         int n = curves.size();

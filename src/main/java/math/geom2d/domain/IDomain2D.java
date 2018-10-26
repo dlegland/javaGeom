@@ -49,14 +49,14 @@ public interface IDomain2D extends IShape2D {
      * 
      * @return the boundary of the domain
      */
-    public abstract IBoundary2D boundary();
+    IBoundary2D boundary();
 
     /**
      * Returns the set of contours that enclose this domain. The result is a collection of shapes that implement the Contour2D interface.
      * 
      * @see math.geom2d.domain.IContour2D
      */
-    public abstract Collection<? extends IContour2D> contours();
+    Collection<? extends IContour2D> contours();
 
     /**
      * Returns the domain which complements this domain in the plane.
@@ -64,7 +64,7 @@ public interface IDomain2D extends IShape2D {
      * @return the complement of this domain.
      * @since 0.6.3
      */
-    public abstract IDomain2D complement();
+    IDomain2D complement();
 
     /**
      * Returns an approximation of the domain as a polygon, or a MultiPolygon.
@@ -72,11 +72,13 @@ public interface IDomain2D extends IShape2D {
      * @return a polygon
      * @since 0.10.2
      */
-    public abstract IPolygon2D asPolygon(int n);
+    IPolygon2D asPolygon(int n);
 
-    public abstract IDomain2D transform(AffineTransform2D transform);
+    @Override
+    IDomain2D transform(AffineTransform2D transform);
 
-    public abstract IDomain2D clip(Box2D box);
+    @Override
+    IDomain2D clip(Box2D box);
 
     /**
      * Draws the boundary of the domain, using current Stroke and color.
@@ -85,7 +87,8 @@ public interface IDomain2D extends IShape2D {
      *            the Graphics to draw on
      * @since 0.6.3
      */
-    public abstract void draw(Graphics2D g2);
+    @Override
+    void draw(Graphics2D g2);
 
     /**
      * Fills the interior of the domain, using the Graphics current Paint.
@@ -94,5 +97,5 @@ public interface IDomain2D extends IShape2D {
      *            the Graphics to fill on
      * @since 0.6.3
      */
-    public abstract void fill(Graphics2D g2);
+    void fill(Graphics2D g2);
 }

@@ -18,7 +18,7 @@ import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
  * @author dlegland
  *
  */
-public interface CapFactory {
+public interface ICapFactory {
 
     public ICirculinearContinuousCurve2D createCap(Point2D center, Vector2D direction, double dist);
 

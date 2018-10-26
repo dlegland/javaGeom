@@ -37,6 +37,7 @@ public class CheckGetBufferPolyline4 extends JPanel {
         domain = bc.computeBuffer(curve, 60);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

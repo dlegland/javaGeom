@@ -56,6 +56,7 @@ public interface ICirculinearCurve2D extends ICirculinearShape2D, ICurve2D {
     // ===================================================================
     // redefines declaration of some parent interfaces
 
+    @Override
     public ICirculinearCurve2D transform(CircleInversion2D inv);
 
     /**
@@ -63,11 +64,15 @@ public interface ICirculinearCurve2D extends ICirculinearShape2D, ICurve2D {
      * 
      * @return a collection of continuous circulinear curves.
      */
+    @Override
     public Collection<? extends ICirculinearContinuousCurve2D> continuousCurves();
 
+    @Override
     public ICurveSet2D<? extends ICirculinearCurve2D> clip(Box2D box);
 
+    @Override
     public ICirculinearCurve2D subCurve(double t0, double t1);
 
+    @Override
     public ICirculinearCurve2D reverse();
 }

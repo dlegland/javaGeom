@@ -1,6 +1,6 @@
-/* file : Transform3D.java
- * 
- * Project : geometry
+/* File Bijection2D.java 
+ *
+ * Project : Java Geometry Library
  *
  * ===========================================
  * 
@@ -19,21 +19,15 @@
  * along with this library. if not, write to :
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
- * 
- * Created on 28 nov. 2006
- *
  */
 
-package math.geom3d.transform;
+// package
 
-import math.geom3d.Point3D;
+package math.geom2d.transform;
 
 /**
- * @author dlegland
+ * Interface for all bijective transformations in the euclidean plane. A transformation is a bijection if there is a direct relation from sources to output. In this case, this means we can find the inverse transformation for each bijection.
  */
-public interface Transform3D {
-
-    public abstract Point3D[] transformPoints(Point3D[] src, Point3D[] dst);
-
-    public abstract Point3D transformPoint(Point3D src);
+public interface IBijection2D extends ITransform2D {
+    IBijection2D invert();
 }

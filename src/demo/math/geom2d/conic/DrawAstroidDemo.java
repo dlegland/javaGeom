@@ -47,6 +47,7 @@ public class DrawAstroidDemo extends JPanel {
         astroid = new BoundaryPolyCurve2D<>(new CircleArc2D[] { arc1, arc2, arc3, arc4 });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

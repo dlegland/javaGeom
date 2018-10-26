@@ -25,23 +25,28 @@
 
 package math.geom2d.line;
 
-//Imports
-
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICircleLine2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
-import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.ISmoothContour2D;
+import math.geom2d.exception.DegeneratedLine2DException;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
-import math.utils.EqualUtils;
 
 /**
  * Implementation of a straight line. Such a line can be constructed using two points, a point and a parallel line or straight object, or with coefficient of the Cartesian equation.
@@ -99,8 +104,8 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     public static StraightLine2D createParallel(ILinearShape2D linear, double d) {
         StraightLine2D line = linear.supportingLine();
-        double d2 = d / Math.hypot(line.dx, line.dy);
-        return new StraightLine2D(line.x0 + line.dy * d2, line.y0 - line.dx * d2, line.dx, line.dy);
+        double d2 = d / Math.hypot(line.dx(), line.dy());
+        return new StraightLine2D(line.x0() + line.dy() * d2, line.y0() - line.dx() * d2, line.dx(), line.dy());
     }
 
     /**
@@ -110,7 +115,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     public static StraightLine2D createPerpendicular(ILinearShape2D linear, Point2D point) {
         StraightLine2D line = linear.supportingLine();
-        return new StraightLine2D(point, -line.dy, line.dx);
+        return new StraightLine2D(point, -line.dy(), line.dx());
     }
 
     /**
@@ -202,8 +207,9 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns a new Straight line, parallel to another straight object (ray, straight line or edge), and going through the given point.
      */
+    @Override
     public StraightLine2D parallel(Point2D point) {
-        return new StraightLine2D(point, dx, dy);
+        return new StraightLine2D(point, dx(), dy());
     }
 
     // ===================================================================
@@ -215,12 +221,13 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      * @throws DegeneratedLine2DException
      *             if line direction vector is null
      */
+    @Override
     public StraightLine2D parallel(double d) {
-        double d2 = Math.hypot(this.dx, this.dy);
+        double d2 = Math.hypot(this.dx(), this.dy());
         if (Math.abs(d2) < IShape2D.ACCURACY)
             throw new DegeneratedLine2DException("Can not compute parallel of degenerated line", this);
         d2 = d / d2;
-        return new StraightLine2D(x0 + dy * d2, y0 - dx * d2, dx, dy);
+        return new StraightLine2D(x0() + dy() * d2, y0() - dx() * d2, dx(), dy());
     }
 
     /**
@@ -228,7 +235,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      */
     @Override
     public StraightLine2D perpendicular(Point2D point) {
-        return new StraightLine2D(point, -dy, dx);
+        return new StraightLine2D(point, -dy(), dx());
     }
 
     /*
@@ -274,6 +281,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      * 
      * @see math.geom2d.domain.Boundary2D#domain()
      */
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
@@ -283,6 +291,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      * 
      * @see math.geom2d.domain.Boundary2D#fill()
      */
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }
@@ -298,8 +307,8 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     @Override
     public double windingAngle(Point2D point) {
 
-        double angle1 = Angle2DUtil.horizontalAngle(-dx, -dy);
-        double angle2 = Angle2DUtil.horizontalAngle(dx, dy);
+        double angle1 = Angle2DUtil.horizontalAngle(-dx(), -dy());
+        double angle2 = Angle2DUtil.horizontalAngle(dx(), dy());
 
         if (this.isInside(point)) {
             if (angle2 > angle1)
@@ -355,6 +364,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns the parameter of the first point of the line, which is always Double.NEGATIVE_INFINITY.
      */
+    @Override
     public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
@@ -362,6 +372,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns the parameter of the last point of the line, which is always Double.POSITIVE_INFINITY.
      */
+    @Override
     public double t1() {
         return Double.POSITIVE_INFINITY;
     }
@@ -369,8 +380,9 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns the point specified with the parametric representation of the line.
      */
+    @Override
     public Point2D point(double t) {
-        return new Point2D(x0 + dx * t, y0 + dy * t);
+        return new Point2D(x0() + dx() * t, y0() + dy() * t);
     }
 
     /**
@@ -386,10 +398,12 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns the straight line with same origin but with opposite direction vector.
      */
+    @Override
     public StraightLine2D reverse() {
-        return new StraightLine2D(this.x0, this.y0, -this.dx, -this.dy);
+        return new StraightLine2D(this.x0(), this.y0(), -this.dx(), -this.dy());
     }
 
+    @Override
     public GeneralPath appendPath(GeneralPath path) {
         throw new UnboundedShape2DException(this);
     }
@@ -398,6 +412,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     // methods implementing the Shape2D interface
 
     /** Always returns false, because a line is not bounded. */
+    @Override
     public boolean isBounded() {
         return false;
     }
@@ -411,11 +426,12 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
         return proj.distance(x, y);
     }
 
+    @Override
     public Box2D boundingBox() {
-        if (Math.abs(dx) < IShape2D.ACCURACY)
-            return new Box2D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        if (Math.abs(dy) < IShape2D.ACCURACY)
-            return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, x0, y0);
+        if (Math.abs(dx()) < IShape2D.ACCURACY)
+            return new Box2D(x0(), x0(), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        if (Math.abs(dy()) < IShape2D.ACCURACY)
+            return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, x0(), y0());
 
         return new Box2D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
@@ -426,7 +442,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     @Override
     public StraightLine2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        return new StraightLine2D(x0 * tab[0] + y0 * tab[1] + tab[2], x0 * tab[3] + y0 * tab[4] + tab[5], dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+        return new StraightLine2D(x0() * tab[0] + y0() * tab[1] + tab[2], x0() * tab[3] + y0() * tab[4] + tab[5], dx() * tab[0] + dy() * tab[1], dx() * tab[3] + dy() * tab[4]);
     }
 
     // ===================================================================
@@ -435,6 +451,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
     /**
      * Returns true if the point (x, y) lies on the line, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(double x, double y) {
         return super.supportContains(x, y);
     }
@@ -460,6 +477,7 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -468,24 +486,16 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
             return false;
         StraightLine2D line = (StraightLine2D) obj;
 
-        if (Math.abs(x0 - line.x0) > eps)
+        if (Math.abs(x0() - line.x0()) > eps)
             return false;
-        if (Math.abs(y0 - line.y0) > eps)
+        if (Math.abs(y0() - line.y0()) > eps)
             return false;
-        if (Math.abs(dx - line.dx) > eps)
+        if (Math.abs(dx() - line.dx()) > eps)
             return false;
-        if (Math.abs(dy - line.dy) > eps)
+        if (Math.abs(dy() - line.dy()) > eps)
             return false;
 
         return true;
-    }
-
-    // ===================================================================
-    // methods overriding the Object class
-
-    @Override
-    public String toString() {
-        return new String("StraightLine2D(" + x0 + "," + y0 + "," + dx + "," + dy + ")");
     }
 
     @Override
@@ -494,29 +504,22 @@ public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, 
             return true;
         if (!(obj instanceof StraightLine2D))
             return false;
-        StraightLine2D that = (StraightLine2D) obj;
 
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
-            return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
-            return false;
-        if (!EqualUtils.areEqual(this.dx, that.dx))
-            return false;
-        if (!EqualUtils.areEqual(this.dy, that.dy))
-            return false;
-
-        return true;
+        return super.equals(obj);
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 31 + Double.valueOf(this.x0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.y0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dx).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+        hash = hash * 31 + Double.valueOf(this.x0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.y0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dx()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dy()).hashCode();
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return new String("StraightLine2D(" + x0() + "," + y0() + "," + dx() + "," + dy() + ")");
+    }
 }

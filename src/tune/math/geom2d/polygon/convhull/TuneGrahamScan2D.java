@@ -46,7 +46,7 @@ public class TuneGrahamScan2D {
         System.out.println("Tune convex hull by Graham Scan");
 
         // Create a new Convex hull calculator
-        ConvexHull2D calculator = new GrahamScan2D();
+        IConvexHull2D calculator = new GrahamScan2D();
 
         long[] times = new long[nIter];
         double total = 0;

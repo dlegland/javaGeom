@@ -32,6 +32,7 @@ public class CheckGetBufferDiscs extends JPanel {
         buffer = CirculinearDomains2D.computeBuffer(domain, 30);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

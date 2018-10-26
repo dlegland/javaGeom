@@ -24,6 +24,7 @@ public interface ICirculinearDomain2D extends ICirculinearShape2D, IDomain2D {
     // ===================================================================
     // redefines declaration of some parent interfaces
 
+    @Override
     public abstract ICirculinearBoundary2D boundary();
 
     /*
@@ -31,9 +32,12 @@ public interface ICirculinearDomain2D extends ICirculinearShape2D, IDomain2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<? extends ICirculinearContour2D> contours();
 
+    @Override
     public ICirculinearDomain2D complement();
 
+    @Override
     public ICirculinearDomain2D transform(CircleInversion2D inv);
 }

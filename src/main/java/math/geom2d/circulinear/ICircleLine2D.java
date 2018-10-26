@@ -22,9 +22,12 @@ public interface ICircleLine2D extends ICirculinearContour2D, ICirculinearElemen
     // ===================================================================
     // redefines declaration of some interfaces
 
+    @Override
     public ICircleLine2D parallel(double dist);
 
+    @Override
     public ICircleLine2D transform(CircleInversion2D inv);
 
+    @Override
     public ICircleLine2D reverse();
 }

@@ -47,11 +47,13 @@ public interface IBoundary2D extends IOrientedCurve2D {
      *            a point in the plane
      * @return true if the point is on the left side of the curve.
      */
+    @Override
     public boolean isInside(Point2D pt);
 
     /**
      * Overloads the declaration of continuousCurves to return a collection of contours (instances of Contour2D).
      */
+    @Override
     public Collection<? extends IContour2D> continuousCurves();
 
     /**
@@ -64,11 +66,13 @@ public interface IBoundary2D extends IOrientedCurve2D {
     /**
      * Forces the subclasses to return an instance of Boundary2D.
      */
+    @Override
     public IBoundary2D reverse();
 
     /**
      * Forces the subclasses to return an instance of Boundary2D.
      */
+    @Override
     public IBoundary2D transform(AffineTransform2D trans);
 
     /**

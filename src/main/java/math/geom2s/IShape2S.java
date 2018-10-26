@@ -1,5 +1,5 @@
-/* file : Bijection3D.java
- * 
+/* File Shape2S.java 
+ *
  * Project : geometry
  *
  * ===========================================
@@ -20,19 +20,15 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 28 nov. 2006
- *
+ * author : Legland
+ * Created on 31 mai 2004
  */
 
-package math.geom3d.transform;
+package math.geom2s;
 
 /**
- * A transformation in the space that have an inverse.
- * 
- * @author dlegland
+ * @author Legland
  */
-public interface Bijection3D extends Transform3D {
-
-    public abstract Bijection3D inverse();
-
+public interface IShape2S {
+    // nothing
 }

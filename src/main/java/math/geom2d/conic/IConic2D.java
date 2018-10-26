@@ -95,9 +95,12 @@ public interface IConic2D extends IBoundary2D {
     // ===================================================================
     // modifiers
 
+    @Override
     public abstract IConic2D reverse();
 
+    @Override
     public abstract IConic2D transform(AffineTransform2D trans);
 
+    @Override
     public abstract ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box);
 }

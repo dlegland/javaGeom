@@ -45,6 +45,7 @@ public class GenericCirculinearDomain2D extends GenericDomain2D implements ICirc
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<? extends ICirculinearContour2D> contours() {
         return ((ICirculinearBoundary2D) this.boundary).continuousCurves();
     }
@@ -59,6 +60,7 @@ public class GenericCirculinearDomain2D extends GenericDomain2D implements ICirc
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
 
         ICirculinearBoundary2D newBoundary = ((ICirculinearBoundary2D) this.boundary).parallel(dist);
@@ -70,6 +72,7 @@ public class GenericCirculinearDomain2D extends GenericDomain2D implements ICirc
      * 
      * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearDomain2D transform(CircleInversion2D inv) {
         // class cast
         ICirculinearBoundary2D boundary2 = (ICirculinearBoundary2D) boundary;

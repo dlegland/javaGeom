@@ -43,25 +43,24 @@ import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.AbstractSmoothCurve2D;
-import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
-import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polyline2D;
 import math.geom2d.transform.CircleInversion2D;
-import math.utils.EqualUtils;
 
 /**
  * A circle arc, defined by the center and the radius of the containing circle, by a starting angle, and by a (signed) angle extent.
@@ -79,7 +78,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     // Class variables
 
     /** The supporting circle */
-    protected Circle2D circle;
+    private final Circle2D circle;
 
     /** The starting position on circle, in radians between 0 and +2PI */
     protected double startAngle = 0;
@@ -87,44 +86,41 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /** The signed angle extent, in radians between -2PI and +2PI. */
     protected double angleExtent = PI;
 
-    // ====================================================================
-    // constructors
-
-    /**
-     * Create a circle arc whose support circle is centered on (0,0) and has a radius equal to 1. Start angle is 0, and angle extent is PI/2.
-     */
-    public CircleArc2D() {
-        this(0, 0, 1, 0, PI / 2);
-    }
-
     // Constructors based on Circles
 
     /**
      * create a new circle arc based on an already existing circle.
      */
     public CircleArc2D(Circle2D circle, double startAngle, double angleExtent) {
-        this(circle.xc, circle.yc, circle.r, startAngle, angleExtent);
+        this.circle = circle;
+        this.startAngle = startAngle;
+        this.angleExtent = angleExtent;
     }
 
     /**
      * create a new circle arc based on an already existing circle, specifying if arc is direct or not.
      */
     public CircleArc2D(Circle2D circle, double startAngle, double endAngle, boolean direct) {
-        this(circle.xc, circle.yc, circle.r, startAngle, endAngle, direct);
+        this.circle = circle;
+        this.startAngle = startAngle;
+        this.angleExtent = endAngle;
+        this.angleExtent = Angle2DUtil.formatAngle(endAngle - startAngle);
+        if (!direct)
+            this.angleExtent = this.angleExtent - PI * 2;
     }
 
     // Constructors based on points
 
     /** Create a new circle arc with specified point center and radius */
     public CircleArc2D(Point2D center, double radius, double startAngle, double angleExtent) {
-        this(center.x(), center.y(), radius, startAngle, angleExtent);
+        this(new Circle2D(center, radius), startAngle, angleExtent);
     }
 
     /**
      * Create a new circle arc with specified point center and radius, start and end angles, and by specifying whether arc is direct or not.
      */
-    public CircleArc2D(Point2D center, double radius, double start, double end, boolean direct) {
-        this(center.x(), center.y(), radius, start, end, direct);
+    public CircleArc2D(Point2D center, double radius, double startAngle, double endAngle, boolean direct) {
+        this(new Circle2D(center, radius), startAngle, endAngle, direct);
     }
 
     // Constructors based on doubles
@@ -133,19 +129,12 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * Base constructor, for constructing arc from circle parameters, start and end angles, and by specifying whether arc is direct or not.
      */
     public CircleArc2D(double xc, double yc, double r, double startAngle, double endAngle, boolean direct) {
-        this.circle = new Circle2D(xc, yc, r);
-        this.startAngle = startAngle;
-        this.angleExtent = endAngle;
-        this.angleExtent = Angle2DUtil.formatAngle(endAngle - startAngle);
-        if (!direct)
-            this.angleExtent = this.angleExtent - PI * 2;
+        this(new Circle2D(xc, yc, r), startAngle, endAngle, direct);
     }
 
     /** Base constructor with all parameters specified */
-    public CircleArc2D(double xc, double yc, double r, double start, double extent) {
-        this.circle = new Circle2D(xc, yc, r);
-        this.startAngle = start;
-        this.angleExtent = extent;
+    public CircleArc2D(double xc, double yc, double r, double startAngle, double angleExtent) {
+        this(new Circle2D(xc, yc, r), startAngle, angleExtent);
     }
 
     // ====================================================================
@@ -188,7 +177,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
             return getArea();
         }
 
-        return (circle.r * circle.r * (angleExtent - sin(angleExtent))) / 2;
+        return (circle.radius() * circle.radius() * (angleExtent - sin(angleExtent))) / 2;
     }
 
     public boolean containsAngle(double angle) {
@@ -226,6 +215,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns the circle that contains the circle arc.
      */
+    @Override
     public Circle2D supportingCircle() {
         return circle;
     }
@@ -244,6 +234,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -252,12 +243,14 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns the circle arc parallel to this circle arc, at the distance dist.
      */
+    @Override
     public CircleArc2D parallel(double dist) {
         double r = circle.radius();
         double r2 = max(angleExtent > 0 ? r + dist : r - dist, 0);
         return new CircleArc2D(circle.center(), r2, startAngle, angleExtent);
     }
 
+    @Override
     public double length() {
         return circle.radius() * abs(angleExtent);
     }
@@ -267,6 +260,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return pos * circle.radius();
     }
@@ -276,6 +270,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         return length / circle.radius();
     }
@@ -285,6 +280,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearElement2D transform(CircleInversion2D inv) {
         // Transform the support circle
         ICirculinearElement2D support = circle.transform(inv);
@@ -297,7 +293,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
             Circle2D circle2 = (Circle2D) support;
             Point2D center = circle2.center();
 
-            return new CircleArc2D(circle2.center(), circle2.radius(), Angle2DUtil.horizontalAngle(center, p1), Angle2DUtil.horizontalAngle(center, p2), !this.isDirect() ^ circle2.isDirect());
+            return new CircleArc2D(circle2, Angle2DUtil.horizontalAngle(center, p1), Angle2DUtil.horizontalAngle(center, p2), !this.isDirect() ^ circle2.isDirect());
 
         } else if (support instanceof StraightLine2D) {
             // TODO: add processing of special cases (arc contains transform center)
@@ -312,6 +308,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     // ====================================================================
     // methods from interface OrientedCurve2D
 
+    @Override
     public double windingAngle(Point2D point) {
         Point2D p1 = firstPoint();
         Point2D p2 = lastPoint();
@@ -350,14 +347,17 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
         }
     }
 
+    @Override
     public boolean isInside(Point2D point) {
         return signedDistance(point.x(), point.y()) < 0;
     }
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         double dist = distance(x, y);
         Point2D point = new Point2D(x, y);
@@ -399,6 +399,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     // ====================================================================
     // methods from interface SmoothCurve2D
 
+    @Override
     public Vector2D tangent(double t) {
         t = this.positionToAngle(t);
 
@@ -412,6 +413,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns curvature of the circle arc. This is the same as the curvature of the parent circle, with a control on the sign that depends on the orientation.
      */
+    @Override
     public double curvature(double t) {
         double kappa = circle.curvature(t);
         return this.isDirect() ? kappa : -kappa;
@@ -423,6 +425,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns a collection of curves containing only this circle arc.
      */
+    @Override
     public Collection<? extends CircleArc2D> smoothPieces() {
         return wrapCurve(this);
     }
@@ -430,6 +433,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns false, as a circle arc is never closed by definition.
      */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -439,6 +443,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public Polyline2D asPolyline(int n) {
 
         // compute increment value
@@ -459,6 +464,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns 0.
      */
+    @Override
     public double t0() {
         return 0;
     }
@@ -466,6 +472,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns the last position of the circle are, which is given by the absolute angle of angle extent of this arc.
      */
+    @Override
     public double t1() {
         return abs(this.angleExtent);
     }
@@ -473,6 +480,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns the position of a point form the curvilinear position.
      */
+    @Override
     public Point2D point(double t) {
         t = this.positionToAngle(t);
         return circle.point(t);
@@ -481,6 +489,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns relative position between 0 and the angle extent.
      */
+    @Override
     public double position(Point2D point) {
         double angle = Angle2DUtil.horizontalAngle(circle.center(), point);
         if (containsAngle(angle))
@@ -496,10 +505,12 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Computes intersections of the circle arc with a line. Return an array of Point2D, of size 0, 1 or 2 depending on the distance between circle and line. If there are 2 intersections points, the first one in the array is the first one on the line.
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         return Circle2D.lineCircleIntersections(line, this);
     }
 
+    @Override
     public double project(Point2D point) {
         double angle = circle.project(point);
 
@@ -522,6 +533,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns a new CircleArc2D. Variables t0 and t1 must be comprised between 0 and the angle extent of the arc.
      */
+    @Override
     public CircleArc2D subCurve(double t0, double t1) {
         // convert position to angle
         if (angleExtent > 0) {
@@ -545,6 +557,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns the circle arc which refers to the same parent circle, but with exchanged extremities.
      */
+    @Override
     public CircleArc2D reverse() {
         double newStart = Angle2DUtil.formatAngle(startAngle + angleExtent);
         return new CircleArc2D(this.circle, newStart, -angleExtent);
@@ -553,6 +566,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns a collection of curves containing only this circle arc.
      */
+    @Override
     public Collection<? extends CircleArc2D> continuousCurves() {
         return wrapCurve(this);
     }
@@ -560,20 +574,23 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     // ====================================================================
     // methods from interface Shape2D
 
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
 
+    @Override
     public double distance(double x, double y) {
-        double angle = Angle2DUtil.horizontalAngle(circle.xc, circle.yc, x, y);
+        double angle = Angle2DUtil.horizontalAngle(circle.center().x(), circle.center().y(), x, y);
 
         if (containsAngle(angle))
-            return abs(Point2D.distance(circle.xc, circle.yc, x, y) - circle.r);
+            return abs(Point2D.distance(circle.center().x(), circle.center().y(), x, y) - circle.radius());
         else
             return min(firstPoint().distance(x, y), lastPoint().distance(x, y));
     }
 
     /** Returns true, as a circle arc is bounded by definition. */
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -581,6 +598,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Clips the circle arc by a box. The result is a CurveSet2D, which contains only instances of CircleArc2D. If circle arc is not clipped, the result is an instance of CurveSet2D with zero curves.
      */
+    @Override
     public ICurveSet2D<CircleArc2D> clip(Box2D box) {
         // Clip he curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -599,6 +617,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns an instance of EllipseArc2D, or CircleArc2D if transform is a similarity.
      */
+    @Override
     public IEllipseArcShape2D transform(AffineTransform2D trans) {
 
         // When the transform is not a similarity, should switch to EllipseArc
@@ -630,7 +649,6 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
         double factor = Math.hypot(coefs[0], coefs[3]);
 
         // compute parameters of new circle arc
-        double xc = center.x(), yc = center.y();
         double r2 = circle.radius() * factor;
         double startAngle = angle1;
         double angleExtent = Angle2DUtil.formatAngle(angle2 - angle1);
@@ -641,21 +659,23 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
             angleExtent = angleExtent - 2 * Math.PI;
 
         // return new CircleArc
-        return new CircleArc2D(xc, yc, r2, startAngle, angleExtent);
+        return new CircleArc2D(center, r2, startAngle, angleExtent);
     }
 
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
 
+    @Override
     public boolean contains(double x, double y) {
         // Check if radius is correct
         double r = circle.radius();
-        if (abs(Point2D.distance(circle.xc, circle.yc, x, y) - r) > IShape2D.ACCURACY)
+        if (abs(Point2D.distance(circle.center().x(), circle.center().y(), x, y) - r) > IShape2D.ACCURACY)
             return false;
 
         // angle from circle center to point
-        double angle = Angle2DUtil.horizontalAngle(circle.xc, circle.yc, x, y);
+        double angle = Angle2DUtil.horizontalAngle(circle.center().x(), circle.center().y(), x, y);
 
         // check if angle is contained in interval [startAngle-angleExtent]
         return this.containsAngle(angle);
@@ -664,10 +684,12 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     /**
      * Returns false.
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public Box2D boundingBox() {
 
         // first get ending points
@@ -694,19 +716,20 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
         boolean direct = angleExtent >= 0;
 
         // check cases arc contains one maximum
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI / 2 + circle.theta, direct))
-            ymax = max(ymax, yc + circle.r);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, 3 * PI / 2 + circle.theta, direct))
-            ymin = min(ymin, yc - circle.r);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, circle.theta, direct))
-            xmax = max(xmax, xc + circle.r);
-        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI + circle.theta, direct))
-            xmin = min(xmin, xc - circle.r);
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI / 2, direct))
+            ymax = max(ymax, yc + circle.radius());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, 3 * PI / 2, direct))
+            ymin = min(ymin, yc - circle.radius());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, 0, direct))
+            xmax = max(xmax, xc + circle.radius());
+        if (Angle2DUtil.containsAngle(startAngle, endAngle, PI, direct))
+            xmin = min(xmin, xc - circle.radius());
 
         // return a bounding with computed limits
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         // number of curves to approximate the arc
         int nSeg = (int) ceil(abs(angleExtent) / (PI / 2));
@@ -810,6 +833,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -819,13 +843,11 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
 
         CircleArc2D arc = (CircleArc2D) obj;
         // test whether supporting ellipses have same support
-        if (abs(circle.xc - arc.circle.xc) > eps)
+        if (abs(circle.center().x() - arc.circle.center().x()) > eps)
             return false;
-        if (abs(circle.yc - arc.circle.yc) > eps)
+        if (abs(circle.center().y() - arc.circle.center().y()) > eps)
             return false;
-        if (abs(circle.r - arc.circle.r) > eps)
-            return false;
-        if (abs(circle.theta - arc.circle.theta) > eps)
+        if (abs(circle.radius() - arc.circle.radius()) > eps)
             return false;
 
         // test is angles are the same
@@ -841,36 +863,13 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     // ===================================================================
     // methods implementing Object interface
 
+    @Override
     public String toString() {
         Point2D center = circle.center();
         return String.format(Locale.US, "CircleArc2D(%7.2f,%7.2f,%7.2f,%7.5f,%7.5f)", center.x(), center.y(), circle.radius(), getStartAngle(), getAngleExtent());
     }
 
-    /**
-     * Two circle arc are equal if the have same center, same radius, same starting and ending angles, and same orientation.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
 
-        if (!(obj instanceof CircleArc2D))
-            return false;
-        CircleArc2D that = (CircleArc2D) obj;
-
-        // test whether supporting circles have same support
-        if (!this.circle.equals(that.circle))
-            return false;
-
-        // test if angles are the same
-        if (!EqualUtils.areEqual(startAngle, that.startAngle))
-            return false;
-        if (!EqualUtils.areEqual(angleExtent, that.angleExtent))
-            return false;
-
-        // if no difference, this is the same
-        return true;
-    }
 
     /**
      * @return A collection of intersection points or empty if either there are no intersections or if the arc & circle are coincident.
@@ -884,4 +883,40 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
 
         return ls;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(angleExtent);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((circle == null) ? 0 : circle.hashCode());
+        temp = Double.doubleToLongBits(startAngle);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CircleArc2D other = (CircleArc2D) obj;
+        if (Double.doubleToLongBits(angleExtent) != Double.doubleToLongBits(other.angleExtent))
+            return false;
+        if (circle == null) {
+            if (other.circle != null)
+                return false;
+        } else if (!circle.equals(other.circle))
+            return false;
+        if (Double.doubleToLongBits(startAngle) != Double.doubleToLongBits(other.startAngle))
+            return false;
+        return true;
+    }
+    
+    
 }

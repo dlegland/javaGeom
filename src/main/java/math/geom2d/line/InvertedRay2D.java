@@ -27,9 +27,13 @@ package math.geom2d.line;
 
 import java.awt.geom.GeneralPath;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.exception.UnboundedShape2DException;
-import math.utils.EqualUtils;
 
 // Imports
 
@@ -43,13 +47,6 @@ import math.utils.EqualUtils;
  */
 public class InvertedRay2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Empty constructor for Ray2D. Default is ray starting at origin, and having a slope of 1*dx and 0*dy.
-     */
-    public InvertedRay2D() {
-        this(0, 0, 1, 0);
-    }
 
     /**
      * Creates a new Ray2D, originating from <code>point1<\code>, and going in the direction of <code>point2<\code>.
@@ -105,7 +102,7 @@ public class InvertedRay2D extends AbstractLine2D {
         super(line.origin(), line.direction());
 
         // enforce condition on direction vector
-        if (Math.hypot(dx, dy) < IShape2D.ACCURACY) {
+        if (Math.hypot(dx(), dy()) < IShape2D.ACCURACY) {
             throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
         }
     }
@@ -118,15 +115,17 @@ public class InvertedRay2D extends AbstractLine2D {
      * 
      * @see math.geom2d.circulinear.ICirculinearCurve2D#parallel(double)
      */
+    @Override
     public InvertedRay2D parallel(double d) {
-        double dd = Math.hypot(dx, dy);
-        return new InvertedRay2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
+        double dd = Math.hypot(dx(), dy());
+        return new InvertedRay2D(x0() + dy() * d / dd, y0() - dx() * d / dd, dx(), dy());
     }
 
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 
     /** Throws an infiniteShapeException */
+    @Override
     public GeneralPath appendPath(GeneralPath path) {
         throw new UnboundedShape2DException(this);
     }
@@ -139,14 +138,16 @@ public class InvertedRay2D extends AbstractLine2D {
     // ===================================================================
     // methods implementing the Curve2D interface
 
+    @Override
     public Point2D point(double t) {
-        t = Math.min(t, 0);
-        return new Point2D(x0 + t * dx, y0 + t * dy);
+        double mt = Math.min(t, 0);
+        return new Point2D(x0() + mt * dx(), y0() + mt * dy());
     }
 
     /**
      * Returns Negative infinity.
      */
+    @Override
     public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
@@ -154,6 +155,7 @@ public class InvertedRay2D extends AbstractLine2D {
     /**
      * Returns 0.
      */
+    @Override
     public double t1() {
         return 0;
     }
@@ -163,18 +165,21 @@ public class InvertedRay2D extends AbstractLine2D {
      * 
      * @see Ray2D#reverse()
      */
+    @Override
     public Ray2D reverse() {
-        return new Ray2D(x0, y0, -dx, -dy);
+        return new Ray2D(x0(), y0(), -dx(), -dy());
     }
 
     // ===================================================================
     // methods implementing the Shape2D interface
 
     /** Always returns false, because n inverted ray is not bounded. */
+    @Override
     public boolean isBounded() {
         return false;
     }
 
+    @Override
     public boolean contains(double x, double y) {
         if (!this.supportContains(x, y))
             return false;
@@ -182,19 +187,20 @@ public class InvertedRay2D extends AbstractLine2D {
         return t < IShape2D.ACCURACY;
     }
 
+    @Override
     public Box2D boundingBox() {
         double t = Double.NEGATIVE_INFINITY;
-        Point2D p0 = new Point2D(x0, y0);
-        Point2D p1 = new Point2D(t * dx, t * dy);
+        Point2D p0 = new Point2D(x0(), y0());
+        Point2D p1 = new Point2D(t * dx(), t * dy());
         return new Box2D(p0, p1);
     }
 
     @Override
     public InvertedRay2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
-        double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
-        return new InvertedRay2D(x1, y1, dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+        double x1 = x0() * tab[0] + y0() * tab[1] + tab[2];
+        double y1 = x0() * tab[3] + y0() * tab[4] + tab[5];
+        return new InvertedRay2D(x1, y1, dx() * tab[0] + dy() * tab[1], dx() * tab[3] + dy() * tab[4]);
     }
 
     // ===================================================================
@@ -208,6 +214,7 @@ public class InvertedRay2D extends AbstractLine2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -215,13 +222,13 @@ public class InvertedRay2D extends AbstractLine2D {
         if (!(obj instanceof InvertedRay2D))
             return false;
         InvertedRay2D ray = (InvertedRay2D) obj;
-        if (Math.abs(x0 - ray.x0) > eps)
+        if (Math.abs(x0() - ray.x0()) > eps)
             return false;
-        if (Math.abs(y0 - ray.y0) > eps)
+        if (Math.abs(y0() - ray.y0()) > eps)
             return false;
-        if (Math.abs(dx - ray.dx) > eps)
+        if (Math.abs(dx() - ray.dx()) > eps)
             return false;
-        if (Math.abs(dy - ray.dy) > eps)
+        if (Math.abs(dy() - ray.dy()) > eps)
             return false;
 
         return true;
@@ -231,29 +238,22 @@ public class InvertedRay2D extends AbstractLine2D {
     // methods implementing the Object interface
 
     @Override
-    public String toString() {
-        return new String("InvertedRay2D(" + x0 + "," + y0 + "," + dx + "," + dy + ")");
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (!(obj instanceof InvertedRay2D))
             return false;
-        InvertedRay2D that = (InvertedRay2D) obj;
 
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
-            return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
-            return false;
-        if (!EqualUtils.areEqual(this.dx, that.dx))
-            return false;
-        if (!EqualUtils.areEqual(this.dy, that.dy))
-            return false;
-
-        return true;
+        return super.equals(obj);
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new String("InvertedRay2D(" + x0() + "," + y0() + "," + dx() + "," + dy() + ")");
+    }
 }

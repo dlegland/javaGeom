@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.ILinearShape2D;
 
 /**
@@ -45,34 +45,21 @@ import math.geom2d.line.ILinearShape2D;
  * <p>
  * Points on curves are identified using curve parameterization. This parameterization is left to the implementation.
  */
-public interface ICurve2D extends IShape2D, Cloneable {
-
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    // ===================================================================
-    // constructors
-
-    // ===================================================================
-    // accessors
-
+public interface ICurve2D extends IShape2D {
     /**
      * Get value of parameter t for the first point of the curve. It can be -Infinity, in this case the piece of curve is not bounded.
      */
-    public abstract double t0();
+    double t0();
 
     /**
      * Get value of parameter t for the last point of the curve. It can be +Infinity, in this case the piece of curve is not bounded.
      */
-    public abstract double t1();
+    double t1();
 
     /**
      * Returns the point located at the given position on the curve. If the parameter lies outside the definition range, the parameter corresponding to the closest bound is used instead. This method can be used to draw an approximated outline of a curve, by selecting multiple values for t and drawing lines between them.
      */
-    public abstract Point2D point(double t);
+    Point2D point(double t);
 
     /**
      * Returns the first point of the curve. It must returns the same result as <code>point(t0())</code>.
@@ -81,7 +68,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      * @see #point(double)
      * @return the first point of the curve
      */
-    public abstract Point2D firstPoint();
+    Point2D firstPoint();
 
     /**
      * Returns the last point of the curve. It must returns the same result as <code>this.point(this.t1())</code>.
@@ -90,7 +77,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      * @see #point(double)
      * @return the last point of the curve.
      */
-    public abstract Point2D lastPoint();
+    Point2D lastPoint();
 
     /**
      * Returns a set of singular points, i. e. which do not locally admit derivative.
@@ -98,7 +85,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      * @see #vertices()
      * @return a collection of Point2D.
      */
-    public abstract Collection<Point2D> singularPoints();
+    Collection<Point2D> singularPoints();
 
     /**
      * Returns the set of vertices for this curve. Vertices can be either singular points, or extremities.
@@ -106,7 +93,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      * @see #singularPoints()
      * @return a collection of Point2D.
      */
-    public abstract Collection<Point2D> vertices();
+    Collection<Point2D> vertices();
 
     /**
      * Checks if a point is singular.
@@ -115,7 +102,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      *            the position of the point on the curve
      * @return true if the point at this location is singular
      */
-    public abstract boolean isSingular(double pos);
+    boolean isSingular(double pos);
 
     /**
      * Computes the position of the point on the curve. If the point does not belong to the curve, return Double.NaN. It is complementary to the <code>point(double)</code> method.
@@ -125,7 +112,7 @@ public interface ICurve2D extends IShape2D, Cloneable {
      * @return the position of the point on the curve
      * @see #point(double)
      */
-    public abstract double position(Point2D point);
+    double position(Point2D point);
 
     /**
      * Returns the position of the closest orthogonal projection of the point on the curve, or of the closest singular point. This function should always returns a valid value.
@@ -134,24 +121,24 @@ public interface ICurve2D extends IShape2D, Cloneable {
      *            a point to project
      * @return the position of the closest orthogonal projection
      */
-    public abstract double project(Point2D point);
+    double project(Point2D point);
 
     /**
      * Returns the intersection points of the curve with the specified line. The length of the result array is the number of intersection points.
      */
-    public abstract Collection<Point2D> intersections(ILinearShape2D line);
+    Collection<Point2D> intersections(ILinearShape2D line);
 
     /**
      * Returns the curve with same trace on the plane with parameterization in reverse order.
      */
-    public abstract ICurve2D reverse();
+    ICurve2D reverse();
 
     /**
      * Returns the collection of continuous curves which constitute this curve.
      * 
      * @return a collection of continuous curves.
      */
-    public abstract Collection<? extends IContinuousCurve2D> continuousCurves();
+    Collection<? extends IContinuousCurve2D> continuousCurves();
 
     /**
      * Returns a portion of the original curve, delimited by two positions on the curve.
@@ -162,23 +149,25 @@ public interface ICurve2D extends IShape2D, Cloneable {
      *            position of the end of the sub-curve
      * @return the portion of original curve comprised between t0 and t1.
      */
-    public abstract ICurve2D subCurve(double t0, double t1);
+    ICurve2D subCurve(double t0, double t1);
 
     /**
      * Transforms the curve by an affine transform. The result is an instance of Curve2D.
      */
-    public abstract ICurve2D transform(AffineTransform2D trans);
+    @Override
+    ICurve2D transform(AffineTransform2D trans);
 
     /**
      * When a curve is clipped, the result is a set of curves.
      */
-    public abstract ICurveSet2D<? extends ICurve2D> clip(Box2D box);
+    @Override
+    ICurveSet2D<? extends ICurve2D> clip(Box2D box);
 
     /**
      * @since 0.7.1
      * @return the shape corresponding to this curve
      */
-    public java.awt.Shape asAwtShape();
+    java.awt.Shape asAwtShape();
 
     /**
      * Draws the curve on the given Graphics2D object.
@@ -187,6 +176,6 @@ public interface ICurve2D extends IShape2D, Cloneable {
      *            the graphics to draw the curve in
      * @since 0.6.3
      */
-    public abstract void draw(Graphics2D g2);
-
+    @Override
+    void draw(Graphics2D g2);
 }

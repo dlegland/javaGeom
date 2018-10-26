@@ -108,6 +108,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
      * 
      * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
      */
+    @Override
     public IShape3D clip(Box3D box) {
         PointSet3D res = new PointSet3D(this.points.size());
         IShape3D clipped;
@@ -119,6 +120,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
         return res;
     }
 
+    @Override
     public Box3D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
@@ -143,6 +145,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
      * 
      * @see math.geom3d.Shape3D#getDistance(math.geom3d.Point3D)
      */
+    @Override
     public double distance(Point3D p) {
         if (points.isEmpty())
             return Double.POSITIVE_INFINITY;
@@ -152,6 +155,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
         return dist;
     }
 
+    @Override
     public boolean contains(Point3D point) {
         for (Point3D p : points)
             if (point.distance(p) < IShape3D.ACCURACY)
@@ -159,10 +163,12 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
         return false;
     }
 
+    @Override
     public boolean isEmpty() {
         return points.size() == 0;
     }
 
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -172,6 +178,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
      * 
      * @see math.geom3d.Shape3D#transform(math.geom3d.AffineTransform3D)
      */
+    @Override
     public IShape3D transform(AffineTransform3D trans) {
         PointSet3D res = new PointSet3D();
         for (Point3D point : points)
@@ -187,6 +194,7 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
      * 
      * @see java.lang.Iterable#iterator()
      */
+    @Override
     public Iterator<Point3D> iterator() {
         return points.iterator();
     }

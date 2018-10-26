@@ -16,9 +16,12 @@ import math.geom2d.curve.ICurveSet2D;
  */
 public interface ILinearElement2D extends ICirculinearElement2D, ILinearShape2D {
 
+    @Override
     public ILinearElement2D transform(AffineTransform2D trans);
 
+    @Override
     public ILinearElement2D subCurve(double y0, double t1);
 
+    @Override
     public ICurveSet2D<? extends ILinearElement2D> clip(Box2D box);
 }

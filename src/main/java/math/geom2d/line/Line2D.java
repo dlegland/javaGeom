@@ -25,20 +25,29 @@
 
 package math.geom2d.line;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.*;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
-// Imports
-
 /**
- * Line object defined from 2 points. This object keep points reference in memory, and recomputes properties directly from points. Line2D is mutable.
+ * Line object defined from 2 points. This object keep points reference in memory, and recomputes properties directly from points.
  * <p>
  * Example :
  * <p>
@@ -53,26 +62,20 @@ import math.geom2d.transform.CircleInversion2D;
  * </code>
  * <p>
  * <p>
- * This class may be slower than Edge2D or StraightLine2D, because parameters are updated each time a computation is made, causing lot of additional processing. Moreover, as inner point fields are public, it is not as safe as {@link math.geom2d.line.LineSegment2D}.
+ * This class may be slower than Edge2D or StraightLine2D, because parameters are updated each time a computation is made, causing lot of additional processing.
  */
 public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     private static final long serialVersionUID = 1L;
 
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
     /**
      * The origin point.
      */
-    public Point2D p1;
+    private final Point2D p1;
 
     /**
      * The destination point.
      */
-    public Point2D p2;
+    private final Point2D p2;
 
     // ===================================================================
     // constructors
@@ -112,13 +115,6 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         p2 = new Point2D(x2, y2);
     }
 
-    /**
-     * Copy constructor.
-     */
-    public Line2D(Line2D line) {
-        this(line.getPoint1(), line.getPoint2());
-    }
-
     // ===================================================================
     // Methods specific to Line2D
 
@@ -140,19 +136,19 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         return p2;
     }
 
-    public double getX1() {
+    public double x1() {
         return p1.x();
     }
 
-    public double getY1() {
+    public double y1() {
         return p1.y();
     }
 
-    public double getX2() {
+    public double x2() {
         return p2.x();
     }
 
-    public double getY2() {
+    public double y2() {
         return p2.y();
     }
 
@@ -169,14 +165,6 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         if (point.equals(p2))
             return p1;
         return null;
-    }
-
-    public void setPoint1(Point2D point) {
-        p1 = point;
-    }
-
-    public void setPoint2(Point2D point) {
-        p2 = point;
     }
 
     // ===================================================================
@@ -207,6 +195,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -217,11 +206,12 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
      */
+    @Override
     public Line2D parallel(double d) {
-        double x0 = getX1();
-        double y0 = getY1();
-        double dx = getX2() - x0;
-        double dy = getY2() - y0;
+        double x0 = x1();
+        double y0 = y1();
+        double dx = x2() - x0;
+        double dy = y2() - y0;
         double d2 = d / Math.hypot(dx, dy);
         return new Line2D(x0 + dy * d2, y0 - dx * d2, x0 + dx + dy * d2, y0 + dy - dx * d2);
     }
@@ -231,6 +221,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         return p1.distance(p2);
     }
@@ -240,6 +231,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         double dx = p2.x() - p1.x();
         double dy = p2.y() - p1.y();
@@ -251,6 +243,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         double dx = p2.x() - p1.x();
         double dy = p2.y() - p1.y();
@@ -262,6 +255,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearElement2D transform(CircleInversion2D inv) {
         // Extract inversion parameters
         Point2D center = inv.center();
@@ -322,6 +316,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // ===================================================================
     // methods implementing the LinearShape2D interface
 
+    @Override
     public double horizontalAngle() {
         return new LineSegment2D(p1, p2).horizontalAngle();
     }
@@ -331,6 +326,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.line.LinearShape2D#intersection(math.geom2d.line.LinearShape2D)
      */
+    @Override
     public Point2D intersection(ILinearShape2D line) {
         return new LineSegment2D(p1, p2).intersection(line);
     }
@@ -340,6 +336,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.line.LinearShape2D#origin()
      */
+    @Override
     public Point2D origin() {
         return p1;
     }
@@ -349,6 +346,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.line.LinearShape2D#supportingLine()
      */
+    @Override
     public StraightLine2D supportingLine() {
         return new StraightLine2D(p1, p2);
     }
@@ -358,6 +356,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.line.LinearShape2D#direction()
      */
+    @Override
     public Vector2D direction() {
         return new Vector2D(p1, p2);
     }
@@ -365,10 +364,12 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // ===================================================================
     // methods implementing the OrientedCurve2D interface
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         return new LineSegment2D(p1, p2).signedDistance(x, y);
     }
@@ -391,6 +392,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.curve.IContinuousCurve2D#isClosed()
      */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -401,6 +403,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns the distance of the point <code>p</code> to this edge.
      */
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
@@ -408,6 +411,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns the distance of the point (x, y) to this edge.
      */
+    @Override
     public double distance(double x, double y) {
         // project the point on the support line
         StraightLine2D support = new StraightLine2D(p1, p2);
@@ -448,6 +452,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Clips the line object by a box. The result is an instance of CurveSet2D, which contains only instances of LineArc2D. If the line object is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends Line2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
@@ -466,6 +471,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns the bounding box of the Line2D.
      */
+    @Override
     public Box2D boundingBox() {
         return new Box2D(p1, p2);
     }
@@ -473,6 +479,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // ===================================================================
     // methods inherited from SmoothCurve2D interface
 
+    @Override
     public Vector2D tangent(double t) {
         return new Vector2D(p1, p2);
     }
@@ -480,6 +487,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns 0 as every linear shape.
      */
+    @Override
     public double curvature(double t) {
         return 0.0;
     }
@@ -487,10 +495,12 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
+    @Override
     public double windingAngle(Point2D point) {
         return new LineSegment2D(p1, p2).windingAngle(point);
     }
 
+    @Override
     public boolean isInside(Point2D point) {
         return new LineSegment2D(p1, p2).signedDistance(point) < 0;
     }
@@ -501,6 +511,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns 0.
      */
+    @Override
     public double t0() {
         return 0.0;
     }
@@ -508,10 +519,12 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns 1.
      */
+    @Override
     public double t1() {
         return 1.0;
     }
 
+    @Override
     public Point2D point(double t) {
         t = Math.min(Math.max(t, 0), 1);
         double x = p1.x() * (1 - t) + p2.x() * t;
@@ -548,10 +561,12 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * <p>
      * If point does not belong to edge, return Double.NaN. The current implementation uses the direction with the biggest derivative, in order to avoid divisions by zero.
      */
+    @Override
     public double position(Point2D point) {
         return new LineSegment2D(p1, p2).position(point);
     }
 
+    @Override
     public double project(Point2D point) {
         return new LineSegment2D(p1, p2).project(point);
     }
@@ -559,6 +574,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns the Line2D object which starts at <code>point2</code> and ends at <code>point1</code>.
      */
+    @Override
     public Line2D reverse() {
         return new Line2D(p2, p1);
     }
@@ -571,6 +587,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns a new Line2D, which is the portion of the line delimited by parameters t0 and t1.
      */
+    @Override
     public Line2D subCurve(double t0, double t1) {
         if (t0 > t1)
             return null;
@@ -584,6 +601,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.curve.Curve2D#intersections(math.geom2d.line.LinearShape2D)
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         return new LineSegment2D(p1, p2).intersections(line);
     }
@@ -591,6 +609,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // ===================================================================
     // methods inherited from Shape2D interface
 
+    @Override
     public Line2D transform(AffineTransform2D trans) {
         return new Line2D(p1.transform(trans), p2.transform(trans));
     }
@@ -601,6 +620,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns true if the point (x, y) lies on the line, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(double x, double y) {
         return new LineSegment2D(p1, p2).contains(x, y);
     }
@@ -608,6 +628,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns true if the point p lies on the line, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
@@ -615,6 +636,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns true
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -622,6 +644,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     /**
      * Returns false
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -633,6 +656,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         return path;
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         path.lineTo((float) p2.x(), (float) p2.y());
         return path;
@@ -646,6 +670,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -659,31 +684,26 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         return p1.almostEquals(edge.p1, eps) && p2.almostEquals(edge.p2, eps);
     }
 
-    // ===================================================================
-    // methods inherited from Object interface
-
-    @Override
-    public String toString() {
-        return "Line2D(" + p1 + ")-(" + p2 + ")";
-    }
-
-    /**
-     * Two Line2D are equals if the share the two same points, in the same order.
-     * 
-     * @param obj
-     *            the edge to compare to.
-     * @return true if extremities of both edges are the same.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!(obj instanceof Line2D))
+        if (obj == null)
             return false;
-
-        // cast class, and compare members
-        Line2D edge = (Line2D) obj;
-        return p1.equals(edge.p1) && p2.equals(edge.p2);
+        if (getClass() != obj.getClass())
+            return false;
+        Line2D other = (Line2D) obj;
+        if (p1 == null) {
+            if (other.p1 != null)
+                return false;
+        } else if (!p1.equals(other.p1))
+            return false;
+        if (p2 == null) {
+            if (other.p2 != null)
+                return false;
+        } else if (!p2.equals(other.p2))
+            return false;
+        return true;
     }
 
     @Override
@@ -694,4 +714,8 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "Line2D [p1=" + p1 + ", p2=" + p2 + "]";
+    }
 }

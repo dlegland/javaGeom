@@ -35,7 +35,7 @@ public class CheckInertiaEllipse extends JPanel {
         ellipse = new Ellipse2D(center, ra, rb, theta);
 
         AffineTransform2D rot = AffineTransform2D.createRotation(theta);
-        AffineTransform2D tra = AffineTransform2D.createTranslation(center.getX(), center.getY());
+        AffineTransform2D tra = AffineTransform2D.createTranslation(center.x(), center.y());
         AffineTransform2D trans = rot.preConcatenate(tra);
 
         java.util.Random random = new java.util.Random();
@@ -48,6 +48,7 @@ public class CheckInertiaEllipse extends JPanel {
         }
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

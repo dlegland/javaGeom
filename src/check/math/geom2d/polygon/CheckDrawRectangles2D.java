@@ -43,6 +43,7 @@ public class CheckDrawRectangles2D extends JPanel {
         rect4 = Polygons2D.createOrientedRectangle(new Point2D(400, 350), length, width, Math.PI / 6);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

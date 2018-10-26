@@ -32,8 +32,6 @@ import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.isInfinite;
 import static java.lang.Double.isNaN;
-import static java.lang.Math.ceil;
-import static java.lang.Math.floor;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;
@@ -52,13 +50,14 @@ import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polygons2D;
-import math.utils.EqualUtils;
 
 /**
  * This class defines bounds of a shape. It stores limits in each direction: <code>x</code> and <code>y</code>. It also provides methods for clipping others shapes, depending on their type.
  */
 public class Box2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
+
+    public final static Box2D ZERO_BOX = new Box2D(0, 0, 0, 0);
 
     /**
      * The box corresponding to the unit square, with bounds [0 1] in each direction
@@ -90,11 +89,6 @@ public class Box2D implements IGeometricObject2D, Serializable {
         this.xmax = xmax;
         this.ymin = ymin;
         this.ymax = ymax;
-    }
-
-    /** Constructor from awt, to allow easy construction from existing apps. */
-    public Box2D(java.awt.geom.Rectangle2D rect) {
-        this(rect.getX(), rect.getX() + rect.getWidth(), rect.getY(), rect.getY() + rect.getHeight());
     }
 
     /**
@@ -396,11 +390,11 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * @return a new Box2D
      */
     public Box2D union(Box2D box) {
-        double xmin = Math.min(this.xmin, box.xmin);
-        double xmax = Math.max(this.xmax, box.xmax);
-        double ymin = Math.min(this.ymin, box.ymin);
-        double ymax = Math.max(this.ymax, box.ymax);
-        return new Box2D(xmin, xmax, ymin, ymax);
+        double newxmin = Math.min(this.xmin, box.xmin);
+        double newxmax = Math.max(this.xmax, box.xmax);
+        double newymin = Math.min(this.ymin, box.ymin);
+        double newymax = Math.max(this.ymax, box.ymax);
+        return new Box2D(newxmin, newxmax, newymin, newymax);
     }
 
     /**
@@ -411,11 +405,11 @@ public class Box2D implements IGeometricObject2D, Serializable {
      * @return a new Box2D
      */
     public Box2D intersection(Box2D box) {
-        double xmin = Math.max(this.xmin, box.xmin);
-        double xmax = Math.min(this.xmax, box.xmax);
-        double ymin = Math.max(this.ymin, box.ymin);
-        double ymax = Math.min(this.ymax, box.ymax);
-        return new Box2D(xmin, xmax, ymin, ymax);
+        double newxmin = Math.max(this.xmin, box.xmin);
+        double newxmax = Math.min(this.xmax, box.xmax);
+        double newymin = Math.max(this.ymin, box.ymin);
+        double newymax = Math.min(this.ymax, box.ymax);
+        return new Box2D(newxmin, newxmax, newymin, newymax);
     }
 
     /**
@@ -455,47 +449,22 @@ public class Box2D implements IGeometricObject2D, Serializable {
             return Box2D.INFINITE_BOX;
 
         // initialize with extreme values
-        double xmin = POSITIVE_INFINITY;
-        double xmax = NEGATIVE_INFINITY;
-        double ymin = POSITIVE_INFINITY;
-        double ymax = NEGATIVE_INFINITY;
+        double newxmin = POSITIVE_INFINITY;
+        double newxmax = NEGATIVE_INFINITY;
+        double newymin = POSITIVE_INFINITY;
+        double newymax = NEGATIVE_INFINITY;
 
         // update bounds with coordinates of transformed box vertices
         for (Point2D point : this.vertices()) {
             point = point.transform(trans);
-            xmin = Math.min(xmin, point.x());
-            ymin = Math.min(ymin, point.y());
-            xmax = Math.max(xmax, point.x());
-            ymax = Math.max(ymax, point.y());
+            newxmin = Math.min(newxmin, point.x());
+            newymin = Math.min(newymin, point.y());
+            newxmax = Math.max(newxmax, point.x());
+            newymax = Math.max(newymax, point.y());
         }
 
         // create the resulting box
-        return new Box2D(xmin, xmax, ymin, ymax);
-    }
-
-    // ===================================================================
-    // conversion methods
-
-    /**
-     * Converts to AWT rectangle.
-     * 
-     * @return an instance of java.awt.geom.Rectangle2D
-     */
-    public java.awt.Rectangle asAwtRectangle() {
-        int xr = (int) floor(this.xmin);
-        int yr = (int) floor(this.ymin);
-        int wr = (int) ceil(this.xmax - xr);
-        int hr = (int) ceil(this.ymax - yr);
-        return new java.awt.Rectangle(xr, yr, wr, hr);
-    }
-
-    /**
-     * Converts to AWT Rectangle2D. Result is an instance of java.awt.geom.Rectangle2D.Double.
-     * 
-     * @return an instance of java.awt.geom.Rectangle2D
-     */
-    public java.awt.geom.Rectangle2D asAwtRectangle2D() {
-        return new java.awt.geom.Rectangle2D.Double(xmin, ymin, xmax - xmin, ymax - ymin);
+        return new Box2D(newxmin, newxmax, newymin, newymax);
     }
 
     /**
@@ -538,6 +507,7 @@ public class Box2D implements IGeometricObject2D, Serializable {
     /**
      * Tests if boxes are the same. Two boxes are the same if they have the same bounds, up to the specified threshold value.
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -559,38 +529,44 @@ public class Box2D implements IGeometricObject2D, Serializable {
         return true;
     }
 
-    // ===================================================================
-    // methods from Object interface
-
     @Override
-    public String toString() {
-        return new String("Box2D(" + xmin + "," + xmax + "," + ymin + "," + ymax + ")");
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(xmax);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(xmin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ymax);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ymin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
-    /**
-     * Test if boxes are the same. two boxes are the same if the have exactly the same bounds.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        // check class, and cast type
-        if (!(obj instanceof Box2D))
+        if (obj == null)
             return false;
-        Box2D that = (Box2D) obj;
-
-        // Compare each field
-        if (!EqualUtils.areEqual(this.xmin, that.xmin))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.xmax, that.xmax))
+        Box2D other = (Box2D) obj;
+        if (Double.doubleToLongBits(xmax) != Double.doubleToLongBits(other.xmax))
             return false;
-        if (!EqualUtils.areEqual(this.ymin, that.ymin))
+        if (Double.doubleToLongBits(xmin) != Double.doubleToLongBits(other.xmin))
             return false;
-        if (!EqualUtils.areEqual(this.ymax, that.ymax))
+        if (Double.doubleToLongBits(ymax) != Double.doubleToLongBits(other.ymax))
             return false;
-
+        if (Double.doubleToLongBits(ymin) != Double.doubleToLongBits(other.ymin))
+            return false;
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Box2D [xmin=" + xmin + ", xmax=" + xmax + ", ymin=" + ymin + ", ymax=" + ymax + "]";
+    }
 }

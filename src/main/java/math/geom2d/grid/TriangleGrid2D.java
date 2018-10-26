@@ -9,24 +9,24 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.point.PointArray2D;
-import math.geom2d.point.IPointSet2D;
+import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.IPointSet2D;
+import math.geom2d.point.PointArray2D;
 
 /**
  * Defines a triangle grid, with various size and orientation. The grid contains triangle with all edges the same length.
  * 
  * @author dlegland
  */
-public class TriangleGrid2D implements Grid2D {
+public class TriangleGrid2D implements IGrid2D {
 
-    double x0 = 0;
-    double y0 = 0;
-    double s = 1;
+    private final double x0;
+    private final double y0;
+    private final double s;
 
-    double theta = 0;
+    private final double theta;
 
     /**
      * Returns TRUE if the number <code>n</code> is even (like 0, 2, 4...).
@@ -122,6 +122,7 @@ public class TriangleGrid2D implements Grid2D {
         this(point.x(), point.y(), s, theta);
     }
 
+    @Override
     public Point2D getOrigin() {
         return new Point2D(x0, y0);
     }
@@ -139,6 +140,7 @@ public class TriangleGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getClosestVertex(Point2D)
      */
+    @Override
     public Point2D getClosestVertex(Point2D point) {
         // create the base line
         double cot = Math.cos(theta);
@@ -191,6 +193,7 @@ public class TriangleGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getEdges(math.geom2d.Box2D)
      */
+    @Override
     public Collection<LineSegment2D> getEdges(Box2D box) {
 
         // init the array of line segments
@@ -237,6 +240,7 @@ public class TriangleGrid2D implements Grid2D {
      * 
      * @see math.geom2d.grid.Grid2D#getVertices(math.geom2d.Box2D)
      */
+    @Override
     public IPointSet2D getVertices(Box2D box) {
 
         // init the array of line segments

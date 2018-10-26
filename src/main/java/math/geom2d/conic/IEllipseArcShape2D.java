@@ -14,9 +14,12 @@ import math.geom2d.domain.ISmoothOrientedCurve2D;
  */
 public interface IEllipseArcShape2D extends ISmoothOrientedCurve2D {
 
+    @Override
     public IEllipseArcShape2D reverse();
 
+    @Override
     public IEllipseArcShape2D subCurve(double t0, double t1);
 
+    @Override
     public IEllipseArcShape2D transform(AffineTransform2D trans);
 }

@@ -9,6 +9,10 @@
 package math.geom2d.circulinear.buffer;
 
 import static java.lang.Math.PI;
+import static math.geom2d.curve.Curves2D.JunctionType.FLAT;
+import static math.geom2d.curve.Curves2D.JunctionType.REENTRANT;
+import static math.geom2d.curve.Curves2D.JunctionType.SALIENT;
+
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
@@ -17,17 +21,17 @@ import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.Curves2D;
 import math.geom2d.line.LineSegment2D;
-import static math.geom2d.curve.Curves2D.JunctionType.*;
 
 /**
  * @author dlegland
  *
  */
-public class RoundJoinFactory implements JoinFactory {
+public class RoundJoinFactory implements IJoinFactory {
 
     /**
      * Creates a join between the parallels of two curves at the specified distance. The first point of curve2 is assumed to be the last point of curve1.
      */
+    @Override
     public ICirculinearContinuousCurve2D createJoin(ICirculinearElement2D curve1, ICirculinearElement2D curve2, double dist) {
 
         // center of circle arc

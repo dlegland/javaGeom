@@ -36,8 +36,8 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
-import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
+import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -54,10 +54,10 @@ public class Rectangle2D implements IPolygon2D {
     // ===================================================================
     // class variables
 
-    protected double x0;
-    protected double y0;
-    protected double w;
-    protected double h;
+    private final double x0;
+    private final double y0;
+    private final double w;
+    private final double h;
 
     // ===================================================================
     // constructors
@@ -77,16 +77,6 @@ public class Rectangle2D implements IPolygon2D {
      */
     public Rectangle2D() {
         this(0, 0, 0, 0);
-    }
-
-    /**
-     * Constructor from awt, to allow easy construction from existing apps.
-     */
-    public Rectangle2D(java.awt.geom.Rectangle2D rect) {
-        this.x0 = rect.getX();
-        this.y0 = rect.getY();
-        this.w = rect.getWidth();
-        this.h = rect.getHeight();
     }
 
     /**
@@ -126,6 +116,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @return the vertices of the rectangle.
      */
+    @Override
     public Collection<Point2D> vertices() {
         // Allocate memory
         ArrayList<Point2D> array = new ArrayList<>(4);
@@ -145,6 +136,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @since 0.6.3
      */
+    @Override
     public int vertexNumber() {
         return 4;
     }
@@ -155,6 +147,7 @@ public class Rectangle2D implements IPolygon2D {
      * @param i
      *            index of the vertex, between 0 and 3
      */
+    @Override
     public Point2D vertex(int i) {
         switch (i) {
         case 0:
@@ -170,18 +163,22 @@ public class Rectangle2D implements IPolygon2D {
         }
     }
 
+    @Override
     public void setVertex(int i, Point2D point) {
         throw new UnsupportedOperationException("Vertices of Rectangle objects can not be modified");
     }
 
+    @Override
     public void addVertex(Point2D point) {
         throw new UnsupportedOperationException("Vertices of Rectangle objects can not be modified");
     }
 
+    @Override
     public void insertVertex(int i, Point2D point) {
         throw new UnsupportedOperationException("Vertices of Rectangle objects can not be modified");
     }
 
+    @Override
     public void removeVertex(int i) {
         throw new UnsupportedOperationException("Vertices of Rectangle objects can not be modified");
     }
@@ -189,6 +186,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Computes the index of the closest vertex to the input point.
      */
+    @Override
     public int closestVertexIndex(Point2D point) {
         double minDist = Double.POSITIVE_INFINITY;
         int index = -1;
@@ -209,6 +207,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the four edges that constitute the boundary of this rectangle.
      */
+    @Override
     public Collection<LineSegment2D> edges() {
         ArrayList<LineSegment2D> edges = new ArrayList<>(4);
         edges.add(new LineSegment2D(x0, y0, x0 + w, y0));
@@ -221,6 +220,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns 4, as a rectangle has four edges.
      */
+    @Override
     public int edgeNumber() {
         return 4;
     }
@@ -231,6 +231,7 @@ public class Rectangle2D implements IPolygon2D {
      * @return the signed area of the polygon.
      * @since 0.9.1
      */
+    @Override
     public double area() {
         return this.w * this.h;
     }
@@ -241,6 +242,7 @@ public class Rectangle2D implements IPolygon2D {
      * @return the centroid of the polygon
      * @since 0.9.1
      */
+    @Override
     public Point2D centroid() {
         double xc = x0 + this.w / 2;
         double yc = y0 + this.h / 2;
@@ -255,6 +257,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#asPolygon(int)
      */
+    @Override
     public IPolygon2D asPolygon(int n) {
         return this;
     }
@@ -267,6 +270,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearDomain2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearDomain2D transform(CircleInversion2D inv) {
         return new GenericCirculinearDomain2D(this.boundary().transform(inv));
     }
@@ -276,6 +280,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this.boundary(), dist);
@@ -284,6 +289,7 @@ public class Rectangle2D implements IPolygon2D {
     // ===================================================================
     // methods inherited from interface Domain2D
 
+    @Override
     public CirculinearContourArray2D<LinearRing2D> boundary() {
         return new CirculinearContourArray2D<>(asRing());
     }
@@ -293,6 +299,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<LinearRing2D> contours() {
         ArrayList<LinearRing2D> rings = new ArrayList<>(1);
         rings.add(this.asRing());
@@ -317,6 +324,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns a new simple Polygon whose vertices are in reverse order of this rectangle.
      */
+    @Override
     public IPolygon2D complement() {
         Point2D pts[] = new Point2D[4];
         pts[0] = new Point2D(x0, y0);
@@ -333,10 +341,12 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Always returns true, because a rectangle is always bounded.
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -344,6 +354,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the distance of the point to the polygon. The result is the minimal distance computed for each edge if the polygon, or ZERO if the point lies inside the polygon.
      */
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
@@ -351,6 +362,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the distance of the point to the polygon. The result is the minimal distance computed for each edge if the polygon, or ZERO if the point lies inside the polygon.
      */
+    @Override
     public double distance(double x, double y) {
         double dist = boundary().signedDistance(x, y);
         return Math.max(dist, 0);
@@ -359,6 +371,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the clipped polygon.
      */
+    @Override
     public IPolygon2D clip(Box2D box) {
         return Polygons2D.clipPolygon(this, box);
     }
@@ -366,6 +379,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the bounding box of the rectangle.
      */
+    @Override
     public Box2D boundingBox() {
         return new Box2D(x0, x0 + w, y0, y0 + h);
     }
@@ -373,6 +387,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Returns the new Polygon created by an affine transform of this polygon.
      */
+    @Override
     public SimplePolygon2D transform(AffineTransform2D trans) {
         int nPoints = 4;
         Point2D[] array = new Point2D[nPoints];
@@ -393,6 +408,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Checks if this rectangle contains the given point.
      */
+    @Override
     public boolean contains(Point2D point) {
         return contains(point.x(), point.y());
     }
@@ -400,6 +416,7 @@ public class Rectangle2D implements IPolygon2D {
     /**
      * Checks if this rectangle contains the point given by (x,y)
      */
+    @Override
     public boolean contains(double x, double y) {
         if (x < this.x0)
             return false;
@@ -412,10 +429,12 @@ public class Rectangle2D implements IPolygon2D {
         return true;
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         this.asRing().draw(g2);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         this.asRing().fill(g2);
     }
@@ -428,6 +447,7 @@ public class Rectangle2D implements IPolygon2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

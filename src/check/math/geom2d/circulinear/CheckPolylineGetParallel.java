@@ -33,6 +33,7 @@ public class CheckPolylineGetParallel extends JPanel {
         curve = new Polyline2D(new Point2D[] { new Point2D(80, 180), new Point2D(140, 180), new Point2D(140, 80), new Point2D(260, 80), new Point2D(260, 200), new Point2D(160, 200), new Point2D(160, 260) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

@@ -8,7 +8,6 @@ import java.util.Collection;
 
 import math.geom3d.Point3D;
 import math.geom3d.IShape3D;
-import math.geom3d.curve.ICurve3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -98,6 +97,7 @@ public interface ICurve3D extends IShape3D {
     /**
      * Transforms the curve by an affine transform. The result is an instance of Curve3D.
      */
+    @Override
     public abstract ICurve3D transform(AffineTransform3D trans);
 
     // /**

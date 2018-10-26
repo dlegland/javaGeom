@@ -49,6 +49,7 @@ public class DrawVennDiagram extends JPanel {
         super();
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         // origin
         Point2D origin = new Point2D(x0, y0);

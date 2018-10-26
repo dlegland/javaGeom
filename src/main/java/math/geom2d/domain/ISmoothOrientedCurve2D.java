@@ -35,11 +35,15 @@ import math.geom2d.curve.ISmoothCurve2D;
  */
 public interface ISmoothOrientedCurve2D extends ISmoothCurve2D, IContinuousOrientedCurve2D {
 
+    @Override
     public abstract ISmoothOrientedCurve2D reverse();
 
+    @Override
     public abstract ISmoothOrientedCurve2D subCurve(double t0, double t1);
 
+    @Override
     public abstract ICurveSet2D<? extends ISmoothOrientedCurve2D> clip(Box2D box);
 
+    @Override
     public abstract ISmoothOrientedCurve2D transform(AffineTransform2D trans);
 }

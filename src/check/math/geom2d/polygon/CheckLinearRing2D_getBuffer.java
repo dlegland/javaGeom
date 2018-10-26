@@ -28,6 +28,7 @@ public class CheckLinearRing2D_getBuffer extends JPanel {
         ring = LinearRing2D.create(new Point2D[] { new Point2D(100, 100), new Point2D(300, 100), new Point2D(300, 300), new Point2D(200, 200), new Point2D(100, 300) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

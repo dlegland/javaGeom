@@ -65,6 +65,7 @@ public class KDTree2D {
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(Point2D p1, Point2D p2) {
             if (p1.x() < p2.x())
                 return -1;
@@ -80,6 +81,7 @@ public class KDTree2D {
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(Point2D p1, Point2D p2) {
             if (p1.y() < p2.y())
                 return -1;

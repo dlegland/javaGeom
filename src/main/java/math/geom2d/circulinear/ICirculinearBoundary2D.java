@@ -26,15 +26,21 @@ public interface ICirculinearBoundary2D extends ICirculinearCurve2D, IBoundary2D
     // ===================================================================
     // redefines declaration of some interfaces
 
+    @Override
     public ICirculinearDomain2D domain();
 
+    @Override
     public ICirculinearBoundary2D parallel(double d);
 
+    @Override
     public Collection<? extends ICirculinearContour2D> continuousCurves();
 
+    @Override
     public ICurveSet2D<? extends ICirculinearContinuousCurve2D> clip(Box2D box);
 
+    @Override
     public ICirculinearBoundary2D transform(CircleInversion2D inv);
 
+    @Override
     public ICirculinearBoundary2D reverse();
 }

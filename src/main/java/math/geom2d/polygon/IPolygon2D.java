@@ -129,6 +129,7 @@ public interface IPolygon2D extends ICirculinearDomain2D {
     /**
      * Overrides the definition of boundary() such that the boundary of a polygon is defined as a set of LinearRing2D.
      */
+    @Override
     public CirculinearContourArray2D<? extends LinearRing2D> boundary();
 
     /*
@@ -136,6 +137,7 @@ public interface IPolygon2D extends ICirculinearDomain2D {
      * 
      * @see math.geom2d.domain.Domain2D#contours()
      */
+    @Override
     public Collection<? extends LinearRing2D> contours();
 
     /**
@@ -143,6 +145,7 @@ public interface IPolygon2D extends ICirculinearDomain2D {
      * 
      * @return the polygon complementary to this
      */
+    @Override
     public IPolygon2D complement();
 
     // ===================================================================
@@ -151,7 +154,9 @@ public interface IPolygon2D extends ICirculinearDomain2D {
     /**
      * Returns the new Polygon created by an affine transform of this polygon.
      */
+    @Override
     public IPolygon2D transform(AffineTransform2D trans);
 
+    @Override
     public IPolygon2D clip(Box2D box);
 }

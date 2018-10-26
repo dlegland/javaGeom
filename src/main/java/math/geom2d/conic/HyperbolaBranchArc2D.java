@@ -7,8 +7,17 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
@@ -64,10 +73,12 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // ===================================================================
     // methods inherited from SmoothCurve2D interface
 
+    @Override
     public double curvature(double t) {
         return branch.curvature(t);
     }
 
+    @Override
     public Vector2D tangent(double t) {
         return branch.tangent(t);
     }
@@ -75,20 +86,24 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
+    @Override
     public double signedDistance(Point2D point) {
         return this.signedDistance(point.x(), point.y());
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public double windingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public boolean isInside(Point2D pt) {
         // TODO Auto-generated method stub
         return false;
@@ -97,11 +112,13 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // ===================================================================
     // methods inherited from ContinuousCurve2D interface
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         return this.asPolyline(60).appendPath(path);
     }
 
     /** Returns false. */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -109,6 +126,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // ===================================================================
     // methods inherited from Curve2D interface
 
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         Collection<Point2D> inters0 = this.branch.intersections(line);
         ArrayList<Point2D> inters = new ArrayList<>();
@@ -124,6 +142,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     /**
      * If t0 equals minus infinity, throws an UnboundedShapeException.
      */
+    @Override
     public Point2D point(double t) {
         if (Double.isInfinite(t))
             throw new UnboundedShape2DException(this);
@@ -131,6 +150,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return branch.point(t);
     }
 
+    @Override
     public double position(Point2D point) {
         if (!this.branch.contains(point))
             return Double.NaN;
@@ -142,11 +162,13 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return t;
     }
 
+    @Override
     public double project(Point2D point) {
         double t = this.branch.project(point);
         return min(max(t, t0), t1);
     }
 
+    @Override
     public HyperbolaBranchArc2D reverse() {
         Hyperbola2D hyper = branch.hyperbola;
         Hyperbola2D hyper2 = new Hyperbola2D(hyper.xc, hyper.yc, hyper.a, hyper.b, hyper.theta, !hyper.direct);
@@ -156,6 +178,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     /**
      * Returns a new HyperbolaBranchArc2D, with same parent hyperbola branch, and with new parameterization bounds. The new bounds are constrained to belong to the old bounds interval. If t1<t0, returns null.
      */
+    @Override
     public HyperbolaBranchArc2D subCurve(double t0, double t1) {
         if (t1 < t0)
             return null;
@@ -164,10 +187,12 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return new HyperbolaBranchArc2D(branch, t0, t1);
     }
 
+    @Override
     public double t0() {
         return t0;
     }
 
+    @Override
     public double t1() {
         return t1;
     }
@@ -175,6 +200,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // ===================================================================
     // methods inherited from Shape2D interface
 
+    @Override
     public Box2D boundingBox() {
         if (!this.isBounded())
             throw new UnboundedShape2DException(this);
@@ -184,6 +210,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     /**
      * Clips the hyperbola branch arc by a box. The result is an instance of CurveSet2D<HyperbolaBranchArc2D>, which contains only instances of HyperbolaBranchArc2D. If the shape is not clipped, the result is an instance of CurveSet2D<HyperbolaBranchArc2D> which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends HyperbolaBranchArc2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -199,16 +226,19 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return result;
     }
 
+    @Override
     public double distance(Point2D point) {
         Point2D p = point(project(point));
         return p.distance(point);
     }
 
+    @Override
     public double distance(double x, double y) {
         Point2D p = point(project(new Point2D(x, y)));
         return p.distance(x, y);
     }
 
+    @Override
     public boolean isBounded() {
         if (t0 == Double.NEGATIVE_INFINITY)
             return false;
@@ -217,10 +247,12 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         return true;
     }
 
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public HyperbolaBranchArc2D transform(AffineTransform2D trans) {
         // transform the parent branch
         HyperbolaBranch2D branch2 = branch.transform(trans);
@@ -237,10 +269,12 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
         }
     }
 
+    @Override
     public boolean contains(Point2D p) {
         return this.contains(p.x(), p.y());
     }
 
+    @Override
     public boolean contains(double x, double y) {
         if (!branch.contains(x, y))
             return false;
@@ -266,6 +300,7 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -287,22 +322,37 @@ public class HyperbolaBranchArc2D extends AbstractSmoothCurve2D implements ISmoo
     // methods overriding object
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof HyperbolaBranchArc2D))
-            return false;
-        HyperbolaBranchArc2D that = (HyperbolaBranchArc2D) obj;
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((branch == null) ? 0 : branch.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(t0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(t1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
-        if (!branch.equals(that.branch))
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        if (!EqualUtils.areEqual(this.t0, that.t0))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.t1, that.t1))
+        HyperbolaBranchArc2D other = (HyperbolaBranchArc2D) obj;
+        if (branch == null) {
+            if (other.branch != null)
+                return false;
+        } else if (!branch.equals(other.branch))
+            return false;
+        if (Double.doubleToLongBits(t0) != Double.doubleToLongBits(other.t0))
+            return false;
+        if (Double.doubleToLongBits(t1) != Double.doubleToLongBits(other.t1))
             return false;
         return true;
     }
 
-    @Override
-    public HyperbolaBranchArc2D clone() {
-        return new HyperbolaBranchArc2D(branch, t0, t1);
-    }
 }

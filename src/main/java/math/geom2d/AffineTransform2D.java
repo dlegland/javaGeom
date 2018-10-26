@@ -25,27 +25,32 @@
 
 package math.geom2d;
 
-// Imports
-import math.geom2d.IShape2D;
-import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
-import math.geom2d.exception.NonInvertibleTransform2DException;
-import math.geom2d.line.ILinearShape2D;
-import math.geom2d.transform.Bijection2D;
-import math.utils.EqualUtils;
-
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.round;
+import static java.lang.Math.sin;
 import static math.geom2d.IShape2D.ACCURACY;
 
 import java.io.Serializable;
+
+import math.geom2d.exception.NonInvertibleTransform2DException;
+import math.geom2d.line.ILinearShape2D;
+import math.geom2d.transform.IBijection2D;
 
 /**
  * Base class for generic affine transforms in the plane. They include rotations, translations, shears, similarities, and combinations of these. Such transformations can be constructed by using coefficients specification, or by creating specialized instances, by using static methods.
  * <p>
  */
-public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Serializable {
+public class AffineTransform2D implements IBijection2D, IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final AffineTransform2D IDENTITY = new AffineTransform2D(1, 0, 0, 0, 1, 0);
+
+    public static final AffineTransform2D QUADRANTROTATION_0 = new AffineTransform2D(1, 0, 0, 0, 1, 0);
+    public static final AffineTransform2D QUADRANTROTATION_1 = new AffineTransform2D(0, -1, 0, 1, 0, 0);
+    public static final AffineTransform2D QUADRANTROTATION_2 = new AffineTransform2D(-1, 0, 0, 0, -1, 0);
+    public static final AffineTransform2D QUADRANTROTATION_3 = new AffineTransform2D(0, 1, 0, -1, 0, 0);
 
     // coefficients for x coordinate.
     private final double m00, m01, m02;
@@ -55,22 +60,6 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
 
     // ===================================================================
     // static methods
-
-    /**
-     * @since 0.8.1
-     */
-    public static AffineTransform2D createIdentity() {
-        return new AffineTransform2D(1, 0, 0, 0, 1, 0);
-    }
-
-    /**
-     * Creates a new affine transform by copying coefficients.
-     * 
-     * @since 0.8.1
-     */
-    public static AffineTransform2D create(AffineTransform2D trans) {
-        return new AffineTransform2D(trans.m00, trans.m01, trans.m02, trans.m10, trans.m11, trans.m12);
-    }
 
     /**
      * Creates an affine transform defined by an array of coefficients. The input array must have either 4 or 6 coefficients.
@@ -162,17 +151,17 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     /**
      * Creates a rotation composed of the given number of rotations by 90 degrees around the origin.
      */
-    public static AffineTransform2D createQuadrantRotation(int numQuadrant) {
+    public static AffineTransform2D getQuadrantRotation(int numQuadrant) {
         int n = ((numQuadrant % 4) + 4) % 4;
         switch (n) {
         case 0:
-            return new AffineTransform2D(1, 0, 0, 0, 1, 0);
+            return QUADRANTROTATION_0;
         case 1:
-            return new AffineTransform2D(0, -1, 0, 1, 0, 0);
+            return QUADRANTROTATION_1;
         case 2:
-            return new AffineTransform2D(-1, 0, 0, 0, -1, 0);
+            return QUADRANTROTATION_2;
         case 3:
-            return new AffineTransform2D(0, 1, 0, -1, 0, 0);
+            return QUADRANTROTATION_3;
         default:
             throw new RuntimeException("Error in integer rounding...");
         }
@@ -182,7 +171,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      * Creates a rotation composed of the given number of rotations by 90 degrees around the given point.
      */
     public static AffineTransform2D createQuadrantRotation(Point2D center, int numQuadrant) {
-        AffineTransform2D trans = createQuadrantRotation(numQuadrant);
+        AffineTransform2D trans = getQuadrantRotation(numQuadrant);
         return trans.recenter(center.x(), center.y());
     }
 
@@ -190,7 +179,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      * Creates a rotation composed of the given number of rotations by 90 degrees around the point given by (x0,y0).
      */
     public static AffineTransform2D createQuadrantRotation(double x0, double y0, int numQuadrant) {
-        AffineTransform2D trans = createQuadrantRotation(numQuadrant);
+        AffineTransform2D trans = getQuadrantRotation(numQuadrant);
         return trans.recenter(x0, y0);
     }
 
@@ -253,13 +242,6 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      */
     public static AffineTransform2D createShear(double shx, double shy) {
         return new AffineTransform2D(1, shx, 0, shy, 1, 0);
-    }
-
-    /**
-     * Creates a new transform from a java AWT transform.
-     */
-    public static AffineTransform2D createTransform(java.awt.geom.AffineTransform transform) {
-        return new AffineTransform2D(transform);
     }
 
     /**
@@ -372,52 +354,11 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
         return true;
     }
 
-    // ===================================================================
-    // Constructors
-
-    /**
-     * Creates a new AffineTransform2D, initialized with Identity.
-     */
-    public AffineTransform2D() {
-        // init to identity matrix
-        m00 = m11 = 1;
-        m01 = m10 = 0;
-        m02 = m12 = 0;
-    }
-
-    /**
-     * Creates a new transform from a java AWT transform.
-     */
-    public AffineTransform2D(java.awt.geom.AffineTransform transform) {
-        double[] coefs = new double[6];
-        transform.getMatrix(coefs);
-        m00 = coefs[0];
-        m10 = coefs[1];
-        m01 = coefs[2];
-        m11 = coefs[3];
-        m02 = coefs[4];
-        m12 = coefs[5];
-    }
-
     /**
      * Creates a new Affine Transform by directly specifying the coefficients, in the order m00, m01, m02, m10, m11, m12 (different order of java.awt.geom.AffineTransform).
      */
-    public AffineTransform2D(double[] coefs) {
-        if (coefs.length == 4) {
-            m00 = coefs[0];
-            m01 = coefs[1];
-            m02 = 0;
-            m10 = coefs[2];
-            m11 = coefs[3];
-            m12 = 0;
-        } else {
-            m00 = coefs[0];
-            m01 = coefs[1];
-            m02 = coefs[2];
-            m10 = coefs[3];
-            m11 = coefs[4];
-            m12 = coefs[5];
-        }
+    public AffineTransform2D(double xx, double yx, double xy, double yy) {
+        this(xx, yx, 0, xy, yy, 0);
     }
 
     public AffineTransform2D(double xx, double yx, double tx, double xy, double yy, double ty) {
@@ -460,13 +401,6 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     public double[][] affineMatrix() {
         double[][] tab = new double[][] { new double[] { m00, m01, m02 }, new double[] { m10, m11, m12 }, new double[] { 0, 0, 1 } };
         return tab;
-    }
-
-    /**
-     * Returns this transform as an instance of java AWT AffineTransform.
-     */
-    public java.awt.geom.AffineTransform asAwtTransform() {
-        return new java.awt.geom.AffineTransform(this.m00, this.m10, this.m01, this.m11, this.m02, this.m12);
     }
 
     /**
@@ -567,6 +501,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
      * 
      * @since 0.6.3
      */
+    @Override
     public AffineTransform2D invert() {
         double det = m00 * m11 - m10 * m01;
 
@@ -582,11 +517,13 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     /**
      * Computes the coordinates of the transformed point.
      */
+    @Override
     public Point2D transform(Point2D p) {
         Point2D dst = new Point2D(p.x() * m00 + p.y() * m01 + m02, p.x() * m10 + p.y() * m11 + m12);
         return dst;
     }
 
+    @Override
     public Point2D[] transform(Point2D[] src, Point2D[] dst) {
         if (dst == null)
             dst = new Point2D[src.length];
@@ -603,6 +540,7 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
     // ===================================================================
     // implements the GeometricObject2D interface
 
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -620,40 +558,52 @@ public class AffineTransform2D implements Bijection2D, IGeometricObject2D, Seria
         return true;
     }
 
-    // ===================================================================
-    // Override the Object methods
-
-    /**
-     * Displays the coefficients of the transform, row by row.
-     */
     @Override
-    public String toString() {
-        return new String("AffineTransform2D(" + m00 + "," + m01 + "," + m02 + "," + m10 + "," + m11 + "," + m12 + ",");
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(m00);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m01);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m02);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m10);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m11);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(m12);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof AffineTransform2D))
+        if (obj == null)
             return false;
-
-        AffineTransform2D that = (AffineTransform2D) obj;
-
-        if (!EqualUtils.areEqual(this.m00, that.m00))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.m01, that.m01))
+        AffineTransform2D other = (AffineTransform2D) obj;
+        if (Double.doubleToLongBits(m00) != Double.doubleToLongBits(other.m00))
             return false;
-        if (!EqualUtils.areEqual(this.m02, that.m02))
+        if (Double.doubleToLongBits(m01) != Double.doubleToLongBits(other.m01))
             return false;
-        if (!EqualUtils.areEqual(this.m00, that.m00))
+        if (Double.doubleToLongBits(m02) != Double.doubleToLongBits(other.m02))
             return false;
-        if (!EqualUtils.areEqual(this.m01, that.m01))
+        if (Double.doubleToLongBits(m10) != Double.doubleToLongBits(other.m10))
             return false;
-        if (!EqualUtils.areEqual(this.m02, that.m02))
+        if (Double.doubleToLongBits(m11) != Double.doubleToLongBits(other.m11))
             return false;
-
+        if (Double.doubleToLongBits(m12) != Double.doubleToLongBits(other.m12))
+            return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AffineTransform2D [m00=" + m00 + ", m01=" + m01 + ", m02=" + m02 + ", m10=" + m10 + ", m11=" + m11 + ", m12=" + m12 + "]";
     }
 }

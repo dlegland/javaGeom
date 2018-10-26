@@ -34,6 +34,7 @@ public class CheckSplit2Contours extends JPanel {
         ring2 = new LinearRing2D(new Point2D[] { new Point2D(50, 200), new Point2D(300, 200), new Point2D(300, 250), new Point2D(50, 250) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

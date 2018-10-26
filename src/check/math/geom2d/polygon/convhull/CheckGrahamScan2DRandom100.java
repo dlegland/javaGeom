@@ -59,6 +59,7 @@ public class CheckGrahamScan2DRandom100 extends JPanel {
         points = new PointArray2D(array);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

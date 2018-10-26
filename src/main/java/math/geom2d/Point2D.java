@@ -43,7 +43,6 @@ import math.geom2d.point.IPointSet2D;
 import math.geom2d.point.IPointShape2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.transform.CircleInversion2D;
-import math.utils.EqualUtils;
 
 /**
  * <p>
@@ -62,14 +61,15 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     private final double y;
 
     /**
-     * Static factory for creating a new point from an existing instance of javageom point.
-     * 
-     * @since 0.10.0
+     * Constructs a new Point2D at the given given position.
      */
-    public static Point2D create(Point2D point) {
-        return new Point2D(point.x, point.y);
+    public Point2D(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
+    // ===================================================================
+    // static methods
     /**
      * Creates a new point from polar coordinates <code>rho</code> and <code>theta</code>.
      */
@@ -244,21 +244,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
         return new Point2D((pt1.x + pt2.x + pt3.x) / 3, (pt1.y + pt2.y + pt3.y) / 3);
     }
 
-    /**
-     * Constructs a new Point2D at the given given position.
-     */
-    public Point2D(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
-     * Constructs a new Point2D by copying coordinates of given java point.
-     */
-    public Point2D(java.awt.geom.Point2D point) {
-        this(point.getX(), point.getY());
-    }
-
     // ===================================================================
     // Methods specific to Point2D
 
@@ -358,30 +343,6 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     }
 
     // ===================================================================
-    // Methods specific to Point2D
-
-    /**
-     * Converts point to an integer version. Coordinates are rounded to the nearest integer.
-     * 
-     * @return an instance of java.awt.Point
-     */
-    public java.awt.Point getAsInt() {
-        return new java.awt.Point((int) x, (int) y);
-    }
-
-    /**
-     * Converts point to a double version.
-     */
-    public java.awt.geom.Point2D.Double getAsDouble() {
-        return new java.awt.geom.Point2D.Double(x, y);
-    }
-
-    /**
-     * Converts point to a float version. Coordinates are rounded to the nearest float.
-     */
-    public java.awt.geom.Point2D.Float getAsFloat() {
-        return new java.awt.geom.Point2D.Float((float) x, (float) y);
-    }
 
     // ===================================================================
     // Getter and setter
@@ -389,27 +350,14 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns the x-coordinate of this point.
      */
-    public double x() {
+    public final double x() {
         return x;
     }
 
     /**
-     */
-    public double getX() {
-        return this.x;
-    }
-
-    /**
      * Returns the y-coordinate of this point.
      */
-    public double y() {
-        return y;
-    }
-
-    /**
-     * Returns the y-coordinate of this point.
-     */
-    public double getY() {
+    public final double y() {
         return y;
     }
 
@@ -421,6 +369,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         return new GenericCirculinearDomain2D(new Circle2D(this, Math.abs(dist), dist > 0));
     }
@@ -430,6 +379,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#transform(CircleInversion2D)
      */
+    @Override
     public Point2D transform(CircleInversion2D inv) {
         // get inversion parameters
         Point2D center = inv.center();
@@ -451,6 +401,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @see math.geom2d.point.PointShape2D#size()
      */
+    @Override
     public int size() {
         return 1;
     }
@@ -460,6 +411,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @see math.geom2d.point.PointShape2D#points()
      */
+    @Override
     public Collection<Point2D> points() {
         ArrayList<Point2D> array = new ArrayList<>(1);
         array.add(this);
@@ -472,6 +424,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Computes the distance between this and the point <code>point</code>.
      */
+    @Override
     public double distance(Point2D point) {
         return distance(point.x, point.y);
     }
@@ -479,6 +432,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Computes the distance between current point and point with coordinate <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for better robustness than simple square root.
      */
+    @Override
     public double distance(double x, double y) {
         return hypot(this.x - x, this.y - y);
     }
@@ -488,6 +442,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @return true if both coordinates of the point are finite
      */
+    @Override
     public boolean isBounded() {
         if (java.lang.Double.isInfinite(this.x))
             return false;
@@ -503,6 +458,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns false, as a point can not be empty.
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -510,6 +466,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns true if the two points are equal.
      */
+    @Override
     public boolean contains(double x, double y) {
         return this.equals(new Point2D(x, y));
     }
@@ -517,6 +474,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns true if the two points are equal.
      */
+    @Override
     public boolean contains(Point2D p) {
         return this.equals(p);
     }
@@ -524,6 +482,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns a PointSet2D, containing 0 or 1 point, depending on whether the point lies inside the specified box.
      */
+    @Override
     public IPointSet2D clip(Box2D box) {
         // init result array
         IPointSet2D set = new PointArray2D(0);
@@ -546,6 +505,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns a bounding box with zero width and zero height, whose coordinates limits are point coordinates.
      */
+    @Override
     public Box2D boundingBox() {
         return new Box2D(x, x, y, y);
     }
@@ -553,6 +513,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Returns the transformed point.
      */
+    @Override
     public Point2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
         return new Point2D(x * tab[0] + y * tab[1] + tab[2], x * tab[3] + y * tab[4] + tab[5]);
@@ -567,6 +528,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * @param g2
      *            the graphics to draw the point
      */
+    @Override
     public void draw(Graphics2D g2) {
         this.draw(g2, 1);
     }
@@ -587,6 +549,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
     /**
      * Test whether this object is the same as another point, with respect to a given threshold along each coordinate.
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -611,6 +574,7 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
      * 
      * @see java.lang.Iterable#iterator()
      */
+    @Override
     public Iterator<Point2D> iterator() {
         return this.points().iterator();
     }
@@ -623,32 +587,33 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
         return new String("Point2D(" + x + ", " + y + ")");
     }
 
-    /**
-     * Two points are considered equal if their Euclidean distance is less than Shape2D.ACCURACY.
-     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof Point2D))
+        if (obj == null)
             return false;
-        Point2D that = (Point2D) obj;
-
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x, that.x))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.y, that.y))
+        Point2D other = (Point2D) obj;
+        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
-
+        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+            return false;
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 1;
-        hash = hash * 31 + Double.valueOf(this.x).hashCode();
-        hash = hash * 31 + Double.valueOf(this.y).hashCode();
-        return hash;
-    }
+
 }

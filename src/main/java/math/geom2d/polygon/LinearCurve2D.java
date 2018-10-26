@@ -9,15 +9,19 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.*;
-import math.geom2d.line.LineSegment2D;
+import math.geom2d.curve.AbstractContinuousCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.PointSets2D;
 
 /**
@@ -146,6 +150,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Returns the vertices of the polyline.
      */
+    @Override
     public Collection<Point2D> vertices() {
         return vertices;
     }
@@ -223,6 +228,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         double sum = 0;
         for (LineSegment2D edge : this.edges())
@@ -235,6 +241,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         // init
         double length = 0;
@@ -259,6 +266,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
 
         // position to compute
@@ -296,6 +304,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
@@ -313,6 +322,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#parallel(double)
      */
+    @Override
     public ICirculinearContinuousCurve2D parallel(double d) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.createContinuousParallel(this, d);
@@ -326,6 +336,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.OrientedCurve2D#signedDistance(Point2D)
      */
+    @Override
     public double signedDistance(Point2D point) {
         double dist = this.distance(point.x(), point.y());
         if (isInside(point))
@@ -339,6 +350,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.OrientedCurve2D#signedDistance(double, double)
      */
+    @Override
     public double signedDistance(double x, double y) {
         double dist = this.distance(x, y);
         if (isInside(new Point2D(x, y)))
@@ -355,6 +367,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#leftTangent(double)
      */
+    @Override
     public Vector2D leftTangent(double t) {
         int index = (int) Math.floor(t);
         if (Math.abs(t - index) < IShape2D.ACCURACY)
@@ -367,6 +380,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#rightTangent(double)
      */
+    @Override
     public Vector2D rightTangent(double t) {
         int index = (int) Math.ceil(t);
         return this.edge(index).tangent(0);
@@ -377,6 +391,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#curvature(double)
      */
+    @Override
     public double curvature(double t) {
         double index = Math.round(t);
         if (Math.abs(index - t) > IShape2D.ACCURACY)
@@ -390,6 +405,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.ContinuousCurve2D#smoothPieces()
      */
+    @Override
     public Collection<? extends LineSegment2D> smoothPieces() {
         return edges();
     }
@@ -400,6 +416,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Returns 0.
      */
+    @Override
     public double t0() {
         return 0;
     }
@@ -407,16 +424,19 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Returns the first point of the linear curve.
      */
+    @Override
     public Point2D firstPoint() {
         if (vertices.size() == 0)
             return null;
         return vertices.get(0);
     }
 
+    @Override
     public Collection<Point2D> singularPoints() {
         return vertices;
     }
 
+    @Override
     public boolean isSingular(double pos) {
         if (Math.abs(pos - Math.round(pos)) < IShape2D.ACCURACY)
             return true;
@@ -428,6 +448,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
+    @Override
     public double position(Point2D point) {
         int ind = 0;
         double dist, minDist = Double.POSITIVE_INFINITY;
@@ -454,6 +475,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.Curve2D#intersections(math.geom2d.LinearShape2D)
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         ArrayList<Point2D> list = new ArrayList<>();
 
@@ -474,6 +496,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
         return list;
     }
 
+    @Override
     public Collection<? extends LinearCurve2D> continuousCurves() {
         return wrapCurve(this);
     }
@@ -483,6 +506,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.Curve2D#position(math.geom2d.Point2D)
      */
+    @Override
     public double project(Point2D point) {
         double dist, minDist = Double.POSITIVE_INFINITY;
         double x = point.x();
@@ -510,6 +534,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.Shape2D#distance(double, double)
      */
+    @Override
     public double distance(double x, double y) {
         double dist = Double.MAX_VALUE;
         for (LineSegment2D edge : this.edges()) {
@@ -525,6 +550,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see math.geom2d.Shape2D#distance(Point2D)
      */
+    @Override
     public double distance(Point2D point) {
         return distance(point.x(), point.y());
     }
@@ -532,11 +558,13 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Returns true if the polyline does not contain any point.
      */
+    @Override
     public boolean isEmpty() {
         return vertices.size() == 0;
     }
 
     /** Always returns true, because a linear curve is always bounded. */
+    @Override
     public boolean isBounded() {
         return true;
     }
@@ -544,6 +572,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Returns the bounding box of this linear curve.
      */
+    @Override
     public Box2D boundingBox() {
         double xmin = Double.MAX_VALUE;
         double ymin = Double.MAX_VALUE;
@@ -571,6 +600,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see java.awt.Shape#contains(double, double)
      */
+    @Override
     public boolean contains(double x, double y) {
         for (LineSegment2D edge : this.edges()) {
             if (edge.length() == 0)
@@ -586,6 +616,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
      * 
      * @see java.awt.Shape#contains(Point2D)
      */
+    @Override
     public boolean contains(Point2D point) {
         return this.contains(point.x(), point.y());
     }
@@ -593,6 +624,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     /**
      * Clips the polyline by a box. The result is an instance of CurveSet2D, which contains only instances of Polyline2D. If the polyline is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends LinearCurve2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
@@ -618,6 +650,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
         return this.appendPath(path);
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         g2.draw(this.asGeneralPath());
     }

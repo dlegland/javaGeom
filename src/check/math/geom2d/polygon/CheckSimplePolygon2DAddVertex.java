@@ -40,6 +40,7 @@ public class CheckSimplePolygon2DAddVertex extends JPanel {
         poly3.insertVertex(2, new Point2D(350, 150));
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

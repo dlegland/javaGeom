@@ -41,6 +41,7 @@ public class CheckBufferPolylines extends JPanel {
         curve4 = curve2.transform(ty);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

@@ -1,5 +1,5 @@
-/* File Curve2S.java 
- *
+/* file : Transform3D.java
+ * 
  * Project : geometry
  *
  * ===========================================
@@ -20,17 +20,19 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * author : Legland
- * Created on 31 mai 2004
+ * Created on 28 nov. 2006
+ *
  */
 
-package math.geom2s;
+package math.geom3d.transform;
+
+import math.geom3d.Point3D;
 
 /**
- * Interface for 1-dimension shapes defined on the 2 dimensions sphere, such as small and great circle, and corresponding arcs.
- * 
- * @author Legland
+ * @author dlegland
  */
-public interface Curve2S extends Shape2S {
+public interface ITransform3D {
+    Point3D[] transformPoints(Point3D[] src, Point3D[] dst);
 
+    Point3D transformPoint(Point3D src);
 }

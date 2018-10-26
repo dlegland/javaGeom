@@ -28,6 +28,7 @@ public class CheckQuadBezier2D extends JPanel {
         bezier = new QuadBezierCurve2D(points);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;

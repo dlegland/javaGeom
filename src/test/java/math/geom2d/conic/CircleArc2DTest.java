@@ -71,7 +71,7 @@ public class CircleArc2DTest extends TestCase {
      */
     public void testEquals() {
         // direct circle
-        CircleArc2D arc0 = new CircleArc2D();
+        CircleArc2D arc0 = new CircleArc2D(Circle2D.UNIT_CIRCLE, 0, PI / 2);
         Circle2D circle = new Circle2D(0, 0, 1, true);
         CircleArc2D arc1 = new CircleArc2D(circle, 0, PI / 2);
         CircleArc2D arc2 = new CircleArc2D(circle, 0, PI / 2, true);

@@ -37,6 +37,7 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.exception.NonCirculinearClassException;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;

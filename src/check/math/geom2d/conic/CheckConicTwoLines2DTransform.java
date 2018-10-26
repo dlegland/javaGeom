@@ -66,6 +66,7 @@ public class CheckConicTwoLines2DTransform extends JPanel {
         box = new Box2D(50, 250, 50, 250);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

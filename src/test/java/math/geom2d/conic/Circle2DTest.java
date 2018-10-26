@@ -197,7 +197,7 @@ public class Circle2DTest extends TestCase {
     }
 
     public void testGetConicType() {
-        Circle2D circle = new Circle2D();
+        Circle2D circle = new Circle2D(0, 0, 0, true);
         assertEquals(circle.conicType(), IConic2D.Type.CIRCLE);
     }
 

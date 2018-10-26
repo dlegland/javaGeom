@@ -23,8 +23,9 @@ public class DrawClosestPointTriangleGrid2D extends JPanel {
 
     Box2D box = new Box2D(30, 310, 30, 310);
 
-    Grid2D grid = new TriangleGrid2D(x0, y0, s);
+    IGrid2D grid = new TriangleGrid2D(x0, y0, s);
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

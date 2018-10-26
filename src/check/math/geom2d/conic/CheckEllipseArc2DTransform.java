@@ -72,6 +72,7 @@ public class CheckEllipseArc2DTransform extends JPanel {
         box = new Box2D(x0 - a, x0 + a, y0 - b, y0 + b);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

@@ -33,8 +33,18 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
@@ -91,6 +101,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // ==========================================================
     // methods implementing the OrientedCurve2D interface
 
+    @Override
     public double windingAngle(Point2D point) {
         double angle0, angle1;
 
@@ -124,16 +135,19 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         }
     }
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         if (isInside(new Point2D(x, y)))
             return -distance(x, y);
         return -distance(x, y);
     }
 
+    @Override
     public boolean isInside(Point2D point) {
         boolean direct = parabola.isDirect();
         boolean inside = parabola.isInside(point);
@@ -163,6 +177,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // ==========================================================
     // methods implementing the SmoothCurve2D interface
 
+    @Override
     public Vector2D tangent(double t) {
         return parabola.tangent(t);
     }
@@ -170,6 +185,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Returns the curvature of the parabola arc.
      */
+    @Override
     public double curvature(double t) {
         return parabola.curvature(t);
     }
@@ -178,10 +194,12 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // methods implementing the ContinuousCurve2D interface
 
     /** Returns false, by definition of a parabola arc */
+    @Override
     public boolean isClosed() {
         return false;
     }
 
+    @Override
     public Polyline2D asPolyline(int n) {
         // Check that the curve is bounded
         if (!this.isBounded())
@@ -205,6 +223,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Returns the position of the first point of the parabola arc.
      */
+    @Override
     public double t0() {
         return t0;
     }
@@ -212,15 +231,18 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Returns the position of the last point of the parabola arc.
      */
+    @Override
     public double t1() {
         return t1;
     }
 
+    @Override
     public Point2D point(double t) {
         t = min(max(t, t0), t1);
         return parabola.point(t);
     }
 
+    @Override
     public double position(Point2D point) {
         if (!this.parabola.contains(point))
             return Double.NaN;
@@ -232,11 +254,13 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         return t;
     }
 
+    @Override
     public double project(Point2D point) {
         double t = this.parabola.project(point);
         return min(max(t, t0), t1);
     }
 
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         Collection<Point2D> inters0 = this.parabola.intersections(line);
         ArrayList<Point2D> inters = new ArrayList<>(2);
@@ -252,10 +276,12 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Returns the parabola arc which refers to the reversed parent parabola, and with inverted parameterization bounds.
      */
+    @Override
     public ParabolaArc2D reverse() {
         return new ParabolaArc2D(this.parabola.reverse(), -t1, -t0);
     }
 
+    @Override
     public ParabolaArc2D subCurve(double t0, double t1) {
         if (t1 < t0)
             return null;
@@ -267,10 +293,12 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // ====================================================================
     // methods implementing the Shape2D interface
 
+    @Override
     public double distance(Point2D p) {
         return distance(p.x(), p.y());
     }
 
+    @Override
     public double distance(double x, double y) {
         // TODO Auto-generated method stub
         return this.asPolyline(100).distance(x, y);
@@ -279,6 +307,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Returns true if the arc is bounded, i.e. if both limits are finite.
      */
+    @Override
     public boolean isBounded() {
         if (t0 == Double.NEGATIVE_INFINITY)
             return false;
@@ -290,6 +319,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Return true if t1<t0.
      */
+    @Override
     public boolean isEmpty() {
         return t1 <= t0;
     }
@@ -297,6 +327,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * Clip the parabola arc by a box. The result is an instance of CurveSet2D<ParabolaArc2D>, which contains only instances of ParabolaArc2D. If the parabola arc is not clipped, the result is an instance of CurveSet2D<ParabolaArc2D> which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends ParabolaArc2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -312,11 +343,13 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         return result;
     }
 
+    @Override
     public Box2D boundingBox() {
         // TODO Auto-generated method stub
         return this.asPolyline(100).boundingBox();
     }
 
+    @Override
     public ParabolaArc2D transform(AffineTransform2D trans) {
         Parabola2D par = parabola.transform(trans);
 
@@ -331,6 +364,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // ====================================================================
     // methods implementing the Shape interface
 
+    @Override
     public boolean contains(double x, double y) {
         // Check on parent parabola
         if (!parabola.contains(x, y))
@@ -346,6 +380,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
         return true;
     }
 
+    @Override
     public boolean contains(Point2D point) {
         return contains(point.x(), point.y());
     }
@@ -353,6 +388,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     // ====================================================================
     // Drawing methods
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         // Check curve is bounded
         if (!this.isBounded())
@@ -390,6 +426,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -417,18 +454,36 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((parabola == null) ? 0 : parabola.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(t0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(t1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ParabolaArc2D))
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        ParabolaArc2D that = (ParabolaArc2D) obj;
-
-        if (!this.parabola.equals(that.parabola))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.t0, that.t0))
+        ParabolaArc2D other = (ParabolaArc2D) obj;
+        if (parabola == null) {
+            if (other.parabola != null)
+                return false;
+        } else if (!parabola.equals(other.parabola))
             return false;
-        if (!EqualUtils.areEqual(this.t1, that.t1))
+        if (Double.doubleToLongBits(t0) != Double.doubleToLongBits(other.t0))
             return false;
-
+        if (Double.doubleToLongBits(t1) != Double.doubleToLongBits(other.t1))
+            return false;
         return true;
     }
 

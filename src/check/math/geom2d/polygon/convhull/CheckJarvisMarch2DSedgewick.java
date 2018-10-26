@@ -54,6 +54,7 @@ public class CheckJarvisMarch2DSedgewick extends JPanel {
         points = new PointArray2D(new Point2D[] { new Point2D(30, 90), new Point2D(110, 10), new Point2D(60, 80), new Point2D(40, 30), new Point2D(50, 150), new Point2D(80, 110), new Point2D(10, 60), new Point2D(70, 40), new Point2D(90, 70), new Point2D(140, 50), new Point2D(100, 130), new Point2D(160, 140), new Point2D(150, 20), new Point2D(130, 160), new Point2D(30, 120), new Point2D(120, 100) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

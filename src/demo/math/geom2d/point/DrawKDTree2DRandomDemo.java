@@ -61,6 +61,7 @@ public class DrawKDTree2DRandomDemo extends JPanel {
         tree = new KDTree2D(points);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

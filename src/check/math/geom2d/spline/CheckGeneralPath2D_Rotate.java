@@ -51,6 +51,7 @@ public class CheckGeneralPath2D_Rotate extends JPanel {
         this.curve = path;
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

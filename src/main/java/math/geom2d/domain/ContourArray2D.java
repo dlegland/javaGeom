@@ -34,7 +34,10 @@ import java.util.Collections;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
-import math.geom2d.curve.*;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 
 /**
  * A ContourArray2D is a set of contours. Each contour in the set defines its own domain.
@@ -45,14 +48,6 @@ import math.geom2d.curve.*;
 public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implements IBoundary2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new ContourArray2D from a collection of contours.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends Contour2D> ContourArray2D<T> create( Collection<T> curves) { return new ContourArray2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new ContourArray2D from an array of contours.
@@ -91,14 +86,17 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
     // ===================================================================
     // Methods implementing Boundary2D interface
 
+    @Override
     public Collection<? extends T> continuousCurves() {
         return Collections.unmodifiableCollection(this.curves);
     }
 
+    @Override
     public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }
@@ -106,6 +104,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
     // ===================================================================
     // Methods implementing OrientedCurve2D interface
 
+    @Override
     public double windingAngle(Point2D point) {
         double angle = 0;
         for (IOrientedCurve2D curve : this.curves())
@@ -113,6 +112,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
         return angle;
     }
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
@@ -122,6 +122,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
      * 
      * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
+    @Override
     public double signedDistance(double x, double y) {
         double minDist = Double.POSITIVE_INFINITY;
         double dist = Double.POSITIVE_INFINITY;
@@ -134,6 +135,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
         return minDist;
     }
 
+    @Override
     public boolean isInside(Point2D point) {
         return this.signedDistance(point.x(), point.y()) < 0;
     }

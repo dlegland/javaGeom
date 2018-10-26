@@ -26,8 +26,10 @@ public interface ICirculinearContinuousCurve2D extends ICirculinearCurve2D, ICon
     // ===================================================================
     // redefines declaration of CirculinearCurve2D interfaces
 
+    @Override
     public ICirculinearContinuousCurve2D parallel(double d);
 
+    @Override
     public ICirculinearContinuousCurve2D transform(CircleInversion2D inv);
 
     // ===================================================================
@@ -36,11 +38,15 @@ public interface ICirculinearContinuousCurve2D extends ICirculinearCurve2D, ICon
     /**
      * Returns a set of circulinear elements, which are basis for circulinear curves.
      */
+    @Override
     public abstract Collection<? extends ICirculinearElement2D> smoothPieces();
 
+    @Override
     public ICurveSet2D<? extends ICirculinearContinuousCurve2D> clip(Box2D box);
 
+    @Override
     public ICirculinearContinuousCurve2D subCurve(double t0, double t1);
 
+    @Override
     public ICirculinearContinuousCurve2D reverse();
 }

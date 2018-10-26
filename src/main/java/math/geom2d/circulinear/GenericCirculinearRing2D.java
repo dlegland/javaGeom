@@ -28,9 +28,6 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
 
     // TODO: parameterize with curve type ?
 
-
-
-
     /**
      * Static factory for creating a new GenericCirculinearRing2D from an array of curves.
      * 
@@ -73,6 +70,7 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
         return new GenericCirculinearRing2D(bc.createContinuousParallel(this, dist).smoothPieces());
     }
 
+    @Override
     public Collection<? extends GenericCirculinearRing2D> continuousCurves() {
         return wrapCurve(this);
     }
@@ -93,6 +91,7 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
      * 
      * @see math.geom2d.domain.Boundary2D#fill(java.awt.Graphics2D)
      */
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }
@@ -102,6 +101,7 @@ public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinea
      * 
      * @see math.geom2d.domain.Boundary2D#domain()
      */
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }

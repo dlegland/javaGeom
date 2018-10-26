@@ -55,6 +55,7 @@ public class CheckPolygon2D_Clip extends JPanel {
         polygon2 = new SimplePolygon2D(new Point2D[] { new Point2D(220, 120), new Point2D(280, 120), new Point2D(280, 180), new Point2D(220, 180) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

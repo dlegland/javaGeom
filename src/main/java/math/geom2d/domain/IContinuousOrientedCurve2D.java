@@ -28,8 +28,8 @@ package math.geom2d.domain;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.IContinuousCurve2D;
 
 /**
  * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D is a continuous, oriented and non self-intersecting curve.
@@ -38,11 +38,15 @@ import math.geom2d.curve.ICurveSet2D;
  */
 public interface IContinuousOrientedCurve2D extends IContinuousCurve2D, IOrientedCurve2D {
 
+    @Override
     public abstract IContinuousOrientedCurve2D reverse();
 
+    @Override
     public abstract IContinuousOrientedCurve2D subCurve(double t0, double t1);
 
+    @Override
     public abstract IContinuousOrientedCurve2D transform(AffineTransform2D trans);
 
+    @Override
     public abstract ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box);
 }

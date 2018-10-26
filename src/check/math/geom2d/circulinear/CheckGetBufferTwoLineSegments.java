@@ -40,6 +40,7 @@ public class CheckGetBufferTwoLineSegments extends JPanel {
         domain = curve.buffer(30);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

@@ -54,6 +54,7 @@ public class CheckPolyCirculinearCurve2DGetBuffer2 extends JPanel {
         parallel2 = curve.parallel(-100);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

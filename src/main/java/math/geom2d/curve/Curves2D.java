@@ -4,9 +4,10 @@
 
 package math.geom2d.curve;
 
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Math.*;
+import static java.lang.Double.POSITIVE_INFINITY;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,11 +17,11 @@ import java.util.TreeSet;
 
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.line.StraightLine2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.line.StraightLine2D;
 
 /**
  * Collects some useful methods for clipping curves.
@@ -468,9 +469,11 @@ public abstract class Curves2D {
 
         // extract the first smooth curve
         ISmoothCurve2D lastCurve = null;
-        for (IContinuousCurve2D cont : curve.continuousCurves())
-            for (ISmoothCurve2D smooth : cont.smoothPieces())
+        for (IContinuousCurve2D cont : curve.continuousCurves()) {
+            for (ISmoothCurve2D smooth : cont.smoothPieces()) {
                 lastCurve = smooth;
+            }
+        }
 
         // check last position of last curve
         return Double.isInfinite(lastCurve.t1());

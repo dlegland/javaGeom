@@ -49,6 +49,7 @@ public class CheckDrawClosedPolyCurve2D extends JPanel {
         polycurve.setClosed(true);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

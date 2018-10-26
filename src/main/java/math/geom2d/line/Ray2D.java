@@ -27,9 +27,13 @@ package math.geom2d.line;
 
 import java.awt.geom.GeneralPath;
 
-import math.geom2d.*;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
 import math.geom2d.exception.UnboundedShape2DException;
-import math.utils.EqualUtils;
 
 // Imports
 
@@ -43,16 +47,6 @@ import math.utils.EqualUtils;
  */
 public class Ray2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
-
-    // ===================================================================
-    // constructors
-
-    /**
-     * Empty constructor for Ray2D. Default is ray starting at origin, and having a slope of 1*dx and 0*dy.
-     */
-    public Ray2D() {
-        this(0, 0, 1, 0);
-    }
 
     /**
      * Creates a new Ray2D, originating from <code>point1<\code>, and going in the direction of <code>point2<\code>.
@@ -108,7 +102,7 @@ public class Ray2D extends AbstractLine2D {
         super(line.origin(), line.direction());
 
         // enforce condition on direction vector
-        if (Math.hypot(dx, dy) < IShape2D.ACCURACY) {
+        if (Math.hypot(dx(), dy()) < IShape2D.ACCURACY) {
             throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
         }
     }
@@ -121,15 +115,17 @@ public class Ray2D extends AbstractLine2D {
      * 
      * @see math.geom2d.circulinear.ICirculinearCurve2D#parallel(double)
      */
+    @Override
     public Ray2D parallel(double d) {
-        double dd = Math.hypot(dx, dy);
-        return new Ray2D(x0 + dy * d / dd, y0 - dx * d / dd, dx, dy);
+        double dd = Math.hypot(dx(), dy());
+        return new Ray2D(x0() + dy() * d / dd, y0() - dx() * d / dd, dx(), dy());
     }
 
     // ===================================================================
     // methods implementing the ContinuousCurve2D interface
 
     /** Throws an infiniteShapeException */
+    @Override
     public GeneralPath appendPath(GeneralPath path) {
         throw new UnboundedShape2DException(this);
     }
@@ -144,14 +140,16 @@ public class Ray2D extends AbstractLine2D {
 
     @Override
     public Point2D firstPoint() {
-        return new Point2D(x0, y0);
+        return new Point2D(x0(), y0());
     }
 
+    @Override
     public Point2D point(double t) {
         t = Math.max(t, 0);
-        return new Point2D(x0 + t * dx, y0 + t * dy);
+        return new Point2D(x0() + t * dx(), y0() + t * dy());
     }
 
+    @Override
     public double t0() {
         return 0;
     }
@@ -159,6 +157,7 @@ public class Ray2D extends AbstractLine2D {
     /**
      * Returns the position of the last point of the ray, which is always Double.POSITIVE_INFINITY.
      */
+    @Override
     public double t1() {
         return Double.POSITIVE_INFINITY;
     }
@@ -168,18 +167,21 @@ public class Ray2D extends AbstractLine2D {
      * 
      * @see InvertedRay2D#reverse()
      */
+    @Override
     public InvertedRay2D reverse() {
-        return new InvertedRay2D(x0, y0, -dx, -dy);
+        return new InvertedRay2D(x0(), y0(), -dx(), -dy());
     }
 
     // ===================================================================
     // methods implementing the Shape2D interface
 
     /** Always returns false, because a ray is not bounded. */
+    @Override
     public boolean isBounded() {
         return false;
     }
 
+    @Override
     public boolean contains(double x, double y) {
         if (!this.supportContains(x, y))
             return false;
@@ -187,19 +189,20 @@ public class Ray2D extends AbstractLine2D {
         return t > -IShape2D.ACCURACY;
     }
 
+    @Override
     public Box2D boundingBox() {
         double t = Double.POSITIVE_INFINITY;
-        Point2D p0 = new Point2D(x0, y0);
-        Point2D p1 = new Point2D(t * dx, t * dy);
+        Point2D p0 = new Point2D(x0(), y0());
+        Point2D p1 = new Point2D(t * dx(), t * dy());
         return new Box2D(p0, p1);
     }
 
     @Override
     public Ray2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        double x1 = x0 * tab[0] + y0 * tab[1] + tab[2];
-        double y1 = x0 * tab[3] + y0 * tab[4] + tab[5];
-        return new Ray2D(x1, y1, dx * tab[0] + dy * tab[1], dx * tab[3] + dy * tab[4]);
+        double x1 = x0() * tab[0] + y0() * tab[1] + tab[2];
+        double y1 = x0() * tab[3] + y0() * tab[4] + tab[5];
+        return new Ray2D(x1, y1, dx() * tab[0] + dy() * tab[1], dx() * tab[3] + dy() * tab[4]);
     }
 
     // ===================================================================
@@ -210,6 +213,7 @@ public class Ray2D extends AbstractLine2D {
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -218,13 +222,13 @@ public class Ray2D extends AbstractLine2D {
             return false;
         Ray2D ray = (Ray2D) obj;
 
-        if (Math.abs(x0 - ray.x0) > eps)
+        if (Math.abs(x0() - ray.x0()) > eps)
             return false;
-        if (Math.abs(y0 - ray.y0) > eps)
+        if (Math.abs(y0() - ray.y0()) > eps)
             return false;
-        if (Math.abs(dx - ray.dx) > eps)
+        if (Math.abs(dx() - ray.dx()) > eps)
             return false;
-        if (Math.abs(dy - ray.dy) > eps)
+        if (Math.abs(dy() - ray.dy()) > eps)
             return false;
 
         return true;
@@ -232,41 +236,28 @@ public class Ray2D extends AbstractLine2D {
 
     // ===================================================================
     // methods implementing the Object interface
-
-    @Override
-    public String toString() {
-        return new String("Ray2D(" + x0 + "," + y0 + "," + dx + "," + dy + ")");
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (!(obj instanceof Ray2D))
             return false;
-        Ray2D that = (Ray2D) obj;
 
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
-            return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
-            return false;
-        if (!EqualUtils.areEqual(this.dx, that.dx))
-            return false;
-        if (!EqualUtils.areEqual(this.dy, that.dy))
-            return false;
-
-        return true;
+        return super.equals(obj);
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 31 + Double.valueOf(this.x0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.y0).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dx).hashCode();
-        hash = hash * 31 + Double.valueOf(this.dy).hashCode();
+        hash = hash * 31 + Double.valueOf(this.x0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.y0()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dx()).hashCode();
+        hash = hash * 31 + Double.valueOf(this.dy()).hashCode();
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return new String("Ray2D(" + x0() + "," + y0() + "," + dx() + "," + dy() + ")");
+    }
 }

@@ -92,6 +92,7 @@ public class Point3D implements IShape3D, Serializable {
     // ===================================================================
     // Methods implementing the Shape3D interface
 
+    @Override
     public double distance(Point3D point) {
         double dx = point.x - x;
         double dy = point.y - y;
@@ -103,6 +104,7 @@ public class Point3D implements IShape3D, Serializable {
     /**
      * A point 'contains' another point if their euclidean distance is less than the accuracy.
      */
+    @Override
     public boolean contains(Point3D point) {
         if (distance(point) > ACCURACY)
             return false;
@@ -112,6 +114,7 @@ public class Point3D implements IShape3D, Serializable {
     /**
      * Returns false, as a point is never empty.
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -119,10 +122,12 @@ public class Point3D implements IShape3D, Serializable {
     /**
      * Returns true, as a point is always bounded.
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
+    @Override
     public Box3D boundingBox() {
         return new Box3D(x, x, y, y, z, z);
     }
@@ -130,6 +135,7 @@ public class Point3D implements IShape3D, Serializable {
     /**
      * Returns the clipped point, or null if empty.
      */
+    @Override
     public PointSet3D clip(Box3D box) {
         PointSet3D set = new PointSet3D(1);
         if (x < box.getMinX() || x > box.getMaxX())
@@ -146,6 +152,7 @@ public class Point3D implements IShape3D, Serializable {
     /**
      * Applies the given affine transform to the point, and return the transformed point.
      */
+    @Override
     public Point3D transform(AffineTransform3D trans) {
         double coef[] = trans.coefficients();
         return new Point3D(x * coef[0] + y * coef[1] + z * coef[2] + coef[3], x * coef[4] + y * coef[5] + z * coef[6] + coef[7], x * coef[8] + y * coef[9] + z * coef[10] + coef[11]);

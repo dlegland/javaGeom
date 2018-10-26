@@ -40,6 +40,7 @@ public class CheckBufferPolyCirculinearCurve extends JPanel {
         domain = curve.buffer(dist);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

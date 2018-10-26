@@ -19,9 +19,12 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public interface ICirculinearContour2D extends IContour2D, ICirculinearContinuousCurve2D, ICirculinearBoundary2D {
 
+    @Override
     public ICirculinearContour2D parallel(double d);
 
+    @Override
     public ICirculinearContour2D transform(CircleInversion2D inv);
 
+    @Override
     public ICirculinearContour2D reverse();
 }

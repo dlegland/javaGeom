@@ -17,5 +17,5 @@ import math.geom2d.IShapeSet2D;
  *
  */
 public interface IDomainSet2D<T extends IDomain2D> extends IShapeSet2D<T>, IDomain2D {
-
+    // nothing
 }

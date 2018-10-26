@@ -37,14 +37,18 @@ public interface ICircularShape2D extends ICirculinearElement2D, ISmoothOriented
      *            a point in the plane
      * @return true if the projection of p on the supporting circle also belongs to this curve
      */
+    @Override
     public boolean containsProjection(Point2D p);
 
     // ===================================================================
     // methods inherited from Shape2D and Curve2D
 
+    @Override
     public ICurveSet2D<? extends ICircularShape2D> clip(Box2D box);
 
+    @Override
     public ICircularShape2D subCurve(double t0, double t1);
 
+    @Override
     public ICircularShape2D reverse();
 }

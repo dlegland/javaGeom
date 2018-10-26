@@ -26,6 +26,9 @@
 
 package math.geom2d.domain;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.round;
+
 // Imports
 import java.util.Collection;
 
@@ -34,15 +37,14 @@ import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.IContinuousCurve2D;
-import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.PolyCurve2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ISmoothCurve2D;
+import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
-import static java.lang.Math.*;
 
 /**
  * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the end of a curve is the beginning of the next curve, and such that they do not intersect nor self-intersect.
@@ -53,15 +55,6 @@ import static java.lang.Math.*;
  */
 public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Static factory for creating a new PolyOrientedCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(Collection<T> curves) { return new PolyOrientedCurve2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new PolyOrientedCurve2D from an array of curves.
@@ -83,14 +76,6 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
         return new PolyOrientedCurve2D<>(curves, true);
     }
 
-    /**
-     * Static factory for creating a new PolyOrientedCurve2D from a collection of curves and a flag indicating if the curve is closed or not.
-     * 
-     * @since 0.9.0
-     */
-    /*
-     * public static <T extends ContinuousOrientedCurve2D> PolyOrientedCurve2D<T> create(Collection<T> curves, boolean closed) { return new PolyOrientedCurve2D<T>(curves, closed); }
-     */
 
     /**
      * Static factory for creating a new PolyOrientedCurve2D from an array of curves and a flag indicating if the curve is closed or not.
@@ -132,6 +117,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
     // ===================================================================
     // Methods specific to PolyOrientedCurve2D
 
+    @Override
     public double windingAngle(Point2D point) {
         double angle = 0;
         for (IOrientedCurve2D curve : this.curves)
@@ -139,6 +125,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
         return angle;
     }
 
+    @Override
     public double signedDistance(Point2D p) {
         return signedDistance(p.x(), p.y());
     }
@@ -148,6 +135,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
      * 
      * @see math.geom2d.Shape2D#signedDistance(math.geom2d.Point2D)
      */
+    @Override
     public double signedDistance(double x, double y) {
         double dist = this.distance(x, y);
 
@@ -160,6 +148,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
     /**
      * Determines if the given point lies within the domain bounded by this curve.
      */
+    @Override
     public boolean isInside(Point2D point) {
         double pos = this.project(point);
 

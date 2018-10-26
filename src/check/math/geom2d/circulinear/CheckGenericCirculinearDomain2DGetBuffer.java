@@ -40,6 +40,7 @@ public class CheckGenericCirculinearDomain2DGetBuffer extends JPanel {
         domain = GenericCirculinearDomain2D.create(circle);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

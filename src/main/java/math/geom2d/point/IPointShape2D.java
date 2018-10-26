@@ -28,22 +28,24 @@ public interface IPointShape2D extends ICirculinearShape2D, Iterable<Point2D> {
      * 
      * @return the collection of points
      */
-    public Collection<Point2D> points();
+    Collection<Point2D> points();
 
     /**
      * Returns the number of points in the set.
      * 
      * @return the number of points
      */
-    public int size();
+    int size();
 
     /**
      * Transforms the point shape by an affine transform. The result is an instance of PointShape2D.
      */
-    public abstract IPointShape2D transform(AffineTransform2D trans);
+    @Override
+    IPointShape2D transform(AffineTransform2D trans);
 
     /**
      * When a PointShape2D is clipped, the result is still a PointShape2D.
      */
-    public abstract IPointShape2D clip(Box2D box);
+    @Override
+    IPointShape2D clip(Box2D box);
 }

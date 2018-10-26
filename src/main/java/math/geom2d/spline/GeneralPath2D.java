@@ -9,10 +9,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
-import math.geom2d.line.LineSegment2D;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.IContinuousCurve2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
+import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.line.LineSegment2D;
 
 /**
  * @author dlegland
@@ -84,7 +93,9 @@ public class GeneralPath2D implements ICurve2D {
                 break;
 
             case CLOSE:
+            default:
                 this.closePath();
+                break;
             }
         }
     }
@@ -230,25 +241,20 @@ public class GeneralPath2D implements ICurve2D {
     /**
      * The first parameterization value is equal to 0.
      */
+    @Override
     public double t0() {
-        return 0;
-    }
-
-    public double getT0() {
         return 0;
     }
 
     /**
      * The last parameterization value is given by the number of elementary operations (moveTo, closePath, lineTo...) minus one (for the initial move).
      */
+    @Override
     public double t1() {
         return segments.size() - 1;
     }
 
-    public double getT1() {
-        return t1();
-    }
-
+    @Override
     public Point2D point(double t) {
         // get curve segment index
         int index = (int) Math.floor(t);
@@ -275,6 +281,7 @@ public class GeneralPath2D implements ICurve2D {
     /**
      * Returns the first point of the curve, or null if this curve is empty.
      */
+    @Override
     public Point2D firstPoint() {
         if (this.segments.isEmpty())
             return null;
@@ -284,6 +291,7 @@ public class GeneralPath2D implements ICurve2D {
     /**
      * Returns the last point of the curve, or null if this curve is empty.
      */
+    @Override
     public Point2D lastPoint() {
         int n = this.segments.size();
         if (n == 0)
@@ -291,6 +299,7 @@ public class GeneralPath2D implements ICurve2D {
         return this.segments.get(n - 1).lastControl();
     }
 
+    @Override
     public Collection<Point2D> singularPoints() {
         // allocate memory for result
         ArrayList<Point2D> points = new ArrayList<>(this.segments.size());
@@ -306,6 +315,7 @@ public class GeneralPath2D implements ICurve2D {
         return points;
     }
 
+    @Override
     public Collection<Point2D> vertices() {
         // allocate memory for result
         ArrayList<Point2D> vertices = new ArrayList<>(this.segments.size());
@@ -321,14 +331,17 @@ public class GeneralPath2D implements ICurve2D {
         return vertices;
     }
 
+    @Override
     public boolean isSingular(double pos) {
         return Math.abs(pos - Math.round(pos)) < IShape2D.ACCURACY;
     }
 
+    @Override
     public double position(Point2D point) {
         return this.project(point);
     }
 
+    @Override
     public double project(Point2D point) {
         // local variables for computing position
         int index = -1;
@@ -394,6 +407,7 @@ public class GeneralPath2D implements ICurve2D {
         return pos;
     }
 
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         // allocate array for the result
         ArrayList<Point2D> pts = new ArrayList<>();
@@ -407,12 +421,14 @@ public class GeneralPath2D implements ICurve2D {
         return pts;
     }
 
+    @Override
     public ICurve2D reverse() {
         ArrayList<IContinuousCurve2D> list = splitContinuousCurves();
         Collections.reverse(list);
         return new CurveArray2D<>(list);
     }
 
+    @Override
     public Collection<? extends IContinuousCurve2D> continuousCurves() {
         return splitContinuousCurves();
     }
@@ -481,6 +497,7 @@ public class GeneralPath2D implements ICurve2D {
         return curveList;
     }
 
+    @Override
     public ICurve2D subCurve(double t0, double t1) {
         // TODO Auto-generated method stub
         return null;
@@ -489,6 +506,7 @@ public class GeneralPath2D implements ICurve2D {
     /**
      * Transform to a java Path2D object.
      */
+    @Override
     public Path2D asAwtShape() {
         // creates the awt path
         Path2D.Double path = new Path2D.Double();
@@ -505,10 +523,12 @@ public class GeneralPath2D implements ICurve2D {
     // ===================================================================
     // Methods implementing the Shape2D interface
 
+    @Override
     public boolean contains(Point2D p) {
         return this.contains(p.x(), p.y());
     }
 
+    @Override
     public boolean contains(double x, double y) {
         Point2D lastControl = null;
         Point2D lastStart = null;
@@ -542,10 +562,12 @@ public class GeneralPath2D implements ICurve2D {
         return false;
     }
 
+    @Override
     public double distance(Point2D p) {
         return this.distance(p.x(), p.y());
     }
 
+    @Override
     public double distance(double x, double y) {
         double minDist = Double.MAX_VALUE;
         double dist;
@@ -585,14 +607,17 @@ public class GeneralPath2D implements ICurve2D {
     /**
      * Returns true, as a curve composed of Bezier pieces is always bounded.
      */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
+    @Override
     public boolean isEmpty() {
         return this.segments.size() > 0;
     }
 
+    @Override
     public Box2D boundingBox() {
         // Initialize with extreme values
         double xmin = Double.MAX_VALUE;
@@ -622,12 +647,14 @@ public class GeneralPath2D implements ICurve2D {
         return new Box2D(xmin, xmax, ymin, ymax);
     }
 
+    @Override
     public ICurveSet2D<? extends ICurve2D> clip(Box2D box) {
         ArrayList<IContinuousCurve2D> list = splitContinuousCurves();
         ICurve2D curve = new CurveArray2D<>(list);
         return curve.clip(box);
     }
 
+    @Override
     public ICurve2D transform(AffineTransform2D trans) {
         GeneralPath2D path = new GeneralPath2D();
         Point2D[] pts;
@@ -664,6 +691,7 @@ public class GeneralPath2D implements ICurve2D {
         return path;
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         Path2D path = this.asAwtShape();
         g2.draw(path);
@@ -672,6 +700,7 @@ public class GeneralPath2D implements ICurve2D {
     // ===================================================================
     // Methods implementing the GeometricObject2D interface
 
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         // Check class of object
         if (obj == null)
@@ -720,6 +749,7 @@ public class GeneralPath2D implements ICurve2D {
     // ===================================================================
     // Methods from the Object superclass
 
+    @Override
     public boolean equals(Object obj) {
         // Check class of object
         if (obj == null)
@@ -765,6 +795,7 @@ public class GeneralPath2D implements ICurve2D {
         return true;
     }
 
+    @Override
     public GeneralPath2D clone() {
         GeneralPath2D path = new GeneralPath2D();
         Point2D[] pts;
@@ -830,10 +861,12 @@ public class GeneralPath2D implements ICurve2D {
             this.p = p;
         }
 
+        @Override
         public Point2D[] controlPoints() {
             return new Point2D[] { p };
         }
 
+        @Override
         public Type type() {
             return Type.MOVE;
         }
@@ -841,14 +874,17 @@ public class GeneralPath2D implements ICurve2D {
         /**
          * Returns null.
          */
+        @Override
         public ISmoothCurve2D asCurve(Point2D lastControl, Point2D lastStart) {
             return null;
         }
 
+        @Override
         public Point2D lastControl() {
             return p;
         }
 
+        @Override
         public void updatePath(Path2D path) {
             path.moveTo(p.x(), p.y());
         }
@@ -863,22 +899,27 @@ public class GeneralPath2D implements ICurve2D {
             this.p = p;
         }
 
+        @Override
         public Point2D[] controlPoints() {
             return new Point2D[] { p };
         }
 
+        @Override
         public Type type() {
             return Type.LINE;
         }
 
+        @Override
         public ISmoothCurve2D asCurve(Point2D lastControl, Point2D lastStart) {
             return new LineSegment2D(lastControl, p);
         }
 
+        @Override
         public Point2D lastControl() {
             return p;
         }
 
+        @Override
         public void updatePath(Path2D path) {
             path.lineTo(p.x(), p.y());
         }
@@ -894,22 +935,27 @@ public class GeneralPath2D implements ICurve2D {
             this.p2 = p2;
         }
 
+        @Override
         public Point2D[] controlPoints() {
             return new Point2D[] { p1, p2 };
         }
 
+        @Override
         public Type type() {
             return Type.QUAD;
         }
 
+        @Override
         public ISmoothCurve2D asCurve(Point2D lastControl, Point2D lastStart) {
             return new QuadBezierCurve2D(lastControl, p1, p2);
         }
 
+        @Override
         public Point2D lastControl() {
             return p2;
         }
 
+        @Override
         public void updatePath(Path2D path) {
             path.quadTo(p1.x(), p1.y(), p2.x(), p2.y());
         }
@@ -927,22 +973,27 @@ public class GeneralPath2D implements ICurve2D {
             this.p3 = p3;
         }
 
+        @Override
         public Point2D[] controlPoints() {
             return new Point2D[] { p1, p2, p3 };
         }
 
+        @Override
         public Type type() {
             return Type.CUBIC;
         }
 
+        @Override
         public ISmoothCurve2D asCurve(Point2D lastControl, Point2D lastStart) {
             return new CubicBezierCurve2D(lastControl, p1, p2, p3);
         }
 
+        @Override
         public Point2D lastControl() {
             return p3;
         }
 
+        @Override
         public void updatePath(Path2D path) {
             path.curveTo(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
         }
@@ -953,22 +1004,27 @@ public class GeneralPath2D implements ICurve2D {
         public ClosingSegment() {
         }
 
+        @Override
         public Point2D[] controlPoints() {
             return new Point2D[] {};
         }
 
+        @Override
         public Type type() {
             return Type.CLOSE;
         }
 
+        @Override
         public ISmoothCurve2D asCurve(Point2D lastControl, Point2D lastStart) {
             return new LineSegment2D(lastControl, lastStart);
         }
 
+        @Override
         public Point2D lastControl() {
             return null;
         }
 
+        @Override
         public void updatePath(Path2D path) {
             path.closePath();
         }

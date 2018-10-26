@@ -1,16 +1,32 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.cosh;
+import static java.lang.Math.hypot;
+import static java.lang.Math.log;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sinh;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
-import math.geom2d.domain.IDomain2D;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.domain.IDomain2D;
 import math.geom2d.domain.ISmoothContour2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
@@ -75,6 +91,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Use formula given in <a href="http://mathworld.wolfram.com/Hyperbola.html"> http://mathworld.wolfram.com/Hyperbola.html</a>
      */
+    @Override
     public double curvature(double t) {
         double a = hyperbola.a;
         double b = hyperbola.b;
@@ -83,6 +100,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         return (a * b) / pow(hypot(bcoh, asih), 3);
     }
 
+    @Override
     public Vector2D tangent(double t) {
         double a = hyperbola.a;
         double b = hyperbola.b;
@@ -103,11 +121,13 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     // ===================================================================
     // methods inherited from Boundary2D interface
 
+    @Override
     public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
     /** Throws an UnboundedShapeException */
+    @Override
     public void fill(Graphics2D g2) {
         throw new UnboundedShape2DException(this);
     }
@@ -115,20 +135,24 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     // ===================================================================
     // methods inherited from OrientedCurve2D interface
 
+    @Override
     public double signedDistance(Point2D point) {
         double dist = this.distance(point);
         return this.isInside(point) ? -dist : dist;
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         return this.signedDistance(new Point2D(x, y));
     }
 
+    @Override
     public double windingAngle(Point2D point) {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public boolean isInside(Point2D point) {
         if (hyperbola.isDirect()) {
             if (hyperbola.isInside(point))
@@ -151,15 +175,18 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
      * 
      * @see math.geom2d.curve.Curve2D#continuousCurves()
      */
+    @Override
     public Collection<? extends HyperbolaBranch2D> continuousCurves() {
         return wrapCurve(this);
     }
 
     /** Return false, by definition of Hyperbola branch */
+    @Override
     public boolean isClosed() {
         return false;
     }
 
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         throw new UnboundedShape2DException(this);
     }
@@ -167,6 +194,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     // ===================================================================
     // methods inherited from Curve2D interface
 
+    @Override
     public Point2D point(double t) {
         if (Double.isInfinite(t))
             throw new UnboundedShape2DException(this);
@@ -190,18 +218,21 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         return hyperbola.toGlobal(new Point2D(x, y));
     }
 
+    @Override
     public double position(Point2D point) {
         Point2D pt = hyperbola.toLocal(point);
         double y = this.positive ? pt.y() : -pt.y();
         return log(y + hypot(y, 1));
     }
 
+    @Override
     public double project(Point2D point) {
         Point2D pt = hyperbola.toLocal(point);
         double y = this.positive ? pt.y() : -pt.y();
         return log(y + hypot(y, 1));
     }
 
+    @Override
     public HyperbolaBranch2D reverse() {
         Hyperbola2D hyper2 = new Hyperbola2D(hyperbola.xc, hyperbola.yc, hyperbola.a, hyperbola.b, hyperbola.theta, !hyperbola.direct);
         return new HyperbolaBranch2D(hyper2, positive);
@@ -210,6 +241,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Returns an instance of HyprbolaBranchArc2D initialized with <code>this</code>.
      */
+    @Override
     public HyperbolaBranchArc2D subCurve(double t0, double t1) {
         return new HyperbolaBranchArc2D(this, t0, t1);
     }
@@ -217,6 +249,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Returns Double.NEGATIVE_INFINITY.
      */
+    @Override
     public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
@@ -224,10 +257,12 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Returns Double.POSITIVE_INFINITY.
      */
+    @Override
     public double t1() {
         return Double.POSITIVE_INFINITY;
     }
 
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         // compute intersections with support hyperbola
         Collection<Point2D> inters = hyperbola.intersections(line);
@@ -247,6 +282,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     // methods inherited from Shape2D interface
 
     /** Returns a bounding box with infinite bounds in every direction */
+    @Override
     public Box2D boundingBox() {
         return Box2D.INFINITE_BOX;
     }
@@ -254,6 +290,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Clips the curve with a box. The result is an instance of CurveSet2D, which contains only instances of HyperbolaBranchArc2D. If the curve does not intersect the boundary of the box, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends HyperbolaBranchArc2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -269,17 +306,20 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         return result;
     }
 
+    @Override
     public double distance(Point2D point) {
         Point2D projected = this.point(this.project(point));
         return projected.distance(point);
     }
 
+    @Override
     public double distance(double x, double y) {
         Point2D projected = this.point(this.project(new Point2D(x, y)));
         return projected.distance(x, y);
     }
 
     /** Returns false, as an hyperbola branch is never bounded. */
+    @Override
     public boolean isBounded() {
         return false;
     }
@@ -287,10 +327,12 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     /**
      * Returns false, as an hyperbola branch is never empty.
      */
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public HyperbolaBranch2D transform(AffineTransform2D trans) {
         // The transform the base hypebola, and a point of the branch
         Hyperbola2D hyperbola = this.hyperbola.transform(trans);
@@ -304,10 +346,12 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
         return new HyperbolaBranch2D(hyperbola, d1 < d2);
     }
 
+    @Override
     public boolean contains(Point2D point) {
         return this.contains(point.x(), point.y());
     }
 
+    @Override
     public boolean contains(double x, double y) {
         if (!hyperbola.contains(x, y))
             return false;
@@ -323,6 +367,7 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -340,17 +385,31 @@ public class HyperbolaBranch2D extends AbstractSmoothCurve2D implements ISmoothC
     // methods overriding Object class
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((hyperbola == null) ? 0 : hyperbola.hashCode());
+        result = prime * result + (positive ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof HyperbolaBranch2D))
+        if (obj == null)
             return false;
-        HyperbolaBranch2D branch = (HyperbolaBranch2D) obj;
-
-        if (!hyperbola.equals(branch.hyperbola))
+        if (getClass() != obj.getClass())
             return false;
-        return positive == branch.positive;
+        HyperbolaBranch2D other = (HyperbolaBranch2D) obj;
+        if (hyperbola == null) {
+            if (other.hyperbola != null)
+                return false;
+        } else if (!hyperbola.equals(other.hyperbola))
+            return false;
+        if (positive != other.positive)
+            return false;
+        return true;
     }
 
 }

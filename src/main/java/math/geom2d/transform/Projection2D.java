@@ -25,28 +25,9 @@
 
 package math.geom2d.transform;
 
-// Imports
-
 /**
  * interface for projections in the plane : projections on a line, on a circle, ...
  */
-public interface Projection2D extends Transform2D {
-
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
-
-    // ===================================================================
-    // constructors
-
-    // ===================================================================
-    // accessors
-
-    // ===================================================================
-    // modifiers
-
-    // ===================================================================
-    // general methods
+public interface Projection2D extends ITransform2D {
+    // Nothing
 }

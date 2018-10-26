@@ -27,6 +27,7 @@ public class CheckCircleArc2D extends JPanel {
 
     Box2D clipping = new Box2D(10, 390, 10, 390);
 
+    @Override
     public void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;

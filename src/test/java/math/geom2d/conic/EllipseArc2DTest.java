@@ -26,6 +26,7 @@
 package math.geom2d.conic;
 
 import static java.lang.Math.PI;
+
 import junit.framework.TestCase;
 import math.geom2d.AffineTransform2D;
 import math.geom2d.IShape2D;
@@ -40,7 +41,7 @@ public class EllipseArc2DTest extends TestCase {
      */
     public void testEllipseArc2D() {
         // direct ellipse
-        EllipseArc2D arc0 = new EllipseArc2D();
+        EllipseArc2D arc0 = new EllipseArc2D(0, 0, 1, 1, 0, 0, PI / 2);
         Ellipse2D ellipse = new Ellipse2D(0, 0, 1, 1, 0, true);
         EllipseArc2D arc1 = new EllipseArc2D(ellipse, 0, Math.PI / 2);
         EllipseArc2D arc2 = new EllipseArc2D(ellipse, 0, Math.PI / 2, true);
@@ -140,15 +141,6 @@ public class EllipseArc2DTest extends TestCase {
         assertAlmostEquals(new Vector2D(0, -20), arc2.tangent(0), eps);
         assertAlmostEquals(new Vector2D(-50, 0), arc2.tangent(Math.PI / 2), eps);
 
-    }
-
-    public void testClone() {
-        Ellipse2D ellipse = new Ellipse2D(10, 20, 30, 40, Math.PI / 3);
-        EllipseArc2D arc = new EllipseArc2D(ellipse, Math.PI / 2, Math.PI);
-        assertTrue(arc.equals(arc.clone()));
-
-        arc = new EllipseArc2D(ellipse, Math.PI / 2, -Math.PI);
-        assertTrue(arc.equals(arc.clone()));
     }
 
     private void assertAlmostEquals(Vector2D v1, Vector2D v2, double eps) {

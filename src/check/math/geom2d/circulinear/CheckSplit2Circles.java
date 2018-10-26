@@ -32,6 +32,7 @@ public class CheckSplit2Circles extends JPanel {
         ring2 = new Circle2D(150, 100, 50);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

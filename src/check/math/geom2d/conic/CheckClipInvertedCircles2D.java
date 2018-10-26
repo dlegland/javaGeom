@@ -66,6 +66,7 @@ public class CheckClipInvertedCircles2D extends JPanel {
         circle4 = new Circle2D(xc4, yc4, r, false);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

@@ -34,7 +34,7 @@ import math.geom2d.conic.Circle2D;
 /**
  * circle inversion : performs a bijection between points outside the circle and points inside the circle.
  */
-public class CircleInversion2D implements Bijection2D {
+public class CircleInversion2D implements IBijection2D {
 
     // ===================================================================
     // static constructors
@@ -50,8 +50,8 @@ public class CircleInversion2D implements Bijection2D {
     // ===================================================================
     // class variables
 
-    protected Point2D center;
-    protected double radius;
+    private final Point2D center;
+    private final double radius;
 
     // ===================================================================
     // constructors
@@ -96,6 +96,7 @@ public class CircleInversion2D implements Bijection2D {
     /**
      * Returns this circle inversion.
      */
+    @Override
     public CircleInversion2D invert() {
         return this;
     }
@@ -103,15 +104,15 @@ public class CircleInversion2D implements Bijection2D {
     // ===================================================================
     // methods implementing the Transform2D interface
 
+    @Override
     public Point2D transform(Point2D pt) {
-        double r = radius;
-
-        double d = r * r / Point2D.distance(pt, center);
+        double d = radius * radius / Point2D.distance(pt, center);
         double theta = Angle2DUtil.horizontalAngle(center, pt);
         return Point2D.createPolar(center, d, theta);
     }
 
     /** Transforms an array of points, and returns the transformed points. */
+    @Override
     public Point2D[] transform(Point2D[] src, Point2D[] dst) {
 
         double d, theta;
@@ -128,12 +129,11 @@ public class CircleInversion2D implements Bijection2D {
 
         xc = center.x();
         yc = center.y();
-        r = radius;
 
         // transform each point
         for (int i = 0; i < src.length; i++) {
             d = Point2D.distance(src[i].x(), src[i].y(), xc, yc);
-            d = r * r / d;
+            d = radius * radius / d;
             theta = Math.atan2(src[i].y() - yc, src[i].x() - xc);
             dst[i] = new Point2D(d * Math.cos(theta), d * Math.sin(theta));
         }

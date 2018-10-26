@@ -19,7 +19,7 @@ import math.geom2d.polygon.IPolygon2D;
  * @author dlegland
  *
  */
-public interface ConvexHull2D {
+public interface IConvexHull2D {
 
     /**
      * Computes the convex hull of the given collection of points.

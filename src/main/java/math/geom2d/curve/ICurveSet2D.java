@@ -40,6 +40,7 @@ public interface ICurveSet2D<T extends ICurve2D> extends ICurve2D, IShapeSet2D<T
     /**
      * Checks if the curve set contains the given curve.
      */
+    @Override
     public boolean contains(T curve);
 
     /**
@@ -57,6 +58,7 @@ public interface ICurveSet2D<T extends ICurve2D> extends ICurve2D, IShapeSet2D<T
      * @return the i-th inner curve
      * @since 0.6.3
      */
+    @Override
     public T get(int index);
 
     /**
@@ -122,5 +124,6 @@ public interface ICurveSet2D<T extends ICurve2D> extends ICurve2D, IShapeSet2D<T
     /**
      * Transforms each curve in the set and returns a new instance of CurveSet2D.
      */
+    @Override
     public ICurveSet2D<? extends ICurve2D> transform(AffineTransform2D trans);
 }

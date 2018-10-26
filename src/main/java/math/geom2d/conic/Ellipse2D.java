@@ -25,23 +25,43 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.*;
-import math.geom2d.curve.*;
-import math.geom2d.domain.IDomain2D;
+import math.geom2d.AffineTransform2D;
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
+import math.geom2d.Vector2D;
+import math.geom2d.curve.AbstractSmoothCurve2D;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.domain.IDomain2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.utils.EqualUtils;
 
-// Imports
 
 /**
  * An ellipse in the plane. It is defined by the center, the orientation angle, and the lengths of the two axis. No convention is taken about lengths of semiaxis: the second semi axis can be greater than the first one.
@@ -140,7 +160,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         // return new Circle2D(0, 0, r1);
 
         // return the reduced ellipse
-        return new Ellipse2D(0, 0, r1, r2, theta);
+        return new Ellipse2D(Point2D.ORIGIN, r1, r2, theta);
     }
 
     /**
@@ -184,8 +204,8 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double yc = 0;
 
         for (Point2D p : points) {
-            xc += p.getX();
-            yc += p.getY();
+            xc += p.x();
+            yc += p.y();
         }
 
         int np = points.size();
@@ -198,8 +218,8 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
 
         for (Point2D p : points) {
             // re-centered point
-            double x = p.getX() - xc;
-            double y = p.getY() - yc;
+            double x = p.x() - xc;
+            double y = p.y() - yc;
             Ixx += x * x;
             Iyy += y * y;
             Ixy += x * y;
@@ -227,67 +247,57 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     // class variables
 
     /** Coordinate of center. */
-    protected double xc;
-    protected double yc;
+    private final Point2D center;
 
     /** Length of major semi-axis. Should be always positive. */
-    protected double r1;
+    private final double r1;
 
     /** Length of minor semi-axis. Should be always positive. */
-    protected double r2;
+    private final double r2;
 
     /** Orientation of major semi-axis, in radians, between 0 and 2*PI. */
-    protected double theta = 0;
+    private final double theta;
 
     /** Directed ellipse or not */
-    protected boolean direct = true;
+    private final boolean direct;
 
-    // ===================================================================
-    // constructors
-
-    /**
-     * Empty constructor, define ellipse centered at origin with both major and minor semi-axis with length equal to 1.
-     */
-    public Ellipse2D() {
-        this(0, 0, 1, 1, 0, true);
+    public Ellipse2D(Point2D center, double l1, double l2, double theta, boolean direct) {
+        this.center = center;
+        this.r1 = l1;
+        this.r2 = l2;
+        this.theta = theta;
+        this.direct = direct;
     }
 
     /** Main constructor: define center by a point plus major and minor semi axis */
     public Ellipse2D(Point2D center, double l1, double l2) {
-        this(center.x(), center.y(), l1, l2, 0, true);
+        this(center, l1, l2, 0, true);
     }
 
     /** Define center by coordinate, plus major and minor semi axis */
     public Ellipse2D(double xc, double yc, double l1, double l2) {
-        this(xc, yc, l1, l2, 0, true);
+        this(new Point2D(xc, yc), l1, l2);
     }
 
     /**
      * Define center by point, major and minor semi axis lengths, and orientation angle.
      */
     public Ellipse2D(Point2D center, double l1, double l2, double theta) {
-        this(center.x(), center.y(), l1, l2, theta, true);
+        this(center, l1, l2, theta, true);
     }
 
     /**
      * Define center by coordinate, major and minor semi axis lengths, and orientation angle.
      */
     public Ellipse2D(double xc, double yc, double l1, double l2, double theta) {
-        this(xc, yc, l1, l2, theta, true);
+        this(new Point2D(xc, yc), l1, l2, theta, true);
     }
 
     /**
      * Define center by coordinate, major and minor semi axis lengths, orientation angle, and boolean flag for directed ellipse.
      */
     public Ellipse2D(double xc, double yc, double l1, double l2, double theta, boolean direct) {
-        this.xc = xc;
-        this.yc = yc;
-
-        r1 = l1;
-        r2 = l2;
-
-        this.theta = theta;
-        this.direct = direct;
+        this(new Point2D(xc, yc), l1, l2, theta, direct);
     }
 
     /**
@@ -334,8 +344,8 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double ot = 1.0 / 3.0;
 
         // center the ellipse
-        double x = point.x() - xc;
-        double y = point.y() - yc;
+        double x = point.x() - center.x();
+        double y = point.y() - center.y();
 
         double la, lb, theta;
         if (r1 >= r2) {
@@ -492,7 +502,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      * Return the parallel ellipse located at a distance d from this ellipse. For direct ellipse, distance is positive outside of the ellipse, and negative inside
      */
     public Ellipse2D parallel(double d) {
-        return new Ellipse2D(xc, yc, abs(r1 + d), abs(r2 + d), theta, direct);
+        return new Ellipse2D(center, abs(r1 + d), abs(r2 + d), theta, direct);
     }
 
     // ===================================================================
@@ -501,6 +511,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns true if ellipse has a direct orientation.
      */
+    @Override
     public boolean isDirect() {
         return direct;
     }
@@ -508,6 +519,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns true if this ellipse is similar to a circle, i.e. has same length for both r1 and r2.
      */
+    @Override
     public boolean isCircle() {
         return abs(r1 - r2) < IShape2D.ACCURACY;
     }
@@ -529,8 +541,9 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns center of the ellipse.
      */
+    @Override
     public Point2D center() {
-        return new Point2D(xc, yc);
+        return center;
     }
 
     /**
@@ -547,7 +560,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
             b = r1;
             theta = this.theta + PI / 2;
         }
-        return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta + PI);
+        return Point2D.createPolar(center.x(), center.y(), sqrt(a * a - b * b), theta + PI);
     }
 
     /**
@@ -564,7 +577,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
             b = r1;
             theta = this.theta + PI / 2;
         }
-        return Point2D.createPolar(xc, yc, sqrt(a * a - b * b), theta);
+        return Point2D.createPolar(center.x(), center.y(), sqrt(a * a - b * b), theta);
     }
 
     /**
@@ -594,6 +607,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     // ===================================================================
     // methods implementing Conic2D interface
 
+    @Override
     public IConic2D.Type conicType() {
         if (Math.abs(this.r1 - this.r2) < IShape2D.ACCURACY)
             return IConic2D.Type.CIRCLE;
@@ -603,6 +617,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns the conic coefficients of the ellipse. Algorithm taken from http://tog.acm.org/GraphicsGems/gemsv/ch2-6/conmat.c
      */
+    @Override
     public double[] conicCoefficients() {
 
         // common coefficients
@@ -617,8 +632,8 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double costSq = cost * cost;
 
         // coefs from ellipse center
-        double xcSq = xc * xc;
-        double ycSq = yc * yc;
+        double xcSq = center.x() * center.x();
+        double ycSq = center.y() * center.y();
         double r1SqInv = 1.0 / r1Sq;
         double r2SqInv = 1.0 / r2Sq;
 
@@ -629,9 +644,9 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double a = costSq / r1Sq + sintSq / r2Sq;
         double b = (r2Sq - r1Sq) * sin2t / (r1Sq * r2Sq);
         double c = costSq / r2Sq + sintSq / r1Sq;
-        double d = -yc * b - 2 * xc * a;
-        double e = -xc * b - 2 * yc * c;
-        double f = -1.0 + (xcSq + ycSq) * (r1SqInv + r2SqInv) / 2.0 + (costSq - sintSq) * (xcSq - ycSq) * (r1SqInv - r2SqInv) / 2.0 + xc * yc * (r1SqInv - r2SqInv) * sin2t;
+        double d = -center.y() * b - 2 * center.x() * a;
+        double e = -center.x() * b - 2 * center.y() * c;
+        double f = -1.0 + (xcSq + ycSq) * (r1SqInv + r2SqInv) / 2.0 + (costSq - sintSq) * (xcSq - ycSq) * (r1SqInv - r2SqInv) / 2.0 + center.x() * center.y() * (r1SqInv - r2SqInv) * sin2t;
 
         // Return array of results
         return new double[] { a, b, c, d, e, f };
@@ -640,6 +655,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Computes eccentricity of ellipse, depending on the lengths of the semi-axes. Eccentricity is 0 for a circle (r1==r2), and tends to 1 when ellipse elongates.
      */
+    @Override
     public double eccentricity() {
         double a = max(r1, r2);
         double b = min(r1, r2);
@@ -650,16 +666,18 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     // ===================================================================
     // methods implementing the Boundary2D interface
 
+    @Override
     public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         // convert ellipse to awt shape
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(xc - r1, yc - r2, 2 * r1, 2 * r2);
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(center.x() - r1, center.y() - r2, 2 * r1, 2 * r2);
 
         // need to rotate by angle theta
-        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
+        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(theta, center.x(), center.y());
         Shape shape = trans.createTransformedShape(ellipse);
 
         // draw the awt ellipse
@@ -672,6 +690,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Return either 0, 2*PI or -2*PI, depending whether the point is located inside the interior of the ellipse or not.
      */
+    @Override
     public double windingAngle(Point2D point) {
         if (this.signedDistance(point) > 0)
             return 0;
@@ -682,22 +701,25 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Test whether the point is inside the ellipse. The test is performed by rotating the ellipse and the point to align with axis, rescaling in each direction, then computing distance to origin.
      */
+    @Override
     public boolean isInside(Point2D point) {
-        AffineTransform2D rot = AffineTransform2D.createRotation(this.xc, this.yc, -this.theta);
+        AffineTransform2D rot = AffineTransform2D.createRotation(this.center.x(), this.center.y(), -this.theta);
         Point2D pt = rot.transform(point);
-        double xp = (pt.x() - this.xc) / this.r1;
-        double yp = (pt.y() - this.yc) / this.r2;
+        double xp = (pt.x() - this.center.x()) / this.r1;
+        double yp = (pt.y() - this.center.y()) / this.r2;
         return (xp * xp + yp * yp < 1) ^ !direct;
     }
 
     /**
      * Returns an approximation of the signed distance to the ellipse. In the current implementation, the ellipse is converted to a polyline.
      */
+    @Override
     public double signedDistance(Point2D point) {
         double dist = this.asPolyline(180).distance(point);
         return isInside(point) ? -dist : dist;
     }
 
+    @Override
     public double signedDistance(double x, double y) {
         return signedDistance(new Point2D(x, y));
     }
@@ -705,6 +727,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     // ===================================================================
     // methods of SmoothCurve2D interface
 
+    @Override
     public Vector2D tangent(double t) {
         if (!direct)
             t = -t;
@@ -720,6 +743,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns the curvature of the ellipse.
      */
+    @Override
     public double curvature(double t) {
         if (!direct)
             t = -t;
@@ -735,6 +759,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns true, as an ellipse is always closed.
      */
+    @Override
     public boolean isClosed() {
         return true;
     }
@@ -744,16 +769,19 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      * 
      * @see math.geom2d.curve.ContinuousCurve2D#asPolyline(int)
      */
+    @Override
     public LinearRing2D asPolyline(int n) {
         return this.asPolylineClosed(n);
     }
 
     /** Always returns true. */
+    @Override
     public boolean isBounded() {
         return true;
     }
 
     /** Always returns false. */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -761,6 +789,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns the parameter of the first point of the ellipse, set to 0.
      */
+    @Override
     public double t0() {
         return 0;
     }
@@ -768,6 +797,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns the parameter of the last point of the ellipse, set to 2*PI.
      */
+    @Override
     public double t1() {
         return 2 * PI;
     }
@@ -775,12 +805,13 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * get the position of the curve from internal parametric representation, depending on the parameter t. This parameter is between the two limits 0 and 2*PI.
      */
+    @Override
     public Point2D point(double t) {
         if (!direct)
             t = -t;
         double cot = cos(theta);
         double sit = sin(theta);
-        return new Point2D(xc + r1 * cos(t) * cot - r2 * sin(t) * sit, yc + r1 * cos(t) * sit + r2 * sin(t) * cot);
+        return new Point2D(center.x() + r1 * cos(t) * cot - r2 * sin(t) * sit, center.y() + r1 * cos(t) * sit + r2 * sin(t) * cot);
     }
 
     /**
@@ -790,7 +821,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      */
     @Override
     public Point2D firstPoint() {
-        return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
+        return new Point2D(center.x() + r1 * cos(theta), center.y() + r1 * sin(theta));
     }
 
     /**
@@ -800,7 +831,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      */
     @Override
     public Point2D lastPoint() {
-        return new Point2D(xc + r1 * cos(theta), yc + r1 * sin(theta));
+        return new Point2D(center.x() + r1 * cos(theta), center.y() + r1 * sin(theta));
     }
 
     /**
@@ -816,8 +847,8 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double yp = point.y();
 
         // translate
-        xp = xp - this.xc;
-        yp = yp - this.yc;
+        xp = xp - this.center.x();
+        yp = yp - this.center.y();
 
         // rotate
         double cot = cos(theta);
@@ -838,6 +869,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         return new Point2D(xp, yp);
     }
 
+    @Override
     public double position(Point2D point) {
         Point2D p2 = toUnitCircle(point);
         double xp = p2.x();
@@ -855,6 +887,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Computes the approximate projection position of the point on the ellipse. The ellipse is first converted to a unit circle, then the angular position of the point is computed in the transformed basis.
      */
+    @Override
     public double project(Point2D point) {
         Point2D p2 = toUnitCircle(point);
         double xp = p2.x();
@@ -869,8 +902,9 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns the ellipse with same center and same radius, but with the other orientation.
      */
+    @Override
     public Ellipse2D reverse() {
-        return new Ellipse2D(xc, yc, r1, r2, theta, !direct);
+        return new Ellipse2D(center.x(), center.y(), r1, r2, theta, !direct);
     }
 
     @Override
@@ -881,6 +915,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * return a new EllipseArc2D.
      */
+    @Override
     public EllipseArc2D subCurve(double t0, double t1) {
         double startAngle, extent;
         if (this.direct) {
@@ -899,12 +934,14 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Computes distance using a polyline approximation.
      */
+    @Override
     public double distance(Point2D point) {
         // PolarVector2D vector = this.getProjectedVector(point, 1e-10);
         // return abs(vector.getRho());
         return this.asPolyline(180).distance(point);
     }
 
+    @Override
     public double distance(double x, double y) {
         return distance(new Point2D(x, y));
     }
@@ -912,6 +949,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Clip the ellipse by a box. The result is an instance of CurveSet2D, which contains only instances of Ellipse2D or EllipseArc2D. If the ellipse is not clipped, the result is an instance of CurveSet2D which contains 0 curves.
      */
+    @Override
     public ICurveSet2D<? extends ISmoothOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
         ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
@@ -932,6 +970,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Return more precise bounds for the ellipse. Return an instance of Box2D.
      */
+    @Override
     public Box2D boundingBox() {
         // we consider the two parametric equations x(t) and y(t). From the
         // ellipse
@@ -944,7 +983,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         double sit = sin(theta);
         double xm = hypot(r1 * cot, r2 * sit);
         double ym = hypot(r1 * sit, r2 * cot);
-        return new Box2D(xc - xm, xc + xm, yc - ym, yc + ym);
+        return new Box2D(center.x() - xm, center.x() + xm, center.y() - ym, center.y() + ym);
     }
 
     /**
@@ -952,12 +991,13 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      * <p>
      * Principle of the algorithm is to transform line and ellipse such that ellipse becomes a circle, then using the intersections computation from circle.
      */
+    @Override
     public Collection<Point2D> intersections(ILinearShape2D line) {
         // Compute the transform2D which transforms ellipse into unit circle
         AffineTransform2D sca, rot, tra;
         sca = AffineTransform2D.createScaling(r1, r2);
         rot = AffineTransform2D.createRotation(theta);
-        tra = AffineTransform2D.createTranslation(xc, yc);
+        tra = AffineTransform2D.createTranslation(center.x(), center.y());
         AffineTransform2D toUnit = sca.chain(rot).chain(tra).invert();
 
         // transform the line accordingly
@@ -967,7 +1007,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         Collection<Point2D> points;
 
         // Compute intersection points with circle
-        Circle2D circle = new Circle2D(0, 0, 1);
+        Circle2D circle = Circle2D.UNIT_CIRCLE;
         points = circle.intersections(line2);
         if (points.size() == 0)
             return points;
@@ -984,13 +1024,11 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Transforms this ellipse by an affine transform. If the transformed shape is a circle (ellipse with equal axis lengths), returns an instance of Circle2D. The resulting ellipse is direct if this ellipse and the transform are either both direct or both indirect.
      */
+    @Override
     public Ellipse2D transform(AffineTransform2D trans) {
         Ellipse2D result = Ellipse2D.transformCentered(this, trans);
         Point2D center = this.center().transform(trans);
-        result.xc = center.x();
-        result.yc = center.y();
-        result.direct = !(this.direct ^ trans.isDirect());
-        return result;
+        return new Ellipse2D(center, result.semiMajorAxisLength(), result.semiMinorAxisLength(), result.angle(), !(this.direct ^ trans.isDirect()));
     }
 
     // ===================================================================
@@ -999,6 +1037,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns true if the point p lies on the ellipse, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.x(), p.y());
     }
@@ -1006,6 +1045,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     /**
      * Returns true if the point (x, y) lies on the ellipse, with precision given by Shape2D.ACCURACY.
      */
+    @Override
     public boolean contains(double x, double y) {
         return this.distance(x, y) < IShape2D.ACCURACY;
     }
@@ -1019,7 +1059,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 
         // move to the first point
-        path.moveTo((float) (xc + r1 * cot), (float) (yc + r1 * sit));
+        path.moveTo((float) (center.x() + r1 * cot), (float) (center.y() + r1 * sit));
 
         // return path after adding curve
         return this.appendPath(path);
@@ -1032,6 +1072,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      *            the path to be completed
      * @return the completed path
      */
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
         double cot = cos(theta);
         double sit = sin(theta);
@@ -1039,21 +1080,21 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         // draw each line of the boundary
         if (direct)
             for (double t = .1; t <= 2 * PI; t += .1)
-                path.lineTo((float) (xc + r1 * cos(t) * cot - r2 * sin(t) * sit), (float) (yc + r2 * sin(t) * cot + r1 * cos(t) * sit));
+                path.lineTo((float) (center.x() + r1 * cos(t) * cot - r2 * sin(t) * sit), (float) (center.y() + r2 * sin(t) * cot + r1 * cos(t) * sit));
         else
             for (double t = .1; t <= 2 * PI; t += .1)
-                path.lineTo((float) (xc + r1 * cos(t) * cot + r2 * sin(t) * sit), (float) (yc - r2 * sin(t) * cot + r1 * cos(t) * sit));
+                path.lineTo((float) (center.x() + r1 * cos(t) * cot + r2 * sin(t) * sit), (float) (center.y() - r2 * sin(t) * cot + r1 * cos(t) * sit));
 
         // loop to the first/last point
-        path.lineTo((float) (xc + r1 * cot), (float) (yc + r1 * sit));
+        path.lineTo((float) (center.x() + r1 * cot), (float) (center.y() + r1 * sit));
 
         return path;
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(xc - r1, yc - r2, 2 * r1, 2 * r2);
-        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(theta, xc, yc);
+        java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double(center.x() - r1, center.y() - r2, 2 * r1, 2 * r2);
+        java.awt.geom.AffineTransform trans = java.awt.geom.AffineTransform.getRotateInstance(theta, center.x(), center.y());
         g2.draw(trans.createTransformedShape(ellipse));
     }
 
@@ -1065,6 +1106,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;
@@ -1087,38 +1129,52 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         return true;
     }
 
-    // ===================================================================
-    // methods of Object superclass
+
+
+    @Override
+    public String toString() {
+        return String.format("Ellipse2D(%f,%f,%f,%f,%f,%s)", center.x(), center.y(), r1, r2, theta, direct ? "true" : "false");
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((center == null) ? 0 : center.hashCode());
+        result = prime * result + (direct ? 1231 : 1237);
+        long temp;
+        temp = Double.doubleToLongBits(r1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(r2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(theta);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof Ellipse2D))
+        if (obj == null)
             return false;
-
-        Ellipse2D that = (Ellipse2D) obj;
-
-        // Compare each field
-        if (!EqualUtils.areEqual(this.xc, that.xc))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.yc, that.yc))
+        Ellipse2D other = (Ellipse2D) obj;
+        if (center == null) {
+            if (other.center != null)
+                return false;
+        } else if (!center.equals(other.center))
             return false;
-        if (!EqualUtils.areEqual(this.r1, that.r1))
+        if (direct != other.direct)
             return false;
-        if (!EqualUtils.areEqual(this.r2, that.r2))
+        if (Double.doubleToLongBits(r1) != Double.doubleToLongBits(other.r1))
             return false;
-        if (!EqualUtils.areEqual(this.theta, that.theta))
+        if (Double.doubleToLongBits(r2) != Double.doubleToLongBits(other.r2))
             return false;
-        if (this.direct != that.direct)
+        if (Double.doubleToLongBits(theta) != Double.doubleToLongBits(other.theta))
             return false;
-
         return true;
     }
-
-    @Override
-    public String toString() {
-        return String.format("Ellipse2D(%f,%f,%f,%f,%f,%s)", xc, yc, r1, r2, theta, direct ? "true" : "false");
-    }
+    
 }

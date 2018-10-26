@@ -11,14 +11,15 @@ package math.geom2d.circulinear;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.ContourArray2D;
+import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -41,14 +42,6 @@ import math.geom2d.transform.CircleInversion2D;
 public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends ContourArray2D<T> implements ICirculinearBoundary2D {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Static factory for creating a new CirculinearContourArray2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends CirculinearContour2D> CirculinearContourArray2D<T> create(Collection<T> curves) { return new CirculinearContourArray2D<T>(curves); }
-     */
 
     /**
      * Static factory for creating a new CirculinearContourArray2D from an array of curves.
@@ -120,6 +113,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.domain.Boundary2D#domain()
      */
+    @Override
     public ICirculinearDomain2D domain() {
         return new GenericCirculinearDomain2D(this);
     }
@@ -132,6 +126,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length()
      */
+    @Override
     public double length() {
         double sum = 0;
         for (ICirculinearCurve2D curve : this.curves())
@@ -144,6 +139,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#length(double)
      */
+    @Override
     public double length(double pos) {
         return CirculinearCurves2D.getLength(this, pos);
     }
@@ -153,6 +149,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#position(double)
      */
+    @Override
     public double position(double length) {
         return CirculinearCurves2D.getPosition(this, length);
     }
@@ -162,6 +159,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearShape2D#buffer(double)
      */
+    @Override
     public ICirculinearDomain2D buffer(double dist) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.computeBuffer(this, dist);
@@ -172,6 +170,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearContinuousCurve2D#parallel(double)
      */
+    @Override
     public ICirculinearBoundary2D parallel(double d) {
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
         return bc.createParallelBoundary(this, d);
@@ -182,6 +181,7 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public CirculinearContourArray2D<? extends ICirculinearContour2D> transform(CircleInversion2D inv) {
         // Allocate array for result
         CirculinearContourArray2D<ICirculinearContour2D> result = new CirculinearContourArray2D<>(curves.size());
@@ -196,8 +196,8 @@ public class CirculinearContourArray2D<T extends ICirculinearContour2D> extends 
     // methods implementing the Curve2D interface
 
     @Override
-    public Collection<T> continuousCurves() {
-        return Collections.unmodifiableCollection(this.curves);
+    public List<T> continuousCurves() {
+        return Collections.unmodifiableList(this.curves);
     }
 
     @Override

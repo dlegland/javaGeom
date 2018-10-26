@@ -15,10 +15,12 @@ package math.geom2d.circulinear;
  * @see GenericCirculinearRing2D
  */
 public interface ICirculinearRing2D extends ICirculinearContour2D {
+    @Override
+    ICirculinearDomain2D domain();
 
-    public ICirculinearDomain2D domain();
+    @Override
+    ICirculinearRing2D parallel(double d);
 
-    public ICirculinearRing2D parallel(double d);
-
-    public ICirculinearRing2D reverse();
+    @Override
+    ICirculinearRing2D reverse();
 }

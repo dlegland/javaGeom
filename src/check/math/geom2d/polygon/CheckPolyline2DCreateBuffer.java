@@ -49,6 +49,7 @@ public class CheckPolyline2DCreateBuffer extends JPanel {
         polygon = new SimplePolygon2D(points1);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

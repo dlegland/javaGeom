@@ -26,7 +26,7 @@
 
 package math.geom3d;
 
-import math.geom3d.transform.*;
+import math.geom3d.transform.AffineTransform3D;
 
 /**
  * General interface for shapes in 3 dimensions.

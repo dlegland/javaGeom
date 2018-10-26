@@ -32,8 +32,8 @@ import java.util.Iterator;
 
 import math.geom2d.AffineTransform2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.line.LineSegment2D;
@@ -110,6 +110,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Returns a simplified version of this polyline, by using Douglas-Peucker algorithm.
      */
+    @Override
     public Polyline2D simplify(double distMax) {
         return new Polyline2D(Polylines2D.simplifyPolyline(this.vertices, distMax));
     }
@@ -119,6 +120,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @return the edges of the polyline
      */
+    @Override
     public Collection<LineSegment2D> edges() {
         int n = vertices.size();
         ArrayList<LineSegment2D> edges = new ArrayList<>(n);
@@ -132,6 +134,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
         return edges;
     }
 
+    @Override
     public int edgeNumber() {
         int n = vertices.size();
         if (n > 1)
@@ -139,10 +142,12 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
         return 0;
     }
 
+    @Override
     public LineSegment2D edge(int index) {
         return new LineSegment2D(vertices.get(index), vertices.get(index + 1));
     }
 
+    @Override
     public LineSegment2D lastEdge() {
         int n = vertices.size();
         if (n < 2)
@@ -158,6 +163,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.circulinear.CirculinearCurve2D#transform(math.geom2d.transform.CircleInversion2D)
      */
+    @Override
     public ICirculinearContinuousCurve2D transform(CircleInversion2D inv) {
 
         // Create array for storing transformed arcs
@@ -181,6 +187,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.OrientedCurve2D#windingAngle(Point2D)
      */
+    @Override
     public double windingAngle(Point2D point) {
         double angle = 0;
         int n = vertices.size();
@@ -195,6 +202,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.OrientedCurve2D#isInside(Point2D)
      */
+    @Override
     public boolean isInside(Point2D pt) {
         if (new LinearRing2D(this.vertexArray()).isInside(pt))
             return true;
@@ -228,6 +236,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Returns false, as Polyline2D is open by definition.
      */
+    @Override
     public boolean isClosed() {
         return false;
     }
@@ -240,6 +249,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.Curve2D#point(double, math.geom2d.Point2D)
      */
+    @Override
     public Point2D point(double t) {
         // format position to stay between limits
         double t0 = this.t0();
@@ -270,6 +280,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Returns the number of points in the polyline, minus one.
      */
+    @Override
     public double t1() {
         return vertices.size() - 1;
     }
@@ -287,6 +298,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Returns the polyline with same points considered in reverse order. Reversed polyline keep same references as original polyline.
      */
+    @Override
     public Polyline2D reverse() {
         Point2D[] points2 = new Point2D[vertices.size()];
         int n = vertices.size();
@@ -303,6 +315,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Return an instance of Polyline2D. If t1 is lower than t0, return an instance of Polyline2D with zero points.
      */
+    @Override
     public Polyline2D subCurve(double t0, double t1) {
         // code adapted from CurveSet2D
 
@@ -353,6 +366,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.Shape2D#transform(math.geom2d.AffineTransform2D)
      */
+    @Override
     public Polyline2D transform(AffineTransform2D trans) {
         Point2D[] pts = new Point2D[vertices.size()];
         for (int i = 0; i < vertices.size(); i++)
@@ -365,6 +379,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.ContinuousCurve2D#appendPath(java.awt.geom.GeneralPath)
      */
+    @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
 
         if (vertices.size() < 2)
@@ -388,6 +403,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
     /**
      * Returns a general path iterator.
      */
+    @Override
     public java.awt.geom.GeneralPath asGeneralPath() {
         java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
         if (vertices.size() < 2)
@@ -417,6 +433,7 @@ public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousC
      * 
      * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
      */
+    @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {
         if (this == obj)
             return true;

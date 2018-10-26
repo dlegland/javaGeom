@@ -46,7 +46,7 @@ public class TuneJarvisMarch2D {
         System.out.println("Tune convex hull by Jarvis march");
 
         // Create a new Convex hull calculator
-        ConvexHull2D calculator = new JarvisMarch2D();
+        IConvexHull2D calculator = new JarvisMarch2D();
 
         long[] times = new long[nIter];
         double total = 0;

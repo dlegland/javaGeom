@@ -25,7 +25,7 @@ import math.geom2d.polygon.SimplePolygon2D;
  * @author dlegland
  *
  */
-public class GrahamScan2D implements ConvexHull2D {
+public class GrahamScan2D implements IConvexHull2D {
 
     /**
      * Creates a new Convex hull calculator.
@@ -38,6 +38,7 @@ public class GrahamScan2D implements ConvexHull2D {
      * 
      * @see math.geom2d.polygon.convhull.ConvexHull2D#convexHull(java.util.Collection)
      */
+    @Override
     public IPolygon2D convexHull(Collection<? extends Point2D> points) {
         int nbPoints = points.size();
         // TODO: manage small values of n
@@ -89,6 +90,7 @@ public class GrahamScan2D implements ConvexHull2D {
          * 
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(Point2D point1, Point2D point2) {
             double angle1 = Angle2DUtil.pseudoAngle(basePoint, point1);
             double angle2 = Angle2DUtil.pseudoAngle(basePoint, point2);

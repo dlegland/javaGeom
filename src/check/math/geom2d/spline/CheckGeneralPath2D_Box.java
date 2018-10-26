@@ -53,6 +53,7 @@ public class CheckGeneralPath2D_Box extends JPanel {
         this.line = new StraightLine2D(180, 220, 3, 2);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

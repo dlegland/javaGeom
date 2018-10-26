@@ -41,6 +41,7 @@ public class DrawCircleDemo extends JPanel {
         super();
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         g.setColor(Color.CYAN);
         g.fillRect(30, 30, 180, 150);

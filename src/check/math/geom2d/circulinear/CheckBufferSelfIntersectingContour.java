@@ -36,6 +36,7 @@ public class CheckBufferSelfIntersectingContour extends JPanel {
         curve = new LinearRing2D(new Point2D[] { new Point2D(100, 300), new Point2D(500, 300), new Point2D(500, 500), new Point2D(300, 500), new Point2D(300, 100), new Point2D(100, 100) });
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

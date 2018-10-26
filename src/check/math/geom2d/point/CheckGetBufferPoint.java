@@ -32,6 +32,7 @@ public class CheckGetBufferPoint extends JPanel {
         domain2 = point.buffer(-50);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 

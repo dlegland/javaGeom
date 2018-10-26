@@ -40,15 +40,6 @@ public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends P
     private static final long serialVersionUID = 1L;
 
     /**
-     * Static factory for creating a new BoundaryPolyCurve2D from a collection of curves.
-     * 
-     * @since 0.8.1
-     */
-    /*
-     * public static <T extends ContinuousOrientedCurve2D> BoundaryPolyCurve2D<T> create( Collection<T> curves) { return new BoundaryPolyCurve2D<T>(curves); }
-     */
-
-    /**
      * Static factory for creating a new BoundaryPolyCurve2D from an array of curves.
      * 
      * @since 0.8.1
@@ -111,14 +102,17 @@ public class BoundaryPolyCurve2D<T extends IContinuousOrientedCurve2D> extends P
     // ===================================================================
     // Methods implementing Boundary2D interface
 
+    @Override
     public Collection<BoundaryPolyCurve2D<T>> continuousCurves() {
         return wrapCurve(this);
     }
 
+    @Override
     public IDomain2D domain() {
         return new GenericDomain2D(this);
     }
 
+    @Override
     public void fill(Graphics2D g2) {
         g2.fill(this.getGeneralPath());
     }

@@ -7,8 +7,8 @@ package math.geom2d.polygon;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.PointSets2D;
 

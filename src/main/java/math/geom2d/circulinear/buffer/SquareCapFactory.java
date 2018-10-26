@@ -18,13 +18,14 @@ import math.geom2d.polygon.Polyline2D;
  * @author dlegland
  *
  */
-public class SquareCapFactory implements CapFactory {
+public class SquareCapFactory implements ICapFactory {
 
     /*
      * (non-Javadoc)
      * 
      * @see math.geom2d.circulinear.buffer.CapFactory#createCap(math.geom2d.Point2D, math.geom2d.Vector2D, double)
      */
+    @Override
     public ICirculinearContinuousCurve2D createCap(Point2D center, Vector2D direction, double dist) {
         double theta = direction.angle();
         return createCap(center, theta, dist);
@@ -35,6 +36,7 @@ public class SquareCapFactory implements CapFactory {
      * 
      * @see math.geom2d.circulinear.buffer.CapFactory#createCap(math.geom2d.Point2D, math.geom2d.Point2D)
      */
+    @Override
     public ICirculinearContinuousCurve2D createCap(Point2D p1, Point2D p2) {
         Point2D center = Point2D.midPoint(p1, p2);
         double dist = Point2D.distance(p1, p2) / 2;
