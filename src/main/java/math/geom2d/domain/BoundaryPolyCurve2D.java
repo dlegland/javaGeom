@@ -29,7 +29,7 @@ package math.geom2d.domain;
 import java.awt.Graphics2D;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A single continuous oriented curve, which defines the boundary of a planar domain. The boundary curve is composed of several continuous and oriented curves linked together to form a continuous curve. The resulting boundary curve is either a closed curve, or an infinite curve at both ends.

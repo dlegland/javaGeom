@@ -28,12 +28,12 @@ package math.geom2d.polygon;
 // Imports
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Represent any class made of a finite set of simply connected edges. This include simple polygons, multiple polygons, or more specialized shapes like rectangles, squares... The boundary of a polygon is a collection of LinearRing2D.

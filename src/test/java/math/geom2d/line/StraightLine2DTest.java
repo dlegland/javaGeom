@@ -22,18 +22,17 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 29 déc. 2003
+ * Created on 29 dï¿½c. 2003
  */
 package math.geom2d.line;
 
 import junit.framework.TestCase;
-
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICircleLine2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**

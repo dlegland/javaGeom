@@ -39,19 +39,17 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
@@ -59,7 +57,9 @@ import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -71,7 +71,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D {
+public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D {
     private static final long serialVersionUID = 1L;
 
     // ====================================================================
@@ -601,7 +601,7 @@ public class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcSha
     @Override
     public ICurveSet2D<CircleArc2D> clip(Box2D box) {
         // Clip he curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // create a new structure for storing result
         CurveArray2D<CircleArc2D> result = new CurveArray2D<>(set.size());

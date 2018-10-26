@@ -4,15 +4,17 @@
 
 package math.geom3d;
 
+import java.io.Serializable;
+
+import math.geom3d.point.Point3D;
+
 /**
  * A 3-dimensional box, defined by its extent in each direction.
  * 
  * @author dlegland
  */
-public class Box3D {
-
-    // ===================================================================
-    // class variables
+public class Box3D implements IGeometricObject3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private double xmin = 0;
     private double xmax = 0;
@@ -40,7 +42,7 @@ public class Box3D {
 
     /** Constructor from 2 points, giving extreme coordinates of the box. */
     public Box3D(Point3D p1, Point3D p2) {
-        this(p1.getX(), p2.getX(), p1.getY(), p2.getY(), p1.getZ(), p2.getZ());
+        this(p1.x(), p2.x(), p1.y(), p2.y(), p1.z(), p2.z());
     }
 
     // ===================================================================
@@ -119,4 +121,76 @@ public class Box3D {
         return new Box3D(newxmin, newxmax, newymin, newymax, newzmin, newzmax);
     }
 
+    /**
+     * Tests if boxes are the same. Two boxes are the same if they have the same bounds, up to the specified threshold value.
+     */
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        // check class, and cast type
+        if (!(obj instanceof Box3D))
+            return false;
+        Box3D box = (Box3D) obj;
+
+        if (Math.abs(this.xmin - box.xmin) > eps)
+            return false;
+        if (Math.abs(this.xmax - box.xmax) > eps)
+            return false;
+        if (Math.abs(this.ymin - box.ymin) > eps)
+            return false;
+        if (Math.abs(this.ymax - box.ymax) > eps)
+            return false;
+        if (Math.abs(this.zmin - box.zmin) > eps)
+            return false;
+        if (Math.abs(this.zmax - box.zmax) > eps)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(xmax);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(xmin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ymax);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ymin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(zmax);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(zmin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Box3D other = (Box3D) obj;
+        if (Double.doubleToLongBits(xmax) != Double.doubleToLongBits(other.xmax))
+            return false;
+        if (Double.doubleToLongBits(xmin) != Double.doubleToLongBits(other.xmin))
+            return false;
+        if (Double.doubleToLongBits(ymax) != Double.doubleToLongBits(other.ymax))
+            return false;
+        if (Double.doubleToLongBits(ymin) != Double.doubleToLongBits(other.ymin))
+            return false;
+        if (Double.doubleToLongBits(zmax) != Double.doubleToLongBits(other.zmax))
+            return false;
+        if (Double.doubleToLongBits(zmin) != Double.doubleToLongBits(other.zmin))
+            return false;
+        return true;
+    }
 }

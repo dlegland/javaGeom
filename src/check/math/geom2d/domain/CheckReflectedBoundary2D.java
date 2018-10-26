@@ -34,11 +34,11 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class CheckReflectedBoundary2D extends JPanel {
 

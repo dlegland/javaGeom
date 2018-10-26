@@ -30,12 +30,12 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A PolyCurve2D is a set of piecewise smooth curve arcs, such that the end of a curve is the beginning of the next curve, and such that they do not intersect nor self-intersect.
@@ -350,7 +350,7 @@ public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> i
     @Override
     public ICurveSet2D<? extends IContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<IContinuousCurve2D> result = new CurveArray2D<>(set.size());

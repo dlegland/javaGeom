@@ -33,7 +33,6 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
@@ -44,6 +43,7 @@ import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author Legland

@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 25 déc. 2003
+ * Created on 25 dï¿½c. 2003
  */
 
 package math.geom2d;
@@ -32,6 +32,8 @@ import static java.lang.Math.sqrt;
 import junit.framework.TestCase;
 import math.geom2d.exception.NonInvertibleTransform2DException;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author Legland

@@ -37,17 +37,17 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.utils.EqualUtils;
 
 // Imports

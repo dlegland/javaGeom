@@ -16,7 +16,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 import java.io.Serializable;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 
 /**
  * The <code>GeneralPath</code> class represents a geometric path constructed from straight lines, and quadratic and cubic (Bezier) curves. It can contain multiple subpaths.

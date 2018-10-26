@@ -20,9 +20,7 @@ import math.geom2d.transform.CircleInversion2D;
  *
  */
 public class GenericCirculinearDomain2D extends GenericDomain2D implements ICirculinearDomain2D {
-
-    // ===================================================================
-    // Static factories
+    private static final long serialVersionUID = 1L;
 
     public static GenericCirculinearDomain2D create(ICirculinearBoundary2D boundary) {
         return new GenericCirculinearDomain2D(boundary);

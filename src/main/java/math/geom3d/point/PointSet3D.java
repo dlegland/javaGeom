@@ -2,13 +2,16 @@
  * 
  */
 
-package math.geom3d;
+package math.geom3d.point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom3d.Box3D;
+import math.geom3d.IGeometricObject3D;
+import math.geom3d.IShape3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -130,12 +133,12 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
         double zmax = Double.MIN_VALUE;
 
         for (Point3D point : points) {
-            xmin = Math.min(xmin, point.getX());
-            ymin = Math.min(ymin, point.getY());
-            zmin = Math.min(zmin, point.getZ());
-            xmax = Math.max(xmax, point.getX());
-            ymax = Math.max(ymax, point.getY());
-            zmax = Math.max(zmax, point.getZ());
+            xmin = Math.min(xmin, point.x());
+            ymin = Math.min(ymin, point.y());
+            zmin = Math.min(zmin, point.z());
+            xmax = Math.max(xmax, point.x());
+            ymax = Math.max(ymax, point.y());
+            zmax = Math.max(zmax, point.z());
         }
         return new Box3D(xmin, xmax, ymin, ymax, zmin, zmax);
     }
@@ -197,5 +200,51 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
     @Override
     public Iterator<Point3D> iterator() {
         return points.iterator();
+    }
+
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof PointSet3D))
+            return false;
+
+        PointSet3D set = (PointSet3D) obj;
+        if (this.points.size() != set.points.size())
+            return false;
+
+        Iterator<Point3D> iter = set.iterator();
+        for (Point3D point : points) {
+            if (!point.almostEquals(iter.next(), eps))
+                return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((points == null) ? 0 : points.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PointSet3D other = (PointSet3D) obj;
+        if (points == null) {
+            if (other.points != null)
+                return false;
+        } else if (!points.equals(other.points))
+            return false;
+        return true;
     }
 }

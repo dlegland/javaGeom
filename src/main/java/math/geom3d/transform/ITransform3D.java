@@ -26,7 +26,7 @@
 
 package math.geom3d.transform;
 
-import math.geom3d.Point3D;
+import math.geom3d.point.Point3D;
 
 /**
  * @author dlegland

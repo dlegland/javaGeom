@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.point.PointSets2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.point.PointSets2DUtil;
 
 /**
  * Some utility functions for manipulating Polyline2D.
@@ -128,7 +128,7 @@ public abstract class Polylines2D {
      */
     public final static boolean hasMultipleVertices(LinearCurve2D polyline, boolean closed) {
         // Test vertices within polyline
-        if (PointSets2D.hasMultipleVertices(polyline.vertices))
+        if (PointSets2DUtil.hasMultipleVertices(polyline.vertices))
             return true;
 
         // Eventually tests extremities

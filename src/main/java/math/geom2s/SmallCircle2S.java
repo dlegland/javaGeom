@@ -26,11 +26,13 @@
 
 package math.geom2s;
 
+import java.io.Serializable;
+
 /**
  * A small circle defined on a 2D Sphere. A small circle is defined by its eulerian pole, and the radius given in radians : the distance of each point of the circle to the eulerian pole equals the radius.
  * 
  * @author Legland
  */
-public class SmallCircle2S implements ICurve2S {
-    // nothing
+public class SmallCircle2S implements ICurve2S, Serializable {
+    private static final long serialVersionUID = 1L;
 }

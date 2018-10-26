@@ -29,11 +29,11 @@ package math.geom2d.curve;
 import java.awt.Graphics2D;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * <p>

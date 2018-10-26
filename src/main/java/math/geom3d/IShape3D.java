@@ -26,6 +26,7 @@
 
 package math.geom3d;
 
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -33,27 +34,27 @@ import math.geom3d.transform.AffineTransform3D;
  * 
  * @author dlegland
  */
-public interface IShape3D {
+public interface IShape3D extends IGeometricObject3D {
 
     public final static double ACCURACY = 1e-12;
 
-    public abstract boolean isEmpty();
+    boolean isEmpty();
 
     /**
      * Returns true if the shape is bounded, that is if we can draw a finite rectangle enclosing the shape. For example, a straight line or a parabola are not bounded.
      */
-    public abstract boolean isBounded();
+    boolean isBounded();
 
-    public abstract Box3D boundingBox();
+    Box3D boundingBox();
 
-    public abstract IShape3D clip(Box3D box);
+    IShape3D clip(Box3D box);
 
-    public abstract IShape3D transform(AffineTransform3D trans);
+    IShape3D transform(AffineTransform3D trans);
 
     /**
      * Gets the distance of the shape to the given point, or the distance of point to the frontier of the shape in the case of a plain shape.
      */
-    public abstract double distance(Point3D p);
+    double distance(Point3D p);
 
-    public abstract boolean contains(Point3D point);
+    boolean contains(Point3D point);
 }

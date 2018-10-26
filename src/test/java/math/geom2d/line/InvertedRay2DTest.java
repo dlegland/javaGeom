@@ -22,13 +22,12 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 31 déc. 2003
+ * Created on 31 dï¿½c. 2003
  */
 
 package math.geom2d.line;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearCurve2D;
@@ -38,6 +37,7 @@ import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.exception.UnboundedShape2DException;
+import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 

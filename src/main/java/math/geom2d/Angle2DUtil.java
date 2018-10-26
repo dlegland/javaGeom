@@ -31,9 +31,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.atan2;
 
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
 import math.utils.EqualUtils;
-
-import static java.lang.Math.*;
 
 /**
  * This class is only devoted to static computations.

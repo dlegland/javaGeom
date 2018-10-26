@@ -20,16 +20,16 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 25 déc. 2006
+ * Created on 25 dï¿½c. 2006
  *
  */
 
 package math.geom2d.domain;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.curve.ICurve2D;
 
 /**

@@ -12,15 +12,15 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -29,7 +29,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyCirculinearCurve2D<T> implements ICirculinearContinuousCurve2D, ICirculinearContour2D {
+public final class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyCirculinearCurve2D<T> implements ICirculinearContinuousCurve2D, ICirculinearContour2D {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -244,7 +244,7 @@ public class BoundaryPolyCirculinearCurve2D<T extends ICirculinearContinuousCurv
     @Override
     public ICirculinearCurveSet2D<? extends ICirculinearContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

@@ -9,11 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.StraightLine2D;
-import math.geom2d.AffineTransform2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class CheckClipCircle2D extends JPanel {
 

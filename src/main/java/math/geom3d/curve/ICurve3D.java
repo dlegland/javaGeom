@@ -6,8 +6,8 @@ package math.geom3d.curve;
 
 import java.util.Collection;
 
-import math.geom3d.Point3D;
 import math.geom3d.IShape3D;
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -20,12 +20,12 @@ public interface ICurve3D extends IShape3D {
     /**
      * Get value of parameter t for the first point of the curve. It can be -Infinity, in this case the piece of curve is not bounded.
      */
-    public abstract double getT0();
+    public abstract double t0();
 
     /**
      * Get value of parameter t for the last point of the curve. It can be +Infinity, in this case the piece of curve is not bounded.
      */
-    public abstract double getT1();
+    public abstract double t1();
 
     /**
      * Gets the point from a parametric representation of the curve. If the parameter lies outside the definition range, the parameter corresponding to the closest bound is used instead. This method can be used to draw an approximated outline of a curve, by selecting multiple values for t and drawing lines between them.

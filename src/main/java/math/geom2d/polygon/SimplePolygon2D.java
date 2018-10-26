@@ -27,27 +27,29 @@ package math.geom2d.polygon;
 
 // Imports
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.CirculinearDomains2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearBoundary2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.point.PointSets2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.point.PointSets2DUtil;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
  * Represent a polygonal domain whose boundary is a single closed polyline.
  */
-public class SimplePolygon2D implements IPolygon2D {
+public class SimplePolygon2D implements IPolygon2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // ===================================================================
     // Static constructors
@@ -348,8 +350,8 @@ public class SimplePolygon2D implements IPolygon2D {
     @Override
     public ICirculinearDomain2D buffer(double dist) {
         // check for multiple vertices
-        if (PointSets2D.hasMultipleVertices(this.vertices, true)) {
-            List<Point2D> pts2 = PointSets2D.filterMultipleVertices(this.vertices, true);
+        if (PointSets2DUtil.hasMultipleVertices(this.vertices, true)) {
+            List<Point2D> pts2 = PointSets2DUtil.filterMultipleVertices(this.vertices, true);
             SimplePolygon2D poly2 = new SimplePolygon2D(pts2);
             return CirculinearDomains2D.computeBuffer(poly2, dist);
         }
@@ -578,31 +580,28 @@ public class SimplePolygon2D implements IPolygon2D {
         return true;
     }
 
-    // ===================================================================
-    // methods inherited from Object interface
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((vertices == null) ? 0 : vertices.hashCode());
+        return result;
+    }
 
-    /**
-     * Tests if the two polygons are equal. Test first the number of vertices, then the bounding boxes, then if each vertex of the polygon is contained in the vertices array of this polygon.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!(obj instanceof SimplePolygon2D))
+        if (obj == null)
             return false;
-
-        SimplePolygon2D polygon = (SimplePolygon2D) obj;
-
-        int nv = this.vertexNumber();
-        if (polygon.vertexNumber() != nv)
+        if (getClass() != obj.getClass())
             return false;
-
-        for (int i = 0; i < nv; i++) {
-            if (!this.vertex(i).equals(polygon.vertex(i)))
+        SimplePolygon2D other = (SimplePolygon2D) obj;
+        if (vertices == null) {
+            if (other.vertices != null)
                 return false;
-        }
-
+        } else if (!vertices.equals(other.vertices))
+            return false;
         return true;
     }
-
 }

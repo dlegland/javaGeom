@@ -25,16 +25,17 @@ package math.geom2d.curve;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * <p>
@@ -46,7 +47,9 @@ import math.geom2d.line.ILinearShape2D;
  * 
  * @author Legland
  */
-public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T> {
+public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * Static factory for creating a new CurveArray2D from an array of curves.
      * 
@@ -128,7 +131,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         T curve = curves.get(i);
         double t0 = curve.t0();
         double t1 = curve.t1();
-        return Curves2D.fromUnitSegment(t - 2 * i, t0, t1);
+        return Curves2DUtil.fromUnitSegment(t - 2 * i, t0, t1);
     }
 
     /**
@@ -147,7 +150,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         T curve = curves.get(i);
         double t0 = curve.t0();
         double t1 = curve.t1();
-        return Curves2D.toUnitSegment(t, t0, t1) + i * 2;
+        return Curves2DUtil.toUnitSegment(t, t0, t1) + i * 2;
     }
 
     /**
@@ -366,7 +369,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         int indc = (int) Math.floor(nc / 2);
         if (indc * 2 == nc) {
             ICurve2D curve = curves.get(indc);
-            double pos = Curves2D.fromUnitSegment(t - nc, curve.t0(), curve.t1());
+            double pos = Curves2DUtil.fromUnitSegment(t - nc, curve.t0(), curve.t1());
             return curve.point(pos);
         } else {
             // return either last point of preceding curve,
@@ -420,11 +423,11 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
                 addPointWithGuardDistance(points, point, eps);
 
             // add first extremity
-            if (!Curves2D.isLeftInfinite(curve))
+            if (!Curves2DUtil.isLeftInfinite(curve))
                 addPointWithGuardDistance(points, curve.firstPoint(), eps);
 
             // add last extremity
-            if (!Curves2D.isRightInfinite(curve))
+            if (!Curves2DUtil.isRightInfinite(curve))
                 addPointWithGuardDistance(points, curve.lastPoint(), eps);
         }
         // return the set of singular points
@@ -488,7 +491,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
                 // format position
                 t0 = curve.t0();
                 t1 = curve.t1();
-                pos = Curves2D.toUnitSegment(pos, t0, t1) + i * 2;
+                pos = Curves2DUtil.toUnitSegment(pos, t0, t1) + i * 2;
             }
             i++;
         }
@@ -510,7 +513,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
                 // format position
                 t0 = curve.t0();
                 t1 = curve.t1();
-                pos = Curves2D.toUnitSegment(pos, t0, t1) + i * 2;
+                pos = Curves2DUtil.toUnitSegment(pos, t0, t1) + i * 2;
             }
             i++;
         }
@@ -570,15 +573,15 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         // need to subdivide only one curve
         if (ind0 == ind1 && t0 < t1) {
             curve = curves.get(ind0);
-            pos0 = Curves2D.fromUnitSegment(t0 - t0f, curve.t0(), curve.t1());
-            pos1 = Curves2D.fromUnitSegment(t1 - t1f, curve.t0(), curve.t1());
+            pos0 = Curves2DUtil.fromUnitSegment(t0 - t0f, curve.t0(), curve.t1());
+            pos1 = Curves2DUtil.fromUnitSegment(t1 - t1f, curve.t0(), curve.t1());
             res.add(curve.subCurve(pos0, pos1));
             return res;
         }
 
         // add the end of the curve containing first cut
         curve = curves.get(ind0);
-        pos0 = Curves2D.fromUnitSegment(t0 - t0f, curve.t0(), curve.t1());
+        pos0 = Curves2DUtil.fromUnitSegment(t0 - t0f, curve.t0(), curve.t1());
         res.add(curve.subCurve(pos0, curve.t1()));
 
         if (ind1 > ind0) {
@@ -597,7 +600,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
 
         // add the beginning of the last cut curve
         curve = curves.get(ind1);
-        pos1 = Curves2D.fromUnitSegment(t1 - t1f, curve.t0(), curve.t1());
+        pos1 = Curves2DUtil.fromUnitSegment(t1 - t1f, curve.t0(), curve.t1());
         res.add(curve.subCurve(curve.t0(), pos1));
 
         // return the curve set
@@ -637,7 +640,7 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
     @Override
     public ICurveSet2D<? extends ICurve2D> clip(Box2D box) {
         // Simply calls the generic method in Curve2DUtils
-        return Curves2D.clipCurveSet(this, box);
+        return Curves2DUtil.clipCurveSet(this, box);
     }
 
     /**
@@ -779,10 +782,6 @@ public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterabl
         // otherwise return true
         return true;
     }
-
-
-
-  
 
     @Override
     public int hashCode() {

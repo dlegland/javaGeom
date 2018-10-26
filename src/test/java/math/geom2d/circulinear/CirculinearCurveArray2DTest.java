@@ -11,7 +11,6 @@ package math.geom2d.circulinear;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
@@ -19,6 +18,7 @@ import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 

@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 31 déc. 2003
+ * Created on 31 dï¿½c. 2003
  */
 
 package math.geom2d;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.IDomain2D;
-
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 /**

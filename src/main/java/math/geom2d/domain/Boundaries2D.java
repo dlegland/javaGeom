@@ -10,13 +10,13 @@ import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.exception.UnboundedBox2DException;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**
@@ -36,7 +36,7 @@ public abstract class Boundaries2D implements Serializable{
         CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<>();
 
         // for each clipped curve, add its pieces
-        for (IContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
+        for (IContinuousCurve2D cont : Curves2DUtil.clipContinuousCurve(curve, box))
             if (cont instanceof IContinuousOrientedCurve2D)
                 result.add((IContinuousOrientedCurve2D) cont);
 

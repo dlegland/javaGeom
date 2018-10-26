@@ -24,25 +24,23 @@
 package math.geom2d.spline;
 
 import java.awt.geom.QuadCurve2D;
-import java.io.Serializable;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A quadratic Bezier curve, defined by 3 control points. The curve starts at the first control point and finished at the third control point. The second point is used to defined the curvature of the curve.
@@ -426,7 +424,7 @@ public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothC
     @Override
     public ICurveSet2D<? extends QuadBezierCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<QuadBezierCurve2D> result = new CurveArray2D<>(set.size());
@@ -520,31 +518,46 @@ public class QuadBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothC
     // methods overriding the class Object
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(ctrlx);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ctrly);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof QuadBezierCurve2D))
+        if (obj == null)
             return false;
-
-        // Class cast
-        QuadBezierCurve2D bezier = (QuadBezierCurve2D) obj;
-
-        // Compare each field
-        if (Math.abs(this.x1 - bezier.x1) > IShape2D.ACCURACY)
+        if (getClass() != obj.getClass())
             return false;
-        if (Math.abs(this.y1 - bezier.y1) > IShape2D.ACCURACY)
+        QuadBezierCurve2D other = (QuadBezierCurve2D) obj;
+        if (Double.doubleToLongBits(ctrlx) != Double.doubleToLongBits(other.ctrlx))
             return false;
-        if (Math.abs(this.ctrlx - bezier.ctrlx) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(ctrly) != Double.doubleToLongBits(other.ctrly))
             return false;
-        if (Math.abs(this.ctrly - bezier.ctrly) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(x1) != Double.doubleToLongBits(other.x1))
             return false;
-        if (Math.abs(this.x2 - bezier.x2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(x2) != Double.doubleToLongBits(other.x2))
             return false;
-        if (Math.abs(this.y2 - bezier.y2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(y1) != Double.doubleToLongBits(other.y1))
             return false;
-
+        if (Double.doubleToLongBits(y2) != Double.doubleToLongBits(other.y2))
+            return false;
         return true;
     }
-
 }

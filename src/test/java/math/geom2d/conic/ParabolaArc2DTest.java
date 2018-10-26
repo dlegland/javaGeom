@@ -29,12 +29,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearCurve2D;
 
 public class ParabolaArc2DTest extends TestCase {
@@ -171,7 +171,7 @@ public class ParabolaArc2DTest extends TestCase {
         ParabolaArc2D clippedArc = new ParabolaArc2D(parabola, -2, 2);
         StraightLine2D line = new StraightLine2D(10, 4, -20, 0);
 
-        ICurveSet2D<?> clippedCurve = Curves2D.clipSmoothCurve(arc, line);
+        ICurveSet2D<?> clippedCurve = Curves2DUtil.clipSmoothCurve(arc, line);
         ICurve2D curve = clippedCurve.firstCurve();
 
         assertTrue(clippedCurve.size() == 1);

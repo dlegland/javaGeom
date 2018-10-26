@@ -26,12 +26,15 @@
 
 package math.geom2d.polygon;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import math.geom2d.domain.IDomain2D;
-import math.geom2d.polygon.SimplePolygon2D;
+import math.geom2d.point.Point2D;
 
 public class CheckPolyline2DCreateBuffer extends JPanel {
 

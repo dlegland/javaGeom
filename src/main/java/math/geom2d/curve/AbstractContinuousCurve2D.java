@@ -14,8 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.Point2D;
 import math.geom2d.exception.UnboundedShape2DException;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearCurve2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;

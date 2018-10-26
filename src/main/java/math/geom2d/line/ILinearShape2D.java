@@ -4,10 +4,10 @@
 
 package math.geom2d.line;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearCurve2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A curve that can be inscribed in a straight line, like a ray, a straight line, or a line segment. Classes implementing this interface can be discontinuous, contrary to the interface LinearElement2D.

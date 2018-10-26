@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 package math.geom2d.curve;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
@@ -18,21 +14,17 @@ import java.util.TreeSet;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Collects some useful methods for clipping curves.
  * 
  * @author dlegland
  */
-public abstract class Curves2D {
-
-    // ===================================================================
-    // static methods
-
+public final class Curves2DUtil {
     /**
      * Mapping of the parameter t, relative to the local curve, into the interval [0 1], [0 1[, ]0 1], or ]0 1[, depending on the values of t0 and t1.
      * 
@@ -100,11 +92,11 @@ public abstract class Curves2D {
         // Case of continuous curve:
         // convert the result of ClipContinuousCurve to CurveSet of Curve2D
         if (curve instanceof IContinuousCurve2D)
-            return Curves2D.clipContinuousCurve((IContinuousCurve2D) curve, box);
+            return Curves2DUtil.clipContinuousCurve((IContinuousCurve2D) curve, box);
 
         // case of a CurveSet2D
         if (curve instanceof ICurveSet2D<?>)
-            return Curves2D.clipCurveSet((ICurveSet2D<?>) curve, box);
+            return Curves2DUtil.clipCurveSet((ICurveSet2D<?>) curve, box);
 
         // Unknown case
         System.err.println("Unknown curve class in Box2D.clipCurve()");
@@ -121,7 +113,7 @@ public abstract class Curves2D {
 
         // a clipped parts of current curve to the result
         for (ICurve2D curve : curveSet) {
-            clipped = Curves2D.clipCurve(curve, box);
+            clipped = Curves2DUtil.clipCurve(curve, box);
             for (ICurve2D clippedPart : clipped)
                 result.add(clippedPart);
         }
@@ -302,7 +294,7 @@ public abstract class Curves2D {
      */
     public static ICurveSet2D<ISmoothCurve2D> clipSmoothCurve(ISmoothCurve2D curve, Box2D box) {
         CurveArray2D<ISmoothCurve2D> result = new CurveArray2D<>();
-        for (IContinuousCurve2D cont : Curves2D.clipContinuousCurve(curve, box))
+        for (IContinuousCurve2D cont : Curves2DUtil.clipContinuousCurve(curve, box))
             if (cont instanceof ISmoothCurve2D)
                 result.add((ISmoothCurve2D) cont);
 

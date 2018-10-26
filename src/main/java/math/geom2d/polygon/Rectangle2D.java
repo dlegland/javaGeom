@@ -27,32 +27,27 @@ package math.geom2d.polygon;
 
 // Imports
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
-import math.utils.EqualUtils;
 
 /**
  * Rectangle2D defines a rectangle rotated around its first corner.
  */
-public class Rectangle2D implements IPolygon2D {
-
-    // ===================================================================
-    // constants
-
-    // ===================================================================
-    // class variables
+public class Rectangle2D implements IPolygon2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final double x0;
     private final double y0;
@@ -479,33 +474,39 @@ public class Rectangle2D implements IPolygon2D {
         return true;
     }
 
-    // ===================================================================
-    // methods inherited from Object interface
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(h);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(w);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y0);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
-    /**
-     * Tests if rectangles are the same.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        // check class, and cast type
-        if (!(obj instanceof Rectangle2D))
+        if (obj == null)
             return false;
-        Rectangle2D that = (Rectangle2D) obj;
-
-        // Compare each field
-        if (!EqualUtils.areEqual(this.x0, that.x0))
+        if (getClass() != obj.getClass())
             return false;
-        if (!EqualUtils.areEqual(this.y0, that.y0))
+        Rectangle2D other = (Rectangle2D) obj;
+        if (Double.doubleToLongBits(h) != Double.doubleToLongBits(other.h))
             return false;
-        if (!EqualUtils.areEqual(this.w, that.w))
+        if (Double.doubleToLongBits(w) != Double.doubleToLongBits(other.w))
             return false;
-        if (!EqualUtils.areEqual(this.h, that.h))
+        if (Double.doubleToLongBits(x0) != Double.doubleToLongBits(other.x0))
             return false;
-
+        if (Double.doubleToLongBits(y0) != Double.doubleToLongBits(other.y0))
+            return false;
         return true;
     }
-
 }

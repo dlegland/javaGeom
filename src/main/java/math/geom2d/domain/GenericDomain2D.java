@@ -27,18 +27,19 @@
 package math.geom2d.domain;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.exception.UnboundedShape2DException;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.polygon.LinearCurve2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.MultiPolygon2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A domain defined from its boundary. The boundary curve must be correctly oriented, non self intersecting, and clearly separating interior and exterior.
@@ -47,7 +48,8 @@ import math.geom2d.polygon.MultiPolygon2D;
  * 
  * @author Legland
  */
-public class GenericDomain2D implements IDomain2D {
+public class GenericDomain2D implements IDomain2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // ===================================================================
     // Static factories
@@ -235,21 +237,27 @@ public class GenericDomain2D implements IDomain2D {
         return "GenericDomain2D(boundary=" + boundary + ")";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom2d.GeometricObject2D#almostEquals(math.geom2d.GeometricObject2D, double)
-     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((boundary == null) ? 0 : boundary.hashCode());
+        return result;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof GenericDomain2D))
+        if (obj == null)
             return false;
-        GenericDomain2D domain = (GenericDomain2D) obj;
-
-        if (!boundary.equals(domain.boundary))
+        if (getClass() != obj.getClass())
+            return false;
+        GenericDomain2D other = (GenericDomain2D) obj;
+        if (boundary == null) {
+            if (other.boundary != null)
+                return false;
+        } else if (!boundary.equals(other.boundary))
             return false;
         return true;
     }

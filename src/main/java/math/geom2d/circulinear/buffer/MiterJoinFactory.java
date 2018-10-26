@@ -11,10 +11,10 @@ package math.geom2d.circulinear.buffer;
 import static java.lang.Math.PI;
 
 import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**

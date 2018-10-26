@@ -31,6 +31,7 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 public class CheckClipPolySmoothCurve2D extends JPanel {
 

@@ -25,10 +25,9 @@
 
 package math.geom2d.curve;
 
-// Imports
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Vector2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Interface for smooth and continuous curves. Such curves accept first and second derivatives at every point, and can be drawn with a parametric representation for every values of t comprised between T0 and T1. Every instance of Curve2D is a compound of several SmoothCurve2D.

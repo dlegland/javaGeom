@@ -2,20 +2,21 @@
 package math.geom2d.polygon;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -23,7 +24,8 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class MultiPolygon2D implements IDomain2D, IPolygon2D {
+public class MultiPolygon2D implements IDomain2D, IPolygon2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // ===================================================================
     // Static constructors
@@ -474,7 +476,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
 
     @Override
     public boolean contains(double x, double y) {
-        return this.contains(new math.geom2d.Point2D(x, y));
+        return this.contains(new math.geom2d.point.Point2D(x, y));
     }
 
     @Override
@@ -516,27 +518,28 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D {
         return true;
     }
 
-    // ===================================================================
-    // methods overriding the Object class
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((rings == null) ? 0 : rings.hashCode());
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof MultiPolygon2D))
+        if (obj == null)
             return false;
-
-        // check if the two objects have same number of rings
-        MultiPolygon2D polygon = (MultiPolygon2D) obj;
-        if (polygon.rings.size() != this.rings.size())
+        if (getClass() != obj.getClass())
             return false;
-
-        // check each couple of ring
-        for (int i = 0; i < rings.size(); i++)
-            if (!this.rings.get(i).equals(polygon.rings.get(i)))
+        MultiPolygon2D other = (MultiPolygon2D) obj;
+        if (rings == null) {
+            if (other.rings != null)
                 return false;
-
+        } else if (!rings.equals(other.rings))
+            return false;
         return true;
     }
 

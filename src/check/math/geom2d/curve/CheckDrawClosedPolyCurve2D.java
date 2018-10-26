@@ -12,9 +12,9 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Check (1) if a line is drawn between each portion, (2) if each portion starts at the right position, and (3) if the curve is drawn closed.

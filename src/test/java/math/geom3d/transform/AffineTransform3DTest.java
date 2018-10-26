@@ -1,7 +1,7 @@
 package math.geom3d.transform;
 
-import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
+import math.geom3d.point.Point3D;
 import junit.framework.TestCase;
 
 public class AffineTransform3DTest extends TestCase {

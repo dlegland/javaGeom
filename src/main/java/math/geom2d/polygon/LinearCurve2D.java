@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
@@ -18,11 +17,12 @@ import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.AbstractContinuousCurve2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineSegment2D;
-import math.geom2d.point.PointSets2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.point.PointSets2DUtil;
 
 /**
  * Abstract class that is the base implementation of Polyline2D and LinearRing2D.
@@ -309,8 +309,8 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
         BufferCalculator bc = BufferCalculator.getDefaultInstance();
 
         // basic check to avoid degenerate cases
-        if (PointSets2D.hasMultipleVertices(this.vertices)) {
-            Polyline2D poly2 = Polyline2D.create(PointSets2D.filterMultipleVertices(this.vertices));
+        if (PointSets2DUtil.hasMultipleVertices(this.vertices)) {
+            Polyline2D poly2 = Polyline2D.create(PointSets2DUtil.filterMultipleVertices(this.vertices));
             return bc.computeBuffer(poly2, dist);
         }
 
@@ -627,7 +627,7 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
     @Override
     public ICurveSet2D<? extends LinearCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<LinearCurve2D> result = new CurveArray2D<>(set.size());
@@ -655,4 +655,28 @@ public abstract class LinearCurve2D extends AbstractContinuousCurve2D implements
         g2.draw(this.asGeneralPath());
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((vertices == null) ? 0 : vertices.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LinearCurve2D other = (LinearCurve2D) obj;
+        if (vertices == null) {
+            if (other.vertices != null)
+                return false;
+        } else if (!vertices.equals(other.vertices))
+            return false;
+        return true;
+    }
 }

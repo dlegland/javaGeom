@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.IPointSet2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Compute the buffer of a circulinear curve or domain, and gather some methods for computing parallel curves.
@@ -342,8 +342,8 @@ public class BufferCalculator {
             ArrayList<ICirculinearElement2D> elements = new ArrayList<>();
 
             // some shortcuts for computing infinity of curve
-            boolean b0 = !Curves2D.isLeftInfinite(curve1);
-            boolean b1 = !Curves2D.isRightInfinite(curve1);
+            boolean b0 = !Curves2DUtil.isLeftInfinite(curve1);
+            boolean b1 = !Curves2DUtil.isRightInfinite(curve1);
 
             if (b0 && b1) {
                 // case of a curve finite at each extremity
@@ -460,7 +460,7 @@ public class BufferCalculator {
         // If no singular point, choose an arbitrary point on the curve
         if (points.isEmpty()) {
             points = new ArrayList<>();
-            double t = Curves2D.choosePosition(curve.t0(), curve.t1());
+            double t = Curves2DUtil.choosePosition(curve.t0(), curve.t1());
             points.add(curve.point(t));
         }
 

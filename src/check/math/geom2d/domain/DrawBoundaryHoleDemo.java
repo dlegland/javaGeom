@@ -26,14 +26,16 @@
 
 package math.geom2d.domain;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import math.geom2d.conic.Circle2D;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.domain.IContour2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
 
 public class DrawBoundaryHoleDemo extends JPanel {

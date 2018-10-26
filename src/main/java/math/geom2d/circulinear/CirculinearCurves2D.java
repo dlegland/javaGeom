@@ -13,18 +13,18 @@ import java.util.Collection;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.ICircularShape2D;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.exception.NonCirculinearClassException;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Some utilities for working with circulinear curves.
@@ -207,10 +207,10 @@ public class CirculinearCurves2D {
                         continue;
 
                     // add the intersection if we keep it
-                    dt = Curves2D.toUnitSegment(elem1.position(inter), elem1.t0(), elem1.t1());
+                    dt = Curves2DUtil.toUnitSegment(elem1.position(inter), elem1.t0(), elem1.t1());
                     list1.add(2 * i + dt);
 
-                    dt = Curves2D.toUnitSegment(elem2.position(inter), elem2.t0(), elem2.t1());
+                    dt = Curves2DUtil.toUnitSegment(elem2.position(inter), elem2.t0(), elem2.t1());
                     list2.add(2 * j + dt);
                 }
             }

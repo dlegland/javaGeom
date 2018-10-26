@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.IPointSet2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.point.PointArray2D;
 
 /**

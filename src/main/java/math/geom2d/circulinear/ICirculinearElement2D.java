@@ -9,9 +9,9 @@
 package math.geom2d.circulinear;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**

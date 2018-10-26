@@ -12,7 +12,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.ShapeArray2D;
 import math.geom2d.exception.UnboundedShape2DException;
@@ -20,6 +19,7 @@ import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.polygon.LinearCurve2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.MultiPolygon2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An array of domains. Note that this class if different from a generic domain whose boundary is a set of contours. In the latter case, the shape is itself a domain, not in the former.

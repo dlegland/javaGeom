@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.IContour2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
 
 public class CirculinearContourArray2DTest extends TestCase {

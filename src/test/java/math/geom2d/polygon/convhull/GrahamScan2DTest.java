@@ -1,6 +1,6 @@
 package math.geom2d.polygon.convhull;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.point.PointArray2D;
 import math.geom2d.polygon.IPolygon2D;
 import junit.framework.TestCase;

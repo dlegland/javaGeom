@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Check if not-too-basic linear ring (or closed polyline) draw correctly.

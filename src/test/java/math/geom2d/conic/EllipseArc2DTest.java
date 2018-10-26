@@ -28,11 +28,11 @@ package math.geom2d.conic;
 import static java.lang.Math.PI;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class EllipseArc2DTest extends TestCase {
 

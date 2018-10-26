@@ -12,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.CurveArray2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.point.PointArray2D;
 
 /**

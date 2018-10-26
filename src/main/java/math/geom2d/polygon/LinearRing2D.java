@@ -30,10 +30,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.GenericCirculinearRing2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
@@ -41,6 +39,8 @@ import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.circulinear.ICirculinearRing2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -57,7 +57,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
+public final class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -296,7 +296,7 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
      * Returns point from position as double. Position t can be from 0 to n, with n equal to the number of vertices of the linear ring.
      */
     @Override
-    public math.geom2d.Point2D point(double t) {
+    public math.geom2d.point.Point2D point(double t) {
         // format position to stay between limits
         double t0 = this.t0();
         double t1 = this.t1();
@@ -489,18 +489,6 @@ public class LinearRing2D extends LinearCurve2D implements ICirculinearRing2D {
         return true;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof LinearRing2D))
-            return false;
-        LinearRing2D ring = (LinearRing2D) object;
 
-        if (vertices.size() != ring.vertices.size())
-            return false;
-        for (int i = 0; i < vertices.size(); i++)
-            if (!(vertices.get(i)).equals(ring.vertices.get(i)))
-                return false;
-        return true;
-    }
 
 }

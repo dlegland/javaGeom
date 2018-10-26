@@ -32,5 +32,5 @@ package math.geom2s;
  * @author Legland
  */
 public class GreatCircle2S extends SmallCircle2S {
-    // nothing
+    private static final long serialVersionUID = 1L;
 }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import junit.framework.TestCase;
 
 /**
@@ -22,7 +21,7 @@ import junit.framework.TestCase;
 public class KDTree2DTest extends TestCase {
 
     /**
-     * Test method for {@link math.geom2d.point.KDTree2D#contains(math.geom2d.Point2D)}.
+     * Test method for {@link math.geom2d.point.KDTree2D#contains(math.geom2d.point.Point2D)}.
      */
     public void testContains() {
         int n = 5;

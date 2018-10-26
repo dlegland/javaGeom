@@ -26,16 +26,19 @@
 
 package math.geom3d.transform;
 
-import math.geom3d.Point3D;
-import math.geom3d.IShape3D;
+import java.io.Serializable;
+
+import math.geom3d.IGeometricObject3D;
 import math.geom3d.Vector3D;
+import math.geom3d.point.Point3D;
 
 /**
  * An affine transform in 3 dimensions. Contains also static methods for creating common transforms like translations or rotations.
  * 
  * @author dlegland
  */
-public class AffineTransform3D implements IBijection3D {
+public class AffineTransform3D implements IBijection3D, IGeometricObject3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** coefficients for x coordinate. */
     protected double m00, m01, m02, m03;
@@ -50,7 +53,7 @@ public class AffineTransform3D implements IBijection3D {
     // public static methods
 
     public final static AffineTransform3D createTranslation(Vector3D vec) {
-        return createTranslation(vec.getX(), vec.getY(), vec.getZ());
+        return createTranslation(vec.x(), vec.y(), vec.z());
     }
 
     public final static AffineTransform3D createTranslation(double x, double y, double z) {
@@ -256,7 +259,7 @@ public class AffineTransform3D implements IBijection3D {
 
         // transform each input point
         for (int i = 0; i < src.length; i++) {
-            dst[i] = new Point3D(src[i].getX() * m00 + src[i].getY() * m01 + src[i].getZ() * m02 + m03, src[i].getX() * m10 + src[i].getY() * m11 + src[i].getZ() * m12 + m13, src[i].getX() * m20 + src[i].getY() * m21 + src[i].getZ() * m22 + m23);
+            dst[i] = new Point3D(src[i].x() * m00 + src[i].y() * m01 + src[i].z() * m02 + m03, src[i].x() * m10 + src[i].y() * m11 + src[i].z() * m12 + m13, src[i].x() * m20 + src[i].y() * m21 + src[i].z() * m22 + m23);
         }
         return dst;
     }
@@ -266,7 +269,25 @@ public class AffineTransform3D implements IBijection3D {
      */
     @Override
     public Point3D transformPoint(Point3D src) {
-        return new Point3D(src.getX() * m00 + src.getY() * m01 + src.getZ() * m02 + m03, src.getX() * m10 + src.getY() * m11 + src.getZ() * m12 + m13, src.getX() * m20 + src.getY() * m21 + src.getZ() * m22 + m23);
+        return new Point3D(src.x() * m00 + src.y() * m01 + src.z() * m02 + m03, src.x() * m10 + src.y() * m11 + src.z() * m12 + m13, src.x() * m20 + src.y() * m21 + src.z() * m22 + m23);
+    }
+
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof AffineTransform3D))
+            return false;
+
+        double[] tab1 = this.coefficients();
+        double[] tab2 = ((AffineTransform3D) obj).coefficients();
+
+        for (int i = 0; i < 12; i++)
+            if (Math.abs(tab1[i] - tab2[i]) > eps)
+                return false;
+
+        return true;
     }
 
     @Override
@@ -336,6 +357,5 @@ public class AffineTransform3D implements IBijection3D {
             return false;
         return true;
     }
-
 
 }

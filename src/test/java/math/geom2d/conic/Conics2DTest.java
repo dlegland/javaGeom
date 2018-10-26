@@ -1,11 +1,11 @@
 package math.geom2d.conic;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class Conics2DTest extends TestCase {
 

@@ -23,7 +23,7 @@
 
 // package
 
-package math.geom2d;
+package math.geom2d.point;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.hypot;
@@ -35,13 +35,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import math.geom2d.Angle2DUtil;
+import math.geom2d.Box2D;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.point.IPointSet2D;
-import math.geom2d.point.IPointShape2D;
-import math.geom2d.point.PointArray2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -49,7 +52,7 @@ import math.geom2d.transform.CircleInversion2D;
  * A point in the plane defined by its 2 Cartesian coordinates x and y. The class provides static methods to compute distance between two points.
  * </p>
  */
-public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearShape2D, Serializable {
+public final class Point2D implements IPointShape2D, ICirculinearShape2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final Point2D ORIGIN = new Point2D(0, 0);
@@ -614,6 +617,4 @@ public class Point2D implements IGeometricObject2D, IPointShape2D, ICirculinearS
             return false;
         return true;
     }
-
-
 }

@@ -12,13 +12,13 @@ import java.util.LinkedList;
 
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.Line2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland

@@ -13,8 +13,8 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland

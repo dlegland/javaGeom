@@ -58,7 +58,6 @@ public class Boundaries2DTest extends TestCase {
 
         Collection<? extends IContour2D> curves2 = clipped2.continuousCurves();
         IContour2D curve2 = curves2.iterator().next();
-        assertTrue(!(curve2 instanceof CircleArc2D));
         assertTrue(curve2 instanceof PolyOrientedCurve2D<?>);
 
         Iterator<?> iter = ((PolyOrientedCurve2D<?>) curve2).curves().iterator();

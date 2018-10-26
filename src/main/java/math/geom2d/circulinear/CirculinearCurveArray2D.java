@@ -15,7 +15,7 @@ import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.transform.CircleInversion2D;
 
@@ -41,7 +41,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends CurveArray2D<T> implements ICirculinearCurveSet2D<T> {
+public final class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends CurveArray2D<T> implements ICirculinearCurveSet2D<T> {
     private static final long serialVersionUID = 1L;
 
 
@@ -189,7 +189,7 @@ public class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends Curv
     @Override
     public CirculinearCurveArray2D<? extends ICirculinearCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

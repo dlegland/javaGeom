@@ -11,10 +11,10 @@ package math.geom2d.circulinear;
 import java.awt.Graphics2D;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -23,7 +23,7 @@ import math.geom2d.transform.CircleInversion2D;
  * @author dlegland
  *
  */
-public class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinearElement2D> implements ICirculinearRing2D {
+public final class GenericCirculinearRing2D extends PolyCirculinearCurve2D<ICirculinearElement2D> implements ICirculinearRing2D {
     private static final long serialVersionUID = 1L;
 
     // TODO: parameterize with curve type ?

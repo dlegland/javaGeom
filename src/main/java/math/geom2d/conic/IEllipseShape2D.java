@@ -5,9 +5,9 @@ package math.geom2d.conic;
 
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
 import math.geom2d.domain.ISmoothContour2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A common interface for Circle2D and Ellipse2D.

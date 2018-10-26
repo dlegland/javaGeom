@@ -9,39 +9,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom3d.Box3D;
+import math.geom3d.IGeometricObject3D;
 import math.geom3d.IShape3D;
-import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
-import math.geom3d.curve.IContinuousCurve3D;
-import math.geom3d.curve.ICurve3D;
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
  * @author dlegland
  */
-public class StraightLine3D implements IContinuousCurve3D, Serializable {
+public class StraightLine3D extends AbstractLine3D implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected double x0 = 0;
-    protected double y0 = 0;
-    protected double z0 = 0;
-    protected double dx = 1;
-    protected double dy = 0;
-    protected double dz = 0;
-
-    // ===================================================================
-    // Constructors
-
-    public StraightLine3D() {
-    }
-
-    public StraightLine3D(Point3D origin, Vector3D direction) {
-        this.x0 = origin.getX();
-        this.y0 = origin.getY();
-        this.z0 = origin.getZ();
-        this.dx = direction.getX();
-        this.dy = direction.getY();
-        this.dz = direction.getZ();
+    public StraightLine3D(Point3D p, Vector3D v) {
+        super(p, v, false);
     }
 
     /**
@@ -56,24 +37,8 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
         this(p1, new Vector3D(p1, p2));
     }
 
-    public StraightLine3D(double x0, double y0, double z0, double dx, double dy, double dz) {
-        this.x0 = x0;
-        this.y0 = y0;
-        this.z0 = z0;
-        this.dx = dx;
-        this.dy = dy;
-        this.dz = dz;
-    }
-
-    // ===================================================================
-    // methods specific to StraightLine3D
-
-    public Point3D origin() {
-        return new Point3D(x0, y0, z0);
-    }
-
-    public Vector3D direction() {
-        return new Vector3D(dx, dy, dz);
+    public StraightLine3D(AbstractLine3D l) {
+        this(l.origin(), l.direction());
     }
 
     // /**
@@ -90,27 +55,11 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
-     */
-    @Override
-    public IShape3D clip(Box3D box) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see math.geom3d.Shape3D#contains(math.geom3d.Point3D)
      */
     @Override
     public boolean contains(Point3D point) {
         return this.distance(point) < IShape3D.ACCURACY;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
     }
 
     @Override
@@ -128,16 +77,16 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
         Vector3D v = this.direction();
 
         // line parallel to (Ox) axis
-        if (Math.hypot(v.getY(), v.getZ()) < IShape3D.ACCURACY)
-            return new Box3D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        if (Math.hypot(v.y(), v.z()) < IShape3D.ACCURACY)
+            return new Box3D(x(), x(), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oy) axis
-        if (Math.hypot(v.getX(), v.getZ()) < IShape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        if (Math.hypot(v.x(), v.z()) < IShape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y(), y(), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // line parallel to (Oz) axis
-        if (Math.hypot(v.getX(), v.getY()) < IShape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z0, z0);
+        if (Math.hypot(v.x(), v.y()) < IShape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z(), z());
 
         return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
@@ -176,7 +125,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
 
     @Override
     public Point3D point(double t) {
-        return new Point3D(x0 + t * dx, y0 + t * dy, z0 + t * dz);
+        return new Point3D(origin().x() + t * direction().x(), origin().y() + t * direction().y(), origin().z() + t * direction().z());
     }
 
     @Override
@@ -197,17 +146,11 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
         return new ArrayList<>(0);
     }
 
-    @Override
-    public ICurve3D subCurve(double t0, double t1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     /**
      * Returns -INFINITY;
      */
     @Override
-    public double getT0() {
+    public double t0() {
         return Double.NEGATIVE_INFINITY;
     }
 
@@ -215,7 +158,7 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
      * Returns +INFINITY;
      */
     @Override
-    public double getT1() {
+    public double t1() {
         return Double.POSITIVE_INFINITY;
     }
 
@@ -234,5 +177,22 @@ public class StraightLine3D implements IContinuousCurve3D, Serializable {
         ArrayList<StraightLine3D> array = new ArrayList<>(1);
         array.add(this);
         return array;
+    }
+
+    @Override
+    public StraightLine3D supportingLine() {
+        return this;
+    }
+
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof StraightLine3D))
+            return false;
+        StraightLine3D line = (StraightLine3D) obj;
+
+        return origin().almostEquals(line.origin(), eps) && direction().almostEquals(line.direction(), eps);
     }
 }

@@ -8,9 +8,9 @@
  */
 package math.geom2d.circulinear.buffer;
 
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Generates a cap at the end of an open curve.

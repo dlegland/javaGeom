@@ -9,18 +9,18 @@
 package math.geom2d.circulinear.buffer;
 
 import static java.lang.Math.PI;
-import static math.geom2d.curve.Curves2D.JunctionType.FLAT;
-import static math.geom2d.curve.Curves2D.JunctionType.REENTRANT;
-import static math.geom2d.curve.Curves2D.JunctionType.SALIENT;
+import static math.geom2d.curve.Curves2DUtil.JunctionType.FLAT;
+import static math.geom2d.curve.Curves2DUtil.JunctionType.REENTRANT;
+import static math.geom2d.curve.Curves2DUtil.JunctionType.SALIENT;
 
 import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland
@@ -36,7 +36,7 @@ public class RoundJoinFactory implements IJoinFactory {
 
         // center of circle arc
         Point2D center = curve2.firstPoint();
-        Curves2D.JunctionType junctionType = Curves2D.getJunctionType(curve1, curve2);
+        Curves2DUtil.JunctionType junctionType = Curves2DUtil.getJunctionType(curve1, curve2);
 
         // compute tangents to each portion
         Vector2D direction1 = curve1.tangent(curve1.t1());

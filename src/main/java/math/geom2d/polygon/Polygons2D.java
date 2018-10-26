@@ -18,14 +18,14 @@ import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.domain.Boundaries2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IContour2D;
-import math.geom2d.point.PointSets2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.point.PointSets2DUtil;
 import math.geom2d.polygon.convhull.JarvisMarch2D;
 
 /**
@@ -328,7 +328,7 @@ public final class Polygons2D {
             vertices.add(v);
 
         // remove adjacent multiple vertices
-        vertices = PointSets2D.filterMultipleVertices(vertices, true);
+        vertices = PointSets2DUtil.filterMultipleVertices(vertices, true);
 
         // Create new ring with vertices
         return LinearRing2D.create(vertices);

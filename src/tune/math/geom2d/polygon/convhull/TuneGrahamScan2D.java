@@ -28,7 +28,7 @@ package math.geom2d.polygon.convhull;
 
 import java.util.ArrayList;
 
-import math.geom2d.*;
+import math.geom2d.point.Point2D;
 
 /**
  * Check computation of convex hull using Graham Scan, on a random set of 1000 points with coordinate generated between 100 and 300.

@@ -28,9 +28,7 @@ package math.geom2d.polygon;
 
 import java.util.ArrayList;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
@@ -39,6 +37,8 @@ import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IContour2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 import junit.framework.TestCase;
 

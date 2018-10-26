@@ -8,7 +8,7 @@
  */
 package math.geom2d.exception;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Exception thrown when the assumption of non colinearity is not respected. Methods are provided by retrieving the three incriminated points.

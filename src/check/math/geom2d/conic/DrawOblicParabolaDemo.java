@@ -35,9 +35,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 

@@ -22,13 +22,13 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 31 déc. 2003
+ * Created on 31 dï¿½c. 2003
  */
 package math.geom2d.polygon;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author Legland

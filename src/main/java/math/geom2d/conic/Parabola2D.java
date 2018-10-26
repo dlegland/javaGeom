@@ -37,18 +37,16 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.IContour2D;
@@ -56,7 +54,8 @@ import math.geom2d.domain.IDomain2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
-import math.utils.EqualUtils;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A parabola, defined by its vertex, its orientation, and its pedal. Orientation is defined as the orientation of derivative at vertex point, with the second derivative pointing to the top.
@@ -509,7 +508,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     @Override
     public ICurveSet2D<ParabolaArc2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<ParabolaArc2D> result = new CurveArray2D<>(set.size());

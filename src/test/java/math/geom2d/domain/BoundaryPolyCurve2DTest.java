@@ -9,8 +9,6 @@
 package math.geom2d.domain;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.line.AbstractLine2D;
@@ -18,6 +16,8 @@ import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland

@@ -29,11 +29,11 @@ import java.awt.*;
 import javax.swing.*;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 
 import static java.lang.Math.*;
 

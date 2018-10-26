@@ -4,16 +4,15 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 4 févr. 09
+ * Created: 4 fï¿½vr. 09
  */
 package math.geom2d.point;
 
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IShapeSet2D;
-import math.geom2d.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A set of points. All points within the set are instances of Point2D. The most direct implementation of PointSet2D is PointArray2D.

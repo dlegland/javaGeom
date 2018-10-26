@@ -4,12 +4,12 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 17 août 10
+ * Created: 17 aoï¿½t 10
  */
 package math.geom2d.domain;
 
-import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 /**

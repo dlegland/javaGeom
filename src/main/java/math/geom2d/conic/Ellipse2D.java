@@ -42,26 +42,24 @@ import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
-import math.utils.EqualUtils;
-
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An ellipse in the plane. It is defined by the center, the orientation angle, and the lengths of the two axis. No convention is taken about lengths of semiaxis: the second semi axis can be greater than the first one.
@@ -952,7 +950,7 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
     @Override
     public ICurveSet2D<? extends ISmoothOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<ISmoothOrientedCurve2D> result = new CurveArray2D<>(set.size());
@@ -1129,8 +1127,6 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
         return true;
     }
 
-
-
     @Override
     public String toString() {
         return String.format("Ellipse2D(%f,%f,%f,%f,%f,%s)", center.x(), center.y(), r1, r2, theta, direct ? "true" : "false");
@@ -1176,5 +1172,5 @@ public class Ellipse2D extends AbstractSmoothCurve2D implements IEllipseShape2D 
             return false;
         return true;
     }
-    
+
 }

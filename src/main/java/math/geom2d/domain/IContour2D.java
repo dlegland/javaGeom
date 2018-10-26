@@ -26,7 +26,7 @@
 
 package math.geom2d.domain;
 
-import math.geom2d.AffineTransform2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A continuous oriented curve which delimits a connected planar domain. A contour can be closed (like ellipse, circle, closed polyline...) or open (parabola, straight line...).

@@ -29,16 +29,16 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ICurve2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class Parabola2DTest extends TestCase {
 
@@ -231,7 +231,7 @@ public class Parabola2DTest extends TestCase {
 
         ICurveSet2D<?> clippedCurve;
 
-        clippedCurve = Curves2D.clipSmoothCurve(parabola, line);
+        clippedCurve = Curves2DUtil.clipSmoothCurve(parabola, line);
         ICurve2D curve = clippedCurve.firstCurve();
 
         assertTrue(clippedCurve.size() == 1);
@@ -240,7 +240,7 @@ public class Parabola2DTest extends TestCase {
         // translated parabola pointing to the right
         parabola = new Parabola2D(20, 10, 1, -Math.PI / 2);
         line = new StraightLine2D(24, 0, 0, 20);
-        clippedCurve = Curves2D.clipSmoothCurve(parabola, line);
+        clippedCurve = Curves2DUtil.clipSmoothCurve(parabola, line);
         assertTrue(clippedCurve.size() == 1);
         curve = clippedCurve.firstCurve();
         assertTrue(curve instanceof ParabolaArc2D);
@@ -249,7 +249,7 @@ public class Parabola2DTest extends TestCase {
         // Oblic line
         parabola = new Parabola2D(20, 10, 1, 0);
         line = new StraightLine2D(20, 10, -1, -2);
-        clippedCurve = Curves2D.clipSmoothCurve(parabola, line);
+        clippedCurve = Curves2DUtil.clipSmoothCurve(parabola, line);
         assertTrue(clippedCurve.size() == 1);
         curve = clippedCurve.firstCurve();
         assertTrue(curve instanceof ParabolaArc2D);
@@ -258,7 +258,7 @@ public class Parabola2DTest extends TestCase {
         // Oblic line 2
         parabola = new Parabola2D(0, 0, 1, 0);
         line = new StraightLine2D(0, 8, -1, -2);
-        clippedCurve = Curves2D.clipSmoothCurve(parabola, line);
+        clippedCurve = Curves2DUtil.clipSmoothCurve(parabola, line);
         assertTrue(clippedCurve.size() == 1);
         curve = clippedCurve.firstCurve();
         assertTrue(curve instanceof ParabolaArc2D);
@@ -270,7 +270,7 @@ public class Parabola2DTest extends TestCase {
         Point2D origin = new Point2D(20, 10 + 8);
         origin = origin.transform(AffineTransform2D.createRotation(20, 10, theta));
         line = new StraightLine2D(origin, new Vector2D(-1, 0));
-        clippedCurve = Curves2D.clipSmoothCurve(parabola, line);
+        clippedCurve = Curves2DUtil.clipSmoothCurve(parabola, line);
         assertTrue(clippedCurve.size() == 1);
         curve = clippedCurve.firstCurve();
         assertTrue(curve instanceof ParabolaArc2D);

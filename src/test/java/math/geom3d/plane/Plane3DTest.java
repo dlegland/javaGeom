@@ -3,10 +3,10 @@
  */
 package math.geom3d.plane;
 
-import math.geom3d.Point3D;
+import junit.framework.TestCase;
 import math.geom3d.Vector3D;
 import math.geom3d.line.StraightLine3D;
-import junit.framework.TestCase;
+import math.geom3d.point.Point3D;
 
 /**
  * @author dlegland
@@ -18,9 +18,10 @@ public class Plane3DTest extends TestCase {
      * Test method for {@link math.geom3d.plane.Plane3D#normal()}.
      */
     public void testGetNormalVector() {
+        double eps = 1e-14;
         Plane3D plane = Plane3D.createXYPlane();
         Vector3D vz = new Vector3D(0, 0, -1);
-        assertTrue(vz.equals(plane.normal()));
+        assertTrue(vz.almostEquals(plane.normal(), eps));
     }
 
     /**

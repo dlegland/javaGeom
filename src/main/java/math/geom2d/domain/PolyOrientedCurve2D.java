@@ -29,22 +29,23 @@ package math.geom2d.domain;
 import static java.lang.Math.PI;
 import static java.lang.Math.round;
 
+import java.io.Serializable;
 // Imports
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A PolyOrientedCurve2D is a set of piecewise smooth curve arcs, such that the end of a curve is the beginning of the next curve, and such that they do not intersect nor self-intersect.
@@ -53,7 +54,7 @@ import math.geom2d.line.StraightLine2D;
  * @see BoundaryPolyCurve2D
  * @author dlegland
  */
-public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D {
+public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -75,7 +76,6 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
     public static <T extends IContinuousOrientedCurve2D> PolyOrientedCurve2D<T> createClosed(T... curves) {
         return new PolyOrientedCurve2D<>(curves, true);
     }
-
 
     /**
      * Static factory for creating a new PolyOrientedCurve2D from an array of curves and a flag indicating if the curve is closed or not.
@@ -203,8 +203,8 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
         }
 
         // Extract curvatures of both curves around singular point
-        ISmoothCurve2D smoothPrev = Curves2D.getLastSmoothCurve(prev);
-        ISmoothCurve2D smoothNext = Curves2D.getFirstSmoothCurve(next);
+        ISmoothCurve2D smoothPrev = Curves2DUtil.getLastSmoothCurve(prev);
+        ISmoothCurve2D smoothNext = Curves2DUtil.getFirstSmoothCurve(next);
         double kappaPrev = smoothPrev.curvature(smoothPrev.t1());
         double kappaNext = smoothNext.curvature(smoothNext.t0());
 
@@ -289,7 +289,7 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
     @Override
     public ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

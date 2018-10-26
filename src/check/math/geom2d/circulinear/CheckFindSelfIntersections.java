@@ -11,10 +11,10 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.Point2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Check the detection of self intersections in a circulinear curve composed of line segments and circle arcs.

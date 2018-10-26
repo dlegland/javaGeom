@@ -4,10 +4,10 @@
 package math.geom2d.circulinear.buffer;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**

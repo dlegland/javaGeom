@@ -2,7 +2,6 @@ package math.geom2d.point;
 
 import junit.framework.TestCase;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 

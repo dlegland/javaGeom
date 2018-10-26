@@ -4,22 +4,20 @@
 
 package math.geom3d;
 
+import java.io.Serializable;
+
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
  * Define a vector in 3 dimensions. Provides methods to compute cross product and dot product, addition and subtraction of vectors.
  */
-public class Vector3D {
-
-    // ===================================================================
-    // class variables
+public class Vector3D implements IGeometricObject3D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected double x = 1;
     protected double y = 0;
     protected double z = 0;
-
-    // ===================================================================
-    // static methods
 
     /**
      * Computes the dot product of the two vectors, defined by :
@@ -81,28 +79,28 @@ public class Vector3D {
      * Construct a new vector between origin and a 3D point.
      */
     public Vector3D(Point3D point) {
-        this(point.getX(), point.getY(), point.getZ());
+        this(point.x(), point.y(), point.z());
     }
 
     /**
      * construct a new vector between two points
      */
     public Vector3D(Point3D point1, Point3D point2) {
-        this(point2.getX() - point1.getX(), point2.getY() - point1.getY(), point2.getZ() - point1.getZ());
+        this(point2.x() - point1.x(), point2.y() - point1.y(), point2.z() - point1.z());
     }
 
     // ===================================================================
     // accessors
 
-    public double getX() {
+    public double x() {
         return x;
     }
 
-    public double getY() {
+    public double y() {
         return y;
     }
 
-    public double getZ() {
+    public double z() {
         return z;
     }
 
@@ -180,22 +178,57 @@ public class Vector3D {
         return new Vector3D(x * tab[0] + y * tab[1] + z * tab[2], x * tab[4] + y * tab[5] + z * tab[6], x * tab[8] + y * tab[9] + z * tab[10]);
     }
 
-    // ===================================================================
-    // methods implementing Object interface
-
+    /**
+     * Test whether this object is the same as another vector, with respect to a given threshold.
+     */
     @Override
-    public boolean equals(Object obj) {
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
         if (!(obj instanceof Vector3D))
             return false;
-
         Vector3D v = (Vector3D) obj;
-        if (Math.abs(x - v.x) > IShape3D.ACCURACY)
+
+        if (Math.abs(this.x - v.x) > eps)
             return false;
-        if (Math.abs(y - v.y) > IShape3D.ACCURACY)
+        if (Math.abs(this.y - v.y) > eps)
             return false;
-        if (Math.abs(z - v.z) > IShape3D.ACCURACY)
+        if (Math.abs(this.z - v.z) > eps)
             return false;
+
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Vector3D other = (Vector3D) obj;
+        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+            return false;
+        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+            return false;
+        if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
+            return false;
+        return true;
+    }
 }

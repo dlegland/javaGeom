@@ -25,10 +25,10 @@
 
 package math.geom2d.domain;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Interface for smooth and oriented curves. The aim of this interface is mainly to specify refinement of method declarations.

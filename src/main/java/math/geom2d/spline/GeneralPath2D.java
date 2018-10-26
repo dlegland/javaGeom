@@ -5,29 +5,31 @@ package math.geom2d.spline;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * @author dlegland
  *
  */
-public class GeneralPath2D implements ICurve2D {
+public class GeneralPath2D implements ICurve2D, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // ===================================================================
     // Static variables and constants
@@ -750,48 +752,30 @@ public class GeneralPath2D implements ICurve2D {
     // Methods from the Object superclass
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((lastType == null) ? 0 : lastType.hashCode());
+        result = prime * result + ((segments == null) ? 0 : segments.hashCode());
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        // Check class of object
+        if (this == obj)
+            return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof GeneralPath2D))
+        if (getClass() != obj.getClass())
             return false;
-
-        // class cast
-        GeneralPath2D that = (GeneralPath2D) obj;
-
-        // Paths should have same number of segments
-        if (this.segments.size() != that.segments.size())
+        GeneralPath2D other = (GeneralPath2D) obj;
+        if (lastType != other.lastType)
             return false;
-
-        Segment seg1, seg2;
-        Point2D[] pts1, pts2;
-
-        for (int i = 0; i < this.segments.size(); i++) {
-            // extract each segment
-            seg1 = this.segments.get(i);
-            seg2 = that.segments.get(i);
-
-            // check segments have same type
-            if (seg1.type() != seg2.type())
+        if (segments == null) {
+            if (other.segments != null)
                 return false;
-
-            // extract control points
-            pts1 = seg1.controlPoints();
-            pts2 = seg2.controlPoints();
-
-            // check size of control point arrays
-            if (pts1.length != pts2.length)
-                throw new RuntimeException("Two path segments have type but different number of control points");
-
-            // check identity of control points
-            for (int j = 0; j < pts1.length; j++) {
-                if (!pts1[j].equals(pts2[j]))
-                    return false;
-            }
-        }
-
-        // if no difference was found, then the paths are almost equal
+        } else if (!segments.equals(other.segments))
+            return false;
         return true;
     }
 

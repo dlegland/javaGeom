@@ -3,8 +3,8 @@
  */
 package math.geom2d.spline;
 
-import math.geom2d.Point2D;
 import junit.framework.TestCase;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland

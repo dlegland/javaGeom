@@ -34,6 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.polygon.IPolygon2D;
+import math.geom2d.transform.AffineTransform2D;
 
 import static math.geom2d.polygon.Polygons2D.*;
 

@@ -32,12 +32,15 @@ import static java.lang.Math.sin;
 
 import java.io.Serializable;
 
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
+
 // Imports
 
 /**
  * A vector in the 2D plane. Provides methods to compute cross product and dot product, addition and subtraction of vectors.
  */
-public class Vector2D implements IGeometricObject2D, Serializable {
+public final class Vector2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final Vector2D UNIT = new Vector2D(1, 0);

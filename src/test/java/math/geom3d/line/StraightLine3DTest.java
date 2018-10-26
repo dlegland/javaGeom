@@ -3,8 +3,8 @@
  */
 package math.geom3d.line;
 
-import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
+import math.geom3d.point.Point3D;
 import junit.framework.TestCase;
 
 /**
@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class StraightLine3DTest extends TestCase {
 
     /**
-     * Test method for {@link math.geom3d.line.StraightLine3D#contains(math.geom3d.Point3D)}.
+     * Test method for {@link math.geom3d.line.StraightLine3D#contains(math.geom3d.point.Point3D)}.
      */
     public void testContains() {
         StraightLine3D line = new StraightLine3D(new Point3D(2, 3, 4), new Vector3D(1, 2, 3));
@@ -23,7 +23,7 @@ public class StraightLine3DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom3d.line.StraightLine3D#project(math.geom3d.Point3D)}.
+     * Test method for {@link math.geom3d.line.StraightLine3D#project(math.geom3d.point.Point3D)}.
      */
     public void testProjectPoint3D() {
         StraightLine3D line = new StraightLine3D(new Point3D(2, 2, 2), new Vector3D(2, 0, 0));

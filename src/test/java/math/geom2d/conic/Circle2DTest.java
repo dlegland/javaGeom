@@ -27,9 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearCurve2D;
@@ -39,6 +37,8 @@ import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**

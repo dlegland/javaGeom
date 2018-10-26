@@ -31,6 +31,7 @@ import javax.swing.*;
 
 import math.geom2d.*;
 import math.geom2d.domain.IBoundary2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.SimplePolygon2D;
 
 public class CheckPolygon2D_Clip2 extends JPanel {

@@ -24,10 +24,14 @@
  *
  */
 
-package math.geom3d;
+package math.geom3d.point;
 
 import java.io.Serializable;
 
+import math.geom3d.Box3D;
+import math.geom3d.IGeometricObject3D;
+import math.geom3d.IShape3D;
+import math.geom3d.Vector3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -61,20 +65,20 @@ public class Point3D implements IShape3D, Serializable {
     // ===================================================================
     // Methods specific to Point3D
 
-    public double getX() {
+    public double x() {
         return x;
     }
 
-    public double getY() {
+    public double y() {
         return y;
     }
 
-    public double getZ() {
+    public double z() {
         return z;
     }
 
     public Point3D plus(Vector3D vec) {
-        return new Point3D(this.x + vec.x, this.y + vec.y, this.z + vec.z);
+        return new Point3D(this.x + vec.x(), this.y + vec.y(), this.z + vec.z());
     }
 
     public Point3D plus(Point3D p2) {
@@ -82,7 +86,7 @@ public class Point3D implements IShape3D, Serializable {
     }
 
     public Point3D minus(Vector3D vec) {
-        return new Point3D(this.x - vec.x, this.y - vec.y, this.z - vec.z);
+        return new Point3D(this.x - vec.x(), this.y - vec.y(), this.z - vec.z());
     }
 
     public Point3D minus(Point3D p2) {
@@ -159,20 +163,56 @@ public class Point3D implements IShape3D, Serializable {
 
     }
 
-    // ===================================================================
-    // methods overriding Object superclass
+    /**
+     * Test whether this object is the same as another point, with respect to a given threshold along each coordinate.
+     */
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof Point3D))
+            return false;
+        Point3D p = (Point3D) obj;
+
+        if (Math.abs(this.x - p.x) > eps)
+            return false;
+        if (Math.abs(this.y - p.y) > eps)
+            return false;
+        if (Math.abs(this.z - p.z) > eps)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Point3D))
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        Point3D point = (Point3D) obj;
-
-        if (Math.abs(point.x - this.x) > IShape3D.ACCURACY)
+        if (getClass() != obj.getClass())
             return false;
-        if (Math.abs(point.y - this.y) > IShape3D.ACCURACY)
+        Point3D other = (Point3D) obj;
+        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
-        if (Math.abs(point.z - this.z) > IShape3D.ACCURACY)
+        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+            return false;
+        if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
             return false;
         return true;
     }

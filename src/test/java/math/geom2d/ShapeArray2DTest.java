@@ -2,6 +2,7 @@ package math.geom2d;
 
 import math.geom2d.conic.Circle2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 public class ShapeArray2DTest extends TestCase {

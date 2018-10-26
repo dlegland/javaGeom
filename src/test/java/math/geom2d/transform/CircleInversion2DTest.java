@@ -8,8 +8,8 @@
  */
 package math.geom2d.transform;
 
-import math.geom2d.Point2D;
 import junit.framework.TestCase;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland
@@ -43,7 +43,7 @@ public class CircleInversion2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.transform.CircleInversion2D#transform(math.geom2d.Point2D)}.
+     * Test method for {@link math.geom2d.transform.CircleInversion2D#transform(math.geom2d.point.Point2D)}.
      */
     public void testTransformPoint2D() {
         double xc = 10;

@@ -1,12 +1,12 @@
 package math.geom2d.conic;
 
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 public class HyperbolaBranch2DTest extends TestCase {
@@ -72,7 +72,7 @@ public class HyperbolaBranch2DTest extends TestCase {
 
         StraightLine2D line = new StraightLine2D(x0 + 2 * a, y0, 0, 1);
 
-        ICurveSet2D<?> clipped = Curves2D.clipSmoothCurve(branch, line);
+        ICurveSet2D<?> clipped = Curves2DUtil.clipSmoothCurve(branch, line);
 
         assertTrue(clipped.size() == 1);
         ICurve2D curve = clipped.firstCurve();
@@ -92,7 +92,7 @@ public class HyperbolaBranch2DTest extends TestCase {
         branch = new HyperbolaBranch2D(hyper, true);
         line = new StraightLine2D(x0 + 2 * a, y0, 0, 1);
 
-        clipped = Curves2D.clipSmoothCurve(branch, line);
+        clipped = Curves2DUtil.clipSmoothCurve(branch, line);
         assertTrue(clipped.size() == 1);
 
         curve = clipped.firstCurve();

@@ -11,8 +11,8 @@ package math.geom2d.curve;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Provides a base implementation for smooth curves.

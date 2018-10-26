@@ -40,12 +40,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICircleLine2D;
@@ -54,7 +52,7 @@ import math.geom2d.circulinear.ICirculinearRing2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
@@ -62,7 +60,9 @@ import math.geom2d.exception.ColinearPoints2DException;
 import math.geom2d.line.AbstractLine2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 import math.utils.EqualUtils;
 
@@ -71,7 +71,7 @@ import math.utils.EqualUtils;
  * 
  * @author dlegland
  */
-public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, ICircleLine2D, ICircularShape2D, ICirculinearRing2D {
+public final class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, ICircleLine2D, ICircularShape2D, ICirculinearRing2D {
     private static final long serialVersionUID = 1L;
 
     public static final Circle2D UNIT_CIRCLE = new Circle2D(Point2D.ORIGIN, 1);
@@ -748,7 +748,7 @@ public class Circle2D extends AbstractSmoothCurve2D implements IEllipseShape2D, 
     @Override
     public ICurveSet2D<? extends ICircularShape2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<ICircularShape2D> result = new CurveArray2D<>(set.size());

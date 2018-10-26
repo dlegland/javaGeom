@@ -14,7 +14,7 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
@@ -194,7 +194,7 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
     @Override
     public ICirculinearCurveSet2D<? extends ICirculinearContinuousCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         int n = set.size();

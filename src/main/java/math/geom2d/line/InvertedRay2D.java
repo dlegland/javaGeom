@@ -27,13 +27,13 @@ package math.geom2d.line;
 
 import java.awt.geom.GeneralPath;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.exception.UnboundedShape2DException;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 // Imports
 
@@ -45,66 +45,42 @@ import math.geom2d.exception.UnboundedShape2DException;
  * </p>
  * with <code>t<code> comprised between -INFINITY and 0. This is complementary class to Ray2D.
  */
-public class InvertedRay2D extends AbstractLine2D {
+public final class InvertedRay2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new Ray2D, originating from <code>point1<\code>, and going in the direction of <code>point2<\code>.
      */
     public InvertedRay2D(Point2D point1, Point2D point2) {
-        this(point1.x(), point1.y(), point2.x() - point1.x(), point2.y() - point1.y());
-    }
-
-    /**
-     * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction defined by vector <code>(dx,dy)<\code>.
-     */
-    public InvertedRay2D(Point2D point, double dx, double dy) {
-        this(point.x(), point.y(), dx, dy);
+        super(point1, point2, false);
     }
 
     /**
      * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction specified by <code>vector<\code>.
      */
     public InvertedRay2D(Point2D point, Vector2D vector) {
-        this(point.x(), point.y(), vector.x(), vector.y());
+        super(point, vector, false);
     }
 
     /**
      * Creates a new Ray2D, originating from point <code>point<\code>, and going in the direction specified by <code>angle<\code> (in radians).
      */
     public InvertedRay2D(Point2D point, double angle) {
-        this(point.x(), point.y(), Math.cos(angle), Math.sin(angle));
-    }
-
-    /**
-     * Creates a new Ray2D, originating from point <code>(x, y)<\code>, and going in the direction specified by <code>angle<\code> (in radians).
-     */
-    public InvertedRay2D(double x, double y, double angle) {
-        this(x, y, Math.cos(angle), Math.sin(angle));
+        this(point, new Vector2D(Math.cos(angle), Math.sin(angle)));
     }
 
     /**
      * Creates a new Ray2D, originating from point <code>(x1,y1)<\code>, and going in the direction defined by vector <code>(dx, dy)<\code>.
      */
     public InvertedRay2D(double x1, double y1, double dx, double dy) {
-        super(x1, y1, dx, dy);
-
-        // enforce condition on direction vector
-        if (Math.hypot(dx, dy) < IShape2D.ACCURACY) {
-            throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
-        }
+        super(new Point2D(x1, y1), new Vector2D(dx, dy), false);
     }
 
     /**
      * Define a new Ray, with same characteristics as given object.
      */
     public InvertedRay2D(ILinearShape2D line) {
-        super(line.origin(), line.direction());
-
-        // enforce condition on direction vector
-        if (Math.hypot(dx(), dy()) < IShape2D.ACCURACY) {
-            throw new IllegalArgumentException("Rays can not have direction vector with zero norm");
-        }
+        this(line.origin(), line.direction());
     }
 
     // ===================================================================
@@ -118,7 +94,7 @@ public class InvertedRay2D extends AbstractLine2D {
     @Override
     public InvertedRay2D parallel(double d) {
         double dd = Math.hypot(dx(), dy());
-        return new InvertedRay2D(x0() + dy() * d / dd, y0() - dx() * d / dd, dx(), dy());
+        return new InvertedRay2D(x() + dy() * d / dd, y() - dx() * d / dd, dx(), dy());
     }
 
     // ===================================================================
@@ -141,7 +117,7 @@ public class InvertedRay2D extends AbstractLine2D {
     @Override
     public Point2D point(double t) {
         double mt = Math.min(t, 0);
-        return new Point2D(x0() + mt * dx(), y0() + mt * dy());
+        return new Point2D(x() + mt * dx(), y() + mt * dy());
     }
 
     /**
@@ -167,7 +143,7 @@ public class InvertedRay2D extends AbstractLine2D {
      */
     @Override
     public Ray2D reverse() {
-        return new Ray2D(x0(), y0(), -dx(), -dy());
+        return new Ray2D(x(), y(), -dx(), -dy());
     }
 
     // ===================================================================
@@ -190,7 +166,7 @@ public class InvertedRay2D extends AbstractLine2D {
     @Override
     public Box2D boundingBox() {
         double t = Double.NEGATIVE_INFINITY;
-        Point2D p0 = new Point2D(x0(), y0());
+        Point2D p0 = new Point2D(x(), y());
         Point2D p1 = new Point2D(t * dx(), t * dy());
         return new Box2D(p0, p1);
     }
@@ -198,8 +174,8 @@ public class InvertedRay2D extends AbstractLine2D {
     @Override
     public InvertedRay2D transform(AffineTransform2D trans) {
         double[] tab = trans.coefficients();
-        double x1 = x0() * tab[0] + y0() * tab[1] + tab[2];
-        double y1 = x0() * tab[3] + y0() * tab[4] + tab[5];
+        double x1 = x() * tab[0] + y() * tab[1] + tab[2];
+        double y1 = x() * tab[3] + y() * tab[4] + tab[5];
         return new InvertedRay2D(x1, y1, dx() * tab[0] + dy() * tab[1], dx() * tab[3] + dy() * tab[4]);
     }
 
@@ -222,9 +198,9 @@ public class InvertedRay2D extends AbstractLine2D {
         if (!(obj instanceof InvertedRay2D))
             return false;
         InvertedRay2D ray = (InvertedRay2D) obj;
-        if (Math.abs(x0() - ray.x0()) > eps)
+        if (Math.abs(x() - ray.x()) > eps)
             return false;
-        if (Math.abs(y0() - ray.y0()) > eps)
+        if (Math.abs(y() - ray.y()) > eps)
             return false;
         if (Math.abs(dx() - ray.dx()) > eps)
             return false;
@@ -234,26 +210,8 @@ public class InvertedRay2D extends AbstractLine2D {
         return true;
     }
 
-    // ===================================================================
-    // methods implementing the Object interface
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof InvertedRay2D))
-            return false;
-
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
     @Override
     public String toString() {
-        return new String("InvertedRay2D(" + x0() + "," + y0() + "," + dx() + "," + dy() + ")");
+        return new String("InvertedRay2D(" + x() + "," + y() + "," + dx() + "," + dy() + ")");
     }
 }

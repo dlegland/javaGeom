@@ -8,7 +8,7 @@
  */
 package math.geom2d.domain;
 
-import math.geom2d.AffineTransform2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Tagging interface to represent in unified way smooth curves that are also contours.

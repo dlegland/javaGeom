@@ -4,16 +4,15 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 6 févr. 09
+ * Created: 6 fï¿½vr. 09
  */
 package math.geom2d.point;
 
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearShape2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Interface for shapes composed of a finite set of points. Single points should also implements this interface. Implementations of this interface can contains duplicate points.

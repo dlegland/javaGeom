@@ -4,47 +4,31 @@
 
 package math.geom3d.line;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import math.geom3d.Box3D;
+import math.geom3d.IGeometricObject3D;
 import math.geom3d.IShape3D;
-import math.geom3d.Point3D;
 import math.geom3d.curve.IContinuousCurve3D;
 import math.geom3d.curve.ICurve3D;
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
  * @author dlegland
  */
-public class LineSegment3D implements IContinuousCurve3D, Serializable {
+public class LineSegment3D extends AbstractLine3D implements IContinuousCurve3D {
     private static final long serialVersionUID = 1L;
 
-    protected double x1 = 0;
-    protected double y1 = 0;
-    protected double z1 = 0;
-    protected double x2 = 1;
-    protected double y2 = 0;
-    protected double z2 = 0;
+    private final Point3D point2;
 
     // ===================================================================
     // constructors
 
     public LineSegment3D(Point3D p1, Point3D p2) {
-        this.x1 = p1.getX();
-        this.y1 = p1.getY();
-        this.z1 = p1.getZ();
-        this.x2 = p2.getX();
-        this.y2 = p2.getY();
-        this.z2 = p2.getZ();
-    }
-
-    // ===================================================================
-    // methods specific to StraightLine3D
-
-    public StraightLine3D supportingLine() {
-        return new StraightLine3D(x1, y1, z1, x2 - x1, y2 - y1, z2 - z1);
+        super(p1, p2, true);
+        this.point2 = p2;
     }
 
     // ===================================================================
@@ -69,7 +53,7 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      */
     @Override
     public Point3D firstPoint() {
-        return new Point3D(x1, y1, z1);
+        return origin();
     }
 
     /*
@@ -79,7 +63,7 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      */
     @Override
     public Point3D lastPoint() {
-        return new Point3D(x2, y2, z2);
+        return point2;
     }
 
     /*
@@ -90,13 +74,13 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
     @Override
     public Point3D point(double t) {
         t = Math.max(Math.min(t, 1), 0);
-        return new Point3D(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, z1 + (z2 - z1) * t);
+        return new Point3D(x() + dx() * t, y() + dy() * t, z() + dz() * t);
     }
 
     /**
      * If point does not project on the line segment, return Double.NaN.
      * 
-     * @see math.geom3d.curve.ICurve3D#position(math.geom3d.Point3D)
+     * @see math.geom3d.curve.ICurve3D#position(math.geom3d.point.Point3D)
      */
     @Override
     public double position(Point3D point) {
@@ -146,20 +130,20 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
     /**
      * Return 0, by definition of LineSegment.
      * 
-     * @see math.geom3d.curve.ICurve3D#getT0()
+     * @see math.geom3d.curve.ICurve3D#t0()
      */
     @Override
-    public double getT0() {
+    public double t0() {
         return 0;
     }
 
     /**
      * Return 1, by definition of LineSegment.
      * 
-     * @see math.geom3d.curve.ICurve3D#getT1()
+     * @see math.geom3d.curve.ICurve3D#t1()
      */
     @Override
-    public double getT1() {
+    public double t1() {
         return 1;
     }
 
@@ -180,23 +164,12 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      * @see math.geom3d.curve.Curve3D#transform(math.geom3d.transform.AffineTransform3D)
      */
     @Override
-    public ICurve3D transform(AffineTransform3D trans) {
-        return new LineSegment3D(new Point3D(x1, y1, z1).transform(trans), new Point3D(x2, y2, z2).transform(trans));
+    public LineSegment3D transform(AffineTransform3D trans) {
+        return new LineSegment3D(firstPoint().transform(trans), lastPoint().transform(trans));
     }
 
     // ===================================================================
     // methods implementing the Shape3D interface
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see math.geom3d.Shape3D#clip(math.geom3d.Box3D)
-     */
-    @Override
-    public IShape3D clip(Box3D box) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     /*
      * (non-Javadoc)
@@ -223,7 +196,7 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
      */
     @Override
     public Box3D boundingBox() {
-        return new Box3D(x1, x2, y1, y2, z1, z2);
+        return new Box3D(firstPoint(), lastPoint());
     }
 
     /*
@@ -257,4 +230,58 @@ public class LineSegment3D implements IContinuousCurve3D, Serializable {
         return false;
     }
 
+    @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof LineSegment3D))
+            return false;
+        LineSegment3D edge = (LineSegment3D) obj;
+
+        Point3D p1 = firstPoint();
+        Point3D p2 = lastPoint();
+        Point3D ep1 = edge.firstPoint();
+        Point3D ep2 = edge.lastPoint();
+        return p1.almostEquals(ep1, eps) && p2.almostEquals(ep2, eps);
+    }
+
+    @Override
+    public int hashCode() {
+        Point3D point1 = firstPoint();
+        final int prime = 31;
+        int result = (point1 == null) ? 0 : point1.hashCode();
+        result = prime * result + ((point2 == null) ? 0 : point2.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LineSegment3D other = (LineSegment3D) obj;
+
+        Point3D point1 = firstPoint();
+        Point3D opoint1 = other.firstPoint();
+        if (point1 == null) {
+            if (opoint1 != null)
+                return false;
+        } else if (!point1.equals(opoint1))
+            return false;
+        if (point2 == null) {
+            if (other.point2 != null)
+                return false;
+        } else if (!point2.equals(other.point2))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return new String("LineSegment3D[" + firstPoint() + "-" + lastPoint() + "]");
+    }
 }

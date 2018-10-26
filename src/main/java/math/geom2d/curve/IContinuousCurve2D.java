@@ -28,10 +28,10 @@ package math.geom2d.curve;
 // Imports
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.Vector2D;
 import math.geom2d.polygon.LinearCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Interface for all curves which can be drawn with one stroke. This includes closed curves (ellipses, polygon boundaries...), infinite curves (straight lines, parabolas, ...), and 'finite' curves, such as polylines, conic arcs, line segments, splines... Note that an hyperbola is compound of 2 continuous curves.

@@ -4,14 +4,22 @@
 
 package math.geom2d.conic;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
 
-import math.geom2d.AffineTransform2D;
+import java.util.Arrays;
+
 import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.domain.ContourArray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Generic class providing utilities for manipulating conics. Provides in particular methods for reducing a conic.
@@ -284,14 +292,14 @@ public class Conics2D {
     // -----------------------------------------------------------------
     // Some special conics
 
-    static class ConicStraightLine2D extends StraightLine2D implements IConic2D {
+    static final class ConicStraightLine2D extends StraightLine2D implements IConic2D {
         private static final long serialVersionUID = 1L;
 
         double[] coefs = new double[] { 0, 0, 0, 1, 0, 0 };
 
         public ConicStraightLine2D(StraightLine2D line) {
             super(line);
-            coefs = new double[] { 0, 0, 0, dy(), -dx(), dx() * y0() - dy() * x0() };
+            coefs = new double[] { 0, 0, 0, dy(), -dx(), dx() * y() - dy() * x() };
         }
 
         public ConicStraightLine2D(double a, double b, double c) {
@@ -324,6 +332,29 @@ public class Conics2D {
         public ConicStraightLine2D transform(AffineTransform2D trans) {
             return new ConicStraightLine2D(super.transform(trans));
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + Arrays.hashCode(coefs);
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!super.equals(obj))
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            ConicStraightLine2D other = (ConicStraightLine2D) obj;
+            if (!Arrays.equals(coefs, other.coefs))
+                return false;
+            return true;
+        }
+
     }
 
     static class ConicTwoLines2D extends ContourArray2D<StraightLine2D> implements IConic2D {
@@ -383,6 +414,42 @@ public class Conics2D {
         @Override
         public ConicTwoLines2D reverse() {
             return new ConicTwoLines2D(xc, yc, -d, theta);
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            long temp;
+            temp = Double.doubleToLongBits(d);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(theta);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(xc);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(yc);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!super.equals(obj))
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            ConicTwoLines2D other = (ConicTwoLines2D) obj;
+            if (Double.doubleToLongBits(d) != Double.doubleToLongBits(other.d))
+                return false;
+            if (Double.doubleToLongBits(theta) != Double.doubleToLongBits(other.theta))
+                return false;
+            if (Double.doubleToLongBits(xc) != Double.doubleToLongBits(other.xc))
+                return false;
+            if (Double.doubleToLongBits(yc) != Double.doubleToLongBits(other.yc))
+                return false;
+            return true;
         }
     }
 

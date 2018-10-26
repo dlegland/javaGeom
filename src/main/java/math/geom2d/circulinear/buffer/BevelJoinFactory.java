@@ -8,9 +8,9 @@
  */
 package math.geom2d.circulinear.buffer;
 
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland

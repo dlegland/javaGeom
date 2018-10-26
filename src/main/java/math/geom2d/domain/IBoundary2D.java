@@ -20,7 +20,7 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 25 déc. 2006
+ * Created on 25 dï¿½c. 2006
  *
  */
 
@@ -29,8 +29,8 @@ package math.geom2d.domain;
 import java.awt.Graphics2D;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A Boundary2D is the curve which defines the contour of a domain in the plane. It is compound of one or several non-intersecting and oriented curves. Curves composing the boundary implements the Contour2D interface.

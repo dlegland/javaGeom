@@ -25,8 +25,7 @@
 
 package math.geom2d.transform;
 
-// Imports
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 
 /**
  * general class for all transformation in the plane, linear or not linear.

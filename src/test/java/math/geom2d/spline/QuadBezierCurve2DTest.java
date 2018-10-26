@@ -21,13 +21,13 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 3 août 2004
+ * Created on 3 aoï¿½t 2004
  */
 
 package math.geom2d.spline;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
 
 /**

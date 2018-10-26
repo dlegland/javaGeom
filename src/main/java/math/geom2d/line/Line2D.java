@@ -25,15 +25,12 @@
 
 package math.geom2d.line;
 
-import java.io.Serializable;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
@@ -41,9 +38,11 @@ import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -64,7 +63,7 @@ import math.geom2d.transform.CircleInversion2D;
  * <p>
  * This class may be slower than Edge2D or StraightLine2D, because parameters are updated each time a computation is made, causing lot of additional processing.
  */
-public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
+public final class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -81,7 +80,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     // constructors
 
     /**
-     * Checks if two line intersect. Uses the {@link math.geom2d.Point2D#ccw(Point2D, Point2D, Point2D) Point2D.ccw} method, which is based on Sedgewick algorithm.
+     * Checks if two line intersect. Uses the {@link math.geom2d.point.Point2D#ccw(Point2D, Point2D, Point2D) Point2D.ccw} method, which is based on Sedgewick algorithm.
      * 
      * @param line1
      *            a Line2D object
@@ -455,7 +454,7 @@ public class Line2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     @Override
     public ICurveSet2D<? extends Line2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<Line2D> result = new CurveArray2D<>(set.size());

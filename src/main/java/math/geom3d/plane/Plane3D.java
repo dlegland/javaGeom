@@ -6,12 +6,13 @@ package math.geom3d.plane;
 
 import java.io.Serializable;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 import math.geom3d.Box3D;
+import math.geom3d.IGeometricObject3D;
 import math.geom3d.IShape3D;
-import math.geom3d.Point3D;
 import math.geom3d.Vector3D;
 import math.geom3d.line.StraightLine3D;
+import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
 
 /**
@@ -20,15 +21,9 @@ import math.geom3d.transform.AffineTransform3D;
 public class Plane3D implements IShape3D, Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected double x0 = 0;
-    protected double y0 = 0;
-    protected double z0 = 0;
-    protected double dx1 = 1;
-    protected double dy1 = 0;
-    protected double dz1 = 0;
-    protected double dx2 = 0;
-    protected double dy2 = 1;
-    protected double dz2 = 0;
+    protected Point3D point;
+    protected Vector3D vector1;
+    protected Vector3D vector2;
 
     // ===================================================================
     // static methods
@@ -45,37 +40,25 @@ public class Plane3D implements IShape3D, Serializable {
         return new Plane3D(new Point3D(0, 0, 0), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
     }
 
-    // ===================================================================
-    // constructors
-
-    public Plane3D() {
-    }
-
     public Plane3D(Point3D point, Vector3D vector1, Vector3D vector2) {
-        this.x0 = point.getX();
-        this.y0 = point.getY();
-        this.z0 = point.getZ();
-        this.dx1 = vector1.getX();
-        this.dy1 = vector1.getY();
-        this.dz1 = vector1.getZ();
-        this.dx2 = vector2.getX();
-        this.dy2 = vector2.getY();
-        this.dz2 = vector2.getZ();
+        this.point = point;
+        this.vector1 = vector1;
+        this.vector2 = vector2;
     }
 
     // ===================================================================
     // methods specific to Plane3D
 
     public Point3D origin() {
-        return new Point3D(x0, y0, z0);
+        return point;
     }
 
     public Vector3D vector1() {
-        return new Vector3D(dx1, dy1, dz1);
+        return vector1;
     }
 
     public Vector3D vector2() {
-        return new Vector3D(dx2, dy2, dz2);
+        return vector2;
     }
 
     /**
@@ -114,13 +97,13 @@ public class Plane3D implements IShape3D, Serializable {
     }
 
     public Vector3D projectVector(Vector3D vect) {
-        Point3D point = new Point3D(x0 + vect.getX(), y0 + vect.getY(), z0 + vect.getZ());
-        point = this.projectPoint(point);
-        return new Vector3D(point.getX() - x0, point.getY() - y0, point.getZ() - z0);
+        Point3D p = point.plus(vect);
+        p = this.projectPoint(p);
+        return new Vector3D(point, p);
     }
 
     public Point3D point(double u, double v) {
-        return new Point3D(x0 + u * dx1 + v * dx2, y0 + u * dy1 + v * dy2, z0 + u * dz1 + v * dz2);
+        return new Point3D(point.x() + u * vector1.x() + v * vector2.x(), point.y() + u * vector1.y() + v * vector2.y(), point.z() + u * vector1.z() + v * vector2.z());
     }
 
     public Point2D pointPosition(Point3D point) {
@@ -162,16 +145,16 @@ public class Plane3D implements IShape3D, Serializable {
     @Override
     public Box3D boundingBox() {
         // plane parallel to XY plane
-        if (Math.abs(dz1) < IShape3D.ACCURACY && Math.abs(dz2) < IShape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, z0, z0);
+        if (Math.abs(vector1.z()) < IShape3D.ACCURACY && Math.abs(vector2.z()) < IShape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, point.z(), point.z());
 
         // plane parallel to YZ plane
-        if (Math.abs(dx1) < IShape3D.ACCURACY && Math.abs(dx2) < IShape3D.ACCURACY)
-            return new Box3D(x0, x0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        if (Math.abs(vector1.x()) < IShape3D.ACCURACY && Math.abs(vector2.x()) < IShape3D.ACCURACY)
+            return new Box3D(point.x(), point.x(), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         // plane parallel to XZ plane
-        if (Math.abs(dy1) < IShape3D.ACCURACY && Math.abs(dy2) < IShape3D.ACCURACY)
-            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, y0, y0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        if (Math.abs(vector1.y()) < IShape3D.ACCURACY && Math.abs(vector2.y()) < IShape3D.ACCURACY)
+            return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, point.y(), point.y(), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         return new Box3D(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
@@ -217,28 +200,27 @@ public class Plane3D implements IShape3D, Serializable {
     }
 
     @Override
+    public boolean almostEquals(IGeometricObject3D obj, double eps) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof Plane3D))
+            return false;
+        Plane3D plane = (Plane3D) obj;
+
+        Point3D p = plane.point;
+        Vector3D v1 = plane.vector1;
+        Vector3D v2 = plane.vector2;
+        return point.almostEquals(p, eps) && vector1.almostEquals(v1, eps) && vector2.almostEquals(v2, eps);
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(dx1);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(dx2);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(dy1);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(dy2);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(dz1);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(dz2);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(x0);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y0);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(z0);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((point == null) ? 0 : point.hashCode());
+        result = prime * result + ((vector1 == null) ? 0 : vector1.hashCode());
+        result = prime * result + ((vector2 == null) ? 0 : vector2.hashCode());
         return result;
     }
 
@@ -251,27 +233,21 @@ public class Plane3D implements IShape3D, Serializable {
         if (getClass() != obj.getClass())
             return false;
         Plane3D other = (Plane3D) obj;
-        if (Double.doubleToLongBits(dx1) != Double.doubleToLongBits(other.dx1))
+        if (point == null) {
+            if (other.point != null)
+                return false;
+        } else if (!point.equals(other.point))
             return false;
-        if (Double.doubleToLongBits(dx2) != Double.doubleToLongBits(other.dx2))
+        if (vector1 == null) {
+            if (other.vector1 != null)
+                return false;
+        } else if (!vector1.equals(other.vector1))
             return false;
-        if (Double.doubleToLongBits(dy1) != Double.doubleToLongBits(other.dy1))
-            return false;
-        if (Double.doubleToLongBits(dy2) != Double.doubleToLongBits(other.dy2))
-            return false;
-        if (Double.doubleToLongBits(dz1) != Double.doubleToLongBits(other.dz1))
-            return false;
-        if (Double.doubleToLongBits(dz2) != Double.doubleToLongBits(other.dz2))
-            return false;
-        if (Double.doubleToLongBits(x0) != Double.doubleToLongBits(other.x0))
-            return false;
-        if (Double.doubleToLongBits(y0) != Double.doubleToLongBits(other.y0))
-            return false;
-        if (Double.doubleToLongBits(z0) != Double.doubleToLongBits(other.z0))
+        if (vector2 == null) {
+            if (other.vector2 != null)
+                return false;
+        } else if (!vector2.equals(other.vector2))
             return false;
         return true;
     }
-
-
-
 }

@@ -10,7 +10,7 @@ package math.geom2d.polygon.convhull;
 
 import java.util.Collection;
 
-import math.geom2d.Point2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.IPolygon2D;
 
 /**

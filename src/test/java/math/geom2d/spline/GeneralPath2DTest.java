@@ -7,11 +7,11 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 /**
@@ -73,7 +73,7 @@ public class GeneralPath2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.spline.GeneralPath2D#distance(math.geom2d.Point2D)}.
+     * Test method for {@link math.geom2d.spline.GeneralPath2D#distance(math.geom2d.point.Point2D)}.
      */
     public void testDistance() {
         GeneralPath2D path = createDefaultPath();
@@ -84,7 +84,7 @@ public class GeneralPath2DTest extends TestCase {
     }
 
     /**
-     * Test method for {@link math.geom2d.spline.GeneralPath2D#contains(math.geom2d.Point2D)}.
+     * Test method for {@link math.geom2d.spline.GeneralPath2D#contains(math.geom2d.point.Point2D)}.
      */
     public void testContainsPoint2D() {
         GeneralPath2D path = createDefaultPath();

@@ -26,8 +26,8 @@
 package math.geom2d.transform;
 
 import math.geom2d.Angle2DUtil;
-import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
+import math.geom2d.point.Point2D;
 
 // Imports
 
@@ -116,7 +116,7 @@ public class CircleInversion2D implements IBijection2D {
     public Point2D[] transform(Point2D[] src, Point2D[] dst) {
 
         double d, theta;
-        double xc, yc, r;
+        double xc, yc;
 
         // create the array if necessary
         if (dst == null)

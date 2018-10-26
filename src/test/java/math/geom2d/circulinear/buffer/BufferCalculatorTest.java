@@ -5,7 +5,6 @@ import static java.lang.Math.PI;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.*;
 import math.geom2d.conic.Circle2D;
@@ -15,6 +14,7 @@ import math.geom2d.line.InvertedRay2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
 

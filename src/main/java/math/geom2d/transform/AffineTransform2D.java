@@ -23,7 +23,7 @@
 
 // package
 
-package math.geom2d;
+package math.geom2d.transform;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -34,15 +34,19 @@ import static math.geom2d.IShape2D.ACCURACY;
 
 import java.io.Serializable;
 
+import math.geom2d.Angle2DUtil;
+import math.geom2d.IGeometricObject2D;
+import math.geom2d.IShape2D;
+import math.geom2d.Vector2D;
 import math.geom2d.exception.NonInvertibleTransform2DException;
 import math.geom2d.line.ILinearShape2D;
-import math.geom2d.transform.IBijection2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Base class for generic affine transforms in the plane. They include rotations, translations, shears, similarities, and combinations of these. Such transformations can be constructed by using coefficients specification, or by creating specialized instances, by using static methods.
  * <p>
  */
-public class AffineTransform2D implements IBijection2D, IGeometricObject2D, Serializable {
+public final class AffineTransform2D implements IBijection2D, IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final AffineTransform2D IDENTITY = new AffineTransform2D(1, 0, 0, 0, 1, 0);
@@ -357,10 +361,6 @@ public class AffineTransform2D implements IBijection2D, IGeometricObject2D, Seri
     /**
      * Creates a new Affine Transform by directly specifying the coefficients, in the order m00, m01, m02, m10, m11, m12 (different order of java.awt.geom.AffineTransform).
      */
-    public AffineTransform2D(double xx, double yx, double xy, double yy) {
-        this(xx, yx, 0, xy, yy, 0);
-    }
-
     public AffineTransform2D(double xx, double yx, double tx, double xy, double yy, double ty) {
         m00 = xx;
         m01 = yx;
@@ -536,9 +536,6 @@ public class AffineTransform2D implements IBijection2D, IGeometricObject2D, Seri
         }
         return dst;
     }
-
-    // ===================================================================
-    // implements the GeometricObject2D interface
 
     @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {

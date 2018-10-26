@@ -32,6 +32,7 @@ import javax.swing.*;
 import math.geom2d.*;
 import math.geom2d.circulinear.GenericCirculinearRing2D;
 import math.geom2d.conic.CircleArc2D;
+import math.geom2d.point.Point2D;
 
 import static java.lang.Math.*;
 

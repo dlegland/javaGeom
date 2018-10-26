@@ -33,14 +33,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -48,15 +47,15 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializable {
+public final class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializable {
     private static final long serialVersionUID = 1L;
 
-    public static <T extends Point2D> PointArray2D create(Collection<T> points) {
+    public static PointArray2D create(Collection<Point2D> points) {
         return new PointArray2D(points);
     }
 
     @SafeVarargs
-    public static <T extends Point2D> PointArray2D create(T... points) {
+    public static PointArray2D create(Point2D... points) {
         return new PointArray2D(points);
     }
 
@@ -425,27 +424,28 @@ public class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializa
         return true;
     }
 
-    /**
-     * Returns true if the given object is an instance of PointSet2D that contains the same number of points, such that iteration on each set returns equal points.
-     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((points == null) ? 0 : points.hashCode());
+        return result;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        if (!(obj instanceof IPointSet2D))
+        if (obj == null)
             return false;
-
-        IPointSet2D set = (IPointSet2D) obj;
-        if (this.points.size() != set.size())
+        if (getClass() != obj.getClass())
             return false;
-
-        Iterator<Point2D> iter = set.iterator();
-        for (Point2D point : points) {
-            if (!point.equals(iter.next()))
+        PointArray2D other = (PointArray2D) obj;
+        if (points == null) {
+            if (other.points != null)
                 return false;
-        }
-
+        } else if (!points.equals(other.points))
+            return false;
         return true;
     }
 }

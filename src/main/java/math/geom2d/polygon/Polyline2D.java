@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.PolyCirculinearCurve2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -45,7 +45,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class Polyline2D extends LinearCurve2D implements ICirculinearContinuousCurve2D {
+public final class Polyline2D extends LinearCurve2D implements ICirculinearContinuousCurve2D {
     private static final long serialVersionUID = 1L;
 
     /**

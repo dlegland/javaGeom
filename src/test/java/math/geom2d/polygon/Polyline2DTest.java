@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 27 déc. 2003
+ * Created on 27 dï¿½c. 2003
  */
 
 package math.geom2d.polygon;
@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.ICirculinearContinuousCurve2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
@@ -40,6 +39,7 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author Legland

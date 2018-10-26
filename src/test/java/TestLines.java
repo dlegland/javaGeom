@@ -1,7 +1,5 @@
-
-// Imports
-import math.geom2d.*;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 
 /**
  * class TestLines.

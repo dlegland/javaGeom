@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 
 /**
@@ -175,7 +175,7 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
     @Override
     public ICurveSet2D<? extends IContinuousOrientedCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<? extends ICurve2D> set = Curves2D.clipCurve(this, box);
+        ICurveSet2D<? extends ICurve2D> set = Curves2DUtil.clipCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<IContinuousOrientedCurve2D> result = new CurveArray2D<>(set.size());

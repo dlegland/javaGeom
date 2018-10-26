@@ -13,9 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.IContour2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.domain.GenericDomain2D;
 import math.geom2d.spline.QuadBezierCurve2D;
 

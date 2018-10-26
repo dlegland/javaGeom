@@ -29,10 +29,10 @@ import junit.framework.TestCase;
 import java.util.*;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.IShape2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 public class CurveArray2DTest extends TestCase {
 

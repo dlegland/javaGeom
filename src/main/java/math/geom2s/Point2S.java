@@ -26,12 +26,15 @@
 
 package math.geom2s;
 
+import java.io.Serializable;
+
 /**
  * A point in spherical coordinates.
  * 
  * @author Legland
  */
-public class Point2S implements IShape2S {
+public class Point2S implements IShape2S, Serializable {
+    private static final long serialVersionUID = 1L;
 
     double phi;
     double theta;
@@ -41,4 +44,31 @@ public class Point2S implements IShape2S {
         this.theta = theta;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(phi);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(theta);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Point2S other = (Point2S) obj;
+        if (Double.doubleToLongBits(phi) != Double.doubleToLongBits(other.phi))
+            return false;
+        if (Double.doubleToLongBits(theta) != Double.doubleToLongBits(other.theta))
+            return false;
+        return true;
+    }
 }

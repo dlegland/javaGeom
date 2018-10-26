@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.spline.CubicBezierCurve2D;
 
 public class CheckDrawCircleArcAsBezier2D extends JPanel {

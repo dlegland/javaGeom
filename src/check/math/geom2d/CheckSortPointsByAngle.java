@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.polygon.SimplePolygon2D;
 

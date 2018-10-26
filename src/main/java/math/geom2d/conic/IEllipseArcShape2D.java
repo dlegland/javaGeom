@@ -3,8 +3,8 @@
  */
 package math.geom2d.conic;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An interface to gather CircleArc2D and EllipseArc2D.

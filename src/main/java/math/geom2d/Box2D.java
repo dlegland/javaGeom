@@ -47,14 +47,16 @@ import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.LineArc2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polygons2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * This class defines bounds of a shape. It stores limits in each direction: <code>x</code> and <code>y</code>. It also provides methods for clipping others shapes, depending on their type.
  */
-public class Box2D implements IGeometricObject2D, Serializable {
+public final class Box2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public final static Box2D ZERO_BOX = new Box2D(0, 0, 0, 0);

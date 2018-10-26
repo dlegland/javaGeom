@@ -27,7 +27,9 @@ package math.geom2d;
 
 import junit.framework.TestCase;
 import math.geom2d.domain.IBoundary2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
+import math.geom2d.transform.AffineTransform2D;
 
 public class Box2DTest extends TestCase {
 

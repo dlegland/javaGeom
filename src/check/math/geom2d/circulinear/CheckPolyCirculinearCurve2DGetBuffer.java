@@ -11,12 +11,12 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 /**
  * @author dlegland

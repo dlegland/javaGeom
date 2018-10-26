@@ -33,24 +33,23 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
-import math.utils.EqualUtils;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An arc of parabola, defined by a parent parabola, and two limits for the parametrization.
@@ -330,7 +329,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     @Override
     public ICurveSet2D<? extends ParabolaArc2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<ParabolaArc2D> result = new CurveArray2D<>(set.size());

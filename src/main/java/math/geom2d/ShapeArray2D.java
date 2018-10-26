@@ -4,7 +4,7 @@
  * 
  * Distributed under the LGPL License.
  *
- * Created: 17 août 10
+ * Created: 17 aoï¿½t 10
  */
 package math.geom2d;
 
@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import math.geom2d.point.Point2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * Default Implementation of IShapeSet2D.
@@ -329,35 +332,28 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
         return shapes.iterator();
     }
 
-    // ===================================================================
-    // methods inherited from interface Object
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((shapes == null) ? 0 : shapes.hashCode());
+        return result;
+    }
 
-    /**
-     * Returns true if obj is a CurveSet2D with the same number of shapes, and such that each shape belongs to both objects.
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-
-        // check class, and cast type
-        if (!(obj instanceof IShapeSet2D<?>))
+        if (obj == null)
             return false;
-        ShapeArray2D<?> shapeSet = (ShapeArray2D<?>) obj;
-
-        // check the number of curves in each set
-        if (this.shapes.size() != shapeSet.shapes.size())
+        if (getClass() != obj.getClass())
             return false;
-
-        // return false if at least one couple of curves does not match
-        Iterator<?> iter2 = shapeSet.shapes.iterator();
-        for (T shape : shapes) {
-            if (!shape.equals(iter2.next()))
+        ShapeArray2D<?> other = (ShapeArray2D<?>) obj;
+        if (shapes == null) {
+            if (other.shapes != null)
                 return false;
-        }
-
-        // otherwise return true
+        } else if (!shapes.equals(other.shapes))
+            return false;
         return true;
     }
-
 }

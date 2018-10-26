@@ -9,10 +9,10 @@
 package math.geom2d.conic;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.ISmoothOrientedCurve2D;
+import math.geom2d.point.Point2D;
 
 /**
  * Tagging interface for grouping Circle2D and CircleArc2D.

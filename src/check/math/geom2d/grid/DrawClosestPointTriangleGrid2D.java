@@ -8,9 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
-import math.geom2d.Point2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.line.LineSegment2D;
+import math.geom2d.point.Point2D;
 
 public class DrawClosestPointTriangleGrid2D extends JPanel {
 

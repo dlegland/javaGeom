@@ -39,16 +39,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
@@ -56,7 +54,9 @@ import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * An arc of ellipse. It is defined by a supporting ellipse, a starting angle, and a signed angle extent, both in radians. The ellipse arc is oriented counter-clockwise if angle extent is positive, and clockwise otherwise.
@@ -248,14 +248,14 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
         if (!direct && onLeft)
             return -dist;
 
-        Ray2D ray = new Ray2D(p1, -sin(startAngle), cos(startAngle));
+        Ray2D ray = new Ray2D(p1, new Vector2D(-sin(startAngle), cos(startAngle)));
         boolean left1 = ray.isInside(point);
         if (direct && !left1)
             return dist;
         if (!direct && left1)
             return -dist;
 
-        ray = new Ray2D(p2, -sin(endAngle), cos(endAngle));
+        ray = new Ray2D(p2, new Vector2D(-sin(endAngle), cos(endAngle)));
         boolean left2 = ray.isInside(point);
         if (direct && !left2)
             return dist;
@@ -502,7 +502,7 @@ public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrient
     @Override
     public ICurveSet2D<? extends EllipseArc2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<EllipseArc2D> result = new CurveArray2D<>(set.size());

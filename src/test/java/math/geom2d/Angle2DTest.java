@@ -20,12 +20,13 @@
  * The Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * Created on 2 déc. 2006
+ * Created on 2 dï¿½c. 2006
  *
  */
 package math.geom2d;
 
 import math.geom2d.line.StraightLine2D;
+import math.geom2d.point.Point2D;
 import junit.framework.TestCase;
 
 public class Angle2DTest extends TestCase {

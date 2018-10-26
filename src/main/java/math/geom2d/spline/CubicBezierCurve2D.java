@@ -25,21 +25,20 @@ package math.geom2d.spline;
 
 import java.util.Collection;
 
-import math.geom2d.AffineTransform2D;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
-import math.geom2d.IShape2D;
-import math.geom2d.Point2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.AbstractSmoothCurve2D;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.curve.Curves2D;
+import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
+import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
+import math.geom2d.transform.AffineTransform2D;
 
 /**
  * A cubic bezier curve, defined by 4 control points. The curve passes through the first and the last control points. The second and the third control points defines the tangents at the extremities of the curve.
@@ -435,7 +434,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
     @Override
     public ICurveSet2D<? extends CubicBezierCurve2D> clip(Box2D box) {
         // Clip the curve
-        ICurveSet2D<ISmoothCurve2D> set = Curves2D.clipSmoothCurve(this, box);
+        ICurveSet2D<ISmoothCurve2D> set = Curves2DUtil.clipSmoothCurve(this, box);
 
         // Stores the result in appropriate structure
         CurveArray2D<CubicBezierCurve2D> result = new CurveArray2D<>(set.size());
@@ -522,38 +521,55 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
         return true;
     }
 
-    // ===================================================================
-    // methods overriding the class Object
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(ctrlx1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ctrlx2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ctrly1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ctrly2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y1);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y2);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!(obj instanceof CubicBezierCurve2D))
+        if (obj == null)
             return false;
-
-        // class cast
-        CubicBezierCurve2D bezier = (CubicBezierCurve2D) obj;
-
-        // compare each field
-        if (Math.abs(this.x1 - bezier.x1) > IShape2D.ACCURACY)
+        if (getClass() != obj.getClass())
             return false;
-        if (Math.abs(this.y1 - bezier.y1) > IShape2D.ACCURACY)
+        CubicBezierCurve2D other = (CubicBezierCurve2D) obj;
+        if (Double.doubleToLongBits(ctrlx1) != Double.doubleToLongBits(other.ctrlx1))
             return false;
-        if (Math.abs(this.ctrlx1 - bezier.ctrlx1) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(ctrlx2) != Double.doubleToLongBits(other.ctrlx2))
             return false;
-        if (Math.abs(this.ctrly1 - bezier.ctrly1) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(ctrly1) != Double.doubleToLongBits(other.ctrly1))
             return false;
-        if (Math.abs(this.ctrlx2 - bezier.ctrlx2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(ctrly2) != Double.doubleToLongBits(other.ctrly2))
             return false;
-        if (Math.abs(this.ctrly2 - bezier.ctrly2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(x1) != Double.doubleToLongBits(other.x1))
             return false;
-        if (Math.abs(this.x2 - bezier.x2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(x2) != Double.doubleToLongBits(other.x2))
             return false;
-        if (Math.abs(this.y2 - bezier.y2) > IShape2D.ACCURACY)
+        if (Double.doubleToLongBits(y1) != Double.doubleToLongBits(other.y1))
             return false;
-
+        if (Double.doubleToLongBits(y2) != Double.doubleToLongBits(other.y2))
+            return false;
         return true;
     }
-
 }
