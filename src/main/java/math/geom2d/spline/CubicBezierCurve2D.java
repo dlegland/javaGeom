@@ -356,7 +356,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
      */
     @Override
     public CubicBezierCurve2D reverse() {
-        return new CubicBezierCurve2D(this.lastPoint(), this.getControl1(), this.getControl2(), this.firstPoint());
+        return new CubicBezierCurve2D(this.lastPoint(), this.getControl2(), this.getControl1(), this.firstPoint());
     }
 
     /**
@@ -470,7 +470,7 @@ public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmooth
 
     @Override
     public java.awt.geom.GeneralPath appendPath(java.awt.geom.GeneralPath path) {
-        path.moveTo(x1, y1);
+        // path.moveTo(x1, y1);
         path.curveTo(ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2);
         return path;
     }
