@@ -30,7 +30,11 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.Vector2D;
-import math.geom2d.curve.*;
+import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.Curves2DUtil;
+import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
 

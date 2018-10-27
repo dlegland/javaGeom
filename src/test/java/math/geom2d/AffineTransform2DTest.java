@@ -29,6 +29,7 @@ package math.geom2d;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
+
 import junit.framework.TestCase;
 import math.geom2d.exception.NonInvertibleTransform2DException;
 import math.geom2d.line.StraightLine2D;

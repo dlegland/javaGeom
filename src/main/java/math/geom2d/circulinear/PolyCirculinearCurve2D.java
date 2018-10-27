@@ -13,9 +13,9 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;
 import math.geom2d.domain.PolyOrientedCurve2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -29,7 +29,6 @@ import math.geom2d.transform.CircleInversion2D;
 public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> extends PolyOrientedCurve2D<T> implements ICirculinearContinuousCurve2D {
     private static final long serialVersionUID = 1L;
 
-
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array of curves.
      * 
@@ -39,7 +38,6 @@ public class PolyCirculinearCurve2D<T extends ICirculinearContinuousCurve2D> ext
     public static <T extends ICirculinearContinuousCurve2D> PolyCirculinearCurve2D<T> create(T... curves) {
         return new PolyCirculinearCurve2D<>(curves);
     }
-
 
     /**
      * Static factory for creating a new PolyCirculinearCurve2D from an array of curves and a flag indicating if the curve is closed.

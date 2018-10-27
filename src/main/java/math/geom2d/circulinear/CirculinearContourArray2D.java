@@ -42,7 +42,6 @@ import math.geom2d.transform.CircleInversion2D;
 public final class CirculinearContourArray2D<T extends ICirculinearContour2D> extends ContourArray2D<T> implements ICirculinearBoundary2D {
     private static final long serialVersionUID = 1L;
 
-
     /**
      * Static factory for creating a new CirculinearContourArray2D from an array of curves.
      * 

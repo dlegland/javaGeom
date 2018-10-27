@@ -25,9 +25,9 @@
  */
 package math.geom2d;
 
+import junit.framework.TestCase;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 public class Angle2DTest extends TestCase {
 

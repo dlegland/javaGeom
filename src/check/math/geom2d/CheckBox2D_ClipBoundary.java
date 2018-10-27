@@ -26,6 +26,8 @@
 
 package math.geom2d;
 
+import static math.geom2d.polygon.Polygons2D.createRectangle;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -35,8 +37,6 @@ import javax.swing.JPanel;
 
 import math.geom2d.polygon.IPolygon2D;
 import math.geom2d.transform.AffineTransform2D;
-
-import static math.geom2d.polygon.Polygons2D.*;
 
 public class CheckBox2D_ClipBoundary extends JPanel {
 

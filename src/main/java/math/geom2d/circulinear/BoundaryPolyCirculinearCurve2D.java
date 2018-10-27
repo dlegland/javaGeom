@@ -14,8 +14,8 @@ import java.util.Collection;
 
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
-import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.Curves2DUtil;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
 import math.geom2d.domain.IContinuousOrientedCurve2D;

@@ -25,17 +25,13 @@
  */
 package math.geom2d.domain;
 
-import junit.framework.TestCase;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.conic.CircleArc2D;
-import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.ContourArray2D;
-import math.geom2d.domain.IContour2D;
-import math.geom2d.domain.IContinuousOrientedCurve2D;
-import math.geom2d.domain.PolyOrientedCurve2D;
 
 public class Boundaries2DTest extends TestCase {
 

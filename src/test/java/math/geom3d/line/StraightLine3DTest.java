@@ -3,9 +3,9 @@
  */
 package math.geom3d.line;
 
+import junit.framework.TestCase;
 import math.geom3d.Vector3D;
 import math.geom3d.point.Point3D;
-import junit.framework.TestCase;
 
 /**
  * @author dlegland

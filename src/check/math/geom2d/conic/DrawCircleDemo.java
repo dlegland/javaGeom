@@ -26,10 +26,12 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.conic.Circle2D;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class DrawCircleDemo extends JPanel {
 

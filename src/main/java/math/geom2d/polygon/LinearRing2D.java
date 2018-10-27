@@ -489,6 +489,4 @@ public final class LinearRing2D extends LinearCurve2D implements ICirculinearRin
         return true;
     }
 
-
-
 }

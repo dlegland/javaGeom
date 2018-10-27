@@ -25,8 +25,17 @@
  *
  */
 
-import java.awt.*;
-import javax.swing.*;
+import static java.lang.Math.PI;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
@@ -34,8 +43,6 @@ import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.Point2D;
-
-import static java.lang.Math.*;
 
 public class DrawVennDiagram extends JPanel {
 

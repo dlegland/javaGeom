@@ -3,6 +3,7 @@
  */
 package math.geom2d.circulinear.buffer;
 
+import junit.framework.TestCase;
 import math.geom2d.IShape2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.IBoundary2D;
@@ -11,7 +12,6 @@ import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.polygon.LinearRing2D;
 import math.geom2d.polygon.Polyline2D;
-import junit.framework.TestCase;
 
 /**
  * @author David

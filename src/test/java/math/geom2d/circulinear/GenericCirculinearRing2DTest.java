@@ -1,13 +1,14 @@
 package math.geom2d.circulinear;
 
 import static java.lang.Math.PI;
+
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 public class GenericCirculinearRing2DTest extends TestCase {
 

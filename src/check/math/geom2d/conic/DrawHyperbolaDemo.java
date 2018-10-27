@@ -26,19 +26,21 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.Collection;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import math.geom2d.*;
-import math.geom2d.conic.Hyperbola2D;
-import math.geom2d.conic.HyperbolaBranch2D;
-import math.geom2d.curve.ICurveSet2D;
+import math.geom2d.Box2D;
 import math.geom2d.curve.Curves2DUtil;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
-import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.Boundaries2D;
+import math.geom2d.domain.IBoundary2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.Point2D;
 

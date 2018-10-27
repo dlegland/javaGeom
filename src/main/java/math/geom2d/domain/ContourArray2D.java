@@ -33,11 +33,11 @@ import java.util.Collections;
 
 import math.geom2d.Box2D;
 import math.geom2d.curve.CurveArray2D;
+import math.geom2d.curve.Curves2DUtil;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.curve.Curves2DUtil;
-import math.geom2d.curve.ICurve2D;
 
 /**
  * A ContourArray2D is a set of contours. Each contour in the set defines its own domain.
@@ -47,7 +47,6 @@ import math.geom2d.curve.ICurve2D;
  */
 public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implements IBoundary2D {
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Static factory for creating a new ContourArray2D from an array of contours.

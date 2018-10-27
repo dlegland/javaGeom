@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 
 import math.geom2d.Box2D;
 import math.geom2d.domain.BoundaryPolyCurve2D;
-import math.geom2d.domain.IContour2D;
 import math.geom2d.domain.GenericDomain2D;
+import math.geom2d.domain.IContour2D;
 
 /**
  * Draw and fill the interior of an astroid defined from several circle arcs.

@@ -258,7 +258,7 @@ public final class GeneralPath2D implements Shape, Serializable {
      * @return a <code>Point2D</code> object containing the ending coordinates of the path or <code>null</code> if there are no points in the path.
      */
     public synchronized Point2D getCurrentPoint() {
-        return new Point2D(path.getCurrentPoint().getX(),path.getCurrentPoint().getY());
+        return new Point2D(path.getCurrentPoint().getX(), path.getCurrentPoint().getY());
     }
 
     /**

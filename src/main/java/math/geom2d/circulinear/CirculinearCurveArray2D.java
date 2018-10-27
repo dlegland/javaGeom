@@ -14,9 +14,9 @@ import java.util.Collection;
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.curve.CurveArray2D;
-import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
+import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.transform.CircleInversion2D;
 
 /**
@@ -43,7 +43,6 @@ import math.geom2d.transform.CircleInversion2D;
  */
 public final class CirculinearCurveArray2D<T extends ICirculinearCurve2D> extends CurveArray2D<T> implements ICirculinearCurveSet2D<T> {
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Static factory for creating a new CirculinearCurveArray2D from an array of curves.

@@ -5,6 +5,7 @@ package math.geom2d.spline;
 
 import java.util.Collection;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
@@ -12,7 +13,6 @@ import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 /**
  * @author dlegland

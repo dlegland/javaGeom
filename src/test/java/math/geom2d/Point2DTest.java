@@ -29,10 +29,10 @@ package math.geom2d;
 
 import java.util.ArrayList;
 
+import junit.framework.TestCase;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 /**
  * @author Legland

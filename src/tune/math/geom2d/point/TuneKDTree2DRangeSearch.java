@@ -28,7 +28,7 @@ package math.geom2d.point;
 
 import java.util.ArrayList;
 
-import math.geom2d.*;
+import math.geom2d.Box2D;
 
 /**
  * At the moment, this class computes only the construction time.

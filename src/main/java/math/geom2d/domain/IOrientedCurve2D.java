@@ -27,10 +27,10 @@
 package math.geom2d.domain;
 
 import math.geom2d.Box2D;
+import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.curve.ICurve2D;
 
 /**
  * An OrientedCurve2D defines an 'inside' and an 'outside'. It is typically a part of the boundary of a domain. Several OrientedCurve2D form a Contour2D, and one or several Contour2D form a Boundary2D.

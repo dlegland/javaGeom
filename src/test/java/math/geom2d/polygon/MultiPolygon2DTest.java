@@ -1,9 +1,8 @@
 package math.geom2d.polygon;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
-
-import java.util.*;
-
 import math.geom2d.Box2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.domain.IDomain2D;

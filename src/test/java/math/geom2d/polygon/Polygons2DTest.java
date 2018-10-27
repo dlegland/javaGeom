@@ -10,10 +10,10 @@ package math.geom2d.polygon;
 
 import java.util.Collection;
 
+import junit.framework.TestCase;
 import math.geom2d.domain.IBoundary2D;
 import math.geom2d.domain.IDomain2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 /**
  * @author dlegland

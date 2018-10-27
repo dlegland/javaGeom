@@ -27,6 +27,7 @@
 
 package math.geom2d.line;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
@@ -39,7 +40,6 @@ import math.geom2d.domain.IDomain2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.CircleInversion2D;
-import junit.framework.TestCase;
 
 /**
  * @author Legland

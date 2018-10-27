@@ -24,7 +24,7 @@ import math.geom2d.polygon.Polyline2D;
  * 
  * @author dlegland
  */
-public abstract class Boundaries2D implements Serializable{
+public abstract class Boundaries2D implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

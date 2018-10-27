@@ -26,10 +26,14 @@
 
 package math.geom2d.domain;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import math.geom2d.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import math.geom2d.Box2D;
 import math.geom2d.conic.Parabola2D;
 import math.geom2d.curve.ICurve2D;
 

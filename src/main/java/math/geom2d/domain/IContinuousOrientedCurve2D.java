@@ -27,9 +27,9 @@
 package math.geom2d.domain;
 
 import math.geom2d.Box2D;
+import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.transform.AffineTransform2D;
-import math.geom2d.curve.IContinuousCurve2D;
 
 /**
  * Defines a part of the boundary of a planar domain. A ContinuousBoundary2D is a continuous, oriented and non self-intersecting curve.

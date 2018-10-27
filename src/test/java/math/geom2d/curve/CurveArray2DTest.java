@@ -25,9 +25,9 @@
  */
 package math.geom2d.curve;
 
-import junit.framework.TestCase;
-import java.util.*;
+import java.util.Iterator;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
 import math.geom2d.conic.CircleArc2D;

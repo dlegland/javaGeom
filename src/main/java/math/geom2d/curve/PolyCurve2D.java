@@ -46,7 +46,6 @@ import math.geom2d.transform.AffineTransform2D;
 public class PolyCurve2D<T extends IContinuousCurve2D> extends CurveArray2D<T> implements IContinuousCurve2D {
     private static final long serialVersionUID = 1L;
 
-
     /**
      * Static factory for creating a new PolyCurve2D from an array of curves.
      * 

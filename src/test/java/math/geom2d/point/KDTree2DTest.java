@@ -11,8 +11,8 @@ package math.geom2d.point;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import math.geom2d.Box2D;
 import junit.framework.TestCase;
+import math.geom2d.Box2D;
 
 /**
  * @author dlegland

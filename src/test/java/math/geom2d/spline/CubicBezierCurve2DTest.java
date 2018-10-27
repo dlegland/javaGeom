@@ -26,10 +26,10 @@
 
 package math.geom2d.spline;
 
+import junit.framework.TestCase;
 import math.geom2d.Vector2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.polygon.Polyline2D;
-import junit.framework.TestCase;
 
 /**
  * @author Legland

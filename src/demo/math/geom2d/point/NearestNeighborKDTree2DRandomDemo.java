@@ -26,12 +26,15 @@
 
 package math.geom2d.point;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import math.geom2d.*;
+import math.geom2d.Box2D;
 import math.geom2d.line.LineSegment2D;
 
 /**

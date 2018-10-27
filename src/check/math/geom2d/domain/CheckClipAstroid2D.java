@@ -26,15 +26,20 @@
 
 package math.geom2d.domain;
 
-import java.awt.*;
-import javax.swing.*;
+import static java.lang.Math.PI;
 
-import math.geom2d.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import math.geom2d.Box2D;
 import math.geom2d.circulinear.GenericCirculinearRing2D;
 import math.geom2d.conic.CircleArc2D;
 import math.geom2d.point.Point2D;
-
-import static java.lang.Math.*;
 
 public class CheckClipAstroid2D extends JPanel {
 

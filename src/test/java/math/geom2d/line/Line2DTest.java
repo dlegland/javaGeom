@@ -26,10 +26,10 @@
  */
 package math.geom2d.line;
 
+import junit.framework.TestCase;
 import math.geom2d.Box2D;
 import math.geom2d.IShape2D;
 import math.geom2d.point.Point2D;
-import junit.framework.TestCase;
 
 /**
  * @author Legland

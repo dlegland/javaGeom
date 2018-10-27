@@ -869,8 +869,6 @@ public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipse
         return String.format(Locale.US, "CircleArc2D(%7.2f,%7.2f,%7.2f,%7.5f,%7.5f)", center.x(), center.y(), circle.radius(), getStartAngle(), getAngleExtent());
     }
 
-
-
     /**
      * @return A collection of intersection points or empty if either there are no intersections or if the arc & circle are coincident.
      */
@@ -917,6 +915,5 @@ public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipse
             return false;
         return true;
     }
-    
-    
+
 }

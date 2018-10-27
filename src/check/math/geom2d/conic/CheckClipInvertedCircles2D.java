@@ -26,12 +26,15 @@
 
 package math.geom2d.conic;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import math.geom2d.*;
-import math.geom2d.conic.Circle2D;
+import math.geom2d.Box2D;
 import math.geom2d.domain.ContourArray2D;
 
 public class CheckClipInvertedCircles2D extends JPanel {
