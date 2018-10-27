@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * author : Legland
- * Created on 30 déc. 2003
+ * Created on 30 dï¿½c. 2003
  */
 package math.geom2d.domain;
 
@@ -41,6 +41,7 @@ public class AllTests {
         suite.addTest(new TestSuite(BoundaryPolyCurve2DTest.class));
         suite.addTest(new TestSuite(GenericDomain2DTest.class));
         suite.addTest(new TestSuite(PolyOrientedCurve2DTest.class));
+        suite.addTest(new TestSuite(DomainArray2DTest.class));
         // $JUnit-END$
         return suite;
     }
