@@ -391,7 +391,7 @@ public class MultiPolygon2D implements IDomain2D, IPolygon2D, Serializable {
     @Override
     public Box2D boundingBox() {
         // start with empty bounding box
-        Box2D box = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        Box2D box = Box2D.EMPTY_BOX;
 
         // compute union of all bounding boxes
         for (LinearRing2D ring : this.rings)

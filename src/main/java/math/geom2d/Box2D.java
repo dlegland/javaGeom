@@ -59,8 +59,6 @@ import math.geom2d.transform.AffineTransform2D;
 public final class Box2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
 
-    public final static Box2D ZERO_BOX = new Box2D(0, 0, 0, 0);
-
     /**
      * The box corresponding to the unit square, with bounds [0 1] in each direction
      * 
@@ -75,22 +73,31 @@ public final class Box2D implements IGeometricObject2D, Serializable {
      */
     public final static Box2D INFINITE_BOX = new Box2D(NEGATIVE_INFINITY, POSITIVE_INFINITY, NEGATIVE_INFINITY, POSITIVE_INFINITY);
 
-    // ===================================================================
-    // class variables
+    /**
+     * The only box that xmin > xmax or ymin > ymax
+     */
+    public final static Box2D EMPTY_BOX = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, false);
 
     private final double xmin;
     private final double xmax;
     private final double ymin;
     private final double ymax;
 
-    /**
-     * Main constructor, given bounds for x coord, then bounds for y coord.
-     */
-    public Box2D(double xmin, double xmax, double ymin, double ymax) {
+    private Box2D(double xmin, double xmax, double ymin, double ymax, boolean check) {
         this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
         this.ymax = ymax;
+        if (check && (xmin > xmax || ymin > ymax)) {
+            throw new RuntimeException("xmin > xmax or ymin > ymax !");
+        }
+    }
+
+    /**
+     * Main constructor, given bounds for x coord, then bounds for y coord.
+     */
+    public Box2D(double xmin, double xmax, double ymin, double ymax) {
+        this(xmin, xmax, ymin, ymax, true);
     }
 
     /**
