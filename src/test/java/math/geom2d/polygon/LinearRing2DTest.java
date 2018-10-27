@@ -307,16 +307,15 @@ public class LinearRing2DTest extends TestCase {
         // Try the other orientation
         polyline = new LinearRing2D(new Point2D[] { new Point2D(50, 50), new Point2D(50, 150), new Point2D(100, 100), new Point2D(150, 150), new Point2D(150, 50), });
 
-        // assertTrue(!polyline.isInside(new Point2D(60, 60)));
-        // assertTrue(!polyline.isInside(new Point2D(140, 60)));
-        // assertTrue(!polyline.isInside(new Point2D(55, 140)));
-        // assertTrue(!polyline.isInside(new Point2D(145, 140)));
-        //
-        // assertTrue(polyline.isInside(new Point2D(100, -50)));
-        // assertTrue(polyline.isInside(new Point2D(100, 110)));
-        // assertTrue(polyline.isInside(new Point2D(200, 50)));
-        // assertTrue(polyline.isInside(new Point2D(0, 50)));
+        assertTrue(!polyline.isInside(new Point2D(60, 60)));
+        assertTrue(!polyline.isInside(new Point2D(140, 60)));
+        assertTrue(!polyline.isInside(new Point2D(55, 140)));
+        assertTrue(!polyline.isInside(new Point2D(145, 140)));
 
+        assertTrue(polyline.isInside(new Point2D(100, -50)));
+        assertTrue(polyline.isInside(new Point2D(100, 110)));
+        assertTrue(polyline.isInside(new Point2D(200, 50)));
+        assertTrue(polyline.isInside(new Point2D(0, 50)));
     }
 
     /*
