@@ -81,10 +81,10 @@ public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipse
     private final Circle2D circle;
 
     /** The starting position on circle, in radians between 0 and +2PI */
-    protected double startAngle = 0;
+    private final double startAngle;
 
     /** The signed angle extent, in radians between -2PI and +2PI. */
-    protected double angleExtent = PI;
+    private final double angleExtent;
 
     // Constructors based on Circles
 
@@ -103,10 +103,12 @@ public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipse
     public CircleArc2D(Circle2D circle, double startAngle, double endAngle, boolean direct) {
         this.circle = circle;
         this.startAngle = startAngle;
-        this.angleExtent = endAngle;
-        this.angleExtent = Angle2DUtil.formatAngle(endAngle - startAngle);
-        if (!direct)
-            this.angleExtent = this.angleExtent - PI * 2;
+        double ae = Angle2DUtil.formatAngle(endAngle - startAngle);
+        if (direct) {
+            this.angleExtent = ae;
+        } else {
+            this.angleExtent = ae - PI * 2;
+        }
     }
 
     // Constructors based on points
