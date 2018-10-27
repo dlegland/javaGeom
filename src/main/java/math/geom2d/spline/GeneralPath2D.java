@@ -129,7 +129,7 @@ public class GeneralPath2D implements ICurve2D, Serializable {
         // Cannot close a path more than once
         if (this.lastType == Type.CLOSE)
             return;
-        this.segments.add(new ClosingSegment());
+        this.segments.add(ClosingSegment.INSTANCE);
     }
 
     /**
@@ -837,7 +837,8 @@ public class GeneralPath2D implements ICurve2D, Serializable {
         public void updatePath(Path2D path);
     }
 
-    private class MoveSegment implements Segment {
+    private static class MoveSegment implements Segment, Serializable {
+        private static final long serialVersionUID = 1L;
 
         Point2D p;
 
@@ -873,9 +874,35 @@ public class GeneralPath2D implements ICurve2D, Serializable {
             path.moveTo(p.x(), p.y());
         }
 
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((p == null) ? 0 : p.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            MoveSegment other = (MoveSegment) obj;
+            if (p == null) {
+                if (other.p != null)
+                    return false;
+            } else if (!p.equals(other.p))
+                return false;
+            return true;
+        }
+
     }
 
-    private class LinearSegment implements Segment {
+    private static class LinearSegment implements Segment, Serializable {
+        private static final long serialVersionUID = 1L;
 
         Point2D p;
 
@@ -907,9 +934,35 @@ public class GeneralPath2D implements ICurve2D, Serializable {
         public void updatePath(Path2D path) {
             path.lineTo(p.x(), p.y());
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((p == null) ? 0 : p.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            LinearSegment other = (LinearSegment) obj;
+            if (p == null) {
+                if (other.p != null)
+                    return false;
+            } else if (!p.equals(other.p))
+                return false;
+            return true;
+        }
     }
 
-    private class QuadSegment implements Segment {
+    private static class QuadSegment implements Segment, Serializable {
+        private static final long serialVersionUID = 1L;
 
         Point2D p1;
         Point2D p2;
@@ -943,9 +996,41 @@ public class GeneralPath2D implements ICurve2D, Serializable {
         public void updatePath(Path2D path) {
             path.quadTo(p1.x(), p1.y(), p2.x(), p2.y());
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
+            result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            QuadSegment other = (QuadSegment) obj;
+            if (p1 == null) {
+                if (other.p1 != null)
+                    return false;
+            } else if (!p1.equals(other.p1))
+                return false;
+            if (p2 == null) {
+                if (other.p2 != null)
+                    return false;
+            } else if (!p2.equals(other.p2))
+                return false;
+            return true;
+        }
     }
 
-    private class CubicSegment implements Segment {
+    private static class CubicSegment implements Segment, Serializable {
+        private static final long serialVersionUID = 1L;
 
         Point2D p1;
         Point2D p2;
@@ -981,11 +1066,51 @@ public class GeneralPath2D implements ICurve2D, Serializable {
         public void updatePath(Path2D path) {
             path.curveTo(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
+            result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+            result = prime * result + ((p3 == null) ? 0 : p3.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            CubicSegment other = (CubicSegment) obj;
+            if (p1 == null) {
+                if (other.p1 != null)
+                    return false;
+            } else if (!p1.equals(other.p1))
+                return false;
+            if (p2 == null) {
+                if (other.p2 != null)
+                    return false;
+            } else if (!p2.equals(other.p2))
+                return false;
+            if (p3 == null) {
+                if (other.p3 != null)
+                    return false;
+            } else if (!p3.equals(other.p3))
+                return false;
+            return true;
+        }
     }
 
-    private class ClosingSegment implements Segment {
+    private static class ClosingSegment implements Segment, Serializable {
+        private static final long serialVersionUID = 1L;
 
-        public ClosingSegment() {
+        public static final ClosingSegment INSTANCE = new ClosingSegment();
+
+        private ClosingSegment() {
         }
 
         @Override
