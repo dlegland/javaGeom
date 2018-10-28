@@ -12,8 +12,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 
-import java.util.Arrays;
-
 import math.geom2d.Angle2DUtil;
 import math.geom2d.IShape2D;
 import math.geom2d.domain.ContourArray2D;
@@ -332,29 +330,6 @@ public class Conics2D {
         public ConicStraightLine2D transform(AffineTransform2D trans) {
             return new ConicStraightLine2D(super.transform(trans));
         }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = super.hashCode();
-            result = prime * result + Arrays.hashCode(coefs);
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!super.equals(obj))
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            ConicStraightLine2D other = (ConicStraightLine2D) obj;
-            if (!Arrays.equals(coefs, other.coefs))
-                return false;
-            return true;
-        }
-
     }
 
     static class ConicTwoLines2D extends ContourArray2D<StraightLine2D> implements IConic2D {

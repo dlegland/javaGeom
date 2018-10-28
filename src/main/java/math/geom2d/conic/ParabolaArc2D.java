@@ -69,17 +69,17 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
     /**
      * The parent parabola.
      */
-    protected Parabola2D parabola = new Parabola2D();
+    private final Parabola2D parabola;
 
     /**
      * The lower bound if the parameterization for this arc.
      */
-    double t0 = 0;
+    private final double t0;
 
     /**
      * The upper bound if the parameterization for this arc.
      */
-    double t1 = 1;
+    private final double t1;
 
     // ==========================================================
     // constructor
@@ -449,7 +449,7 @@ public class ParabolaArc2D extends AbstractSmoothCurve2D implements ISmoothOrien
 
     @Override
     public String toString() {
-        return String.format("ParabolaArc2D(%f,%f,%f,%f,%f,%f)", parabola.xv, parabola.yv, parabola.a, parabola.theta, t0, t1);
+        return "ParabolaArc2D(" + parabola.getVertex() + "," + parabola.getParameter() + "," + parabola.getAngle() + "," + t0 + "," + t1 + ")";
     }
 
     @Override

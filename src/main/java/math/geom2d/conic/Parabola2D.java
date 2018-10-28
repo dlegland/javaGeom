@@ -92,36 +92,25 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     // class variables
 
     /** Coordinate of the vertex */
-    protected double xv = 0, yv = 0;
+    private final Point2D vertex;
 
     /** orientation of the parabola */
-    protected double theta = 0;
+    private final double theta;
 
     /** The parameter of the parabola. If positive, the parabola is direct. */
-    protected double a = 1;
-
-    private boolean debug = false;
+    private final double a;
 
     // ==========================================================
     // constructors
 
-    /**
-     * Empty constructor.
-     */
-    public Parabola2D() {
-        super();
-    }
-
     public Parabola2D(Point2D vertex, double a, double theta) {
-        this(vertex.x(), vertex.y(), a, theta);
+        this.vertex = vertex;
+        this.a = a;
+        this.theta = theta;
     }
 
     public Parabola2D(double xv, double yv, double a, double theta) {
-        super();
-        this.xv = xv;
-        this.yv = yv;
-        this.a = a;
-        this.theta = theta;
+        this(new Point2D(xv, yv), a, theta);
     }
 
     // ==========================================================
@@ -132,7 +121,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
      */
     public Point2D getFocus() {
         double c = 1 / a / 4.0;
-        return new Point2D(xv - c * sin(theta), yv + c * cos(theta));
+        return new Point2D(vertex.x() - c * sin(theta), vertex.y() + c * cos(theta));
     }
 
     public double getParameter() {
@@ -144,7 +133,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     }
 
     public Point2D getVertex() {
-        return new Point2D(xv, yv);
+        return vertex;
     }
 
     /**
@@ -185,7 +174,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
      */
     private Point2D formatPoint(Point2D point) {
         Point2D p2 = point;
-        p2 = p2.transform(AffineTransform2D.createTranslation(-xv, -yv));
+        p2 = p2.transform(AffineTransform2D.createTranslation(-vertex.x(), -vertex.y()));
         p2 = p2.transform(AffineTransform2D.createRotation(-theta));
         p2 = p2.transform(AffineTransform2D.createScaling(1, 1.0 / a));
         return p2;
@@ -198,7 +187,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
      * @return
      */
     private ILinearShape2D formatLine(ILinearShape2D line) {
-        line = line.transform(AffineTransform2D.createTranslation(-xv, -yv));
+        line = line.transform(AffineTransform2D.createTranslation(-vertex.x(), -vertex.y()));
         line = line.transform(AffineTransform2D.createRotation(-theta));
         line = line.transform(AffineTransform2D.createScaling(1, 1.0 / a));
         return line;
@@ -215,7 +204,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     @Override
     public double[] conicCoefficients() {
         // The transformation matrix from base parabola y=x^2
-        AffineTransform2D transform = AffineTransform2D.createRotation(theta).chain(AffineTransform2D.createTranslation(xv, yv));
+        AffineTransform2D transform = AffineTransform2D.createRotation(theta).chain(AffineTransform2D.createTranslation(vertex.x(), vertex.y()));
 
         // Extract coefficients of inverse transform
         double[][] coefs = transform.invert().affineMatrix();
@@ -360,7 +349,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
     public Point2D point(double t) {
         Point2D point = new Point2D(t, a * t * t);
         point = AffineTransform2D.createRotation(theta).transform(point);
-        point = AffineTransform2D.createTranslation(xv, yv).transform(point);
+        point = AffineTransform2D.createTranslation(vertex.x(), vertex.y()).transform(point);
         return point;
     }
 
@@ -393,8 +382,6 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
 
         // case of vertical or quasi-vertical line
         if (Math.abs(dx) < IShape2D.ACCURACY) {
-            if (debug)
-                System.out.println("intersect parabola with vertical line ");
             double x = line2.origin().x();
             Point2D point = new Point2D(x, x * x);
             if (line2.contains(point))
@@ -443,7 +430,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
      */
     @Override
     public Parabola2D reverse() {
-        return new Parabola2D(xv, yv, -a, Angle2DUtil.formatAngle(theta + PI));
+        return new Parabola2D(vertex, -a, Angle2DUtil.formatAngle(theta + PI));
     }
 
     /**
@@ -451,8 +438,6 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
      */
     @Override
     public ParabolaArc2D subCurve(double t0, double t1) {
-        if (debug)
-            System.out.println("theta = " + Math.toDegrees(theta));
         if (t1 < t0)
             return null;
         return new ParabolaArc2D(this, t0, t1);
@@ -585,9 +570,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
             return false;
         Parabola2D parabola = (Parabola2D) obj;
 
-        if ((this.xv - parabola.xv) > eps)
-            return false;
-        if ((this.yv - parabola.yv) > eps)
+        if (!vertex.almostEquals(parabola.vertex, eps))
             return false;
         if ((this.a - parabola.a) > eps)
             return false;
@@ -602,7 +585,7 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
 
     @Override
     public String toString() {
-        return String.format("Parabola2D(%f,%f,%f,%f)", xv, yv, a, theta);
+        return "Parabola2D(" + vertex + "," + a + "," + theta + ")";
     }
 
     @Override
@@ -612,13 +595,9 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
         long temp;
         temp = Double.doubleToLongBits(a);
         result = prime * result + (int) (temp ^ (temp >>> 32));
-        result = prime * result + (debug ? 1231 : 1237);
         temp = Double.doubleToLongBits(theta);
         result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(xv);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(yv);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((vertex == null) ? 0 : vertex.hashCode());
         return result;
     }
 
@@ -633,15 +612,13 @@ public class Parabola2D extends AbstractSmoothCurve2D implements IContour2D, ICo
         Parabola2D other = (Parabola2D) obj;
         if (Double.doubleToLongBits(a) != Double.doubleToLongBits(other.a))
             return false;
-        if (debug != other.debug)
-            return false;
         if (Double.doubleToLongBits(theta) != Double.doubleToLongBits(other.theta))
             return false;
-        if (Double.doubleToLongBits(xv) != Double.doubleToLongBits(other.xv))
-            return false;
-        if (Double.doubleToLongBits(yv) != Double.doubleToLongBits(other.yv))
+        if (vertex == null) {
+            if (other.vertex != null)
+                return false;
+        } else if (!vertex.equals(other.vertex))
             return false;
         return true;
     }
-
 }
