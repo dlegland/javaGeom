@@ -33,7 +33,6 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -49,7 +48,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public final class LineArc2D extends AbstractLine2D implements ISmoothOrientedCurve2D {
+public final class LineArc2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
 
     /**

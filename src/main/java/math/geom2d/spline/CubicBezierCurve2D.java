@@ -47,7 +47,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author Legland
  */
-public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements ISmoothCurve2D, IContinuousOrientedCurve2D {
+public class CubicBezierCurve2D extends AbstractSmoothCurve2D implements IContinuousOrientedCurve2D {
     private static final long serialVersionUID = 1L;
 
     // ===================================================================

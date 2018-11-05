@@ -43,7 +43,6 @@ import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.IContinuousCurve2D;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.exception.DegeneratedLine2DException;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -63,7 +62,7 @@ import math.geom2d.transform.CircleInversion2D;
  * Then, coordinates for a point (x,y) such as x=x0+t*dx and y=y0+t=dy, t between 0 and 1 give a point inside p1 and p2, t<0 give a point 'before' p1, and t>1 give a point 'after' p2, so it is convenient to easily manage edges, rays and straight lines.
  * <p>
  */
-public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, ILinearElement2D {
+public abstract class AbstractLine2D extends AbstractSmoothCurve2D implements ILinearElement2D {
     private static final long serialVersionUID = 1L;
 
     /**

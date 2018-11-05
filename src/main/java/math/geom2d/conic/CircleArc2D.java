@@ -71,7 +71,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D, ICirculinearElement2D {
+public final class CircleArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D, ICircularShape2D {
     private static final long serialVersionUID = 1L;
 
     // ====================================================================

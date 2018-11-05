@@ -4,7 +4,6 @@
 
 package math.geom3d.line;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,7 +17,7 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class StraightLine3D extends AbstractLine3D implements Serializable {
+public class StraightLine3D extends AbstractLine3D {
     private static final long serialVersionUID = 1L;
 
     public StraightLine3D(Point3D p, Vector3D v) {

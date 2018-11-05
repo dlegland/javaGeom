@@ -29,7 +29,6 @@ package math.geom2d.domain;
 import static java.lang.Math.PI;
 import static java.lang.Math.round;
 
-import java.io.Serializable;
 // Imports
 import java.util.Collection;
 
@@ -54,7 +53,7 @@ import math.geom2d.transform.AffineTransform2D;
  * @see BoundaryPolyCurve2D
  * @author dlegland
  */
-public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D, Serializable {
+public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends PolyCurve2D<T> implements IContinuousOrientedCurve2D {
     private static final long serialVersionUID = 1L;
 
     /**

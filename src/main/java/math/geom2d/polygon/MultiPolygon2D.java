@@ -13,7 +13,6 @@ import math.geom2d.circulinear.CirculinearContourArray2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.domain.IBoundary2D;
-import math.geom2d.domain.IDomain2D;
 import math.geom2d.line.LineSegment2D;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -24,7 +23,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public class MultiPolygon2D implements IDomain2D, IPolygon2D, Serializable {
+public class MultiPolygon2D implements IPolygon2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     // ===================================================================

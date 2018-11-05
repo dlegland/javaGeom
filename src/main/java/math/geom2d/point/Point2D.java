@@ -42,7 +42,6 @@ import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
-import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.conic.Circle2D;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -52,7 +51,7 @@ import math.geom2d.transform.CircleInversion2D;
  * A point in the plane defined by its 2 Cartesian coordinates x and y. The class provides static methods to compute distance between two points.
  * </p>
  */
-public final class Point2D implements IPointShape2D, ICirculinearShape2D, Serializable {
+public final class Point2D implements IPointShape2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final Point2D ORIGIN = new Point2D(0, 0);

@@ -11,7 +11,6 @@ package math.geom2d.conic;
 import math.geom2d.Box2D;
 import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.curve.ICurveSet2D;
-import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.point.Point2D;
 
 /**
@@ -20,7 +19,7 @@ import math.geom2d.point.Point2D;
  * @author dlegland
  *
  */
-public interface ICircularShape2D extends ICirculinearElement2D, ISmoothOrientedCurve2D {
+public interface ICircularShape2D extends ICirculinearElement2D {
 
     // ===================================================================
     // method specific to CircularShape2D

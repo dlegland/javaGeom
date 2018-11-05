@@ -50,7 +50,6 @@ import math.geom2d.curve.Curves2DUtil;
 import math.geom2d.curve.ICurve2D;
 import math.geom2d.curve.ICurveSet2D;
 import math.geom2d.curve.ISmoothCurve2D;
-import math.geom2d.domain.ISmoothOrientedCurve2D;
 import math.geom2d.line.ILinearShape2D;
 import math.geom2d.line.Ray2D;
 import math.geom2d.line.StraightLine2D;
@@ -63,7 +62,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author dlegland
  */
-public class EllipseArc2D extends AbstractSmoothCurve2D implements ISmoothOrientedCurve2D, IEllipseArcShape2D {
+public class EllipseArc2D extends AbstractSmoothCurve2D implements IEllipseArcShape2D {
     private static final long serialVersionUID = 1L;
 
     /** The supporting ellipse */

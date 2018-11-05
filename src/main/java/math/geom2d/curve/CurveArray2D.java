@@ -47,7 +47,7 @@ import math.geom2d.transform.AffineTransform2D;
  * 
  * @author Legland
  */
-public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Iterable<T>, Serializable {
+public class CurveArray2D<T extends ICurve2D> implements ICurveSet2D<T>, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

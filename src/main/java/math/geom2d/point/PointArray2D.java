@@ -37,7 +37,6 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
-import math.geom2d.circulinear.ICirculinearShape2D;
 import math.geom2d.circulinear.buffer.BufferCalculator;
 import math.geom2d.transform.AffineTransform2D;
 import math.geom2d.transform.CircleInversion2D;
@@ -47,7 +46,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public final class PointArray2D implements IPointSet2D, ICirculinearShape2D, Serializable {
+public final class PointArray2D implements IPointSet2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static PointArray2D create(Collection<Point2D> points) {

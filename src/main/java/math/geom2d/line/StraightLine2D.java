@@ -37,7 +37,6 @@ import math.geom2d.circulinear.GenericCirculinearDomain2D;
 import math.geom2d.circulinear.ICircleLine2D;
 import math.geom2d.circulinear.ICirculinearDomain2D;
 import math.geom2d.conic.Circle2D;
-import math.geom2d.domain.ISmoothContour2D;
 import math.geom2d.exception.DegeneratedLine2DException;
 import math.geom2d.exception.UnboundedShape2DException;
 import math.geom2d.point.Point2D;
@@ -48,7 +47,7 @@ import math.geom2d.transform.CircleInversion2D;
 /**
  * Implementation of a straight line. Such a line can be constructed using two points, a point and a parallel line or straight object, or with coefficient of the Cartesian equation.
  */
-public class StraightLine2D extends AbstractLine2D implements ISmoothContour2D, ICircleLine2D {
+public class StraightLine2D extends AbstractLine2D implements ICircleLine2D {
     private static final long serialVersionUID = 1L;
 
     /**

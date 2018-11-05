@@ -30,7 +30,6 @@ import math.geom2d.Box2D;
 import math.geom2d.IGeometricObject2D;
 import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
-import math.geom2d.circulinear.ICirculinearElement2D;
 import math.geom2d.exception.DegeneratedLine2DException;
 import math.geom2d.point.Point2D;
 import math.geom2d.transform.AffineTransform2D;
@@ -38,7 +37,7 @@ import math.geom2d.transform.AffineTransform2D;
 /**
  * Line segment, defined as the set of points located between the two end points.
  */
-public final class LineSegment2D extends AbstractLine2D implements ICirculinearElement2D {
+public final class LineSegment2D extends AbstractLine2D {
     private static final long serialVersionUID = 1L;
     private final Point2D point2;
 

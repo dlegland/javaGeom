@@ -45,7 +45,7 @@ import math.geom2d.transform.CircleInversion2D;
  * 
  * @author dlegland
  */
-public final class Polyline2D extends LinearCurve2D implements ICirculinearContinuousCurve2D {
+public final class Polyline2D extends LinearCurve2D {
     private static final long serialVersionUID = 1L;
 
     /**

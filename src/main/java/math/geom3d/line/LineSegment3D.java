@@ -10,7 +10,6 @@ import java.util.Collection;
 import math.geom3d.Box3D;
 import math.geom3d.IGeometricObject3D;
 import math.geom3d.IShape3D;
-import math.geom3d.curve.IContinuousCurve3D;
 import math.geom3d.curve.ICurve3D;
 import math.geom3d.point.Point3D;
 import math.geom3d.transform.AffineTransform3D;
@@ -18,7 +17,7 @@ import math.geom3d.transform.AffineTransform3D;
 /**
  * @author dlegland
  */
-public class LineSegment3D extends AbstractLine3D implements IContinuousCurve3D {
+public class LineSegment3D extends AbstractLine3D {
     private static final long serialVersionUID = 1L;
 
     private final Point3D point2;
