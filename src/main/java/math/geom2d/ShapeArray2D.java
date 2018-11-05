@@ -221,7 +221,7 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
             ymax = Math.max(ymax, box.getMaxY());
         }
 
-        return new Box2D(xmin, xmax, ymin, ymax);
+        return Box2D.getBox(xmin, xmax, ymin, ymax);
     }
 
     /*

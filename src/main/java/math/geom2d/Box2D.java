@@ -54,7 +54,9 @@ import math.geom2d.polygon.Polygons2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
- * This class defines bounds of a shape. It stores limits in each direction: <code>x</code> and <code>y</code>. It also provides methods for clipping others shapes, depending on their type.
+ * This class defines bounds of a shape. It stores limits in each direction:
+ * <code>x</code> and <code>y</code>. It also provides methods for clipping
+ * others shapes, depending on their type.
  */
 public final class Box2D implements IGeometricObject2D, Serializable {
     private static final long serialVersionUID = 1L;
@@ -67,16 +69,19 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     public final static Box2D UNIT_SQUARE_BOX = new Box2D(0, 1, 0, 1);
 
     /**
-     * The box corresponding to the the whole plane, with infinite bounds in each direction.
+     * The box corresponding to the the whole plane, with infinite bounds in each
+     * direction.
      * 
      * @since 0.9.1
      */
-    public final static Box2D INFINITE_BOX = new Box2D(NEGATIVE_INFINITY, POSITIVE_INFINITY, NEGATIVE_INFINITY, POSITIVE_INFINITY);
+    public final static Box2D INFINITE_BOX = new Box2D(NEGATIVE_INFINITY, POSITIVE_INFINITY, NEGATIVE_INFINITY,
+            POSITIVE_INFINITY);
 
     /**
      * The only box that xmin > xmax or ymin > ymax
      */
-    public final static Box2D EMPTY_BOX = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, false);
+    public final static Box2D EMPTY_BOX = new Box2D(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
+            Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, false);
 
     private final double xmin;
     private final double xmax;
@@ -117,6 +122,17 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     /** Constructor from a point, a width and an height */
     public Box2D(Point2D point, double w, double h) {
         this(point.x(), point.x() + w, point.y(), point.y() + h);
+    }
+
+    /**
+     * Main constructor, given bounds for x coord, then bounds for y coord.
+     */
+    public static Box2D getBox(double xmin, double xmax, double ymin, double ymax) {
+        if (xmin > xmax || ymin > ymax) {
+            return EMPTY_BOX;
+        } else {
+            return new Box2D(xmin, xmax, ymin, ymax, false);
+        }
     }
 
     // ===================================================================
@@ -195,7 +211,11 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     }
 
     /**
-     * Tests if the specified Shape is totally contained in this Box2D. Note that the test is performed on the bounding box of the shape, then for rotated rectangles, this method can return false with a shape totally contained in the rectangle. The problem does not exist for horizontal rectangle, since edges of rectangle and bounding box are parallel.
+     * Tests if the specified Shape is totally contained in this Box2D. Note that
+     * the test is performed on the bounding box of the shape, then for rotated
+     * rectangles, this method can return false with a shape totally contained in
+     * the rectangle. The problem does not exist for horizontal rectangle, since
+     * edges of rectangle and bounding box are parallel.
      */
     public boolean containsBounds(IShape2D shape) {
         if (!shape.isBounded())
@@ -211,7 +231,9 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     // information on the boundary
 
     /**
-     * Returns a set of straight of lines defining half-planes, that all contain the box. If the box is bounded, the number of straight lines is 4, otherwise it can be less.
+     * Returns a set of straight of lines defining half-planes, that all contain the
+     * box. If the box is bounded, the number of straight lines is 4, otherwise it
+     * can be less.
      * 
      * @return a set of straight lines
      */
@@ -283,7 +305,10 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     }
 
     /**
-     * Returns the boundary of this box. The boundary can be bounded, in the case of a bounded box. It is unbounded if at least one bound of the box is infinite. If both x bounds or both y-bounds are infinite, the boundary is constituted from 2 straight lines.
+     * Returns the boundary of this box. The boundary can be bounded, in the case of
+     * a bounded box. It is unbounded if at least one bound of the box is infinite.
+     * If both x bounds or both y-bounds are infinite, the boundary is constituted
+     * from 2 straight lines.
      * 
      * @return the box boundary
      */
@@ -313,7 +338,8 @@ public final class Box2D implements IGeometricObject2D, Serializable {
                 return new StraightLine2D(0, ymin, 1, 0);
             if (!by0 && by1)
                 return new StraightLine2D(0, ymax, -1, 0);
-            return new ContourArray2D<>(new StraightLine2D[] { new StraightLine2D(0, ymin, 1, 0), new StraightLine2D(0, ymax, -1, 0) });
+            return new ContourArray2D<>(
+                    new StraightLine2D[] { new StraightLine2D(0, ymin, 1, 0), new StraightLine2D(0, ymax, -1, 0) });
         }
 
         // case of boxes unbounded in both y directions
@@ -324,36 +350,49 @@ public final class Box2D implements IGeometricObject2D, Serializable {
                 return new StraightLine2D(xmin, 0, 0, -1);
             if (!bx0 && bx1)
                 return new StraightLine2D(xmax, 0, 0, 1);
-            return new ContourArray2D<>(new StraightLine2D[] { new StraightLine2D(xmin, 0, 0, -1), new StraightLine2D(xmax, 0, 0, 1) });
+            return new ContourArray2D<>(
+                    new StraightLine2D[] { new StraightLine2D(xmin, 0, 0, -1), new StraightLine2D(xmax, 0, 0, 1) });
         }
 
         // "corner boxes"
 
         if (bx0 && by0) // lower left corner
-            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0),
+                    new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx1 && by0) // lower right corner
-            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0),
+                    new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
         if (bx1 && by1) // upper right corner
-            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0),
+                    new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx0 && by1) // upper left corner
-            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new LineArc2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0),
+                    new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         // Remains only 4 cases: boxes unbounded in only one direction
 
         if (bx0)
-            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymax, xmin, ymin), new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] {
+                    new LineArc2D(xmin, ymax, -1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymax, xmin, ymin),
+                    new LineArc2D(xmin, ymin, 1, 0, 0, POSITIVE_INFINITY) });
 
         if (bx1)
-            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymin, xmax, ymax), new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] {
+                    new LineArc2D(xmax, ymin, 1, 0, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymin, xmax, ymax),
+                    new LineArc2D(xmax, ymax, -1, 0, 0, POSITIVE_INFINITY) });
 
         if (by0)
-            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymin, xmax, ymin), new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] {
+                    new LineArc2D(xmin, ymin, 0, -1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmin, ymin, xmax, ymin),
+                    new LineArc2D(xmax, ymin, 0, 1, 0, POSITIVE_INFINITY) });
 
         if (by1)
-            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] { new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymax, xmin, ymax), new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
+            return new BoundaryPolyCurve2D<>(new AbstractLine2D[] {
+                    new LineArc2D(xmax, ymax, 0, 1, NEGATIVE_INFINITY, 0), new LineSegment2D(xmax, ymax, xmin, ymax),
+                    new LineArc2D(xmin, ymax, 0, -1, 0, POSITIVE_INFINITY) });
 
         return null;
     }
@@ -394,8 +433,7 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     /**
      * Returns the Box2D which contains both this box and the specified box.
      * 
-     * @param box
-     *            the bounding box to include
+     * @param box the bounding box to include
      * @return a new Box2D
      */
     public Box2D union(Box2D box) {
@@ -403,14 +441,14 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         double newxmax = Math.max(this.xmax, box.xmax);
         double newymin = Math.min(this.ymin, box.ymin);
         double newymax = Math.max(this.ymax, box.ymax);
-        return new Box2D(newxmin, newxmax, newymin, newymax);
+        return Box2D.getBox(newxmin, newxmax, newymin, newymax);
     }
 
     /**
-     * Returns the Box2D which is contained both by this box and by the specified box.
+     * Returns the Box2D which is contained both by this box and by the specified
+     * box.
      * 
-     * @param box
-     *            the bounding box to include
+     * @param box the bounding box to include
      * @return a new Box2D
      */
     public Box2D intersection(Box2D box) {
@@ -418,14 +456,13 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         double newxmax = Math.min(this.xmax, box.xmax);
         double newymin = Math.max(this.ymin, box.ymin);
         double newymax = Math.min(this.ymax, box.ymax);
-        return new Box2D(newxmin, newxmax, newymin, newymax);
+        return Box2D.getBox(newxmin, newxmax, newymin, newymax);
     }
 
     /**
      * Changes the bounds of this box to also include bounds of the argument.
      * 
-     * @param box
-     *            the bounding box to include
+     * @param box the bounding box to include
      * @return this
      */
     public Box2D merge(Box2D box) {
@@ -433,11 +470,12 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         double newxmax = Math.max(this.xmax, box.xmax);
         double newymin = Math.min(this.ymin, box.ymin);
         double newymax = Math.max(this.ymax, box.ymax);
-        return new Box2D(newxmin, newxmax, newymin, newymax);
+        return Box2D.getBox(newxmin, newxmax, newymin, newymax);
     }
 
     /**
-     * Clip this bounding box such that after clipping, it is totally contained in the given box.
+     * Clip this bounding box such that after clipping, it is totally contained in
+     * the given box.
      * 
      * @return the clipped box
      */
@@ -446,11 +484,12 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         double newxmax = Math.min(this.xmax, box.xmax);
         double newymin = Math.max(this.ymin, box.ymin);
         double newymax = Math.min(this.ymax, box.ymax);
-        return new Box2D(newxmin, newxmax, newymin, newymax);
+        return Box2D.getBox(newxmin, newxmax, newymin, newymax);
     }
 
     /**
-     * Returns the new box created by an affine transform of this box. If the box is unbounded, return an infinite box in all directions.
+     * Returns the new box created by an affine transform of this box. If the box is
+     * unbounded, return an infinite box in all directions.
      */
     public Box2D transform(AffineTransform2D trans) {
         // special case of unbounded box
@@ -473,7 +512,7 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         }
 
         // create the resulting box
-        return new Box2D(newxmin, newxmax, newymin, newymax);
+        return Box2D.getBox(newxmin, newxmax, newymin, newymax);
     }
 
     /**
@@ -488,10 +527,8 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     /**
      * Draws the boundary of the box on the specified graphics.
      * 
-     * @param g2
-     *            the instance of graphics to draw in.
-     * @throws UnboundedBox2DException
-     *             if the box is unbounded
+     * @param g2 the instance of graphics to draw in.
+     * @throws UnboundedBox2DException if the box is unbounded
      */
     public void draw(Graphics2D g2) {
         if (!isBounded())
@@ -502,10 +539,8 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     /**
      * Fills the content of the box on the specified graphics.
      * 
-     * @param g2
-     *            the instance of graphics to draw in.
-     * @throws UnboundedBox2DException
-     *             if the box is unbounded
+     * @param g2 the instance of graphics to draw in.
+     * @throws UnboundedBox2DException if the box is unbounded
      */
     public void fill(Graphics2D g2) {
         if (!isBounded())
@@ -514,7 +549,8 @@ public final class Box2D implements IGeometricObject2D, Serializable {
     }
 
     /**
-     * Tests if boxes are the same. Two boxes are the same if they have the same bounds, up to the specified threshold value.
+     * Tests if boxes are the same. Two boxes are the same if they have the same
+     * bounds, up to the specified threshold value.
      */
     @Override
     public boolean almostEquals(IGeometricObject2D obj, double eps) {

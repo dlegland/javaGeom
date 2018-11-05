@@ -225,7 +225,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
      * Creates a scaling by the given coefficients, centered on the origin.
      */
     public static AffineTransform2D createScaling(double sx, double sy) {
-        return AffineTransform2D.createScaling(new Point2D(0, 0), sx, sy);
+        return AffineTransform2D.createScaling(Point2D.ORIGIN, sx, sy);
     }
 
     /**
