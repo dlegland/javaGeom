@@ -164,7 +164,7 @@ public final class Box2D implements IGeometricObject2D, Serializable {
 
     /** Returns true if all bounds are finite. */
     public boolean isBounded() {
-        if (this == EMPTY_BOX) {
+        if (isEmpty()) {
             return true;
         }
         if (isInfinite(xmin))
@@ -176,6 +176,10 @@ public final class Box2D implements IGeometricObject2D, Serializable {
         if (isInfinite(ymax))
             return false;
         return true;
+    }
+
+    public boolean isEmpty() {
+        return this.equals(EMPTY_BOX);
     }
 
     // ===================================================================
