@@ -125,12 +125,12 @@ public class PointSet3D implements IShape3D, Iterable<Point3D>, Serializable {
 
     @Override
     public Box3D boundingBox() {
-        double xmin = Double.MAX_VALUE;
-        double ymin = Double.MAX_VALUE;
-        double zmin = Double.MAX_VALUE;
-        double xmax = Double.MIN_VALUE;
-        double ymax = Double.MIN_VALUE;
-        double zmax = Double.MIN_VALUE;
+        double xmin = Double.POSITIVE_INFINITY;
+        double ymin = Double.POSITIVE_INFINITY;
+        double zmin = Double.POSITIVE_INFINITY;
+        double xmax = Double.NEGATIVE_INFINITY;
+        double ymax = Double.NEGATIVE_INFINITY;
+        double zmax = Double.NEGATIVE_INFINITY;
 
         for (Point3D point : points) {
             xmin = Math.min(xmin, point.x());

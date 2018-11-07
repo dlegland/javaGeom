@@ -206,10 +206,10 @@ public class ShapeArray2D<T extends IShape2D> implements IShapeSet2D<T>, Seriali
      */
     @Override
     public Box2D boundingBox() {
-        double xmin = Double.MAX_VALUE;
-        double ymin = Double.MAX_VALUE;
-        double xmax = Double.MIN_VALUE;
-        double ymax = Double.MIN_VALUE;
+        double xmin = Double.POSITIVE_INFINITY;
+        double ymin = Double.POSITIVE_INFINITY;
+        double xmax = Double.NEGATIVE_INFINITY;
+        double ymax = Double.NEGATIVE_INFINITY;
 
         Box2D box;
         for (IShape2D shape : shapes) {
