@@ -148,7 +148,7 @@ public class GenericDomain2D implements IDomain2D, Serializable {
         // If boundary is bounded, get the bounding box, choose a point
         // outside of the box, and check if its belongs to the domain.
         Box2D box = boundary.boundingBox();
-        Point2D point = new Point2D(box.getMinX(), box.getMinY());
+        Point2D point = new Point2D(box.getMinX() - 1, box.getMinY() - 1);
 
         return !boundary.isInside(point);
     }
