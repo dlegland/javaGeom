@@ -34,6 +34,7 @@ import java.util.Collection;
 
 import math.geom2d.Angle2DUtil;
 import math.geom2d.Box2D;
+import math.geom2d.IShape2D;
 import math.geom2d.Vector2D;
 import math.geom2d.curve.CurveArray2D;
 import math.geom2d.curve.Curves2DUtil;
@@ -44,6 +45,7 @@ import math.geom2d.curve.ISmoothCurve2D;
 import math.geom2d.curve.PolyCurve2D;
 import math.geom2d.line.StraightLine2D;
 import math.geom2d.point.Point2D;
+import math.geom2d.polygon.LinearCurve2D;
 import math.geom2d.transform.AffineTransform2D;
 
 /**
@@ -243,15 +245,20 @@ public class PolyOrientedCurve2D<T extends IContinuousOrientedCurve2D> extends P
      */
     private static Vector2D computeTangent(IContinuousCurve2D curve, double pos) {
         // For smooth curves, simply call the getTangent() method
-        if (curve instanceof ISmoothCurve2D)
+        if (curve instanceof ISmoothCurve2D) {
             return ((ISmoothCurve2D) curve).tangent(pos);
-
-        // Extract sub curve and recursively call this method on the sub curve
-        if (curve instanceof ICurveSet2D<?>) {
+        } else if (curve instanceof ICurveSet2D<?>) {
+            // Extract sub curve and recursively call this method on the sub curve
             ICurveSet2D<?> curveSet = (ICurveSet2D<?>) curve;
             double pos2 = curveSet.localPosition(pos);
             ICurve2D subCurve = curveSet.childCurve(pos);
             return computeTangent((IContinuousCurve2D) subCurve, pos2);
+        } else if (curve instanceof LinearCurve2D) {
+            if (pos <= IShape2D.ACCURACY) {
+                return ((LinearCurve2D) curve).rightTangent(pos);
+            } else {
+                return ((LinearCurve2D) curve).leftTangent(pos);
+            }
         }
 
         throw new IllegalArgumentException("Unknown type of curve: should be either continuous or curveset");
