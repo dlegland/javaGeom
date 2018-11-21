@@ -124,12 +124,12 @@ public class ContourArray2D<T extends IContour2D> extends CurveArray2D<T> implem
     @Override
     public double signedDistance(double x, double y) {
         double minDist = Double.POSITIVE_INFINITY;
-        double dist = Double.POSITIVE_INFINITY;
 
         for (IOrientedCurve2D curve : this.curves()) {
-            dist = Math.min(dist, curve.signedDistance(x, y));
-            if (Math.abs(dist) < Math.abs(minDist))
+            double dist = curve.signedDistance(x, y);
+            if (Math.abs(dist) < Math.abs(minDist)) {
                 minDist = dist;
+            }
         }
         return minDist;
     }
