@@ -43,10 +43,7 @@ import math.geom2d.line.ILinearShape2D;
 import math.geom2d.point.Point2D;
 
 /**
- * Base class for generic affine transforms in the plane. They include
- * rotations, translations, shears, similarities, and combinations of these.
- * Such transformations can be constructed by using coefficients specification,
- * or by creating specialized instances, by using static methods.
+ * Base class for generic affine transforms in the plane. They include rotations, translations, shears, similarities, and combinations of these. Such transformations can be constructed by using coefficients specification, or by creating specialized instances, by using static methods.
  * <p>
  */
 public final class AffineTransform2D implements IBijection2D, IGeometricObject2D, Serializable {
@@ -69,8 +66,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     // static methods
 
     /**
-     * Creates an affine transform defined by an array of coefficients. The input
-     * array must have either 4 or 6 coefficients.
+     * Creates an affine transform defined by an array of coefficients. The input array must have either 4 or 6 coefficients.
      * 
      * @since 0.8.1
      */
@@ -92,9 +88,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Create a glide reflection, composed of a reflection by the given line, and a
-     * translation in the direction of the line by a distance given by second
-     * parameter.
+     * Create a glide reflection, composed of a reflection by the given line, and a translation in the direction of the line by a distance given by second parameter.
      */
     public static AffineTransform2D createGlideReflection(ILinearShape2D line, double distance) {
         // get origin and vector of line
@@ -120,8 +114,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
         double dyx0 = dy * x0;
 
         // create the affine transform with parameters of glide reflection
-        return new AffineTransform2D((dx2 - dy2) / delta, 2 * dxy / delta, 2 * dy * (dyx0 - dxy0) / delta + tx, 2 * dxy
-                / delta, (dy2 - dx2) / delta, 2 * dx * (dxy0 - dyx0) / delta + ty);
+        return new AffineTransform2D((dx2 - dy2) / delta, 2 * dxy / delta, 2 * dy * (dyx0 - dxy0) / delta + tx, 2 * dxy / delta, (dy2 - dx2) / delta, 2 * dx * (dxy0 - dyx0) / delta + ty);
     }
 
     /**
@@ -145,13 +138,11 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
         double delta = dx2 + dy2;
 
         // creates the new transform
-        return new AffineTransform2D((dx2 - dy2) / delta, 2 * dxy / delta, 2 * (dy2 * x0 - dxy * y0) / delta, 2 * dxy
-                / delta, (dy2 - dx2) / delta, 2 * (dx2 * y0 - dxy * x0) / delta);
+        return new AffineTransform2D((dx2 - dy2) / delta, 2 * dxy / delta, 2 * (dy2 * x0 - dxy * y0) / delta, 2 * dxy / delta, (dy2 - dx2) / delta, 2 * (dx2 * y0 - dxy * x0) / delta);
     }
 
     /**
-     * Returns a center reflection around a point. The resulting transform is
-     * equivalent to a rotation by 180 around this point.
+     * Returns a center reflection around a point. The resulting transform is equivalent to a rotation by 180 around this point.
      * 
      * @param center the center of the reflection
      * @return an instance of AffineTransform2D representing a point reflection
@@ -161,8 +152,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a rotation composed of the given number of rotations by 90 degrees
-     * around the origin.
+     * Creates a rotation composed of the given number of rotations by 90 degrees around the origin.
      */
     public static AffineTransform2D getQuadrantRotation(int numQuadrant) {
         int n = ((numQuadrant % 4) + 4) % 4;
@@ -181,8 +171,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a rotation composed of the given number of rotations by 90 degrees
-     * around the given point.
+     * Creates a rotation composed of the given number of rotations by 90 degrees around the given point.
      */
     public static AffineTransform2D createQuadrantRotation(Point2D center, int numQuadrant) {
         AffineTransform2D trans = getQuadrantRotation(numQuadrant);
@@ -190,8 +179,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a rotation composed of the given number of rotations by 90 degrees
-     * around the point given by (x0,y0).
+     * Creates a rotation composed of the given number of rotations by 90 degrees around the point given by (x0,y0).
      */
     public static AffineTransform2D createQuadrantRotation(double x0, double y0, int numQuadrant) {
         AffineTransform2D trans = getQuadrantRotation(numQuadrant);
@@ -213,9 +201,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a rotation around the specified point, with angle in radians. If the
-     * angular distance of the angle with a multiple of PI/2 is lower than the
-     * threshold Shape2D.ACCURACY, the method assumes equality.
+     * Creates a rotation around the specified point, with angle in radians. If the angular distance of the angle with a multiple of PI/2 is lower than the threshold Shape2D.ACCURACY, the method assumes equality.
      */
     public static AffineTransform2D createRotation(double cx, double cy, double angle) {
         angle = Angle2DUtil.formatAngle(angle);
@@ -242,8 +228,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a scaling by the given coefficients, centered on the point given by
-     * (x0,y0).
+     * Creates a scaling by the given coefficients, centered on the point given by (x0,y0).
      */
     public static AffineTransform2D createScaling(Point2D center, double sx, double sy) {
         return new AffineTransform2D(sx, 0, (1 - sx) * center.x(), 0, sy, (1 - sy) * center.y());
@@ -272,6 +257,22 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
      */
     public static AffineTransform2D createTranslation(double dx, double dy) {
         return new AffineTransform2D(1, 0, dx, 0, 1, dy);
+    }
+
+    /**
+     * Return a transform who map 2 pairs of points to another pairs of points by translation, rotation, and scaling.
+     */
+    public static AffineTransform2D createAlign(Point2D from1, Point2D from2, Point2D to1, Point2D to2) {
+        AffineTransform2D t0 = AffineTransform2D.createTranslation(new Vector2D(from1, to1));
+
+        Vector2D vfrom = new Vector2D(from1, from2);
+        Vector2D vto = new Vector2D(to1, to2);
+        AffineTransform2D t1 = AffineTransform2D.createRotation(to1, Angle2DUtil.angle(vfrom, vto));
+
+        double r = vto.norm() / vfrom.norm();
+        AffineTransform2D t2 = AffineTransform2D.createScaling(to1, r, r);
+
+        return t0.chain(t1).chain(t2);
     }
 
     // Short cuts methods
@@ -373,8 +374,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Checks if the transform is direct, i.e. it preserves the orientation of
-     * transformed shapes.
+     * Checks if the transform is direct, i.e. it preserves the orientation of transformed shapes.
      * 
      * @return true if transform is direct.
      */
@@ -383,9 +383,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Checks if the transform is an isometry, i.e. a compound of translation,
-     * rotation and reflection. Isometry keeps area of shapes unchanged, but can
-     * change orientation (direct or indirect).
+     * Checks if the transform is an isometry, i.e. a compound of translation, rotation and reflection. Isometry keeps area of shapes unchanged, but can change orientation (direct or indirect).
      * 
      * @return true in case of isometry.
      */
@@ -411,9 +409,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Checks if the transform is a motion, i.e. a compound of translations and
-     * rotations. Motions are special case of isometries that keep orientation
-     * (directed or undirected) of shapes unchanged.
+     * Checks if the transform is a motion, i.e. a compound of translations and rotations. Motions are special case of isometries that keep orientation (directed or undirected) of shapes unchanged.
      * 
      * @return true in case of motion.
      */
@@ -423,8 +419,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Checks if the transform is an similarity, i.e. transformation which keeps
-     * unchanged the global shape, up to a scaling factor.
+     * Checks if the transform is an similarity, i.e. transformation which keeps unchanged the global shape, up to a scaling factor.
      * 
      * @return true in case of similarity.
      */
@@ -453,9 +448,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Creates a new Affine Transform by directly specifying the coefficients, in
-     * the order m00, m01, m02, m10, m11, m12 (different order of
-     * java.awt.geom.AffineTransform).
+     * Creates a new Affine Transform by directly specifying the coefficients, in the order m00, m01, m02, m10, m11, m12 (different order of java.awt.geom.AffineTransform).
      */
     public AffineTransform2D(double xx, double yx, double tx, double xy, double yy, double ty) {
         m00 = xx;
@@ -467,9 +460,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Helper function that fixes the center of the transform. This function
-     * recomputes m02 and m12 from the other coefficients and the given parameters.
-     * If transform is a pure translation, the result is the identity transform.
+     * Helper function that fixes the center of the transform. This function recomputes m02 and m12 from the other coefficients and the given parameters. If transform is a pure translation, the result is the identity transform.
      */
     private AffineTransform2D recenter(double x0, double y0) {
         double newm00 = m00;
@@ -497,16 +488,12 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
      * @return the 3x3 affine transform representing the matrix
      */
     public double[][] affineMatrix() {
-        double[][] tab = new double[][] { new double[] { m00, m01, m02 }, new double[] { m10, m11, m12 }, new double[] {
-                0, 0, 1 } };
+        double[][] tab = new double[][] { new double[] { m00, m01, m02 }, new double[] { m10, m11, m12 }, new double[] { 0, 0, 1 } };
         return tab;
     }
 
     /**
-     * Returns the affine transform created by applying first the affine transform
-     * given by <code>that</code>, then this affine transform. This is the
-     * equivalent method of the 'concatenate' method in
-     * java.awt.geom.AffineTransform.
+     * Returns the affine transform created by applying first the affine transform given by <code>that</code>, then this affine transform. This is the equivalent method of the 'concatenate' method in java.awt.geom.AffineTransform.
      * 
      * @param that the transform to apply first
      * @return the composition this * that
@@ -523,10 +510,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Returns the affine transform created by applying first this affine transform,
-     * then the affine transform given by <code>that</code>. This the equivalent
-     * method of the 'preConcatenate' method in java.awt.geom.AffineTransform.
-     * <code><pre>
+     * Returns the affine transform created by applying first this affine transform, then the affine transform given by <code>that</code>. This the equivalent method of the 'preConcatenate' method in java.awt.geom.AffineTransform. <code><pre>
      * shape = shape.transform(T1.chain(T2).chain(T3));
      * </pre></code> is equivalent to the sequence: <code><pre>
      * shape = shape.transform(T1);
@@ -539,16 +523,11 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
      * @since 0.6.3
      */
     public AffineTransform2D chain(AffineTransform2D that) {
-        return new AffineTransform2D(that.m00 * this.m00 + that.m01 * this.m10, that.m00 * this.m01 + that.m01
-                * this.m11, that.m00 * this.m02 + that.m01 * this.m12 + that.m02, that.m10 * this.m00 + that.m11
-                        * this.m10, that.m10 * this.m01 + that.m11 * this.m11, that.m10 * this.m02 + that.m11 * this.m12
-                                + that.m12);
+        return new AffineTransform2D(that.m00 * this.m00 + that.m01 * this.m10, that.m00 * this.m01 + that.m01 * this.m11, that.m00 * this.m02 + that.m01 * this.m12 + that.m02, that.m10 * this.m00 + that.m11 * this.m10, that.m10 * this.m01 + that.m11 * this.m11, that.m10 * this.m02 + that.m11 * this.m12 + that.m12);
     }
 
     /**
-     * Return the affine transform created by applying first this affine transform,
-     * then the affine transform given by <code>that</code>. This the equivalent
-     * method of the 'preConcatenate' method in java.awt.geom.AffineTransform.
+     * Return the affine transform created by applying first this affine transform, then the affine transform given by <code>that</code>. This the equivalent method of the 'preConcatenate' method in java.awt.geom.AffineTransform.
      * 
      * @param that the transform to apply in a second step
      * @return the composition that * this
@@ -569,17 +548,14 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Tests if this affine transform is a motion, i.e. is composed only of
-     * rotations and translations.
+     * Tests if this affine transform is a motion, i.e. is composed only of rotations and translations.
      */
     public boolean isMotion() {
         return AffineTransform2D.isMotion(this);
     }
 
     /**
-     * Tests if this affine transform is an isometry, i.e. is equivalent to a
-     * compound of translations, rotations and reflections. Isometry keeps area of
-     * shapes unchanged, but can change orientation (direct or indirect).
+     * Tests if this affine transform is an isometry, i.e. is equivalent to a compound of translations, rotations and reflections. Isometry keeps area of shapes unchanged, but can change orientation (direct or indirect).
      * 
      * @return true in case of isometry.
      */
@@ -588,9 +564,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     }
 
     /**
-     * Tests if this affine transform is direct, i.e. the sign of the determinant of
-     * the associated matrix is positive. Direct transforms preserve the orientation
-     * of transformed shapes.
+     * Tests if this affine transform is direct, i.e. the sign of the determinant of the associated matrix is positive. Direct transforms preserve the orientation of transformed shapes.
      */
     public boolean isDirect() {
         return AffineTransform2D.isDirect(this);
@@ -609,8 +583,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
     // implementations of Bijection2D methods
 
     /**
-     * Returns the inverse transform. If the transform is not invertible, throws a
-     * new NonInvertibleTransform2DException.
+     * Returns the inverse transform. If the transform is not invertible, throws a new NonInvertibleTransform2DException.
      * 
      * @since 0.6.3
      */
@@ -621,8 +594,7 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
         if (Math.abs(det) < IShape2D.ACCURACY)
             throw new NonInvertibleTransform2DException(this);
 
-        return new AffineTransform2D(m11 / det, -m01 / det, (m01 * m12 - m02 * m11) / det, -m10 / det, m00 / det, (m02
-                * m10 - m00 * m12) / det);
+        return new AffineTransform2D(m11 / det, -m01 / det, (m01 * m12 - m02 * m11) / det, -m10 / det, m00 / det, (m02 * m10 - m00 * m12) / det);
     }
 
     // ===================================================================
@@ -715,7 +687,6 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
 
     @Override
     public String toString() {
-        return "AffineTransform2D [m00=" + m00 + ", m01=" + m01 + ", m02=" + m02 + ", m10=" + m10 + ", m11=" + m11
-                + ", m12=" + m12 + "]";
+        return "AffineTransform2D [m00=" + m00 + ", m01=" + m01 + ", m02=" + m02 + ", m10=" + m10 + ", m11=" + m11 + ", m12=" + m12 + "]";
     }
 }
