@@ -204,6 +204,14 @@ public final class Polyline2D extends LinearCurve2D {
      */
     @Override
     public boolean isInside(Point2D pt) {
+        if (this.vertices.size() < 2) {
+            return false;
+        }
+
+        if (this.vertices.size() == 2) {
+            return new StraightLine2D(this.firstPoint(), this.lastPoint()).isInside(pt);
+        }
+
         if (new LinearRing2D(this.vertexArray()).isInside(pt))
             return true;
 
