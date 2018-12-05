@@ -55,6 +55,7 @@ public final class Point2D implements IPointShape2D, Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final Point2D ORIGIN = new Point2D(0, 0);
+    public static final Point2D ONE = new Point2D(1, 0);
 
     /** The x coordinate of this point. */
     private final double x;
