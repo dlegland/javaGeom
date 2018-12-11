@@ -466,6 +466,29 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
         // if each test passed, return true
         return true;
     }
+    
+    /**
+     * Checks if the transform is a translation.
+     * 
+     * @return true in case of translation.
+     */
+    public static boolean isTranslation(AffineTransform2D trans) {
+        double a = trans.m00;
+        double b = trans.m01;
+        double c = trans.m10;
+        double d = trans.m11;
+
+        if (abs(a - 1) > ACCURACY)
+            return false;
+        if (abs(b) > ACCURACY)
+            return false;
+        if (abs(c) > ACCURACY)
+            return false;
+        if (abs(d - 1) > ACCURACY)
+            return false;
+
+        return true;
+    }
 
     /**
      * Creates a new Affine Transform by directly specifying the coefficients, in
@@ -577,6 +600,13 @@ public final class AffineTransform2D implements IBijection2D, IGeometricObject2D
      */
     public boolean isSimilarity() {
         return AffineTransform2D.isSimilarity(this);
+    }
+
+    /**
+     * Tests if this affine transform is a translation.
+     */
+    public boolean isTranslation() {
+        return AffineTransform2D.isTranslation(this);
     }
 
     /**
