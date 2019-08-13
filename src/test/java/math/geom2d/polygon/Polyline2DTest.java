@@ -44,18 +44,20 @@ import math.geom2d.line.StraightLine2D;
 /**
  * @author Legland
  */
-public class Polyline2DTest extends TestCase {
-
+public class Polyline2DTest extends TestCase
+{
 	/**
 	 * Constructor for Polyline2DTest.
 	 * 
 	 * @param arg0
 	 */
-	public Polyline2DTest(String arg0) {
+    public Polyline2DTest(String arg0)
+    {
 		super(arg0);
 	}
 
-	public void testSimplify() {
+    public void testSimplify()
+    {
 		CircleArc2D arc = new CircleArc2D(0, 0, 10, 0, Math.PI / 2);
 		Polyline2D poly = arc.asPolyline(16);
 		Polyline2D poly2 = poly.simplify(2.5);
@@ -63,16 +65,38 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(3, poly2.vertexNumber());
 	}
 	
-	public void testGetLength() {
-		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
-				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
+    public void testDistanceToPoint()
+    {
+        ArrayList<Point2D> listPoint= new ArrayList<>();
+        listPoint.add(new Point2D(201093.16610711772, 1777477.3696508463)); 
+        listPoint.add(new Point2D(202667.84818503872, 1777673.8963489647));
+        Polyline2D polyline = Polyline2D.create(listPoint);
+        Point2D currentPoint = new Point2D(201926.0433899812, 1777926.9596233366);
+        double dist1 = polyline.distance(currentPoint);
+//        System.out.println("distance1: " + dist1);
+        
+        ArrayList<Point2D> listPoint2= new ArrayList<>();
+        listPoint2.add(new Point2D(201.09316610711772, 1777.4773696508463));
+        listPoint2.add(new Point2D(202.66784818503872, 1777.6738963489647));
 
+        Polyline2D polyline2 = Polyline2D.create(listPoint2);
+        Point2D currentPoint2 = new Point2D(201.9260433899812, 1777.9269596233366);
+        double dist2 = polyline2.distance(currentPoint2);
+//        System.out.println("distance2: " + dist2*1000);
+        
+        assertEquals(dist1, dist2 * 1000, 1.0);
+    }
+    
+    
+    public void testGetLength()
+    {
+		Polyline2D polyline = createDefaultPolyline();
 		assertEquals(polyline.length(), 30, 1e-14);
 	}
 
-	public void testGetLengthDouble() {
-		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
-				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
+    public void testGetLengthDouble()
+    {
+        Polyline2D polyline = createDefaultPolyline();
 
 		assertEquals(polyline.length(0), 0, 1e-14);
 		assertEquals(polyline.length(.5), 5, 1e-14);
@@ -83,9 +107,9 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(polyline.length(3), 30, 1e-14);
 	}
 
-	public void testGetPositionDouble() {
-		Polyline2D polyline = new Polyline2D(new Point2D[] { new Point2D(0, 0),
-				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 10) });
+    public void testGetPositionDouble()
+    {
+        Polyline2D polyline = createDefaultPolyline();
 
 		assertEquals(polyline.position(0), 0, 1e-14);
 		assertEquals(polyline.position(5), .5, 1e-14);
@@ -96,7 +120,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(polyline.position(30), 3, 1e-14);
 	}
 
-	public void testGetBufferDouble() {
+    public void testGetBufferDouble()
+    {
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(50, 50), new Point2D(100, 50),
 				new Point2D(100, 100), new Point2D(150, 100) });
@@ -107,7 +132,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(1, boundary.continuousCurves().size());
 	}
 
-	public void testGetBufferDouble_MultipleVertex() {
+    public void testGetBufferDouble_MultipleVertex()
+    {
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(50, 50), new Point2D(100, 50),
 				new Point2D(100, 50), new Point2D(100, 100),
@@ -143,7 +169,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(1, boundary.continuousCurves().size());
 	}
 
-	public void testGetParallelDouble() {
+    public void testGetParallelDouble()
+    {
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(50, 50), new Point2D(100, 50),
 				new Point2D(100, 100), new Point2D(150, 100) });
@@ -152,7 +179,8 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(parallel != null);
 	}
 
-	public void testGetLeftTangent() {
+    public void testGetLeftTangent()
+    {
 		Polyline2D line = new Polyline2D(new Point2D[] { new Point2D(10, 10),
 				new Point2D(20, 10), new Point2D(20, 20) });
 
@@ -160,7 +188,8 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(line.leftTangent(2).equals(new Vector2D(0, 10)));
 	}
 
-	public void testGetRightTangent() {
+    public void testGetRightTangent()
+    {
 		Polyline2D line = new Polyline2D(new Point2D[] { new Point2D(10, 10),
 				new Point2D(20, 10), new Point2D(20, 20) });
 
@@ -168,7 +197,8 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(line.rightTangent(1).equals(new Vector2D(0, 10)));
 	}
 
-	public void testAddVertex() {
+    public void testAddVertex()
+    {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
@@ -179,7 +209,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(line.vertexNumber(), points.length + 1);
 	}
 
-	public void testRemoveVertex_Point2D() {
+    public void testRemoveVertex_Point2D()
+    {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
@@ -190,7 +221,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(3, line.vertexNumber());
 	}
 
-	public void testRemoveVertex_int() {
+    public void testRemoveVertex_int()
+    {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
@@ -201,7 +233,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(3, line.vertexNumber());
 	}
 
-	public void testInsertVertex() {
+    public void testInsertVertex()
+    {
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
 		points[1] = new Point2D(10, 0);
@@ -213,7 +246,8 @@ public class Polyline2DTest extends TestCase {
 		assertEquals(line.vertex(2), new Point2D(15, 20));
 	}
 
-	public void testGetPoint() {
+    public void testGetPoint()
+    {
 		// initialize points
 		Point2D[] points = new Point2D[4];
 		points[0] = new Point2D(0, 0);
@@ -243,7 +277,8 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(p30.equals(line1.point(3.5)));
 	}
 
-	public void testGetPosition() {
+    public void testGetPosition()
+    {
 		Polyline2D line = new Polyline2D(new Point2D[] { new Point2D(0, 0),
 				new Point2D(10, 0), new Point2D(10, 10), new Point2D(20, 20) });
 		double eps = 1e-14;
@@ -261,7 +296,8 @@ public class Polyline2DTest extends TestCase {
 
 	}
 
-	public void testgetIntersections() {
+    public void testgetIntersections()
+    {
 		// initialize points
 		Point2D[] points = new Point2D[3];
 		points[0] = new Point2D(0, -5);
@@ -288,27 +324,23 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(iter2.next().equals(new Point2D(15, 0)));
 	}
 
-	public void testGetSubCurve() {
-		// initialize points
-		Point2D[] points = new Point2D[4];
-		points[0] = new Point2D(0, 0);
-		points[1] = new Point2D(10, 0);
-		points[2] = new Point2D(10, 10);
-		points[3] = new Point2D(20, 20);
+    public void testGetSubCurve()
+    {
+        // create polyline
+        Polyline2D line1 = createDefaultPolyline();
 
-		// create polyline, and subcurve
-		Polyline2D line1 = new Polyline2D(points);
-		Polyline2D sub = line1.subCurve(.5, 2.5);
+        Polyline2D sub = line1.subCurve(.5, 2.5);
 
-		// to check result
-		Polyline2D line2 = new Polyline2D(new Point2D[] { new Point2D(5, 0),
-				new Point2D(10, 0), new Point2D(10, 10), new Point2D(15, 15) });
+        // to check result
+        Polyline2D line2 = new Polyline2D(new Point2D[] { new Point2D(15, 10),
+                new Point2D(20, 10), new Point2D(20, 20), new Point2D(15, 20) });
 
-		// check two objects are the same
-		assertTrue(line2.equals(sub));
-	}
+        // check two objects are the same
+        assertTrue(line2.equals(sub));
+    }
 
-	public void testIsInside() {
+	public void testIsInside() 
+	{
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(150, 50), new Point2D(150, 150),
 				new Point2D(100, 100), new Point2D(50, 150),
@@ -325,7 +357,8 @@ public class Polyline2DTest extends TestCase {
 		assertTrue(!polyline.isInside(new Point2D(0, 50)));
 	}
 
-	public void testCreate_Collection() {
+    public void testCreate_Collection()
+    {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		array.add(new Point2D(10, 10));
 		array.add(new Point2D(20, 10));
@@ -335,7 +368,8 @@ public class Polyline2DTest extends TestCase {
 		assertNotNull(ring);
 	}
 
-	public void testCreate_Array() {
+    public void testCreate_Array()
+    {
 		Point2D[] array = new Point2D[4];
 		array[0] = new Point2D(10, 10);
 		array[1] = new Point2D(20, 10);
@@ -345,7 +379,8 @@ public class Polyline2DTest extends TestCase {
 		assertNotNull(ring);
 	}
 
-	public void testCopyConstructor() {
+    public void testCopyConstructor()
+    {
 		Polyline2D polyline = new Polyline2D(new Point2D[] {
 				new Point2D(150, 50), new Point2D(150, 150),
 				new Point2D(100, 100), new Point2D(50, 150),
@@ -353,5 +388,17 @@ public class Polyline2DTest extends TestCase {
 
 		Polyline2D copy = new Polyline2D(polyline);
 		assertTrue(polyline.equals(copy));
+	}
+
+	/**
+	 * @return an open polyline composed of three line segment of length 10. 
+	 */
+	private static final Polyline2D createDefaultPolyline()
+	{
+        return new Polyline2D(new Point2D[] { 
+                new Point2D(10, 10),
+                new Point2D(20, 10), 
+                new Point2D(20, 20), 
+                new Point2D(10, 20) });
 	}
 }
