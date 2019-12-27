@@ -206,6 +206,13 @@ implements ShapeSet2D<T>, Cloneable {
 		return this.distance(p.x(), p.y());
 	}
 
+	public double sqDistance(Point2D p) {
+        double dist = Double.POSITIVE_INFINITY;
+        for (Shape2D shape : shapes)
+            dist = Math.min(dist, shape.sqDistance(p));
+        return dist;
+	}
+
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#getDistance(double, double)
 	 */

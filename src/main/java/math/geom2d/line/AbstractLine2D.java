@@ -780,6 +780,23 @@ implements SmoothOrientedCurve2D, LinearElement2D {
        	return dist;
     }
 
+    public double sqDistance(Point2D p) {
+    	// first project on the line
+        Point2D proj = projectedPoint(p);
+        
+        // if the line contains the projection, returns the distance
+        if (contains(proj))
+            return proj.sqDistance(p);
+        
+        // otherwise, returns the distance to the closest singular point
+        double dist = Double.POSITIVE_INFINITY;
+        if(!Double.isInfinite(t0()))
+        	dist = firstPoint().sqDistance(p);
+        if(!Double.isInfinite(t1()))
+        	dist = Math.min(dist, lastPoint().sqDistance(p));
+       	return dist;
+    }
+
 	/* (non-Javadoc)
 	 * @see math.geom2d.Shape2D#contains(Point2D)
 	 */

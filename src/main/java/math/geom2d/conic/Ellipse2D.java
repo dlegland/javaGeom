@@ -1017,6 +1017,13 @@ implements EllipseShape2D, Cloneable {
     }
 
     /**
+     * Computes squared distance using a polyline approximation.
+     */
+    public double sqDistance(Point2D point) {
+        return this.asPolyline(180).sqDistance(point);
+    }
+
+    /**
      * Clip the ellipse by a box. The result is an instance of CurveSet2D,
      * which contains only instances of Ellipse2D or EllipseArc2D. If the
      * ellipse is not clipped, the result is an instance of CurveSet2D

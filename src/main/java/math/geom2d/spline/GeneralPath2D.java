@@ -594,6 +594,41 @@ public class GeneralPath2D implements Curve2D {
 		return minDist;
 	}
 
+	public double sqDistance(Point2D p) {
+		double minDist = Double.MAX_VALUE;
+		double dist;
+		
+		Point2D lastControl = null;
+		Point2D lastStart = null;
+		
+		for (Segment seg : this.segments) {
+			switch (seg.type()) {
+			case MOVE:
+				lastStart = seg.lastControl();
+				lastControl = lastStart;
+				break;
+
+			case LINE:
+			case QUAD:
+			case CUBIC:
+				dist = seg.asCurve(lastControl, lastStart).sqDistance(p);
+				minDist = Math.min(dist, minDist);
+				lastControl = seg.lastControl();
+				break;
+
+			case CLOSE:
+				dist = seg.asCurve(lastControl, lastStart).sqDistance(p);
+				minDist = Math.min(dist, minDist);
+				lastControl = lastStart;
+				break;
+				
+			default:
+				throw new RuntimeException("Unknown Path segment type: " + seg.type());
+			}
+		}
+
+		return minDist;
+	}
 	/**
 	 * Returns true, as a curve composed of Bezier pieces is always bounded.
 	 */

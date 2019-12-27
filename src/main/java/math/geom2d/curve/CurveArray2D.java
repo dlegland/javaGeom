@@ -625,7 +625,14 @@ implements CurveSet2D<T>, Iterable<T>, Cloneable {
         return dist;
     }
 
-    /**
+	public double sqDistance(Point2D p) {
+        double dist = Double.POSITIVE_INFINITY;
+        for (Curve2D curve : curves)
+            dist = Math.min(dist, curve.sqDistance(p));
+        return dist;
+	}
+
+	/**
      * return true, if all curve pieces are bounded
      */
     public boolean isBounded() {

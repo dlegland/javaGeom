@@ -316,6 +316,14 @@ implements SmoothContour2D, Cloneable {
         return projected.distance(x, y);
     }
 
+    /**
+     * Computes squared distance using a polyline approximation.
+     */
+    public double sqDistance(Point2D point) {
+        Point2D projected = this.point(this.project(point));
+        return projected.sqDistance(point);
+    }
+
     /** Returns false, as an hyperbola branch is never bounded. */
     public boolean isBounded() {
         return false;

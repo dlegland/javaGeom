@@ -125,6 +125,15 @@ public class GenericDomain2D implements Domain2D {
         return Math.max(boundary.signedDistance(x, y), 0);
     }
 
+    public double sqDistance(Point2D p)
+    {
+    	double dist = boundary.signedDistance(p);
+    	if (dist > 0)
+    		return dist * dist;
+    	else
+    		return 0.0;
+    }
+
     /**
      * Returns true if the domain is bounded. The domain is unbounded if either
      * its boundary is unbounded, or a point located outside of the boundary

@@ -297,6 +297,11 @@ implements SmoothOrientedCurve2D, Cloneable {
         return this.asPolyline(100).distance(x, y);
     }
 
+    public double sqDistance(Point2D p) {
+        // TODO Auto-generated method stub
+        return this.asPolyline(100).sqDistance(p);
+    }
+
     /**
      * Returns true if the arc is bounded, i.e. if both limits are finite.
      */

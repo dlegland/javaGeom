@@ -470,6 +470,25 @@ public class LinearRing2DTest extends TestCase {
 		assertFalse(poly.isInside(5, 35));		
 	}
 
+	public void testIsInside_GitHubIssue_10()
+	{
+        double[] xcoords0 = { 0.0, 0.0, 10.0, 10.0, 0.0 };
+        double[] ycoords0 = { 0.0, 10.0, 10.0, 0.0, 0.0 };
+        LinearRing2D ringCW = new LinearRing2D(xcoords0, ycoords0);
+
+        // anti-clockwise
+        double[] xcoords1 = { 0.0, 10.0, 10.0, 0.0, 0.0 };
+        double[] ycoords1 = { 0.0, 0.0, 10.0, 10.0, 0.0 };
+        LinearRing2D ringACW = new LinearRing2D(xcoords1, ycoords1);
+
+        System.out.println(ringCW.isInside(1.0, 1.0));
+        System.out.println(ringCW.isInside(10.5, 10.5));
+
+        System.out.println(ringACW.isInside(1.0, 1.0));
+        System.out.println(ringACW.isInside(10.5, 10.5));
+
+	}
+	
 	public void testCreate_Collection() {
 		ArrayList<Point2D> array = new ArrayList<Point2D>(4);
 		array.add(new Point2D(10, 10));

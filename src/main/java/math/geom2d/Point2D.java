@@ -523,6 +523,10 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 		return distance(point.x, point.y);
 	}
 
+	public double sqDistance(Point2D point) {
+		return sqDistance(point.x, point.y);
+	}
+
 	/**
 	 * Computes the distance between current point and point with coordinate
 	 * <code>(x,y)</code>. Uses the <code>Math.hypot()</code> function for
@@ -530,6 +534,12 @@ implements GeometricObject2D, PointShape2D, Cloneable, CirculinearShape2D {
 	 */
 	public double distance(double x, double y) {
 		return hypot(this.x - x, this.y - y);
+	}
+
+	public double sqDistance(double x, double y) {
+		double dx = this.x - x;
+		double dy = this.y - y;
+		return dx * dx + dy * dy;
 	}
 
 	/**

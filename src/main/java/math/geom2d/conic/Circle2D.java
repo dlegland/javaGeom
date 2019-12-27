@@ -912,6 +912,11 @@ Cloneable {
 		return abs(Point2D.distance(xc, yc, x, y) - r);
     }
 
+    public double sqDistance(Point2D p) {
+    	double d =  Point2D.distance(center(), p) - r;
+		return d * d;
+    }
+
     /**
      * Computes intersections of the circle with a line. Return an array of
      * Point2D, of size 0, 1 or 2 depending on the distance between circle and

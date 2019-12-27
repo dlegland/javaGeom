@@ -432,6 +432,8 @@ public static EllipseArc2D create(Ellipse2D ell, double start, double end,
     }
 
     public double project(Point2D point) {
+    	// TODO: projection on ellipse is an approximation.
+    	// should be better to use polyline approximation
         double angle = ellipse.project(point);
 
         // Case of an angle contained in the ellipse arc
@@ -518,6 +520,13 @@ public static EllipseArc2D create(Ellipse2D ell, double start, double end,
     public double distance(double x, double y) {
         Point2D p = point(project(new Point2D(x, y)));
         return p.distance(x, y);
+    }
+
+    /**
+     * Computes squared distance using a polyline approximation.
+     */
+    public double sqDistance(Point2D point) {
+        return this.asPolyline(180).sqDistance(point);
     }
 
     /** Always return true: an ellipse arc is bounded by definition */

@@ -643,6 +643,16 @@ implements EllipseArcShape2D, CircularShape2D, CirculinearElement2D, Cloneable {
             return min(firstPoint().distance(x, y), lastPoint().distance(x, y));
     }
 
+    public double sqDistance(Point2D p) {
+    	Point2D center = circle.center();
+        double angle = Angle2D.horizontalAngle(center, p);
+
+        if (containsAngle(angle))
+        	return circle.sqDistance(p);
+        else 
+            return min(firstPoint().sqDistance(p), lastPoint().sqDistance(p));
+    }
+
     /** Returns true, as a circle arc is bounded by definition. */
     public boolean isBounded() {
         return true;

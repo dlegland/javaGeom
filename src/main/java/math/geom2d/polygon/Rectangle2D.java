@@ -353,8 +353,15 @@ public class Rectangle2D implements Polygon2D {
      * point lies inside the polygon.
      */
     public double distance(double x, double y) {
-        double dist = boundary().signedDistance(x, y);
+        double dist = asRing().signedDistance(x, y);
         return Math.max(dist, 0);
+    }
+
+    public double sqDistance(Point2D p) {
+    	if(contains(p))
+    		return 0.0;
+    	else
+    		return asRing().sqDistance(p);
     }
 
     /**

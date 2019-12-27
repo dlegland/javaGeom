@@ -251,6 +251,25 @@ implements PointSet2D, CirculinearShape2D, Cloneable {
         return dist;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.Shape2D#distance(double, double)
+     */
+    public double sqDistance(Point2D p) {
+    	// basic checkup
+        if (points.isEmpty())
+            return Double.NaN;
+        
+        // find smallest distance
+        double dist = Double.MAX_VALUE;
+        for (Point2D point : points)
+            dist = Math.min(dist, point.sqDistance(p));
+        
+        // return distance to closest point
+        return dist;
+    }
+
     /**
      * Always return true.
      */

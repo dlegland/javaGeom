@@ -426,6 +426,24 @@ implements LinearElement2D, Cloneable {
         return Math.min(d1, d2);
     }
 
+    public double sqDistance(Point2D p) {
+    	// project the point on the support line 
+        StraightLine2D support = new StraightLine2D(p1, p2);
+        Point2D proj = support.projectedPoint(p);
+        
+        // if the line contains the projection, returns the distance
+        if (contains(proj))
+            return proj.sqDistance(p);
+        
+        // otherwise, returns the distance to the closest singular point
+        double dist = Double.POSITIVE_INFINITY;
+        if(!Double.isInfinite(t0()))
+        	dist = firstPoint().sqDistance(p);
+        if(!Double.isInfinite(t1()))
+        	dist = Math.min(dist, lastPoint().sqDistance(p));
+       	return dist;
+    }
+    
     /**
      * Creates a straight line parallel to this object, and passing through
      * the given point.

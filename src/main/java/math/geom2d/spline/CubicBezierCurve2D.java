@@ -425,7 +425,7 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
 	}
 
 	/**
-     * @see math.geom2d.Shape2D#distance(Point2D)
+     * @see math.geom2d.Shape2D#distance(math.geom2d.Point2D)
      */
     public double distance(Point2D p) {
         return this.distance(p.x(), p.y());
@@ -438,6 +438,16 @@ implements SmoothCurve2D, ContinuousOrientedCurve2D, Cloneable {
      */
     public double distance(double x, double y) {
     	return this.asPolyline(100).distance(x, y);
+    }
+
+    /**
+	 * Computes approximated squared distance, computed on a polyline
+	 * approximation.
+	 * 
+	 * @see math.geom2d.Shape2D#sqDistance(math.geom2d.Point2D)
+	 */
+    public double sqDistance(Point2D p) {
+        return this.asPolyline(100).sqDistance(p);
     }
 
     /**

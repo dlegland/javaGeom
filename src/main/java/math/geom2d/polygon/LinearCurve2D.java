@@ -21,7 +21,12 @@ import math.geom2d.line.LinearShape2D;
 import math.geom2d.point.PointSets2D;
 
 /**
- * Abstract class that is the base implementation of Polyline2D and LinearRing2D. 
+ * Abstract class that is the base implementation of Polyline2D and
+ * LinearRing2D.
+ *
+ * @see math.geom2d.polygon.Polyline2D
+ * @see math.geom2d.polygon.LinearRing2D
+ * 
  * @author dlegland
  *
  */
@@ -526,6 +531,21 @@ implements CirculinearContinuousCurve2D {
      */
     public double distance(Point2D point) {
         return distance(point.x(), point.y());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see math.geom2d.Shape2D#sqDistance(math.geom2d.Point2D)
+     */
+    public double sqDistance(Point2D p) {
+        double dist = Double.MAX_VALUE;
+        for (LineSegment2D edge : this.edges()) {
+        	if (edge.length()==0)
+        		continue;
+            dist = Math.min(dist, edge.sqDistance(p));
+        }
+        return dist;
     }
 
     /**

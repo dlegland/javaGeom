@@ -278,6 +278,11 @@ public class HRectangle2D extends java.awt.geom.Rectangle2D.Double implements
         return Math.max(dist, 0);
     }
 
+    public double sqDistance(Point2D p) {
+    	double dist = distance(p.x(), p.y());
+    	return dist * dist;
+    }
+
     /**
      * Returns the clipping of the rectangle, as an instance of HRectangle2D. If
      * rectangle is outside clipping box, returns an instance of HRectangle with

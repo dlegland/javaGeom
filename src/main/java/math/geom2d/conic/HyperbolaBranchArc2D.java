@@ -238,6 +238,11 @@ implements SmoothOrientedCurve2D, Cloneable {
         return p.distance(x, y);
     }
 
+    public double sqDistance(Point2D point) {
+        Point2D p = point(project(point));
+        return p.sqDistance(point);
+    }
+
     public boolean isBounded() {
 		if (t0 == Double.NEGATIVE_INFINITY)
 			return false;

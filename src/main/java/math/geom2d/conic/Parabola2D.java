@@ -464,6 +464,12 @@ implements Contour2D, Conic2D, Cloneable {
         return new ParabolaArc2D(this, -100, 100).distance(x, y);
     }
 
+    public double sqDistance(Point2D point) {
+        // TODO Computes on polyline approximation, needs to compute on whole
+        // curve
+        return new ParabolaArc2D(this, -100, 100).sqDistance(point);
+    }
+
     // ===============================================
     // Drawing methods (curve interface)
 

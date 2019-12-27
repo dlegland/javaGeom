@@ -512,6 +512,16 @@ public class StraightLine2D extends AbstractLine2D implements
         return proj.distance(x, y);
     }
 
+	/**
+	 * Returns the square of the distance of the point (x, y) to this straight
+	 * line.
+	 */
+    @Override
+    public double sqDistance(Point2D point) {
+        Point2D proj = super.projectedPoint(point.x(), point.y());
+        return proj.sqDistance(point);
+    }
+
     public Box2D boundingBox() {
         if (Math.abs(dx) < Shape2D.ACCURACY)
             return new Box2D(

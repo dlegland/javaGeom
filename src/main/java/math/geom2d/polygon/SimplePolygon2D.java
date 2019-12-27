@@ -415,6 +415,13 @@ public class SimplePolygon2D implements Polygon2D {
         return Math.max(dist, 0);
     }
 
+    public double sqDistance(Point2D p) {
+    	if(contains(p))
+    		return 0.0;
+    	else
+    		return boundary().sqDistance(p);
+    }
+
     /**
      * Returns the shape formed by the polygon clipped by the given box.
      */

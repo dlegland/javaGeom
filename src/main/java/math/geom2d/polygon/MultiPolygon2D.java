@@ -393,6 +393,13 @@ public class MultiPolygon2D implements Domain2D, Polygon2D {
         return Math.max(this.boundary().signedDistance(x, y), 0);
     }
 
+    public double sqDistance(Point2D p) {
+    	if(contains(p))
+    		return 0.0;
+    	else
+    		return boundary().sqDistance(p);
+    }
+
     public boolean isBounded() {
         // If boundary is not bounded, the polygon is not
         Boundary2D boundary = this.boundary();

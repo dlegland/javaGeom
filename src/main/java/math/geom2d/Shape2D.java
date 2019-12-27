@@ -77,6 +77,12 @@ public interface Shape2D extends GeometricObject2D {
     public abstract double distance(Point2D p);
 
     /**
+	 * Returns the square of the distance between this the shape and the given
+	 * point.
+	 */
+    public abstract double sqDistance(Point2D p);
+
+    /**
      * Returns the distance of the shape to the given point, specified by x and
      * y, or the distance of point to the frontier of the shape in the case of
      * a plain (i.e. fillable) shape.
