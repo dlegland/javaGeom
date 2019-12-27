@@ -18,10 +18,10 @@
 FOR /F "tokens=*" %%i IN ('dir /a:d /b jar') DO rmdir /S /Q %%i
 
 @REM make a copy of the binary directory into the jar directory
-robocopy bin jar *.* /s /njs /njh /ndl
+robocopy target\classes jar *.* /s /njs /njh /ndl
 
 @REM remove '.svn' directories, created by Eclipse from subversion repository
-FOR /F "tokens=*" %%i IN ('dir /a:d /s /b jar\*.svn*') DO rmdir /S /Q %%i
+:: FOR /F "tokens=*" %%i IN ('dir /a:d /s /b jar\*.svn*') DO rmdir /S /Q %%i
 
 @REM change directory and uncompress external library
 cd jar
@@ -34,6 +34,7 @@ cd ..
 if exist javaGeom.jar del /f /q javaGeom.jar
 
 @REM build the new archive
+@REM (the archive file can later be numbered manually)
 jar cf javaGeom.jar -C jar\ .
 
 @REM remove temporary files created during process
