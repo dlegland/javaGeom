@@ -25,17 +25,16 @@
 
 package math.geom2d;
 
-// Imports
-import math.geom2d.Shape2D;
-import math.geom2d.Angle2D;
-import math.geom2d.Point2D;
-import math.geom2d.Vector2D;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.round;
+import static java.lang.Math.sin;
+import static math.geom2d.Shape2D.ACCURACY;
+
 import math.geom2d.line.LinearShape2D;
 import math.geom2d.transform.Bijection2D;
 import math.utils.EqualUtils;
-
-import static java.lang.Math.*;
-import static math.geom2d.Shape2D.ACCURACY;
 
 
 /**

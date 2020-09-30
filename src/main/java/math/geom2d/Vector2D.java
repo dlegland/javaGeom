@@ -25,9 +25,12 @@
 
 package math.geom2d;
 
-import math.geom2d.AffineTransform2D;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
+
 import math.utils.EqualUtils;
-import static java.lang.Math.*;
 
 // Imports
 
