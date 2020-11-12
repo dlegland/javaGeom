@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.Vector2D;
-import net.javageom.geom2d.conic.Hyperbola2D;
-import net.javageom.geom2d.conic.HyperbolaBranch2D;
 import net.javageom.geom2d.curve.Curve2D;
 import net.javageom.geom2d.curve.CurveSet2D;
 import net.javageom.geom2d.curve.Curves2D;

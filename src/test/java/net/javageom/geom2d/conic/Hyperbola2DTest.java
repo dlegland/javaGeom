@@ -5,10 +5,6 @@ import net.javageom.geom2d.AffineTransform2D;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
-import net.javageom.geom2d.conic.Conic2D;
-import net.javageom.geom2d.conic.Conics2D;
-import net.javageom.geom2d.conic.Hyperbola2D;
-import net.javageom.geom2d.conic.HyperbolaBranchArc2D;
 import net.javageom.geom2d.curve.Curve2D;
 import net.javageom.geom2d.curve.CurveSet2D;
 

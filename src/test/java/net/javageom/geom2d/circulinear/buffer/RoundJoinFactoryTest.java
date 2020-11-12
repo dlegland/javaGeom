@@ -2,9 +2,6 @@ package net.javageom.geom2d.circulinear.buffer;
 
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.circulinear.buffer.BufferCalculator;
-import net.javageom.geom2d.circulinear.buffer.RoundCapFactory;
-import net.javageom.geom2d.circulinear.buffer.RoundJoinFactory;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
 import net.javageom.geom2d.polygon.LinearRing2D;

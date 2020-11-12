@@ -6,7 +6,6 @@ package net.javageom.geom3d.line;
 import junit.framework.TestCase;
 import net.javageom.geom3d.Point3D;
 import net.javageom.geom3d.Vector3D;
-import net.javageom.geom3d.line.StraightLine3D;
 
 /**
  * @author dlegland

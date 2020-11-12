@@ -25,6 +25,8 @@
  */
 package net.javageom.geom2d.curve;
 
+import static java.lang.Math.PI;
+
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -34,14 +36,8 @@ import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.curve.Curve2D;
-import net.javageom.geom2d.curve.CurveArray2D;
-import net.javageom.geom2d.curve.CurveSet2D;
-import net.javageom.geom2d.curve.Curves2D;
 import net.javageom.geom2d.line.LineSegment2D;
 import net.javageom.geom2d.polygon.Polyline2D;
-
-import static java.lang.Math.PI;
 
 public class Curves2DTest extends TestCase {
 

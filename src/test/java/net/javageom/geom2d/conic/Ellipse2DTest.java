@@ -35,7 +35,6 @@ import net.javageom.geom2d.AffineTransform2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.Vector2D;
-import net.javageom.geom2d.conic.*;
 import net.javageom.geom2d.line.StraightLine2D;
 
 /**

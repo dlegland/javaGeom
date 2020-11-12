@@ -3,7 +3,6 @@ package net.javageom.geom3d.transform;
 import junit.framework.TestCase;
 import net.javageom.geom3d.Point3D;
 import net.javageom.geom3d.Vector3D;
-import net.javageom.geom3d.transform.AffineTransform3D;
 
 public class AffineTransform3DTest extends TestCase {
 

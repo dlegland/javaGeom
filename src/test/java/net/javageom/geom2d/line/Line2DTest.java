@@ -30,9 +30,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
-import net.javageom.geom2d.line.Line2D;
-import net.javageom.geom2d.line.LinearShape2D;
-import net.javageom.geom2d.line.StraightLine2D;
 
 /**
  * @author Legland

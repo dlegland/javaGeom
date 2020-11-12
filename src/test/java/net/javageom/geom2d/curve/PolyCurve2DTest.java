@@ -28,10 +28,6 @@ package net.javageom.geom2d.curve;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.curve.ContinuousCurve2D;
-import net.javageom.geom2d.curve.Curve2D;
-import net.javageom.geom2d.curve.CurveSet2D;
-import net.javageom.geom2d.curve.PolyCurve2D;
 
 public class PolyCurve2DTest extends TestCase {
 

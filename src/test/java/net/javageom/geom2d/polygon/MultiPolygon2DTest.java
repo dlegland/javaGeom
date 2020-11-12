@@ -1,16 +1,13 @@
 package net.javageom.geom2d.polygon;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.polygon.LinearRing2D;
-import net.javageom.geom2d.polygon.MultiPolygon2D;
-import net.javageom.geom2d.polygon.Polygon2D;
 import net.javageom.geom2d.transform.CircleInversion2D;
-
-import java.util.*;
 
 public class MultiPolygon2DTest extends TestCase {
 

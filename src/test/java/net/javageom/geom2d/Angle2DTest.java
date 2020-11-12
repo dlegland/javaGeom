@@ -26,9 +26,6 @@
 package net.javageom.geom2d;
 
 import junit.framework.TestCase;
-import net.javageom.geom2d.Angle2D;
-import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.line.StraightLine2D;
 
 public class Angle2DTest extends TestCase {

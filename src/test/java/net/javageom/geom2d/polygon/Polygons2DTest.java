@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.polygon.*;
 
 
 /**

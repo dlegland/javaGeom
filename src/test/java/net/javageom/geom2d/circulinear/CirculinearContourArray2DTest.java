@@ -5,7 +5,6 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.circulinear.*;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.domain.Contour2D;
 import net.javageom.geom2d.transform.CircleInversion2D;

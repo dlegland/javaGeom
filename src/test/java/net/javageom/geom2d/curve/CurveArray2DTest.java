@@ -25,17 +25,14 @@
  */
 package net.javageom.geom2d.curve;
 
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.curve.Curve2D;
-import net.javageom.geom2d.curve.CurveArray2D;
-import net.javageom.geom2d.curve.CurveSet2D;
 import net.javageom.geom2d.line.LineSegment2D;
-
-import java.util.*;
 
 
 public class CurveArray2DTest extends TestCase {

@@ -26,6 +26,8 @@
 
 package net.javageom.geom2d.conic;
 
+import static java.lang.Math.PI;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
@@ -33,10 +35,6 @@ import java.util.Random;
 import junit.framework.TestCase;
 import net.javageom.geom2d.*;
 import net.javageom.geom2d.circulinear.CirculinearCurve2D;
-import net.javageom.geom2d.conic.Circle2D;
-import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.conic.EllipseArc2D;
-import net.javageom.geom2d.conic.EllipseArcShape2D;
 import net.javageom.geom2d.curve.Curve2D;
 import net.javageom.geom2d.curve.CurveSet2D;
 import net.javageom.geom2d.domain.Boundary2D;
@@ -45,8 +43,6 @@ import net.javageom.geom2d.line.LineSegment2D;
 import net.javageom.geom2d.line.StraightLine2D;
 import net.javageom.geom2d.polygon.Polyline2D;
 import net.javageom.geom2d.transform.CircleInversion2D;
-
-import static java.lang.Math.PI;
 
 
 /**

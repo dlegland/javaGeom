@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Vector2D;
 import net.javageom.geom2d.circulinear.*;
-import net.javageom.geom2d.circulinear.buffer.BufferCalculator;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.conic.CircleArc2D;
 import net.javageom.geom2d.domain.Domain2D;

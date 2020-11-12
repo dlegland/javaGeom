@@ -33,7 +33,6 @@ import net.javageom.geom2d.Vector2D;
 import net.javageom.geom2d.circulinear.CircleLine2D;
 import net.javageom.geom2d.circulinear.CirculinearDomain2D;
 import net.javageom.geom2d.conic.Circle2D;
-import net.javageom.geom2d.line.StraightLine2D;
 import net.javageom.geom2d.transform.CircleInversion2D;
 
 /**

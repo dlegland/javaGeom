@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.point.PointArray2D;
 import net.javageom.geom2d.polygon.Polygon2D;
-import net.javageom.geom2d.polygon.convhull.JarvisMarch2D;
 
 public class JarvisMarch2DTest extends TestCase {
 

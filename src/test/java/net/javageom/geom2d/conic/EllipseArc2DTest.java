@@ -26,12 +26,11 @@
 package net.javageom.geom2d.conic;
 
 import static java.lang.Math.PI;
+
 import junit.framework.TestCase;
 import net.javageom.geom2d.AffineTransform2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.Vector2D;
-import net.javageom.geom2d.conic.Ellipse2D;
-import net.javageom.geom2d.conic.EllipseArc2D;
 import net.javageom.geom2d.line.StraightLine2D;
 import net.javageom.geom2d.polygon.Polyline2D;
 

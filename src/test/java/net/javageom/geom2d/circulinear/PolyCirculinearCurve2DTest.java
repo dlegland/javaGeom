@@ -15,9 +15,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Vector2D;
-import net.javageom.geom2d.circulinear.CirculinearContinuousCurve2D;
-import net.javageom.geom2d.circulinear.CirculinearElement2D;
-import net.javageom.geom2d.circulinear.PolyCirculinearCurve2D;
 import net.javageom.geom2d.line.*;
 
 

@@ -38,7 +38,6 @@ import net.javageom.geom2d.conic.CircleArc2D;
 import net.javageom.geom2d.curve.SmoothCurve2D;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.line.LineSegment2D;
 import net.javageom.geom2d.transform.CircleInversion2D;
 
 /**

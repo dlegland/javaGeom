@@ -32,7 +32,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.Vector2D;
-import net.javageom.geom2d.circulinear.*;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.conic.CircleArc2D;
 import net.javageom.geom2d.curve.ContinuousCurve2D;

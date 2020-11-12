@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.point.PointArray2D;
 import net.javageom.geom2d.polygon.Polygon2D;
-import net.javageom.geom2d.polygon.convhull.GrahamScan2D;
 
 public class GrahamScan2DTest extends TestCase {
 

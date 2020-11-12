@@ -2,8 +2,6 @@ package net.javageom.geom2d.point;
 
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.point.PointArray2D;
-import net.javageom.geom2d.point.PointSets2D;
 
 public class PointSets2DTest extends TestCase {
 

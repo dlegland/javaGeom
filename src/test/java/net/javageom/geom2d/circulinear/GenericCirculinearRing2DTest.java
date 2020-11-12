@@ -5,7 +5,6 @@ import static java.lang.Math.PI;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.circulinear.GenericCirculinearRing2D;
 import net.javageom.geom2d.conic.CircleArc2D;
 import net.javageom.geom2d.curve.Curve2D;
 import net.javageom.geom2d.domain.Domain2D;

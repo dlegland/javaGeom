@@ -5,8 +5,6 @@ package net.javageom.geom2d.spline;
 
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.spline.CubicBezierCurve2D;
-import net.javageom.geom2d.spline.PolyCubicBezierCurve2D;
 
 /**
  * @author dlegland

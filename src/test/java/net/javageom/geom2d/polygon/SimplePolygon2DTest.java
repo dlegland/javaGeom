@@ -36,9 +36,6 @@ import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Contour2D;
 import net.javageom.geom2d.domain.Domain2D;
 import net.javageom.geom2d.line.StraightLine2D;
-import net.javageom.geom2d.polygon.LinearRing2D;
-import net.javageom.geom2d.polygon.Polygon2D;
-import net.javageom.geom2d.polygon.SimplePolygon2D;
 import net.javageom.geom2d.transform.CircleInversion2D;
 
 /**

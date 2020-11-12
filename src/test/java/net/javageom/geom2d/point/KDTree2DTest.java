@@ -14,7 +14,6 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.point.KDTree2D;
 
 
 /**

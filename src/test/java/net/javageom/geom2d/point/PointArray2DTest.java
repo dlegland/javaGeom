@@ -5,8 +5,6 @@ import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.point.PointArray2D;
-import net.javageom.geom2d.point.PointSet2D;
 
 public class PointArray2DTest extends TestCase {
 

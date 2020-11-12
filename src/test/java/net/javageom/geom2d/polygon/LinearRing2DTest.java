@@ -43,9 +43,6 @@ import net.javageom.geom2d.curve.SmoothCurve2D;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
 import net.javageom.geom2d.line.StraightLine2D;
-import net.javageom.geom2d.polygon.LinearCurve2D;
-import net.javageom.geom2d.polygon.LinearRing2D;
-import net.javageom.geom2d.polygon.Polyline2D;
 
 
 /**

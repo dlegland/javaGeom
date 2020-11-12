@@ -11,9 +11,6 @@ package net.javageom.geom2d.domain;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.conic.Circle2D;
-import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.domain.DomainArray2D;
-import net.javageom.geom2d.domain.GenericDomain2D;
 
 
 /**

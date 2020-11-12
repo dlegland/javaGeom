@@ -1,7 +1,6 @@
 package net.javageom.geom3d;
 
 import junit.framework.TestCase;
-import net.javageom.geom3d.Vector3D;
 
 public class Vector3DTest extends TestCase {
 

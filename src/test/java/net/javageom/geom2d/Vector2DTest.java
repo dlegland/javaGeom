@@ -28,7 +28,6 @@
 package net.javageom.geom2d;
 
 import junit.framework.TestCase;
-import net.javageom.geom2d.Vector2D;
 
 /**
  * @author Legland

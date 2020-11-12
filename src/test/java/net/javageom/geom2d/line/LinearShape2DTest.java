@@ -28,8 +28,6 @@ package net.javageom.geom2d.line;
 
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.line.LineSegment2D;
-import net.javageom.geom2d.line.StraightLine2D;
 
 /**
  * @author Legland

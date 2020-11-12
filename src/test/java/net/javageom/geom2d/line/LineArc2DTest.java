@@ -29,7 +29,6 @@ package net.javageom.geom2d.line;
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Shape2D;
-import net.javageom.geom2d.line.LineArc2D;
 
 /**
  * @author Legland

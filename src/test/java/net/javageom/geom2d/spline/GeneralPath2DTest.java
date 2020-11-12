@@ -12,7 +12,6 @@ import net.javageom.geom2d.Shape2D;
 import net.javageom.geom2d.curve.ContinuousCurve2D;
 import net.javageom.geom2d.curve.Curve2D;
 import net.javageom.geom2d.line.StraightLine2D;
-import net.javageom.geom2d.spline.GeneralPath2D;
 
 /**
  * @author dlegland

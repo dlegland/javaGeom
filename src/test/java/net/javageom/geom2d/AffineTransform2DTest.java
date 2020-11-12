@@ -30,7 +30,6 @@ package net.javageom.geom2d;
 import java.awt.geom.AffineTransform;
 
 import junit.framework.TestCase;
-import net.javageom.geom2d.*;
 import net.javageom.geom2d.line.StraightLine2D;
 
 import static java.lang.Math.*;

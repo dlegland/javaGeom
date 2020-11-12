@@ -13,9 +13,6 @@ import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Vector2D;
 import net.javageom.geom2d.conic.Circle2D;
-import net.javageom.geom2d.domain.ContourArray2D;
-import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.domain.GenericDomain2D;
 import net.javageom.geom2d.line.StraightLine2D;
 import net.javageom.geom2d.polygon.Polygon2D;
 

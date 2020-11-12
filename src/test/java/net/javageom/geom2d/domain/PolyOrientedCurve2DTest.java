@@ -8,14 +8,12 @@
  */
 package net.javageom.geom2d.domain;
 
+import static java.lang.Math.PI;
+
 import junit.framework.TestCase;
 import net.javageom.geom2d.AffineTransform2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.domain.OrientedCurve2D;
-import net.javageom.geom2d.domain.PolyOrientedCurve2D;
-
-import static java.lang.Math.*;
 
 /**
  * @author dlegland

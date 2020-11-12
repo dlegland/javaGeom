@@ -13,10 +13,6 @@ import net.javageom.geom2d.AffineTransform2D;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Vector2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.domain.Boundary2D;
-import net.javageom.geom2d.domain.BoundaryPolyCurve2D;
-import net.javageom.geom2d.domain.Domain2D;
-import net.javageom.geom2d.domain.GenericDomain2D;
 import net.javageom.geom2d.line.*;
 
 /**

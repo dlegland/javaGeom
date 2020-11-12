@@ -40,7 +40,6 @@ import net.javageom.geom2d.conic.CircleArc2D;
 import net.javageom.geom2d.domain.Boundary2D;
 import net.javageom.geom2d.domain.Domain2D;
 import net.javageom.geom2d.line.StraightLine2D;
-import net.javageom.geom2d.polygon.Polyline2D;
 
 /**
  * @author Legland

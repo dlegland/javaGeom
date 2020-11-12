@@ -30,7 +30,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
 import net.javageom.geom2d.Vector2D;
 import net.javageom.geom2d.polygon.Polyline2D;
-import net.javageom.geom2d.spline.CubicBezierCurve2D;
 
 /**
  * @author Legland

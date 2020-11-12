@@ -10,7 +10,6 @@ package net.javageom.geom2d.transform;
 
 import junit.framework.TestCase;
 import net.javageom.geom2d.Point2D;
-import net.javageom.geom2d.transform.CircleInversion2D;
 
 
 /**

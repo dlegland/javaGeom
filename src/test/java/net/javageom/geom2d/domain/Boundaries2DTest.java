@@ -32,7 +32,6 @@ import junit.framework.TestCase;
 import net.javageom.geom2d.Box2D;
 import net.javageom.geom2d.conic.Circle2D;
 import net.javageom.geom2d.conic.CircleArc2D;
-import net.javageom.geom2d.domain.*;
 
 public class Boundaries2DTest extends TestCase {
 
