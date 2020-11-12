@@ -3,8 +3,8 @@
 
 
 // Imports
-import math.geom2d.*;
-import math.geom2d.line.StraightLine2D;
+import net.javageom.geom2d.*;
+import net.javageom.geom2d.line.StraightLine2D;
 
 /**
  * class TestLines.
